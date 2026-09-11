@@ -1,0 +1,43 @@
+{
+  "name": "@bysages/core",
+  "version": "0.0.0",
+  "description": "Shared core of By Sages Elements — design tokens, theme engine, and framework-agnostic component logic",
+  "keywords": [
+    "design-tokens",
+    "headless",
+    "theming",
+    "typescript",
+    "ui"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "basis build --stub",
+    "build": "vp pack",
+    "prepack": "pnpm build"
+  }
+}
