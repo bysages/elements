@@ -1,5 +1,6 @@
 import tokensStyles from "@bysages/tokens/styles";
 
+import { baseCss } from "./styles/base";
 import { componentStyles } from "./styles/components";
 
 /** Per-component style strings keyed by component name — the single source
@@ -9,8 +10,8 @@ import { componentStyles } from "./styles/components";
 export { componentStyles };
 
 /** The complete token layer (`@layer bs.tokens`): themes, density, contrast,
- * typography, motion, z-index. */
-export const tokensCss: string = tokensStyles;
+ * typography, motion, z-index, plus the document-level base guard. */
+export const tokensCss: string = tokensStyles + baseCss;
 
 let injected = false;
 
