@@ -1,6 +1,9 @@
+import { useSignaturePad } from "@ark-ui/vue/signature-pad";
 import type { Meta } from "@storybook/vue3-vite";
-import { h } from "vue";
+import { h, reactive } from "vue";
 
+import { Field } from "../field/index.js";
+import { withState } from "../with-state.js";
 import { SignaturePad } from "./index.js";
 
 const meta: Meta = { title: "Components / Signature Pad" };
@@ -22,17 +25,144 @@ function undoGlyph() {
   );
 }
 
+function pad(extraRootProps: Record<string, any> = {}, label = "Sign below") {
+  return [
+    h(SignaturePad.Label, () => label),
+    h(SignaturePad.Control, () => [
+      h(SignaturePad.Segment),
+      h(SignaturePad.ClearTrigger, () => undoGlyph()),
+      h(SignaturePad.Guide),
+    ]),
+    h(SignaturePad.HiddenInput),
+  ];
+}
+
 /** Sign below the guide hairline; the clear trigger wipes the paper without
  * leaving the field. */
 export const Basic = {
+  render: () => h(SignaturePad.Root, () => pad()),
+};
+
+/** The strokes answer to the caller — the readout counts them. */
+export const Controlled = {
   render: () =>
-    h(SignaturePad.Root, () => [
-      h(SignaturePad.Label, () => "Sign below"),
-      h(SignaturePad.Control, () => [
-        h(SignaturePad.Segment),
-        h(SignaturePad.ClearTrigger, () => undoGlyph()),
-        h(SignaturePad.Guide),
-      ]),
-      h(SignaturePad.HiddenInput),
+    withState(() => {
+      const state = reactive({ paths: [] as string[] });
+      return () =>
+        h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [
+          h(
+            "output",
+            {
+              style: {
+                fontSize: "var(--bs-font-size-sm)",
+                color: "var(--bs-color-text-secondary)",
+              },
+            },
+            () => `paths: ${state.paths.length}`,
+          ),
+          h(
+            SignaturePad.Root,
+            {
+              paths: state.paths,
+              onDraw: (e: { paths: string[] }) => (state.paths = e.paths),
+            } as any,
+            () => pad(),
+          ),
+          h(
+            "button",
+            {
+              onClick: () => (state.paths = []),
+              style: {
+                padding: "0.375rem 0.75rem",
+                border: "1px solid var(--bs-color-border)",
+                borderRadius: "var(--bs-radius-sm)",
+                background: "var(--bs-color-surface-2)",
+                font: "inherit",
+                fontSize: "var(--bs-font-size-sm)",
+              },
+            },
+            "Clear",
+          ),
+        ]);
+    }),
+};
+
+/** The finished stroke is developable: draw ends, the signature prints as
+ * an image below. */
+export const ImagePreview = {
+  render: () =>
+    withState(() => {
+      const state = reactive({ imageUrl: "" });
+      return () =>
+        h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [
+          h(
+            SignaturePad.Root,
+            {
+              onDrawEnd: (e: { getDataUrl: (type: string) => Promise<string> }) =>
+                e.getDataUrl("image/png").then((url) => (state.imageUrl = url)),
+            } as any,
+            () => pad(),
+          ),
+          h("div", { style: { display: "grid", gap: "0.25rem" } }, [
+            h(
+              "span",
+              {
+                style: {
+                  fontSize: "var(--bs-font-size-xs)",
+                  color: "var(--bs-color-text-tertiary)",
+                  letterSpacing: "var(--bs-tracking-label)",
+                },
+              },
+              "Image preview",
+            ),
+            state.imageUrl
+              ? h("img", {
+                  src: state.imageUrl,
+                  alt: "Signature",
+                  style: {
+                    border: "1px solid var(--bs-color-border)",
+                    borderRadius: "var(--bs-radius-sm)",
+                    background: "var(--bs-color-surface-2)",
+                  },
+                })
+              : null,
+          ]),
+        ]);
+    }),
+};
+
+/** In a field: the helper speaks below, the error waits for invalid. */
+export const WithField = {
+  render: () =>
+    h(Field.Root, { invalid: true } as any, () => [
+      h(SignaturePad.Root, () => pad({}, "Label")),
+      h(Field.HelperText, () => "Sign within the guide"),
+      h(Field.ErrorText, () => "A signature is required"),
     ]),
+};
+
+/** The machine answers outside its anatomy: the provider owns the pad. */
+export const RootProvider = {
+  render: () => {
+    const Driver = {
+      name: "SignaturePadRootProvider",
+      setup() {
+        const signaturePad = useSignaturePad();
+        return () => [
+          h(
+            "output",
+            {
+              style: {
+                fontSize: "var(--bs-font-size-sm)",
+                color: "var(--bs-color-text-secondary)",
+              },
+            },
+            () => `paths: ${signaturePad.value.paths.length}`,
+          ),
+          h(SignaturePad.RootProvider as any, { value: signaturePad.value }, () => pad()),
+        ];
+      },
+    };
+    return () => h(Driver);
+  },
 };
