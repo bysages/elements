@@ -68,49 +68,63 @@ export const Basic = {
 };
 
 /** Toggle rows: each carries its own check, independent of the others. */
+/** Toggles hold independently: the vue adapter's checkbox items are
+ * stateless, so the story owns each checked flag. */
 export const CheckboxItems = {
   render: () =>
-    h(Menu.Root, () => [
-      h(Menu.Trigger, () => [h("span", () => "View"), h(Menu.Indicator, () => chevronDown())]),
-      positioner([
-        h(Menu.CheckboxItem as any, { value: "rulers" }, () => [
-          h(Menu.ItemIndicator, () => checkGlyph()),
-          "Rulers",
-        ]),
-        h(Menu.CheckboxItem as any, { value: "grid", defaultChecked: true }, () => [
-          h(Menu.ItemIndicator, () => checkGlyph()),
-          "Grid",
-        ]),
-        h(Menu.CheckboxItem as any, { value: "guides" }, () => [
-          h(Menu.ItemIndicator, () => checkGlyph()),
-          "Guides",
-        ]),
-      ]),
-    ]),
+    withState(() => {
+      const state = reactive({ checked: { rulers: false, grid: true, guides: false } });
+      const item = (key: keyof typeof state.checked, label: string) =>
+        h(
+          Menu.CheckboxItem as any,
+          {
+            value: key,
+            checked: state.checked[key],
+            "onUpdate:checked": (checked: boolean) => (state.checked[key] = checked),
+          } as any,
+          () => [h(Menu.ItemIndicator, () => checkGlyph()), label],
+        );
+      return () =>
+        h(Menu.Root, () => [
+          h(Menu.Trigger, () => [h("span", () => "View"), h(Menu.Indicator, () => chevronDown())]),
+          positioner([item("rulers", "Rulers"), item("grid", "Grid"), item("guides", "Guides")]),
+        ]);
+    }),
 };
 
 /** One radio course: exactly one theme holds the ink at a time. */
 export const RadioItems = {
   render: () =>
-    h(Menu.Root, () => [
-      h(Menu.Trigger, () => [h("span", () => "Theme"), h(Menu.Indicator, () => chevronDown())]),
-      positioner([
-        h(Menu.RadioItemGroup, { value: "qinghua" }, () => [
-          h(Menu.RadioItem, { value: "qinghua" }, () => [
-            h(Menu.ItemIndicator, () => checkGlyph()),
-            "Qinghua cobalt",
+    withState(() => {
+      const state = reactive({ theme: "qinghua" });
+      return () =>
+        h(Menu.Root, () => [
+          h(Menu.Trigger, () => [h("span", () => "Theme"), h(Menu.Indicator, () => chevronDown())]),
+          positioner([
+            h(
+              Menu.RadioItemGroup,
+              {
+                modelValue: state.theme,
+                "onUpdate:modelValue": (value: string) => (state.theme = value),
+              } as any,
+              () => [
+                h(Menu.RadioItem, { value: "qinghua" }, () => [
+                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  "Qinghua cobalt",
+                ]),
+                h(Menu.RadioItem, { value: "celadon" }, () => [
+                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  "Celadon",
+                ]),
+                h(Menu.RadioItem, { value: "zhusha" }, () => [
+                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  "Zhusha cinnabar",
+                ]),
+              ],
+            ),
           ]),
-          h(Menu.RadioItem, { value: "celadon" }, () => [
-            h(Menu.ItemIndicator, () => checkGlyph()),
-            "Celadon",
-          ]),
-          h(Menu.RadioItem, { value: "zhusha" }, () => [
-            h(Menu.ItemIndicator, () => checkGlyph()),
-            "Zhusha cinnabar",
-          ]),
-        ]),
-      ]),
-    ]),
+        ]);
+    }),
 };
 
 /** A course that opens another course: trigger rows nest menus to any
