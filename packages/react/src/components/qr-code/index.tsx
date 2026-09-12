@@ -1,0 +1,10 @@
+import { QrCode as ArkQrCode } from "@ark-ui/react/qr-code";
+import { injectComponentStyle } from "@bysages/core";
+
+/** Ark's QrCode, dressed in the paper-and-ink system: the pattern prints in
+ * ink on the page, with an optional paper badge and a seal-cut download
+ * control. The API is Ark's own — Root, Frame, Pattern, Overlay,
+ * DownloadTrigger. */
+export const QrCode = ArkQrCode;
+
+injectComponentStyle("qr-code");
