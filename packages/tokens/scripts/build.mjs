@@ -66,6 +66,7 @@ const semanticFiles = [
   "contrast.css",
   "typography.css",
   "motion.css",
+  "z-index.css",
 ];
 
 const semantic = await Promise.all(
