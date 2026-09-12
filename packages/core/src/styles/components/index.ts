@@ -36,10 +36,12 @@ import { scrollAreaCss } from "./scroll-area";
 import { segmentGroupCss } from "./segment-group";
 import { selectCss } from "./select";
 import { signaturePadCss } from "./signature-pad";
+import { highlightCss } from "./highlight";
 import { sliderCss } from "./slider";
 import { splitterCss } from "./splitter";
 import { stepsCss } from "./steps";
 import { switchCss } from "./switch";
+import { swapCss } from "./swap";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
 import { timerCss } from "./timer";
@@ -92,10 +94,12 @@ export const componentStyles: Record<string, string> = {
   "segment-group": segmentGroupCss,
   select: selectCss,
   "signature-pad": signaturePadCss,
+  highlight: highlightCss,
   slider: sliderCss,
   splitter: splitterCss,
   steps: stepsCss,
   switch: switchCss,
+  swap: swapCss,
   tabs: tabsCss,
   "tags-input": tagsInputCss,
   timer: timerCss,
