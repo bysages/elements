@@ -32,7 +32,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/js/index.mjs"
     },
-    "./css": "./dist/css/index.css",
+    "./css": {
+      "types": "./src/static/css.d.ts",
+      "default": "./dist/css/index.css"
+    },
     "./styles": {
       "types": "./dist/js/styles.d.ts",
       "import": "./dist/js/styles.mjs"
