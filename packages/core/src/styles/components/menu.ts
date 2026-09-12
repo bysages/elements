@@ -140,12 +140,14 @@ export const menuCss =
   background: var(--bs-color-surface-0);
 }
 
-[data-scope="menu"][data-part="item"][data-state="checked"] {
+[data-scope="menu"][data-part="item"][data-state="checked"],
+[data-scope="menu"][data-part="radio-item"][data-state="checked"] {
   background: var(--bs-color-primary);
   color: var(--bs-color-primary-text);
 }
 
-[data-scope="menu"][data-part="item"][data-state="checked"][data-highlighted] {
+[data-scope="menu"][data-part="item"][data-state="checked"][data-highlighted],
+[data-scope="menu"][data-part="radio-item"][data-state="checked"][data-highlighted] {
   background: var(--bs-color-primary-hover);
 }
 

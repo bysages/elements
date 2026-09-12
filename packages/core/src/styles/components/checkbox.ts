@@ -11,6 +11,19 @@ export const checkboxCss =
   font-size: var(--bs-font-size-sm);
 }
 
+/* A group of checkboxes is one field: the rows stack, and the invalid
+ * pigment bleeds onto every row inside. */
+[data-scope="checkbox"][data-part="group"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-space-2);
+}
+
+[data-scope="checkbox"][data-part="group"][data-invalid],
+[data-scope="checkbox"][data-part="group"][data-invalid] [data-part="root"] {
+  color: var(--bs-color-danger);
+}
+
 /* The box is the seal: square-cut, hairline, resting in ambient shade. */
 [data-scope="checkbox"][data-part="control"] {
   display: inline-flex;
