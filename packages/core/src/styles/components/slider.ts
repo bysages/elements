@@ -33,6 +33,7 @@ export const sliderCss =
 [data-scope="slider"][data-part="control"][data-orientation="vertical"] {
   flex-direction: column;
   inline-size: var(--bs-control-height-sm);
+  block-size: 10rem;
 }
 
 [data-scope="slider"][data-part="control"][data-disabled] {

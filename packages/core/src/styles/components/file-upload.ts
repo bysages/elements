@@ -60,6 +60,52 @@ export const fileUploadCss =
   cursor: not-allowed;
 }
 
+/* The clear-all action is the quiet twin of the choose-files door: the same
+   frame drawn only on hover — it never competes with the primary door. */
+[data-scope="file-upload"][data-part="clear-trigger"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  block-size: var(--bs-control-height-md);
+  padding: 0 var(--bs-padding-md);
+  border: 1px solid transparent;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-secondary);
+  font: inherit;
+  font-size: var(--bs-font-size-sm);
+  font-weight: var(--bs-font-weight-medium);
+  letter-spacing: var(--bs-tracking-label);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    background-color var(--bs-duration-fast) var(--bs-ease-out),
+    color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="file-upload"][data-part="clear-trigger"]:hover:not([data-disabled]) {
+  border-color: var(--bs-color-border);
+  background: var(--bs-color-surface-2);
+  color: var(--bs-color-text-primary);
+}
+
+[data-scope="file-upload"][data-part="clear-trigger"]:focus-visible {
+  outline: none;
+  border-color: var(--bs-color-primary);
+  box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="file-upload"][data-part="clear-trigger"]:active:not([data-disabled]) {
+  background: var(--bs-color-surface-inset);
+}
+
+[data-scope="file-upload"][data-part="clear-trigger"][data-disabled] {
+  color: var(--bs-color-text-disabled);
+  cursor: not-allowed;
+}
+
 /* The dropzone is a vessel, not a control: one dashed hairline drawn on the
    paper — an invitation, not a border. Drag-over floods it with subtle
    primary light; invalid floods it with cinnabar. */

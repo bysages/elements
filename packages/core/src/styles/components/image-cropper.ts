@@ -83,38 +83,38 @@ export const imageCropperCss =
   display: none;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="top-left"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="nw"] {
   cursor: nwse-resize;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="top-left"] > * {
+[data-scope="image-cropper"][data-part="handle"][data-position="nw"] > * {
   border-block-start: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
   border-inline-start: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="top-right"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="ne"] {
   cursor: nesw-resize;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="top-right"] > * {
+[data-scope="image-cropper"][data-part="handle"][data-position="ne"] > * {
   border-block-start: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
   border-inline-end: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="bottom-right"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="se"] {
   cursor: nwse-resize;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="bottom-right"] > * {
+[data-scope="image-cropper"][data-part="handle"][data-position="se"] > * {
   border-block-end: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
   border-inline-end: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="bottom-left"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="sw"] {
   cursor: nesw-resize;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="bottom-left"] > * {
+[data-scope="image-cropper"][data-part="handle"][data-position="sw"] > * {
   border-block-end: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
   border-inline-start: var(--bs-cropper-arm) solid var(--bs-color-surface-2);
 }
@@ -123,13 +123,13 @@ export const imageCropperCss =
   transform: scale(1.25);
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="top"],
-[data-scope="image-cropper"][data-part="handle"][data-position="bottom"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="n"],
+[data-scope="image-cropper"][data-part="handle"][data-position="s"] {
   cursor: ns-resize;
 }
 
-[data-scope="image-cropper"][data-part="handle"][data-position="left"],
-[data-scope="image-cropper"][data-part="handle"][data-position="right"] {
+[data-scope="image-cropper"][data-part="handle"][data-position="w"],
+[data-scope="image-cropper"][data-part="handle"][data-position="e"] {
   cursor: ew-resize;
 }
 
