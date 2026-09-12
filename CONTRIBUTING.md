@@ -10,6 +10,7 @@ pnpm build                                  # build all packages
 cd packages/<pkg> && pnpm build             # build one package
 cd packages/<pkg> && pnpm exec vp test run  # test one package
 pnpm exec vp check                          # lint, format & type check
+cd packages/<pkg> && pnpm dev               # storybook for one package (port 6006)
 ```
 
 Prerequisites: Node.js 18+, pnpm 9+.
