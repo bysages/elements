@@ -44,6 +44,9 @@
   "dependencies": {
     "@ark-ui/solid": "^5.39.1"
   },
+  "devDependencies": {
+    "solid-js": "^1.9.15"
+  },
   "peerDependencies": {
     "solid-js": "^1.9"
   }
