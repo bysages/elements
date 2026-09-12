@@ -1,10 +1,11 @@
 {
-  "name": "@bysages/core",
+  "name": "@bysages/svelte",
   "version": "0.0.0",
-  "description": "Shared core of By Sages Elements — theme engine, per-component styles, and the lighting engine, all token-driven",
+  "description": "Ark-based By Sages Elements components for Svelte — styled by the paper-and-ink design tokens",
   "keywords": [
+    "ark-ui",
+    "design-system",
     "design-tokens",
-    "headless",
     "theming",
     "typescript",
     "ui"
@@ -39,5 +40,11 @@
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@ark-ui/svelte": "^5.24.1"
+  },
+  "peerDependencies": {
+    "svelte": "^5"
   }
 }

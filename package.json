@@ -2,22 +2,24 @@
   "name": "@bysages/monorepo",
   "version": "0.0.0",
   "private": true,
-  "description": "By Sages Elements monorepo — headless UI components, responsive via container queries and themed by design tokens, shipped as Vue, React, and Web Components",
+  "description": "By Sages Elements monorepo — Ark-based UI components styled by design tokens, responsive via container queries, with a dynamic lighting engine, shipped as React, Vue, Solid, and Svelte components",
   "keywords": [
     "a11y",
     "accessible",
+    "ark-ui",
     "component-library",
     "components",
     "container-queries",
     "design-system",
     "design-tokens",
-    "headless",
+    "lighting-engine",
     "react",
+    "solid",
+    "svelte",
     "theming",
     "typescript",
     "ui",
-    "vue",
-    "web-components"
+    "vue"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
   "bugs": {

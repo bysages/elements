@@ -8,19 +8,21 @@ The premise: **Ark's headless components, dressed in our design system.** Intera
 
 ## Architecture
 
-| Layer       | Technology                                  | Owns                                                                  |
-| ----------- | ------------------------------------------- | --------------------------------------------------------------------- |
-| Components  | [Ark UI](https://ark-ui.com) (`@ark-ui/*`)  | interaction, state, ARIA, popper positioning — headless, unstyled     |
-| Styling     | `@bysages/core` component styles            | the only visual layer: native CSS scoped by `[data-scope][data-part]` |
-| Lighting    | `@bysages/core` lighting engine (planned)   | dynamic light: source model + a state → CSS-variable pipeline         |
-| Theming     | design tokens → CSS custom properties       | palettes, light/dark, contrast & density tiers, `@layer`              |
-| Responsive  | native CSS Container Queries (`@container`) | components respond to their container, not the viewport               |
-| Frameworks  | React, Vue, Solid, Svelte                   | thin wrappers: API narrowing + style injection, no DOM of our own     |
+| Layer      | Technology                                  | Owns                                                                  |
+| ---------- | ------------------------------------------- | --------------------------------------------------------------------- |
+| Components | [Ark UI](https://ark-ui.com) (`@ark-ui/*`)  | interaction, state, ARIA, popper positioning — headless, unstyled     |
+| Styling    | `@bysages/core` component styles            | the only visual layer: native CSS scoped by `[data-scope][data-part]` |
+| Lighting   | `@bysages/core` lighting engine (planned)   | dynamic light: source model + a state → CSS-variable pipeline         |
+| Theming    | design tokens → CSS custom properties       | palettes, light/dark, contrast & density tiers, `@layer`              |
+| Responsive | native CSS Container Queries (`@container`) | components respond to their container, not the viewport               |
+| Frameworks | React, Vue, Solid, Svelte                   | thin wrappers: API narrowing + style injection, no DOM of our own     |
 
 Notes an agent must not miss:
 
 - The framework matrix is whatever Ark UI supports — React, Vue, Solid, Svelte. **Web Components are explicitly out of scope.**
 - Ark renders the anatomy attributes our CSS styles against (`data-scope`, `data-part`, `data-state`, …), so one stylesheet serves every framework. Wrappers add no structural DOM beyond Ark's anatomy; all styling happens in `@bysages/core`, never inline in a wrapper.
+- Animations follow Ark's contract: keyframes hooked on `[data-state="open"]` / `[data-state="closed"]`; Ark postpones unmounting so exit animations always finish. Components also expose CSS variables (`--transform-origin`, `--reference-width`, `--available-width`) — consume them, never recompute them.
+- Overlay stacking uses one shared base z-index for every dismissible layer, ordered by Zag's `--layer-index`: content `calc(var(--bs-z-overlay) + var(--layer-index, 0))`, positioner `var(--z-index, var(--bs-z-overlay))`, backdrop one below. Never give each component its own base — nested dialog/menu/popover combos must stack correctly.
 - Floating positioning is built into the Ark components (popper). Do not add Floating UI as a direct dependency.
 - Styling is native CSS driven by CSS variables. No utility framework is a dependency of component styles; utility-friendly output may exist at the wrapper layer, never in the core.
 - Container queries need a containment context: components establish their own `container` boundaries; never couple component breakpoints to media queries.
@@ -81,7 +83,7 @@ packages/svelte/src/    @bysages/svelte — Ark wrappers for Svelte
 
 Each package carries a `demo/` folder next to `src/` — one folder per component, mirroring the source layout, served by `vite` from the package root (dev-only, never published). The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) joins the workspace later.
 
-Tokens are real today; the wrapper packages and the core style layer are the current build-out. `@bysages/table` (TanStack Table) and `@bysages/charts` (ECharts themed from tokens) are planned data-layer packages on top.
+Tokens are real today; the wrapper packages and the core style layer are the current build-out. `@bysages/table` (TanStack Table) and `@bysages/charts` (TanStack Charts themed from tokens) are planned data-layer packages on top.
 
 ## Build
 

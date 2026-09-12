@@ -1,10 +1,11 @@
 {
-  "name": "@bysages/core",
+  "name": "@bysages/react",
   "version": "0.0.0",
-  "description": "Shared core of By Sages Elements — theme engine, per-component styles, and the lighting engine, all token-driven",
+  "description": "Ark-based By Sages Elements components for React — styled by the paper-and-ink design tokens",
   "keywords": [
+    "ark-ui",
+    "design-system",
     "design-tokens",
-    "headless",
     "theming",
     "typescript",
     "ui"
@@ -39,5 +40,12 @@
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@ark-ui/react": "^5.39.1"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   }
 }
