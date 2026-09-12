@@ -55,7 +55,8 @@ Avoid `.forEach()` — `for...of` is strictly superior.
 
 ### Component rules
 
-- Component logic belongs in state machines (Zag.js) or pure functions in `@bysages/core`; adapters only translate machine state to the framework's rendering primitives.
+- Interaction logic belongs to [Ark UI](https://ark-ui.com) — never reimplement it. A wrapper only narrows the API to our surface (props, events) and injects the component style from `@bysages/core`; it adds no structural DOM beyond Ark's anatomy.
+- Component styles live in `@bysages/core`, scoped by `[data-scope][data-part]` — the anatomy attributes Ark renders in every framework.
 - Visual values (color, spacing, radius, elevation, motion) come from tokens/CSS variables — never hardcoded in components.
 - Responsiveness is container-driven (`@container`); media queries are reserved for global concerns.
 

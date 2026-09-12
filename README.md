@@ -7,7 +7,7 @@
 ![GitHub License](https://img.shields.io/github/license/bysages/elements)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
 
-> Elements is the UI component library of By Sages: component logic written once and shared by every rendering layer, responsive through native **CSS Container Queries**, and themed through **design tokens compiled to CSS variables** — one headless core, shipped as Vue components, React components, and Web Components.
+> Elements is the UI component library of By Sages: accessible components built on **Ark UI headless primitives**, styled entirely by **design tokens compiled to CSS variables**, and responsive through native **CSS Container Queries** — one design system, shipped as React, Vue, Solid, and Svelte components.
 
 [Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
 
@@ -17,18 +17,22 @@
 
 ## Why Elements?
 
-- **Logic once, render everywhere** — interaction, state, and accessibility live in a framework-agnostic logic core; the Vue / React / Web Components layers are thin adapters over it, so behavior stays in perfect parity.
+- **Ark's logic, our look** — interaction, state, accessibility, and positioning come from [Ark UI](https://ark-ui.com) headless components; every visual decision lives in one style layer, so behavior stays rock-solid while the design stays ours.
+- **Dynamic light, not static shadows** — the lighting engine computes elevation, pigment bleed, and glow into CSS variables; component styles only consume light (以光为影 — light as shadow).
 - **Container-driven responsiveness** — components respond to the space they are given (`@container`), not the viewport; the same component composes correctly in a sidebar, a card, or a full page.
-- **Tokens all the way down** — palettes, type, spacing, radius, elevation, and density are design tokens exposed as CSS custom properties. Themes (light/dark, contrast tiers, density tiers) are data, never hardcoded styles.
-- **Light as shadow (以光为影)** — hierarchy comes from light: luminance ramps, hairlines, soft glow, not heavy borders or drop shadows. The language bridges Chinese restraint (留白) and Western minimalism, with legible defaults and contrast/density tiers that serve both older and younger users, and both information-dense and airy layouts.
+- **Tokens all the way down** — palettes, type, spacing, radius, elevation, and density are design tokens exposed as CSS custom properties. Themes (light/dark, accent pigments, contrast tiers, density tiers) are data, never hardcoded styles.
+- **Paper and ink (以光为影)** — interfaces are warm paper, content is ink, hierarchy is light. Primary actions default to ink with switchable mineral-pigment accent themes; semantic colors are fixed traditional pigments; controls are square-cut like seals while vessels stay round. The language bridges Chinese restraint (留白) and Western minimalism, with legible defaults and contrast/density tiers that serve both older and younger users.
 
 ## Packages
 
-| Package                                    | Version | Description                                                                       |
-| ------------------------------------------ | ------- | --------------------------------------------------------------------------------- |
-| [@bysages/core](./packages/core/README.md) | -       | Shared core — design tokens, theme engine, and framework-agnostic component logic |
-
-Adapter packages (Web Components, Vue, React) are planned on top of the core.
+| Package                                    | Version | Description                                                                 |
+| ------------------------------------------ | ------- | --------------------------------------------------------------------------- |
+| [@bysages/tokens](./packages/tokens)       | -       | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
+| [@bysages/core](./packages/core/README.md) | -       | Theme engine, per-component styles, and the lighting engine                 |
+| [@bysages/react](./packages/react)         | -       | Ark-based components for React                                              |
+| [@bysages/vue](./packages/vue)             | -       | Ark-based components for Vue                                                |
+| [@bysages/solid](./packages/solid)         | -       | Ark-based components for Solid                                              |
+| [@bysages/svelte](./packages/svelte)       | -       | Ark-based components for Svelte                                             |
 
 ## Quick Start
 
@@ -66,10 +70,13 @@ Adapter packages (Web Components, Vue, React) are planned on top of the core.
 ### Development Commands
 
 ```bash
-pnpm build                       # Build all packages
-cd packages/<pkg> && pnpm build  # Build one package
-vp check                         # Lint & format
+pnpm build                                  # Build all packages
+cd packages/<pkg> && pnpm build             # Build one package
+cd packages/<pkg> && pnpm exec vp test run  # Test one package
+pnpm exec vp check                          # Lint, format & type check
 ```
+
+Each package serves its own component demos with `vite` from the package root (`cd packages/<pkg> && pnpm dev`).
 
 ## Versioning
 
