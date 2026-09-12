@@ -1,0 +1,48 @@
+{
+  "name": "@bysages/tokens",
+  "version": "0.0.0",
+  "description": "Design tokens for By Sages Elements — DTCG source compiled to CSS variables and JavaScript: surface ramps, elevation from light, density tiers, themes",
+  "keywords": [
+    "css-variables",
+    "design-tokens",
+    "dtcg",
+    "theming",
+    "ui"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/js/index.mjs"
+    },
+    "./css": "./dist/css/index.css",
+    "./styles": {
+      "types": "./dist/js/styles.d.ts",
+      "import": "./dist/js/styles.mjs"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.5.3"
+  }
+}

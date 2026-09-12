@@ -1,0 +1,42 @@
+/* Density — decoration compresses, information never does: density scales whitespace and decoration
+   only. Type sizes, contrast, and control heights stay fixed so compact can
+   never trade away readability; controls follow the type they hold. */
+
+:root,
+:host {
+  --bs-density-scale: 1;
+
+  /* Density-scaled whitespace. */
+  --bs-padding-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
+  --bs-padding-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
+  --bs-padding-md: calc(var(--bs-space-3) * var(--bs-density-scale));
+  --bs-padding-lg: calc(var(--bs-space-4) * var(--bs-density-scale));
+  --bs-padding-xl: calc(var(--bs-space-6) * var(--bs-density-scale));
+  --bs-gap-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
+  --bs-gap-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
+  --bs-gap-md: calc(var(--bs-space-3) * var(--bs-density-scale));
+  --bs-gap-lg: calc(var(--bs-space-5) * var(--bs-density-scale));
+  --bs-gap-xl: calc(var(--bs-space-8) * var(--bs-density-scale));
+
+  /* Control heights: 28/32/36px — the compact desktop register (buttons and
+     toggles at md, small chips and segmented items at sm). Density may ease
+     them toward roomy but never below the readable floor. */
+  --bs-control-height-sm: max(1.625rem, calc(1.75rem * var(--bs-density-scale)));
+  --bs-control-height-md: max(1.875rem, calc(2rem * var(--bs-density-scale)));
+  --bs-control-height-lg: max(2.125rem, calc(2.25rem * var(--bs-density-scale)));
+}
+
+[data-density="compact"],
+:host([data-density="compact"]) {
+  --bs-density-scale: 0.9;
+}
+
+[data-density="comfortable"],
+:host([data-density="comfortable"]) {
+  --bs-density-scale: 1.125;
+}
+
+[data-density="spacious"],
+:host([data-density="spacious"]) {
+  --bs-density-scale: 1.25;
+}

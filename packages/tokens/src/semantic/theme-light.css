@@ -1,0 +1,126 @@
+/* Light theme — light as shadow, the paper-and-ink register: hierarchy reads through
+   the paper ladder (the ground sits in ambient shade, raised surfaces catch
+   the light), hairline borders, and restrained cast shadows in warm ink.
+   Controls stay crisp — a paper-white surface, one hairline, and shadow-xs.
+   Primary defaults to ink so the interface stays monochrome and solemn; the
+   pigment accents (qinghua, celadon, zhusha) live in accent.css. */
+
+:root,
+:host,
+[data-theme="light"],
+:host([data-theme="light"]) {
+  color-scheme: light;
+
+  /* Surfaces: the ground rests in ambient shade; raised surfaces catch the
+     light. Warm paper whites throughout — pure #ffffff never appears, it
+     would read clinical against the ink. */
+  --bs-color-surface-0: var(--bs-color-gray-50);
+  --bs-color-surface-1: var(--bs-color-gray-25);
+  --bs-color-surface-2: oklch(0.988 0.004 95);
+  --bs-color-surface-3: oklch(0.988 0.004 95);
+  --bs-color-surface-4: oklch(0.988 0.004 95);
+  --bs-color-surface-5: oklch(0.988 0.004 95);
+  --bs-color-surface-inset: var(--bs-color-gray-100);
+  /* The inverted surface — ink on paper — hosts floating labels like
+     tooltips that must read against the page, never blend into it. */
+  --bs-color-surface-inverse: var(--bs-color-gray-800);
+  --bs-color-scrim: oklch(0.15 0.007 76 / 0.4);
+
+  --bs-color-text-primary: var(--bs-color-gray-900);
+  --bs-color-text-secondary: var(--bs-color-gray-600);
+  --bs-color-text-tertiary: var(--bs-color-gray-500);
+  --bs-color-text-disabled: var(--bs-color-gray-400);
+  --bs-color-text-inverse: var(--bs-color-surface-2);
+
+  --bs-color-border: var(--bs-color-gray-200);
+  --bs-color-border-strong: var(--bs-color-gray-300);
+
+  /* Focus is a halo of light: a crisp inner line inside a soft, wide glow.
+     The inset variant serves parts flush against a container edge (steppers),
+     where an outer halo would spill past it. */
+  --bs-color-focus: var(--bs-color-primary);
+  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
+  --bs-focus-ring-width: 8px;
+  --bs-focus-ring:
+    0 0 0 1px var(--bs-color-focus), 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
+  --bs-focus-ring-inset:
+    inset 0 0 0 1px var(--bs-color-focus), inset 0 0 0 4px var(--bs-focus-ring-color);
+
+  /* Primary is ink by default — solemn, unhurried, industry-neutral. The
+     hover deepens the ink into the paper; the pigment accents override the
+     whole block (see accent.css). */
+  --bs-color-primary: var(--bs-color-gray-800);
+  --bs-color-primary-hover: var(--bs-color-gray-900);
+  --bs-color-primary-active: var(--bs-color-gray-925);
+  --bs-color-primary-text: var(--bs-color-surface-2);
+  --bs-color-primary-subtle: var(--bs-color-gray-100);
+  --bs-color-primary-subtle-text: var(--bs-color-gray-800);
+  --bs-color-primary-border: var(--bs-color-gray-300);
+
+  /* Fixed semantic pigments — bamboo, ochre, cinnabar, ultramarine. They do
+     not follow the accent theme: an error is always cinnabar-red, a warning
+     always ochre, whatever pigment the brand rides. */
+  --bs-color-success: var(--bs-color-success-600);
+  --bs-color-success-hover: var(--bs-color-success-700);
+  --bs-color-success-subtle: var(--bs-color-success-100);
+  --bs-color-success-subtle-text: var(--bs-color-success-800);
+
+  --bs-color-warning: var(--bs-color-warning-600);
+  --bs-color-warning-hover: var(--bs-color-warning-700);
+  --bs-color-warning-subtle: var(--bs-color-warning-100);
+  --bs-color-warning-subtle-text: var(--bs-color-warning-800);
+
+  --bs-color-danger: var(--bs-color-danger-600);
+  --bs-color-danger-hover: var(--bs-color-danger-700);
+  --bs-color-danger-subtle: var(--bs-color-danger-100);
+  --bs-color-danger-subtle-text: var(--bs-color-danger-800);
+
+  --bs-color-info: var(--bs-color-info-600);
+  --bs-color-info-hover: var(--bs-color-info-700);
+  --bs-color-info-subtle: var(--bs-color-info-100);
+  --bs-color-info-subtle-text: var(--bs-color-info-800);
+
+  /* Lighting — elevation shadows are computed, never copy-pasted. Every
+     shadow draws its ink from --bs-shadow-ink, this theme's warm shadow hue,
+     shifts with --bs-light-x (where the key light stands), and spreads with
+     --bs-light-reach (how high the surface floats). Custom properties resolve
+     their own var() references at the declaring element, so these composite
+     tokens always carry theme ink; a colored surface that casts in its own
+     color composes its shadow inline from these parts mixed with its tint —
+     see the dialog trigger. Restraint ladder: controls carry only shadow-xs;
+     cards rise on elevation-1/2; menus and popovers separate on elevation-3;
+     dialogs own elevation-4/5. */
+  --bs-shadow-ink: oklch(0.3 0.02 80);
+  --bs-light-x: 0px;
+  --bs-light-reach: 1;
+  --bs-shadow-xs: 0 1px 2px 0 color-mix(in oklab, var(--bs-shadow-ink) 5%, transparent);
+  --bs-elevation-0: none;
+  --bs-elevation-1: var(--bs-light-x) calc(1px * var(--bs-light-reach))
+    calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent);
+  --bs-elevation-2:
+    var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
+      color-mix(in oklab, var(--bs-shadow-ink) 6%, transparent),
+    var(--bs-light-x) calc(3px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
+      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 9%, transparent);
+  --bs-elevation-3:
+    var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(4px * var(--bs-light-reach))
+      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent),
+    var(--bs-light-x) calc(5px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
+      calc(-3px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
+    var(--bs-light-x) calc(12px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
+      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent);
+  --bs-elevation-4:
+    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
+      calc(-4px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent),
+    var(--bs-light-x) calc(10px * var(--bs-light-reach)) calc(28px * var(--bs-light-reach))
+      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent),
+    var(--bs-light-x) calc(28px * var(--bs-light-reach)) calc(56px * var(--bs-light-reach))
+      calc(-12px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent);
+  --bs-elevation-5:
+    var(--bs-light-x) calc(6px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
+      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
+    var(--bs-light-x) calc(16px * var(--bs-light-reach)) calc(40px * var(--bs-light-reach))
+      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent),
+    var(--bs-light-x) calc(40px * var(--bs-light-reach)) calc(80px * var(--bs-light-reach))
+      calc(-16px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent);
+}

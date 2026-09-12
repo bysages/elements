@@ -1,0 +1,70 @@
+/* Accent themes — the pigments. Primary is ink by default (theme-light/dark);
+   switching [data-accent] lays a different mineral pigment under the same
+   interface: qinghua (cobalt, the blue of blue-and-white porcelain), celadon
+   (aquatic green-blue), zhusha (cinnabar, the seal-paste red used sparingly
+   by civic sites for identity — never for errors; danger stays cinnabar-red
+   by way of --bs-color-danger, a separate token). Each accent redefines the
+   primary block and the focus hue; the fixed semantic pigments never follow. */
+
+[data-accent="qinghua"] {
+  --bs-color-primary: var(--bs-color-brand-600);
+  --bs-color-primary-hover: var(--bs-color-brand-700);
+  --bs-color-primary-active: var(--bs-color-brand-800);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-brand-100);
+  --bs-color-primary-subtle-text: var(--bs-color-brand-800);
+  --bs-color-primary-border: var(--bs-color-brand-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="qinghua"],
+:host([data-theme="dark"][data-accent="qinghua"]) {
+  --bs-color-primary: var(--bs-color-brand-500);
+  --bs-color-primary-hover: var(--bs-color-brand-600);
+  --bs-color-primary-active: var(--bs-color-brand-700);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-brand-300);
+  --bs-color-primary-border: var(--bs-color-brand-700);
+}
+
+[data-accent="celadon"] {
+  --bs-color-primary: var(--bs-color-celadon-600);
+  --bs-color-primary-hover: var(--bs-color-celadon-700);
+  --bs-color-primary-active: var(--bs-color-celadon-800);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-celadon-100);
+  --bs-color-primary-subtle-text: var(--bs-color-celadon-800);
+  --bs-color-primary-border: var(--bs-color-celadon-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="celadon"],
+:host([data-theme="dark"][data-accent="celadon"]) {
+  --bs-color-primary: var(--bs-color-celadon-500);
+  --bs-color-primary-hover: var(--bs-color-celadon-600);
+  --bs-color-primary-active: var(--bs-color-celadon-700);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-celadon-300);
+  --bs-color-primary-border: var(--bs-color-celadon-700);
+}
+
+[data-accent="zhusha"] {
+  --bs-color-primary: var(--bs-color-zhusha-600);
+  --bs-color-primary-hover: var(--bs-color-zhusha-700);
+  --bs-color-primary-active: var(--bs-color-zhusha-800);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-zhusha-100);
+  --bs-color-primary-subtle-text: var(--bs-color-zhusha-800);
+  --bs-color-primary-border: var(--bs-color-zhusha-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="zhusha"],
+:host([data-theme="dark"][data-accent="zhusha"]) {
+  --bs-color-primary: var(--bs-color-zhusha-500);
+  --bs-color-primary-hover: var(--bs-color-zhusha-600);
+  --bs-color-primary-active: var(--bs-color-zhusha-700);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-zhusha-300);
+  --bs-color-primary-border: var(--bs-color-zhusha-700);
+}

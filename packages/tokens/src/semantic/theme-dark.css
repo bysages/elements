@@ -1,0 +1,111 @@
+/* Dark theme — lacquer night: the room dims into warm lacquer black,
+   and text turns to paper. Surfaces still brighten as they rise (e0 darkest
+   → e5 lightest) — at night the ladder of light, not the cast shadow, does
+   the separating. Primary inverts: paper-white buttons set ink on fire
+   gently against the dark. */
+
+[data-theme="dark"],
+:host([data-theme="dark"]) {
+  color-scheme: dark;
+
+  /* Lacquer surfaces: warm black at every step, never pure #000. */
+  --bs-color-surface-0: oklch(0.165 0.008 75);
+  --bs-color-surface-1: oklch(0.205 0.009 75);
+  --bs-color-surface-2: oklch(0.245 0.01 76);
+  --bs-color-surface-3: oklch(0.272 0.01 76);
+  --bs-color-surface-4: oklch(0.29 0.01 76);
+  --bs-color-surface-5: oklch(0.31 0.01 76);
+  --bs-color-surface-inset: oklch(0.135 0.007 75);
+  /* The inverted surface — paper on lacquer — hosts floating labels like
+     tooltips; at night the inversion reads as a slip of bright paper. */
+  --bs-color-surface-inverse: var(--bs-color-gray-100);
+  --bs-color-scrim: oklch(0.05 0.01 75 / 0.6);
+
+  --bs-color-text-primary: oklch(0.925 0.006 90);
+  --bs-color-text-secondary: var(--bs-color-gray-300);
+  --bs-color-text-tertiary: var(--bs-color-gray-400);
+  --bs-color-text-disabled: var(--bs-color-gray-500);
+  --bs-color-text-inverse: var(--bs-color-gray-900);
+
+  --bs-color-border: oklch(0.31 0.01 78);
+  --bs-color-border-strong: oklch(0.4 0.012 78);
+
+  /* The halo reads brighter at night, like any light source does. */
+  --bs-color-focus: var(--bs-color-primary);
+  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 22%, transparent);
+  --bs-focus-ring-width: 8px;
+  --bs-focus-ring:
+    0 0 0 1px var(--bs-color-focus), 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
+  --bs-focus-ring-inset:
+    inset 0 0 0 1px var(--bs-color-focus), inset 0 0 0 4px var(--bs-focus-ring-color);
+
+  /* Primary inverts to paper — ink set down on lacquer. */
+  --bs-color-primary: oklch(0.93 0.007 90);
+  --bs-color-primary-hover: var(--bs-color-gray-200);
+  --bs-color-primary-active: var(--bs-color-gray-300);
+  --bs-color-primary-text: var(--bs-color-gray-900);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 10%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-gray-200);
+  --bs-color-primary-border: var(--bs-color-gray-700);
+
+  /* Semantic pigments lift to their lighter steps at night; the fixed hue
+     relationships (bamboo / ochre / cinnabar / ultramarine) never change. */
+  --bs-color-success: var(--bs-color-success-500);
+  --bs-color-success-hover: var(--bs-color-success-400);
+  --bs-color-success-subtle: color-mix(in oklab, var(--bs-color-success) 16%, transparent);
+  --bs-color-success-subtle-text: var(--bs-color-success-300);
+
+  --bs-color-warning: var(--bs-color-warning-500);
+  --bs-color-warning-hover: var(--bs-color-warning-400);
+  --bs-color-warning-subtle: color-mix(in oklab, var(--bs-color-warning) 16%, transparent);
+  --bs-color-warning-subtle-text: var(--bs-color-warning-300);
+
+  --bs-color-danger: var(--bs-color-danger-500);
+  --bs-color-danger-hover: var(--bs-color-danger-400);
+  --bs-color-danger-subtle: color-mix(in oklab, var(--bs-color-danger) 16%, transparent);
+  --bs-color-danger-subtle-text: var(--bs-color-danger-300);
+
+  --bs-color-info: var(--bs-color-info-500);
+  --bs-color-info-hover: var(--bs-color-info-400);
+  --bs-color-info-subtle: color-mix(in oklab, var(--bs-color-info) 16%, transparent);
+  --bs-color-info-subtle-text: var(--bs-color-info-300);
+
+  /* Elevation in the dark: cast shadows need far more opacity to read against
+     a dark ground, so every level carries a faint warm hairline of light to
+     cut the raised surface out of the one below it. Same lighting parts as
+     light — ink from --bs-shadow-ink, shifted by --bs-light-x, spread by
+     --bs-light-reach; colored surfaces compose their tint inline. */
+  --bs-shadow-ink: oklch(0.04 0.01 75);
+  --bs-light-x: 0px;
+  --bs-light-reach: 1;
+  --bs-shadow-xs: 0 1px 2px 0 color-mix(in oklab, var(--bs-shadow-ink) 35%, transparent);
+  --bs-elevation-0: none;
+  --bs-elevation-1:
+    0 0 0 1px oklch(0.95 0.01 90 / 0.04),
+    var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
+      color-mix(in oklab, var(--bs-shadow-ink) 32%, transparent);
+  --bs-elevation-2:
+    0 0 0 1px oklch(0.95 0.01 90 / 0.05),
+    var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(4px * var(--bs-light-reach))
+      calc(-1px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent),
+    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
+      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 36%, transparent);
+  --bs-elevation-3:
+    0 0 0 1px oklch(0.95 0.01 90 / 0.06),
+    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
+      calc(-3px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent),
+    var(--bs-light-x) calc(10px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
+      calc(-4px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent);
+  --bs-elevation-4:
+    0 0 0 1px oklch(0.95 0.01 90 / 0.07),
+    var(--bs-light-x) calc(8px * var(--bs-light-reach)) calc(16px * var(--bs-light-reach))
+      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent),
+    var(--bs-light-x) calc(24px * var(--bs-light-reach)) calc(48px * var(--bs-light-reach))
+      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent);
+  --bs-elevation-5:
+    0 0 0 1px oklch(0.95 0.01 90 / 0.08),
+    var(--bs-light-x) calc(12px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
+      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 52%, transparent),
+    var(--bs-light-x) calc(40px * var(--bs-light-reach)) calc(80px * var(--bs-light-reach))
+      calc(-12px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent);
+}

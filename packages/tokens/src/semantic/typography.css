@@ -1,0 +1,43 @@
+/* Typography — two tracks: the voice and the chrome. The voice is the song
+   stack (upright, structured strokes — Noto Serif SC falling back through the
+   platform faces); headings and editorial narrative ride it, the way Western
+   systems let a serif carry voice. The chrome is the modern hei stack — MiSans
+   and HarmonyOS Sans lead, falling back into PingFang / YaHei so mixed CJK-Latin lines stay
+   on one rhythm. Sizes are fixed rem values outside the density scale; compact
+   UI may choose --bs-font-size-sm but never below it. */
+
+:root,
+:host {
+  --bs-font-sans:
+    MiSans, "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system,
+    "Segoe UI", Roboto, "Noto Sans CJK SC", sans-serif;
+  --bs-font-serif:
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, "Times New Roman", Georgia, serif;
+  --bs-font-mono:
+    ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, "PingFang SC", "Microsoft YaHei",
+    monospace;
+
+  --bs-font-size-xs: 0.75rem;
+  --bs-font-size-sm: 0.8125rem;
+  --bs-font-size-md: 0.875rem;
+  --bs-font-size-base: 0.9375rem;
+  --bs-font-size-lg: 1.0625rem;
+  --bs-font-size-xl: 1.25rem;
+  --bs-font-size-2xl: 1.5rem;
+  --bs-font-size-3xl: 1.875rem;
+  --bs-font-size-4xl: 2.25rem;
+
+  --bs-line-height-tight: 1.25;
+  --bs-line-height-snug: 1.375;
+  --bs-line-height-normal: 1.5;
+  --bs-line-height-relaxed: 1.625;
+
+  /* Control labels carry a whisper of tracking — upright and unhurried is a
+     property of CJK typesetting, not of any single typeface. */
+  --bs-tracking-label: 0.02em;
+
+  --bs-font-weight-regular: 400;
+  --bs-font-weight-medium: 500;
+  --bs-font-weight-semibold: 600;
+  --bs-font-weight-bold: 700;
+}
