@@ -3,6 +3,7 @@ import { useFilter } from "@ark-ui/vue/locale";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, Teleport, type PropType, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { Combobox } from "./index.js";
 
 const meta: Meta = { title: "Components / Combobox" };
@@ -154,26 +155,28 @@ export const Basic = {
 /** Several skills can be picked at once; the choice chips sit above the
  * field. */
 export const Multiple = {
-  render: () => {
-    const state = reactive({ value: [] as string[] });
-    return h(ComboboxStory, {
-      label: "Skills",
-      rootProps: {
-        multiple: true,
-        value: state.value,
-        onValueChange: (e: { value: string[] }) => {
-          state.value = e.value;
-        },
-      },
-      initialItems: [
-        { label: "JS", value: "js" },
-        { label: "TypeScript", value: "ts" },
-        { label: "Vue", value: "vue" },
-        { label: "React", value: "react" },
-        { label: "Svelte", value: "svelte" },
-      ],
-    } as any);
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: [] as string[] });
+      return () =>
+        h(ComboboxStory, {
+          label: "Skills",
+          rootProps: {
+            multiple: true,
+            modelValue: state.value,
+            onValueChange: (e: { value: string[] }) => {
+              state.value = e.value;
+            },
+          },
+          initialItems: [
+            { label: "JS", value: "js" },
+            { label: "TypeScript", value: "ts" },
+            { label: "Vue", value: "vue" },
+            { label: "React", value: "react" },
+            { label: "Svelte", value: "svelte" },
+          ],
+        } as any);
+    }),
 };
 
 /** Rows ride in their continent groups; the group() split drives the
@@ -211,17 +214,19 @@ export const Grouping = {
 
 /** The selection answers to state — the field mirrors every pick. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ value: ["banana"] });
-    return h(ComboboxStory, {
-      rootProps: {
-        value: state.value,
-        onValueChange: (e: { value: string[] }) => {
-          state.value = e.value;
-        },
-      },
-    } as any);
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: ["banana"] });
+      return () =>
+        h(ComboboxStory, {
+          rootProps: {
+            modelValue: state.value,
+            onValueChange: (e: { value: string[] }) => {
+              state.value = e.value;
+            },
+          },
+        } as any);
+    }),
 };
 
 /** Nothing matches? The typed text becomes a creatable row, and picking it

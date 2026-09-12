@@ -2,6 +2,7 @@ import { parseDate } from "@ark-ui/vue/date-picker";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { DatePicker } from "./index.js";
 
 const meta: Meta = { title: "Components / Date Picker" };
@@ -210,22 +211,24 @@ export const DefaultValue = {
 /** The picker answers to state: the field mirrors every selection made in
  * the grid and the input. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ value: [parseDate("2026-03-15")] });
-    return h(
-      DatePicker.Root,
-      {
-        value: state.value,
-        onValueChange: (e: any) => {
-          state.value = e.value;
-        },
-      },
-      () => [
-        ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
-        popup(dayView(), monthView(), yearView()),
-      ],
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: [parseDate("2026-03-15")] });
+      return () =>
+        h(
+          DatePicker.Root,
+          {
+            modelValue: state.value,
+            onValueChange: (e: any) => {
+              state.value = e.value;
+            },
+          } as any,
+          () => [
+            ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+            popup(dayView(), monthView(), yearView()),
+          ],
+        );
+    }),
 };
 
 /** A range spans two inputs, one per endpoint; the preset triggers stamp

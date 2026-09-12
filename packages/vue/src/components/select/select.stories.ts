@@ -2,6 +2,7 @@ import { createListCollection } from "@ark-ui/vue/select";
 import type { Meta } from "@storybook/vue3-vite";
 import { computed, defineComponent, h, Teleport, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { Select } from "./index.js";
 
 const meta: Meta = { title: "Components / Select" };
@@ -127,19 +128,21 @@ export const Basic = {
 
 /** The selection answers to state — the trigger mirrors the caller. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ value: ["vue"] });
-    return shell(
-      {
-        value: state.value,
-        onValueChange: (e: { value: string[] }) => {
-          state.value = e.value;
-        },
-      },
-      frameworks,
-      rows(frameworks),
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: ["vue"] });
+      return () =>
+        shell(
+          {
+            modelValue: state.value,
+            onValueChange: (e: { value: string[] }) => {
+              state.value = e.value;
+            },
+          },
+          frameworks,
+          rows(frameworks),
+        );
+    }),
 };
 
 /** The whole field rests: no open, no pick, no highlight. */
@@ -154,20 +157,22 @@ export const Multiple = {
 
 /** Past two picks the rest go quiet. */
 export const MaxSelected = {
-  render: () => {
-    const state = reactive({ value: ["react", "solid"] });
-    return shell(
-      {
-        multiple: true,
-        value: state.value,
-        onValueChange: (e: { value: string[] }) => {
-          if (e.value.length <= 2) state.value = e.value;
-        },
-      },
-      frameworks,
-      rows(frameworks),
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: ["react", "solid"] });
+      return () =>
+        shell(
+          {
+            multiple: true,
+            modelValue: state.value,
+            onValueChange: (e: { value: string[] }) => {
+              if (e.value.length <= 2) state.value = e.value;
+            },
+          },
+          frameworks,
+          rows(frameworks),
+        );
+    }),
 };
 
 /** Rows ride in their region groups; the group() split drives the labels. */

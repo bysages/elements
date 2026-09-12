@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { TagsInput } from "./index.js";
 
 const meta: Meta = { title: "Components / Tags Input" };
@@ -124,50 +125,60 @@ export const Validation = {
 
 /** The typed text itself is controlled, echoing every keystroke. */
 export const ControlledInputValue = {
-  render: () => {
-    const state = reactive({ inputValue: "" });
-    return h(
-      TagsInput.Root,
-      {
-        inputValue: state.inputValue,
-        onInputValueChange: (e: any) => {
-          state.inputValue = e.inputValue;
-        },
-      },
-      {
-        default: () => [
-          h(TagsInput.Label, () => "Pigments"),
-          h(TagsInput.Control, null, {
-            default: () => [tagList(), h(TagsInput.Input as any, { placeholder: "Add pigment" })],
-          }),
-          h(TagsInput.HiddenInput),
-        ],
-      },
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ inputValue: "" });
+      return () =>
+        h(
+          TagsInput.Root,
+          {
+            inputValue: state.inputValue,
+            onInputValueChange: (e: any) => {
+              state.inputValue = e.inputValue;
+            },
+          },
+          {
+            default: () => [
+              h(TagsInput.Label, () => "Pigments"),
+              h(TagsInput.Control, null, {
+                default: () => [
+                  tagList(),
+                  h(TagsInput.Input as any, { placeholder: "Add pigment" }),
+                ],
+              }),
+              h(TagsInput.HiddenInput),
+            ],
+          },
+        );
+    }),
 };
 
 /** The chip list answers to state; deleting and adding round-trip. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ value: ["Qinghua", "Celadon"] });
-    return h(
-      TagsInput.Root,
-      {
-        value: state.value,
-        onValueChange: (e: any) => {
-          state.value = e.value;
-        },
-      },
-      {
-        default: () => [
-          h(TagsInput.Label, () => "Pigments"),
-          h(TagsInput.Control, null, {
-            default: () => [tagList(), h(TagsInput.Input as any, { placeholder: "Add pigment" })],
-          }),
-          h(TagsInput.HiddenInput),
-        ],
-      },
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: ["Qinghua", "Celadon"] });
+      return () =>
+        h(
+          TagsInput.Root,
+          {
+            modelValue: state.value,
+            onValueChange: (e: any) => {
+              state.value = e.value;
+            },
+          },
+          {
+            default: () => [
+              h(TagsInput.Label, () => "Pigments"),
+              h(TagsInput.Control, null, {
+                default: () => [
+                  tagList(),
+                  h(TagsInput.Input as any, { placeholder: "Add pigment" }),
+                ],
+              }),
+              h(TagsInput.HiddenInput),
+            ],
+          },
+        );
+    }),
 };

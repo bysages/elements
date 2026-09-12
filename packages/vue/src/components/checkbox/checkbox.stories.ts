@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { Checkbox } from "./index.js";
 
 const meta: Meta = { title: "Components / Checkbox" };
@@ -59,23 +60,25 @@ export const Basic = {
 
 /** The state answers to the caller: the box only mirrors. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ checked: true });
-    return h(
-      Checkbox.Root,
-      {
-        checked: state.checked,
-        onCheckedChange: (e: { checked: boolean }) => {
-          state.checked = !!e.checked;
-        },
-      } as any,
-      () => [
-        h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
-        h(Checkbox.Label, () => "Controlled"),
-        h(Checkbox.HiddenInput),
-      ],
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ checked: true });
+      return () =>
+        h(
+          Checkbox.Root,
+          {
+            checked: state.checked,
+            onCheckedChange: (e: { checked: boolean }) => {
+              state.checked = !!e.checked;
+            },
+          } as any,
+          () => [
+            h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+            h(Checkbox.Label, () => "Controlled"),
+            h(Checkbox.HiddenInput),
+          ],
+        );
+    }),
 };
 
 /** The dash posture: some, not all, of the rows below are checked. */
@@ -133,34 +136,37 @@ export const Group = {
 /** The parent row summarizes its children: checked when all, dashed when
  * some, and its click sweeps the whole group. */
 export const GroupWithSelectAll = {
-  render: () => {
-    const state = reactive({ value: ["react"] });
-    const all = state.value.length === frameworks.length;
-    const some = state.value.length > 0 && !all;
-    return h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
-      h(
-        Checkbox.Root,
-        {
-          checked: some ? "indeterminate" : all,
-          onCheckedChange: (e: { checked: boolean }) => {
-            state.value = e.checked ? frameworks.map((f) => f.value) : [];
-          },
-        } as any,
-        () => [
-          h(Checkbox.Control, () =>
-            h(Checkbox.Indicator, { indeterminate: minusGlyph() } as any, () => checkGlyph()),
+  render: () =>
+    withState(() => {
+      const state = reactive({ value: ["react"] });
+      return () => {
+        const all = state.value.length === frameworks.length;
+        const some = state.value.length > 0 && !all;
+        return h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
+          h(
+            Checkbox.Root,
+            {
+              checked: all ? true : some ? "indeterminate" : false,
+              onCheckedChange: (e: { checked: boolean }) => {
+                state.value = e.checked ? frameworks.map((f) => f.value) : [];
+              },
+            } as any,
+            () => [
+              h(Checkbox.Control, () =>
+                h(Checkbox.Indicator, { indeterminate: minusGlyph() } as any, () => checkGlyph()),
+              ),
+              h(Checkbox.Label, () => "All frameworks"),
+              h(Checkbox.HiddenInput),
+            ],
           ),
-          h(Checkbox.Label, () => "All frameworks"),
-          h(Checkbox.HiddenInput),
-        ],
-      ),
-      h(
-        Checkbox.Group,
-        { value: state.value, onValueChange: (e: any) => (state.value = e.value) } as any,
-        () => frameworks.map(groupRow),
-      ),
-    ]);
-  },
+          h(
+            Checkbox.Group,
+            { modelValue: state.value, onValueChange: (e: any) => (state.value = e.value) } as any,
+            () => frameworks.map(groupRow),
+          ),
+        ]);
+      };
+    }),
 };
 
 /** Past two picks the group refuses a third. */

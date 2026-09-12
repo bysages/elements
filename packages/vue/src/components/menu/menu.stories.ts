@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
+import { withState } from "../with-state.js";
 import { Menu } from "./index.js";
 
 const meta: Meta = { title: "Components / Menu" };
@@ -177,25 +178,30 @@ export const Links = {
 
 /** The open state answers to the caller — the page controls the vessel. */
 export const Controlled = {
-  render: () => {
-    const state = reactive({ open: false });
-    return h(
-      Menu.Root,
-      {
-        open: state.open,
-        onOpenChange: (e: { open: boolean }) => {
-          state.open = e.open;
-        },
-      },
-      () => [
-        h(Menu.Trigger, () => [h("span", () => "Edit"), h(Menu.Indicator, () => chevronDown())]),
-        positioner([
-          h(Menu.Item, { value: "undo" }, () => "Undo"),
-          h(Menu.Item, { value: "redo" }, () => "Redo"),
-        ]),
-      ],
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ open: false });
+      return () =>
+        h(
+          Menu.Root,
+          {
+            open: state.open,
+            onOpenChange: (e: { open: boolean }) => {
+              state.open = e.open;
+            },
+          },
+          () => [
+            h(Menu.Trigger, () => [
+              h("span", () => "Edit"),
+              h(Menu.Indicator, () => chevronDown()),
+            ]),
+            positioner([
+              h(Menu.Item, { value: "undo" }, () => "Undo"),
+              h(Menu.Item, { value: "redo" }, () => "Redo"),
+            ]),
+          ],
+        );
+    }),
 };
 
 /** The vessel floats where the pointer pressed: a context menu on any

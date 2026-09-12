@@ -3,6 +3,7 @@ import { createTreeCollection } from "@ark-ui/vue/tree-view";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, type PropType, reactive } from "vue";
 
+import { withState } from "../with-state.js";
 import { TreeView } from "./index.js";
 
 const meta: Meta = { title: "Components / Tree View" };
@@ -279,38 +280,42 @@ export const Basic = {
 
 /** Expansion answers to state — the open branches are fully controlled. */
 export const ControlledExpanded = {
-  render: () => {
-    const state = reactive({ expandedValue: ["ink"] });
-    return h(
-      TreeView.Root,
-      {
-        collection: libraryCollection,
-        expandedValue: state.expandedValue,
-        onExpandedChange: (e: any) => {
-          state.expandedValue = e.expandedValue;
-        },
-      } as any,
-      () => [h(TreeView.Label, () => "Library"), treeOf(libraryCollection)],
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ expandedValue: ["ink"] });
+      return () =>
+        h(
+          TreeView.Root,
+          {
+            collection: libraryCollection,
+            expandedValue: state.expandedValue,
+            onExpandedChange: (e: any) => {
+              state.expandedValue = e.expandedValue;
+            },
+          } as any,
+          () => [h(TreeView.Label, () => "Library"), treeOf(libraryCollection)],
+        );
+    }),
 };
 
 /** Selection answers to state — one selected node at a time. */
 export const ControlledSelected = {
-  render: () => {
-    const state = reactive({ selectedValue: ["ink/brush"] });
-    return h(
-      TreeView.Root,
-      {
-        collection: libraryCollection,
-        selectedValue: state.selectedValue,
-        onSelectionChange: (e: any) => {
-          state.selectedValue = e.selectedValue;
-        },
-      } as any,
-      () => [h(TreeView.Label, () => "Library"), treeOf(libraryCollection)],
-    );
-  },
+  render: () =>
+    withState(() => {
+      const state = reactive({ selectedValue: ["ink/brush"] });
+      return () =>
+        h(
+          TreeView.Root,
+          {
+            collection: libraryCollection,
+            selectedValue: state.selectedValue,
+            onSelectionChange: (e: any) => {
+              state.selectedValue = e.selectedValue;
+            },
+          } as any,
+          () => [h(TreeView.Label, () => "Library"), treeOf(libraryCollection)],
+        );
+    }),
 };
 
 /** Every row carries a checkbox; branch checkboxes track their subtree. */
