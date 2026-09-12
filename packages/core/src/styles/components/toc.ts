@@ -67,6 +67,8 @@ export const tocCss = /* css */ `
   position: absolute;
   inset-inline-start: 0;
   inline-size: 2px;
+  top: var(--top, 0);
+  block-size: var(--height, 0);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   transition:
