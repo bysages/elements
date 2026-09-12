@@ -25,6 +25,10 @@ export const tourCss =
 [data-scope="tour"][data-part="positioner"] {
   position: fixed;
   z-index: var(--z-index, var(--bs-z-overlay));
+  /* Zag's tooltip steps compose their inline z from this consumer-side
+     base; without it the calc is invalid and the backdrop out-stacks the
+     card. */
+  --tour-z-index: var(--bs-z-overlay);
 }
 
 [data-scope="tour"][data-part="positioner"][data-type="dialog"] {
