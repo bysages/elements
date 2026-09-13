@@ -83,7 +83,10 @@ export const datePickerCss =
   border-color: var(--bs-color-border-strong);
 }
 
-[data-scope="date-picker"][data-part="trigger"]:focus-visible {
+/* Open keeps the focus look: the calendar takes focus once the popup is
+   up, so :focus-visible alone would drop the halo the moment it opens. */
+[data-scope="date-picker"][data-part="trigger"]:focus-visible,
+[data-scope="date-picker"][data-part="trigger"][data-state="open"] {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);

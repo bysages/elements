@@ -63,7 +63,10 @@ export const popoverCss =
   box-shadow: none;
 }
 
-[data-scope="popover"][data-part="trigger"]:focus-visible {
+/* Open keeps the focus look: Zag hands focus to the popover itself, so
+   :focus-visible alone would drop the halo the moment it opens. */
+[data-scope="popover"][data-part="trigger"]:focus-visible,
+[data-scope="popover"][data-part="trigger"][data-state="open"] {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);

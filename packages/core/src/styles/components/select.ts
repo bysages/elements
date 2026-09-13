@@ -33,7 +33,11 @@ export const selectCss =
   border-color: var(--bs-color-border-strong);
 }
 
-[data-scope="select"][data-part="control"]:focus-within {
+/* Zag moves focus into the list once the select opens, so :focus-within
+   alone drops the halo the moment the popup appears; the open state keeps
+   it lit for as long as the field is being worked. */
+[data-scope="select"][data-part="control"]:focus-within,
+[data-scope="select"][data-part="control"]:has([data-part="trigger"][data-state="open"]) {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);

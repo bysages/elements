@@ -51,8 +51,7 @@ export const menuCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="menu"][data-part="trigger"]:hover:not([data-disabled]),
-[data-scope="menu"][data-part="trigger"][data-state="open"] {
+[data-scope="menu"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -60,7 +59,10 @@ export const menuCss =
   box-shadow: none;
 }
 
-[data-scope="menu"][data-part="trigger"]:focus-visible {
+/* Open keeps the focus look: Zag hands focus to the menu itself, so
+   :focus-visible alone would drop the halo the moment it opens. */
+[data-scope="menu"][data-part="trigger"]:focus-visible,
+[data-scope="menu"][data-part="trigger"][data-state="open"] {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);
