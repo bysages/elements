@@ -161,7 +161,11 @@ export const GroupWithSelectAll = {
           ),
           h(
             Checkbox.Group,
-            { modelValue: state.value, onValueChange: (e: any) => (state.value = e.value) } as any,
+            {
+              // The group's change callback receives the bare value array.
+              modelValue: state.value,
+              onValueChange: (value: string[]) => (state.value = value),
+            } as any,
             () => frameworks.map(groupRow),
           ),
         ]);
