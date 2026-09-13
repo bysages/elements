@@ -18,6 +18,7 @@
 }
 
 [data-theme="dark"] [data-accent="qinghua"],
+[data-theme="dark"][data-accent="qinghua"],
 :host([data-theme="dark"][data-accent="qinghua"]) {
   --bs-color-primary: var(--bs-color-brand-500);
   --bs-color-primary-hover: var(--bs-color-brand-600);
@@ -39,6 +40,7 @@
 }
 
 [data-theme="dark"] [data-accent="celadon"],
+[data-theme="dark"][data-accent="celadon"],
 :host([data-theme="dark"][data-accent="celadon"]) {
   --bs-color-primary: var(--bs-color-celadon-500);
   --bs-color-primary-hover: var(--bs-color-celadon-600);
@@ -60,6 +62,7 @@
 }
 
 [data-theme="dark"] [data-accent="zhusha"],
+[data-theme="dark"][data-accent="zhusha"],
 :host([data-theme="dark"][data-accent="zhusha"]) {
   --bs-color-primary: var(--bs-color-zhusha-500);
   --bs-color-primary-hover: var(--bs-color-zhusha-600);

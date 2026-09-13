@@ -368,11 +368,30 @@ Theme is token data, never a component fork:
 - `[data-accent]` — ink _(default)_ / qinghua / celadon / zhusha
 - `[data-contrast]` — normal / high
 - `[data-density]` — compact / default / comfortable / spacious
+- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech
 
 Future brand themes change color, surface, lighting, typography, and density —
 never interaction. Dark mode is lacquer night: warm blacks (never `#000`),
 paper-white text, the same hue relationships lifted to lighter steps, and
 separation carried by the surface ladder plus a faint warm hairline of light.
+
+**Scene presets.** A `[data-scene]` attribute retunes the temperament of the
+whole interface for a context — shape, density, pace, and how far the light
+reaches, with a paired pigment as the scene's voice:
+
+| Scene        | 官名 | Temper                                 | Paired accent | Moves                                                                                  |
+| ------------ | ---- | -------------------------------------- | ------------- | -------------------------------------------------------------------------------------- |
+| `civic`      | 典章 | canonical, unhurried, hairline-led     | zhusha        | harder seal-cut controls (4px), smaller vessels, compact, pace ×1.1, flat light ×0.7   |
+| `enterprise` | 信笺 | measured baseline, quiet long sessions | qinghua       | default geometry, calm light ×0.85                                                     |
+| `studio`     | 雅集 | literati gathering, airy 留白          | celadon       | controls keep the 6px seal edge, rounder vessels (20/28px), spacious ×1.2, light ×1.25 |
+| `tech`       | 司南 | precision instrument, snappy           | ink _(none)_  | sharper controls (4px), tightened vessels, compact, pace ×0.85, light ×0.85            |
+
+The pairing is applied by the theme engine (`SCENE_DEFAULT_ACCENT`) as a
+plain `data-accent` attribute, so accent rules and their dark variants carry
+it unchanged. Explicit attributes always outrank the scene: a `data-accent`
+or `data-density` set alongside `data-scene` wins. Controls stay
+square-cut and vessels round in every scene — 方寸为章，器物为圆 holds per
+scene, only the measures change.
 
 ## Tokens
 

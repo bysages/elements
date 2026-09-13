@@ -62,6 +62,7 @@ const semanticFiles = [
   "theme-light.css",
   "theme-dark.css",
   "accent.css",
+  "scene.css",
   "density.css",
   "contrast.css",
   "typography.css",

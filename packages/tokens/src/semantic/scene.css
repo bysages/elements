@@ -1,0 +1,64 @@
+/* Scene presets — one attribute that retunes the temperament of the whole
+   interface for a context: government (civic), enterprise, design and
+   editorial (studio), technology (tech). A scene moves only what the paper
+   allows: shape (radius), density, motion pace, and how far the light
+   reaches — never interaction, never the semantic pigments.
+
+   Each scene pairs with a default accent (civic wears zhusha, enterprise
+   qinghua, studio celadon, tech stays ink). That pairing is applied by the
+   theme engine as a plain `data-accent` attribute, so the accent rules in
+   accent.css — including their dark variants — carry it unchanged.
+
+   Explicit attributes always outrank the scene's bundled defaults: a
+   `[data-accent]` or `[data-density]` set alongside `[data-scene]` wins by
+   cascade order. Note `:root` ties `[data-scene]` in specificity (both
+   0,1,0), so this file must sit after every stylesheet that declares these
+   variables on `:root` (themes, primitives via accent's placement) and
+   before density.css, whose explicit tiers must win over scene defaults. */
+
+[data-scene="civic"] {
+  /* The canonical register: harder seal-cut controls, smaller
+     vessels, compact rows, an unhurried pace, and a flat light that lets
+     hairlines carry the hierarchy. */
+  --bs-radius-sm: 0.25rem;
+  --bs-radius-md: 0.375rem;
+  --bs-radius-lg: 0.625rem;
+  --bs-radius-xl: 0.875rem;
+  --bs-radius-2xl: 1.125rem;
+  --bs-density-scale: 0.9;
+  --bs-motion-scale: 1.1;
+  --bs-light-reach: 0.7;
+}
+
+[data-scene="enterprise"] {
+  /* The measured baseline: default geometry at a calmer light, so
+     long working sessions read quiet and the hairlines do the talking. */
+  --bs-density-scale: 1;
+  --bs-motion-scale: 1;
+  --bs-light-reach: 0.85;
+}
+
+[data-scene="studio"] {
+  /* The literati gathering: controls keep the 6px seal edge, vessels
+     round out generously, whitespace breathes, and the light turns airy. */
+  --bs-radius-md: 0.625rem;
+  --bs-radius-lg: 0.875rem;
+  --bs-radius-xl: 1.25rem;
+  --bs-radius-2xl: 1.75rem;
+  --bs-density-scale: 1.2;
+  --bs-motion-scale: 1;
+  --bs-light-reach: 1.25;
+}
+
+[data-scene="tech"] {
+  /* The precision instrument: sharper controls, tightened vessels,
+     compact rows, and a snappier pace on a restrained light. */
+  --bs-radius-sm: 0.25rem;
+  --bs-radius-md: 0.375rem;
+  --bs-radius-lg: 0.625rem;
+  --bs-radius-xl: 0.75rem;
+  --bs-radius-2xl: 1rem;
+  --bs-density-scale: 0.9;
+  --bs-motion-scale: 0.85;
+  --bs-light-reach: 0.85;
+}

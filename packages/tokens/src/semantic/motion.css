@@ -9,10 +9,13 @@
 
 :root,
 :host {
-  --bs-duration-instant: 80ms;
-  --bs-duration-fast: 140ms;
-  --bs-duration-base: 200ms;
-  --bs-duration-slow: 320ms;
+  /* Durations ride --bs-motion-scale so a scene preset can tune the pace
+     (a snappier instrument, an unhurried civic register) without touching
+     the reduced-motion floor below, which declares 1ms directly. */
+  --bs-duration-instant: calc(80ms * var(--bs-motion-scale, 1));
+  --bs-duration-fast: calc(140ms * var(--bs-motion-scale, 1));
+  --bs-duration-base: calc(200ms * var(--bs-motion-scale, 1));
+  --bs-duration-slow: calc(320ms * var(--bs-motion-scale, 1));
 
   --bs-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --bs-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);

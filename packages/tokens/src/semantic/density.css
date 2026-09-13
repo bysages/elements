@@ -2,10 +2,16 @@
    only. Type sizes, contrast, and control heights stay fixed so compact can
    never trade away readability; controls follow the type they hold. */
 
+/* The default scale sits behind :where() so a scene preset (an attribute,
+   same 0,1,0 as :root) can override it by cascade order, while the explicit
+   [data-density] tiers below still outrank scenes that come before them. */
+:where(:root),
+:where(:host) {
+  --bs-density-scale: 1;
+}
+
 :root,
 :host {
-  --bs-density-scale: 1;
-
   /* Density-scaled whitespace. */
   --bs-padding-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
   --bs-padding-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
