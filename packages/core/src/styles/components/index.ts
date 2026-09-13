@@ -4,6 +4,7 @@ import { angleSliderCss } from "./angle-slider";
 import { avatarCss } from "./avatar";
 import { avatarGroupCss } from "./avatar-group";
 import { badgeCss } from "./badge";
+import { breadcrumbCss } from "./breadcrumb";
 import { buttonCss } from "./button";
 import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
@@ -18,6 +19,7 @@ import { datePickerCss } from "./date-picker";
 import { dialogCss } from "./dialog";
 import { drawerCss } from "./drawer";
 import { editableCss } from "./editable";
+import { emptyCss } from "./empty";
 import { fieldCss } from "./field";
 import { fieldsetCss } from "./fieldset";
 import { fileUploadCss } from "./file-upload";
@@ -54,6 +56,7 @@ import { switchCss } from "./switch";
 import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
+import { timelineCss } from "./timeline";
 import { timerCss } from "./timer";
 import { toastCss } from "./toast";
 import { tocCss } from "./toc";
@@ -72,6 +75,7 @@ export const componentStyles: Record<string, string> = {
   avatar: avatarCss,
   "avatar-group": avatarGroupCss,
   badge: badgeCss,
+  breadcrumb: breadcrumbCss,
   button: buttonCss,
   card: cardCss,
   carousel: carouselCss,
@@ -86,6 +90,7 @@ export const componentStyles: Record<string, string> = {
   dialog: dialogCss,
   drawer: drawerCss,
   editable: editableCss,
+  empty: emptyCss,
   field: fieldCss,
   fieldset: fieldsetCss,
   "file-upload": fileUploadCss,
@@ -121,6 +126,7 @@ export const componentStyles: Record<string, string> = {
   switch: switchCss,
   tabs: tabsCss,
   "tags-input": tagsInputCss,
+  timeline: timelineCss,
   timer: timerCss,
   table: tableCss,
   toast: toastCss,
@@ -139,6 +145,7 @@ export {
   avatarCss,
   avatarGroupCss,
   badgeCss,
+  breadcrumbCss,
   buttonCss,
   cardCss,
   carouselCss,
@@ -153,6 +160,7 @@ export {
   dialogCss,
   drawerCss,
   editableCss,
+  emptyCss,
   fieldCss,
   fieldsetCss,
   fileUploadCss,
@@ -188,6 +196,7 @@ export {
   switchCss,
   tabsCss,
   tagsInputCss,
+  timelineCss,
   timerCss,
   toastCss,
   tocCss,
