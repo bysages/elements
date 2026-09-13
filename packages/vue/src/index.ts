@@ -1,3 +1,4 @@
+export * from "./components/ai";
 export * from "./components/alert";
 export * from "./components/angle-slider";
 export * from "./components/avatar";

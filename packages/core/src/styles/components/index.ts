@@ -1,4 +1,5 @@
 import { accordionCss } from "./accordion";
+import { aiCss } from "./ai";
 import { alertCss } from "./alert";
 import { angleSliderCss } from "./angle-slider";
 import { avatarCss } from "./avatar";
@@ -70,6 +71,7 @@ import { treeViewCss } from "./tree-view";
  * here, keyed by the name wrappers pass to `injectComponentStyle`. */
 export const componentStyles: Record<string, string> = {
   accordion: accordionCss,
+  ai: aiCss,
   alert: alertCss,
   "angle-slider": angleSliderCss,
   avatar: avatarCss,
@@ -140,6 +142,7 @@ export const componentStyles: Record<string, string> = {
 
 export {
   accordionCss,
+  aiCss,
   alertCss,
   angleSliderCss,
   avatarCss,
