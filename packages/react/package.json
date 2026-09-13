@@ -42,7 +42,9 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.39.1"
+    "@ark-ui/react": "^5.39.1",
+    "@tanstack/react-table": "^9.2.4",
+    "@tanstack/react-virtual": "^3.13.12"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^10.6.0",

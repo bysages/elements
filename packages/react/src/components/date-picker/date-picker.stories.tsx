@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { DatePicker } from ".";
 
-const meta: Meta = { title: "Components/Forms/" };
+const meta: Meta = { title: "Components/Forms/Date Picker" };
 export default meta;
 
 function CalendarGlyph() {

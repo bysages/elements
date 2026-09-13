@@ -3,7 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { Dialog } from ".";
 
 const meta: Meta = {
-  title: "Components/Overlay/",
+  title: "Components/Overlay/Dialog",
 };
 
 export default meta;

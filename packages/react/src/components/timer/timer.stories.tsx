@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Timer } from ".";
 
-const meta: Meta = { title: "Components/Data/" };
+const meta: Meta = { title: "Components/Data/Timer" };
 export default meta;
 
 function Glyph({ d }: { d: string }) {
