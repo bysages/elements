@@ -3,8 +3,8 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { Field } from "../field/index.js";
-import { PinInput } from "./index.js";
 import { withState } from "../with-state.js";
+import { PinInput } from "./index.js";
 
 const meta: Meta = { title: "Components / Pin Input" };
 export default meta;
@@ -42,7 +42,7 @@ export const BlurOnComplete = {
 
 /** A bolder vacancy: each empty seal shows a custom placeholder. */
 export const CustomPlaceholder = {
-  render: () => h("div", { style: { maxWidth: "20rem" } }, [pin({ placeholder: "*" })]),
+  render: () => h("div", { style: { maxWidth: "20rem" } }, [pin({ placeholder: "0" })]),
 };
 
 /** What is typed stays secret: every seal reads as a dot. */

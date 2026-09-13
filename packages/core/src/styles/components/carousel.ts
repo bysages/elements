@@ -8,6 +8,10 @@ export const carouselCss = /* css */ `
 
 [data-scope="carousel"][data-part="root"][data-orientation="vertical"] {
   flex-direction: row;
+  /* The lane's track math resolves --slide-item-size against the group's
+     block size, so a vertical carousel needs a bounded window or every
+     percentage collapses into a content loop. */
+  block-size: 20rem;
 }
 
 [data-scope="carousel"][data-part="control"] {

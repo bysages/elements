@@ -72,24 +72,23 @@ export const colorPickerCss =
   cursor: not-allowed;
 }
 
+/* The swatch sits as a seal inset into the trigger's paper face — never a
+   full-bleed fill, which would read as a foreign block rather than ink on
+   paper. A hairline under the pigment keeps pale picks visible. */
 [data-scope="color-picker"][data-part="swatch"] {
-  position: relative;
-  grid-area: 1 / 1;
-  inline-size: 100%;
-  block-size: 100%;
-  border-radius: inherit;
+  position: absolute;
+  inset: var(--bs-space-1);
+  border-radius: calc(var(--bs-radius-sm) - 2px);
+  box-shadow: inset 0 0 0 1px var(--bs-color-border);
 }
 
 /* The checkerboard is painted before the track/swatch in DOM order and
-   stacks in the same cell — never the parent background, or the whole
+   stacks in the same inset — never the parent background, or the whole
    control would read as transparent. */
 [data-scope="color-picker"][data-part="transparency-grid"] {
   position: absolute;
-  inset: 0;
-  grid-area: 1 / 1;
-  inline-size: 100%;
-  block-size: 100%;
-  border-radius: inherit;
+  inset: var(--bs-space-1);
+  border-radius: calc(var(--bs-radius-sm) - 2px);
 }
 
 /* The geometry vars live on the content: the popup teleports to body, out

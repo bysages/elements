@@ -16,7 +16,8 @@ const slides = [
   { src: "https://picsum.photos/seed/bs-5/640/360", alt: "Valley fog" },
 ];
 
-function chevron(dir: "left" | "right") {
+function chevron(dir: "left" | "right" | "up" | "down") {
+  const rotation = { left: 180, up: -90, right: 0, down: 90 }[dir];
   return h(
     "svg",
     {
@@ -27,7 +28,7 @@ function chevron(dir: "left" | "right") {
       stroke: "currentColor",
       "stroke-width": 1.75,
       "aria-hidden": true,
-      style: dir === "left" ? { transform: "rotate(180deg)" } : undefined,
+      style: rotation ? { transform: `rotate(${rotation}deg)` } : undefined,
     },
     [h("path", { d: "m9 5 7 7-7 7" })],
   );
@@ -37,7 +38,7 @@ function chevron(dir: "left" | "right") {
  * dots underneath with the current page in ink. */
 export const Basic = {
   args: {
-    orientation: "vertical",
+    orientation: "horizontal",
   },
   render: (args: any) =>
     strip({ slideCount: slides.length, orientation: args.orientation }, images()),
@@ -215,11 +216,12 @@ export const Controlled = {
 };
 
 function strip(rootProps: any, items: any, indicators?: any) {
+  const vertical = rootProps.orientation === "vertical";
   return h(Carousel.Root, rootProps as any, () => [
     h(Carousel.Control, () => [
-      h(Carousel.PrevTrigger, () => chevron("left")),
+      h(Carousel.PrevTrigger, () => chevron(vertical ? "up" : "left")),
       h(Carousel.ItemGroup, () => items),
-      h(Carousel.NextTrigger, () => chevron("right")),
+      h(Carousel.NextTrigger, () => chevron(vertical ? "down" : "right")),
     ]),
     h(
       Carousel.IndicatorGroup,
