@@ -15,15 +15,17 @@ addons.setConfig({
     fontCode:
       'ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, "PingFang SC", "Microsoft YaHei", monospace',
 
-    brandTitle: "By Sages Elements",
+    brandTitle: "By Sages Elements · Vue",
 
     // Primary actions are ink; the manager highlights are ink too.
     colorPrimary: "#36322c", // --bs-color-gray-800
     colorSecondary: "#36322c",
 
-    // The workshop rests on warm paper with hairline seams.
+    // The workshop rests on warm paper with hairline seams. appHoverBg
+    // paints the toolbar's hover pill (barHoverBg is gone in Storybook 10).
     appBg: "#fbfaf8", // --bs-color-surface-1
     appContentBg: "#fcfbf8", // --bs-color-surface-2
+    appHoverBg: "#f6f4f1", // --bs-color-gray-50
     appBorderColor: "#d7d4ce", // --bs-color-gray-200
     appBorderRadius: 6, // --bs-radius-sm — controls are square-cut like a seal
 
@@ -36,21 +38,18 @@ addons.setConfig({
     barTextColor: "#635d56",
     barSelectedColor: "#1f1c18",
     barHoverColor: "#1f1c18",
-    barHoverBg: "#f6f4f1", // --bs-color-gray-50
 
     // Form fields follow the input recipe: surface + hairline, no shadow.
     inputBg: "#fcfbf8",
     inputBorder: "#d7d4ce",
     inputTextColor: "#1f1c18",
     inputBorderRadius: 4,
+    // The boolean control paints the selected label's text with textColor,
+    // so the selected pill must stay light — the raised paper, per the SB
+    // light-theme convention (booleanBg is the recessed track).
     booleanBg: "#e9e7e2", // --bs-color-gray-100
-    booleanSelectedBg: "#36322c",
+    booleanSelectedBg: "#fcfbf8", // --bs-color-surface-2
     buttonBg: "#fcfbf8",
     buttonBorder: "#d7d4ce",
-
-    // Fixed semantic pigments — bamboo, cinnabar, ochre.
-    colorPositive: "#307a4f", // --bs-color-success
-    colorNegative: "#ab3937", // --bs-color-danger
-    colorWarning: "#a16004", // --bs-color-warning
   }),
 });
