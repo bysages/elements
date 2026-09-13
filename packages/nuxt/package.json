@@ -1,0 +1,53 @@
+{
+  "name": "@bysages/nuxt",
+  "version": "0.0.0",
+  "description": "Nuxt module for By Sages Elements — auto-imports the paper-and-ink Vue components and applies the theme",
+  "keywords": [
+    "design-system",
+    "elements",
+    "nuxt",
+    "nuxt-module",
+    "theming",
+    "vue"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements"
+  },
+  "files": [
+    "src"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/module.d.mts",
+      "default": "./src/module.ts"
+    },
+    "./runtime/plugin": "./src/runtime/plugin.ts"
+  },
+  "scripts": {
+    "dev": "basis build --stub",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bysages/core": "workspace:*",
+    "@bysages/vue": "workspace:*",
+    "@nuxt/kit": "^4.2.0"
+  },
+  "devDependencies": {
+    "nuxt": "^4.2.0"
+  },
+  "peerDependencies": {
+    "nuxt": "^4.0.0"
+  }
+}
