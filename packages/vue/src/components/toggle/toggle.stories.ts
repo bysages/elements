@@ -33,7 +33,11 @@ function boldGlyph() {
 
 /** A pressed seal: the glyph sinks into the ink and holds. */
 export const Basic = {
-  render: () => h(Toggle.Root, { "aria-label": "Toggle bold" }, () => boldGlyph()),
+  args: {
+    label: "Toggle bold",
+  },
+  render: (args: any) =>
+    withState(() => () => h(Toggle.Root, { "aria-label": args.label }, () => boldGlyph())),
 };
 
 /** The seal reads its own state: the word beside it names the side. */

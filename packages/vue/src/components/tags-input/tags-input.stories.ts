@@ -34,14 +34,18 @@ function tagList() {
   });
 }
 
-function field(rootProps: Record<string, unknown>, label = "Pigments") {
+function field(
+  rootProps: Record<string, unknown>,
+  label = "Pigments",
+  placeholder = "Add pigment",
+) {
   return h(TagsInput.Root, rootProps, {
     default: () => [
       h(TagsInput.Label, () => label),
       h(TagsInput.Control, null, {
         default: () => [
           tagList(),
-          h(TagsInput.Input as any, { placeholder: "Add pigment" }),
+          h(TagsInput.Input as any, { placeholder }),
           h(TagsInput.ClearTrigger, () => h(XIcon)),
         ],
       }),
@@ -52,7 +56,14 @@ function field(rootProps: Record<string, unknown>, label = "Pigments") {
 
 /** Type and press enter; chips carry a delete whisker each. */
 export const Basic = {
-  render: () => field({ defaultValue: ["Qinghua", "Celadon"] }),
+  args: {
+    label: "Pigments",
+    placeholder: "Add pigment",
+  },
+  render: (args: any) =>
+    withState(
+      () => () => field({ defaultValue: ["Qinghua", "Celadon"] }, args.label, args.placeholder),
+    ),
 };
 
 /** The same pigment may be stamped twice. */

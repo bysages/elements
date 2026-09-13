@@ -69,11 +69,17 @@ const buttonStyle = {
 /** Copy the link from the hairline field; the trigger's ink turns bamboo
  * for as long as the machine holds the copied state. */
 export const Basic = {
-  render: () =>
-    h(Clipboard.Root, { defaultValue: "https://ark-ui.com" }, () => [
-      h(Clipboard.Label, () => "Copy this link"),
-      h(Clipboard.Control, () => [h(Clipboard.Input), trigger()]),
-    ]),
+  args: {
+    label: "Copy this link",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Clipboard.Root, { defaultValue: "https://ark-ui.com" }, () => [
+          h(Clipboard.Label, () => args.label),
+          h(Clipboard.Control, () => [h(Clipboard.Input), trigger()]),
+        ]),
+    ),
 };
 
 /** Five seconds of confirmed ink, then the eye returns to rest. */

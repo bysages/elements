@@ -99,17 +99,23 @@ const viewport = () => h(NavigationMenu.ViewportPositioner, () => h(NavigationMe
  * elevation while the stroke of primary ink slides beneath the open
  * trigger. */
 export const Basic = {
-  render: () =>
-    h(NavigationMenu.Root, () => [
-      h(NavigationMenu.List, () => [
-        menuPanel("overview", columns),
-        h(NavigationMenu.Item, () =>
-          h(NavigationMenu.Link, { href: "#guides", current: true }, () => "Guides"),
-        ),
-        menuPanel("resources", columns.slice().reverse()),
-      ]),
-      viewport(),
-    ]),
+  args: {
+    guidesLink: "Guides",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(NavigationMenu.Root, () => [
+          h(NavigationMenu.List, () => [
+            menuPanel("overview", columns),
+            h(NavigationMenu.Item, () =>
+              h(NavigationMenu.Link, { href: "#guides", current: true }, () => args.guidesLink),
+            ),
+            menuPanel("resources", columns.slice().reverse()),
+          ]),
+          viewport(),
+        ]),
+    ),
 };
 
 /** The bar reads its own state: the context reports which trigger holds

@@ -27,7 +27,10 @@ const AXES = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
 
 /** The sheet itself: a draggable header with stage seals, a body and the
  * eight resize rims. */
-function stage(body = "A sheet of paper you can move: drag the header, pull the rim.") {
+function stage(
+  body = "A sheet of paper you can move: drag the header, pull the rim.",
+  title = "Notes",
+) {
   return h(Teleport, { to: "body" }, () => [
     h(FloatingPanel.Positioner, () =>
       h(FloatingPanel.Content, () => [
@@ -35,7 +38,7 @@ function stage(body = "A sheet of paper you can move: drag the header, pull the 
           h(FloatingPanel.Header, () => [
             h(FloatingPanel.Title, () => [
               glyph("M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01"),
-              "Notes",
+              title,
             ]),
             h(FloatingPanel.Control, () => [
               h(FloatingPanel.StageTrigger, { stage: "minimized" }, () => glyph("M5 12h14")),
@@ -56,14 +59,21 @@ function stage(body = "A sheet of paper you can move: drag the header, pull the 
   ]);
 }
 
-function panel(extraRootProps: Record<string, any> = {}) {
+function panel(
+  extraRootProps: Record<string, any> = {},
+  text = {
+    trigger: "Open panel",
+    title: "Notes",
+    body: "A sheet of paper you can move: drag the header, pull the rim.",
+  },
+) {
   const Host = {
     name: "FloatingPanelStage",
     setup() {
       return () =>
         h(FloatingPanel.Root, extraRootProps, () => [
-          h(FloatingPanel.Trigger, () => "Open panel"),
-          stage(),
+          h(FloatingPanel.Trigger, () => text.trigger),
+          stage(text.body, text.title),
         ]);
     },
   };
@@ -99,7 +109,15 @@ function outsideButton(label: string, onClick: () => void) {
 /** Toggle the sheet open, drag it by its header, resize it from the rim and
  * stage it small, large or home from the control seals. */
 export const Basic = {
-  render: () => panel(),
+  args: {
+    triggerText: "Open panel",
+    title: "Notes",
+    body: "A sheet of paper you can move: drag the header, pull the rim.",
+  },
+  render: (args: any) =>
+    withState(
+      () => () => panel({}, { trigger: args.triggerText, title: args.title, body: args.body }),
+    ),
 };
 
 /** The bar reads its own state: the paragraph names the panel open or

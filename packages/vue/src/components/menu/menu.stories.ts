@@ -50,21 +50,30 @@ function positioner(children: any) {
 /** A file menu: one trigger, one vessel dissolving in, items as rows of
  * light with a hairline between courses. */
 export const Basic = {
-  render: () =>
-    h(Menu.Root, () => [
-      h(Menu.Trigger, () => [h("span", () => "File"), h(Menu.Indicator, () => chevronDown())]),
-      positioner([
-        h(Menu.Item, { value: "new-file" }, () => "New file"),
-        h(Menu.Item, { value: "open", disabled: true }, () => "Open…"),
-        h(Menu.ItemGroup, () => [
-          h(Menu.ItemGroupLabel, () => "Save"),
-          h(Menu.Item, { value: "save" }, () => "Save"),
-          h(Menu.Item, { value: "save-as" }, () => "Save as…"),
+  args: {
+    label: "File",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Menu.Root, () => [
+          h(Menu.Trigger, () => [
+            h("span", () => args.label),
+            h(Menu.Indicator, () => chevronDown()),
+          ]),
+          positioner([
+            h(Menu.Item, { value: "new-file" }, () => "New file"),
+            h(Menu.Item, { value: "open", disabled: true }, () => "Open…"),
+            h(Menu.ItemGroup, () => [
+              h(Menu.ItemGroupLabel, () => "Save"),
+              h(Menu.Item, { value: "save" }, () => "Save"),
+              h(Menu.Item, { value: "save-as" }, () => "Save as…"),
+            ]),
+            h(Menu.Separator),
+            h(Menu.Item, { value: "export" }, () => "Export"),
+          ]),
         ]),
-        h(Menu.Separator),
-        h(Menu.Item, { value: "export" }, () => "Export"),
-      ]),
-    ]),
+    ),
 };
 
 /** Toggle rows: each carries its own check, independent of the others. */

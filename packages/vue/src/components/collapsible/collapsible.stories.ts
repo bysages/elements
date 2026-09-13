@@ -21,7 +21,10 @@ const chevron = () =>
 /** The paper folds away behind one trigger; the indicator turns as the
  * panel opens. */
 export const Basic = {
-  render: () => panel("What is Ark UI?"),
+  args: {
+    label: "What is Ark UI?",
+  },
+  render: (args: any) => withState(() => () => panel(args.label)),
 };
 
 /** The panel starts open, resting its content on the page. */

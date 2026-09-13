@@ -33,7 +33,11 @@ function dial(label: string) {
 /** The dial: eight marks of the compass rose, the thumb dragged around the
  * circle. */
 export const Basic = {
-  render: () => h(AngleSlider.Root, { defaultValue: 45 }, () => dial("Rotation")),
+  args: {
+    label: "Rotation",
+  },
+  render: (args: any) =>
+    withState(() => () => h(AngleSlider.Root, { defaultValue: 45 }, () => dial(args.label))),
 };
 
 /** The dial reads its own state: the label names the current bearing. */

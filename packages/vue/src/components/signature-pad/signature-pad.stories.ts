@@ -40,7 +40,14 @@ function pad(extraRootProps: Record<string, any> = {}, label = "Sign below") {
 /** Sign below the guide hairline; the clear trigger wipes the paper without
  * leaving the field. */
 export const Basic = {
-  render: () => h(SignaturePad.Root, () => pad()),
+  args: {
+    label: "Sign below",
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () => h(SignaturePad.Root, { disabled: args.disabled }, () => pad({}, args.label)),
+    ),
 };
 
 /** The strokes answer to the caller — the readout counts them. */

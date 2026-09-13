@@ -41,11 +41,19 @@ const pigments = createListCollection({
 
 /** One choice from the ledger: the current row keeps the ink check. */
 export const Basic = {
-  render: () =>
-    h(Listbox.Root, { collection: pigments, selectionMode: "single" } as any, () => [
-      h(Listbox.Label, () => "Pigment"),
-      h(Listbox.Content, () => rows(pigments)),
-    ]),
+  args: {
+    label: "Pigment",
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(
+          Listbox.Root,
+          { collection: pigments, selectionMode: "single", disabled: args.disabled } as any,
+          () => [h(Listbox.Label, () => args.label), h(Listbox.Content, () => rows(pigments))],
+        ),
+    ),
 };
 
 /** Several rows may carry the check at once — days of the week, say. */

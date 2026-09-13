@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, Teleport } from "vue";
 
 import { ColorPicker } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Color Picker" };
 export default meta;
@@ -71,53 +72,65 @@ function channelRow(channels: string[]) {
  * area, the hue and alpha tracks beside the eyedropper, the saved swatches,
  * and one channel-input row per format, switched by the format select. */
 export const Basic = {
-  render: () =>
-    h(ColorPicker.Root, { defaultValue: parseColor("#3d5a80"), defaultFormat: "rgba" }, () => [
-      h(ColorPicker.Label, () => "Ink color"),
-      h(ColorPicker.Control, () => [
-        h(ColorPicker.ChannelInput as any, { channel: "hex" }),
-        h(ColorPicker.ChannelInput as any, { channel: "alpha" }),
-        h(ColorPicker.Trigger, () => [h(ColorPicker.TransparencyGrid), h(ColorPicker.ValueSwatch)]),
-      ]),
-      h(Teleport, { to: "body" }, () => [
-        h(ColorPicker.Positioner, () =>
-          h(ColorPicker.Content, () => [
-            h(ColorPicker.Area, () => [h(ColorPicker.AreaBackground), h(ColorPicker.AreaThumb)]),
-            h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
-              h(ColorPicker.EyeDropperTrigger, () => eyedropperGlyph()),
-              h(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.5rem",
-                    flex: 1,
-                    minWidth: 0,
-                  },
-                },
-                [channelSlider("hue"), channelSlider("alpha")],
-              ),
+  args: {
+    label: "Ink color",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(ColorPicker.Root, { defaultValue: parseColor("#3d5a80"), defaultFormat: "rgba" }, () => [
+          h(ColorPicker.Label, () => args.label),
+          h(ColorPicker.Control, () => [
+            h(ColorPicker.ChannelInput as any, { channel: "hex" }),
+            h(ColorPicker.ChannelInput as any, { channel: "alpha" }),
+            h(ColorPicker.Trigger, () => [
+              h(ColorPicker.TransparencyGrid),
+              h(ColorPicker.ValueSwatch),
             ]),
-            h(ColorPicker.SwatchGroup, () =>
-              savedColors.map((color) =>
-                h(ColorPicker.SwatchTrigger, { key: color, value: color }, () => [
-                  h(ColorPicker.Swatch as any, { value: color }, () => [
-                    h(ColorPicker.SwatchIndicator, () => checkGlyph()),
-                  ]),
-                ]),
-              ),
-            ),
-            h(ColorPicker.View as any, { format: "rgba" }, () =>
-              channelRow(["red", "green", "blue", "alpha"]),
-            ),
-            h(ColorPicker.View as any, { format: "hsla" }, () =>
-              channelRow(["hue", "saturation", "lightness", "alpha"]),
-            ),
-            h(ColorPicker.FormatSelect),
           ]),
-        ),
-      ]),
-      h(ColorPicker.HiddenInput),
-    ]),
+          h(Teleport, { to: "body" }, () => [
+            h(ColorPicker.Positioner, () =>
+              h(ColorPicker.Content, () => [
+                h(ColorPicker.Area, () => [
+                  h(ColorPicker.AreaBackground),
+                  h(ColorPicker.AreaThumb),
+                ]),
+                h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
+                  h(ColorPicker.EyeDropperTrigger, () => eyedropperGlyph()),
+                  h(
+                    "div",
+                    {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
+                        flex: 1,
+                        minWidth: 0,
+                      },
+                    },
+                    [channelSlider("hue"), channelSlider("alpha")],
+                  ),
+                ]),
+                h(ColorPicker.SwatchGroup, () =>
+                  savedColors.map((color) =>
+                    h(ColorPicker.SwatchTrigger, { key: color, value: color }, () => [
+                      h(ColorPicker.Swatch as any, { value: color }, () => [
+                        h(ColorPicker.SwatchIndicator, () => checkGlyph()),
+                      ]),
+                    ]),
+                  ),
+                ),
+                h(ColorPicker.View as any, { format: "rgba" }, () =>
+                  channelRow(["red", "green", "blue", "alpha"]),
+                ),
+                h(ColorPicker.View as any, { format: "hsla" }, () =>
+                  channelRow(["hue", "saturation", "lightness", "alpha"]),
+                ),
+                h(ColorPicker.FormatSelect),
+              ]),
+            ),
+          ]),
+          h(ColorPicker.HiddenInput),
+        ]),
+    ),
 };

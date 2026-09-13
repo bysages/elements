@@ -51,7 +51,6 @@ const preview: Preview = {
     },
     layout: "padded",
     actions: { disable: true },
-    controls: { disable: true },
     backgrounds: { disable: true },
     viewport: { disable: true },
   },

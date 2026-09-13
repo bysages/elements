@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { Format as BSFormat } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Format" };
 export default meta;
@@ -34,7 +35,16 @@ const NUM = { style: { fontSize: "var(--bs-font-size-lg)" } } as const;
 
 /** The plain numeral, grouped by the reader's own convention. */
 export const Number = {
-  render: () => stack(row("Plain", () => h(BSFormat.Number, { value: 1450.45 }))),
+  args: {
+    locale: undefined,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        stack(
+          row("Plain", () => h(BSFormat.Number, { value: 1450.45, locale: args.locale } as any)),
+        ),
+    ),
 };
 
 /** Grand totals compressed to their headline. */

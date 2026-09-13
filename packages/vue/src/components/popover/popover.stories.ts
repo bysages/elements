@@ -37,18 +37,23 @@ function vessel(title: string, ...extra: any[]) {
 }
 
 export const Basic = {
-  render: () =>
-    h(Popover.Root, () => [
-      h(Popover.Trigger, () => "Notes"),
-      vessel(
-        "Reading notes",
-        h(
-          Popover.Description,
-          () =>
-            "Marginalia stay on the paper: this vessel pins to its trigger and dissolves in on elevation.",
-        ),
-      ),
-    ]),
+  args: {
+    trigger: "Notes",
+    title: "Reading notes",
+    description:
+      "Marginalia stay on the paper: this vessel pins to its trigger and dissolves in on elevation.",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Popover.Root, () => [
+          h(Popover.Trigger, () => args.trigger),
+          vessel(
+            args.title,
+            h(Popover.Description, () => args.description),
+          ),
+        ]),
+    ),
 };
 
 /** A whisker of the same paper points from the vessel to its trigger. */

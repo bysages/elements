@@ -34,7 +34,30 @@ const row = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 
 /** One thumb, one track, the ink filling left of the seal. */
 export const Basic = {
-  render: () => h("div", { style: row }, [slider({ defaultValue: [40] }, "Volume", [40])]),
+  args: {
+    label: "Volume",
+    min: 0,
+    max: 100,
+    step: 1,
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h("div", { style: row }, [
+          slider(
+            {
+              defaultValue: [40],
+              min: args.min,
+              max: args.max,
+              step: args.step,
+              disabled: args.disabled,
+            },
+            args.label,
+            [40],
+          ),
+        ]),
+    ),
 };
 
 /** Two thumbs share the track: the ink runs between them. */

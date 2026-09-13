@@ -25,11 +25,11 @@ function text(props: Record<string, unknown>) {
 
 /** The first stroke of pigment on the page. */
 export const Basic = {
-  render: () =>
-    text({
-      query: "component",
-      text: "Ark UI is a headless component library for building accessible web applications.",
-    }),
+  args: {
+    query: "component",
+    text: "Ark UI is a headless component library for building accessible web applications.",
+  },
+  render: (args: any) => withState(() => () => text(args)),
 };
 
 /** The query rides a live input: every keystroke re-inks the page. */

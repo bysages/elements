@@ -40,8 +40,16 @@ const items = [
 /** One row may be open at a time; the open leaf keeps a lit edge while the
  * others rest. */
 export const Basic = {
-  render: () =>
-    h(Accordion.Root, { defaultValue: ["paper"] }, () => items.map((item) => leaf(item))),
+  args: {
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Accordion.Root, { defaultValue: ["paper"], disabled: args.disabled }, () =>
+          items.map((item) => leaf(item)),
+        ),
+    ),
 };
 
 /** Collapsible: the open leaf may also be folded — at rest, all rows

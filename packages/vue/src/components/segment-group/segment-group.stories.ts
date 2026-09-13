@@ -25,7 +25,11 @@ function group(extraProps: Record<string, any> = {}, values = frameworks) {
 
 /** One ink stroke slides beneath the chosen segment. */
 export const Basic = {
-  render: () => group({ defaultValue: "Vue" }),
+  args: {
+    orientation: "horizontal",
+  },
+  render: (args: any) =>
+    withState(() => () => group({ defaultValue: "Vue", orientation: args.orientation })),
 };
 
 /** The choice answers to the caller — the group only mirrors it. */

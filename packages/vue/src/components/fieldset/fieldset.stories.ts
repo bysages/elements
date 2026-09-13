@@ -6,6 +6,7 @@ import { Checkbox } from "../checkbox/index.js";
 import { Field } from "../field/index.js";
 import { Select } from "../select/index.js";
 import { Fieldset } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Fieldset" };
 export default meta;
@@ -34,18 +35,29 @@ function checkGlyph() {
 
 /** A serif legend heading a column of fields — the grouped form unit. */
 export const Basic = {
-  render: () =>
-    h(Fieldset.Root, null, () => [
-      h(Fieldset.Legend, () => "Contact details"),
-      h(Field.Root, null, () => [
-        h(Field.Label, () => "Name"),
-        h(Field.Input as any, { placeholder: "John Doe" }),
-      ]),
-      h(Field.Root, null, () => [
-        h(Field.Label, () => "Email"),
-        h(Field.Input as any, { type: "email", placeholder: "john@example.com" }),
-      ]),
-    ]),
+  args: {
+    legend: "Contact details",
+    nameLabel: "Name",
+    namePlaceholder: "John Doe",
+    emailLabel: "Email",
+    emailPlaceholder: "john@example.com",
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Fieldset.Root, { disabled: args.disabled } as any, () => [
+          h(Fieldset.Legend, () => args.legend),
+          h(Field.Root, null, () => [
+            h(Field.Label, () => args.nameLabel),
+            h(Field.Input as any, { placeholder: args.namePlaceholder }),
+          ]),
+          h(Field.Root, null, () => [
+            h(Field.Label, () => args.emailLabel),
+            h(Field.Input as any, { type: "email", placeholder: args.emailPlaceholder }),
+          ]),
+        ]),
+    ),
 };
 
 /** One attribute settles the whole column: every field inside rests

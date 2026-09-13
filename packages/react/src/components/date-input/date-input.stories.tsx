@@ -7,10 +7,13 @@ export default meta;
 
 /** Segmented typing — each part of the date is its own arrow-navigable
  * segment; the focused segment takes the ink. */
-export function Basic() {
-  return (
+export const Basic = {
+  args: {
+    label: "Date of birth",
+  },
+  render: (args: any) => (
     <DateInput.Root>
-      <DateInput.Label>Date of birth</DateInput.Label>
+      <DateInput.Label>{args.label}</DateInput.Label>
       <DateInput.Control>
         <DateInput.SegmentGroup>
           <DateInput.SegmentContext>
@@ -20,8 +23,8 @@ export function Basic() {
       </DateInput.Control>
       <DateInput.HiddenInput />
     </DateInput.Root>
-  );
-}
+  ),
+};
 
 /** Time-only granularity — the same field, hours to seconds. */
 export function TimeOnly() {

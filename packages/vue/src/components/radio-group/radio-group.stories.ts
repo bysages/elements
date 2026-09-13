@@ -19,17 +19,26 @@ function item(paper: string) {
   ]);
 }
 
-function paperGroup(extraProps: Record<string, any> = {}) {
+function paperGroup(extraProps: Record<string, any> = {}, label = "Paper") {
   return h(RadioGroup.Root, extraProps, () => [
-    h(RadioGroup.Label, () => "Paper"),
+    h(RadioGroup.Label, () => label),
     ...papers.map(item),
   ]);
 }
 
 /** A column of full-circle seals; the chosen one fills flat with ink. */
 export const Basic = {
-  render: () =>
-    h("div", { style: { maxWidth: "20rem" } }, [paperGroup({ defaultValue: "Doushu" })]),
+  args: {
+    label: "Paper",
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h("div", { style: { maxWidth: "20rem" } }, [
+          paperGroup({ defaultValue: "Doushu", disabled: args.disabled }, args.label),
+        ]),
+    ),
 };
 
 /** Retired choices: the seals mute, no ink, no pointer. */

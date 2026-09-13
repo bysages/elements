@@ -36,7 +36,11 @@ function chevron(dir: "left" | "right") {
 /** Prev/next as quiet outline controls, the lane clipped to one slide,
  * dots underneath with the current page in ink. */
 export const Basic = {
-  render: () => strip({ slideCount: slides.length }, images()),
+  args: {
+    orientation: "vertical",
+  },
+  render: (args: any) =>
+    strip({ slideCount: slides.length, orientation: args.orientation }, images()),
 };
 
 /** The lane rises: slides travel bottom to top. */

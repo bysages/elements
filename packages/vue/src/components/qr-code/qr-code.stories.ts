@@ -35,16 +35,22 @@ function sealGlyph() {
 /** The code prints in ink; an overlaid paper badge carries a mark, and the
  * download control stays a quiet seal beneath it. */
 export const Basic = {
-  render: () =>
-    h(QrCode.Root, { defaultValue: "https://elements.bysages.com" }, () => [
-      h(QrCode.Frame, () => h(QrCode.Pattern)),
-      h(QrCode.Overlay, () => sealGlyph()),
-      h(
-        QrCode.DownloadTrigger,
-        { fileName: "qr-code.png", mimeType: "image/png" },
-        () => "Download PNG",
-      ),
-    ]),
+  args: {
+    value: "https://elements.bysages.com",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(QrCode.Root, { value: args.value }, () => [
+          h(QrCode.Frame, () => h(QrCode.Pattern)),
+          h(QrCode.Overlay, () => sealGlyph()),
+          h(
+            QrCode.DownloadTrigger,
+            { fileName: "qr-code.png", mimeType: "image/png" },
+            () => "Download PNG",
+          ),
+        ]),
+    ),
 };
 
 /** The caller owns the payload — the pattern reprints on command. */

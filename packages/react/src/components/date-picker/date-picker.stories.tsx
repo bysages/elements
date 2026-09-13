@@ -41,10 +41,13 @@ function Chevron({ dir }: { dir: "left" | "right" }) {
 
 /** Day view with the full control row: type a date or pick one from the
  * grid; the title doubles as the zoom-out affordance. */
-export function Basic() {
-  return (
+export const Basic = {
+  args: {
+    label: "Start date",
+  },
+  render: (args: any) => (
     <DatePicker.Root>
-      <DatePicker.Label>Start date</DatePicker.Label>
+      <DatePicker.Label>{args.label}</DatePicker.Label>
       <DatePicker.Control>
         <DatePicker.Input />
         <DatePicker.Trigger>
@@ -165,8 +168,8 @@ export function Basic() {
         </DatePicker.Content>
       </DatePicker.Positioner>
     </DatePicker.Root>
-  );
-}
+  ),
+};
 
 /** A bounded range: the fill runs as one continuous band between the two
  * ink endpoints. */

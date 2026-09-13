@@ -149,7 +149,10 @@ const ComboboxStory = defineComponent({
 /** Type to filter; the matching strokes take the primary ink while the
  * checked row holds the flat fill. */
 export const Basic = {
-  render: () => h(ComboboxStory),
+  args: {
+    label: "Fruit",
+  },
+  render: (args: any) => withState(() => () => h(ComboboxStory, { label: args.label } as any)),
 };
 
 /** Several skills can be picked at once; the choice chips sit above the

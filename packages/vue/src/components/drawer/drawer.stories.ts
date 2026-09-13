@@ -48,18 +48,23 @@ function trigger(label: string) {
 /** The sheet rises from the bottom edge, grabber first; the page dims
  * behind it. */
 export const Basic = {
-  render: () =>
-    h(Drawer.Root, () => [
-      trigger("Open drawer"),
-      ...sheet(
-        "Settings",
-        h(
-          Drawer.Description,
-          () => "Preferences travel with the sheet — pull the grabber to put them away.",
-        ),
-        h("p", () => "The rest of the sheet is yours to fill."),
-      ),
-    ]),
+  args: {
+    triggerLabel: "Open drawer",
+    title: "Settings",
+    description: "Preferences travel with the sheet — pull the grabber to put them away.",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Drawer.Root, () => [
+          trigger(args.triggerLabel),
+          ...sheet(
+            args.title,
+            h(Drawer.Description, () => args.description),
+            h("p", () => "The rest of the sheet is yours to fill."),
+          ),
+        ]),
+    ),
 };
 
 /** The sheet drags between resting heights: 25%, 50%, and full. */

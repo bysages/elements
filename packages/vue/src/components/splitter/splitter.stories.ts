@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
 import { Splitter } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Splitter" };
 export default meta;
@@ -28,12 +29,18 @@ function room(id: string) {
 /** Two rooms, one divide: drag the seal thumb to re-partition the
  * paper. */
 export const Basic = {
-  render: () =>
-    h(Splitter.Root, { panels: [{ id: "a" }, { id: "b" }] }, () => [
-      room("a"),
-      divider("a:b"),
-      room("b"),
-    ]),
+  args: {
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Splitter.Root, { panels: [{ id: "a" }, { id: "b" }], disabled: args.disabled }, () => [
+          room("a"),
+          divider("a:b"),
+          room("b"),
+        ]),
+    ),
 };
 
 /** The left wing folds: drag past its floor and it collapses to a

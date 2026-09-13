@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { JsonTreeView } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Json Tree View" };
 export default meta;
@@ -43,7 +44,16 @@ function tree(extraProps: Record<string, any> = {}) {
 /** The object as a ledger: branches fold, values read as tabular
  * types. */
 export const Basic = {
-  render: () => h(JsonTreeView.Root, { data, defaultExpandedDepth: 1 }, () => tree()),
+  args: {
+    defaultExpandedDepth: 1,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(JsonTreeView.Root, { data, defaultExpandedDepth: args.defaultExpandedDepth }, () =>
+          tree(),
+        ),
+    ),
 };
 
 /** Arrays of every temper: dense, sparse, and carrying hidden

@@ -62,14 +62,22 @@ const buttonStyle = {
 /** The masked field with its reveal eye — the indicator swaps eye for
  * eye-off in the same seat. */
 export const Basic = {
-  render: () =>
-    h(PasswordInput.Root, null, () => [
-      h(PasswordInput.Label, () => "Password"),
-      h(PasswordInput.Control, () => [
-        h(PasswordInput.Input, { placeholder: "Enter a password" }),
-        h(PasswordInput.VisibilityTrigger, () => indicator()),
-      ]),
-    ]),
+  args: {
+    label: "Password",
+    placeholder: "Enter a password",
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(PasswordInput.Root, { disabled: args.disabled }, () => [
+          h(PasswordInput.Label, () => args.label),
+          h(PasswordInput.Control, () => [
+            h(PasswordInput.Input, { placeholder: args.placeholder }),
+            h(PasswordInput.VisibilityTrigger, () => indicator()),
+          ]),
+        ]),
+    ),
 };
 
 /** The reveal answers to the caller — the eye and the mask only mirror. */

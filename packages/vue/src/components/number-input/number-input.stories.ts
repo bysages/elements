@@ -56,7 +56,20 @@ function control(rootProps: any, label: string, extra: any[] = []) {
 }
 
 export const Basic = {
-  render: () => control({ defaultValue: "42", min: 0, max: 100 }, "Quantity"),
+  args: {
+    label: "Quantity",
+    min: 0,
+    max: 100,
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        control(
+          { defaultValue: "42", min: args.min, max: args.max, disabled: args.disabled },
+          args.label,
+        ),
+    ),
 };
 
 /** Format options ink the value as it rests: here a USD currency. */

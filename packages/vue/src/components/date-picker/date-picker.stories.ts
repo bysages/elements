@@ -188,11 +188,17 @@ function field(control: any[], label = "Start date") {
 
 /** The standard picker: type a date or pick one from the grid. */
 export const Basic = {
-  render: () =>
-    h(DatePicker.Root, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
-      popup(dayView(), monthView(), yearView()),
-    ]),
+  args: {
+    label: "Start date",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(DatePicker.Root, () => [
+          ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())], args.label),
+          popup(dayView(), monthView(), yearView()),
+        ]),
+    ),
 };
 
 /** The field starts filled; the clear trigger empties it. */

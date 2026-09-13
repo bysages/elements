@@ -36,7 +36,22 @@ function ledger(rootProps: any, opts: { indicator?: boolean; disabled?: string }
 /** Three ledgers, one showing: the current tab holds the ink and the
  * panel. */
 export const Basic = {
-  render: () => ledger({ defaultValue: "account" }, { indicator: true }),
+  args: {
+    orientation: "horizontal",
+    activationMode: "auto",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        ledger(
+          {
+            defaultValue: "account",
+            orientation: args.orientation,
+            activationMode: args.activationMode,
+          } as any,
+          { indicator: true },
+        ),
+    ),
 };
 
 /** The open tab answers to the caller — the rail only mirrors. */

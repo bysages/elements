@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, ref, Teleport } from "vue";
 
 import { createToaster, Toast, Toaster, type CreateToasterReturn } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Toast" };
 export default meta;
@@ -123,14 +124,20 @@ const announce = (toaster: CreateToasterReturn) =>
 /** One notice rises from the bottom edge; the machine's translate
  * variables carry the slide. */
 export const Basic = {
-  render: () =>
-    notifier("ToastBasic", {}, (toaster) => [
-      h(
-        "button",
-        { type: "button", style: buttonStyle, onClick: () => announce(toaster) },
-        () => "Schedule meeting",
-      ),
-    ]),
+  args: {
+    triggerLabel: "Schedule meeting",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        notifier("ToastBasic", {}, (toaster) => [
+          h(
+            "button",
+            { type: "button", style: buttonStyle, onClick: () => announce(toaster) },
+            () => args.triggerLabel,
+          ),
+        ]),
+    ),
 };
 
 /** The notice carries an undo rung: the action trigger sits beside the

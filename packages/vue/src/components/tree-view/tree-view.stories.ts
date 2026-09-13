@@ -270,11 +270,17 @@ function treeOf(collection: ReturnType<typeof createTreeCollection<Node>>, compo
 
 /** The library tree: branches open on click, files sit at the leaves. */
 export const Basic = {
-  render: () =>
-    h(
-      TreeView.Root,
-      { collection: libraryCollection, defaultExpandedValue: ["ink"] } as any,
-      () => [h(TreeView.Label, () => "Library"), treeOf(libraryCollection)],
+  args: {
+    label: "Library",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(
+          TreeView.Root,
+          { collection: libraryCollection, defaultExpandedValue: ["ink"] } as any,
+          () => [h(TreeView.Label, () => args.label), treeOf(libraryCollection)],
+        ),
     ),
 };
 

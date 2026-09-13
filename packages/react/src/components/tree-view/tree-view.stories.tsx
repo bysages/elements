@@ -88,15 +88,18 @@ function Node({ node, indexPath }: { node: Node; indexPath: number[] }) {
   );
 }
 
-export function Basic() {
-  return (
+export const Basic = {
+  args: {
+    label: "Library",
+  },
+  render: (args: any) => (
     <TreeView.Root collection={collection} defaultExpandedValue={["ink"]}>
-      <TreeView.Label>Library</TreeView.Label>
+      <TreeView.Label>{args.label}</TreeView.Label>
       <TreeView.Tree>
         {collection.rootNode.children?.map((node, index) => (
           <Node key={node.id} node={node} indexPath={[index]} />
         ))}
       </TreeView.Tree>
     </TreeView.Root>
-  );
-}
+  ),
+};

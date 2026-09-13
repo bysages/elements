@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { ScrollArea } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Scroll Area" };
 export default meta;
@@ -33,7 +34,13 @@ function area(
 /** The hairline vessel with ink lanes: scrollbars stay hidden until hover
  * or scroll summons them. */
 export const Basic = {
-  render: () => h("div", { style: ROOT_STYLE }, [area({}, prose(3))]),
+  args: {
+    orientation: "vertical",
+  },
+  render: (args: any) =>
+    withState(
+      () => () => h("div", { style: ROOT_STYLE }, [area({}, prose(3), [args.orientation])]),
+    ),
 };
 
 /** The page runs both ways: two creases, one per direction. */

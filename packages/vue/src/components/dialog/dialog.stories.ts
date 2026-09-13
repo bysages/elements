@@ -27,15 +27,31 @@ function trigger(label: string) {
 
 /** The paper vessel rests above a dimmed page and dissolves away. */
 export const Basic = {
-  render: () =>
-    h(Dialog.Root, () => [
-      trigger("Delete item"),
-      vessel(
-        "Delete item",
-        "This action cannot be undone.",
-        h("p", () => "Removed items stay recoverable for 30 days."),
-      ),
-    ]),
+  args: {
+    title: "Delete item",
+    description: "This action cannot be undone.",
+    closeOnEscape: true,
+    closeOnInteractOutside: true,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(
+          Dialog.Root,
+          {
+            closeOnEscape: args.closeOnEscape,
+            closeOnInteractOutside: args.closeOnInteractOutside,
+          },
+          () => [
+            trigger(args.title),
+            vessel(
+              args.title,
+              args.description,
+              h("p", () => "Removed items stay recoverable for 30 days."),
+            ),
+          ],
+        ),
+    ),
 };
 
 /** The dialog answers to state — open and close belong to the caller. */

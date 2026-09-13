@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive, Teleport } from "vue";
 
 import { Tour, useTour, type TourStepDetails } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Tour" };
 export default meta;
@@ -97,56 +98,62 @@ const targets = (ids: string[], prefix: string) =>
 /** A dimmed page where the spotlight alone keeps focus; the card walks
  * from anchor to anchor, dialogs bookending the walk. */
 export const Basic = {
-  render: () =>
-    stage(
-      "TourBasic",
-      {},
-      [
-        {
-          id: "welcome",
-          type: "dialog",
-          title: "Welcome",
-          description: "A short walk through the room before the ink settles.",
-          actions: [{ label: "Start", action: "next" }],
-        },
-        {
-          id: "first",
-          type: "tooltip",
-          title: "The first seal",
-          description: "Primary actions sit quiet until asked — then they answer.",
-          target: () => document.querySelector<HTMLElement>("#tour-basic-1"),
-          actions: [
-            { label: "Back", action: "prev" },
-            { label: "Next", action: "next" },
+  args: {
+    startLabel: "Start tour",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        stage(
+          "TourBasic",
+          {},
+          [
+            {
+              id: "welcome",
+              type: "dialog",
+              title: "Welcome",
+              description: "A short walk through the room before the ink settles.",
+              actions: [{ label: "Start", action: "next" }],
+            },
+            {
+              id: "first",
+              type: "tooltip",
+              title: "The first seal",
+              description: "Primary actions sit quiet until asked — then they answer.",
+              target: () => document.querySelector<HTMLElement>("#tour-basic-1"),
+              actions: [
+                { label: "Back", action: "prev" },
+                { label: "Next", action: "next" },
+              ],
+            },
+            {
+              id: "second",
+              type: "tooltip",
+              title: "The second seal",
+              description: "Everything stays on the paper; nothing leaves the page.",
+              target: () => document.querySelector<HTMLElement>("#tour-basic-2"),
+              actions: [
+                { label: "Back", action: "prev" },
+                { label: "Finish", action: "dismiss" },
+              ],
+            },
+            {
+              id: "complete",
+              type: "dialog",
+              title: "You're all set",
+              description: "The walk is over; the room is yours.",
+              actions: [{ label: "Done", action: "dismiss" }],
+            },
           ],
-        },
-        {
-          id: "second",
-          type: "tooltip",
-          title: "The second seal",
-          description: "Everything stays on the paper; nothing leaves the page.",
-          target: () => document.querySelector<HTMLElement>("#tour-basic-2"),
-          actions: [
-            { label: "Back", action: "prev" },
-            { label: "Finish", action: "dismiss" },
+          (tour) => [
+            h(
+              "button",
+              { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
+              () => args.startLabel,
+            ),
+            targets(["tour-basic-1", "tour-basic-2"], "Anchor"),
           ],
-        },
-        {
-          id: "complete",
-          type: "dialog",
-          title: "You're all set",
-          description: "The walk is over; the room is yours.",
-          actions: [{ label: "Done", action: "dismiss" }],
-        },
-      ],
-      (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
         ),
-        targets(["tour-basic-1", "tour-basic-2"], "Anchor"),
-      ],
     ),
 };
 

@@ -15,24 +15,32 @@ function control() {
 
 /** The track rests in the paper's shade and fills flat with ink when on. */
 export const Basic = {
-  render: () =>
-    h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "20rem" } }, [
-      h(Switch.Root, { defaultChecked: true }, () => [
-        control(),
-        h(Switch.Label, () => "Dissolve overlays"),
-        h(Switch.HiddenInput),
-      ]),
-      h(Switch.Root, () => [
-        control(),
-        h(Switch.Label, () => "Show hairlines"),
-        h(Switch.HiddenInput),
-      ]),
-      h(Switch.Root, { defaultChecked: true, disabled: true }, () => [
-        control(),
-        h(Switch.Label, () => "Reduced motion"),
-        h(Switch.HiddenInput),
-      ]),
-    ]),
+  args: {
+    overlaysLabel: "Dissolve overlays",
+    hairlinesLabel: "Show hairlines",
+    motionLabel: "Reduced motion",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "20rem" } }, [
+          h(Switch.Root, { defaultChecked: true }, () => [
+            control(),
+            h(Switch.Label, () => args.overlaysLabel),
+            h(Switch.HiddenInput),
+          ]),
+          h(Switch.Root, () => [
+            control(),
+            h(Switch.Label, () => args.hairlinesLabel),
+            h(Switch.HiddenInput),
+          ]),
+          h(Switch.Root, { defaultChecked: true, disabled: true }, () => [
+            control(),
+            h(Switch.Label, () => args.motionLabel),
+            h(Switch.HiddenInput),
+          ]),
+        ]),
+    ),
 };
 
 /** The caller owns the state — the track only mirrors it. */

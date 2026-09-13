@@ -42,11 +42,17 @@ function glyph(path: string) {
 /** Ink answers only when asked: hover raises a quiet label on the
  * paper. */
 export const Basic = {
-  render: () =>
-    h(Tooltip.Root, { positioning: { placement: "bottom-start" } }, () => [
-      h(Tooltip.Trigger, () => [sealGlyph(), h("span", () => "Hover me")]),
-      h(Tooltip.Positioner, () => h(Tooltip.Content, () => "Ink answers only when asked.")),
-    ]),
+  args: {
+    placement: "bottom-start",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Tooltip.Root, { positioning: { placement: args.placement } }, () => [
+          h(Tooltip.Trigger, () => [sealGlyph(), h("span", () => "Hover me")]),
+          h(Tooltip.Positioner, () => h(Tooltip.Content, () => "Ink answers only when asked.")),
+        ]),
+    ),
 };
 
 /** A whisker of the same paper points from the label to its trigger. */

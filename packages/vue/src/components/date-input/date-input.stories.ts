@@ -30,7 +30,10 @@ function field(rootProps: any, label: string, extra: any[] = []) {
 /** Segmented typing — each part of the date is its own arrow-navigable
  * segment; the focused segment takes the ink. */
 export const Basic = {
-  render: () => field({}, "Date of birth"),
+  args: {
+    label: "Date of birth",
+  },
+  render: (args: any) => withState(() => () => field({}, args.label)),
 };
 
 /** The field arrives already written: June fifteenth, resting in its

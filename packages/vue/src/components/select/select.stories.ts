@@ -99,11 +99,11 @@ function grouped(collection: any) {
   );
 }
 
-function shell(rootProps: any, collection: any, content: any) {
+function shell(rootProps: any, collection: any, content: any, placeholder = "Select") {
   return h(Select.Root, { collection, ...rootProps }, () => [
     h(Select.Label, () => "Framework"),
     h(Select.Control, () => [
-      h(Select.Trigger, () => h(Select.ValueText, { placeholder: "Select" })),
+      h(Select.Trigger, () => h(Select.ValueText, { placeholder })),
       h(Select.ClearTrigger, () => xGlyph()),
       h(Select.Indicator, () => chevronsUpDown()),
     ]),
@@ -115,15 +115,29 @@ function shell(rootProps: any, collection: any, content: any) {
 }
 
 /** The trigger is the whole control; the chosen row carries the flat ink
- * fill inside the vessel. */
+ * fill inside the vessel. The args proxy must be read inside the host's
+ * render — Storybook's vue renderer only mutates that proxy on a Controls
+ * edit, so a render reading it outside a reactive effect would freeze on
+ * the first value. */
 export const Basic = {
-  render: () =>
-    shell({}, frameworks, [
-      h(Select.ItemGroup, () => [
-        h(Select.ItemGroupLabel, () => "Frameworks"),
-        ...rows(frameworks),
-      ]),
-    ]),
+  args: {
+    placeholder: "Select",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        shell(
+          {},
+          frameworks,
+          [
+            h(Select.ItemGroup, () => [
+              h(Select.ItemGroupLabel, () => "Frameworks"),
+              ...rows(frameworks),
+            ]),
+          ],
+          args.placeholder,
+        ),
+    ),
 };
 
 /** The selection answers to state — the trigger mirrors the caller. */

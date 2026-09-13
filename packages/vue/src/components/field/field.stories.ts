@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { Field } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Field" };
 export default meta;
@@ -11,13 +12,24 @@ const column = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 /** Label, control, help, error — the whole field column in its resting
  * register. */
 export const Basic = {
-  render: () =>
-    h(Field.Root, null, () => [
-      h(Field.Label, () => "Label"),
-      h(Field.Input as any, { placeholder: "Placeholder" }),
-      h(Field.HelperText, () => "Some additional info"),
-      h(Field.ErrorText, () => "Error info"),
-    ]),
+  args: {
+    label: "Label",
+    placeholder: "Placeholder",
+    helperText: "Some additional info",
+    errorText: "Error info",
+    disabled: false,
+    required: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Field.Root, { disabled: args.disabled, required: args.required } as any, () => [
+          h(Field.Label, () => args.label),
+          h(Field.Input as any, { placeholder: args.placeholder }),
+          h(Field.HelperText, () => args.helperText),
+          h(Field.ErrorText, () => args.errorText),
+        ]),
+    ),
 };
 
 /** A multiline field: the paper gives as many rows as the thought needs. */

@@ -37,7 +37,16 @@ function scale(rootProps: any, label: string) {
 }
 
 export const Basic = {
-  render: () => scale({ defaultValue: 3, count: 5 }, "Rating"),
+  args: {
+    label: "Rating",
+    count: 5,
+    disabled: false,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        scale({ defaultValue: 3, count: args.count, disabled: args.disabled }, args.label),
+    ),
 };
 
 /** Half measures count: the star under the pointer fills by its left

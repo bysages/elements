@@ -8,19 +8,24 @@ const meta: Meta = {
 
 export default meta;
 
-export function Basic() {
-  return (
+export const Basic = {
+  args: {
+    trigger: "Delete item",
+    title: "Delete item",
+    description: "This action cannot be undone.",
+  },
+  render: (args: any) => (
     <Dialog.Root>
-      <Dialog.Trigger>Delete item</Dialog.Trigger>
+      <Dialog.Trigger>{args.trigger}</Dialog.Trigger>
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
-          <Dialog.Title>Delete item</Dialog.Title>
-          <Dialog.Description>This action cannot be undone.</Dialog.Description>
+          <Dialog.Title>{args.title}</Dialog.Title>
+          <Dialog.Description>{args.description}</Dialog.Description>
           <p>Removed items stay recoverable for 30 days.</p>
           <Dialog.CloseTrigger>×</Dialog.CloseTrigger>
         </Dialog.Content>
       </Dialog.Positioner>
     </Dialog.Root>
-  );
-}
+  ),
+};

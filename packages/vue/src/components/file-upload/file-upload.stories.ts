@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { FileUpload } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / File Upload" };
 export default meta;
@@ -95,17 +96,25 @@ function slips() {
 /** Drop files onto the dashed paper or pick them with the trigger; each
  * accepted file lands as a loose slip with a delete glyph. */
 export const Basic = {
-  render: () =>
-    h(FileUpload.Root, { maxFiles: 5 }, () => [
-      h(FileUpload.Label, () => "Attachments"),
-      h(FileUpload.Dropzone, () => [
-        uploadGlyph(),
-        h("span", () => "Drag files here or"),
-        h(FileUpload.Trigger, () => "Choose files"),
-      ]),
-      slips(),
-      h(FileUpload.HiddenInput),
-    ]),
+  args: {
+    label: "Attachments",
+    dropzoneText: "Drag files here or",
+    triggerText: "Choose files",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(FileUpload.Root, { maxFiles: 5 }, () => [
+          h(FileUpload.Label, () => args.label),
+          h(FileUpload.Dropzone, () => [
+            uploadGlyph(),
+            h("span", () => args.dropzoneText),
+            h(FileUpload.Trigger, () => args.triggerText),
+          ]),
+          slips(),
+          h(FileUpload.HiddenInput),
+        ]),
+    ),
 };
 
 /** Without the dropzone: a plain trigger and its quiet twin, clear-all,

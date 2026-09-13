@@ -47,10 +47,10 @@ function card() {
   );
 }
 
-function mention() {
+function mention(handle = profile.handle) {
   return h("p", { style: { margin: 0 } }, [
     "Liked by ",
-    h(HoverCard.Trigger, () => profile.handle),
+    h(HoverCard.Trigger, () => handle),
     " and 3 others.",
   ]);
 }
@@ -58,7 +58,11 @@ function mention() {
 /** Resting on the mention, the card rises on hover — identity rendered
  * where the eye already is. */
 export const Basic = {
-  render: () => h(HoverCard.Root, () => [mention(), card()]),
+  args: {
+    triggerText: profile.handle,
+  },
+  render: (args: any) =>
+    withState(() => () => h(HoverCard.Root, () => [mention(args.triggerText), card()])),
 };
 
 /** The card prefers the right: it rests beside the mention with a

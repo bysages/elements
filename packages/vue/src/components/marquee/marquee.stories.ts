@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
 import { Marquee } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Marquee" };
 export default meta;
@@ -12,7 +13,12 @@ const entries = ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indi
 /** The ribbon of seal-cut chips: content duplicated so the loop never
  * shows its seam. */
 export const Basic = {
-  render: () => ribbon({ spacing: "1.5rem" }),
+  args: {
+    spacing: "1.5rem",
+    speed: undefined,
+  },
+  render: (args: any) =>
+    withState(() => () => ribbon({ spacing: args.spacing, speed: args.speed } as any)),
 };
 
 /** The paper fades the ribbon in and out at both ends of the viewport. */

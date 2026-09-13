@@ -32,16 +32,23 @@ function slate(rootProps: any, label: string, extras: any[] = []) {
 /** Click the text to edit it — the preview becomes the field, and the
  * submit seal carries the ink. */
 export const Basic = {
-  render: () =>
-    h(Editable.Root, { placeholder: "Enter text…", defaultValue: "Hello World" }, () => [
-      h(Editable.Label, () => "Label"),
-      h(Editable.Area, () => [h(Editable.Preview), h(Editable.Input)]),
-      h(Editable.Control, () => [
-        h(Editable.EditTrigger, { "aria-label": "Edit" }, { default: pencil }),
-        h(Editable.SubmitTrigger, { "aria-label": "Submit" }, { default: check }),
-        h(Editable.CancelTrigger, { "aria-label": "Cancel" }, { default: cross }),
-      ]),
-    ]),
+  args: {
+    label: "Label",
+    placeholder: "Enter text…",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(Editable.Root, { placeholder: args.placeholder, defaultValue: "Hello World" }, () => [
+          h(Editable.Label, () => args.label),
+          h(Editable.Area, () => [h(Editable.Preview), h(Editable.Input)]),
+          h(Editable.Control, () => [
+            h(Editable.EditTrigger, { "aria-label": "Edit" }, { default: pencil }),
+            h(Editable.SubmitTrigger, { "aria-label": "Submit" }, { default: check }),
+            h(Editable.CancelTrigger, { "aria-label": "Cancel" }, { default: cross }),
+          ]),
+        ]),
+    ),
 };
 
 /** The triggers read the machine: pencil at rest, check and cross while

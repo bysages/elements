@@ -4,6 +4,7 @@ import { h } from "vue";
 
 import { Field } from "../field/index.js";
 import { PinInput } from "./index.js";
+import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components / Pin Input" };
 export default meta;
@@ -21,7 +22,17 @@ function pin(extraProps: Record<string, any> = {}, count = 4) {
 /** A six-digit code: one character per seal, the caret hopping forward on
  * each keystroke. */
 export const Basic = {
-  render: () => h("div", { style: { maxWidth: "20rem" } }, [pin({}, 6)]),
+  args: {
+    placeholder: "·",
+    length: 6,
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h("div", { style: { maxWidth: "20rem" } }, [
+          pin({ placeholder: args.placeholder }, args.length),
+        ]),
+    ),
 };
 
 /** The last seal filled lets go of the focus: the form is ready. */

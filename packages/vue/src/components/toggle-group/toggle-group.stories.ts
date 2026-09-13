@@ -41,9 +41,22 @@ function alignItem(align: string) {
 
 /** The alignment bench: one seal pressed at rest, the others waiting. */
 export const Basic = {
-  render: () =>
-    h(ToggleGroup.Root, { defaultValue: ["left"], "aria-label": "Text alignment" }, () =>
-      Object.keys(alignPaths).map(alignItem),
+  args: {
+    orientation: "horizontal",
+    label: "Text alignment",
+  },
+  render: (args: any) =>
+    withState(
+      () => () =>
+        h(
+          ToggleGroup.Root,
+          {
+            defaultValue: ["left"],
+            orientation: args.orientation,
+            "aria-label": args.label,
+          },
+          () => Object.keys(alignPaths).map(alignItem),
+        ),
     ),
 };
 

@@ -59,7 +59,12 @@ function bar(rootProps: any, edges = false) {
 /** Five hundred entries, ten to a page: the ladder of numbers with
  * ellipses where the rung count folds. */
 export const Basic = {
-  render: () => bar({ count: 5000, pageSize: 10, siblingCount: 2 }),
+  args: {
+    count: 5000,
+    pageSize: 10,
+    siblingCount: 2,
+  },
+  render: (args: any) => withState(() => () => bar(args)),
 };
 
 /** Edge triggers jump straight to the ends — no walking through
