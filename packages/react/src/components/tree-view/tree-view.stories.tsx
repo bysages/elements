@@ -3,7 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { TreeView } from ".";
 
-const meta: Meta = { title: "Components / Tree View" };
+const meta: Meta = { title: "Components/Data/Tree View" };
 export default meta;
 
 interface Node {
