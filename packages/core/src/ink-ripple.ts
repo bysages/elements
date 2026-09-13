@@ -27,7 +27,10 @@ export function attachInkRipple(root?: HTMLElement): () => void {
     if (event.target instanceof HTMLElement) delete event.target.dataset.ripple;
   };
 
-  const onDown = (event: PointerEvent) => {
+  const onDown = (event: Event) => {
+    // The scope union (Document | HTMLElement) resolves to the generic
+    // listener signature, so the pointer payload is narrowed here.
+    if (!(event instanceof PointerEvent)) return;
     if (event.pointerType !== "touch" && event.button !== 0) return;
     const target = event.target;
     if (!(target instanceof Element)) return;

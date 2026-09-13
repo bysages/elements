@@ -120,7 +120,7 @@ export function attachDynamicLight(options: DynamicLightOptions = {}): () => voi
   };
 
   const reduced =
-    typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)");
+    typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : undefined;
   if (reduced?.matches) return () => {};
 
   document.addEventListener("pointermove", onMove, { passive: true });

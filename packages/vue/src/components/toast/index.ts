@@ -1,6 +1,6 @@
-import type { DefineComponent } from "vue";
 import { Toaster as ArkToaster, Toast as ArkToast, createToaster } from "@ark-ui/vue/toast";
 import { injectComponentStyle } from "@bysages/core";
+import type { DefineComponent } from "vue";
 
 export type { CreateToasterReturn } from "@ark-ui/vue/toast";
 export { createToaster };
@@ -12,7 +12,8 @@ export { createToaster };
  * createToaster. */
 export const Toast = ArkToast;
 // The inferred type reaches into @zag-js/toast through a pnpm-internal
-// path, which is not portable in a declaration file — name it explicitly.
-export const Toaster: DefineComponent = ArkToaster;
+// path, which is not portable in a declaration file — name it explicitly
+// (the loose generics accept Ark's inferred component shape).
+export const Toaster: DefineComponent<any, any, any> = ArkToaster;
 
 injectComponentStyle("toast");
