@@ -134,6 +134,17 @@ export const navigationMenuCss =
   z-index: var(--bs-z-overlay);
 }
 
+/* A vertical bar hangs its panel off the list's trailing edge — centering
+   on the bar itself would throw the panel halfway out of the viewport,
+   since the bar is only as wide as its widest trigger. */
+[data-scope="navigation-menu"][data-part="root"][data-orientation="vertical"]
+  [data-part="viewport-positioner"] {
+  inset-block-start: 0;
+  inset-inline-start: 100%;
+  inset-inline-end: auto;
+  justify-content: flex-start;
+}
+
 [data-scope="navigation-menu"][data-part="viewport"] {
   position: relative;
   inline-size: max-content;
@@ -150,8 +161,11 @@ export const navigationMenuCss =
 /* Inside the panel a link is a card, not a bar row: it leaves the bar's
    inline register (which would sit two cards side by side on one line),
    grows with its two lines of ink — title over description — and the
-   cards stack with a whisper of daylight between. */
+   cards stack with a whisper of daylight between. Border-box keeps the
+   full-width fill inside the panel's padding — without it the hover wash
+   spills to the panel's very edge. */
 [data-scope="navigation-menu"][data-part="content"] [data-part="link"] {
+  box-sizing: border-box;
   display: flex;
   block-size: auto;
   align-items: flex-start;
