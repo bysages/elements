@@ -1,0 +1,47 @@
+{
+  "name": "@bysages/charts",
+  "version": "0.0.0",
+  "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus a thin Vue adapter",
+  "keywords": [
+    "charts",
+    "design-system",
+    "tanstack",
+    "theming",
+    "vue"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "basis build --stub",
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@bysages/core": "workspace:*",
+    "@tanstack/charts": "0.18.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  }
+}
