@@ -501,10 +501,11 @@ export const DefaultView = {
     ]),
 };
 
-/** Months only — no day grid anywhere in the hierarchy. */
+/** Months only — no day grid anywhere in the hierarchy. The floor view
+ * keeps a cell click from drilling below the grain. */
 export const MonthPicker = {
   render: () =>
-    h(DatePicker.Root, { defaultView: "month" }, () => [
+    h(DatePicker.Root, { defaultView: "month", minView: "month" }, () => [
       ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
       popup(monthView()),
     ]),
@@ -513,7 +514,7 @@ export const MonthPicker = {
 /** Years only — the coarsest picking grain. */
 export const YearPicker = {
   render: () =>
-    h(DatePicker.Root, { defaultView: "year" }, () => [
+    h(DatePicker.Root, { defaultView: "year", minView: "year" }, () => [
       ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
       popup(yearView()),
     ]),
@@ -522,7 +523,7 @@ export const YearPicker = {
 /** A month-grain range: two inputs, the grid paginates years. */
 export const MonthPickerRange = {
   render: () =>
-    h(DatePicker.Root, { selectionMode: "range", defaultView: "month" }, () => [
+    h(DatePicker.Root, { selectionMode: "range", defaultView: "month", minView: "month" }, () => [
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),
@@ -535,7 +536,7 @@ export const MonthPickerRange = {
 /** A year-grain range for spanning decades. */
 export const YearPickerRange = {
   render: () =>
-    h(DatePicker.Root, { selectionMode: "range", defaultView: "year" }, () => [
+    h(DatePicker.Root, { selectionMode: "range", defaultView: "year", minView: "year" }, () => [
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),

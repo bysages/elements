@@ -83,7 +83,10 @@ function control(...children: any[]) {
 
 function popup(children: any) {
   return h(Teleport, { to: "body" }, () => [
-    h(Combobox.Positioner, () => h(Combobox.Content, () => children)),
+    h(Combobox.Positioner, () =>
+      // A function keeps reactive rows live; a plain array is static JSX.
+      h(Combobox.Content, () => (typeof children === "function" ? children() : children)),
+    ),
   ]);
 }
 

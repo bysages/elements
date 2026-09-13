@@ -1,7 +1,9 @@
 /* Contrast tier — softness comes from light and shadow, never from low contrast: the aesthetic softens through
    light, never through gray-on-gray. The high tier pulls secondary text and
    borders up to primary strength and widens the focus halo; it exists so
-   older and low-vision users get the same design, just louder. */
+   older and low-vision users get the same design, just louder. Surface
+   steps stay untouched — rows signal hover by one step of shade, and
+   flattening the ladder would silence every hover in the system. */
 
 [data-contrast="high"],
 :host([data-contrast="high"]) {
@@ -13,12 +15,10 @@
 
 [data-theme="light"][data-contrast="high"],
 :host([data-theme="light"][data-contrast="high"]) {
-  --bs-color-surface-0: oklch(0.988 0.004 95);
   --bs-color-border-strong: var(--bs-color-gray-400);
 }
 
 [data-theme="dark"][data-contrast="high"],
 :host([data-theme="dark"][data-contrast="high"]) {
-  --bs-color-surface-0: oklch(0.12 0.006 75);
   --bs-color-border-strong: var(--bs-color-gray-500);
 }

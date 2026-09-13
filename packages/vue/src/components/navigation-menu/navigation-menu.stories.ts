@@ -31,7 +31,9 @@ function sectionHeading(label: string) {
     {
       style: {
         display: "block",
-        padding: "var(--bs-space-2) var(--bs-padding-sm) var(--bs-space-1)",
+        // The heading's text lines up with the card text beside it: both
+        // sit one card padding in from the panel edge.
+        padding: "var(--bs-space-2) var(--bs-padding-md) var(--bs-space-1)",
         color: "var(--bs-color-text-tertiary)",
         fontSize: "var(--bs-font-size-xs)",
         letterSpacing: "var(--bs-tracking-label)",

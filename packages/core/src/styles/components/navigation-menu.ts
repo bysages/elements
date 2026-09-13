@@ -147,6 +147,22 @@ export const navigationMenuCss =
   padding: var(--bs-padding-md);
 }
 
+/* Inside the panel a link is a card, not a bar row: it leaves the bar's
+   inline register (which would sit two cards side by side on one line),
+   grows with its two lines of ink — title over description — and the
+   cards stack with a whisper of daylight between. */
+[data-scope="navigation-menu"][data-part="content"] [data-part="link"] {
+  display: flex;
+  block-size: auto;
+  align-items: flex-start;
+  inline-size: 100%;
+  padding: var(--bs-space-2) var(--bs-padding-md);
+}
+
+[data-scope="navigation-menu"][data-part="content"] [data-part="link"] + [data-part="link"] {
+  margin-block-start: var(--bs-space-1);
+}
+
 [data-scope="navigation-menu"][data-part="item-indicator"] {
   display: inline-flex;
   align-items: center;

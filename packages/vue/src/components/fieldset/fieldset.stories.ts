@@ -141,14 +141,14 @@ export const PhoneInput = {
             ],
           ),
         ),
-        h(Field.Root, null, () => [
-          h(Field.Label, () => "Number"),
+        h(Field.Root, null, () =>
           h(Field.Input as any, {
             ref: inputEl,
             type: "tel",
+            "aria-label": "Number",
             placeholder: "555-0123",
           }),
-        ]),
+        ),
       ]),
     ]);
   },
