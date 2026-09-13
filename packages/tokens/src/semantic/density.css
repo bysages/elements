@@ -1,6 +1,8 @@
 /* Density — decoration compresses, information never does: density scales whitespace and decoration
-   only. Type sizes, contrast, and control heights stay fixed so compact can
-   never trade away readability; controls follow the type they hold. */
+   only. Type sizes and contrast stay fixed so compact can never trade away
+   readability. Control heights ride the density directly — a compact
+   workbench and an elder-friendly spacious screen are different products,
+   not the same one nudged by two pixels. */
 
 /* The default scale sits behind :where() so a scene preset (an attribute,
    same 0,1,0 as :root) can override it by cascade order, while the explicit
@@ -31,27 +33,41 @@
   --bs-gap-md: calc(var(--bs-space-3) * var(--bs-density-scale));
   --bs-gap-lg: calc(var(--bs-space-5) * var(--bs-density-scale));
   --bs-gap-xl: calc(var(--bs-space-8) * var(--bs-density-scale));
+}
 
-  /* Control heights: 28/32/40px — the compact desktop register (buttons and
-     toggles at md, small chips and segmented items at sm; large follows the
-     cross-system consensus of 40px). Density may ease them toward roomy but
-     never below the readable floor. */
-  --bs-control-height-sm: max(1.625rem, calc(1.75rem * var(--bs-density-scale)));
-  --bs-control-height-md: max(1.875rem, calc(2rem * var(--bs-density-scale)));
-  --bs-control-height-lg: max(2.25rem, calc(2.5rem * var(--bs-density-scale)));
+/* Control heights per tier — the cross-system ladders (28/32/40 sits at
+   default; compact matches the Fiori/Ant workbench register; spacious
+   reaches the 48px targets elderly-vision research asks for). The base
+   tier sits behind :where() like the scale above, so a scene's bundled
+   ladder overrides it by cascade order while the explicit [data-density]
+   tiers below still outrank both. */
+:where(:root),
+:where(:host) {
+  --bs-control-height-sm: 1.75rem;
+  --bs-control-height-md: 2rem;
+  --bs-control-height-lg: 2.5rem;
 }
 
 [data-density="compact"],
 :host([data-density="compact"]) {
-  --bs-density-scale: 0.9;
+  --bs-density-scale: 0.75;
+  --bs-control-height-sm: 1.5rem;
+  --bs-control-height-md: 1.75rem;
+  --bs-control-height-lg: 2rem;
 }
 
 [data-density="comfortable"],
 :host([data-density="comfortable"]) {
-  --bs-density-scale: 1.125;
+  --bs-density-scale: 1.25;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.25rem;
+  --bs-control-height-lg: 2.75rem;
 }
 
 [data-density="spacious"],
 :host([data-density="spacious"]) {
-  --bs-density-scale: 1.25;
+  --bs-density-scale: 1.5;
+  --bs-control-height-sm: 2.25rem;
+  --bs-control-height-md: 2.625rem;
+  --bs-control-height-lg: 3rem;
 }

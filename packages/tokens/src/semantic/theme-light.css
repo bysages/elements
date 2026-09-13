@@ -31,6 +31,10 @@
   --bs-color-text-tertiary: var(--bs-color-gray-500);
   --bs-color-text-disabled: var(--bs-color-gray-400);
   --bs-color-text-inverse: var(--bs-color-surface-2);
+  /* Ink on a solid pigment fill: paper under daylight, kneaded bright
+     under lacquer night (see the dark theme). */
+  --bs-color-ink-on-fill: var(--bs-color-surface-2);
+  --bs-ink-knead: 0%;
 
   --bs-color-border: var(--bs-color-gray-200);
   --bs-color-border-strong: var(--bs-color-gray-300);
@@ -53,6 +57,10 @@
   --bs-color-primary-hover: var(--bs-color-gray-900);
   --bs-color-primary-active: var(--bs-color-gray-925);
   --bs-color-primary-text: var(--bs-color-surface-2);
+  /* The solid-fill body: pigments rest at full strength on paper — night
+     kneads them (see the dark theme), daylight does not. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
   --bs-color-primary-subtle: var(--bs-color-gray-100);
   --bs-color-primary-subtle-text: var(--bs-color-gray-800);
   --bs-color-primary-border: var(--bs-color-gray-300);
@@ -82,45 +90,61 @@
 
   /* Lighting — elevation shadows are computed, never copy-pasted. Every
      shadow draws its ink from --bs-shadow-ink, this theme's warm shadow hue,
-     shifts with --bs-light-x (where the key light stands), and spreads with
-     --bs-light-reach (how high the surface floats). Custom properties resolve
-     their own var() references at the declaring element, so these composite
-     tokens always carry theme ink; a colored surface that casts in its own
-     color composes its shadow inline from these parts mixed with its tint —
-     see the dialog trigger. Restraint ladder: controls carry only shadow-xs;
-     cards rise on elevation-1/2; menus and popovers separate on elevation-3;
-     dialogs own elevation-4/5. */
+     shifts with --bs-light-x/-y (where the key light stands), and spreads
+     with --bs-light-reach (how high the surface floats). Custom properties
+     resolve their own var() references at the declaring element, so these
+     composite tokens always carry theme ink; a colored surface that casts in
+     its own color composes its shadow inline from these parts mixed with its
+     tint — see the dialog trigger. Restraint ladder: controls carry only
+     shadow-xs; cards rise on elevation-1/2; menus and popovers separate on
+     elevation-3; dialogs own elevation-4/5. */
   --bs-shadow-ink: oklch(0.3 0.02 80);
   --bs-light-x: 0px;
+  --bs-light-y: 0px;
   --bs-light-reach: 1;
-  --bs-shadow-xs: 0 1px 2px 0 color-mix(in oklab, var(--bs-shadow-ink) 5%, transparent);
+  /* Weighted hairlines: the 1px edge everything rides, and the 3px
+     status edge an alert earns. */
+  --bs-hairline: 1px;
+  --bs-hairline-strong: 3px;
+  --bs-shadow-xs: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+    calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 5%, transparent);
   --bs-elevation-0: none;
-  --bs-elevation-1: var(--bs-light-x) calc(1px * var(--bs-light-reach))
+  --bs-elevation-1: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent);
   --bs-elevation-2:
-    var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
-      color-mix(in oklab, var(--bs-shadow-ink) 6%, transparent),
-    var(--bs-light-x) calc(3px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
-      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 9%, transparent);
+    var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 6%, transparent),
+    var(--bs-light-x) calc(3px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(8px * var(--bs-light-reach)) calc(-2px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 9%, transparent);
   --bs-elevation-3:
-    var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(4px * var(--bs-light-reach))
-      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent),
-    var(--bs-light-x) calc(5px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
-      calc(-3px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
-    var(--bs-light-x) calc(12px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
-      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent);
+    var(--bs-light-x) calc(2px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(4px * var(--bs-light-reach)) calc(-2px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent),
+    var(--bs-light-x) calc(5px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(12px * var(--bs-light-reach)) calc(-3px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
+    var(--bs-light-x) calc(12px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(24px * var(--bs-light-reach)) calc(-6px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent);
   --bs-elevation-4:
-    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
-      calc(-4px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent),
-    var(--bs-light-x) calc(10px * var(--bs-light-reach)) calc(28px * var(--bs-light-reach))
-      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent),
-    var(--bs-light-x) calc(28px * var(--bs-light-reach)) calc(56px * var(--bs-light-reach))
-      calc(-12px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent);
+    var(--bs-light-x) calc(4px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(8px * var(--bs-light-reach)) calc(-4px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 8%, transparent),
+    var(--bs-light-x) calc(10px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(28px * var(--bs-light-reach)) calc(-6px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent),
+    var(--bs-light-x) calc(28px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(56px * var(--bs-light-reach)) calc(-12px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 12%, transparent);
   --bs-elevation-5:
-    var(--bs-light-x) calc(6px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
-      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
-    var(--bs-light-x) calc(16px * var(--bs-light-reach)) calc(40px * var(--bs-light-reach))
-      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent),
-    var(--bs-light-x) calc(40px * var(--bs-light-reach)) calc(80px * var(--bs-light-reach))
-      calc(-16px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent);
+    var(--bs-light-x) calc(6px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(12px * var(--bs-light-reach)) calc(-6px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent),
+    var(--bs-light-x) calc(16px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(40px * var(--bs-light-reach)) calc(-8px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent),
+    var(--bs-light-x) calc(40px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(80px * var(--bs-light-reach)) calc(-16px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 14%, transparent);
 }

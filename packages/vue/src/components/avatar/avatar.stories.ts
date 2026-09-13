@@ -5,7 +5,7 @@ import { h, reactive } from "vue";
 import { Avatar } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Avatar" };
+const meta: Meta = { title: "Components/Elements/Avatar" };
 export default meta;
 
 /** A tiny inline portrait: loads instantly, keeps the story offline. */

@@ -1,4 +1,9 @@
-import { SCENE_DEFAULT_ACCENT } from "@bysages/core";
+import {
+  SCENE_DEFAULT_ACCENT,
+  SCENE_DEFAULT_CONTRAST,
+  attachDynamicLight,
+  attachInkRipple,
+} from "@bysages/core";
 import type { Preview } from "@storybook/react-vite";
 import "@bysages/tokens/css";
 
@@ -16,11 +21,26 @@ function applyGlobals(globals: Globals): void {
   const root = document.documentElement;
 
   root.dataset.theme = globals.theme ?? "light";
+  // The canvas is the page surface: the dark theme must darken it too,
+  // or washed fills composite against daylight and every reading skews.
+  document.body.style.background = "var(--bs-color-surface-1)";
 
   if (globals.scene && globals.scene !== "auto") {
     root.dataset.scene = globals.scene;
   } else {
     delete root.dataset.scene;
+  }
+
+  // Contrast pairs with the scene (civic serves elders at the loud tier);
+  // there is no explicit contrast toolbar item, so no override here yet.
+  if (
+    globals.scene &&
+    globals.scene !== "auto" &&
+    SCENE_DEFAULT_CONTRAST[globals.scene] === "high"
+  ) {
+    root.dataset.contrast = "high";
+  } else {
+    delete root.dataset.contrast;
   }
 
   let accent = globals.accent ?? "auto";
@@ -135,6 +155,8 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       applyGlobals(context.globals as Globals);
+      attachInkRipple();
+      attachDynamicLight();
       return Story();
     },
   ],

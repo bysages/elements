@@ -5,7 +5,7 @@ import { h } from "vue";
 import { Format as BSFormat } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Format" };
+const meta: Meta = { title: "Components/Elements/Format" };
 export default meta;
 
 /** Format renders bare text — the label/value row is the story's own

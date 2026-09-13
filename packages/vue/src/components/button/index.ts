@@ -26,6 +26,9 @@ export const Button = defineComponent({
           "data-variant": props.variant,
           "data-tone": props.tone,
           "data-size": props.size,
+          // Press feedback and pointer light ride motion attributes, so
+          // consumers can detach them per element too.
+          "data-motion": "ink-ripple lit",
         },
         ctx.slots.default?.(),
       );

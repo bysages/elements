@@ -4,7 +4,7 @@ import { h, reactive } from "vue";
 import { Highlight } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Highlight" };
+const meta: Meta = { title: "Components/Elements/Highlight" };
 export default meta;
 
 /** The paragraph carries no styling of its own — the query hits are

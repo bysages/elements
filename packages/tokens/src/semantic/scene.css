@@ -1,64 +1,90 @@
 /* Scene presets — one attribute that retunes the temperament of the whole
-   interface for a context: government (civic), enterprise, design and
-   editorial (studio), technology (tech). A scene moves only what the paper
-   allows: shape (radius), density, motion pace, and how far the light
-   reaches — never interaction, never the semantic pigments.
+   interface for its audience: civic serves elders and civic desks (square
+   seal-cut geometry, generous targets, loud contrast, an unhurried pace),
+   tech serves modern efficiency products (sharp, dense, quick), enterprise
+   is the quiet commercial baseline, studio the literati gathering for
+   design and editorial work.
 
-   Each scene pairs with a default accent (civic wears zhusha, enterprise
-   qinghua, studio celadon, tech stays ink). That pairing is applied by the
-   theme engine as a plain `data-accent` attribute, so the accent rules in
-   accent.css — including their dark variants — carry it unchanged.
+   A scene moves only what the paper allows: shape (radius), density, motion
+   pace, where the key light stands, and how far it reaches — never
+   interaction, never the semantic pigments. Each scene pairs with a default
+   accent and (for civic) the high-contrast tier; those pairings are applied
+   by the theme engine as plain data attributes, so the accent and contrast
+   rules — including their dark variants — carry them unchanged.
 
    Explicit attributes always outrank the scene's bundled defaults: a
-   `[data-accent]` or `[data-density]` set alongside `[data-scene]` wins by
-   cascade order. Note `:root` ties `[data-scene]` in specificity (both
-   0,1,0), so this file must sit after every stylesheet that declares these
-   variables on `:root` (themes, primitives via accent's placement) and
-   before density.css, whose explicit tiers must win over scene defaults. */
+   `[data-accent]`, `[data-contrast]`, or `[data-density]` set alongside
+   `[data-scene]` wins by cascade order. Note `:root` ties `[data-scene]` in
+   specificity (both 0,1,0), so this file must sit after every stylesheet
+   that declares these variables on `:root` (themes, primitives via accent's
+   placement) and before density.css, whose explicit tiers must win over
+   scene defaults. */
 
 [data-scene="civic"] {
-  /* The canonical register: harder seal-cut controls, smaller
-     vessels, compact rows, an unhurried pace, and a flat light that lets
-     hairlines carry the hierarchy. */
-  --bs-radius-sm: 0.25rem;
-  --bs-radius-md: 0.375rem;
-  --bs-radius-lg: 0.625rem;
-  --bs-radius-xl: 0.875rem;
-  --bs-radius-2xl: 1.125rem;
-  --bs-density-scale: 0.9;
-  --bs-motion-scale: 1.1;
+  /* 典章 — for elders and civic desks: the square-cut register of official
+     documents. Corners go true square (a seal is not round), targets grow
+     to the spacious ladder (48px controls), the pace slows so states are
+     never missed, and the light stays flat so nothing hides in a shadow. */
+  --bs-radius-sm: 0rem;
+  --bs-radius-md: 0.125rem;
+  --bs-radius-lg: 0.25rem;
+  --bs-radius-xl: 0.375rem;
+  --bs-radius-2xl: 0.5rem;
+  --bs-control-height-sm: 2.25rem;
+  --bs-control-height-md: 2.625rem;
+  --bs-control-height-lg: 3rem;
+  --bs-density-scale: 1.5;
+  --bs-motion-scale: 1.25;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
   --bs-light-reach: 0.7;
 }
 
 [data-scene="enterprise"] {
-  /* The measured baseline: default geometry at a calmer light, so
-     long working sessions read quiet and the hairlines do the talking. */
+  /* 信笺 — the measured commercial baseline: default geometry at a calmer
+     light, so long working sessions read quiet and the hairlines do the
+     talking. */
   --bs-density-scale: 1;
   --bs-motion-scale: 1;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
   --bs-light-reach: 0.85;
 }
 
 [data-scene="studio"] {
-  /* The literati gathering: controls keep the 6px seal edge, vessels
-     round out generously, whitespace breathes, and the light turns airy. */
+  /* 雅集 — the literati gathering for design and editorial work: controls
+     keep the 6px seal edge, vessels round out generously, whitespace
+     breathes, and the light comes from the upper left, casting each
+     element's shadow gently toward the lower right. */
   --bs-radius-md: 0.625rem;
   --bs-radius-lg: 0.875rem;
   --bs-radius-xl: 1.25rem;
   --bs-radius-2xl: 1.75rem;
-  --bs-density-scale: 1.2;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.25rem;
+  --bs-control-height-lg: 2.75rem;
+  --bs-density-scale: 1.25;
   --bs-motion-scale: 1;
+  --bs-light-x: 0.125rem;
+  --bs-light-y: 0.125rem;
   --bs-light-reach: 1.25;
 }
 
 [data-scene="tech"] {
-  /* The precision instrument: sharper controls, tightened vessels,
-     compact rows, and a snappier pace on a restrained light. */
-  --bs-radius-sm: 0.25rem;
-  --bs-radius-md: 0.375rem;
-  --bs-radius-lg: 0.625rem;
+  /* 司南 — the modern precision instrument: near-square corners, dense
+     rows, a snappy pace, and a flat restrained light where hairlines carry
+     all the hierarchy. */
+  --bs-radius-sm: 0.125rem;
+  --bs-radius-md: 0.25rem;
+  --bs-radius-lg: 0.5rem;
   --bs-radius-xl: 0.75rem;
   --bs-radius-2xl: 1rem;
-  --bs-density-scale: 0.9;
+  --bs-control-height-sm: 1.5rem;
+  --bs-control-height-md: 1.75rem;
+  --bs-control-height-lg: 2rem;
+  --bs-density-scale: 0.75;
   --bs-motion-scale: 0.85;
-  --bs-light-reach: 0.85;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.5;
 }

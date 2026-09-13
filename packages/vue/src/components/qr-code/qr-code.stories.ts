@@ -6,7 +6,7 @@ import { QrCode } from ".";
 import { RadioGroup } from "../radio-group";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Qr Code" };
+const meta: Meta = { title: "Components/Elements/Qr Code" };
 export default meta;
 
 function frame(value: string, extraProps: Record<string, any> = {}) {

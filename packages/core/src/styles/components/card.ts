@@ -1,14 +1,14 @@
 export const cardCss = /* css */ `
-/* A vessel: round at the large radius, resting at the first elevation,
-   one hairline for its edge. Sections carry their own whitespace so the
-   card composes with or without a header. */
+/* A vessel: round at the large radius, paper-white, risen to the first
+   elevation, one hairline for its edge. Sections carry their own
+   whitespace so the card composes with or without a header. */
 [data-scope="card"][data-part="root"] {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-1);
-  box-shadow: var(--bs-shadow-xs);
+  background: var(--bs-color-surface-2);
+  box-shadow: var(--bs-elevation-1);
 }
 
 [data-scope="card"][data-part="header"] {

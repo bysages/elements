@@ -8,7 +8,7 @@ export const alertCss = /* css */ `
   gap: var(--bs-space-3);
   padding: var(--bs-padding-md) var(--bs-padding-lg);
   border: 1px solid color-mix(in oklab, var(--_pigment) 25%, var(--bs-color-border));
-  border-inline-start: 3px solid var(--_pigment);
+  border-inline-start: var(--bs-hairline-strong) solid var(--_pigment);
   border-radius: var(--bs-radius-md);
   background: color-mix(in oklab, var(--_pigment) 7%, var(--bs-color-surface-1));
   color: var(--bs-color-text-secondary);

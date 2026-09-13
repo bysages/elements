@@ -7,4 +7,6 @@
  */
 
 export * from "./theme";
+export * from "./lighting";
+export * from "./ink-ripple";
 export * from "./styles";

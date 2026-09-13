@@ -16,6 +16,6 @@ export const avatarGroupCss = /* css */ `
    neighbor. */
 [data-scope="avatar-group"][data-part="root"] > * {
   flex: none;
-  box-shadow: 0 0 0 2px var(--bs-color-surface-1);
+  box-shadow: 0 0 0 calc(var(--bs-hairline) * 2) var(--bs-color-surface-1);
 }
 `;

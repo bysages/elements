@@ -26,6 +26,11 @@
   --bs-color-text-tertiary: var(--bs-color-gray-400);
   --bs-color-text-disabled: var(--bs-color-gray-500);
   --bs-color-text-inverse: var(--bs-color-gray-900);
+  /* Ink on a solid pigment fill: pigments knead a fifth of ink into their
+     bodies at night (a mid-tone fill carries neither deep nor pale text
+     past 4.5:1), so the ink turns bright paper. */
+  --bs-color-ink-on-fill: var(--bs-color-gray-25);
+  --bs-ink-knead: 20%;
 
   --bs-color-border: oklch(0.31 0.01 78);
   --bs-color-border-strong: oklch(0.4 0.012 78);
@@ -44,6 +49,8 @@
   --bs-color-primary-hover: var(--bs-color-gray-200);
   --bs-color-primary-active: var(--bs-color-gray-300);
   --bs-color-primary-text: var(--bs-color-gray-900);
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
   --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 10%, transparent);
   --bs-color-primary-subtle-text: var(--bs-color-gray-200);
   --bs-color-primary-border: var(--bs-color-gray-700);
@@ -73,39 +80,51 @@
   /* Elevation in the dark: cast shadows need far more opacity to read against
      a dark ground, so every level carries a faint warm hairline of light to
      cut the raised surface out of the one below it. Same lighting parts as
-     light — ink from --bs-shadow-ink, shifted by --bs-light-x, spread by
+     light — ink from --bs-shadow-ink, shifted by --bs-light-x/-y, spread by
      --bs-light-reach; colored surfaces compose their tint inline. */
   --bs-shadow-ink: oklch(0.04 0.01 75);
   --bs-light-x: 0px;
+  --bs-light-y: 0px;
   --bs-light-reach: 1;
-  --bs-shadow-xs: 0 1px 2px 0 color-mix(in oklab, var(--bs-shadow-ink) 35%, transparent);
+  --bs-hairline: 1px;
+  --bs-hairline-strong: 3px;
+  --bs-shadow-xs: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+    calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 35%, transparent);
   --bs-elevation-0: none;
   --bs-elevation-1:
     0 0 0 1px oklch(0.95 0.01 90 / 0.04),
-    var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
-      color-mix(in oklab, var(--bs-shadow-ink) 32%, transparent);
+    var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 32%, transparent);
   --bs-elevation-2:
     0 0 0 1px oklch(0.95 0.01 90 / 0.05),
-    var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(4px * var(--bs-light-reach))
-      calc(-1px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent),
-    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(12px * var(--bs-light-reach))
-      calc(-2px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 36%, transparent);
+    var(--bs-light-x) calc(2px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(4px * var(--bs-light-reach)) calc(-1px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent),
+    var(--bs-light-x) calc(4px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(12px * var(--bs-light-reach)) calc(-2px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 36%, transparent);
   --bs-elevation-3:
     0 0 0 1px oklch(0.95 0.01 90 / 0.06),
-    var(--bs-light-x) calc(4px * var(--bs-light-reach)) calc(8px * var(--bs-light-reach))
-      calc(-3px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent),
-    var(--bs-light-x) calc(10px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
-      calc(-4px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent);
+    var(--bs-light-x) calc(4px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(8px * var(--bs-light-reach)) calc(-3px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent),
+    var(--bs-light-x) calc(10px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(24px * var(--bs-light-reach)) calc(-4px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 40%, transparent);
   --bs-elevation-4:
     0 0 0 1px oklch(0.95 0.01 90 / 0.07),
-    var(--bs-light-x) calc(8px * var(--bs-light-reach)) calc(16px * var(--bs-light-reach))
-      calc(-6px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent),
-    var(--bs-light-x) calc(24px * var(--bs-light-reach)) calc(48px * var(--bs-light-reach))
-      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent);
+    var(--bs-light-x) calc(8px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(16px * var(--bs-light-reach)) calc(-6px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent),
+    var(--bs-light-x) calc(24px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(48px * var(--bs-light-reach)) calc(-8px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 44%, transparent);
   --bs-elevation-5:
     0 0 0 1px oklch(0.95 0.01 90 / 0.08),
-    var(--bs-light-x) calc(12px * var(--bs-light-reach)) calc(24px * var(--bs-light-reach))
-      calc(-8px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 52%, transparent),
-    var(--bs-light-x) calc(40px * var(--bs-light-reach)) calc(80px * var(--bs-light-reach))
-      calc(-12px * var(--bs-light-reach)) color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent);
+    var(--bs-light-x) calc(12px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(24px * var(--bs-light-reach)) calc(-8px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 52%, transparent),
+    var(--bs-light-x) calc(40px * var(--bs-light-reach) + var(--bs-light-y))
+      calc(80px * var(--bs-light-reach)) calc(-12px * var(--bs-light-reach))
+      color-mix(in oklab, var(--bs-shadow-ink) 48%, transparent);
 }

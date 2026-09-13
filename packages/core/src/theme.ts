@@ -8,7 +8,7 @@
  */
 
 export type ThemeMode = "light" | "dark" | "system";
-export type ThemeContrast = "normal" | "high";
+export type ThemeContrast = "auto" | "normal" | "high";
 export type ThemeDensity = "compact" | "default" | "comfortable" | "spacious";
 export type ThemeScene = "auto" | "civic" | "enterprise" | "studio" | "tech";
 export type ThemeAccent = "auto" | "ink" | "qinghua" | "celadon" | "zhusha";
@@ -31,6 +31,16 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   tech: "ink",
 };
 
+/** Each scene also pairs with a contrast tier — civic serves elders, so it
+ * speaks at the loud tier by default. "auto" contrast resolves here;
+ * explicit choices win. */
+export const SCENE_DEFAULT_CONTRAST: Record<Exclude<ThemeScene, "auto">, "normal" | "high"> = {
+  civic: "high",
+  enterprise: "normal",
+  studio: "normal",
+  tech: "normal",
+};
+
 export interface ApplyThemeOptions extends Partial<Theme> {
   /** Persist the theme to localStorage so `initTheme` can restore it. Defaults to true. */
   persist?: boolean;
@@ -41,7 +51,7 @@ const DARK_QUERY = "(prefers-color-scheme: dark)";
 
 const defaults: Theme = {
   mode: "system",
-  contrast: "normal",
+  contrast: "auto",
   density: "default",
   scene: "auto",
   accent: "auto",
@@ -64,6 +74,15 @@ function resolvedAccent(accent: ThemeAccent, scene: ThemeScene): ThemeAccent | u
   return paired === "ink" ? undefined : paired;
 }
 
+/** An "auto" contrast follows the scene's paired tier ("normal" is the
+ * absence of a contrast attribute). */
+function resolvedContrast(contrast: ThemeContrast, scene: ThemeScene): "normal" | "high" {
+  if (contrast === "auto") {
+    return scene === "auto" ? "normal" : SCENE_DEFAULT_CONTRAST[scene];
+  }
+  return contrast === "high" ? "high" : "normal";
+}
+
 /** The logical theme, kept in memory because the DOM cannot represent
  * "auto": the resolved `data-accent` pigment it drives would read back as
  * an explicit choice and survive a scene change that should re-pair it. */
@@ -80,7 +99,12 @@ function readTheme(): Theme {
           : root.dataset.theme === "light"
             ? "light"
             : "system",
-      contrast: root.dataset.contrast === "high" ? "high" : "normal",
+      contrast:
+        root.dataset.contrast === "high"
+          ? "high"
+          : root.dataset.contrast === "normal"
+            ? "normal"
+            : "auto",
       density: (root.dataset.density as ThemeDensity) ?? defaults.density,
       scene: (root.dataset.scene as ThemeScene) ?? defaults.scene,
       accent: (root.dataset.accent as ThemeAccent) ?? defaults.accent,
@@ -111,7 +135,14 @@ export function applyTheme(options: ApplyThemeOptions = {}): Theme {
   if (typeof document !== "undefined") {
     const root = document.documentElement;
     root.dataset.theme = resolvedMode(theme.mode);
-    root.dataset.contrast = theme.contrast;
+
+    const contrast = resolvedContrast(theme.contrast, theme.scene);
+    if (contrast === "high") {
+      root.dataset.contrast = "high";
+    } else {
+      delete root.dataset.contrast;
+    }
+
     root.dataset.density = theme.density;
 
     if (theme.scene === "auto") {

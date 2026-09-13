@@ -168,14 +168,14 @@ halo — the same design, louder.
 
 A surface is color + material + elevation + lighting + border. The ladder:
 
-| Level    | Token                  | Carries                                             |
-| -------- | ---------------------- | --------------------------------------------------- |
-| Ground   | `--bs-color-surface-0` | page canvas, in ambient shade, no shadow            |
-| Surface  | `--bs-color-surface-1` | panels, sections — color and hairline, no shadow    |
-| Raised   | `--bs-color-surface-2` | controls, cards — `--bs-shadow-xs`                  |
-| Floating | `--bs-color-surface-3` | popovers, menus — elevation-3, clearly off the page |
-| Dialog   | `--bs-color-surface-4` | modals, sheets — elevation-4/5                      |
-| Topmost  | `--bs-color-surface-5` | toasts — brief, highest priority only               |
+| Level    | Token                  | Carries                                                 |
+| -------- | ---------------------- | ------------------------------------------------------- |
+| Ground   | `--bs-color-surface-0` | page canvas, in ambient shade, no shadow                |
+| Surface  | `--bs-color-surface-1` | panels, sections — color and hairline, no shadow        |
+| Raised   | `--bs-color-surface-2` | controls (`--bs-shadow-xs`), cards (`--bs-elevation-1`) |
+| Floating | `--bs-color-surface-3` | popovers, menus — elevation-3, clearly off the page     |
+| Dialog   | `--bs-color-surface-4` | modals, sheets — elevation-4/5                          |
+| Topmost  | `--bs-color-surface-5` | toasts — brief, highest priority only                   |
 
 Inputs may sit in `--bs-color-surface-inset` (recessed semantics). Page-level
 surfaces may opt into a 2–3% grain — paper for the paper, never for controls.
@@ -183,12 +183,18 @@ surfaces may opt into a 2–3% grain — paper for the paper, never for controls
 ## Lighting and shadow
 
 One light. `--bs-shadow-ink` is the theme's shadow hue (warm in light, deeper
-at night), `--bs-light-x` places the key light, `--bs-light-reach` sets how
-high surfaces float. Every elevation level composes from these parts with
-`color-mix` — never copy-pasted values.
+at night), `--bs-light-x`/`--bs-light-y` place the key light, and
+`--bs-light-reach` sets how high surfaces float. Every elevation level
+composes from these parts with `color-mix` — never copy-pasted values. The
+core lighting engine (`setLight`, `attachDynamicLight`) writes these
+variables: one call re-lights the interface, and the pointer can carry the
+light across any element marked `data-motion~="lit"` — components never own
+shadow code of their own.
 
 Shadows are cast: they trail the property that raised them (~1.5× the
 duration), so a hover reads as light rearranging, not a sticker appearing.
+A solid pigment surface bleeds on hover: it casts a small shadow in its own
+color.
 
 One CSS law: custom properties resolve their own `var()` references at the
 declaring element. A colored surface that casts in its own color declares
@@ -214,21 +220,24 @@ Never one uniform radius everywhere; never oversized corners on controls.
 
 ## Density
 
-Four tiers via `[data-density]`, one scale factor driving all whitespace:
+Four tiers via `[data-density]`: one scale factor drives all whitespace and
+decorative parts, and control heights ride their own ladder per tier — a
+compact workbench and an elder-friendly spacious screen are different
+products, not the same one nudged by two pixels:
 
-| Tier        | Scale |
-| ----------- | ----- |
-| compact     | 0.9   |
-| default     | 1     |
-| comfortable | 1.125 |
-| spacious    | 1.25  |
+| Tier        | Scale | Controls sm/md/lg |
+| ----------- | ----- | ----------------- |
+| compact     | 0.75  | 24 / 28 / 32 px   |
+| default     | 1     | 28 / 32 / 40 px   |
+| comfortable | 1.25  | 32 / 36 / 44 px   |
+| spacious    | 1.5   | 36 / 42 / 48 px   |
 
 Density may change padding, gaps, row heights, control heights, and decorative
 spacing. It must not change semantic structure, contrast, focus visibility, or
-type size. Control heights ride `--bs-control-height-sm/md/lg` (28/32/40px)
-with a readable floor — density can ease them roomier, never shrink them past
-legibility. Visual size ≠ hit area: a 28px button can carry a larger pointer
-target.
+type size. The spacious ladder's 48px is the target size elderly-vision
+research asks for; pair it with `[data-contrast="high"]` and civic's slow
+pace for an elder-friendly product. Visual size ≠ hit area: a 28px button
+can carry a larger pointer target.
 
 Content has priority: Primary → Secondary → Tertiary → Metadata. Under
 pressure, keep the primary, keep as much secondary as possible, fold the rest
@@ -376,22 +385,25 @@ paper-white text, the same hue relationships lifted to lighter steps, and
 separation carried by the surface ladder plus a faint warm hairline of light.
 
 **Scene presets.** A `[data-scene]` attribute retunes the temperament of the
-whole interface for a context — shape, density, pace, and how far the light
-reaches, with a paired pigment as the scene's voice:
+whole interface for its audience — shape, density, pace, where the key light
+stands, and how far it reaches, with a paired pigment and contrast tier as
+the scene's voice. Scenes are audiences, not decorations: civic serves
+elders, tech serves modern efficiency:
 
-| Scene        | 官名 | Temper                                 | Paired accent | Moves                                                                                  |
-| ------------ | ---- | -------------------------------------- | ------------- | -------------------------------------------------------------------------------------- |
-| `civic`      | 典章 | canonical, unhurried, hairline-led     | zhusha        | harder seal-cut controls (4px), smaller vessels, compact, pace ×1.1, flat light ×0.7   |
-| `enterprise` | 信笺 | measured baseline, quiet long sessions | qinghua       | default geometry, calm light ×0.85                                                     |
-| `studio`     | 雅集 | literati gathering, airy 留白          | celadon       | controls keep the 6px seal edge, rounder vessels (20/28px), spacious ×1.2, light ×1.25 |
-| `tech`       | 司南 | precision instrument, snappy           | ink _(none)_  | sharper controls (4px), tightened vessels, compact, pace ×0.85, light ×0.85            |
+| Scene        | 官名 | For                                 | Paired accent | Contrast | Moves                                                                                                 |
+| ------------ | ---- | ----------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| `civic`      | 典章 | elders and civic desks              | zhusha        | high     | true square-cut corners (0–8px), spacious targets (48px controls), pace ×1.25, flat light ×0.7        |
+| `enterprise` | 信笺 | quiet commercial long sessions      | qinghua       | normal   | default geometry, calm light ×0.85                                                                    |
+| `studio`     | 雅集 | design and editorial, literati 留白 | celadon       | normal   | controls keep the 6px seal edge, rounder vessels (20/28px), comfortable ×1.25, upper-left light ×1.25 |
+| `tech`       | 司南 | modern precision and efficiency     | ink _(none)_  | normal   | near-square (2/4/8px), compact (24px controls), pace ×0.85, flat light ×0.5                           |
 
-The pairing is applied by the theme engine (`SCENE_DEFAULT_ACCENT`) as a
-plain `data-accent` attribute, so accent rules and their dark variants carry
-it unchanged. Explicit attributes always outrank the scene: a `data-accent`
-or `data-density` set alongside `data-scene` wins. Controls stay
-square-cut and vessels round in every scene — 方寸为章，器物为圆 holds per
-scene, only the measures change.
+The pairings are applied by the theme engine (`SCENE_DEFAULT_ACCENT`,
+`SCENE_DEFAULT_CONTRAST`) as plain data attributes, so accent and contrast
+rules — including their dark variants — carry them unchanged. Explicit
+attributes always outrank the scene: a `data-accent`, `data-contrast`, or
+`data-density` set alongside `data-scene` wins. Controls stay square-cut and
+vessels round in every scene — 方寸为章，器物为圆 holds per scene, only the
+measures change.
 
 ## Tokens
 
@@ -408,7 +420,10 @@ Component   anatomy styles composing the semantic layer (packages/core)
 ```
 
 Tokens are the only allowed source of visual values in components — a
-hardcoded color, spacing, radius, shadow, or duration is a bug.
+hardcoded color, spacing, radius, shadow, or duration is a bug. Pigment
+washes are the sanctioned exception: the `color-mix` percentages that tint
+semantic color into a surface are recipes (parts of a formula), not
+standalone values — tokenizing each percentage would only bury the formula.
 
 ## Do and don't
 

@@ -6,6 +6,10 @@ export const buttonCss = /* css */ `
    variables. Ink is the solemn default. */
 [data-scope="button"][data-part="root"] {
   --_pigment: var(--bs-color-primary);
+  /* The deep register of the pigment for the subtle wash — the 600-step
+     tone itself fails 4.5:1 on its own wash, so washed fills read from
+     the dedicated -800/-300 text ramp. */
+  --_ink-strong: var(--bs-color-primary-subtle-text);
   --_fill: transparent;
   --_fill-hover: transparent;
   --_ink: var(--bs-color-text-secondary);
@@ -32,11 +36,12 @@ export const buttonCss = /* css */ `
   cursor: pointer;
   user-select: none;
   box-shadow: var(--bs-shadow-xs);
+  /* The fill answers at once; the shadow arrives late — light needs time. */
   transition:
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
 [data-scope="button"][data-part="root"][data-size="sm"] {
@@ -57,23 +62,62 @@ export const buttonCss = /* css */ `
 
 [data-scope="button"][data-part="root"][data-tone="danger"] {
   --_pigment: var(--bs-color-danger);
+  --_ink-strong: var(--bs-color-danger-subtle-text);
 }
 [data-scope="button"][data-part="root"][data-tone="success"] {
   --_pigment: var(--bs-color-success);
+  --_ink-strong: var(--bs-color-success-subtle-text);
 }
 [data-scope="button"][data-part="root"][data-tone="warning"] {
   --_pigment: var(--bs-color-warning);
+  --_ink-strong: var(--bs-color-warning-subtle-text);
 }
 [data-scope="button"][data-part="root"][data-tone="info"] {
   --_pigment: var(--bs-color-info);
+  --_ink-strong: var(--bs-color-info-subtle-text);
 }
 
-/* Solid: the flat pigment fill, no lit edge, no inner shadow. */
+/* Solid: the flat pigment fill, no lit edge at rest. On hover the ink
+   bleeds — the pigment casts a small shadow of its own color, on a slower
+   transition than the fill (light needs time). */
 [data-scope="button"][data-part="root"][data-variant="solid"] {
-  --_fill: var(--_pigment);
-  --_fill-hover: color-mix(in oklab, var(--_pigment) 85%, black);
+  /* The solid body follows --bs-color-primary-fill: full pigment on
+     paper, kneaded toward black at night, and the theme keeps the ink
+     on it legible in both registers. */
+  --_fill: var(--bs-color-primary-fill);
+  --_fill-hover: var(--bs-color-primary-fill-hover);
   --_ink: var(--bs-color-primary-text);
+  --_ripple-pigment: color-mix(in oklab, var(--_pigment) 35%, transparent);
   box-shadow: none;
+}
+
+/* The fixed pigments knead by the theme's measure — a mid-tone body at
+   night carries neither deep nor pale text past 4.5:1, so its ink turns
+   bright paper. */
+[data-scope="button"][data-part="root"][data-variant="solid"][data-tone="danger"] {
+  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
+  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
+  --_ink: var(--bs-color-ink-on-fill);
+}
+[data-scope="button"][data-part="root"][data-variant="solid"][data-tone="success"] {
+  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
+  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
+  --_ink: var(--bs-color-ink-on-fill);
+}
+[data-scope="button"][data-part="root"][data-variant="solid"][data-tone="warning"] {
+  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
+  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
+  --_ink: var(--bs-color-ink-on-fill);
+}
+[data-scope="button"][data-part="root"][data-variant="solid"][data-tone="info"] {
+  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
+  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
+  --_ink: var(--bs-color-ink-on-fill);
+}
+
+[data-scope="button"][data-part="root"][data-variant="solid"]:hover:not(:disabled) {
+  box-shadow: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+    calc(3px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--_pigment) 28%, transparent);
 }
 
 /* Outline: paper on a hairline, the hairline deepening on hover. */
@@ -89,11 +133,11 @@ export const buttonCss = /* css */ `
   box-shadow: none;
 }
 
-/* Subtle: a wash of the pigment with the full ink on top. */
+/* Subtle: a wash of the pigment with its deep register on top. */
 [data-scope="button"][data-part="root"][data-variant="subtle"] {
   --_fill: color-mix(in oklab, var(--_pigment) 12%, transparent);
   --_fill-hover: color-mix(in oklab, var(--_pigment) 20%, transparent);
-  --_ink: var(--_pigment);
+  --_ink: var(--_ink-strong);
   box-shadow: none;
 }
 

@@ -6,7 +6,7 @@ import { SignaturePad } from ".";
 import { Field } from "../field";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Signature Pad" };
+const meta: Meta = { title: "Components/Forms/Signature Pad" };
 export default meta;
 
 function undoGlyph() {

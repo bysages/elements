@@ -5,7 +5,7 @@ import { Accordion } from ".";
 import { Slider } from "../slider";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Accordion" };
+const meta: Meta = { title: "Components/Layout/Accordion" };
 export default meta;
 
 const chevron = () =>

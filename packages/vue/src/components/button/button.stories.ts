@@ -46,6 +46,11 @@ export const Variants: Story = {
 
 /** Any action can carry the primary weight: semantic tones on solid. */
 export const Tones: Story = {
+  args: {
+    tone: "warning",
+    size: "sm",
+  },
+
   render: () =>
     withState(
       () => () =>

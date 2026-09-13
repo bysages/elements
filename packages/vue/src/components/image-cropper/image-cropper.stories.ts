@@ -4,7 +4,7 @@ import { defineComponent, h, reactive } from "vue";
 
 import { ImageCropper } from ".";
 
-const meta: Meta = { title: "Components/Data/Image Cropper" };
+const meta: Meta = { title: "Components/Forms/Image Cropper" };
 export default meta;
 
 const PHOTO = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800";
