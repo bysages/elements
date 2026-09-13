@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Tooltip } from ".";
 import { withState } from "../with-state.js";
-import { Tooltip } from "./index.js";
 
-const meta: Meta = { title: "Components / Tooltip" };
+const meta: Meta = { title: "Components/Overlay/Tooltip" };
 export default meta;
 
 function sealGlyph() {

@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Timer } from ".";
 import { withState } from "../with-state.js";
-import { Timer } from "./index.js";
 
-const meta: Meta = { title: "Components / Timer" };
+const meta: Meta = { title: "Components/Data/Timer" };
 export default meta;
 
 function glyph(d: string) {

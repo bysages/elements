@@ -2,10 +2,10 @@ import { parseDate } from "@ark-ui/vue/date-picker";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { DatePicker } from ".";
 import { withState } from "../with-state.js";
-import { DatePicker } from "./index.js";
 
-const meta: Meta = { title: "Components / Date Picker" };
+const meta: Meta = { title: "Components/Forms/Date Picker" };
 export default meta;
 
 function calendarGlyph() {

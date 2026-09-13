@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { PasswordInput } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { PasswordInput } from "./index.js";
 
-const meta: Meta = { title: "Components / Password Input" };
+const meta: Meta = { title: "Components/Forms/Password Input" };
 export default meta;
 
 function eye(open: boolean) {

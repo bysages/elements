@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react-vite";
 
-import { Timer } from "./index.js";
+import { Timer } from ".";
 
-const meta: Meta = { title: "Components / Timer" };
+const meta: Meta = { title: "Components/Data/" };
 export default meta;
 
 function Glyph({ d }: { d: string }) {

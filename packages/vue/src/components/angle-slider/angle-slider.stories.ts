@@ -2,10 +2,10 @@ import { useAngleSlider } from "@ark-ui/vue/angle-slider";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { AngleSlider } from ".";
 import { withState } from "../with-state.js";
-import { AngleSlider } from "./index.js";
 
-const meta: Meta = { title: "Components / Angle Slider" };
+const meta: Meta = { title: "Components/Forms/Angle Slider" };
 export default meta;
 
 const MARKS = [0, 45, 90, 135, 180, 225, 270, 315];

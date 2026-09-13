@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Collapsible } from ".";
 import { withState } from "../with-state.js";
-import { Collapsible } from "./index.js";
 
-const meta: Meta = { title: "Components / Collapsible" };
+const meta: Meta = { title: "Components/Layout/Collapsible" };
 export default meta;
 
 const chevron = () =>

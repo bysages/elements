@@ -2,10 +2,10 @@ import { useJsonTreeView } from "@ark-ui/vue/json-tree-view";
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { JsonTreeView } from "./index.js";
+import { JsonTreeView } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Json Tree View" };
+const meta: Meta = { title: "Components/Data/Json Tree View" };
 export default meta;
 
 const data = {

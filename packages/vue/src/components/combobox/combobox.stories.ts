@@ -3,10 +3,10 @@ import { useFilter } from "@ark-ui/vue/locale";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, Teleport, type PropType, reactive } from "vue";
 
+import { Combobox } from ".";
 import { withState } from "../with-state.js";
-import { Combobox } from "./index.js";
 
-const meta: Meta = { title: "Components / Combobox" };
+const meta: Meta = { title: "Components/Forms/Combobox" };
 export default meta;
 
 interface Item {

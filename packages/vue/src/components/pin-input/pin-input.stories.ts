@@ -2,11 +2,11 @@ import { usePinInput } from "@ark-ui/vue/pin-input";
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Field } from "../field/index.js";
+import { PinInput } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { PinInput } from "./index.js";
 
-const meta: Meta = { title: "Components / Pin Input" };
+const meta: Meta = { title: "Components/Forms/Pin Input" };
 export default meta;
 
 function pin(extraProps: Record<string, any> = {}, count = 4) {

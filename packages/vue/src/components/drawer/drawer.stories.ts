@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
+import { Drawer } from ".";
 import { withState } from "../with-state.js";
-import { Drawer } from "./index.js";
 
-const meta: Meta = { title: "Components / Drawer" };
+const meta: Meta = { title: "Components/Overlay/Drawer" };
 export default meta;
 
 function closeGlyph() {

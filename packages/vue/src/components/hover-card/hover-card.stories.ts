@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { HoverCard } from ".";
 import { withState } from "../with-state.js";
-import { HoverCard } from "./index.js";
 
-const meta: Meta = { title: "Components / Hover Card" };
+const meta: Meta = { title: "Components/Overlay/Hover Card" };
 export default meta;
 
 const profile = {

@@ -1,7 +1,7 @@
 import { createTreeCollection } from "@ark-ui/react/tree-view";
 import type { Meta } from "@storybook/react-vite";
 
-import { TreeView } from "./index.js";
+import { TreeView } from ".";
 
 const meta: Meta = { title: "Components / Tree View" };
 export default meta;

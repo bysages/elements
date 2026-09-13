@@ -2,11 +2,11 @@ import { useQrCode } from "@ark-ui/vue/qr-code";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { RadioGroup } from "../radio-group/index.js";
+import { QrCode } from ".";
+import { RadioGroup } from "../radio-group";
 import { withState } from "../with-state.js";
-import { QrCode } from "./index.js";
 
-const meta: Meta = { title: "Components / Qr Code" };
+const meta: Meta = { title: "Components/Data/Qr Code" };
 export default meta;
 
 function frame(value: string, extraProps: Record<string, any> = {}) {

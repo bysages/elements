@@ -2,10 +2,10 @@ import { useAvatar } from "@ark-ui/vue/avatar";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Avatar } from ".";
 import { withState } from "../with-state.js";
-import { Avatar } from "./index.js";
 
-const meta: Meta = { title: "Components / Avatar" };
+const meta: Meta = { title: "Components/Data/Avatar" };
 export default meta;
 
 /** A tiny inline portrait: loads instantly, keeps the story offline. */

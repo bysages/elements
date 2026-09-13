@@ -3,11 +3,11 @@ import { createTreeCollection } from "@ark-ui/vue/tree-view";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive, ref } from "vue";
 
-import { Collapsible } from "../collapsible/index.js";
-import { TreeView } from "../tree-view/index.js";
-import { Toc } from "./index.js";
+import { Toc } from ".";
+import { Collapsible } from "../collapsible";
+import { TreeView } from "../tree-view";
 
-const meta: Meta = { title: "Components / Toc" };
+const meta: Meta = { title: "Components/Navigation/Toc" };
 export default meta;
 
 interface Section {

@@ -3,10 +3,10 @@ import { createTreeCollection } from "@ark-ui/vue/tree-view";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, type PropType, reactive } from "vue";
 
+import { TreeView } from ".";
 import { withState } from "../with-state.js";
-import { TreeView } from "./index.js";
 
-const meta: Meta = { title: "Components / Tree View" };
+const meta: Meta = { title: "Components/Data/Tree View" };
 export default meta;
 
 interface Node {

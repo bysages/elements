@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { TagsInput } from ".";
 import { withState } from "../with-state.js";
-import { TagsInput } from "./index.js";
 
-const meta: Meta = { title: "Components / Tags Input" };
+const meta: Meta = { title: "Components/Forms/Tags Input" };
 export default meta;
 
 const XIcon = () =>

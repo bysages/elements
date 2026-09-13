@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
+import { Dialog } from ".";
 import { withState } from "../with-state.js";
-import { Dialog } from "./index.js";
 
-const meta: Meta = { title: "Components / Dialog" };
+const meta: Meta = { title: "Components/Overlay/Dialog" };
 export default meta;
 
 function vessel(title: string, description: string, ...extra: any[]) {

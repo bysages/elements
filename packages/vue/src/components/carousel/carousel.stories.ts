@@ -2,10 +2,10 @@ import { useCarousel } from "@ark-ui/vue/carousel";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
+import { Carousel } from ".";
 import { withState } from "../with-state.js";
-import { Carousel } from "./index.js";
 
-const meta: Meta = { title: "Components / Carousel" };
+const meta: Meta = { title: "Components/Data/Carousel" };
 export default meta;
 
 const slides = [

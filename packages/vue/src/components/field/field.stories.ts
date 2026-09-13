@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
-import { Field } from "./index.js";
+import { Field } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Field" };
+const meta: Meta = { title: "Components/Forms/Field" };
 export default meta;
 
 const column = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };

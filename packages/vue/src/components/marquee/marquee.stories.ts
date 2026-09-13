@@ -2,10 +2,10 @@ import { useMarquee } from "@ark-ui/vue/marquee";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
-import { Marquee } from "./index.js";
+import { Marquee } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Marquee" };
+const meta: Meta = { title: "Components/Data/Marquee" };
 export default meta;
 
 const entries = ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indigo"];

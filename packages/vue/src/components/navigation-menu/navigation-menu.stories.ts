@@ -2,10 +2,10 @@ import { useNavigationMenu } from "@ark-ui/vue/navigation-menu";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
+import { NavigationMenu } from ".";
 import { withState } from "../with-state.js";
-import { NavigationMenu } from "./index.js";
 
-const meta: Meta = { title: "Components / Navigation Menu" };
+const meta: Meta = { title: "Components/Navigation/Navigation Menu" };
 export default meta;
 
 const columns = [

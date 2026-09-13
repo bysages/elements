@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Steps } from "./index.js";
+import { Steps } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Steps" };
+const meta: Meta = { title: "Components/Navigation/Steps" };
 export default meta;
 
 const items = [

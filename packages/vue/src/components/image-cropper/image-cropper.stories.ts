@@ -2,9 +2,9 @@ import { useImageCropper } from "@ark-ui/vue/image-cropper";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
-import { ImageCropper } from "./index.js";
+import { ImageCropper } from ".";
 
-const meta: Meta = { title: "Components / Image Cropper" };
+const meta: Meta = { title: "Components/Data/Image Cropper" };
 export default meta;
 
 const PHOTO = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800";

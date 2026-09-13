@@ -2,11 +2,11 @@ import { useSignaturePad } from "@ark-ui/vue/signature-pad";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { SignaturePad } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { SignaturePad } from "./index.js";
 
-const meta: Meta = { title: "Components / Signature Pad" };
+const meta: Meta = { title: "Components/Data/Signature Pad" };
 export default meta;
 
 function undoGlyph() {

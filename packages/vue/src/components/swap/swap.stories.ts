@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Swap } from ".";
 import { withState } from "../with-state.js";
-import { Swap } from "./index.js";
 
-const meta: Meta = { title: "Components / Swap" };
+const meta: Meta = { title: "Components/Actions/Swap" };
 export default meta;
 
 const ICON_ATTRS = {

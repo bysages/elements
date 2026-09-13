@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react-vite";
 
-import { Tour, useTour, type TourStepDetails } from "./index.js";
+import { Tour, useTour, type TourStepDetails } from ".";
 
-const meta: Meta = { title: "Components / Tour" };
+const meta: Meta = { title: "Components/Overlay/" };
 export default meta;
 
 const steps: TourStepDetails[] = [

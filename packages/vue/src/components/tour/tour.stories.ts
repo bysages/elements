@@ -2,10 +2,10 @@ import { waitForElement, waitForEvent } from "@ark-ui/vue/tour";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive, Teleport } from "vue";
 
-import { Tour, useTour, type TourStepDetails } from "./index.js";
+import { Tour, useTour, type TourStepDetails } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Tour" };
+const meta: Meta = { title: "Components/Overlay/Tour" };
 export default meta;
 
 const buttonStyle = {

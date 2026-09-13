@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Slider } from ".";
 import { withState } from "../with-state.js";
-import { Slider } from "./index.js";
 
-const meta: Meta = { title: "Components / Slider" };
+const meta: Meta = { title: "Components/Forms/Slider" };
 export default meta;
 
 /** One slider anatomy: the labeled heading row, the recessed track with

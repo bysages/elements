@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
+import { Menu } from ".";
 import { withState } from "../with-state.js";
-import { Menu } from "./index.js";
 
-const meta: Meta = { title: "Components / Menu" };
+const meta: Meta = { title: "Components/Overlay/Menu" };
 export default meta;
 
 function chevronDown() {

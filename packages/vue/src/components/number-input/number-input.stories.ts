@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { NumberInput } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { NumberInput } from "./index.js";
 
-const meta: Meta = { title: "Components / Number Input" };
+const meta: Meta = { title: "Components/Forms/Number Input" };
 export default meta;
 
 function chevron(dir: "up" | "down") {

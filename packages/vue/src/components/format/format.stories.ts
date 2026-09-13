@@ -2,10 +2,10 @@ import { LocaleProvider } from "@ark-ui/vue/locale";
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Format as BSFormat } from "./index.js";
+import { Format as BSFormat } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Format" };
+const meta: Meta = { title: "Components/Data/Format" };
 export default meta;
 
 /** Format renders bare text — the label/value row is the story's own

@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, ref } from "vue";
 
-import { Frame } from "./index.js";
+import { Frame } from ".";
 
-const meta: Meta = { title: "Components / Frame" };
+const meta: Meta = { title: "Components/Layout/Frame" };
 export default meta;
 
 /** The vessel belongs to the consumer — an iframe carries no anatomy

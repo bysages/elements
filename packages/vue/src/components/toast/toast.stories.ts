@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, ref, Teleport } from "vue";
 
-import { createToaster, Toast, Toaster, type CreateToasterReturn } from "./index.js";
+import { createToaster, Toast, Toaster, type CreateToasterReturn } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Toast" };
+const meta: Meta = { title: "Components/Overlay/Toast" };
 export default meta;
 
 function closeGlyph() {

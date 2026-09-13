@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { Editable } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { Editable } from "./index.js";
 
-const meta: Meta = { title: "Components / Editable" };
+const meta: Meta = { title: "Components/Forms/Editable" };
 export default meta;
 
 function icon(d: string) {

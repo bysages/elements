@@ -2,10 +2,10 @@ import { useToggleGroup } from "@ark-ui/vue/toggle-group";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { ToggleGroup } from ".";
 import { withState } from "../with-state.js";
-import { ToggleGroup } from "./index.js";
 
-const meta: Meta = { title: "Components / Toggle Group" };
+const meta: Meta = { title: "Components/Actions/Toggle Group" };
 export default meta;
 
 const strokeAttrs = {

@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/react-vite";
 
-import { DateInput } from "./index.js";
+import { DateInput } from ".";
 
-const meta: Meta = { title: "Components / Date Input" };
+const meta: Meta = { title: "Components/Forms/" };
 export default meta;
 
 /** Segmented typing — each part of the date is its own arrow-navigable

@@ -44,9 +44,19 @@ function applyGlobals(globals: Globals): void {
 const preview: Preview = {
   parameters: {
     options: {
-      storySort: {
-        order: ["Components"],
-        method: "alphabetical",
+      storySort: (a, b) => {
+        // Sections inside "Components" sort by this ladder; anything
+        // outside keeps its place below, alphabetical within a section.
+        const ladder = ["Elements", "Actions", "Forms", "Overlay", "Navigation", "Data", "Layout"];
+        const section = (s) => {
+          const name = (s.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
+          const index = ladder.indexOf(name);
+          return index === -1 ? ladder.length : index;
+        };
+        const bySection = section(a) - section(b);
+        if (bySection !== 0) return bySection;
+        if (a.title !== b.title) return (a.title ?? "").localeCompare(b.title ?? "");
+        return (a.name ?? "").localeCompare(b.name ?? "");
       },
     },
     layout: "padded",

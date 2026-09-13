@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Clipboard } from ".";
 import { withState } from "../with-state.js";
-import { Clipboard } from "./index.js";
 
-const meta: Meta = { title: "Components / Clipboard" };
+const meta: Meta = { title: "Components/Actions/Clipboard" };
 export default meta;
 
 function copyGlyph() {

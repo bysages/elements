@@ -2,10 +2,10 @@ import { Dialog } from "@ark-ui/vue/dialog";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, ref, Teleport } from "vue";
 
+import { Popover } from ".";
 import { withState } from "../with-state.js";
-import { Popover } from "./index.js";
 
-const meta: Meta = { title: "Components / Popover" };
+const meta: Meta = { title: "Components/Overlay/Popover" };
 export default meta;
 
 function closeGlyph() {

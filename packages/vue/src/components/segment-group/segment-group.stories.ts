@@ -2,10 +2,10 @@ import { useSegmentGroup } from "@ark-ui/vue/segment-group";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { SegmentGroup } from ".";
 import { withState } from "../with-state.js";
-import { SegmentGroup } from "./index.js";
 
-const meta: Meta = { title: "Components / Segment Group" };
+const meta: Meta = { title: "Components/Actions/Segment Group" };
 export default meta;
 
 const frameworks = ["React", "Solid", "Svelte", "Vue"];

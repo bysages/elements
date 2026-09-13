@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
-import { FileUpload } from "./index.js";
+import { FileUpload } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / File Upload" };
+const meta: Meta = { title: "Components/Forms/File Upload" };
 export default meta;
 
 function fileGlyph() {

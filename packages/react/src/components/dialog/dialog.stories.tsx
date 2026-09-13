@@ -1,9 +1,9 @@
 import type { Meta } from "@storybook/react-vite";
 
-import { Dialog } from "./index.js";
+import { Dialog } from ".";
 
 const meta: Meta = {
-  title: "Components / Dialog",
+  title: "Components/Overlay/",
 };
 
 export default meta;

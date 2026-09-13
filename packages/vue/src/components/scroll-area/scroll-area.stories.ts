@@ -2,10 +2,10 @@ import { useScrollArea } from "@ark-ui/vue/scroll-area";
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { ScrollArea } from "./index.js";
+import { ScrollArea } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Scroll Area" };
+const meta: Meta = { title: "Components/Layout/Scroll Area" };
 export default meta;
 
 const paragraph =

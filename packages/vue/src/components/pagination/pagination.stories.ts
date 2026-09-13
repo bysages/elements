@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Pagination } from ".";
 import { withState } from "../with-state.js";
-import { Pagination } from "./index.js";
 
-const meta: Meta = { title: "Components / Pagination" };
+const meta: Meta = { title: "Components/Navigation/Pagination" };
 export default meta;
 
 type Pages = Array<{ type: string; value?: number }>;

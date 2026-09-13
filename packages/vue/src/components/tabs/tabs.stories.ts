@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Tabs } from ".";
 import { withState } from "../with-state.js";
-import { Tabs } from "./index.js";
 
-const meta: Meta = { title: "Components / Tabs" };
+const meta: Meta = { title: "Components/Navigation/Tabs" };
 export default meta;
 
 const PANELS = [

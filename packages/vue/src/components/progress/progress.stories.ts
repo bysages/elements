@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Progress } from "./index.js";
+import { Progress } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Progress" };
+const meta: Meta = { title: "Components/Data/Progress" };
 export default meta;
 
 /** Linear progress: label and value sit on one line, the groove runs the

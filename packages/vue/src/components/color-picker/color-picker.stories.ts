@@ -2,10 +2,10 @@ import { parseColor } from "@ark-ui/vue/color-picker";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, Teleport } from "vue";
 
-import { ColorPicker } from "./index.js";
+import { ColorPicker } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Color Picker" };
+const meta: Meta = { title: "Components/Forms/Color Picker" };
 export default meta;
 
 function eyedropperGlyph() {

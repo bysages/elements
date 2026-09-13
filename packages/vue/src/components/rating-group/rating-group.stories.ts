@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { RatingGroup } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { RatingGroup } from "./index.js";
 
-const meta: Meta = { title: "Components / Rating Group" };
+const meta: Meta = { title: "Components/Forms/Rating Group" };
 export default meta;
 
 const star = () =>

@@ -2,11 +2,11 @@ import { useRadioGroup } from "@ark-ui/vue/radio-group";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Fieldset } from "../fieldset/index.js";
+import { RadioGroup } from ".";
+import { Fieldset } from "../fieldset";
 import { withState } from "../with-state.js";
-import { RadioGroup } from "./index.js";
 
-const meta: Meta = { title: "Components / Radio Group" };
+const meta: Meta = { title: "Components/Forms/Radio Group" };
 export default meta;
 
 const papers = ["Xuan", "Doushu", "Mian"];

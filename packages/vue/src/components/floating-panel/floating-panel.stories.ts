@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
+import { FloatingPanel } from ".";
 import { withState } from "../with-state.js";
-import { FloatingPanel } from "./index.js";
 
-const meta: Meta = { title: "Components / Floating Panel" };
+const meta: Meta = { title: "Components/Overlay/Floating Panel" };
 export default meta;
 
 function glyph(d: string) {

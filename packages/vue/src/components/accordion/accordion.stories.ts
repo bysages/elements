@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Slider } from "../slider/index.js";
+import { Accordion } from ".";
+import { Slider } from "../slider";
 import { withState } from "../with-state.js";
-import { Accordion } from "./index.js";
 
-const meta: Meta = { title: "Components / Accordion" };
+const meta: Meta = { title: "Components/Data/Accordion" };
 export default meta;
 
 const chevron = () =>

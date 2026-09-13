@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Toggle } from ".";
 import { withState } from "../with-state.js";
-import { Toggle } from "./index.js";
 
-const meta: Meta = { title: "Components / Toggle" };
+const meta: Meta = { title: "Components/Actions/Toggle" };
 export default meta;
 
 function glyph(d: string, filled = false) {

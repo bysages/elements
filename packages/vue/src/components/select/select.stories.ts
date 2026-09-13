@@ -2,10 +2,10 @@ import { createListCollection } from "@ark-ui/vue/select";
 import type { Meta } from "@storybook/vue3-vite";
 import { computed, defineComponent, h, Teleport, reactive } from "vue";
 
+import { Select } from ".";
 import { withState } from "../with-state.js";
-import { Select } from "./index.js";
 
-const meta: Meta = { title: "Components / Select" };
+const meta: Meta = { title: "Components/Forms/Select" };
 export default meta;
 
 const frameworks = createListCollection({

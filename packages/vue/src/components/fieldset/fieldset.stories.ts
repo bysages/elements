@@ -2,13 +2,13 @@ import { createListCollection } from "@ark-ui/vue/select";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, ref } from "vue";
 
-import { Checkbox } from "../checkbox/index.js";
-import { Field } from "../field/index.js";
-import { Select } from "../select/index.js";
-import { Fieldset } from "./index.js";
+import { Fieldset } from ".";
+import { Checkbox } from "../checkbox";
+import { Field } from "../field";
+import { Select } from "../select";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Fieldset" };
+const meta: Meta = { title: "Components/Forms/Fieldset" };
 export default meta;
 
 function checkGlyph() {

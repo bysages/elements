@@ -2,11 +2,11 @@ import { useSwitch } from "@ark-ui/vue/switch";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
-import { Field } from "../field/index.js";
+import { Switch } from ".";
+import { Field } from "../field";
 import { withState } from "../with-state.js";
-import { Switch } from "./index.js";
 
-const meta: Meta = { title: "Components / Switch" };
+const meta: Meta = { title: "Components/Forms/Switch" };
 export default meta;
 
 function control() {

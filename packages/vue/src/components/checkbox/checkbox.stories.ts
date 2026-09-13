@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Checkbox } from ".";
 import { withState } from "../with-state.js";
-import { Checkbox } from "./index.js";
 
-const meta: Meta = { title: "Components / Checkbox" };
+const meta: Meta = { title: "Components/Forms/Checkbox" };
 export default meta;
 
 function checkGlyph() {

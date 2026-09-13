@@ -4,10 +4,10 @@ import { LocaleProvider } from "@ark-ui/vue/locale";
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { DateInput } from ".";
 import { withState } from "../with-state.js";
-import { DateInput } from "./index.js";
 
-const meta: Meta = { title: "Components / Date Input" };
+const meta: Meta = { title: "Components/Forms/Date Input" };
 export default meta;
 
 function segments() {

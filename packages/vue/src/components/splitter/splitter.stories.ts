@@ -2,10 +2,10 @@ import { useSplitterContext } from "@ark-ui/vue/splitter";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
-import { Splitter } from "./index.js";
+import { Splitter } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components / Splitter" };
+const meta: Meta = { title: "Components/Layout/Splitter" };
 export default meta;
 
 const panelStyle = {

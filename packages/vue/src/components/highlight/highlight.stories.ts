@@ -1,10 +1,10 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
+import { Highlight } from ".";
 import { withState } from "../with-state.js";
-import { Highlight } from "./index.js";
 
-const meta: Meta = { title: "Components / Highlight" };
+const meta: Meta = { title: "Components/Data/Highlight" };
 export default meta;
 
 /** The paragraph carries no styling of its own — the query hits are
