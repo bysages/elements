@@ -132,32 +132,35 @@ export const TreeTable = {
         tree: true,
         data: [
           {
+            id: "north",
             region: "North",
             units: 4820,
             revenue: 96400,
             subRows: [
               {
+                id: "north-hebei",
                 region: "Hebei",
                 units: 2310,
                 revenue: 46200,
                 subRows: [
-                  { region: "Shijiazhuang", units: 1200, revenue: 24000 },
-                  { region: "Tangshan", units: 1110, revenue: 22200 },
+                  { id: "north-hebei-sjz", region: "Shijiazhuang", units: 1200, revenue: 24000 },
+                  { id: "north-hebei-ts", region: "Tangshan", units: 1110, revenue: 22200 },
                 ],
               },
-              { region: "Shanxi", units: 2510, revenue: 50200 },
+              { id: "north-shanxi", region: "Shanxi", units: 2510, revenue: 50200 },
             ],
           },
           {
+            id: "south",
             region: "South",
             units: 5310,
             revenue: 106200,
             subRows: [
-              { region: "Guangdong", units: 3610, revenue: 72200 },
-              { region: "Guangxi", units: 1700, revenue: 34000 },
+              { id: "south-gd", region: "Guangdong", units: 3610, revenue: 72200 },
+              { id: "south-gx", region: "Guangxi", units: 1700, revenue: 34000 },
             ],
           },
-          { region: "East", units: 2750, revenue: 55000 },
+          { id: "east", region: "East", units: 2750, revenue: 55000 },
         ],
         columns: col.columns([
           col.accessor("region", { header: "Region" }),
@@ -268,5 +271,97 @@ export const IncrementalUpdates = {
           ]);
           return h("div", { style: { display: "grid", gap: "0.75rem" } }, [tools, table]);
         });
+    }),
+};
+
+/** Header cells drag onto each other and swap; pinned columns hold
+ * still. */
+export const DraggableColumns = {
+  render: () =>
+    frame(() =>
+      h(DataTable, {
+        data: makeRows(12),
+        columns: salesColumns.slice(0, 5),
+        reorderable: true,
+        pinStart: ["region"],
+        style: { "max-width": "56rem" },
+      }),
+    ),
+};
+
+/** Rows drop above or below their target; the reordered array comes
+ * back through the event and sticks in the story state. */
+export const RowReorder = {
+  render: () =>
+    withState(() => {
+      const state = reactive({ rows: makeRows(8) });
+      return () =>
+        frame(() =>
+          h(DataTable, {
+            data: state.rows,
+            columns: salesColumns.slice(0, 5),
+            reorderable: true,
+            selectable: true,
+            onRowReorder: (rows: any[]) => {
+              state.rows = rows;
+            },
+            style: { "max-width": "56rem" },
+          }),
+        );
+    }),
+};
+
+/** Tree drops read before / inside / after: the outer bands swap
+ * siblings, the middle band adopts the dragged branch as a child, and
+ * a branch never drops into its own subtree. */
+export const TreeDrag = {
+  render: () =>
+    withState(() => {
+      const state = reactive({
+        tree: [
+          {
+            id: "north",
+            region: "North",
+            units: 4820,
+            revenue: 96400,
+            subRows: [
+              { id: "north-hebei", region: "Hebei", units: 2310, revenue: 46200 },
+              { id: "north-shanxi", region: "Shanxi", units: 2510, revenue: 50200 },
+            ],
+          },
+          {
+            id: "south",
+            region: "South",
+            units: 5310,
+            revenue: 106200,
+            subRows: [
+              { id: "south-gd", region: "Guangdong", units: 3610, revenue: 72200 },
+              { id: "south-gx", region: "Guangxi", units: 1700, revenue: 34000 },
+            ],
+          },
+          { id: "east", region: "East", units: 2750, revenue: 55000 },
+        ],
+      });
+      return () =>
+        frame(() =>
+          h(DataTable, {
+            tree: true,
+            reorderable: true,
+            data: state.tree,
+            columns: col.columns([
+              col.accessor("region", { header: "Region" }),
+              col.accessor("units", { header: "Units", meta: { numeric: true } }),
+              col.accessor("revenue", {
+                header: "Revenue",
+                meta: { numeric: true },
+                cell: (info) => `$${(info.getValue() as number).toLocaleString("en-US")}`,
+              }),
+            ]),
+            onRowReorder: (rows: any[]) => {
+              state.tree = rows;
+            },
+            style: { "max-width": "40rem" },
+          }),
+        );
     }),
 };

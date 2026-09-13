@@ -56,6 +56,7 @@ export const tableCss = /* css */ `
   grid-template-columns: var(--bs-table-cols, repeat(auto-fill, minmax(0, 1fr)));
   align-items: stretch;
   block-size: var(--bs-table-row-height);
+  position: relative;
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
@@ -112,11 +113,12 @@ export const tableCss = /* css */ `
 }
 
 /* The per-column filter rides inside its header: a quiet slot that wakes
-   only under the caret. */
+   only under the caret. Zero basis keeps it out of the column's
+   max-content floor — filter boxes never widen the tracks. */
 [data-scope="table"][data-part="header-filter"] {
   flex: 1;
   min-inline-size: 0;
-  inline-size: 6rem;
+  inline-size: 0;
   block-size: 1.5rem;
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
@@ -356,5 +358,56 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="pagination"] [data-part="page-status"] {
   font-variant-numeric: tabular-nums;
+}
+
+/* Drag reordering: the lifted source dims; the candidate slot answers
+   with a primary hairline; the adopt slot (tree "make child") takes a
+   dashed outline and a light pigment wash. */
+[data-scope="table"][data-part="row"][data-dragging],
+[data-scope="table"][data-part="header-cell"][data-dragging] {
+  opacity: 0.45;
+}
+
+[data-scope="table"][data-part="header-cell"][data-drop-before-col] {
+  box-shadow: inset 2px 0 0 var(--bs-color-primary);
+}
+
+[data-scope="table"][data-part="header-cell"][data-drop-after-col] {
+  box-shadow: inset -2px 0 0 var(--bs-color-primary);
+}
+
+/* The row insertion line indents to the sibling depth the drop will
+   produce — the tree reads its own hierarchy off the line's origin. */
+[data-scope="table"][data-part="row"][data-drop-before]::before,
+[data-scope="table"][data-part="row"][data-drop-after]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--bs-drop-indent, 0) * var(--bs-table-indent));
+  inset-inline-end: 0;
+  block-size: 2px;
+  background: var(--bs-color-primary);
+  pointer-events: none;
+}
+
+[data-scope="table"][data-part="row"][data-drop-before]::before {
+  inset-block-start: -1px;
+}
+
+[data-scope="table"][data-part="row"][data-drop-after]::before {
+  inset-block-end: -1px;
+}
+
+/* Same specificity as the row hover wash, later in the file, so the
+   adopt signal wins while the pointer rests on the target. */
+[data-scope="table"][data-part="row"][data-drop-inside]:hover {
+  background: color-mix(in oklab, var(--bs-color-primary) 6%, transparent);
+  outline: 1px dashed var(--bs-color-primary);
+  outline-offset: -1px;
+}
+
+[data-scope="table"][data-part="root"][data-reorderable] [data-part="row"][draggable],
+[data-scope="table"][data-part="root"][data-reorderable]
+  [data-part="header-cell"][data-draggable] {
+  cursor: grab;
 }
 `;
