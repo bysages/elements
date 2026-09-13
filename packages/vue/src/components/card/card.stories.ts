@@ -47,7 +47,8 @@ export const ContentOnly = {
     ),
 };
 
-/** Footer as actions: the primary carries the ink. */
+/** Footer as actions: a compact register inside the vessel — actions on
+ * a card are secondary, so they ride the small control height. */
 export const WithActions = {
   render: () =>
     withState(
@@ -68,7 +69,7 @@ export const WithActions = {
                   "data-part": "root",
                   "data-variant": "solid",
                   "data-tone": "ink",
-                  "data-size": "md",
+                  "data-size": "sm",
                 },
                 () => "Archive",
               ),
@@ -79,7 +80,7 @@ export const WithActions = {
                   "data-part": "root",
                   "data-variant": "ghost",
                   "data-tone": "ink",
-                  "data-size": "md",
+                  "data-size": "sm",
                 },
                 () => "Keep",
               ),

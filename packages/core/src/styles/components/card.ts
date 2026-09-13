@@ -47,4 +47,11 @@ export const cardCss = /* css */ `
   gap: var(--bs-space-2);
   padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
 }
+
+/* Sections carry their own whitespace, so a body between header and
+   footer keeps the rhythm — when the two sit adjacent nothing does, and
+   the footer supplies the missing beat itself. */
+[data-scope="card"][data-part="header"] + [data-scope="card"][data-part="footer"] {
+  margin-block-start: var(--bs-padding-lg);
+}
 `;

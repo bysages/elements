@@ -87,7 +87,9 @@ export const buttonCss = /* css */ `
   --_fill: var(--bs-color-primary-fill);
   --_fill-hover: var(--bs-color-primary-fill-hover);
   --_ink: var(--bs-color-primary-text);
-  --_ripple-pigment: color-mix(in oklab, var(--_pigment) 35%, transparent);
+  /* On a filled body the wash must read against the fill, not sink into
+     it — the ink that blooms on a fill is the fill's own ink. */
+  --_ripple-pigment: color-mix(in oklab, var(--_ink) 30%, transparent);
   box-shadow: none;
 }
 

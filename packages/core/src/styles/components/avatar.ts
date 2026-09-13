@@ -1,7 +1,9 @@
 export const avatarCss = /* css */ `
 [data-scope="avatar"][data-part="root"] {
-  /* A seal, not a portrait frame: fixed square, cut to a full circle. */
-  --bs-avatar-size: calc(var(--bs-control-height-lg) + var(--bs-space-2));
+  /* A seal, not a portrait frame: fixed square, cut to a full circle. It
+     stands as tall as the largest control, so an avatar rides a row of
+     text without stretching it — and scenes retune it for free. */
+  --bs-avatar-size: var(--bs-control-height-lg);
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
