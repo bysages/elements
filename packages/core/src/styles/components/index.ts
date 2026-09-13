@@ -51,6 +51,7 @@ import { splitterCss } from "./splitter";
 import { stepsCss } from "./steps";
 import { swapCss } from "./swap";
 import { switchCss } from "./switch";
+import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
 import { timerCss } from "./timer";
@@ -121,6 +122,7 @@ export const componentStyles: Record<string, string> = {
   tabs: tabsCss,
   "tags-input": tagsInputCss,
   timer: timerCss,
+  table: tableCss,
   toast: toastCss,
   toc: tocCss,
   toggle: toggleCss,

@@ -42,7 +42,9 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@ark-ui/vue": "^5.39.1"
+    "@ark-ui/vue": "^5.39.1",
+    "@tanstack/vue-table": "^9.2.4",
+    "@tanstack/vue-virtual": "^3.13.38"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^10.6.0",

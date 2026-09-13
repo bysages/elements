@@ -52,6 +52,7 @@ export * from "./components/splitter";
 export * from "./components/steps";
 export * from "./components/switch";
 export * from "./components/swap";
+export * from "./components/table";
 export * from "./components/tabs";
 export * from "./components/tags-input";
 export * from "./components/timer";
