@@ -129,6 +129,8 @@ export const Basic = {
   },
   render: (args: any) =>
     withState(
+      // `notifier` yields a render function; the story host needs its
+      // vnode, so the inner call happens right here.
       () => () =>
         notifier("ToastBasic", {}, (toaster) => [
           h(
@@ -136,7 +138,7 @@ export const Basic = {
             { type: "button", style: buttonStyle, onClick: () => announce(toaster) },
             () => args.triggerLabel,
           ),
-        ]),
+        ])(),
     ),
 };
 

@@ -77,6 +77,10 @@ export const Sizes: Story = {
 
 /** With a leading mark: the icon inherits the ink of its tone. */
 export const WithIcon: Story = {
+  args: {
+    variant: "subtle",
+  },
+
   render: () =>
     withState(
       () => () =>
