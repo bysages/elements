@@ -32,12 +32,13 @@
   --bs-gap-lg: calc(var(--bs-space-5) * var(--bs-density-scale));
   --bs-gap-xl: calc(var(--bs-space-8) * var(--bs-density-scale));
 
-  /* Control heights: 28/32/36px — the compact desktop register (buttons and
-     toggles at md, small chips and segmented items at sm). Density may ease
-     them toward roomy but never below the readable floor. */
+  /* Control heights: 28/32/40px — the compact desktop register (buttons and
+     toggles at md, small chips and segmented items at sm; large follows the
+     cross-system consensus of 40px). Density may ease them toward roomy but
+     never below the readable floor. */
   --bs-control-height-sm: max(1.625rem, calc(1.75rem * var(--bs-density-scale)));
   --bs-control-height-md: max(1.875rem, calc(2rem * var(--bs-density-scale)));
-  --bs-control-height-lg: max(2.125rem, calc(2.25rem * var(--bs-density-scale)));
+  --bs-control-height-lg: max(2.25rem, calc(2.5rem * var(--bs-density-scale)));
 }
 
 [data-density="compact"],

@@ -1,8 +1,14 @@
 import { accordionCss } from "./accordion";
+import { alertCss } from "./alert";
 import { angleSliderCss } from "./angle-slider";
 import { avatarCss } from "./avatar";
+import { avatarGroupCss } from "./avatar-group";
+import { badgeCss } from "./badge";
+import { buttonCss } from "./button";
+import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
 import { checkboxCss } from "./checkbox";
+import { chipCss } from "./chip";
 import { clipboardCss } from "./clipboard";
 import { collapsibleCss } from "./collapsible";
 import { colorPickerCss } from "./color-picker";
@@ -20,6 +26,7 @@ import { highlightCss } from "./highlight";
 import { hoverCardCss } from "./hover-card";
 import { imageCropperCss } from "./image-cropper";
 import { jsonTreeViewCss } from "./json-tree-view";
+import { kbdCss } from "./kbd";
 import { listboxCss } from "./listbox";
 import { marqueeCss } from "./marquee";
 import { menuCss } from "./menu";
@@ -36,7 +43,9 @@ import { ratingGroupCss } from "./rating-group";
 import { scrollAreaCss } from "./scroll-area";
 import { segmentGroupCss } from "./segment-group";
 import { selectCss } from "./select";
+import { separatorCss } from "./separator";
 import { signaturePadCss } from "./signature-pad";
+import { skeletonCss } from "./skeleton";
 import { sliderCss } from "./slider";
 import { splitterCss } from "./splitter";
 import { stepsCss } from "./steps";
@@ -57,10 +66,16 @@ import { treeViewCss } from "./tree-view";
  * here, keyed by the name wrappers pass to `injectComponentStyle`. */
 export const componentStyles: Record<string, string> = {
   accordion: accordionCss,
+  alert: alertCss,
   "angle-slider": angleSliderCss,
   avatar: avatarCss,
+  "avatar-group": avatarGroupCss,
+  badge: badgeCss,
+  button: buttonCss,
+  card: cardCss,
   carousel: carouselCss,
   checkbox: checkboxCss,
+  chip: chipCss,
   clipboard: clipboardCss,
   collapsible: collapsibleCss,
   "color-picker": colorPickerCss,
@@ -74,9 +89,11 @@ export const componentStyles: Record<string, string> = {
   fieldset: fieldsetCss,
   "file-upload": fileUploadCss,
   "floating-panel": floatingPanelCss,
+  highlight: highlightCss,
   "hover-card": hoverCardCss,
   "image-cropper": imageCropperCss,
   "json-tree-view": jsonTreeViewCss,
+  kbd: kbdCss,
   listbox: listboxCss,
   marquee: marqueeCss,
   menu: menuCss,
@@ -93,13 +110,14 @@ export const componentStyles: Record<string, string> = {
   "scroll-area": scrollAreaCss,
   "segment-group": segmentGroupCss,
   select: selectCss,
+  separator: separatorCss,
   "signature-pad": signaturePadCss,
-  highlight: highlightCss,
+  skeleton: skeletonCss,
   slider: sliderCss,
   splitter: splitterCss,
   steps: stepsCss,
-  switch: switchCss,
   swap: swapCss,
+  switch: switchCss,
   tabs: tabsCss,
   "tags-input": tagsInputCss,
   timer: timerCss,
@@ -114,10 +132,16 @@ export const componentStyles: Record<string, string> = {
 
 export {
   accordionCss,
+  alertCss,
   angleSliderCss,
   avatarCss,
+  avatarGroupCss,
+  badgeCss,
+  buttonCss,
+  cardCss,
   carouselCss,
   checkboxCss,
+  chipCss,
   clipboardCss,
   collapsibleCss,
   colorPickerCss,
@@ -131,9 +155,11 @@ export {
   fieldsetCss,
   fileUploadCss,
   floatingPanelCss,
+  highlightCss,
   hoverCardCss,
   imageCropperCss,
   jsonTreeViewCss,
+  kbdCss,
   listboxCss,
   marqueeCss,
   menuCss,
@@ -150,10 +176,13 @@ export {
   scrollAreaCss,
   segmentGroupCss,
   selectCss,
+  separatorCss,
   signaturePadCss,
+  skeletonCss,
   sliderCss,
   splitterCss,
   stepsCss,
+  swapCss,
   switchCss,
   tabsCss,
   tagsInputCss,

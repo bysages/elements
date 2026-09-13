@@ -225,7 +225,7 @@ Four tiers via `[data-density]`, one scale factor driving all whitespace:
 
 Density may change padding, gaps, row heights, control heights, and decorative
 spacing. It must not change semantic structure, contrast, focus visibility, or
-type size. Control heights ride `--bs-control-height-sm/md/lg` (28/32/36px)
+type size. Control heights ride `--bs-control-height-sm/md/lg` (28/32/40px)
 with a readable floor — density can ease them roomier, never shrink them past
 legibility. Visual size ≠ hit area: a 28px button can carry a larger pointer
 target.

@@ -1,0 +1,50 @@
+export const cardCss = /* css */ `
+/* A vessel: round at the large radius, resting at the first elevation,
+   one hairline for its edge. Sections carry their own whitespace so the
+   card composes with or without a header. */
+[data-scope="card"][data-part="root"] {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+  background: var(--bs-color-surface-1);
+  box-shadow: var(--bs-shadow-xs);
+}
+
+[data-scope="card"][data-part="header"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-space-1);
+  padding: var(--bs-padding-lg) var(--bs-padding-lg) 0;
+}
+
+/* The title rides the serif — a vessel carries a heading, not a control. */
+[data-scope="card"][data-part="title"] {
+  margin: 0;
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-lg);
+  font-weight: var(--bs-font-weight-semibold);
+  line-height: var(--bs-line-height-snug);
+}
+
+[data-scope="card"][data-part="description"] {
+  margin: 0;
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
+}
+
+[data-scope="card"][data-part="content"] {
+  padding: var(--bs-padding-lg);
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
+}
+
+[data-scope="card"][data-part="footer"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
+}
+`;
