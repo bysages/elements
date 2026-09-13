@@ -14,8 +14,8 @@ export const switchCss =
 /* The track geometry: thumb travel is derived here so the knob lands
    flush against the far edge instead of drifting off-token. */
 [data-scope="switch"][data-part="control"] {
-  --bs-switch-track: 3rem;
-  --bs-switch-thumb: 1.25rem;
+  --bs-switch-track: calc(var(--bs-switch-thumb) * 2 + var(--bs-switch-inset) * 2);
+  --bs-switch-thumb: var(--bs-part-size-md);
   --bs-switch-inset: var(--bs-space-1);
   display: inline-flex;
   align-items: center;

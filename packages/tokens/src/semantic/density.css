@@ -12,6 +12,14 @@
 
 :root,
 :host {
+  /* Interior control parts (thumbs, knobs, check boxes, close buttons) are
+     decoration riding a control, not the control itself: they scale with
+     density and keep no readable floor, so a compact density actually
+     makes them smaller. */
+  --bs-part-size-sm: calc(1rem * var(--bs-density-scale));
+  --bs-part-size-md: calc(1.25rem * var(--bs-density-scale));
+  --bs-part-size-lg: calc(1.75rem * var(--bs-density-scale));
+
   /* Density-scaled whitespace. */
   --bs-padding-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
   --bs-padding-sm: calc(var(--bs-space-2) * var(--bs-density-scale));

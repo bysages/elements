@@ -129,8 +129,8 @@ export const toastCss = /* css */ `
   inset-inline-end: var(--bs-space-2);
   display: grid;
   place-items: center;
-  inline-size: 1.75rem;
-  block-size: 1.75rem;
+  inline-size: var(--bs-part-size-lg);
+  block-size: var(--bs-part-size-lg);
   padding: 0;
   border: none;
   border-radius: var(--bs-radius-sm);

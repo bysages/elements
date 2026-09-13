@@ -119,8 +119,8 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="close-trigger"] {
   display: inline-grid;
   place-items: center;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
+  inline-size: var(--bs-part-size-lg);
+  block-size: var(--bs-part-size-lg);
   padding: 0;
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
