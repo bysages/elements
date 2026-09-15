@@ -746,6 +746,15 @@ body {
   font-size: var(--bs-font-size-sm);
 }
 
+/* The frame's vessel dress belongs to the consumer — the wrapper carries
+   no anatomy for the core stylesheet to hook — and the UA's fossil 2px
+   inset border on iframes must go first. */
+.bs-docs-frame {
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+  background: var(--bs-color-surface-2);
+}
+
 .bs-docs-demo-code {
   margin: 0;
   padding: var(--bs-padding-md);

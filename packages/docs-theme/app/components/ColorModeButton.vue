@@ -2,7 +2,9 @@
 import { getTheme, applyTheme } from "@bysages/core";
 import { Button } from "@bysages/vue";
 
-const mode = ref<"light" | "dark" | "system">(getTheme().mode);
+// The header and the footer each render a toggle; a per-instance ref
+// would let them drift apart, so the mode lives in shared app state.
+const mode = useState<"light" | "dark" | "system">("color-mode", () => getTheme().mode);
 
 type ViewTransitionDocument = Document & {
   startViewTransition?: (update: () => void) => { ready: Promise<void> };
