@@ -4,16 +4,16 @@
 ![npm downloads](https://img.shields.io/npm/dw/@bysages/solid)
 ![npm license](https://img.shields.io/npm/l/@bysages/solid)
 
-> By Sages Elements for Solid — 70+ accessible component families built on Ark UI headless primitives, dressed by the paper-and-ink style layer.
+> By Sages Elements for Solid — 70+ accessible component families, headless by construction, dressed by the paper-and-ink style layer.
 
 ## Features
 
 - 🧩 **70+ families** — actions, forms, overlays, navigation, data, layout, and an AI conversation family on ai-sdk formats
-- 🏛️ **Ark inside** — interaction, state, ARIA, and positioning come from [Ark UI](https://ark-ui.com); wrappers add API narrowing and style injection, no DOM of their own
+- 🏛️ **Headless inside** — interaction, state, ARIA, and positioning come from proven headless state machines; wrappers add API narrowing and style injection, no DOM of their own
 - 🎨 **Token-styled** — every visual value is a CSS custom property from `@bysages/core`; light/dark, accent pigments, contrast and density tiers are data, never hardcoded styles
 - 📦 **Container-driven** — components respond to `@container`, not the viewport; the same component composes in a sidebar, a card, or a page
 - 💡 **Styles on import** — each family injects its stylesheet at module load, guarded against double-injection
-- ⚡ **Solid to the bone** — the same Ark machines, no virtual DOM; components are plain functions over fine-grained signals
+- ⚡ **Solid to the bone** — the same headless machines, no virtual DOM; components are plain functions over fine-grained signals
 
 ## Installation
 

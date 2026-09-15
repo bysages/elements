@@ -1,15 +1,15 @@
-> **⚠️ Warning:** This project is not yet stable and may undergo significant changes before reaching version 1.0.0. We strongly advise against using it in production environments.
-
 # By Sages Elements
+
+English | [简体中文](./README.zh-CN.md)
 
 [![npm downloads](https://img.shields.io/npm/dm/@bysages/core)](https://www.npmjs.com/package/@bysages/core)
 [![GitHub Stars](https://img.shields.io/github/stars/bysages/elements)](https://github.com/bysages/elements/stargazers)
 ![GitHub License](https://img.shields.io/github/license/bysages/elements)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
 
-> Elements is the UI component library of By Sages: accessible components built on **Ark UI headless primitives**, styled entirely by **design tokens compiled to CSS variables**, and responsive through native **CSS Container Queries** — one design system, shipped as React, Vue, Solid, and Svelte components.
+> Elements is the UI component library of By Sages: accessible, headless components styled entirely by **design tokens compiled to CSS variables**, and responsive through native **CSS Container Queries** — one design system, shipped as React, Vue, Solid, and Svelte components.
 
-[Documentation](https://elements.bysages.com) · [Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
+[Documentation](https://elements.bysages.com) · [AI Integration](https://elements.bysages.com/en/guide/ai) · [Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
 
 ⭐ **If Elements is useful to you, a star helps other developers find it.**
 
@@ -17,25 +17,27 @@
 
 ## Why Elements?
 
-- **Ark's logic, our look** — interaction, state, accessibility, and positioning come from [Ark UI](https://ark-ui.com) headless components; every visual decision lives in one style layer, so behavior stays rock-solid while the design stays ours.
-- **Dynamic light, not static shadows** — the lighting engine computes elevation, pigment bleed, and glow into CSS variables; component styles only consume light (以光为影 — light as shadow).
-- **Container-driven responsiveness** — components respond to the space they are given (`@container`), not the viewport; the same component composes correctly in a sidebar, a card, or a full page.
-- **Tokens all the way down** — palettes, type, spacing, radius, elevation, and density are design tokens exposed as CSS custom properties. Themes (light/dark, accent pigments, contrast tiers, density tiers) are data, never hardcoded styles.
-- **Paper and ink (以光为影)** — interfaces are warm paper, content is ink, hierarchy is light. Primary actions default to ink with switchable mineral-pigment accent themes; semantic colors are fixed traditional pigments; controls are square-cut like seals while vessels stay round. The language bridges Chinese restraint (留白) and Western minimalism, with legible defaults and contrast/density tiers that serve both older and younger users.
+- 🧩 **Headless logic, our look** — interaction, state, accessibility, and positioning live in proven headless state machines; every visual decision lives in one style layer, so behavior stays rock-solid while the design stays ours.
+- 💡 **Dynamic light, not static shadows** — the lighting engine computes elevation, pigment bleed, and glow into CSS variables; component styles only consume light (以光为影 — light as shadow).
+- 📐 **Container-driven responsiveness** — components respond to the space they are given (`@container`), not the viewport; the same component composes correctly in a sidebar, a card, or a full page.
+- 🎨 **Tokens all the way down** — palettes, type, spacing, radius, elevation, and density are design tokens exposed as CSS custom properties. Themes (light/dark, accent pigments, contrast tiers, density tiers) are data, never hardcoded styles.
+- 🖋 **Paper and ink (以光为影)** — interfaces are warm paper, content is ink, hierarchy is light. Primary actions default to ink with switchable mineral-pigment accent themes; semantic colors are fixed traditional pigments; controls are square-cut like seals while vessels stay round. The language bridges Chinese restraint (留白) and Western minimalism, with legible defaults and contrast/density tiers that serve both older and younger users.
+- 🌐 **Every framework, one anatomy** — React, Vue, Solid, and Svelte wrappers share the same parts contract (`data-scope` / `data-part`), so one stylesheet — and one mental model — serves them all.
+- 🤖 **AI-native docs** — the documentation speaks agent: every page is served as raw markdown, the whole site compiles to `llms.txt`, and an MCP server exposes the docs to any client.
 
 ## Packages
 
-| Package                                          | Version | Description                                                                 |
-| ------------------------------------------------ | ------- | --------------------------------------------------------------------------- |
-| [@bysages/tokens](./packages/tokens/README.md)   | -       | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
-| [@bysages/core](./packages/core/README.md)       | -       | Theme engine, per-component styles, and the lighting engine                 |
-| [@bysages/react](./packages/react/README.md)     | -       | Ark-based components for React                                              |
-| [@bysages/vue](./packages/vue/README.md)         | -       | Ark-based components for Vue                                                |
-| [@bysages/solid](./packages/solid/README.md)     | -       | Ark-based components for Solid                                              |
-| [@bysages/svelte](./packages/svelte/README.md)   | -       | Ark-based components for Svelte                                             |
-| [@bysages/charts](./packages/charts/README.md)   | -       | Token-themed charts                                                         |
-| [@bysages/nuxt](./packages/nuxt/README.md)       | -       | Nuxt module wrapping the Vue components                                     |
-| [@bysages/docs-theme](./packages/docs-theme/README.md) | - | Nuxt Content layer for Elements documentation sites                         |
+| Package                                                | Version                                                                  | Description                                                                 |
+| ------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| [@bysages/tokens](./packages/tokens/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/tokens)                     | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
+| [@bysages/core](./packages/core/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/core)                       | Theme engine, per-component styles, and the lighting engine                 |
+| [@bysages/react](./packages/react/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/react)                      | Components for React                                                        |
+| [@bysages/vue](./packages/vue/README.md)               | ![npm](https://img.shields.io/npm/v/@bysages/vue)                        | Components for Vue                                                          |
+| [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)                      | Components for Solid                                                        |
+| [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)                     | Components for Svelte                                                       |
+| [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)                     | Token-themed charts                                                         |
+| [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)                       | Nuxt module wrapping the Vue components                                     |
+| [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme)                 | Nuxt Content layer for Elements documentation sites                         |
 
 ## Quick Start
 
@@ -80,6 +82,16 @@ import { Button, Dialog } from "@bysages/vue";
 ```
 
 Nuxt applications get every family auto-imported and SSR styling handled by the module — see [@bysages/nuxt](./packages/nuxt/README.md). The [documentation site](https://elements.bysages.com) documents installation per framework, theming, and every component family with live demos.
+
+## AI Integration
+
+The docs site is built for agents: every page is available as raw markdown, the whole site compiles to [`llms.txt`](https://elements.bysages.com/llms.txt), and an MCP server exposes the docs to any MCP client:
+
+```bash
+claude mcp add --transport http elements https://elements.bysages.com/mcp
+```
+
+See the [AI integration guide](https://elements.bysages.com/en/guide/ai) for details.
 
 ## Development
 

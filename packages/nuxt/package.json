@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "description": "Nuxt module for By Sages Elements — auto-imports the paper-and-ink Vue components and applies the theme",
   "keywords": [
+    "components",
     "design-system",
-    "elements",
+    "design-tokens",
     "nuxt",
     "nuxt-module",
     "theming",
+    "ui",
     "vue"
   ],
   "homepage": "https://github.com/bysages/elements#readme",

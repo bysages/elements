@@ -4,9 +4,13 @@
   "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus thin framework adapters",
   "keywords": [
     "charts",
+    "components",
+    "data-visualization",
+    "dataviz",
     "design-system",
-    "tanstack",
+    "design-tokens",
     "theming",
+    "ui",
     "vue"
   ],
   "homepage": "https://github.com/bysages/elements#readme",

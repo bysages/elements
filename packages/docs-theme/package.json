@@ -4,11 +4,14 @@
   "description": "Documentation theme for By Sages Elements — a Nuxt Content layer that turns a content folder into a paper-and-ink docs site",
   "keywords": [
     "design-system",
+    "design-tokens",
     "docs",
     "documentation",
     "nuxt",
     "nuxt-content",
-    "nuxt-layer"
+    "nuxt-layer",
+    "theming",
+    "ui"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
   "bugs": {

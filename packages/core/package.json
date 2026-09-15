@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "description": "Shared core of By Sages Elements — theme engine, per-component styles, and the lighting engine, all token-driven",
   "keywords": [
+    "css",
+    "css-variables",
+    "design-system",
     "design-tokens",
     "headless",
+    "lighting",
+    "style-engine",
     "theming",
-    "typescript",
     "ui"
   ],
   "homepage": "https://github.com/bysages/elements#readme",

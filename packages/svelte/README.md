@@ -4,12 +4,12 @@
 ![npm downloads](https://img.shields.io/npm/dw/@bysages/svelte)
 ![npm license](https://img.shields.io/npm/l/@bysages/svelte)
 
-> By Sages Elements for Svelte — 70+ accessible component families built on Ark UI headless primitives, dressed by the paper-and-ink style layer.
+> By Sages Elements for Svelte — 70+ accessible component families, headless by construction, dressed by the paper-and-ink style layer.
 
 ## Features
 
 - 🧩 **70+ families** — actions, forms, overlays, navigation, data, layout, and an AI conversation family on ai-sdk formats
-- 🏛️ **Ark inside** — interaction, state, ARIA, and positioning come from [Ark UI](https://ark-ui.com); wrappers add API narrowing and style injection, no DOM of their own
+- 🏛️ **Headless inside** — interaction, state, ARIA, and positioning come from proven headless state machines; wrappers add API narrowing and style injection, no DOM of their own
 - 🎨 **Token-styled** — every visual value is a CSS custom property from `@bysages/core`; light/dark, accent pigments, contrast and density tiers are data, never hardcoded styles
 - 📦 **Container-driven** — components respond to `@container`, not the viewport; the same component composes in a sidebar, a card, or a page
 - 💡 **Styles on import** — each family injects its stylesheet at module load, guarded against double-injection

@@ -1,14 +1,18 @@
 {
   "name": "@bysages/vue",
   "version": "0.0.0",
-  "description": "Ark-based By Sages Elements components for Vue — styled by the paper-and-ink design tokens",
+  "description": "By Sages Elements components for Vue — styled by the paper-and-ink design tokens",
   "keywords": [
-    "ark-ui",
+    "accessible",
+    "components",
+    "css",
     "design-system",
     "design-tokens",
     "theming",
-    "typescript",
-    "ui"
+    "ui",
+    "ui-components",
+    "vue",
+    "vue-components"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
   "bugs": {

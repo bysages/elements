@@ -1,14 +1,18 @@
 {
   "name": "@bysages/solid",
   "version": "0.0.0",
-  "description": "Ark-based By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
+  "description": "By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
   "keywords": [
-    "ark-ui",
+    "accessible",
+    "components",
+    "css",
     "design-system",
     "design-tokens",
+    "solid",
+    "solidjs",
     "theming",
-    "typescript",
-    "ui"
+    "ui",
+    "ui-components"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
   "bugs": {

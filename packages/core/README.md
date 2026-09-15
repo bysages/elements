@@ -49,10 +49,10 @@ attachDynamicLight();
       ↓
 @bysages/core      theme engine · lighting engine · per-component styles
       ↓
-wrappers           Vue · React · Solid · Svelte — thin Ark UI adapters
+wrappers           Vue · React · Solid · Svelte — thin adapters over headless machines
 ```
 
-The core owns no interaction; it renders nothing but light. Wrappers bring Ark UI's headless machines, the core dresses them.
+The core owns no interaction; it renders nothing but light. Wrappers bring the headless state machines, the core dresses them.
 
 ## License
 

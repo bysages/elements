@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "description": "Design tokens for By Sages Elements — DTCG source compiled to CSS variables and JavaScript: surface ramps, elevation from light, density tiers, themes",
   "keywords": [
+    "css",
+    "css-custom-properties",
     "css-variables",
+    "design-system",
     "design-tokens",
     "dtcg",
+    "style-dictionary",
     "theming",
+    "tokens",
     "ui"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
