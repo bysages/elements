@@ -541,17 +541,60 @@ body {
   color: var(--bs-color-text-tertiary);
 }
 
-/* Shiki ships both palettes on every token (--shiki-default / --shiki-dark)
-   but switches on the ecosystem's `.dark` class, while the theme engine
-   speaks data-theme — claim the dark palette here, one notch above the
-   generated `html .shiki span` consumer. Backgrounds stay paper. */
-html[data-theme="dark"] .shiki span {
-  /* !important beats the inline color on shiki's inline-output tokens
-     (the demo code tab); class-driven tokens never notice. */
-  color: var(--shiki-dark) !important;
-  font-style: var(--shiki-dark-font-style);
-  font-weight: var(--shiki-dark-font-weight);
-  text-decoration: var(--shiki-dark-text-decoration);
+/* The highlighter emits class-based tokens (th-*) with no palette of
+   its own — colors ride the theme's flipping tokens, so light and dark
+   come free and the pigments follow the design system. Ink stays the
+   text color; only the accents take pigment. */
+.th-comment,
+.th-meta {
+  color: var(--bs-color-text-tertiary);
+  font-style: italic;
+}
+
+.th-keyword,
+.th-type {
+  color: var(--bs-color-primary);
+}
+
+.th-string {
+  color: var(--bs-color-success);
+}
+
+.th-number,
+.th-literal {
+  color: var(--bs-color-warning);
+}
+
+.th-tag,
+.th-selector {
+  color: var(--bs-color-danger);
+}
+
+.th-function {
+  color: var(--bs-color-info);
+}
+
+.th-attr,
+.th-property,
+.th-operator {
+  color: var(--bs-color-text-secondary);
+}
+
+.th-heading {
+  font-weight: 600;
+}
+
+.th-link {
+  color: var(--bs-color-primary);
+  text-decoration: underline;
+}
+
+.th-inserted {
+  color: var(--bs-color-success);
+}
+
+.th-deleted {
+  color: var(--bs-color-danger);
 }
 
 /* Code groups share one vessel: the tab strip on top, the panes beneath
@@ -664,10 +707,10 @@ html[data-theme="dark"] .shiki span {
   border-radius: 0;
 }
 
-/* The highlighted source arrives as shiki's own pre inside the panel —
-   it inherits the panel's paper and metrics, contributing no box of
-   its own. */
-.bs-docs-demo-code pre.shiki {
+/* The highlighted source arrives as the highlighter's own pre inside
+   the panel — it inherits the pane's paper and metrics, contributing
+   no box of its own. */
+.bs-docs-demo-code pre.th-code {
   margin: 0;
   padding: 0;
   background: transparent;

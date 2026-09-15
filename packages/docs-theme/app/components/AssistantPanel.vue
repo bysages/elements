@@ -3,6 +3,8 @@ import { useChat } from "@ai-sdk/vue";
 import { Ai, Drawer } from "@bysages/vue";
 import { DefaultChatTransport, type ToolUIPart } from "ai";
 
+import { highlightFence } from "../../utils/highlight";
+
 const {
   Conversation,
   Message,
@@ -86,14 +88,13 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
                 <MessageContent v-if="message.role === 'user'">
                   {{
                     message.parts
-                      .filter((part) => part.type === "text")
-                      .map((part) => (part as { text: string }).text)
+                      .flatMap((part) => (part.type === "text" ? [part.text] : []))
                       .join("")
                   }}
                 </MessageContent>
                 <template v-else>
                   <template v-for="(part, index) in message.parts" :key="index">
-                    <Response v-if="part.type === 'text'" :content="part.text" />
+                    <Response v-if="part.type === 'text'" :content="part.text" :highlighter="highlightFence" />
                     <Reasoning v-else-if="part.type === 'reasoning'" label="Thinking">
                       {{ part.text }}
                     </Reasoning>

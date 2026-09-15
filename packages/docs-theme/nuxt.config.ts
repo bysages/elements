@@ -1,7 +1,6 @@
 import { createResolver, useNuxt } from "@nuxt/kit";
 import { defineNuxtConfig, type NuxtConfig } from "nuxt/config";
 import type { NitroOptions } from "nitropack";
-import type { BundledLanguage } from "shiki";
 
 const { resolve } = createResolver(import.meta.url);
 
@@ -105,24 +104,10 @@ const config = {
     experimental: { sqliteConnector: "native" as const },
     build: {
       markdown: {
-        highlight: {
-          langs: [
-            "bash",
-            "diff",
-            "json",
-            "js",
-            "ts",
-            "tsx",
-            "html",
-            "css",
-            "vue",
-            "svelte",
-            "shell",
-            "mdc",
-            "md",
-            "yaml",
-          ] as BundledLanguage[],
-        },
+        // Code blocks are stored as plain text in the content AST and
+        // re-inked at render time (ProsePre) — `false` keeps shiki, its
+        // wasm and grammar imports, out of the pipeline entirely.
+        highlight: false as const,
         remarkPlugins: {
           "remark-mdc": {
             options: {
