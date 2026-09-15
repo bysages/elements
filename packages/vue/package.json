@@ -42,17 +42,17 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@ark-ui/vue": "^5.39.1",
-    "@tanstack/markdown": "^0.0.15",
-    "@tanstack/vue-table": "^9.2.4",
-    "@tanstack/vue-virtual": "^3.13.38"
+    "@ark-ui/vue": "5.39.1",
+    "@tanstack/markdown": "0.0.15",
+    "@tanstack/vue-table": "9.2.4",
+    "@tanstack/vue-virtual": "3.13.38"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^10.6.0",
-    "@storybook/vue3-vite": "^10.6.0",
-    "ai": "^7.0.99",
-    "storybook": "^10.6.0",
-    "vue": "^3.5.42"
+    "@storybook/addon-a11y": "10.6.0",
+    "@storybook/vue3-vite": "10.6.0",
+    "ai": "7.0.99",
+    "storybook": "10.6.0",
+    "vue": "3.5.42"
   },
   "peerDependencies": {
     "vue": "^3.5"

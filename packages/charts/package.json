@@ -78,8 +78,8 @@
     }
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^7.3.0",
-    "rollup-plugin-svelte": "^7.2.3",
-    "svelte": "^5.57.0"
+    "@sveltejs/vite-plugin-svelte": "7.3.0",
+    "rollup-plugin-svelte": "7.2.3",
+    "svelte": "5.57.0"
   }
 }

@@ -12,6 +12,6 @@
     "@bysages/docs-theme": "workspace:*"
   },
   "devDependencies": {
-    "nuxt": "^4.2.0"
+    "nuxt": "4.5.2"
   }
 }
