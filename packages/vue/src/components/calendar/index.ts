@@ -29,9 +29,8 @@ function chevron(dir: "left" | "right") {
 }
 
 /** The date-picker's month grid, standing on the page without its
- * popup: always open, the trigger gone, the vessel a quiet card. The
- * grid itself is the shared machinery — value, range selection, and
- * focus ride Ark's own contract. */
+ * popup: always open, the trigger gone, the vessel a quiet card. The grid itself is the date-picker's machinery —
+ * value, range selection, and focus included. */
 export const Calendar = defineComponent({
   name: "Calendar",
   props: {

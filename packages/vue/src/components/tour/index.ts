@@ -7,9 +7,9 @@ export type {
   TourStepDetails,
 } from "@ark-ui/vue/tour";
 
-/** Ark's Tour, dressed in the paper-and-ink system: a dimmed page where
+/** Tour, dressed in the paper-and-ink system: a dimmed page where
  * the spotlight alone keeps the focus halo, and the anchored card rides
- * the shared popup vessel. The API is Ark's own — Root, Backdrop,
+ * the shared popup vessel. The parts — Root, Backdrop,
  * Spotlight, Positioner, Content, Arrow, ArrowTip, Title, Description,
  * ProgressText, Control, Actions, ActionTrigger, CloseTrigger, plus
  * useTour. */

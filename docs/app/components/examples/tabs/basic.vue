@@ -1,0 +1,17 @@
+<script setup lang="ts">
+import { Tabs } from "@bysages/vue";
+</script>
+
+<template>
+  <Tabs.Root default-value="ink">
+    <Tabs.List>
+      <Tabs.Trigger value="ink">Ink</Tabs.Trigger>
+      <Tabs.Trigger value="paper">Paper</Tabs.Trigger>
+      <Tabs.Trigger value="light">Light</Tabs.Trigger>
+      <Tabs.Indicator />
+    </Tabs.List>
+    <Tabs.Content value="ink">Content is ink — the marks that carry the words.</Tabs.Content>
+    <Tabs.Content value="paper">The ground is warm paper, never pure white.</Tabs.Content>
+    <Tabs.Content value="light">Hierarchy is light — shadow answers to the source.</Tabs.Content>
+  </Tabs.Root>
+</template>

@@ -12,6 +12,8 @@ export default defineConfig({
     },
   },
   fmt: {
+    // Landing pages carry MDC component slots a formatter would flatten.
+    ignorePatterns: ["**/docs/content/*/index.md"],
     sortImports: {
       type: "natural",
     },

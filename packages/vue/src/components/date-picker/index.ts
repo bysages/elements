@@ -9,9 +9,9 @@ export type {
   DatePickerVisibleRangeChangeDetails,
 } from "@ark-ui/vue/date-picker";
 
-/** Ark's DatePicker, dressed in the paper-and-ink system: the popup
+/** DatePicker, dressed in the paper-and-ink system: the popup
  * dissolves in on elevation, selected days take the flat ink fill, and
- * range middles run subtle with cut corners. The API is Ark's own —
+ * range middles run subtle with cut corners. The parts —
  * Root, Label, Control, Input, Trigger, ClearTrigger, Positioner,
  * Content, View, ViewControl, ViewTrigger, RangeText, PrevTrigger,
  * NextTrigger, Table*, MonthSelect, YearSelect, PresetTrigger. */

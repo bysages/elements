@@ -1,5 +1,5 @@
-/** Ark's collections, mirrored one-for-one: the list/tree helpers the
- * machine-facing components want alongside their namespace exports. */
+/** The list and tree collections the machine-facing components compose
+ * alongside their namespace exports. */
 export {
   createGridCollection,
   type GridCollection,

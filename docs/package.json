@@ -1,0 +1,19 @@
+{
+  "name": "@bysages/docs-site",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Elements documentation site, on the docs-theme layer",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@bysages/docs-theme": "workspace:*",
+    "@nuxtjs/i18n": "^10.6.0",
+    "minisearch": "^7.2.0"
+  },
+  "devDependencies": {
+    "nuxt": "^4.2.0"
+  }
+}

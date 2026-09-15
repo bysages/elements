@@ -8,9 +8,9 @@ export type {
   TreeViewSelectionChangeDetails,
 } from "@ark-ui/vue/tree-view";
 
-/** Ark's TreeView, dressed in the paper-and-ink system: quiet rows where
+/** TreeView, dressed in the paper-and-ink system: quiet rows where
  * selection is pure light on the paper, one hairline plumb line per depth,
- * and branches that swing open on the spring. The API is Ark's own —
+ * and branches that swing open on the spring. The parts —
  * Root, Label, Tree, NodeProvider, NodeContext, Branch, BranchControl,
  * BranchTrigger, BranchIndicator, BranchText, BranchContent,
  * BranchIndentGuide, Item, ItemText, ItemIndicator, NodeCheckbox,

@@ -5,9 +5,9 @@ import type { DefineComponent } from "vue";
 export type { CreateToasterReturn } from "@ark-ui/vue/toast";
 export { createToaster };
 
-/** Ark's Toast, dressed in the paper-and-ink system: each notice rides the
+/** Toast, dressed in the paper-and-ink system: each notice rides the
  * popup vessel while a pigment accents the title by type, and the machine's
- * translate variables carry the slide. The API is Ark's own — Toaster,
+ * translate variables carry the slide. The parts — Toaster,
  * Root, Title, Description, ActionTrigger, CloseTrigger, plus
  * createToaster. */
 export const Toast = ArkToast;

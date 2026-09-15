@@ -32,7 +32,8 @@ A [Nuxt Content](https://content.nuxt.com) layer that turns any Nuxt site into a
 - **Shell** — sticky header (brand, menubar navigation, theme toggle), sidebar, article grid with the "On this page" outline, footer
 - **Prose** — headings with hover anchors, code panels with copy, callouts via `::callout{type="note"}` (note / tip / important / warning / caution)
 - **Landing and error pages** — a home page and a 404 dressed in the system, overridable by the site
-- **Extension points** — `navigation` for the header menubar, `reference-navigation` for the sidebar's Reference section (provide both as arrays of `{ title, path, children? }`)
+- **Agent surfaces** — `llms.txt` / `llms-full.txt`, raw Markdown per page, an MCP server at `/mcp`, and `.well-known` discovery documents
+- **Extension points** — `navigation` for the header menubar (provide an array of `{ title, path, children? }`)
 
 ## AI assistant
 

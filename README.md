@@ -9,7 +9,7 @@
 
 > Elements is the UI component library of By Sages: accessible components built on **Ark UI headless primitives**, styled entirely by **design tokens compiled to CSS variables**, and responsive through native **CSS Container Queries** — one design system, shipped as React, Vue, Solid, and Svelte components.
 
-[Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
+[Documentation](https://elements.bysages.com) · [Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
 
 ⭐ **If Elements is useful to you, a star helps other developers find it.**
 
@@ -25,18 +25,61 @@
 
 ## Packages
 
-| Package                                    | Version | Description                                                                 |
-| ------------------------------------------ | ------- | --------------------------------------------------------------------------- |
-| [@bysages/tokens](./packages/tokens)       | -       | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
-| [@bysages/core](./packages/core/README.md) | -       | Theme engine, per-component styles, and the lighting engine                 |
-| [@bysages/react](./packages/react)         | -       | Ark-based components for React                                              |
-| [@bysages/vue](./packages/vue)             | -       | Ark-based components for Vue                                                |
-| [@bysages/solid](./packages/solid)         | -       | Ark-based components for Solid                                              |
-| [@bysages/svelte](./packages/svelte)       | -       | Ark-based components for Svelte                                             |
+| Package                                          | Version | Description                                                                 |
+| ------------------------------------------------ | ------- | --------------------------------------------------------------------------- |
+| [@bysages/tokens](./packages/tokens/README.md)   | -       | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
+| [@bysages/core](./packages/core/README.md)       | -       | Theme engine, per-component styles, and the lighting engine                 |
+| [@bysages/react](./packages/react/README.md)     | -       | Ark-based components for React                                              |
+| [@bysages/vue](./packages/vue/README.md)         | -       | Ark-based components for Vue                                                |
+| [@bysages/solid](./packages/solid/README.md)     | -       | Ark-based components for Solid                                              |
+| [@bysages/svelte](./packages/svelte/README.md)   | -       | Ark-based components for Svelte                                             |
+| [@bysages/charts](./packages/charts/README.md)   | -       | Token-themed charts                                                         |
+| [@bysages/nuxt](./packages/nuxt/README.md)       | -       | Nuxt module wrapping the Vue components                                     |
+| [@bysages/docs-theme](./packages/docs-theme/README.md) | - | Nuxt Content layer for Elements documentation sites                         |
 
 ## Quick Start
 
-> 🚧 Under construction — installation and usage guides land with the first usable release.
+Pick the package for your framework and add it with the core:
+
+```bash
+pnpm add @bysages/vue @bysages/core
+# or @bysages/react / @bysages/solid / @bysages/svelte
+```
+
+Import the token stylesheet once and theme the document:
+
+```ts
+import "@bysages/tokens/css";
+import { applyTheme } from "@bysages/core";
+
+applyTheme({ mode: "system", accent: "ink" });
+```
+
+Then use the components — Vue here; [React](./packages/react/README.md), [Solid](./packages/solid/README.md), and [Svelte](./packages/svelte/README.md) mirror the same anatomy:
+
+```vue
+<script setup lang="ts">
+import { Button, Dialog } from "@bysages/vue";
+</script>
+
+<template>
+  <Dialog.Root>
+    <Dialog.Trigger>Delete item</Dialog.Trigger>
+    <Teleport to="body">
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          <Dialog.Title>Delete item</Dialog.Title>
+          <Dialog.Description>This action cannot be undone.</Dialog.Description>
+          <Dialog.CloseTrigger>×</Dialog.CloseTrigger>
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Teleport>
+  </Dialog.Root>
+</template>
+```
+
+Nuxt applications get every family auto-imported and SSR styling handled by the module — see [@bysages/nuxt](./packages/nuxt/README.md). The [documentation site](https://elements.bysages.com) documents installation per framework, theming, and every component family with live demos.
 
 ## Development
 
