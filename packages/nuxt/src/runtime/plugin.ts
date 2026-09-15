@@ -1,9 +1,9 @@
 import { applyTheme } from "@bysages/core";
 
 /** Applies the theme configured through module options on the client.
- * The components dress themselves — each wrapper injects its own
- * stylesheet as it is imported. Nuxt's auto-imports provide
- * `defineNuxtPlugin` and `useRuntimeConfig` here. */
+ * The wrappers' own injection already stands down against the build-time
+ * stylesheet via the head marker the module plants. Nuxt's auto-imports
+ * provide `defineNuxtPlugin` and `useRuntimeConfig` here. */
 export default defineNuxtPlugin(() => {
   if (import.meta.server) return;
 

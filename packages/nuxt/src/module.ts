@@ -1,4 +1,7 @@
-import type { ApplyThemeOptions } from "@bysages/core";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
+import { componentStyles, tokensCss, type ApplyThemeOptions } from "@bysages/core";
 import { addComponent, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 
 /** Every family @bysages/vue exports, with the name it is exported by. */
@@ -111,6 +114,19 @@ export default defineNuxtModule<BsElementsOptions>({
     nuxt.options.runtimeConfig.public.bsElements = {
       theme: options.theme ?? null,
     };
+
+    // Ship the whole core style layer as one build-time stylesheet: SSR
+    // pages carry styled HTML, so the first paint never waits on the
+    // wrappers' runtime injection. The head marker tells that injection
+    // to stand down — it parses before any module script, so the
+    // wrappers cannot race it however their chunks load.
+    const stylesDir = join(nuxt.options.buildDir, "bs-styles");
+    mkdirSync(stylesDir, { recursive: true });
+    const stylesFile = join(stylesDir, "core.css");
+    writeFileSync(stylesFile, tokensCss + Object.values(componentStyles).join("\n"));
+    nuxt.options.css.push(stylesFile);
+    nuxt.options.app.head.meta ||= [];
+    nuxt.options.app.head.meta.push({ name: "bs-styles-shipped", content: "build" });
 
     addPlugin(resolver.resolve("./runtime/plugin"));
   },
