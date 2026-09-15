@@ -28,14 +28,15 @@ export const editableCss =
   inline-size: 100%;
   min-inline-size: 0;
   block-size: var(--bs-control-height-md);
-  /* The row-height centers the preview's text exactly where the browser
-     centers an input's — switching modes never nudges the letters. */
-  line-height: calc(var(--bs-control-height-md) - 2px);
   padding: 0 var(--bs-padding-md);
   border: 1px solid transparent;
   border-radius: var(--bs-radius-sm);
   font: inherit;
   font-size: var(--bs-font-size-md);
+  /* The row-height centers the preview's text exactly where the browser
+     centers an input's — switching modes never nudges the letters. It
+     must come after the font shorthand, which resets line-height. */
+  line-height: calc(var(--bs-control-height-md) - 2px);
   text-overflow: ellipsis;
 }
 
