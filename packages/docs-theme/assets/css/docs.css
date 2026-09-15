@@ -1,0 +1,1297 @@
+/* The documentation site: document base, layout skeleton, and prose.
+   Every control is a library component — this sheet only dresses the
+   page they stand on, and every visual value rides the tokens. */
+
+@import "@bysages/tokens/css";
+
+/* ---------------------------------------------------------------- */
+/* Document                                                          */
+/* ---------------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* The same ground the storybook canvas stands on: the card's paper
+     rises one step, not two. */
+  background: var(--bs-color-surface-1);
+  color: var(--bs-color-text-primary);
+  font-family: var(--bs-font-sans);
+  font-size: var(--bs-font-size-md);
+  line-height: var(--bs-line-height-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Shell — the one container the layout breakpoints query            */
+/* ---------------------------------------------------------------- */
+
+/* No global reset ships with the theme; the shell opts every box it owns
+   into border-box so padding never pushes a stretched lane past the
+   viewport. (Core components declare their own.) */
+.bs-docs,
+.bs-docs *,
+.bs-docs *::before,
+.bs-docs *::after {
+  box-sizing: border-box;
+}
+
+.bs-docs {
+  container-type: inline-size;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-docs-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: calc(var(--bs-z-overlay) - 20);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bs-gap-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-xl);
+  background: color-mix(in srgb, var(--bs-color-surface-0) 82%, transparent);
+  backdrop-filter: blur(8px);
+  border-block-end: 1px solid var(--bs-color-border);
+}
+
+.bs-docs-brand {
+  display: inline-flex;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The seal: a square-cut mark resting on the paper. */
+.bs-docs-brand-mark {
+  inline-size: var(--bs-space-4);
+  block-size: var(--bs-space-4);
+  background: var(--bs-color-ink-on-fill);
+  border-radius: calc(var(--bs-radius-sm) / 2);
+  box-shadow: var(--bs-elevation-1);
+}
+
+.bs-docs-brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-sm);
+}
+
+.bs-docs-brand-name {
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-lg);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+.bs-docs-header-center {
+  flex: 1;
+  /* The search field seats itself at the header's true center, between
+     brand and rail — docus's register. */
+  display: flex;
+  justify-content: center;
+}
+
+.bs-docs-header-end {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-sm);
+}
+
+/* The mobile toggle opens the drawer that carries the whole tree; it only
+   exists while the sidebar is folded away. The part attribute keeps the
+   rule above the button's own display. */
+.bs-docs-header-menu[data-scope="button"][data-part="root"] {
+  display: none;
+}
+
+/* When the sections ride the header (`navigation.sub: "header"`), the bar
+   wraps beneath the brand row and the toggle takes over below it. */
+.bs-docs-header-stacked {
+  flex-wrap: wrap;
+}
+
+.bs-docs-header-bottom {
+  display: none;
+}
+
+.bs-docs-header-drawer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-md);
+  overflow-block: auto;
+}
+
+.bs-docs-header-drawer [data-part="title"] {
+  margin: 0;
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-lg);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+@container (max-width: 1023.98px) {
+  .bs-docs-header-menu[data-scope="button"][data-part="root"] {
+    display: inline-flex;
+  }
+}
+
+@container (min-width: 1024px) {
+  .bs-docs-header-stacked .bs-docs-header-bottom {
+    /* The basis is the header's content box; the two paddings the
+       negative margins walk out must be added back, or the rule stops
+       one padding short on the right. */
+    flex-basis: calc(100% + var(--bs-padding-xl) * 2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--bs-gap-md);
+    /* The rule runs the full width of the bar: the negative margin walks
+       it out through the header's own padding. */
+    margin-inline: calc(-1 * var(--bs-padding-xl));
+    padding-inline: var(--bs-padding-xl);
+    padding-block-start: var(--bs-padding-sm);
+    border-block-start: 1px solid var(--bs-color-border);
+  }
+}
+
+/* Narrow containers slim the rail to the essentials — docus keeps the
+   language, mode and menu; the rest lives in the footer or the drawer.
+   The !important out-ranks the component styles' attribute specificity. */
+@container (width < 640px) {
+  .bs-docs-header-github,
+  .bs-docs-header-theme-settings {
+    display: none !important;
+  }
+
+  /* A pointer's shortcut means nothing on a touch screen. */
+  .bs-docs-search-trigger kbd {
+    display: none !important;
+  }
+}
+
+/* The aside column folds away until the container carries two lanes. */
+.bs-docs-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  inline-size: 100%;
+  max-inline-size: 90rem;
+  margin-inline: auto;
+  padding: var(--bs-padding-md);
+  align-items: start;
+}
+
+.bs-docs-main {
+  min-inline-size: 0;
+  flex: 1;
+  inline-size: 100%;
+}
+
+/* ---------------------------------------------------------------- */
+/* Page transition — ink bleeds between pages, never a hard cut      */
+/* ---------------------------------------------------------------- */
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity var(--bs-duration-base) var(--bs-ease-out);
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* Sidebar — a NavigationMenu stood on its side                      */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-sidebar {
+  display: none;
+}
+
+.bs-docs-sidebar [data-scope="navigation-menu"] {
+  inline-size: 100%;
+}
+
+/* Sidebar entries wrap instead of pushing the lane wider — the register is
+   a column of titles, not a menubar. */
+.bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"] {
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The entry under the reader's eye holds the accent ink. Hover must not
+   steal the state back, so the current color also claims :hover. */
+.bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"][data-current],
+.bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"][data-current]:hover {
+  color: var(--bs-color-primary);
+  font-weight: var(--bs-font-weight-medium);
+}
+
+/* Folders fold: the title row is a collapsible trigger, the branch opens
+   under it, one indent step deeper. */
+.bs-docs-nav-branch {
+  margin-block-start: var(--bs-space-2);
+}
+
+.bs-docs-nav-branch:first-child {
+  margin-block-start: 0;
+}
+
+.bs-docs-nav-folder {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  inline-size: 100%;
+  margin: var(--bs-space-4) var(--bs-padding-md) var(--bs-space-2);
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+  text-transform: uppercase;
+  text-align: start;
+  color: var(--bs-color-text-tertiary);
+  cursor: pointer;
+}
+
+.bs-docs-nav-folder:hover {
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-nav-folder:focus-visible {
+  outline: none;
+  box-shadow: var(--bs-focus-ring);
+  border-radius: var(--bs-radius-sm);
+}
+
+.bs-docs-nav-folder-icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+  flex: none;
+}
+
+.bs-docs-nav-chevron {
+  margin-inline-start: auto;
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex: none;
+  transition: rotate var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-docs-nav-folder[data-state="open"] .bs-docs-nav-chevron {
+  rotate: 90deg;
+}
+
+.bs-docs-nav-branch-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Deeper branches walk one indent step in. */
+.bs-docs-nav-branch .bs-docs-nav-branch-list {
+  padding-inline-start: var(--bs-space-4);
+}
+
+/* ---------------------------------------------------------------- */
+/* Article — prose and the outline share the main lane               */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-article-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--bs-gap-xl);
+  align-items: start;
+}
+
+/* Grid items keep an automatic minimum; the code panels' unbreakable lines
+   would inflate the article past its lane and cut the page margin off. */
+.bs-docs-article-grid > * {
+  min-inline-size: 0;
+}
+
+.bs-docs-page {
+  /* Explicit width: as a grid item with auto margins the page would
+     resolve to fit-content, and the unbreakable code lines' min-content
+     would inflate it past narrow lanes (the margin then centers it). */
+  inline-size: 100%;
+  max-inline-size: 46rem;
+  margin-inline: auto;
+  padding-block: var(--bs-space-6) var(--bs-space-24);
+}
+
+.bs-docs-toc {
+  display: none;
+}
+
+.bs-docs-page-header h1 {
+  margin: 0 0 var(--bs-space-3);
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-3xl);
+  font-weight: var(--bs-font-weight-bold);
+  line-height: var(--bs-line-height-tight);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+/* The section eyebrow, lifted from the navigation tree. */
+.bs-docs-page-headline {
+  margin: 0 0 var(--bs-space-2);
+  font-size: var(--bs-font-size-sm);
+  font-weight: var(--bs-font-weight-medium);
+  letter-spacing: var(--bs-tracking-label);
+  color: var(--bs-color-text-tertiary);
+}
+
+.bs-docs-page-description {
+  margin: 0 0 var(--bs-space-8);
+  font-size: var(--bs-font-size-lg);
+  color: var(--bs-color-text-secondary);
+}
+
+/* ---------------------------------------------------------------- */
+/* Prose                                                             */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-prose {
+  font-size: var(--bs-font-size-md);
+  line-height: var(--bs-line-height-relaxed);
+}
+
+.bs-docs-prose > :first-child {
+  margin-block-start: 0;
+}
+
+.bs-docs-prose h2,
+.bs-docs-prose h3,
+.bs-docs-prose h4,
+.bs-docs-api h2,
+.bs-docs-api h3 {
+  font-family: var(--bs-font-serif);
+  letter-spacing: var(--bs-tracking-label);
+  line-height: var(--bs-line-height-snug);
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-prose h2,
+.bs-docs-api h2 {
+  margin: var(--bs-space-12) 0 var(--bs-space-4);
+  padding-block-end: var(--bs-space-2);
+  border-block-end: 1px solid var(--bs-color-border);
+  font-size: var(--bs-font-size-xl);
+  font-weight: var(--bs-font-weight-semibold);
+}
+
+.bs-docs-prose h3,
+.bs-docs-api h3 {
+  margin: var(--bs-space-8) 0 var(--bs-space-3);
+  font-size: var(--bs-font-size-lg);
+  font-weight: var(--bs-font-weight-semibold);
+}
+
+.bs-docs-prose h4 {
+  margin: var(--bs-space-6) 0 var(--bs-space-2);
+  font-size: var(--bs-font-size-md);
+  font-weight: var(--bs-font-weight-semibold);
+}
+
+.bs-docs-prose p {
+  margin: var(--bs-space-4) 0;
+}
+
+/* Links carry the ink of the sentence and a hairline for the affordance
+   — visible in both modes, where primary flips from ink to paper. :where
+   keeps the rule from out-ranking the components it wraps (buttons, page
+   cards), which bring their own link treatment. */
+.bs-docs-prose :where(a:not([data-scope="button"])) {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--bs-color-border-strong);
+  text-underline-offset: 3px;
+}
+
+.bs-docs-prose :where(a:not([data-scope="button"])):hover {
+  color: var(--bs-color-primary-subtle-text);
+  text-decoration-color: var(--bs-color-primary-subtle-text);
+}
+
+.bs-docs-prose ul,
+.bs-docs-prose ol {
+  margin: var(--bs-space-4) 0;
+  padding-inline-start: var(--bs-space-5);
+}
+
+.bs-docs-prose li {
+  margin-block: var(--bs-space-1);
+}
+
+.bs-docs-prose li::marker {
+  color: var(--bs-color-text-tertiary);
+}
+
+.bs-docs-prose blockquote {
+  margin: var(--bs-space-5) 0;
+  padding-inline-start: var(--bs-space-4);
+  border-inline-start: 3px solid var(--bs-color-border-strong);
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-prose hr {
+  margin: var(--bs-space-8) 0;
+  border: 0;
+  border-block-start: 1px solid var(--bs-color-border);
+}
+
+.bs-docs-prose img {
+  max-inline-size: 100%;
+  border-radius: var(--bs-radius-md);
+}
+
+.bs-docs-prose table {
+  inline-size: 100%;
+  margin: var(--bs-space-5) 0;
+  border-collapse: collapse;
+  font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-prose th {
+  padding: var(--bs-space-2) var(--bs-space-3);
+  border-block-end: 1px solid var(--bs-color-border-strong);
+  text-align: start;
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+.bs-docs-prose td {
+  padding: var(--bs-space-2) var(--bs-space-3);
+  border-block-end: 1px solid var(--bs-color-border);
+}
+
+/* Inline code — the seal edge on a recessed chip of paper. */
+.bs-docs-prose :not(pre) > code {
+  padding: calc(var(--bs-space-1) / 2) calc(var(--bs-space-1));
+  background: var(--bs-color-surface-inset);
+  border-radius: var(--bs-radius-sm);
+  font-family: var(--bs-font-mono);
+  font-size: 0.875em;
+}
+
+.bs-docs-prose pre {
+  margin: 0;
+  padding: var(--bs-padding-md);
+  overflow: auto;
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
+}
+
+/* The anchor a heading offers on hover. */
+.bs-docs-anchor {
+  margin-inline-end: var(--bs-space-2);
+  color: var(--bs-color-text-tertiary);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-docs-prose h2:hover .bs-docs-anchor,
+.bs-docs-prose h3:hover .bs-docs-anchor,
+.bs-docs-anchor:focus-visible {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------- */
+/* Code panel                                                        */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-pre {
+  margin: var(--bs-space-5) 0;
+  background: var(--bs-color-surface-2);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+  overflow: hidden;
+}
+
+.bs-docs-pre-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-space-1) var(--bs-space-2) var(--bs-space-1) var(--bs-padding-md);
+  border-block-end: 1px solid var(--bs-color-border);
+}
+
+.bs-docs-pre-label {
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-xs);
+  letter-spacing: var(--bs-tracking-label);
+  color: var(--bs-color-text-tertiary);
+}
+
+/* Shiki ships both palettes on every token (--shiki-default / --shiki-dark)
+   but switches on the ecosystem's `.dark` class, while the theme engine
+   speaks data-theme — claim the dark palette here, one notch above the
+   generated `html .shiki span` consumer. Backgrounds stay paper. */
+html[data-theme="dark"] .shiki span {
+  /* !important beats the inline color on shiki's inline-output tokens
+     (the demo code tab); class-driven tokens never notice. */
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+/* Code groups share one vessel: the tab strip on top, the panes beneath
+   — each pane's own title bar and border dissolve into the group. The
+   vessel stays paper, not inset: the code reads like a printed block. */
+.bs-docs-code-group[data-scope="tabs"][data-part="root"] {
+  gap: 0;
+  margin-block: var(--bs-space-5);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+  background: var(--bs-color-surface-2);
+  overflow: clip;
+}
+
+.bs-docs-code-group [data-part="list"] {
+  padding-inline: var(--bs-space-2);
+}
+
+/* The family's own tab strip rides the vessel: one mono adjustment, the
+   rest is the stock tabs anatomy (list rule, travelling ink indicator). */
+.bs-docs-code-group [data-part="trigger"] {
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-code-group [data-part="content"] {
+  padding: 0 var(--bs-padding-md) var(--bs-padding-md);
+}
+
+.bs-docs-code-group .bs-docs-pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.bs-docs-code-group .bs-docs-pre-bar {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Callout                                                           */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-callout {
+  margin-block: var(--bs-space-5);
+}
+
+/* ---------------------------------------------------------------- */
+/* Component demo — the live example the component pages stand on    */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-demo[data-scope="tabs"][data-part="root"] {
+  gap: 0;
+  margin-block: var(--bs-space-5);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+  background: var(--bs-color-surface-2);
+  overflow: clip;
+}
+
+.bs-docs-demo [data-part="list"] {
+  padding-inline: var(--bs-space-2);
+}
+
+.bs-docs-demo [data-part="trigger"] {
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-sm);
+}
+
+/* The canvas is the paper the component stands on: one step brighter
+   than the vessel, hairlined, never elevated. */
+.bs-docs-demo-canvas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bs-space-3);
+  margin: 0 var(--bs-padding-md);
+  padding: var(--bs-space-6) var(--bs-space-4);
+  background: var(--bs-color-surface-1);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+}
+
+.bs-docs-demo-missing {
+  margin: 0;
+  color: var(--bs-color-text-muted);
+  font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-demo-code {
+  margin: 0;
+  padding: var(--bs-padding-md);
+  border-radius: 0;
+  background: transparent;
+  overflow-x: auto;
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
+  color: var(--bs-color-text-primary);
+  tab-size: 2;
+}
+
+/* The demo's code pane reuses the printed-block vessel; nested inside
+   the tabs panel it contributes no margin or radius of its own. */
+.bs-docs-demo-code-panel {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* The highlighted source arrives as shiki's own pre inside the panel —
+   it inherits the panel's paper and metrics, contributing no box of
+   its own. */
+.bs-docs-demo-code pre.shiki {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow-x: inherit;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  tab-size: inherit;
+}
+
+/* ---------------------------------------------------------------- */
+/* Surround — the shared Button carrying the reader onward           */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-surround {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--bs-gap-md);
+  margin-block-start: var(--bs-space-16);
+}
+
+.bs-docs-surround-direction {
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+/* The "edit this page" trail under the article body. */
+.bs-docs-page-edit {
+  margin-block-start: var(--bs-space-8);
+  font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-page-edit a {
+  color: var(--bs-color-text-tertiary);
+  text-decoration-color: var(--bs-color-border);
+}
+
+.bs-docs-page-edit a:hover {
+  color: var(--bs-color-primary);
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer                                                            */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--bs-gap-md);
+  padding: var(--bs-padding-lg) var(--bs-padding-xl);
+  border-block-start: 1px solid var(--bs-color-border);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-footer p {
+  margin: 0;
+}
+
+.bs-docs-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--bs-color-border-strong);
+  text-underline-offset: 3px;
+}
+
+.bs-docs-footer a:hover {
+  color: var(--bs-color-text-primary);
+}
+
+/* ---------------------------------------------------------------- */
+/* Theme panel — scene, accent, density over the stock SegmentGroup  */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-theme-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-md);
+  min-inline-size: 18rem;
+}
+
+.bs-docs-theme-panel section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-space-1);
+}
+
+.bs-docs-theme-panel h3 {
+  margin: 0;
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+  text-transform: uppercase;
+  color: var(--bs-color-text-tertiary);
+}
+
+/* The radio text rides quiet until its row is chosen — shared with the
+   language menu, the same popover speaking one radio. */
+.bs-docs-theme-panel [data-scope="radio-group"] [data-part="item-text"],
+.bs-docs-language-menu [data-scope="radio-group"] [data-part="item-text"] {
+  font-size: var(--bs-font-size-sm);
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-theme-panel
+  [data-scope="radio-group"]
+  [data-part="item"][data-state="checked"]
+  [data-part="item-text"],
+.bs-docs-language-menu
+  [data-scope="radio-group"]
+  [data-part="item"][data-state="checked"]
+  [data-part="item-text"] {
+  color: var(--bs-color-text-primary);
+}
+
+/* The header rail's ghost icons — mode, assistant — share one register. */
+.bs-docs-rail-icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+/* The language switcher poses as a bare emoji flag in the header rail —
+   the trigger sheds the stock select chrome at header specificity. */
+.bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: var(--bs-control-height-sm);
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger:hover {
+  background: transparent;
+}
+
+.bs-docs-language-flag {
+  font-size: var(--bs-font-size-lg);
+  line-height: 1;
+}
+
+.bs-docs-language-positioner {
+  min-inline-size: 10rem;
+}
+
+.bs-docs-language-menu {
+  min-inline-size: 10rem;
+}
+
+/* Docus's rows: the name carries the weight, the flag trails at the end. */
+.bs-docs-language-menu [data-scope="select"][data-part="item"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bs-space-2);
+}
+
+/* ---------------------------------------------------------------- */
+/* Search — a header trigger and a top-seated dialog panel           */
+/* ---------------------------------------------------------------- */
+
+/* The kbd hint rides quiet inside the ghost trigger. */
+.bs-docs-search-trigger kbd {
+  padding: 1px var(--bs-space-1);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-xs);
+  background: var(--bs-color-surface-1);
+  color: var(--bs-color-text-tertiary);
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-xs);
+}
+
+/* The trigger poses as a field — the hairline box readers expect to type
+   into — so it out-ranks the ghost-host delegation from core. The center
+   lane flexes it into the header's middle, docus's register. */
+.bs-docs-header-center [data-scope="dialog"][data-part="trigger"].bs-docs-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  inline-size: min(17rem, 100%);
+  block-size: var(--bs-control-height-sm);
+  padding-inline: var(--bs-space-3);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  background: var(--bs-color-surface-2);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+  white-space: nowrap;
+  box-shadow: var(--bs-shadow-xs);
+}
+
+.bs-docs-header-center [data-scope="dialog"][data-part="trigger"].bs-docs-search-trigger:hover {
+  border-color: var(--bs-color-border-strong);
+  background: var(--bs-color-surface-2);
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-search-trigger kbd {
+  margin-inline-start: auto;
+}
+
+/* Inside the panel the combobox sheds its own chrome — the dialog is the
+   vessel; the control is just the typing line. */
+.bs-docs-search-panel [data-scope="combobox"][data-part="root"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-docs-search-panel [data-scope="combobox"][data-part="control"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  padding: var(--bs-space-3) var(--bs-padding-md);
+  border-block-end: 1px solid var(--bs-color-border);
+  border-inline: none;
+  border-block-start: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--bs-color-text-tertiary);
+}
+
+.bs-docs-search-panel [data-scope="combobox"][data-part="input"] {
+  flex: 1;
+  border: none;
+  background: none;
+  box-shadow: none;
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-search-panel [data-scope="combobox"][data-part="input"]:focus,
+.bs-docs-search-panel [data-scope="combobox"][data-part="input"]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* The list flows inside the panel, not as a floating popper: the machine
+   parks position/inset/transform inline, so only !important un-parks it. */
+.bs-docs-search-combobox-positioner {
+  position: static !important;
+  inset: auto !important;
+  inline-size: 100%;
+  transform: none !important;
+}
+
+.bs-docs-search-panel [data-scope="combobox"][data-part="content"] {
+  max-block-size: 46vh;
+  padding: var(--bs-space-2);
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  /* The machine parks pointer-events on the popper it thinks is floating;
+     this list lives in the panel, so the rows take clicks again. */
+  pointer-events: auto !important;
+}
+
+.bs-docs-search-trail {
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+}
+
+.bs-docs-search-panel [data-scope="combobox"][data-part="empty"] {
+  padding: var(--bs-space-4);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+  text-align: center;
+}
+
+/* The panel seats near the top of the viewport, like an editor palette —
+   the scope key lifts these over the stock dialog chrome. */
+.bs-docs-search-positioner[data-scope="dialog"][data-part="positioner"] {
+  align-items: flex-start;
+  padding-block-start: 14vh;
+}
+
+.bs-docs-search-panel[data-scope="dialog"][data-part="content"] {
+  inline-size: min(36rem, 100%);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- */
+/* Assistant — a floating prompt, a Drawer panel                     */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-assistant-float {
+  position: fixed;
+  inset-block-end: var(--bs-space-5);
+  inset-inline: 0;
+  z-index: calc(var(--bs-z-overlay) - 10);
+  inline-size: min(26rem, calc(100vw - var(--bs-space-8)));
+  margin-inline: auto;
+  box-shadow: var(--bs-elevation-2);
+}
+
+.bs-docs-assistant {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-sm);
+}
+
+.bs-docs-assistant-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bs-gap-sm);
+}
+
+.bs-docs-assistant-head h2 {
+  margin: 0;
+  font-family: var(--bs-font-serif);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+.bs-docs-assistant-log {
+  flex: 1;
+  min-block-size: 0;
+  overflow-block: auto;
+}
+
+.bs-docs-assistant-empty {
+  /* The empty panel reads like a title page: greeting and starters
+     centred in the space the conversation will fill. */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bs-gap-sm);
+  padding-block: var(--bs-space-4);
+}
+
+.bs-docs-assistant-greeting {
+  margin: 0;
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-lg);
+  color: var(--bs-color-text-secondary);
+  text-align: center;
+}
+
+.bs-docs-assistant-error {
+  margin: 0;
+  font-size: var(--bs-font-size-sm);
+  color: var(--bs-color-danger);
+}
+
+/* ---------------------------------------------------------------- */
+/* API reference pages                                               */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-api .bs-docs-page-header h1 {
+  font-size: var(--bs-font-size-2xl);
+}
+
+.bs-docs-api-anatomy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bs-gap-sm);
+  margin: 0 0 var(--bs-space-8);
+}
+
+.bs-docs-api-anatomy-label {
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+  text-transform: uppercase;
+  color: var(--bs-color-text-tertiary);
+}
+
+.bs-docs-api-section {
+  margin-block-end: var(--bs-space-12);
+}
+
+.bs-docs-api-empty {
+  font-size: var(--bs-font-size-sm);
+  color: var(--bs-color-text-tertiary);
+}
+
+/* ---------------------------------------------------------------- */
+/* Landing and error pages                                           */
+/* ---------------------------------------------------------------- */
+
+.bs-docs-landing {
+  padding-block: 0;
+}
+
+.bs-docs-hero {
+  max-inline-size: 50rem;
+  margin-inline: auto;
+  padding-block: var(--bs-space-24) var(--bs-space-16);
+  text-align: center;
+}
+
+/* The horizontal hero carries a live demo pane beside the copy. */
+.bs-docs-hero--horizontal {
+  max-inline-size: 72rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--bs-gap-xl);
+  align-items: center;
+  text-align: start;
+}
+
+.bs-docs-hero--reverse .bs-docs-hero-body {
+  order: -1;
+}
+
+.bs-docs-hero-head {
+  min-inline-size: 0;
+}
+
+.bs-docs-hero-body {
+  min-inline-size: 0;
+}
+
+.bs-docs-hero-title {
+  margin: 0 0 var(--bs-space-4);
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-4xl);
+  font-weight: var(--bs-font-weight-bold);
+  line-height: var(--bs-line-height-tight);
+  letter-spacing: var(--bs-tracking-label);
+}
+
+.bs-docs-hero-description {
+  margin: 0 0 var(--bs-space-8);
+  font-size: var(--bs-font-size-lg);
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-hero-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--bs-gap-sm);
+}
+
+.bs-docs-hero--horizontal .bs-docs-hero-links {
+  justify-content: start;
+}
+
+.bs-docs-section {
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding-block: var(--bs-space-8) var(--bs-space-24);
+}
+
+/* Horizontal sections set the copy and the demo side by side; `reverse`
+   flips the panes so consecutive sections interleave. */
+.bs-docs-section--horizontal {
+  padding-block: var(--bs-space-16);
+}
+
+.bs-docs-section--horizontal .bs-docs-section-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--bs-gap-xl);
+  align-items: center;
+}
+
+.bs-docs-section--horizontal .bs-docs-section-head {
+  max-inline-size: none;
+  margin: 0;
+}
+
+.bs-docs-section--horizontal .bs-docs-section-body {
+  order: 1;
+}
+
+.bs-docs-section--reverse .bs-docs-section-body {
+  order: -1;
+}
+
+.bs-docs-section-main {
+  min-inline-size: 0;
+}
+
+.bs-docs-section-body {
+  min-inline-size: 0;
+}
+
+.bs-docs-section-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bs-gap-sm);
+  margin-block-start: var(--bs-space-6);
+}
+
+.bs-docs-section-head {
+  max-inline-size: 46rem;
+  margin: 0 0 var(--bs-space-8);
+}
+
+.bs-docs-section-head h2 {
+  margin: 0 0 var(--bs-space-2);
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-2xl);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+  line-height: var(--bs-line-height-snug);
+}
+
+.bs-docs-section-head p {
+  margin: 0;
+  font-size: var(--bs-font-size-lg);
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-cards {
+  display: grid;
+  /* Nineteen rem keeps the section at three lanes, so a six-card run
+     composes as a full 3x2 at width, 2x3 mid, 1x6 on a rail. */
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: var(--bs-gap-md);
+}
+
+/* The card rides the vessel's surface, hairline, and whitespace rhythm;
+   the link layer only lets the reader in. */
+.bs-docs-page-card {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color var(--bs-duration-base) var(--bs-ease-out),
+    box-shadow var(--bs-duration-slow) var(--bs-ease-out);
+}
+
+/* The feature glyph: a bare line icon in the accent pigment, riding the
+   card's own whitespace — no chip, no seat. The card root carries no
+   padding, so the glyph answers for its own inset: level with the
+   header's copy, one hairline of air beneath. */
+.bs-docs-page-card-icon {
+  display: inline-flex;
+  padding: var(--bs-padding-lg) var(--bs-padding-lg) 0;
+  color: var(--bs-color-primary);
+  font-size: 1.5rem;
+}
+
+.bs-docs-page-card-icon svg {
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.bs-docs-page-card:hover {
+  border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-elevation-1);
+}
+
+.bs-docs-error {
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bs-gap-md);
+  padding: var(--bs-padding-xl);
+  background: var(--bs-color-surface-0);
+  color: var(--bs-color-text-primary);
+  font-family: var(--bs-font-sans);
+  text-align: center;
+}
+
+.bs-docs-error-code {
+  margin: 0;
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-4xl);
+  font-weight: var(--bs-font-weight-bold);
+}
+
+.bs-docs-error-title {
+  margin: 0 0 var(--bs-space-4);
+  font-family: var(--bs-font-serif);
+  font-size: var(--bs-font-size-lg);
+  font-weight: var(--bs-font-weight-medium);
+}
+
+/* ---------------------------------------------------------------- */
+/* Wide containers — the aside and the outline unfold                */
+/* ---------------------------------------------------------------- */
+
+@container (min-width: 1024px) {
+  .bs-docs-body {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: var(--bs-gap-xl);
+    padding: var(--bs-padding-xl);
+  }
+
+  .bs-docs-sidebar {
+    display: block;
+    position: sticky;
+    inset-block-start: calc(var(--bs-control-height-md) + var(--bs-space-8));
+    max-block-size: calc(100dvh - var(--bs-control-height-md) - var(--bs-space-12));
+    overflow-block: auto;
+    padding-block-end: var(--bs-space-8);
+  }
+}
+
+@container (min-width: 1280px) {
+  .bs-docs-article-grid {
+    grid-template-columns: minmax(0, 1fr) 14rem;
+  }
+
+  .bs-docs-toc {
+    display: block;
+    position: sticky;
+    inset-block-start: calc(var(--bs-control-height-md) + var(--bs-space-8));
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Mode transition — the next theme unclips out of the toggle button  */
+/* ---------------------------------------------------------------- */
+
+/* The stock view transition is a crossfade; the toggle drives a circular
+   clip on the new snapshot instead, so light spreads as light would. The
+   animation itself comes from the component's JS. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

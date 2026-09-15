@@ -1,0 +1,17 @@
+{
+  "name": "@bysages/docs-theme-example",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The verification site for @bysages/docs-theme — extends the layer and renders its own markdown",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@bysages/docs-theme": "workspace:*"
+  },
+  "devDependencies": {
+    "nuxt": "^4.2.0"
+  }
+}

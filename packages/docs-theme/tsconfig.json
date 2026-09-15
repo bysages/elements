@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["app", "server", "modules", "utils", "content.config.ts", "nuxt.config.ts"]
+}

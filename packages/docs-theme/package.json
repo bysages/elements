@@ -1,0 +1,72 @@
+{
+  "name": "@bysages/docs-theme",
+  "version": "0.0.0",
+  "description": "Documentation theme for By Sages Elements — a Nuxt Content layer that turns a content folder into a paper-and-ink docs site",
+  "keywords": [
+    "design-system",
+    "docs",
+    "documentation",
+    "nuxt",
+    "nuxt-content",
+    "nuxt-layer"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements"
+  },
+  "files": [
+    "app",
+    "assets",
+    "server",
+    "content.config.ts",
+    "nuxt.config.ts"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./nuxt.config.ts"
+  },
+  "scripts": {
+    "dev": "basis build --stub",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/mcp": "^2.0.49",
+    "@ai-sdk/openai-compatible": "^3.0.48",
+    "@ai-sdk/vue": "^4.0.99",
+    "@bysages/core": "workspace:*",
+    "@bysages/nuxt": "workspace:*",
+    "@bysages/vue": "workspace:*",
+    "@iconify-json/lucide": "^1.2.0",
+    "@nuxt/content": "^3.16.0",
+    "@nuxt/icon": "^2.0.0",
+    "@nuxt/kit": "^4.2.0",
+    "@nuxtjs/i18n": "^10.6.0",
+    "@nuxtjs/mcp-toolkit": "^0.21.0",
+    "@nuxtjs/robots": "^6.2.2",
+    "@nuxtjs/sitemap": "^8.5.1",
+    "ai": "^7.0.99",
+    "better-sqlite3": "^12.4.1",
+    "nuxt-agent-discovery": "^0.5.1",
+    "nuxt-llms": "^0.2.0",
+    "nuxt-og-image": "^6.7.8",
+    "nuxt-schema-org": "^6.3.1",
+    "shiki": "^4.4.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "nuxt": "^4.2.0"
+  },
+  "peerDependencies": {
+    "nuxt": "^4.0.0"
+  }
+}

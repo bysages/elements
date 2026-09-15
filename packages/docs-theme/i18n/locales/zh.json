@@ -1,0 +1,25 @@
+{
+  "common": {
+    "error": {
+      "title": "这一页不在书架上。",
+      "back": "回到目录"
+    }
+  },
+  "docs": {
+    "toc": "本页目录",
+    "menu": "菜单",
+    "language": "语言",
+    "reference": "参考",
+    "copy": {
+      "code": "复制代码",
+      "copied": "已复制"
+    },
+    "search": "搜索文档…",
+    "searchEmpty": "没有找到。",
+    "assistant": "询问文档助手…",
+    "assistantGreeting": "问问文档助手——它读过这些书架。",
+    "prev": "上一篇",
+    "next": "下一篇",
+    "edit": "编辑此页"
+  }
+}
