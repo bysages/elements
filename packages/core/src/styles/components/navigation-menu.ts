@@ -94,6 +94,13 @@ export const navigationMenuCss =
   background: var(--bs-color-surface-0);
 }
 
+/* A vertical menu is a column of titles: the row spans the lane, so the
+   hover wash reads as a full row — a column's width is the row's own
+   property, never the container's stretch. */
+[data-scope="navigation-menu"][data-orientation="vertical"] [data-part="link"] {
+  inline-size: 100%;
+}
+
 /* The page the reader stands on takes the subtle wash of primary —
    legible in both modes — and hover never repaints it. */
 [data-scope="navigation-menu"][data-part="link"][data-current] {

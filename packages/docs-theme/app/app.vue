@@ -19,11 +19,13 @@ const collectionName = computed(() =>
 
 // The key rides the collection: each shelf keeps its own payload entry,
 // so switching back to a locale the reader already visited resolves
-// from cache instead of showing a half-fetched tree.
+// from cache instead of showing a half-fetched tree. The previous tree
+// stays on screen while the new shelf loads — a bare refresh would
+// flash the lane empty for the length of the query.
 const { data: tree } = await useAsyncData(
   () => `docs-nav:${collectionName.value}`,
   () => queryCollectionNavigation(collectionName.value),
-  { watch: [collectionName] },
+  { watch: [collectionName], keepPreviousData: true },
 );
 
 // The locale prefix mounts every collection under one ghost folder;
