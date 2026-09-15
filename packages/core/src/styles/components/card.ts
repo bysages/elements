@@ -3,6 +3,8 @@ export const cardCss = /* css */ `
    elevation, one hairline for its edge. Sections carry their own
    whitespace so the card composes with or without a header. */
 [data-scope="card"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--bs-color-border);

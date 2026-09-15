@@ -4,6 +4,8 @@ export const tableCss = /* css */ `
    ARIA roles keep the semantics of a table. Column widths arrive as the
    --bs-table-cols track list; row height rides the density scale. */
 [data-scope="table"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   --bs-table-row-height: calc(2.5rem * var(--bs-density-scale, 1));
   --bs-table-indent: calc(1.25rem * var(--bs-density-scale, 1));
   display: flex;

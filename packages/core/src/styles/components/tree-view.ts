@@ -9,6 +9,8 @@ export const treeViewCss =
   --bs-tree-indent: 1rem;
   --bs-tree-icon: 1rem;
   --bs-tree-row-block: var(--bs-space-2);
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--bs-space-2);

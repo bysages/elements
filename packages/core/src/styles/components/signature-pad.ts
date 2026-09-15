@@ -5,10 +5,11 @@ export const signaturePadCss =
   /* css */ `
 [data-scope="signature-pad"][data-part="root"] {
   --bs-signature-block: 10rem;
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--bs-space-2);
-  max-inline-size: 24rem;
 }
 
 [data-scope="signature-pad"][data-part="root"][data-disabled] {

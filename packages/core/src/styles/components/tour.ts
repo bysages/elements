@@ -24,7 +24,9 @@ export const tourCss =
 
 [data-scope="tour"][data-part="positioner"] {
   position: fixed;
-  z-index: var(--z-index, var(--bs-z-overlay));
+  /* Same ladder as the backdrop, one rung up — the machine's inline
+     --z-index: auto defeats a var() fallback. */
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
   /* Zag's tooltip steps compose their inline z from this consumer-side
      base; without it the calc is invalid and the backdrop out-stacks the
      card. */

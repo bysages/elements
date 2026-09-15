@@ -4,6 +4,8 @@ export const pageHeaderCss = /* css */ `
    baseline. Generous whitespace — the header opens the page, it does
    not crowd it. */
 [data-scope="page-header"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--bs-space-2);

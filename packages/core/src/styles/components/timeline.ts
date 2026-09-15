@@ -3,6 +3,8 @@ export const timelineCss = /* css */ `
    thread running from the first moment to the last. The dot rides the
    part-size ladder at half step — a quiet point, not a button. */
 [data-scope="timeline"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   margin: 0;

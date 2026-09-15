@@ -4,6 +4,8 @@ export const imageCropperCss =
   labelCss("image-cropper") +
   /* css */ `
 [data-scope="image-cropper"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   --bs-cropper-line: color-mix(in oklab, var(--bs-color-surface-2) 60%, transparent);
   position: relative;
   display: flex;

@@ -56,6 +56,10 @@ export const dialogCss = /* css */ `
 [data-scope="dialog"][data-part="positioner"] {
   position: fixed;
   inset: 0;
+  /* One above its backdrop on the shared base: the machine's inline
+     --z-index: auto defeats a var() fallback, so the ladder rides the
+     layer index directly. */
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
   display: grid;
   place-items: center;
   padding: var(--bs-padding-lg);

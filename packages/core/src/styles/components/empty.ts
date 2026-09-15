@@ -2,6 +2,8 @@ export const emptyCss = /* css */ `
 /* An empty state: the page holds its breath — a quiet mark, one line of
    ink, and room for the next action. Centered, generous with whitespace. */
 [data-scope="empty"][data-part="root"] {
+  /* Full width is the component's own property, not the stage's stretch. */
+  inline-size: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
