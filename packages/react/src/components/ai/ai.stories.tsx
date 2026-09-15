@@ -135,7 +135,7 @@ export const ToolCall = {
       <Ai.Tool
         name="search_web"
         status="completed"
-        open
+        defaultOpen
         input='{"query": "paper stock"}'
         output='{"hits": 12}'
       />

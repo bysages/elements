@@ -157,7 +157,7 @@ export const ToolCall = {
       ),
       h(
         Ai.Tool,
-        { name: "search_web", status: "completed", open: true },
+        { name: "search_web", status: "completed", defaultOpen: true },
         {
           input: () => '{"query": "paper stock"}',
           output: () => '{"hits": 12}',
@@ -181,15 +181,14 @@ export const ToolCall = {
     ]),
 };
 
-/** The model's thought on one hairline — a native disclosure, so the
- * fold costs no script. */
+/** The model's thought on one hairline, folded by the shared collapsible. */
 export const Reasoning = {
   render: () =>
     h("div", { style: { display: "grid", gap: "1rem", maxInlineSize: "34rem" } }, [
       h(Ai.Reasoning, { label: "Thought for 2s" }, () => reasoningText),
       h(
         Ai.Reasoning,
-        { label: "Thought for 5s", open: true },
+        { label: "Thought for 5s", defaultOpen: true },
         () => "Shorter strokes first, the shadow note last.",
       ),
     ]),

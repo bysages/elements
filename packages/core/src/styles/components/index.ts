@@ -5,8 +5,10 @@ import { angleSliderCss } from "./angle-slider";
 import { avatarCss } from "./avatar";
 import { avatarGroupCss } from "./avatar-group";
 import { badgeCss } from "./badge";
+import { bannerCss } from "./banner";
 import { breadcrumbCss } from "./breadcrumb";
 import { buttonCss } from "./button";
+import { calendarCss } from "./calendar";
 import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
 import { checkboxCss } from "./checkbox";
@@ -30,11 +32,15 @@ import { hoverCardCss } from "./hover-card";
 import { imageCropperCss } from "./image-cropper";
 import { jsonTreeViewCss } from "./json-tree-view";
 import { kbdCss } from "./kbd";
+import { linkCss } from "./link";
 import { listboxCss } from "./listbox";
 import { marqueeCss } from "./marquee";
 import { menuCss } from "./menu";
+import { meterCss } from "./meter";
+import { typographyCss } from "./typography";
 import { navigationMenuCss } from "./navigation-menu";
 import { numberInputCss } from "./number-input";
+import { pageHeaderCss } from "./page-header";
 import { paginationCss } from "./pagination";
 import { passwordInputCss } from "./password-input";
 import { pinInputCss } from "./pin-input";
@@ -49,6 +55,8 @@ import { selectCss } from "./select";
 import { separatorCss } from "./separator";
 import { signaturePadCss } from "./signature-pad";
 import { skeletonCss } from "./skeleton";
+import { spinnerCss } from "./spinner";
+import { statCss } from "./stat";
 import { sliderCss } from "./slider";
 import { splitterCss } from "./splitter";
 import { stepsCss } from "./steps";
@@ -77,8 +85,12 @@ export const componentStyles: Record<string, string> = {
   avatar: avatarCss,
   "avatar-group": avatarGroupCss,
   badge: badgeCss,
+  banner: bannerCss,
   breadcrumb: breadcrumbCss,
   button: buttonCss,
+  // The calendar is the date-picker's grid standing alone: same parts,
+  // its own data-scope — re-scope the shared stylesheet, never copy it.
+  calendar: calendarCss + datePickerCss.replaceAll('data-scope="date-picker"', 'data-scope="calendar"'),
   card: cardCss,
   carousel: carouselCss,
   checkbox: checkboxCss,
@@ -102,11 +114,15 @@ export const componentStyles: Record<string, string> = {
   "image-cropper": imageCropperCss,
   "json-tree-view": jsonTreeViewCss,
   kbd: kbdCss,
+  link: linkCss,
   listbox: listboxCss,
   marquee: marqueeCss,
   menu: menuCss,
+  meter: meterCss,
+  typography: typographyCss,
   "navigation-menu": navigationMenuCss,
   "number-input": numberInputCss,
+  "page-header": pageHeaderCss,
   pagination: paginationCss,
   "password-input": passwordInputCss,
   "pin-input": pinInputCss,
@@ -121,6 +137,8 @@ export const componentStyles: Record<string, string> = {
   separator: separatorCss,
   "signature-pad": signaturePadCss,
   skeleton: skeletonCss,
+  spinner: spinnerCss,
+  stat: statCss,
   slider: sliderCss,
   splitter: splitterCss,
   steps: stepsCss,
@@ -150,6 +168,7 @@ export {
   badgeCss,
   breadcrumbCss,
   buttonCss,
+  calendarCss,
   cardCss,
   carouselCss,
   checkboxCss,
@@ -173,9 +192,12 @@ export {
   imageCropperCss,
   jsonTreeViewCss,
   kbdCss,
+  linkCss,
   listboxCss,
   marqueeCss,
   menuCss,
+  meterCss,
+  typographyCss,
   navigationMenuCss,
   numberInputCss,
   paginationCss,

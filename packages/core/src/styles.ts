@@ -16,11 +16,19 @@ export const tokensCss: string = tokensStyles + baseCss + inkRippleCss;
 
 let injected = false;
 
+/** True when an SSR integration already delivered the whole layer (the
+ * Nuxt module ships it as one build-time stylesheet and plants this
+ * marker in the head). The marker parses before any module script, so
+ * the wrappers' import-time injection stands down at any load order. */
+const stylesShipped = () =>
+  typeof document !== "undefined" &&
+  !!document.querySelector("meta[name='bs-styles-shipped']");
+
 /** Inject the token layer into the document head once — the inheritance
  * root that carries themes, density, and the motion grammar. SSR is a
  * no-op; for SSR pass `tokensCss` to a head tag instead. */
 export function injectTokens(): void {
-  if (injected || typeof document === "undefined") return;
+  if (injected || stylesShipped() || typeof document === "undefined") return;
 
   const style = document.createElement("style");
   style.dataset.bsStyles = "tokens";
@@ -34,7 +42,7 @@ const injectedComponents = new Set<string>();
 /** Inject one component stylesheet (plus the token layer on first use).
  * Idempotent per component; SSR is a no-op. */
 export function injectComponentStyle(key: string): void {
-  if (injectedComponents.has(key) || typeof document === "undefined") return;
+  if (injectedComponents.has(key) || stylesShipped() || typeof document === "undefined") return;
 
   injectTokens();
 

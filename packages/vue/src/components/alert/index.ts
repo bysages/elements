@@ -1,8 +1,10 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { InjectionKey, SetupContext } from "vue";
-import { defineComponent, h, inject, provide } from "vue";
+import type { ComputedRef, InjectionKey, SetupContext } from "vue";
+import { computed, defineComponent, h, inject, provide } from "vue";
 
-const STATUS: InjectionKey<string> = Symbol("alert-status");
+// The status rides the context as a computed so a live status prop
+// re-reads on every icon render instead of freezing at mount.
+const STATUS: InjectionKey<ComputedRef<string>> = Symbol("alert-status");
 
 function glyph(status: string) {
   const paths: Record<string, string> = {
@@ -36,7 +38,7 @@ const Root = defineComponent({
     status: { type: String, default: "ink" },
   },
   setup(props, ctx: SetupContext) {
-    provide(STATUS, props.status);
+    provide(STATUS, computed(() => props.status));
     return () =>
       h(
         "div",
@@ -55,8 +57,8 @@ const Root = defineComponent({
 const Icon = defineComponent({
   name: "AlertIcon",
   setup() {
-    const status = inject(STATUS, "ink");
-    return () => h("span", { "data-scope": "alert", "data-part": "icon" }, glyph(status));
+    const status = inject(STATUS, computed(() => "ink"));
+    return () => h("span", { "data-scope": "alert", "data-part": "icon" }, glyph(status.value));
   },
 });
 

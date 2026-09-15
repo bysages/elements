@@ -15,7 +15,7 @@ export const cardCss = /* css */ `
   display: flex;
   flex-direction: column;
   gap: var(--bs-space-1);
-  padding: var(--bs-padding-lg) var(--bs-padding-lg) 0;
+  padding: var(--bs-padding-lg);
 }
 
 /* The title rides the serif — a vessel carries a heading, not a control. */
@@ -35,7 +35,7 @@ export const cardCss = /* css */ `
 }
 
 [data-scope="card"][data-part="content"] {
-  padding: var(--bs-padding-lg);
+  padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
@@ -48,10 +48,9 @@ export const cardCss = /* css */ `
   padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
 }
 
-/* Sections carry their own whitespace, so a body between header and
-   footer keeps the rhythm — when the two sit adjacent nothing does, and
-   the footer supplies the missing beat itself. */
-[data-scope="card"][data-part="header"] + [data-scope="card"][data-part="footer"] {
-  margin-block-start: var(--bs-padding-lg);
+/* A body that opens the card answers the header's top padding itself. */
+[data-scope="card"][data-part="content"]:first-child,
+[data-scope="card"][data-part="footer"]:first-child {
+  padding-block: var(--bs-padding-lg);
 }
 `;

@@ -43,9 +43,42 @@ export const dialogCss = /* css */ `
   box-shadow: var(--bs-focus-ring);
 }
 
+/* as-child triggers carry our Button seals onto the dialog anatomy — the
+   machine overwrites data-scope, so the ghost variant is re-declared
+   here, exactly as the popover does. */
+[data-scope="dialog"][data-part="trigger"][data-variant="ghost"] {
+  block-size: var(--bs-control-height-sm);
+  padding: 0 var(--bs-space-2);
+  border: none;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-secondary);
+  font: inherit;
+  font-size: var(--bs-font-size-sm);
+  font-weight: var(--bs-font-weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--bs-duration-fast) var(--bs-ease-out),
+    color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="dialog"][data-part="trigger"][data-variant="ghost"]:hover {
+  background: var(--bs-color-surface-0);
+  color: var(--bs-color-text-primary);
+}
+
+[data-scope="dialog"][data-part="trigger"][data-variant="ghost"]:focus-visible,
+[data-scope="dialog"][data-part="trigger"][data-variant="ghost"][data-state="open"] {
+  outline: none;
+  box-shadow: var(--bs-focus-ring);
+}
+
 [data-scope="dialog"][data-part="backdrop"] {
   position: fixed;
   inset: 0;
+  /* One below its positioner, from the same shared base — chrome like the
+     sticky header (overlay - 20) must fall under the scrim. */
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0) - 1);
   background: var(--bs-color-scrim);
   transition: opacity var(--bs-duration-slow) var(--bs-ease-out);
 }

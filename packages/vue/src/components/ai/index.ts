@@ -1,15 +1,18 @@
 import { injectComponentStyle } from "@bysages/core";
 import { renderHtml } from "@tanstack/markdown/html";
 import type { PropType, SetupContext } from "vue";
-import { computed, defineComponent, h, ref, watch } from "vue";
+import { computed, defineComponent, h } from "vue";
 
 import { Button } from "../button";
+import { Collapsible } from "../collapsible";
+import { Field } from "../field";
 
 /** A conversation column: Root is the log, Message carries a role, and
  * the speaking parts — Response, Reasoning, Tool, Sources — part the
- * stream. Parts stay agnostic of any client; consumers map their
- * message format (e.g. the `UIMessage` parts re-exported below) onto
- * these primitives. */
+ * stream. The interactive folds are the shared Collapsible wearing a
+ * `data-ai` marker, so the machine work is never ours. Parts stay
+ * agnostic of any client; consumers map their message format (e.g. the
+ * `UIMessage` parts re-exported below) onto these primitives. */
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
     name: "Ai" + name,
@@ -34,6 +37,18 @@ const MessageContent = part("Content", "div");
 const Sources = part("Sources", "ol");
 const Actions = part("Actions", "div");
 const Loader = part("Loader", "span", { role: "status", "aria-label": "Loading" });
+
+/** The folding chevron the shared indicator turns. */
+const chevron = () =>
+  h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" }, [
+    h("path", {
+      d: "M6 4l4 4-4 4",
+      stroke: "currentColor",
+      "stroke-width": "1.5",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+    }),
+  ]);
 
 /** Whose stroke this is — the user's words sit in a recessed bubble,
  * the assistant speaks flat on the paper. */
@@ -74,31 +89,27 @@ const Response = defineComponent({
   },
 });
 
-/** The model's thought: a native disclosure, so folding costs no
- * script. Pass the `open` attribute to start unfolded. */
+/** The model's thought, folded by the shared collapsible in its quiet
+ * register: bare ink for a trigger, the thought on one hairline. */
 const Reasoning = defineComponent({
   name: "AiReasoning",
   props: {
     label: { type: String, default: "Thinking" },
   },
   setup(props, ctx: SetupContext) {
-    const content = ctx.slots.default?.();
     return () =>
-      h(
-        "details",
-        { ...ctx.attrs, "data-scope": "ai", "data-part": "reasoning" },
-        content
-          ? [
-              h("summary", props.label),
-              h("div", { "data-scope": "ai", "data-part": "reasoning-content" }, content),
-            ]
-          : h("summary", props.label),
-      );
+      h(Collapsible.Root, { ...ctx.attrs, "data-ai": "reasoning" }, () => [
+        h(Collapsible.Trigger, () => [h("span", props.label), h(Collapsible.Indicator, chevron)]),
+        h(Collapsible.Content, () =>
+          h("div", { "data-scope": "ai", "data-part": "reasoning-content" }, ctx.slots.default?.()),
+        ),
+      ]);
   },
 });
 
-/** A tool call: the name it was reached by, the state it reached in,
- * and — folded inside — its input and output. */
+/** A tool call: the shared collapsible as the vessel — the name it was
+ * reached by and the state it reached in on the trigger, its input and
+ * output folded inside. */
 const Tool = defineComponent({
   name: "AiTool",
   props: {
@@ -108,30 +119,11 @@ const Tool = defineComponent({
   setup(props, ctx: SetupContext) {
     return () => {
       const status = props.status;
-      const body = [
-        ...(ctx.slots.input
-          ? [
-              h("span", { "data-scope": "ai", "data-part": "tool-label" }, "Input"),
-              h("pre", ctx.slots.input()),
-            ]
-          : []),
-        ...(ctx.slots.output
-          ? [
-              h("span", { "data-scope": "ai", "data-part": "tool-label" }, "Output"),
-              h("pre", ctx.slots.output()),
-            ]
-          : []),
-      ];
       return h(
-        "details",
-        {
-          ...ctx.attrs,
-          "data-scope": "ai",
-          "data-part": "tool",
-          ...(status ? { "data-status": status } : {}),
-        },
-        [
-          h("summary", [
+        Collapsible.Root,
+        { ...ctx.attrs, "data-ai": "tool", ...(status ? { "data-status": status } : {}) },
+        () => [
+          h(Collapsible.Trigger, () => [
             h("span", props.name),
             status
               ? h(
@@ -140,8 +132,25 @@ const Tool = defineComponent({
                   status.charAt(0).toUpperCase() + status.slice(1),
                 )
               : null,
+            h(Collapsible.Indicator, chevron),
           ]),
-          h("div", { "data-scope": "ai", "data-part": "tool-body" }, body),
+          h(Collapsible.Content, () => {
+            const body = [
+              ...(ctx.slots.input
+                ? [
+                    h("span", { "data-scope": "ai", "data-part": "tool-label" }, "Input"),
+                    h("pre", ctx.slots.input()),
+                  ]
+                : []),
+              ...(ctx.slots.output
+                ? [
+                    h("span", { "data-scope": "ai", "data-part": "tool-label" }, "Output"),
+                    h("pre", ctx.slots.output()),
+                  ]
+                : []),
+            ];
+            return h("div", { "data-scope": "ai", "data-part": "tool-body" }, body);
+          }),
         ],
       );
     };
@@ -178,7 +187,13 @@ const Action = defineComponent({
     return () =>
       h(
         Button,
-        { variant: "ghost", size: "sm", "aria-label": props.label, title: props.label },
+        {
+          variant: "ghost",
+          size: "sm",
+          square: true,
+          "aria-label": props.label,
+          title: props.label,
+        },
         ctx.slots.default?.(),
       );
   },
@@ -204,9 +219,10 @@ const Suggestion = defineComponent({
   },
 });
 
-/** The prompt vessel: a bare, self-growing textarea and the submit
- * seal. Controlled — bind `v-model` and take the text on `submit`.
- * Enter sends; Shift+Enter breaks the line. */
+/** The prompt vessel: the shared field textarea — self-growing on the
+ * machine's autoresize — over a footer row carrying the submit seal.
+ * Controlled — bind `v-model` and take the text on `submit`. Enter
+ * sends; Shift+Enter breaks the line. */
 const PromptInput = defineComponent({
   name: "AiPromptInput",
   props: {
@@ -219,23 +235,12 @@ const PromptInput = defineComponent({
     submit: (value: string) => true,
   },
   setup(props, { emit, attrs }: SetupContext) {
-    const field = ref<HTMLTextAreaElement | null>(null);
-
-    const grow = () => {
-      const el = field.value;
-      if (!el) return;
-      el.style.blockSize = "auto";
-      el.style.blockSize = `${el.scrollHeight}px`;
-    };
-
     const submit = () => {
       const value = props.modelValue.trim();
       if (!value || props.disabled) return;
       emit("submit", value);
       emit("update:modelValue", "");
     };
-
-    watch(() => props.modelValue, grow);
 
     return () =>
       h(
@@ -250,51 +255,51 @@ const PromptInput = defineComponent({
           },
         },
         [
-          h("textarea", {
-            ref: field,
-            "data-scope": "ai",
-            "data-part": "prompt-textarea",
-            rows: 1,
-            value: props.modelValue,
-            placeholder: props.placeholder,
-            disabled: props.disabled,
-            onInput: (event: Event) => {
-              emit("update:modelValue", (event.target as HTMLTextAreaElement).value);
-              grow();
-            },
-            onKeydown: (event: KeyboardEvent) => {
-              if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                submit();
-              }
-            },
-          }),
-          h(
-            Button,
-            {
-              variant: "solid",
-              size: "sm",
-              type: "submit",
-              "aria-label": "Send",
-              disabled: props.disabled || !props.modelValue.trim(),
-            },
-            [
-              h(
-                "svg",
-                {
-                  viewBox: "0 0 16 16",
-                  width: 14,
-                  height: 14,
-                  "aria-hidden": "true",
-                  fill: "none",
-                  stroke: "currentColor",
-                  "stroke-width": "1.5",
-                  "stroke-linecap": "square",
-                },
-                [h("path", { d: "M8 13V3M3.5 7.5 8 3l4.5 4.5" })],
-              ),
-            ],
+          h(Field.Root as any, () =>
+            h(Field.Textarea as any, {
+              autoresize: true,
+              rows: 1,
+              modelValue: props.modelValue,
+              placeholder: props.placeholder,
+              disabled: props.disabled,
+              "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
+              onKeydown: (event: KeyboardEvent) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  submit();
+                }
+              },
+            }),
           ),
+          h("div", { "data-scope": "ai", "data-part": "prompt-footer" }, [
+            h(
+              Button,
+              {
+                variant: "solid",
+                size: "sm",
+                square: true,
+                type: "submit",
+                "aria-label": "Send",
+                disabled: props.disabled || !props.modelValue.trim(),
+              },
+              [
+                h(
+                  "svg",
+                  {
+                    viewBox: "0 0 16 16",
+                    width: 14,
+                    height: 14,
+                    "aria-hidden": "true",
+                    fill: "none",
+                    stroke: "currentColor",
+                    "stroke-width": "1.5",
+                    "stroke-linecap": "square",
+                  },
+                  [h("path", { d: "M8 13V3M3.5 7.5 8 3l4.5 4.5" })],
+                ),
+              ],
+            ),
+          ]),
         ],
       );
   },

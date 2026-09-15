@@ -26,7 +26,9 @@ export const aiCss = /* css */ `
   padding: var(--bs-space-2) var(--bs-space-3);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-inset);
+  background: var(--bs-color-surface-1);
+  inline-size: fit-content;
+  max-inline-size: min(75%, 30rem);
 }
 
 /* Markdown response: the ink is set with relaxed leading, code rides
@@ -70,22 +72,25 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="response"] a {
-  color: var(--bs-color-primary);
+  color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--bs-color-border-strong);
+  text-underline-offset: 3px;
 }
 
 [data-scope="ai"][data-part="response"] a:hover {
-  text-decoration-color: var(--bs-color-primary);
+  color: var(--bs-color-primary-subtle-text);
+  text-decoration-color: var(--bs-color-primary-subtle-text);
 }
 
-[data-scope="ai"][data-part="response"] code {
-  padding: var(--bs-space-1) calc(var(--bs-space-1) + 1px);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-xs);
+/* The code chip: the recessed paper, no border — the docs prose
+   treatment. The block: the same panel the pre rides in. */
+[data-scope="ai"][data-part="response"] :not(pre) > code {
+  padding: calc(var(--bs-space-1) / 2) var(--bs-space-1);
+  border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-inset);
   font-family: var(--bs-font-mono);
-  font-size: var(--bs-font-size-sm);
+  font-size: 0.875em;
 }
 
 [data-scope="ai"][data-part="response"] pre {
@@ -95,12 +100,15 @@ export const aiCss = /* css */ `
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-inset);
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
 }
 
 [data-scope="ai"][data-part="response"] pre code {
   padding: 0;
-  border: none;
   background: none;
+  font-size: inherit;
 }
 
 [data-scope="ai"][data-part="response"] blockquote {
@@ -116,11 +124,16 @@ export const aiCss = /* css */ `
   font-size: var(--bs-font-size-sm);
 }
 
-[data-scope="ai"][data-part="response"] th,
-[data-scope="ai"][data-part="response"] td {
-  padding: var(--bs-space-1) var(--bs-space-2);
-  border: 1px solid var(--bs-color-border);
+[data-scope="ai"][data-part="response"] th {
+  padding: var(--bs-space-2) var(--bs-space-3);
+  border-block-end: 1px solid var(--bs-color-border-strong);
   text-align: start;
+  font-weight: var(--bs-font-weight-semibold);
+}
+
+[data-scope="ai"][data-part="response"] td {
+  padding: var(--bs-space-2) var(--bs-space-3);
+  border-block-end: 1px solid var(--bs-color-border);
 }
 
 [data-scope="ai"][data-part="response"] hr {
@@ -129,71 +142,59 @@ export const aiCss = /* css */ `
   border-block-start: 1px solid var(--bs-color-border);
 }
 
-/* Reasoning: a quiet disclosure. The summary whispers; the thought
-   itself hangs on one hairline, like the timeline thread. */
-[data-scope="ai"][data-part="reasoning"] summary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--bs-space-2);
+/* Reasoning: the shared collapsible in its quiet register — a bare
+   trigger of ink, the thought itself hanging on one hairline. Both the
+   tool and the thought stretch the full message column: the message
+   flexes its children to fit-content, and a shrinking panel would jump
+   wide the moment its content unfurls. */
+[data-scope="collapsible"][data-part="root"][data-ai="reasoning"],
+[data-scope="collapsible"][data-part="root"][data-ai="tool"] {
+  align-self: stretch;
+}
+
+[data-scope="collapsible"][data-part="root"][data-ai="reasoning"] [data-part="trigger"],
+[data-scope="collapsible"][data-part="root"][data-ai="reasoning"] [data-part="trigger"]:hover {
+  justify-content: flex-start;
+  inline-size: 100%;
+  min-block-size: auto;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
 }
 
-[data-scope="ai"][data-part="reasoning"] summary::-webkit-details-marker {
-  display: none;
+[data-scope="collapsible"][data-part="root"][data-ai="reasoning"] [data-part="trigger"]:hover {
+  color: var(--bs-color-text-primary);
 }
 
-[data-scope="ai"][data-part="reasoning"] summary::before {
-  content: "";
-  inline-size: calc(var(--bs-part-size-sm) / 2);
-  block-size: calc(var(--bs-part-size-sm) / 2);
-  border-inline-end: 1px solid var(--bs-color-border-strong);
-  border-block-end: 1px solid var(--bs-color-border-strong);
-  transform: rotate(-45deg);
-  transition: transform var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="ai"][data-part="reasoning"][open] summary::before {
-  transform: rotate(45deg);
-}
-
-[data-scope="ai"][data-part="reasoning"] [data-part="reasoning-content"] {
-  margin-block-start: var(--bs-space-2);
-  padding-inline-start: var(--bs-space-3);
+[data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="reasoning-content"] {
+  padding: 0 0 0 var(--bs-space-3);
   border-inline-start: 1px solid var(--bs-color-border);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
 
-/* A tool call: a quiet vessel naming what was reached for. The status
-   dot pairs color with nothing else — the name carries the meaning. */
-[data-scope="ai"][data-part="tool"] {
+/* A tool call: the shared collapsible as the vessel — the box is the
+   component's, the trigger bleeds to the edges. The status dot pairs
+   color with nothing else — the name carries the meaning. */
+[data-scope="collapsible"][data-part="root"][data-ai="tool"] {
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
 }
 
-[data-scope="ai"][data-part="tool"] summary {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
+[data-scope="collapsible"][data-part="root"][data-ai="tool"] [data-part="trigger"],
+[data-scope="collapsible"][data-part="root"][data-ai="tool"] [data-part="trigger"]:hover {
+  inline-size: 100%;
+  min-block-size: auto;
   padding: var(--bs-space-2) var(--bs-space-3);
+  border: none;
+  background: none;
+  box-shadow: none;
   font-size: var(--bs-font-size-sm);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-}
-
-[data-scope="ai"][data-part="tool"] summary::-webkit-details-marker {
-  display: none;
 }
 
 [data-scope="ai"][data-part="tool-status"] {
@@ -214,22 +215,22 @@ export const aiCss = /* css */ `
   background: var(--bs-color-surface-2);
 }
 
-[data-scope="ai"][data-part="tool"][data-status="running"] [data-part="tool-status"]::before {
+[data-ai="tool"][data-status="running"] [data-part="tool-status"]::before {
   border-color: var(--bs-color-info);
   background: var(--bs-color-info);
 }
 
-[data-scope="ai"][data-part="tool"][data-status="completed"] [data-part="tool-status"]::before {
+[data-ai="tool"][data-status="completed"] [data-part="tool-status"]::before {
   border-color: var(--bs-color-success);
   background: var(--bs-color-success);
 }
 
-[data-scope="ai"][data-part="tool"][data-status="error"] [data-part="tool-status"]::before {
+[data-ai="tool"][data-status="error"] [data-part="tool-status"]::before {
   border-color: var(--bs-color-danger);
   background: var(--bs-color-danger);
 }
 
-[data-scope="ai"][data-part="tool-body"] {
+[data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="tool-body"] {
   display: grid;
   gap: var(--bs-space-2);
   padding: 0 var(--bs-space-3) var(--bs-space-3);
@@ -280,8 +281,10 @@ export const aiCss = /* css */ `
   gap: var(--bs-space-1);
 }
 
-/* The prompt: one vessel holding a bare textarea and the submit seal.
-   The halo answers the vessel, not the field inside it. */
+/* The prompt: one vessel — the shared field bared to the paper and
+   self-growing on the machine's autoresize. It starts a single line tall,
+   the submit seal riding that line; as the text grows the seal settles
+   onto the last line. The halo answers the vessel, not the control. */
 [data-scope="ai"][data-part="prompt"] {
   display: flex;
   align-items: flex-end;
@@ -300,14 +303,27 @@ export const aiCss = /* css */ `
   box-shadow: var(--bs-focus-ring);
 }
 
-[data-scope="ai"][data-part="prompt-textarea"] {
-  box-sizing: border-box;
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="root"] {
   flex: 1;
-  min-block-size: calc(var(--bs-control-height-md) - 2 * var(--bs-space-2));
+  min-inline-size: 0;
+}
+
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"] {
+  box-sizing: border-box;
+  inline-size: 100%;
+  /* One line of text stands a control tall: the line box is padded to
+     the control height, so text and the submit seal share one axis at
+     every density — and the seal keeps riding that axis as text grows. */
+  min-block-size: var(--bs-control-height-sm);
   max-block-size: calc(var(--bs-space-16) * 2);
-  padding: 0;
+  padding-block: calc(
+    (var(--bs-control-height-sm) - var(--bs-font-size-md) * var(--bs-line-height-relaxed)) / 2
+  );
+  padding-inline: 0;
   border: none;
+  border-radius: 0;
   background: none;
+  box-shadow: none;
   color: var(--bs-color-text-primary);
   font: inherit;
   font-size: var(--bs-font-size-md);
@@ -315,11 +331,25 @@ export const aiCss = /* css */ `
   resize: none;
 }
 
-[data-scope="ai"][data-part="prompt-textarea"]:focus {
+[data-scope="ai"][data-part="prompt-footer"] {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"]:focus,
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"]:hover:not(:disabled) {
+  border: none;
+  box-shadow: none;
   outline: none;
 }
 
-[data-scope="ai"][data-part="prompt-textarea"]::placeholder {
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"]:disabled {
+  border: none;
+  background: none;
+}
+
+[data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"]::placeholder {
   color: var(--bs-color-text-tertiary);
 }
 

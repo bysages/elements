@@ -1,8 +1,9 @@
 export const tocCss = /* css */ `
 [data-scope="toc"][data-part="root"] {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-6);
+  gap: var(--bs-space-2);
 }
 
 /* The heading of the rail whispers: small, tracked, never competing with
@@ -52,7 +53,7 @@ export const tocCss = /* css */ `
 /* The section currently under the reader's eye is the active ink — and the
    two states never stack. */
 [data-scope="toc"][data-part="link"][data-active] {
-  color: var(--bs-color-primary);
+  color: var(--bs-color-primary-subtle-text);
   font-weight: var(--bs-font-weight-medium);
 }
 

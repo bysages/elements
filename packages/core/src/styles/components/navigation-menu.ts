@@ -23,6 +23,11 @@ export const navigationMenuCss =
   flex-direction: column;
 }
 
+/* A vertical bar is a column of full-width rows. */
+[data-scope="navigation-menu"][data-part="root"][data-orientation="vertical"] {
+  align-items: stretch;
+}
+
 [data-scope="navigation-menu"][data-part="item"] {
   position: relative;
 }
@@ -65,6 +70,8 @@ export const navigationMenuCss =
 }
 
 [data-scope="navigation-menu"][data-part="link"] {
+  /* No page reset may be assumed: the padding rides inside the stretch. */
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--bs-space-2);
@@ -87,10 +94,11 @@ export const navigationMenuCss =
   background: var(--bs-color-surface-0);
 }
 
-/* The page the reader stands on is inked in primary — and hover never
-   repaints it. */
+/* The page the reader stands on takes the subtle wash of primary —
+   legible in both modes — and hover never repaints it. */
 [data-scope="navigation-menu"][data-part="link"][data-current] {
-  color: var(--bs-color-primary);
+  background: var(--bs-color-primary-subtle);
+  color: var(--bs-color-primary-subtle-text);
 }
 
 [data-scope="navigation-menu"][data-part="link"]:focus-visible {

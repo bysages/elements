@@ -30,6 +30,9 @@ export const drawerCss =
 [data-scope="drawer"][data-part="backdrop"] {
   position: fixed;
   inset: 0;
+  /* One below its positioner, from the same shared base — chrome like the
+     sticky header (overlay - 20) must fall under the scrim. */
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0) - 1);
   background: var(--bs-color-scrim);
   transition: opacity var(--bs-duration-slow) var(--bs-ease-out);
 }

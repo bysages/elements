@@ -2,6 +2,9 @@ export const accordionCss = /* css */ `
 [data-scope="accordion"][data-part="root"] {
   display: flex;
   flex-direction: column;
+  /* Fill the parent at rest too: an auto width would refit to the
+     content on every fold, breathing as rows open and close. */
+  inline-size: 100%;
   color: var(--bs-color-text-primary);
 }
 
@@ -95,6 +98,15 @@ export const accordionCss = /* css */ `
 [data-scope="accordion"][data-part="item-content"] > * {
   padding: 0 var(--bs-padding-md) var(--bs-space-3);
   margin: 0;
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-relaxed);
+}
+
+/* Bare text has no element child for the rule above — pad it inline
+   only, so the collapse still settles to a clean zero height. */
+[data-scope="accordion"][data-part="item-content"]:not(:has(*)) {
+  padding: 0 var(--bs-padding-md);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

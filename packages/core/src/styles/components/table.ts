@@ -55,7 +55,9 @@ export const tableCss = /* css */ `
   display: grid;
   grid-template-columns: var(--bs-table-cols, repeat(auto-fill, minmax(0, 1fr)));
   align-items: stretch;
-  block-size: var(--bs-table-row-height);
+  /* The register's height is a floor: content grows the row. Virtual
+     windows pin their rows to exact px inline, overriding this. */
+  min-block-size: var(--bs-table-row-height);
   position: relative;
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
@@ -150,7 +152,7 @@ export const tableCss = /* css */ `
   display: flex;
   align-items: center;
   gap: var(--bs-space-2);
-  padding: 0 var(--bs-padding-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   font-size: var(--bs-font-size-md);
   color: var(--bs-color-text-primary);
   box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--bs-color-border) 60%, transparent);

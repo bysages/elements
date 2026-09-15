@@ -29,6 +29,8 @@ export const treeViewCss =
   display: flex;
   align-items: center;
   gap: var(--bs-space-2);
+  /* No page reset may be assumed: 100% must count the row's own padding. */
+  box-sizing: border-box;
   inline-size: 100%;
   padding-block: var(--bs-tree-row-block);
   padding-inline-end: var(--bs-padding-md);

@@ -33,6 +33,8 @@ export const buttonCss = /* css */ `
   font-weight: var(--bs-font-weight-medium);
   letter-spacing: var(--bs-tracking-label);
   white-space: nowrap;
+  /* as-child hands the part an <a>; the underline is the prose's, not ours. */
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   box-shadow: var(--bs-shadow-xs);
@@ -53,6 +55,21 @@ export const buttonCss = /* css */ `
 [data-scope="button"][data-part="root"][data-size="lg"] {
   block-size: var(--bs-control-height-lg);
   padding: 0 var(--bs-padding-xl);
+}
+
+/* Icon-only: the silhouette is the seal — width equals height. */
+[data-scope="button"][data-part="root"][data-square="true"],
+[data-scope="button"][data-part="root"][data-size="sm"][data-square="true"] {
+  inline-size: var(--bs-control-height-sm);
+  padding-inline: 0;
+}
+
+[data-scope="button"][data-part="root"][data-size="md"][data-square="true"] {
+  inline-size: var(--bs-control-height-md);
+}
+
+[data-scope="button"][data-part="root"][data-size="lg"][data-square="true"] {
+  inline-size: var(--bs-control-height-lg);
 }
 
 [data-scope="button"][data-part="root"] svg {

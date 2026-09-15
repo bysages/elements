@@ -1,16 +1,26 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactElement } from "react";
+import { Children, cloneElement, isValidElement } from "react";
 
 /** A vessel: round, resting at the first elevation, one hairline for its
  * edge. Root, Header, Title, Description, Content, Footer — sections
  * carry their own whitespace, so any subset composes. */
 function part(name: string, tag: string) {
   const Tag = tag as "section";
-  const Component = ({ children, ...rest }: HTMLAttributes<HTMLElement>) => (
-    <Tag {...rest} data-scope="card" data-part={name.toLowerCase()}>
-      {children}
-    </Tag>
-  );
+  const Component = ({
+    asChild,
+    children,
+    ...rest
+  }: HTMLAttributes<HTMLElement> & { asChild?: boolean }) => {
+    const partProps = { ...rest, "data-scope": "card", "data-part": name.toLowerCase() };
+    if (asChild) {
+      const child = Children.only(children);
+      return isValidElement(child)
+        ? cloneElement(child as ReactElement<Record<string, unknown>>, partProps)
+        : null;
+    }
+    return <Tag {...partProps}>{children}</Tag>;
+  };
   Component.displayName = "Card" + name;
   return Component;
 }

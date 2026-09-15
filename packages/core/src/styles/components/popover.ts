@@ -80,6 +80,36 @@ export const popoverCss =
   cursor: not-allowed;
 }
 
+/* As-child hosting: the machine overwrites the host button's anatomy (the
+   element reads data-scope="popover" no matter what volunteered), so a
+   ghost button carrying our variant seals re-asserts its register here. */
+[data-scope="popover"][data-part="trigger"][data-variant="ghost"] {
+  block-size: var(--bs-control-height-sm);
+  padding: 0;
+  border: none;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-primary);
+  font: inherit;
+  font-size: var(--bs-font-size-sm);
+  font-weight: var(--bs-font-weight-medium);
+  cursor: pointer;
+}
+
+[data-scope="popover"][data-part="trigger"][data-variant="ghost"][data-square="true"] {
+  inline-size: var(--bs-control-height-sm);
+}
+
+[data-scope="popover"][data-part="trigger"][data-variant="ghost"]:hover {
+  background: var(--bs-color-surface-0);
+}
+
+[data-scope="popover"][data-part="trigger"][data-variant="ghost"]:focus-visible,
+[data-scope="popover"][data-part="trigger"][data-variant="ghost"][data-state="open"] {
+  outline: none;
+  box-shadow: var(--bs-focus-ring);
+}
+
 /* The chevron leans into the opening on the spring — puppets have strings. */
 [data-scope="popover"][data-part="indicator"] {
   display: inline-flex;

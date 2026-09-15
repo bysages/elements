@@ -392,13 +392,15 @@ export function DataTable(rawProps: DataTableProps) {
         (d) => d.id === column.id || ("accessorKey" in d && String(d.accessorKey) === column.id),
       );
       // A fixed `size` pins to px; an explicit `minSize` floors the
-      // track; otherwise the track hugs its content and only the
-      // leftover space is shared — columns never stare at empty width.
+      // track; otherwise columns split evenly. The default must not
+      // consult the content (max-content et al.) — every row is its
+      // own grid, and content-sized tracks would realign per row,
+      // dragging each row's cell edges away from the header's.
       return def?.size != null
         ? `${def.size}px`
         : def?.minSize != null
           ? `minmax(${def.minSize}px, 1fr)`
-          : "minmax(max-content, 1fr)";
+          : "1fr";
     })
     .join(" ");
 

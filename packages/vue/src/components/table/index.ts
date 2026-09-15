@@ -367,13 +367,16 @@ export const DataTable = defineComponent({
       })),
     );
     // Density and scene presets rewrite the scale in place; re-measure so
-    // the virtual window keeps matching the rendered rows.
-    const densityObserver = new MutationObserver(() => virtualizer.value.measure());
-    densityObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-density", "data-scene"],
-    });
-    onScopeDispose(() => densityObserver.disconnect());
+    // the virtual window keeps matching the rendered rows. Server renders
+    // have no observer — the client picks the watch up on hydration.
+    if (typeof MutationObserver !== "undefined") {
+      const densityObserver = new MutationObserver(() => virtualizer.value.measure());
+      densityObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-density", "data-scene"],
+      });
+      onScopeDispose(() => densityObserver.disconnect());
+    }
     const virtualRows = computed(() => virtualizer.value.getVirtualItems());
     const totalSize = computed(() => virtualizer.value.getTotalSize());
 
@@ -401,13 +404,15 @@ export const DataTable = defineComponent({
               d.id === column.id || ("accessorKey" in d && String(d.accessorKey) === column.id),
           );
           // A fixed `size` pins to px; an explicit `minSize` floors the
-          // track; otherwise the track hugs its content and only the
-          // leftover space is shared — columns never stare at empty width.
+          // track; otherwise columns split evenly. The default must not
+          // consult the content (max-content et al.) — every row is its
+          // own grid, and content-sized tracks would realign per row,
+          // dragging each row's cell edges away from the header's.
           return def?.size != null
             ? `${def.size}px`
             : def?.minSize != null
               ? `minmax(${def.minSize}px, 1fr)`
-              : "minmax(max-content, 1fr)";
+              : "1fr";
         })
         .join(" "),
     );

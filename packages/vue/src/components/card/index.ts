@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import { cloneVNode, defineComponent, h } from "vue";
 
 /** A vessel: round, resting at the first elevation, one hairline for its
  * edge. Root, Header, Title, Description, Content, Footer — sections
@@ -8,13 +8,24 @@ import { defineComponent, h } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Card" + name,
-    setup(_, ctx: SetupContext) {
-      return () =>
-        h(
-          tag,
-          { ...ctx.attrs, "data-scope": "card", "data-part": name.toLowerCase() },
-          ctx.slots.default?.(),
-        );
+    props: {
+      /** Render the slot's element as the part — a link may wear the
+       * vessel itself. */
+      asChild: { type: Boolean, default: false },
+    },
+    setup(props, ctx: SetupContext) {
+      const partProps = () => ({
+        ...ctx.attrs,
+        "data-scope": "card",
+        "data-part": name.toLowerCase(),
+      });
+      if (props.asChild) {
+        return () => {
+          const child = ctx.slots.default?.()[0];
+          return child ? cloneVNode(child, partProps()) : null;
+        };
+      }
+      return () => h(tag, partProps(), ctx.slots.default?.());
     },
   });
 }

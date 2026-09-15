@@ -4,12 +4,15 @@
  * per component, so the recipes stay identical instead of drifting. */
 
 /** The dismissible-layer ladder: one shared z-index base, ordered by the
- * machine's `--layer-index`, so any nesting combination stacks correctly. */
+ * machine's `--layer-index`, so any nesting combination stacks correctly.
+ * The machine writes `--z-index: auto` when no nested layer is in play,
+ * which would defeat a var() fallback — so the overlay baseline rides the
+ * layer index directly, exactly like the content's. */
 export function positionerCss(scope: string): string {
   return /* css */ `
 [data-scope="${scope}"][data-part="positioner"] {
   position: absolute;
-  z-index: var(--z-index, var(--bs-z-overlay));
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
 }
 `;
 }

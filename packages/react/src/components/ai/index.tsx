@@ -1,15 +1,17 @@
 import { injectComponentStyle } from "@bysages/core";
 import { renderHtml } from "@tanstack/markdown/html";
 import type { HTMLAttributes, ReactNode } from "react";
-import { useLayoutEffect, useRef } from "react";
 
 import { Button } from "../button";
+import { Collapsible } from "../collapsible";
+import { Field } from "../field";
 
 /** A conversation column: Root is the log, Message carries a role, and
  * the speaking parts — Response, Reasoning, Tool, Sources — part the
- * stream. Parts stay agnostic of any client; consumers map their
- * message format (e.g. the `UIMessage` parts re-exported below) onto
- * these primitives. */
+ * stream. The interactive folds are the shared Collapsible wearing a
+ * `data-ai` marker, so the machine work is never ours. Parts stay
+ * agnostic of any client; consumers map their message format (e.g. the
+ * `UIMessage` parts re-exported below) onto these primitives. */
 function part(name: string, tag: string, extra: Record<string, string> = {}) {
   const Tag = tag as "div";
   const Component = ({ children, ...rest }: HTMLAttributes<HTMLElement>) => (
@@ -26,6 +28,19 @@ const MessageContent = part("Content", "div");
 const Sources = part("Sources", "ol");
 const Actions = part("Actions", "div");
 const Loader = part("Loader", "span", { role: "status", "aria-label": "Loading" });
+
+/** The folding chevron the shared indicator turns. */
+const chevron = (
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path
+      d="M6 4l4 4-4 4"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export type ToolStatus = "pending" | "running" | "completed" | "error";
 
@@ -62,67 +77,74 @@ export function Response({ content, ...rest }: ResponseProps) {
   );
 }
 
-/** The model's thought: a native disclosure, so folding costs no
- * script. Pass `open` to start unfolded. */
-export interface ReasoningProps extends HTMLAttributes<HTMLDetailsElement> {
+/** The model's thought, folded by the shared collapsible in its quiet
+ * register: bare ink for a trigger, the thought on one hairline. */
+export interface ReasoningProps extends HTMLAttributes<HTMLDivElement> {
   label?: string;
-  open?: boolean;
+  defaultOpen?: boolean;
   children?: ReactNode;
 }
 
 export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningProps) {
   return (
-    <details {...rest} data-scope="ai" data-part="reasoning">
-      <summary>{label}</summary>
-      {children ? (
+    <Collapsible.Root {...rest} data-ai="reasoning">
+      <Collapsible.Trigger>
+        <span>{label}</span>
+        <Collapsible.Indicator>{chevron}</Collapsible.Indicator>
+      </Collapsible.Trigger>
+      <Collapsible.Content>
         <div data-scope="ai" data-part="reasoning-content">
           {children}
         </div>
-      ) : null}
-    </details>
+      </Collapsible.Content>
+    </Collapsible.Root>
   );
 }
 
-/** A tool call: the name it was reached by, the state it reached in,
- * and — folded inside — its input and output. */
-export interface ToolProps extends HTMLAttributes<HTMLDetailsElement> {
+/** A tool call: the shared collapsible as the vessel — the name it was
+ * reached by and the state it reached in on the trigger, its input and
+ * output folded inside. */
+export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
   status?: ToolStatus;
-  open?: boolean;
+  defaultOpen?: boolean;
   input?: ReactNode;
   output?: ReactNode;
 }
 
 export function Tool({ name, status, input, output, ...rest }: ToolProps) {
   return (
-    <details {...rest} data-scope="ai" data-part="tool" data-status={status}>
-      <summary>
+    <Collapsible.Root {...rest} data-ai="tool" data-status={status}>
+      <Collapsible.Trigger>
         <span>{name}</span>
         {status ? (
           <span data-scope="ai" data-part="tool-status">
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </span>
         ) : null}
-      </summary>
-      <div data-scope="ai" data-part="tool-body">
-        {input ? (
-          <>
-            <span data-scope="ai" data-part="tool-label">
-              Input
-            </span>
-            <pre>{input}</pre>
-          </>
-        ) : null}
-        {output ? (
-          <>
-            <span data-scope="ai" data-part="tool-label">
-              Output
-            </span>
-            <pre>{output}</pre>
-          </>
-        ) : null}
-      </div>
-    </details>
+        <Collapsible.Indicator>{chevron}</Collapsible.Indicator>
+      </Collapsible.Trigger>
+      <Collapsible.Content>
+        <div data-scope="ai" data-part="tool-body">
+          {input ? (
+            <>
+              <span data-scope="ai" data-part="tool-label">
+                Input
+              </span>
+              <pre>{input}</pre>
+            </>
+          ) : null}
+          {output ? (
+            <>
+              <span data-scope="ai" data-part="tool-label">
+                Output
+              </span>
+              <pre>{output}</pre>
+            </>
+          ) : null}
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
   );
 }
 
@@ -152,7 +174,7 @@ export interface ActionProps extends HTMLAttributes<HTMLButtonElement> {
 
 export function Action({ label, children, ...rest }: ActionProps) {
   return (
-    <Button variant="ghost" size="sm" aria-label={label} title={label} {...rest}>
+    <Button variant="ghost" size="sm" square aria-label={label} title={label} {...rest}>
       {children}
     </Button>
   );
@@ -173,9 +195,10 @@ export function Suggestion({ prompt, onSelect, ...rest }: SuggestionProps) {
   );
 }
 
-/** The prompt vessel: a bare, self-growing textarea and the submit
- * seal. Controlled — bind `value` and take the text on `submit`.
- * Enter sends; Shift+Enter breaks the line. */
+/** The prompt vessel: the shared field textarea — self-growing on the
+ * machine's autoresize — over a footer row carrying the submit seal.
+ * Controlled — bind `value` and take the text on `submit`. Enter
+ * sends; Shift+Enter breaks the line. */
 export interface PromptInputProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit"> {
   value: string;
   onValueChange?: (value: string) => void;
@@ -192,15 +215,6 @@ export function PromptInput({
   disabled = false,
   ...rest
 }: PromptInputProps) {
-  const field = useRef<HTMLTextAreaElement>(null);
-
-  useLayoutEffect(() => {
-    const el = field.current;
-    if (!el) return;
-    el.style.blockSize = "auto";
-    el.style.blockSize = `${el.scrollHeight}px`;
-  }, [value]);
-
   const send = () => {
     const text = value.trim();
     if (!text || disabled) return;
@@ -218,42 +232,45 @@ export function PromptInput({
         send();
       }}
     >
-      <textarea
-        ref={field}
-        data-scope="ai"
-        data-part="prompt-textarea"
-        rows={1}
-        value={value}
-        placeholder={placeholder}
-        disabled={disabled}
-        onChange={(event) => onValueChange?.(event.target.value)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            send();
-          }
-        }}
-      />
-      <Button
-        variant="solid"
-        size="sm"
-        type="submit"
-        aria-label="Send"
-        disabled={disabled || !value.trim()}
-      >
-        <svg
-          viewBox="0 0 16 16"
-          width={14}
-          height={14}
-          aria-hidden="true"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          strokeLinecap="square"
+      <Field.Root>
+        <Field.Textarea
+          autoresize
+          rows={1}
+          value={value}
+          placeholder={placeholder}
+          disabled={disabled}
+          onChange={(event) => onValueChange?.(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              send();
+            }
+          }}
+        />
+      </Field.Root>
+      <div data-scope="ai" data-part="prompt-footer">
+        <Button
+          variant="solid"
+          size="sm"
+          square
+          type="submit"
+          aria-label="Send"
+          disabled={disabled || !value.trim()}
         >
-          <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
-        </svg>
-      </Button>
+          <svg
+            viewBox="0 0 16 16"
+            width={14}
+            height={14}
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="square"
+          >
+            <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
+          </svg>
+        </Button>
+      </div>
     </form>
   );
 }

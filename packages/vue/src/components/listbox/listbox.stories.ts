@@ -1,9 +1,13 @@
-import { createGridCollection, useListCollection } from "@ark-ui/vue/collection";
+import {
+  createGridCollection,
+  createListCollection,
+  useListCollection,
+} from "@ark-ui/vue/collection";
 import { useListboxContext } from "@ark-ui/vue/listbox";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
-import { Listbox, createListCollection } from ".";
+import { Listbox } from ".";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Listbox" };
