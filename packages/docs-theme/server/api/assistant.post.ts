@@ -8,7 +8,7 @@ import {
   type ToolSet,
   type UIMessage,
 } from "ai";
-import { createError, defineEventHandler, getRequestURL, readBody } from "h3";
+import { createError, defineEventHandler, getRequestURL, readBody, type H3Event } from "h3";
 import { useRuntimeConfig } from "nitropack/runtime";
 
 /**
@@ -22,6 +22,24 @@ import { useRuntimeConfig } from "nitropack/runtime";
 
 /** Max model/tool steps before the assistant is forced to answer. */
 const MAX_STEPS = 10;
+
+/** The internal MCP route is not always reachable over the network in
+ * production (TLS terminated upstream, hairpin restrictions), so
+ * same-origin requests ride the event instead of the wire. */
+function createLocalFetch(event: H3Event): typeof fetch {
+  const origin = getRequestURL(event).origin;
+  return (input, init) => {
+    const url =
+      input instanceof URL
+        ? input
+        : typeof input === "string"
+          ? new URL(input, origin)
+          : new URL(input.url);
+    return url.origin === origin
+      ? event.fetch(`${url.pathname}${url.search}`, init)
+      : fetch(url, init);
+  };
+}
 
 /** Docus's documentation-tuned prompt: a firm identity, terse output
  * rules and a hard "no walls of text" register. Loose prompts are why
@@ -81,10 +99,16 @@ export default defineEventHandler(async (event) => {
   // The assistant browses this site the same way an agent does: through
   // our own /mcp server (list-pages, get-page).
   const mcpClient = await createMCPClient({
-    transport: { type: "http", url: `${getRequestURL(event).origin}/mcp` },
+    transport: {
+      type: "http",
+      url: `${getRequestURL(event).origin}/mcp`,
+      fetch: createLocalFetch(event),
+    },
   });
   const tools = (await mcpClient.tools()) as ToolSet;
-  const closeMcp = () => void mcpClient.close();
+  // waitUntil keeps the close alive past the response, as the runtime
+  // may recycle the context as soon as the stream ends.
+  const closeMcp = () => event.waitUntil(mcpClient.close());
 
   // Aborting when the reader walks away — generation stops server-side.
   const abortController = new AbortController();
