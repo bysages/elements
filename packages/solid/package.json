@@ -45,7 +45,7 @@
     "@ark-ui/solid": "^5.39.1",
     "@tanstack/markdown": "^0.0.15",
     "@tanstack/solid-table": "9.2.4",
-    "@tanstack/solid-virtual": "3.13.12"
+    "@tanstack/solid-virtual": "3.13.40"
   },
   "devDependencies": {
     "ai": "^7.0.99",

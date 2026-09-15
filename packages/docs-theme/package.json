@@ -57,7 +57,7 @@
     "@nuxtjs/sitemap": "^8.5.1",
     "ai": "^7.0.99",
     "better-sqlite3": "^12.4.1",
-    "nuxt-agent-discovery": "^0.5.1",
+    "nuxt-agent-discovery": "^0.6.0",
     "nuxt-llms": "^0.2.0",
     "nuxt-og-image": "^6.7.8",
     "nuxt-schema-org": "^6.3.1",
