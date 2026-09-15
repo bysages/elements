@@ -187,4 +187,66 @@ export const buttonCss = /* css */ `
   cursor: not-allowed;
   box-shadow: none;
 }
+
+/* As-child hosting: an overlay trigger that hosts a Button overwrites the
+   button's anatomy (data-scope reads the overlay family, not "button"),
+   so the rules above never match. The variant seals survive, though —
+   the ghost register re-asserts itself here for every overlay trigger at
+   once. The bare [data-scope] keeps specificity above any family's base,
+   and the state branches above its open/focus/disabled rules. */
+[data-scope][data-part="trigger"][data-variant="ghost"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bs-space-2);
+  flex: none;
+  block-size: var(--bs-control-height-sm);
+  padding: 0 var(--bs-padding-md);
+  border: none;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-secondary);
+  font: inherit;
+  font-size: var(--bs-font-size-sm);
+  font-weight: var(--bs-font-weight-medium);
+  letter-spacing: var(--bs-tracking-label);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: none;
+  transition:
+    background-color var(--bs-duration-fast) var(--bs-ease-out),
+    color var(--bs-duration-fast) var(--bs-ease-out),
+    box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
+}
+
+/* Icon-only: the silhouette is the seal — width equals height. */
+[data-scope][data-part="trigger"][data-variant="ghost"][data-square="true"] {
+  inline-size: var(--bs-control-height-sm);
+  padding-inline: 0;
+}
+
+[data-scope][data-part="trigger"][data-variant="ghost"]:hover {
+  background: var(--bs-color-surface-0);
+}
+
+/* Open keeps the focus look: Zag hands focus to the overlay itself, so
+   :focus-visible alone would drop the halo the moment it opens. */
+[data-scope][data-part="trigger"][data-variant="ghost"]:focus-visible,
+[data-scope][data-part="trigger"][data-variant="ghost"][data-state="open"] {
+  outline: none;
+  box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope][data-part="trigger"][data-variant="ghost"]:active {
+  box-shadow: none;
+}
+
+[data-scope][data-part="trigger"][data-variant="ghost"][data-disabled] {
+  background: var(--bs-color-surface-inset);
+  color: var(--bs-color-text-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+}
 `;
