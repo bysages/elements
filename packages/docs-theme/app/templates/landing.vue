@@ -34,9 +34,11 @@ if (!page.value.seo?.ogImage) {
 </script>
 
 <template>
-  <!-- A bare element root: the page transition animates the page's own
-   root node, and NuxtLayout here would nest a second layout shell. -->
   <div class="bs-docs-landing">
+    <!-- A bare element root animates cleanly under the page transition;
+         NuxtLayout here would nest a second layout shell. The remark
+         sits inside the div: since Vue 3.4, root-level comments stay in
+         the render output and break the single-root check. -->
     <ContentRenderer :value="page as Record<string, any>" class="bs-docs-prose" />
   </div>
 </template>

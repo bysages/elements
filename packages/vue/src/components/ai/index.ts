@@ -205,7 +205,7 @@ const Action = defineComponent({
           "aria-label": props.label,
           title: props.label,
         },
-        ctx.slots.default?.(),
+        ctx.slots.default,
       );
   },
 });
@@ -225,7 +225,7 @@ const Suggestion = defineComponent({
       h(
         Button,
         { variant: "outline", size: "sm", onClick: () => emit("select", props.prompt) },
-        props.prompt,
+        () => props.prompt,
       );
   },
 });
@@ -293,7 +293,7 @@ const PromptInput = defineComponent({
                 "aria-label": "Send",
                 disabled: props.disabled || !props.modelValue.trim(),
               },
-              [
+              () => [
                 h(
                   "svg",
                   {
