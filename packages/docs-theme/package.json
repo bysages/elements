@@ -37,6 +37,7 @@
   },
   "scripts": {
     "dev": "basis build --stub",
+    "build": "nuxt prepare",
     "typecheck": "nuxt typecheck ."
   },
   "dependencies": {
