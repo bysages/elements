@@ -1,4 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["app", "server", "modules", "utils", "content.config.ts", "nuxt.config.ts"]
+  // The generated config carries the Nuxt auto-imports and module
+  // augmentation (sitemap, i18n, route middleware) these sources rely on.
+  "extends": "./.nuxt/tsconfig.json"
 }

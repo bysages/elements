@@ -1,5 +1,7 @@
 import { createResolver, useNuxt } from "@nuxt/kit";
-import { defineNuxtConfig } from "nuxt/config";
+import { defineNuxtConfig, type NuxtConfig } from "nuxt/config";
+import type { NitroOptions } from "nitropack";
+import type { BundledLanguage } from "shiki";
 
 const { resolve } = createResolver(import.meta.url);
 
@@ -41,28 +43,33 @@ const config = {
   // Content collections are invisible to the sitemap module's own scan —
   // the server handler is the one true source.
   sitemap: {
-    excludeAppSources: true,
+    excludeAppSources: true as const,
     sources: ["/api/__sitemap__/urls"],
   },
 
   // Statically generate from the entry points: the bare root, or one
   // root per locale — crawlLinks walks the rest of the shelves from
   // there. Pure-SSR deployments simply never run the prerenderer.
+  // The hook key predates Nuxt's typed hook map but stays supported at
+  // runtime — the assertion is the type layer catching up, not a cast
+  // around a lie.
   hooks: {
-    "nitro:config"(nitroConfig) {
+    "nitro:config"(nitroConfig: NitroOptions) {
       const i18n = useNuxt().options.i18n as
         | { locales?: Array<string | { code: string }> }
         | undefined;
       const codes = (i18n?.locales ?? []).map((entry) =>
         typeof entry === "string" ? entry : entry.code,
       );
-      nitroConfig.prerender ||= {};
-      nitroConfig.prerender.crawlLinks = true;
-      nitroConfig.prerender.autoSubfolderIndex = false;
-      nitroConfig.prerender.routes ||= [];
-      nitroConfig.prerender.routes.push(...(codes.length ? codes.map((c) => `/${c}`) : ["/"]));
+      const roots = codes.length ? codes.map((c) => `/${c}`) : ["/"];
+      nitroConfig.prerender = {
+        ...nitroConfig.prerender,
+        crawlLinks: true,
+        autoSubfolderIndex: false,
+        routes: [...(nitroConfig.prerender?.routes ?? []), ...roots],
+      };
     },
-  },
+  } as NuxtConfig["hooks"],
 
   // Agents discover the site by domain: deployment sets NUXT_SITE_URL,
   // everything else (sitemap, robots, canonical links) follows it.
@@ -95,7 +102,7 @@ const config = {
   },
 
   content: {
-    experimental: { sqliteConnector: "native" },
+    experimental: { sqliteConnector: "native" as const },
     build: {
       markdown: {
         highlight: {
@@ -114,7 +121,7 @@ const config = {
             "mdc",
             "md",
             "yaml",
-          ],
+          ] as BundledLanguage[],
         },
         remarkPlugins: {
           "remark-mdc": {

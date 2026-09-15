@@ -38,7 +38,7 @@
   },
   "scripts": {
     "dev": "basis build --stub",
-    "build": "node scripts/emit-svelte-dts.ts && vp pack",
+    "build": "tsx scripts/emit-svelte-dts.ts && vp pack",
     "prepack": "pnpm build"
   },
   "dependencies": {

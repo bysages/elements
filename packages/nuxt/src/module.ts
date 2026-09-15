@@ -1,8 +1,5 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-
 import { componentStyles, tokensCss, type ApplyThemeOptions } from "@bysages/core";
-import { addComponent, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
+import { addComponent, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 
 /** Every family @bysages/vue exports, with the name it is exported by. */
 const FAMILIES = [
@@ -120,11 +117,16 @@ export default defineNuxtModule<BsElementsOptions>({
     // wrappers' runtime injection. The head marker tells that injection
     // to stand down — it parses before any module script, so the
     // wrappers cannot race it however their chunks load.
-    const stylesDir = join(nuxt.options.buildDir, "bs-styles");
-    mkdirSync(stylesDir, { recursive: true });
-    const stylesFile = join(stylesDir, "core.css");
-    writeFileSync(stylesFile, tokensCss + Object.values(componentStyles).join("\n"));
-    nuxt.options.css.push(stylesFile);
+    // Written through addTemplate, not by hand: Nuxt 4 clears its build
+    // directory after module setup runs, so a file written here is
+    // deleted before the css manifest that references it is generated —
+    // a template lands after that clear and travels with the build.
+    const styles = addTemplate({
+      filename: "bs-styles/core.css",
+      getContents: () => tokensCss + Object.values(componentStyles).join("\n"),
+      write: true,
+    });
+    nuxt.options.css.push(styles.dst);
     nuxt.options.app.head.meta ||= [];
     nuxt.options.app.head.meta.push({ name: "bs-styles-shipped", content: "build" });
 
