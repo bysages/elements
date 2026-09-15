@@ -37,7 +37,7 @@
   },
   "scripts": {
     "dev": "basis build --stub",
-    "build": "tsc --noEmit"
+    "typecheck": "nuxt typecheck ."
   },
   "dependencies": {
     "@ai-sdk/mcp": "^2.0.49",

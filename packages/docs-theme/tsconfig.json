@@ -1,5 +1,12 @@
 {
-  // The generated config carries the Nuxt auto-imports and module
-  // augmentation (sitemap, i18n, route middleware) these sources rely on.
-  "extends": "./.nuxt/tsconfig.json"
+  // Nuxt's generated project set: the split configs carry the auto
+  // imports and module augmentation these sources rely on. `nuxt
+  // typecheck` prepares them, editors follow the references.
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
 }

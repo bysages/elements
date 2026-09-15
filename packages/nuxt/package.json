@@ -25,19 +25,26 @@
     "url": "git+https://github.com/bysages/elements"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "type": "module",
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
   "exports": {
     ".": {
-      "types": "./src/module.d.mts",
-      "default": "./src/module.ts"
-    },
-    "./runtime/plugin": "./src/runtime/plugin.ts"
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
   },
   "scripts": {
-    "dev": "basis build --stub",
-    "build": "tsc --noEmit"
+    "dev": "nuxt-module-build build --stub",
+    "build": "nuxt-module-build build"
   },
   "dependencies": {
     "@bysages/core": "workspace:*",
@@ -45,6 +52,7 @@
     "@nuxt/kit": "^4.2.0"
   },
   "devDependencies": {
+    "@nuxt/module-builder": "^1.0.3",
     "nuxt": "^4.2.0"
   },
   "peerDependencies": {

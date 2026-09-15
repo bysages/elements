@@ -44,7 +44,7 @@ const openByDefault = computed(() => holds(props.item, routePath.value));
       </Collapsible.Content>
     </Collapsible.Root>
   </li>
-  <Item v-else :value="item.path">
+  <Item v-else :value="item.path!">
     <Link as-child :current="routePath === item.path">
       <NuxtLink :to="item.path!">{{ item.title }}</NuxtLink>
     </Link>

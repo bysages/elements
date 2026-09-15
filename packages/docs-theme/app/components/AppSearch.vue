@@ -51,7 +51,7 @@ const items = computed<SearchItem[]>(() => {
   const seen = new Map<string, SearchSection>();
   for (const row of rows) {
     const section =
-      typeof row === "string" ? (engine.value.getStoredFields(row) as SearchSection) : row;
+      typeof row === "string" ? (engine.value.getStoredFields(row) as unknown as SearchSection) : row;
     if (!section) continue;
     // The shelf rides the URL's first segment, evaluated live — the
     // locale ref can trail a same-record language switch.

@@ -104,7 +104,7 @@ if (!page.value.seo?.ogImage) {
   <div class="bs-docs-article-grid">
     <article class="bs-docs-page">
       <DocsPageHeader :page="page" :headline="headline" />
-      <ContentRenderer :value="page" class="bs-docs-prose" />
+      <ContentRenderer :value="page as Record<string, any>" class="bs-docs-prose" />
       <nav v-if="editLink" class="bs-docs-page-edit">
         <NuxtLink :to="editLink" target="_blank" rel="noopener">
           {{ t("docs.edit") }}

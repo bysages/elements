@@ -77,7 +77,7 @@ function pick(value: unknown) {
   <Select.Root
     v-if="many"
     :collection="collection"
-    :model-value="locale"
+    :model-value="[locale]"
     @update:model-value="pick"
   >
     <Select.Trigger

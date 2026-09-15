@@ -67,7 +67,7 @@ const { t } = useDocsI18n();
   <!-- Outside the header: its backdrop-filter would become the fixed
        positioner's containing block and drag the sheet under the bar. -->
   <ClientOnly>
-    <Root :open="menuOpen" swipe-direction="left" @update:open="menuOpen = $event">
+    <Root :open="menuOpen" swipe-direction="start" @update:open="menuOpen = $event">
       <Backdrop />
       <Positioner>
         <Content aria-label="Navigation" class="bs-docs-header-drawer">

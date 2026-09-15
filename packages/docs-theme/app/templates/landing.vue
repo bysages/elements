@@ -37,6 +37,6 @@ if (!page.value.seo?.ogImage) {
   <!-- A bare element root: the page transition animates the page's own
    root node, and NuxtLayout here would nest a second layout shell. -->
   <div class="bs-docs-landing">
-    <ContentRenderer :value="page" class="bs-docs-prose" />
+    <ContentRenderer :value="page as Record<string, any>" class="bs-docs-prose" />
   </div>
 </template>

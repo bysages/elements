@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useChat } from "@ai-sdk/vue";
 import { Ai, Drawer } from "@bysages/vue";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, type ToolUIPart } from "ai";
 
 const {
   Conversation,
@@ -37,7 +37,7 @@ watch(draft, (value) => {
 const busy = computed(() => status.value !== "ready" && status.value !== "error");
 
 /** Zag-free mapping from a tool part's lifecycle to our status dot. */
-const TOOL_STATUS: Record<string, string> = {
+const TOOL_STATUS: Record<string, "running" | "completed" | "error"> = {
   "input-streaming": "running",
   "input-available": "running",
   "output-available": "completed",
@@ -55,7 +55,7 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
   <ClientOnly>
     <Root
       :open="isOpen"
-      swipe-direction="right"
+      swipe-direction="end"
       @update:open="(value: boolean) => value || close()"
     >
       <Backdrop />
@@ -86,8 +86,8 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
                 <MessageContent v-if="message.role === 'user'">
                   {{
                     message.parts
-                      .filter((part: { type: string }) => part.type === "text")
-                      .map((part: { text: string }) => part.text)
+                      .filter((part) => part.type === "text")
+                      .map((part) => (part as { text: string }).text)
                       .join("")
                   }}
                 </MessageContent>
@@ -97,16 +97,19 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
                     <Reasoning v-else-if="part.type === 'reasoning'" label="Thinking">
                       {{ part.text }}
                     </Reasoning>
+                    <!-- A `tool-` prefix marks a tool invocation, but TS
+                         cannot narrow a union by prefix — the assertion
+                         carries what the check just proved. -->
                     <Tool
                       v-else-if="part.type.startsWith('tool-')"
                       :name="part.type.slice(5)"
-                      :status="TOOL_STATUS[part.state] ?? 'running'"
+                      :status="TOOL_STATUS[(part as ToolUIPart).state] ?? 'running'"
                     >
-                      <template v-if="part.input !== undefined" #input>{{
-                        format(part.input)
+                      <template v-if="(part as ToolUIPart).input !== undefined" #input>{{
+                        format((part as ToolUIPart).input)
                       }}</template>
-                      <template v-if="part.output !== undefined" #output>{{
-                        format(part.output)
+                      <template v-if="(part as ToolUIPart).output !== undefined" #output>{{
+                        format((part as ToolUIPart).output)
                       }}</template>
                     </Tool>
                   </template>
