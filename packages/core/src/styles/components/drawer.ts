@@ -65,14 +65,18 @@ export const drawerCss =
   border-radius: 0 0 var(--bs-radius-lg) var(--bs-radius-lg);
 }
 
+/* A side sheet keeps a drawer's measure, not the canvas': at full width
+   the rounded lip lands on the screen edge and wears a see-through
+   notch. Capped, the lip hangs over the page where a rounded corner
+   belongs. */
 [data-scope="drawer"][data-part="content"][data-swipe-direction="left"] {
-  inline-size: min(24rem, 100%);
+  inline-size: min(24rem, 85%);
   max-block-size: none;
   border-radius: 0 var(--bs-radius-lg) var(--bs-radius-lg) 0;
 }
 
 [data-scope="drawer"][data-part="content"][data-swipe-direction="right"] {
-  inline-size: min(24rem, 100%);
+  inline-size: min(24rem, 85%);
   max-block-size: none;
   border-radius: var(--bs-radius-lg) 0 0 var(--bs-radius-lg);
 }

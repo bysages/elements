@@ -14,7 +14,9 @@ interface SearchSection {
 const { t, isEnabled, localeOf } = useDocsI18n();
 const route = useRoute();
 
-const open = ref(false);
+// The rail's square trigger shares this state — the dialog is opened
+// from the header's field or its folded trigger alike.
+const open = useDocsSearch();
 const query = ref("");
 
 // The index is client-only: the payload never rides the SSR html.

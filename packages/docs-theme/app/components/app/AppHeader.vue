@@ -20,6 +20,10 @@ watch(
 const { Root, Backdrop, Positioner, Content, Title } = Drawer;
 
 const { t } = useDocsI18n();
+
+// The square trigger exists only while the center field is folded, but
+// it opens the same dialog — the state lives in one place.
+const searchOpen = useDocsSearch();
 </script>
 
 <template>
@@ -33,6 +37,17 @@ const { t } = useDocsI18n();
 
     <div class="bs-docs-header-end">
       <AppHeaderCTA />
+
+      <Button
+        variant="ghost"
+        size="sm"
+        square
+        aria-label="Search"
+        class="bs-docs-header-search"
+        @click="searchOpen = true"
+      >
+        <Icon name="i-lucide-search" class="bs-docs-rail-icon" />
+      </Button>
 
       <Button
         v-if="github?.url"
@@ -65,9 +80,11 @@ const { t } = useDocsI18n();
   </header>
 
   <!-- Outside the header: its backdrop-filter would become the fixed
-       positioner's containing block and drag the sheet under the bar. -->
+       positioner's containing block and drag the sheet under the bar.
+       The sheet rises from the bottom edge — centered by nature, its
+       rounded corners meeting the reader's thumb, no side seams. -->
   <ClientOnly>
-    <Root :open="menuOpen" swipe-direction="start" @update:open="menuOpen = $event">
+    <Root :open="menuOpen" @update:open="menuOpen = $event">
       <Backdrop />
       <Positioner>
         <Content aria-label="Navigation" class="bs-docs-header-drawer">

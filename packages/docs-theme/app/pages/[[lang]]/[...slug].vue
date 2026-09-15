@@ -101,19 +101,28 @@ if (!page.value.seo?.ogImage) {
 </script>
 
 <template>
-  <div class="bs-docs-article-grid">
-    <article class="bs-docs-page">
-      <DocsPageHeader :page="page" :headline="headline" />
-      <ContentRenderer :value="page as Record<string, any>" class="bs-docs-prose" />
-      <nav v-if="editLink" class="bs-docs-page-edit">
-        <NuxtLink :to="editLink" target="_blank" rel="noopener">
-          {{ t("docs.edit") }}
-        </NuxtLink>
-      </nav>
-      <DocsSurround :surround="surround" />
-    </article>
-    <div class="bs-docs-toc">
-      <DocsAsideRight :page="page" />
+  <div>
+    <!-- One element root: the out-in page transition animates the page's
+         own root node and deadlocks on a fragment — a blank page between
+         routes. The bar belongs to the lane, not the article, but it must
+         live under the same root, and the remark must live inside it:
+         since Vue 3.4 root-level comments stay in the render output and
+         break the single-root check. -->
+    <DocsAsideMobileBar :page="page" />
+    <div class="bs-docs-article-grid">
+      <article class="bs-docs-page">
+        <DocsPageHeader :page="page" :headline="headline" />
+        <ContentRenderer :value="page as Record<string, any>" class="bs-docs-prose" />
+        <nav v-if="editLink" class="bs-docs-page-edit">
+          <NuxtLink :to="editLink" target="_blank" rel="noopener">
+            {{ t("docs.edit") }}
+          </NuxtLink>
+        </nav>
+        <DocsSurround :surround="surround" />
+      </article>
+      <div class="bs-docs-toc">
+        <DocsAsideRight :page="page" />
+      </div>
     </div>
   </div>
 </template>
