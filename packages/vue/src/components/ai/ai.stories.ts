@@ -71,7 +71,7 @@ export const Basic = {
       };
 
       return () =>
-        h("div", { style: { display: "grid", gap: "2rem", maxInlineSize: "46rem" } }, [
+        h("div", { style: { display: "grid", gap: "2rem", inlineSize: "100%", maxInlineSize: "46rem" } }, [
           h(Ai.Conversation, () => [
             ...state.messages.map((message) =>
               h(Ai.Message, { role: message.role }, () =>
