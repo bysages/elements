@@ -38,14 +38,21 @@
   },
   "scripts": {
     "dev": "basis build --stub",
-    "build": "vp pack",
+    "build": "node scripts/emit-svelte-dts.ts && vp pack",
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@ark-ui/svelte": "^5.24.1"
+    "@ark-ui/svelte": "^5.24.1",
+    "@tanstack/markdown": "^0.0.15",
+    "@tanstack/svelte-table": "9.2.4",
+    "@tanstack/svelte-virtual": "3.13.12"
   },
   "devDependencies": {
-    "svelte": "^5.57.0"
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "ai": "^7.0.99",
+    "rollup-plugin-svelte": "^7.2.3",
+    "svelte": "^5.57.0",
+    "svelte2tsx": "^0.7.61"
   },
   "peerDependencies": {
     "svelte": "^5"
