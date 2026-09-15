@@ -1,7 +1,7 @@
 {
   "name": "@bysages/charts",
   "version": "0.0.0",
-  "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus a thin Vue adapter",
+  "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus thin framework adapters",
   "keywords": [
     "charts",
     "design-system",
@@ -32,20 +32,54 @@
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
     },
+    "./vue": {
+      "types": "./dist/vue/chart.d.mts",
+      "import": "./dist/vue/chart.mjs"
+    },
     "./react": {
       "types": "./dist/react/chart.d.mts",
       "import": "./dist/react/chart.mjs"
+    },
+    "./solid": {
+      "types": "./dist/solid/chart.d.mts",
+      "import": "./dist/solid/chart.mjs"
+    },
+    "./svelte": {
+      "types": "./dist/svelte/chart.d.mts",
+      "import": "./dist/svelte/chart.mjs"
     }
   },
   "scripts": {
     "dev": "basis build --stub",
-    "build": "vp pack src/index.ts src/react/chart.ts"
+    "build": "vp pack"
   },
   "dependencies": {
     "@bysages/core": "workspace:*",
     "@tanstack/charts": "0.18.0"
   },
   "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "solid-js": ">=1.8",
+    "svelte": "^5.20.0",
     "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "rollup-plugin-svelte": "^7.2.3",
+    "svelte": "^5.57.0"
   }
 }

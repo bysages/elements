@@ -1,11 +1,11 @@
 import { injectChartTheme } from "../theme";
 
-export { Chart } from "@tanstack/charts/vue";
+export { Chart } from "@tanstack/charts/svelte";
 export type {
   ChartCommonProps,
   ChartDefinition,
   ChartPresentationProps,
   ChartProps,
-} from "@tanstack/charts/vue";
+} from "@tanstack/charts/svelte";
 
 injectChartTheme();
