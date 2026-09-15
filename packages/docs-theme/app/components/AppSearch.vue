@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PageCollections } from "@nuxt/content";
 import { Button, Combobox, Dialog } from "@bysages/vue";
 import MiniSearch from "minisearch";
 import { computed, ref, watch } from "vue";
@@ -19,11 +20,18 @@ const route = useRoute();
 const open = useDocsSearch();
 const query = ref("");
 
-// The index is client-only: the payload never rides the SSR html.
-const { data: sections } = useFetch<SearchSection[]>("/api/search", {
-  server: false,
-  lazy: true,
-});
+// One collection per locale, mirroring content.config.ts. The query runs
+// client-side against Content's bundled database — no server route, so
+// static hosting searches exactly like a node deployment.
+const collectionName = computed(
+  () => (isEnabled.value ? `docs_${localeOf(route.path)}` : "docs") as keyof PageCollections,
+);
+
+const { data: sections } = useLazyAsyncData(
+  `search_${collectionName.value}`,
+  () => queryCollectionSearchSections(collectionName.value),
+  { server: false, watch: [collectionName] },
+);
 
 const engine = computed(() => {
   const mini = new MiniSearch<SearchSection>({
@@ -42,8 +50,7 @@ interface SearchItem {
 }
 
 // No query turns the dialog into a page picker; otherwise the best
-// section per page wins — one row per destination. The index carries
-// every locale; the results only ever show the shelf the reader is on.
+// section per page wins — one row per destination.
 const items = computed<SearchItem[]>(() => {
   const list = sections.value ?? [];
   const rows: Array<SearchSection | string> = !query.value.trim()
@@ -55,9 +62,6 @@ const items = computed<SearchItem[]>(() => {
     const section =
       typeof row === "string" ? (engine.value.getStoredFields(row) as unknown as SearchSection) : row;
     if (!section) continue;
-    // The shelf rides the URL's first segment, evaluated live — the
-    // locale ref can trail a same-record language switch.
-    if (isEnabled.value && !section.id.startsWith(`/${localeOf(route.path)}/`)) continue;
     const path = section.id.split("#")[0]!;
     if (!seen.has(path)) seen.set(path, section);
   }
