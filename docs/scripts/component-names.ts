@@ -6,6 +6,7 @@ export const componentNames: Record<string, string> = {
   accordion: "手风琴",
   ai: "AI 会话",
   "ai-action": "AI 操作",
+  "ai-attachments": "AI 附件",
   "ai-message": "AI 消息",
   "ai-prompt-input": "AI 提示输入",
   "ai-reasoning": "AI 思考",

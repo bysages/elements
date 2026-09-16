@@ -278,6 +278,78 @@ export const aiCss = /* css */ `
   text-decoration-color: var(--bs-color-border-strong);
 }
 
+/* Attachments: the files riding the prompt's header — paper chips on
+   the recessed vessel, square-cut like every control. Uploading is a
+   dashed ghost, error speaks in danger ink; no chip casts a shadow. */
+[data-scope="ai"][data-part="attachments"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bs-space-1);
+}
+
+[data-scope="ai"][data-part="attachment"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-space-1);
+  max-inline-size: 100%;
+  padding-block: calc(var(--bs-space-1) / 2);
+  padding-inline: var(--bs-space-2);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  background: var(--bs-color-surface);
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="ai"][data-part="attachment"]:hover {
+  border-color: var(--bs-color-border-strong);
+}
+
+[data-scope="ai"][data-part="attachment"] svg {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex: none;
+  color: var(--bs-color-text-tertiary);
+}
+
+[data-scope="ai"][data-part="attachment"][data-status="uploading"] {
+  border-style: dashed;
+  color: var(--bs-color-text-tertiary);
+}
+
+[data-scope="ai"][data-part="attachment"][data-status="error"] {
+  border-color: var(--bs-color-danger);
+  color: var(--bs-color-danger);
+}
+
+[data-scope="ai"][data-part="attachment"] > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-scope="ai"][data-part="attachment"] [data-remove] {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+[data-scope="ai"][data-part="attachment"] [data-remove]:hover {
+  color: var(--bs-color-text-primary);
+}
+
+[data-scope="ai"][data-part="attachment"] [data-remove]:focus-visible {
+  outline: none;
+  border-radius: var(--bs-radius-sm);
+  box-shadow: var(--bs-focus-ring);
+}
+
 /* Actions row: a quiet line of shared ghost buttons. */
 [data-scope="ai"][data-part="actions"] {
   display: flex;
@@ -288,10 +360,13 @@ export const aiCss = /* css */ `
 /* The prompt: one vessel — the shared field bared to the paper and
    self-growing on the machine's autoresize. It starts a single line tall,
    the submit seal riding that line; as the text grows the seal settles
-   onto the last line. The halo answers the vessel, not the control. */
+   onto the last line. The rows above and below (attachments, the model
+   and its switches) are slots — absent when empty, so the bare vessel
+   stays one quiet line. The halo answers the vessel, not the control. */
 [data-scope="ai"][data-part="prompt"] {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--bs-space-2);
   padding: var(--bs-space-2);
   border: 1px solid var(--bs-color-border);
@@ -305,6 +380,30 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="prompt"]:focus-within {
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);
+}
+
+/* The writing row: the field between its optional shoulders, the seal
+   and the tools riding the text's last line. */
+[data-scope="ai"][data-part="prompt-main"] {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bs-space-2);
+  min-inline-size: 0;
+}
+
+[data-scope="ai"][data-part="prompt-header"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bs-space-1);
+}
+
+[data-scope="ai"][data-part="prompt-leading"],
+[data-scope="ai"][data-part="prompt-trailing"] {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bs-space-1);
+  flex: none;
 }
 
 [data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="root"] {
@@ -335,10 +434,31 @@ export const aiCss = /* css */ `
   resize: none;
 }
 
+/* The tool row beneath the writing: the model and its switches — the
+   seal closes the row at its far end. */
 [data-scope="ai"][data-part="prompt-footer"] {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: var(--bs-space-1);
   flex: none;
+}
+
+/* The send-side group: it drifts to the row's far end and keeps the
+   model picker and the seal shoulder to shoulder. */
+[data-scope="ai"][data-part="prompt-end"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-2);
+  flex: none;
+  margin-inline-start: auto;
+}
+
+/* The tool row holds fixed-width chrome: a field family dropped in
+   here keeps its natural width, not the form-field full-bleed
+   baseline. */
+[data-scope="ai"][data-part="prompt-footer"] [data-part="root"] {
+  inline-size: auto;
 }
 
 [data-scope="ai"][data-part="prompt"] [data-scope="field"][data-part="textarea"]:focus,

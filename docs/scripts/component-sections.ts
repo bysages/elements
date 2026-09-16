@@ -145,6 +145,7 @@ export const componentSections: Array<{
     families: [
       "ai",
       "ai-action",
+      "ai-attachments",
       "ai-message",
       "ai-prompt-input",
       "ai-reasoning",

@@ -9,6 +9,7 @@ export * from "./components/accordion";
 export * from "./components/alert";
 export * from "./components/autocomplete";
 export * from "./components/ai-action";
+export * from "./components/ai-attachments";
 export * from "./components/ai-message";
 export * from "./components/ai-prompt-input";
 export * from "./components/ai-reasoning";
