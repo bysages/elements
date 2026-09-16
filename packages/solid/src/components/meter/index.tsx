@@ -3,7 +3,14 @@ import { splitProps, type JSX } from "solid-js";
 
 function part(name: string, tag: string) {
   function Component(props: JSX.HTMLAttributes<HTMLElement>) {
-    return <tag {...props} data-scope="meter" data-part={name.toLowerCase()} />;
+    const Tag = tag as "span";
+    return (
+      <Tag
+        {...(props as JSX.HTMLAttributes<HTMLElement>)}
+        data-scope="meter"
+        data-part={name.toLowerCase()}
+      />
+    );
   }
   return Component;
 }
@@ -17,7 +24,7 @@ const Track = (props: JSX.HTMLAttributes<HTMLElement>) => (
   </span>
 );
 
-export interface MeterRootProps extends JSX.HTMLAttributes<HTMLElement> {
+export interface MeterRootProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The measured value — clamped between min and max. */
   value: number;
   min?: number;

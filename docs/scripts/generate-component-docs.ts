@@ -158,7 +158,7 @@ function render(): Map<string, string> {
   // order, so the flat file order already reads grouped.
   let order = 0;
   for (const section of componentSections) {
-    for (const [index, family] of section.families.entries()) {
+    for (const family of section.families) {
       const doc = documentFamily(family);
       if (!doc) continue;
 

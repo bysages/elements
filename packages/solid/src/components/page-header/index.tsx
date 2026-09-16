@@ -6,7 +6,15 @@ import type { JSX } from "solid-js";
  * baseline. Heading groups title and actions; the rest compose below. */
 function part(name: string, tag: string, extra: Record<string, string> = {}) {
   function Component(props: JSX.HTMLAttributes<HTMLElement>) {
-    return <tag {...extra} {...props} data-scope="page-header" data-part={name.toLowerCase()} />;
+    const Tag = tag as "header";
+    return (
+      <Tag
+        {...(extra as JSX.HTMLAttributes<HTMLElement>)}
+        {...props}
+        data-scope="page-header"
+        data-part={name.toLowerCase()}
+      />
+    );
   }
   return Component;
 }

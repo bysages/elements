@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { h, ref } from "vue";
+import { h, ref, type Ref } from "vue";
 
 import { Form } from ".";
 import { Button } from "../button";

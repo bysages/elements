@@ -101,7 +101,7 @@ export const Filtering = {
         return () =>
           h(Listbox.Root, { collection: collection.value } as any, () => [
             h(Listbox.Label, () => "Framework"),
-            h(Listbox.Input, {
+            h(Listbox.Input as any, {
               placeholder: "Search frameworks...",
               onInput: (e: Event) => filter((e.target as HTMLInputElement).value),
             }),

@@ -100,7 +100,7 @@ export const CascadeSelect = defineComponent({
         id,
         collection: collection.value,
         dir: locale.value.dir,
-        getRootNode: env.value.getRootNode,
+        getRootNode: env.value.getRootNode.bind(env.value),
         disabled: props.disabled || undefined,
         multiple: props.multiple || undefined,
         ...(props.modelValue !== undefined ? { value: props.modelValue } : null),

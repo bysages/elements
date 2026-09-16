@@ -2,7 +2,11 @@ import { createResolver, useNuxt } from "@nuxt/kit";
 import type { NitroOptions } from "nitropack";
 import { defineNuxtConfig, type NuxtConfig } from "nuxt/config";
 
-const { resolve } = createResolver(import.meta.url);
+// Resolver#resolve is a method signature, which unbound-method flags on
+// destructuring — the returned closure never touches `this`.
+const { resolve } = createResolver(import.meta.url) as {
+  resolve: (...path: string[]) => string;
+};
 
 // Canonical, sitemap, llms.txt and the raw-markdown twins all need the
 // deployed origin. The chain mirrors docus: explicit runtime config

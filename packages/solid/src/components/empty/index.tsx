@@ -9,7 +9,7 @@ function part<P extends Record<string, unknown>>(name: string, tag: string): Com
     const Tag = tag as "div";
     return (
       <Tag
-        {...(props as JSX.HTMLAttributes<HTMLElement>)}
+        {...(props as JSX.HTMLAttributes<HTMLDivElement>)}
         data-scope="empty"
         data-part={name.toLowerCase()}
       />

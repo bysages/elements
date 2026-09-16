@@ -3,7 +3,7 @@ import { splitProps, type JSX } from "solid-js";
 
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
 
-export interface BannerRootProps extends JSX.HTMLAttributes<HTMLElement> {
+export interface BannerRootProps extends JSX.HTMLAttributes<HTMLDivElement> {
   status?: BannerStatus;
 }
 
@@ -26,8 +26,9 @@ function Root(props: BannerRootProps) {
 }
 
 function part(name: string, tag: string) {
-  function Component(props: JSX.HTMLAttributes<HTMLElement>) {
-    return <tag {...props} data-scope="banner" data-part={name.toLowerCase()} />;
+  function Component(props: JSX.HTMLAttributes<HTMLDivElement>) {
+    const Tag = tag as "div";
+    return <Tag {...props} data-scope="banner" data-part={name.toLowerCase()} />;
   }
   return Component;
 }
@@ -40,7 +41,7 @@ const Actions = part("Actions", "div");
 
 /** The quiet close: a plain square-cut button; dismissal stays the
  * consumer's state. */
-function Close(props: JSX.HTMLAttributes<HTMLButtonElement>) {
+function Close(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [own, rest] = splitProps(props, ["type"]);
   return (
     <button

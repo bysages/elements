@@ -3,7 +3,6 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { Format as BSFormat } from ".";
-import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Elements/Format" };
 export default meta;

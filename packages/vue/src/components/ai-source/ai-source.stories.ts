@@ -10,7 +10,7 @@ export default meta;
  * ink came from, each opening in its own tab. */
 export const Basic = {
   render: () =>
-    h("div", { style: { inlineSize: "100%", inlineSize: "100%", maxInlineSize: "46rem" } }, [
+    h("div", { style: { inlineSize: "100%", maxInlineSize: "46rem" } }, [
       h(AiSources, () => [
         h(AiSource, { href: "https://example.com/ink" }, () => "Ink release notes"),
         h(AiSource, { href: "https://example.com/paper" }, () => "The paper-and-ink system"),

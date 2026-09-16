@@ -9,7 +9,7 @@ function part<P extends Record<string, unknown>>(name: string, tag: string): Com
     const Tag = tag as "ol";
     return (
       <Tag
-        {...(props as JSX.HTMLAttributes<HTMLElement>)}
+        {...(props as JSX.OlHTMLAttributes<HTMLOListElement>)}
         data-scope="timeline"
         data-part={name.toLowerCase()}
       />

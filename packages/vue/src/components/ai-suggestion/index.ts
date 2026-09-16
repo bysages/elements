@@ -1,5 +1,4 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { PropType } from "vue";
 import { defineComponent, h } from "vue";
 
 import { Button } from "../button";
@@ -14,7 +13,7 @@ export const Suggestion = defineComponent({
     prompt: { type: String, required: true },
   },
   emits: {
-    select: (prompt: string) => true,
+    select: (_prompt: string) => true,
   },
   setup(props, { emit }) {
     return () =>

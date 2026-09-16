@@ -38,7 +38,7 @@ export const Basic: Story = {
 export const Horizontal: Story = {
   render: () =>
     withState(() => {
-      const picked = ref([]);
+      const picked = ref<string[]>([]);
       return () =>
         h(CheckboxGroup, {
           modelValue: picked.value,

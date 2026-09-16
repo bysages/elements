@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes } from "react";
 
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
 
@@ -42,7 +42,7 @@ const Actions = part("Actions", "div");
 
 /** The quiet close: a plain square-cut button; dismissal stays the
  * consumer's state. */
-const Close = ({ children, ...rest }: HTMLAttributes<HTMLButtonElement>) => (
+const Close = (rest: ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     {...rest}
     type={rest.type ?? "button"}

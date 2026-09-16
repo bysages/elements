@@ -2,8 +2,9 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
 function part(name: string, tag: string) {
-  function Component(props: JSX.HTMLAttributes<HTMLElement>) {
-    return <tag {...props} data-scope="stat" data-part={name.toLowerCase()} />;
+  function Component(props: JSX.HTMLAttributes<HTMLDivElement>) {
+    const Tag = tag as "div";
+    return <Tag {...props} data-scope="stat" data-part={name.toLowerCase()} />;
   }
   return Component;
 }
@@ -15,6 +16,7 @@ const Description = part("Description", "p");
 
 export interface StatDeltaProps extends JSX.HTMLAttributes<HTMLElement> {
   direction?: "up" | "down" | "flat";
+  "data-direction"?: string;
 }
 
 /** The delta reads the direction in the fixed semantic pigments; an

@@ -15,7 +15,7 @@ import { emitDts } from "svelte2tsx";
  * would silently block every later one. `.d.ts` copies of plain `.ts`
  * sources are dropped too — the pack toolchain declares those itself. */
 const srcRoot = path.resolve("src");
-const walk = (dir, visit) => {
+const walk = (dir: string, visit: (file: string) => void) => {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full, visit);

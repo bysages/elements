@@ -237,7 +237,7 @@ export const WaitForClick = {
           effect({ next, target, show }: any) {
             show();
             const [promise, cancel] = waitForEvent(target, "click");
-            promise.then(() => next());
+            void promise.then(() => next());
             return cancel;
           },
         })),
@@ -296,7 +296,7 @@ export const WaitForInput = {
             const [promise, cancel] = waitForEvent(target, "input", {
               predicate: (el: HTMLInputElement) => el.value.trim().length >= 2,
             });
-            promise.then(() => next());
+            void promise.then(() => next());
             return cancel;
           },
         },
@@ -312,7 +312,7 @@ export const WaitForInput = {
             const [promise, cancel] = waitForEvent(target, "input", {
               predicate: (el: HTMLInputElement) => email.test(el.value),
             });
-            promise.then(() => next());
+            void promise.then(() => next());
             return cancel;
           },
         },
@@ -327,7 +327,7 @@ export const WaitForInput = {
             const [promise, cancel] = waitForEvent(target, "change", {
               predicate: (el: HTMLInputElement) => el.checked,
             });
-            promise.then(() => next());
+            void promise.then(() => next());
             return cancel;
           },
         },
@@ -700,7 +700,7 @@ export const WaitForElement = {
               effect({ next, target, show }: any) {
                 show();
                 const [promise, cancel] = waitForEvent(target, "click");
-                promise.then(() => next());
+                void promise.then(() => next());
                 return cancel;
               },
             },
@@ -715,7 +715,7 @@ export const WaitForElement = {
                   () => document.querySelector<HTMLElement>('[data-item="new"]'),
                   { timeout: 5000 },
                 );
-                promise.then(() => show());
+                void promise.then(() => show());
                 return () => cancel();
               },
               actions: [{ label: "Next", action: "next" }],

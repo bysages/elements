@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { PropType, SetupContext } from "vue";
+import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
 import { chevron } from "../ai/chevron";

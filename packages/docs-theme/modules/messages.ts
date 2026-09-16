@@ -2,7 +2,9 @@ import { createResolver, defineNuxtModule } from "@nuxt/kit";
 
 const MESSAGES: Record<string, string> = { en: "en.json", zh: "zh.json" };
 
-const { resolve } = createResolver(import.meta.url);
+const { resolve } = createResolver(import.meta.url) as {
+  resolve: (...path: string[]) => string;
+};
 
 /** The theme speaks its own UI vocabulary (`docs.*`, `common.*`). A
  * site that registers `@nuxtjs/i18n` with its own locale files would

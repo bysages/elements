@@ -104,8 +104,8 @@ export const Range = {
         h("span", { style: { color: "var(--bs-color-text-tertiary)" } }, () => "→"),
         h(DateInput.SegmentGroup, { index: 1 }, () => segments()),
       ]),
-      h(DateInput.HiddenInput, { index: 0 }),
-      h(DateInput.HiddenInput, { index: 1 }),
+      h(DateInput.HiddenInput as any, { index: 0 }),
+      h(DateInput.HiddenInput as any, { index: 1 }),
     ]),
 };
 

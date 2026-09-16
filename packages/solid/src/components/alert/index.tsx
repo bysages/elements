@@ -6,7 +6,7 @@ export type AlertStatus = "ink" | "info" | "success" | "warning" | "danger";
 
 // The status rides the context as an accessor so a live status prop
 // re-reads on every icon render instead of freezing at mount.
-const StatusContext = createContext<() => AlertStatus>(() => "ink");
+const StatusContext = createContext<() => AlertStatus>((): AlertStatus => "ink");
 
 function glyph(status: AlertStatus) {
   const paths: Record<AlertStatus, string> = {
@@ -36,7 +36,9 @@ function glyph(status: AlertStatus) {
 /** A notice drawn on the page: a wash of the status pigment, one heavier
  * hairline on the leading edge, the serif for its title. Root, Icon,
  * Body, Title, Description — the icon reads the status from the Root. */
-export interface AlertProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+export interface AlertProps extends JSX.HTMLAttributes<HTMLDivElement> {
+  status?: AlertStatus;
+}
 
 function AlertRoot(props: AlertProps) {
   const [own, rest] = splitProps(props, ["status"]);

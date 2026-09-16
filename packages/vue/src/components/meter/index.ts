@@ -58,7 +58,7 @@ const Root = defineComponent({
       const children = ctx.slots.default?.() ?? [
         h(Label, () => props.label),
         h(ValueText, () => `${Math.round(ratio.value * 100)}%`),
-        h(Track as any),
+        h(Track),
       ];
       return h(
         "div",
@@ -73,7 +73,7 @@ const Root = defineComponent({
           "data-part": "root",
           "data-level": props.level !== "normal" ? props.level : undefined,
           // The share of the scale, inherited by the range below.
-          style: { ...((ctx.attrs.style as object) ?? {}), "--_percent": `${ratio.value * 100}%` },
+          style: { ...(ctx.attrs.style as object), "--_percent": `${ratio.value * 100}%` },
         },
         children,
       );

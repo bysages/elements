@@ -5,8 +5,9 @@ import type { JSX } from "solid-js";
  * heading ride the song-serif, the rest ride the hei. Nothing here is
  * decorative — hierarchy is size, weight, and space. */
 function part(name: string, tag: string) {
-  function Component(props: JSX.HTMLAttributes<HTMLElement>) {
-    return <tag {...props} data-scope="typography" data-part={name.toLowerCase()} />;
+  function Component(props: JSX.HTMLAttributes<HTMLParagraphElement>) {
+    const Tag = tag as "p";
+    return <Tag {...props} data-scope="typography" data-part={name.toLowerCase()} />;
   }
   return Component;
 }

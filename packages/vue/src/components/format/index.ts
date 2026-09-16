@@ -1,5 +1,5 @@
 import { Format as ArkFormat } from "@ark-ui/vue/format";
-import { defineComponent, h, type Component } from "vue";
+import { defineComponent, h, type Component, type ComponentObjectPropsOptions } from "vue";
 
 /** Format, dressed in the paper-and-ink system: Intl formatting for
  * numbers, currency, bytes and relative time. The parts —
@@ -22,7 +22,7 @@ function homed<T extends Component>(part: T): T {
     // Re-declare the part's props, then forward everything: declared
     // props ride `props`, the rest of the attributes stay in `attrs` —
     // only class and style belong to the span itself.
-    ...(part as { props?: Record<string, unknown> }),
+    ...(part as { props?: ComponentObjectPropsOptions }),
     setup(props, { attrs, slots }) {
       return () => {
         const { class: cls, style: sty, ...rest } = attrs;

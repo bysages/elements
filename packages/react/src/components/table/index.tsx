@@ -127,7 +127,7 @@ const SELECT_COL_WIDTH = 48;
 
 /* --- Drag-to-reorder helpers ------------------------------------------- */
 
-type TreeNode = RowData & { id?: unknown; subRows?: TreeNode[] };
+type TreeNode = Record<string, any> & { id?: unknown; subRows?: TreeNode[] };
 
 /** The list holding `id` and the index inside it, or null when absent. */
 function findNode(rows: TreeNode[], id: string): { list: TreeNode[]; index: number } | null {
@@ -217,9 +217,7 @@ function SelectBox(props: {
 }
 
 export function DataTable(rawProps: DataTableProps) {
-  // Declared defaults keep these present for the whole render.
-  const props = rawProps as DataTableProps &
-    Required<Pick<DataTableProps, "sortable" | "rowHeight" | "pageSize" | "pageSizeOptions">>;
+  const props = rawProps;
   const {
     selectable = false,
     sortable = true,
@@ -328,8 +326,8 @@ export function DataTable(rawProps: DataTableProps) {
     columns,
     data: props.data,
     enableSorting: sortable,
-    getRowId: (row: any) => String(row.id),
-    getSubRows: (row: any) => row.subRows,
+    getRowId: (row) => String(row.id),
+    getSubRows: (row) => row.subRows,
     // Reordering swaps the whole data array; expansion is the user's
     // view state and must survive it.
     autoResetExpanded: false,

@@ -1,7 +1,7 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/vue/date-picker";
-import type { DatePickerRootProps } from "@ark-ui/vue/date-picker";
+import type { DatePickerRootProps, UseDatePickerContext } from "@ark-ui/vue/date-picker";
 import { injectComponentStyle } from "@bysages/core";
-import type { PropType, SetupContext } from "vue";
+import type { PropType, SetupContext, UnwrapRef } from "vue";
 import { defineComponent, h } from "vue";
 
 export type {
@@ -39,20 +39,22 @@ export const Calendar = defineComponent({
   props: {
     /** Selected date(s) — an array, as the machine speaks in ranges. */
     modelValue: {
-      type: null as unknown as PropType<DatePickerRootProps["value"]>,
+      type: null as unknown as PropType<DatePickerRootProps["modelValue"]>,
       default: undefined,
     },
     min: { type: null as unknown as PropType<DatePickerRootProps["min"]>, default: undefined },
     max: { type: null as unknown as PropType<DatePickerRootProps["max"]>, default: undefined },
   },
   emits: {
-    "update:modelValue": (_value: NonNullable<DatePickerRootProps["value"]>) => true,
+    "update:modelValue": (_value: NonNullable<DatePickerRootProps["modelValue"]>) => true,
   },
   setup(props, ctx: SetupContext) {
     /* zag's RangeText follows the visible day-page (startValue), which
        the month and year steps never move — it would freeze the title.
        Formatting the focused value keeps it in step with the arrows. */
-    const title = (dp: any) => {
+    /* slot props are the unwrapped api object (renderSlot passes unref(api)) */
+    type DatePickerApi = UnwrapRef<UseDatePickerContext>;
+    const title = (dp: DatePickerApi) => {
       const d = dp.focusedValue;
       if (!d) return "";
       if (dp.view === "day") return dp.format(d, { month: "long", year: "numeric" });
@@ -68,7 +70,7 @@ export const Calendar = defineComponent({
         h(ArkDatePicker.ViewControl, () => [
           h(ArkDatePicker.PrevTrigger, () => chevron("left")),
           h(ArkDatePicker.Context, null, {
-            default: (dp: any) => h(ArkDatePicker.ViewTrigger, () => title(dp)),
+            default: (dp: DatePickerApi) => h(ArkDatePicker.ViewTrigger, () => title(dp)),
           }),
           h(ArkDatePicker.NextTrigger, () => chevron("right")),
         ]),
@@ -98,11 +100,11 @@ export const Calendar = defineComponent({
             h(ArkDatePicker.View, { view: "day" }, () => [
               header(),
               h(ArkDatePicker.Context, null, {
-                default: (dp: any) =>
+                default: (dp: DatePickerApi) =>
                   h(ArkDatePicker.Table, () => [
                     h(ArkDatePicker.TableHead, () =>
                       h(ArkDatePicker.TableRow, () =>
-                        dp.weekDays.map((day: any, id: number) =>
+                        dp.weekDays.map((day, id) =>
                           h(
                             ArkDatePicker.TableHeader,
                             { key: id, "aria-label": day.long },
@@ -112,9 +114,9 @@ export const Calendar = defineComponent({
                       ),
                     ),
                     h(ArkDatePicker.TableBody, () =>
-                      dp.weeks.map((week: any, id: number) =>
+                      dp.weeks.map((week, id) =>
                         h(ArkDatePicker.TableRow, { key: id }, () =>
-                          week.map((day: any, id: number) =>
+                          week.map((day, id: number) =>
                             h(ArkDatePicker.TableCell, { key: id, value: day }, () =>
                               h(ArkDatePicker.TableCellTrigger, () => day.day),
                             ),
@@ -128,14 +130,14 @@ export const Calendar = defineComponent({
             h(ArkDatePicker.View, { view: "month" }, () => [
               header(),
               h(ArkDatePicker.Context, null, {
-                default: (dp: any) =>
+                default: (dp: DatePickerApi) =>
                   h(ArkDatePicker.Table, { columns: 3 }, () =>
                     h(ArkDatePicker.TableBody, () =>
                       dp
                         .getMonthsGrid({ columns: 3 })
-                        .map((months: any, id: number) =>
+                        .map((months, id) =>
                           h(ArkDatePicker.TableRow, { key: id }, () =>
-                            months.map((month: any, id: number) =>
+                            months.map((month, id: number) =>
                               h(
                                 ArkDatePicker.TableCell,
                                 { key: id, value: month.value, columns: 3 },
@@ -151,14 +153,14 @@ export const Calendar = defineComponent({
             h(ArkDatePicker.View, { view: "year" }, () => [
               header(),
               h(ArkDatePicker.Context, null, {
-                default: (dp: any) =>
+                default: (dp: DatePickerApi) =>
                   h(ArkDatePicker.Table, { columns: 3 }, () =>
                     h(ArkDatePicker.TableBody, () =>
                       dp
                         .getYearsGrid({ columns: 3 })
-                        .map((years: any, id: number) =>
+                        .map((years, id) =>
                           h(ArkDatePicker.TableRow, { key: id }, () =>
-                            years.map((year: any, id: number) =>
+                            years.map((year, id: number) =>
                               h(
                                 ArkDatePicker.TableCell,
                                 { key: id, value: year.value, columns: 3 },

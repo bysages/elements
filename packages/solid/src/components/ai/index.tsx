@@ -1,17 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
 import { renderHtml } from "@tanstack/markdown/html";
-import type {
-  DataUIPart,
-  FileUIPart,
-  ReasoningUIPart,
-  SourceDocumentUIPart,
-  SourceUrlUIPart,
-  StepStartUIPart,
-  TextUIPart,
-  ToolUIPart,
-  UIMessage,
-  UIMessagePart,
-} from "ai";
 import type { JSX } from "solid-js";
 import { createMemo, splitProps } from "solid-js";
 
@@ -25,8 +13,8 @@ import { Field } from "../field";
  * `data-ai` marker, so the machine work is never ours. Parts stay
  * agnostic of any client; consumers map their message format (e.g. the
  * `UIMessage` parts re-exported below) onto these primitives. */
-function part(name: string, tag: string, extra: Record<string, string> = {}) {
-  function Component(props: JSX.HTMLAttributes<HTMLElement>) {
+function part(name: string, tag: string, extra: Partial<JSX.HTMLAttributes<HTMLDivElement>> = {}) {
+  function Component(props: JSX.HTMLAttributes<HTMLDivElement>) {
     return <div {...extra} {...props} data-scope="ai" data-part={name.toLowerCase()} />;
   }
   return Component;
@@ -53,7 +41,7 @@ const chevron = (
 
 export type MessageRole = "user" | "assistant" | "system";
 
-export interface MessageProps extends JSX.HTMLAttributes<HTMLElement> {
+export interface MessageProps extends Omit<JSX.HTMLAttributes<HTMLElement>, "role"> {
   role?: MessageRole;
 }
 
@@ -189,7 +177,7 @@ export function Action(props: ActionProps) {
   );
 }
 
-export interface SuggestionProps extends JSX.HTMLAttributes<HTMLButtonElement> {
+export interface SuggestionProps extends Omit<JSX.HTMLAttributes<HTMLButtonElement>, "onSelect"> {
   prompt: string;
   onSelect?: (prompt: string) => void;
 }
@@ -205,7 +193,10 @@ export function Suggestion(props: SuggestionProps) {
   );
 }
 
-export interface PromptInputProps extends JSX.HTMLAttributes<HTMLFormElement> {
+export interface PromptInputProps extends Omit<
+  JSX.HTMLAttributes<HTMLFormElement>,
+  "onSubmit" | "value"
+> {
   value: string;
   onValueChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
@@ -248,7 +239,7 @@ export function PromptInput(props: PromptInputProps) {
           value={own.value}
           placeholder={own.placeholder ?? "Send a message"}
           disabled={own.disabled}
-          onValueChange={(details) => own.onValueChange?.(details.value)}
+          onInput={(event) => own.onValueChange?.(event.currentTarget.value)}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();

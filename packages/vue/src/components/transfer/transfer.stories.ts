@@ -43,7 +43,7 @@ export const Basic: Story = {
 export const Searchable: Story = {
   render: () =>
     withState(() => {
-      const picked = ref([]);
+      const picked = ref<string[]>([]);
       return () =>
         h(Transfer, {
           modelValue: picked.value,

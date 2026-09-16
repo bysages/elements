@@ -1,7 +1,8 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/solid/date-picker";
-import type { DatePickerRootProps } from "@ark-ui/solid/date-picker";
+import type { DatePickerRootProps, UseDatePickerContext } from "@ark-ui/solid/date-picker";
 import { injectComponentStyle } from "@bysages/core";
-import { For, Show } from "solid-js";
+import { For, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 
 function chevron(dir: "left" | "right") {
   return (
@@ -38,11 +39,13 @@ export function Calendar(props: CalendarProps) {
   /* zag's RangeText follows the visible day-page (startValue), which
      the month and year steps never move — it would freeze the title.
      Formatting the focused value keeps it in step with the arrows. */
-  const title = (dp: any) => {
-    const d = dp.focusedValue;
+  /* the context render prop hands over the api accessor */
+  const title = (dp: UseDatePickerContext) => {
+    const api = dp();
+    const d = api.focusedValue;
     if (!d) return "";
-    if (dp.view === "day") return dp.format(d, { month: "long", year: "numeric" });
-    if (dp.view === "month") return dp.format(d, { year: "numeric" });
+    if (api.view === "day") return api.format(d, { month: "long", year: "numeric" });
+    if (api.view === "month") return api.format(d, { year: "numeric" });
     const decade = Math.floor(d.year / 10) * 10;
     return `${decade} - ${decade + 9}`;
   };
@@ -54,7 +57,7 @@ export function Calendar(props: CalendarProps) {
       <ArkDatePicker.ViewControl>
         <ArkDatePicker.PrevTrigger>{chevron("left")}</ArkDatePicker.PrevTrigger>
         <ArkDatePicker.Context>
-          {(dp: any) => <ArkDatePicker.ViewTrigger>{title(dp)}</ArkDatePicker.ViewTrigger>}
+          {(dp) => <ArkDatePicker.ViewTrigger>{title(dp)}</ArkDatePicker.ViewTrigger>}
         </ArkDatePicker.Context>
         <ArkDatePicker.NextTrigger>{chevron("right")}</ArkDatePicker.NextTrigger>
       </ArkDatePicker.ViewControl>
@@ -69,10 +72,10 @@ export function Calendar(props: CalendarProps) {
         open
         closeOnSelect
         inline
-        {...(own.value !== undefined ? { value: own.value as any } : {})}
-        {...(own.min !== undefined ? { min: own.min as any } : {})}
-        {...(own.max !== undefined ? { max: own.max as any } : {})}
-        onValueChange={(details: any) => own.onValueChange?.(details.value)}
+        {...(own.value !== undefined ? { value: own.value } : {})}
+        {...(own.min !== undefined ? { min: own.min } : {})}
+        {...(own.max !== undefined ? { max: own.max } : {})}
+        onValueChange={(details) => own.onValueChange?.(details.value)}
       >
         {/* Three views ride the machine; only the one matching the current
             view shows. Month and year are hand-laid grids of three columns
@@ -84,8 +87,8 @@ export function Calendar(props: CalendarProps) {
               <ArkDatePicker.TableRow>
                 <ArkDatePicker.Context>
                   {(dp) => (
-                    <For each={dp.weekDays}>
-                      {(day: any, id) => (
+                    <For each={dp().weekDays}>
+                      {(day) => (
                         <ArkDatePicker.TableHeader aria-label={day.long}>
                           {day.narrow}
                         </ArkDatePicker.TableHeader>
@@ -98,11 +101,11 @@ export function Calendar(props: CalendarProps) {
             <ArkDatePicker.TableBody>
               <ArkDatePicker.Context>
                 {(dp) => (
-                  <For each={dp.weeks}>
-                    {(week: any, id) => (
+                  <For each={dp().weeks}>
+                    {(week) => (
                       <ArkDatePicker.TableRow>
                         <For each={week}>
-                          {(day: any, id2) => (
+                          {(day) => (
                             <ArkDatePicker.TableCell value={day}>
                               <ArkDatePicker.TableCellTrigger>
                                 {day.day}
@@ -124,11 +127,11 @@ export function Calendar(props: CalendarProps) {
             <ArkDatePicker.TableBody>
               <ArkDatePicker.Context>
                 {(dp) => (
-                  <For each={dp.getMonthsGrid({ columns: 3 })}>
-                    {(months: any, id) => (
+                  <For each={dp().getMonthsGrid({ columns: 3 })}>
+                    {(months) => (
                       <ArkDatePicker.TableRow>
                         <For each={months}>
-                          {(month: any, id2) => (
+                          {(month) => (
                             <ArkDatePicker.TableCell value={month.value} columns={3}>
                               <ArkDatePicker.TableCellTrigger>
                                 {month.label}
@@ -150,11 +153,11 @@ export function Calendar(props: CalendarProps) {
             <ArkDatePicker.TableBody>
               <ArkDatePicker.Context>
                 {(dp) => (
-                  <For each={dp.getYearsGrid({ columns: 3 })}>
-                    {(years: any, id) => (
+                  <For each={dp().getYearsGrid({ columns: 3 })}>
+                    {(years) => (
                       <ArkDatePicker.TableRow>
                         <For each={years}>
-                          {(year: any, id2) => (
+                          {(year) => (
                             <ArkDatePicker.TableCell value={year.value} columns={3}>
                               <ArkDatePicker.TableCellTrigger>
                                 {year.label}

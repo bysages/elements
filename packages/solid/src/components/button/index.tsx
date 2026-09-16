@@ -6,7 +6,7 @@ import type { JSX } from "solid-js";
  * rests, the tone chooses the pigment. Ink is the solemn default; any
  * action can carry the primary weight. The react package's asChild has
  * no solid equivalent — compose a control around `<Button>` instead. */
-export interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "solid" | "outline" | "ghost" | "subtle";
   tone?: "ink" | "info" | "success" | "warning" | "danger";
   size?: "sm" | "md" | "lg";

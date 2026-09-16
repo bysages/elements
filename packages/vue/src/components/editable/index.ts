@@ -14,7 +14,10 @@ const Preview = defineComponent({
     const editable = useEditableContext();
     return () => {
       const machine = unref(editable);
-      const { innerHTML, ...props } = machine.getPreviewProps() as Record<string, unknown>;
+      const { innerHTML: _innerHTML, ...props } = machine.getPreviewProps() as Record<
+        string,
+        unknown
+      >;
       return h("span", { ...props, ...ctx.attrs }, ctx.slots.default?.() ?? machine.valueText);
     };
   },

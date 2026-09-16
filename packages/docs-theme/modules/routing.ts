@@ -13,7 +13,9 @@ export default defineNuxtModule({
     name: "docs-theme-routing",
   },
   setup(_options, nuxt) {
-    const { resolve } = createResolver(import.meta.url);
+    const { resolve } = createResolver(import.meta.url) as {
+      resolve: (...path: string[]) => string;
+    };
 
     const i18nOptions = (nuxt.options as typeof nuxt.options & { i18n?: I18nOptions }).i18n;
     const locales = (i18nOptions?.locales ?? []).map((entry) =>

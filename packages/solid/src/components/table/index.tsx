@@ -126,7 +126,20 @@ const SELECT_COL_WIDTH = 48;
 
 /* --- Drag-to-reorder helpers ------------------------------------------- */
 
-type TreeNode = RowData & { id?: unknown; subRows?: TreeNode[] };
+type TreeNode = Exclude<RowData, Array<any>> & { id?: unknown; subRows?: TreeNode[] };
+
+/** Placement attrs for a pinned cell plus the seam markers the stylesheet
+ * reads; spread onto header, body, and footer cells. */
+type PinAttrs = {
+  "data-pinned"?: string;
+  "data-last-pinned"?: string;
+  "data-first-pinned"?: string;
+  style?: JSX.CSSProperties;
+};
+
+/** Solid's JSX input types omit `indeterminate` even though the runtime
+ * property exists; the select checkboxes spread it through. */
+type CheckboxAttrs = JSX.InputHTMLAttributes<HTMLInputElement> & { indeterminate?: boolean };
 
 /** The list holding `id` and the index inside it, or null when absent. */
 function findNode(rows: TreeNode[], id: string): { list: TreeNode[]; index: number } | null {
@@ -275,8 +288,8 @@ export function DataTable(props: DataTableProps) {
       return props.data;
     },
     enableSorting: props.sortable !== false,
-    getRowId: (row: any) => String(row.id),
-    getSubRows: (row: any) => row.subRows,
+    getRowId: (row) => String(row.id),
+    getSubRows: (row) => row.subRows,
     // Reordering swaps the whole data array; expansion is the user's
     // view state and must survive it.
     autoResetExpanded: false,
@@ -365,22 +378,20 @@ export function DataTable(props: DataTableProps) {
 
   /** Inline placement for pinned cells plus the seam attributes the
    * stylesheet reads. */
-  function pinAttrs(column: TColumn) {
+  function pinAttrs(column: TColumn): PinAttrs {
     const pinned = column.getIsPinned();
-    const attrs: Record<string, unknown> = {
-      "data-pinned": pinned || undefined,
-    };
-    if (!pinned) return attrs;
+    if (!pinned) return { "data-pinned": undefined };
     const offset = pinned === "start" ? column.getStart("start") : column.getAfter("end");
     const siblings = leafIds();
     const index = siblings.indexOf(column.id);
     const prev = index > 0 ? table.getColumn(siblings[index - 1]!) : undefined;
     const next = index < siblings.length - 1 ? table.getColumn(siblings[index + 1]!) : undefined;
-    attrs["data-last-pinned"] =
-      pinned === "start" && next?.getIsPinned() !== "start" ? "" : undefined;
-    attrs["data-first-pinned"] = pinned === "end" && prev?.getIsPinned() !== "end" ? "" : undefined;
-    attrs.style = { "--pin-offset": `${offset}px` };
-    return attrs;
+    return {
+      "data-pinned": pinned,
+      "data-last-pinned": pinned === "start" && next?.getIsPinned() !== "start" ? "" : undefined,
+      "data-first-pinned": pinned === "end" && prev?.getIsPinned() !== "end" ? "" : undefined,
+      style: { "--pin-offset": `${offset}px` } as JSX.CSSProperties,
+    };
   }
 
   /* --- Drag reordering ---------------------------------------------------
@@ -581,7 +592,7 @@ export function DataTable(props: DataTableProps) {
 
     const isExpandHost = column.id === expandHostId();
     const pin = pinAttrs(column);
-    const pinStyle = (pin.style as JSX.CSSProperties) ?? {};
+    const pinStyle = pin.style ?? {};
     delete pin.style;
     const rowSpan = cell.getRowSpan();
     const style: JSX.CSSProperties = {
@@ -595,7 +606,7 @@ export function DataTable(props: DataTableProps) {
         <input
           type="checkbox"
           checked={row.getIsSelected()}
-          indeterminate={false}
+          {...({ indeterminate: false } as CheckboxAttrs)}
           aria-label="Select row"
           onchange={() => row.toggleSelected(!row.getIsSelected())}
         />
@@ -632,7 +643,7 @@ export function DataTable(props: DataTableProps) {
         data-part="cell"
         data-numeric={column.columnDef.meta?.numeric ? "" : undefined}
         data-spanned={rowSpan > 1 ? "" : undefined}
-        {...(pin as any)}
+        {...pin}
         style={style}
       >
         {content}
@@ -688,7 +699,7 @@ export function DataTable(props: DataTableProps) {
         data-id={column.id}
         draggable={canDrag || undefined}
         aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
-        {...(pinAttrs(column) as any)}
+        {...pinAttrs(column)}
         onclick={canSort ? () => column.toggleSorting() : undefined}
         ondragstart={canDrag ? onColDragStart : undefined}
         ondragover={canDrag ? (e: DragEvent) => onColDragOver(column, e) : undefined}
@@ -757,12 +768,14 @@ export function DataTable(props: DataTableProps) {
                           role="columnheader"
                           data-scope="table"
                           data-part="header-cell"
-                          {...(pinAttrs(column) as any)}
+                          {...pinAttrs(column)}
                         >
                           <input
                             type="checkbox"
                             checked={all}
-                            indeterminate={table.getIsSomeRowsSelected() && !all}
+                            {...({
+                              indeterminate: table.getIsSomeRowsSelected() && !all,
+                            } as CheckboxAttrs)}
                             aria-label="Select all rows"
                             onchange={() => table.toggleAllRowsSelected(!all)}
                           />
@@ -813,7 +826,7 @@ export function DataTable(props: DataTableProps) {
                           data-scope="table"
                           data-part="footer-cell"
                           data-numeric={header.column.columnDef.meta?.numeric ? "" : undefined}
-                          {...(pinAttrs(header.column) as any)}
+                          {...pinAttrs(header.column)}
                         >
                           {header.isPlaceholder ? null : <FlexRender footer={header} />}
                         </div>

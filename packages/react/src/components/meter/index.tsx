@@ -15,7 +15,7 @@ function part(name: string, tag: string) {
 const Label = part("Label", "span");
 const ValueText = part("ValueText", "span");
 
-const Track = ({ children, ...rest }: HTMLAttributes<HTMLElement>) => (
+const Track = ({ ...rest }: HTMLAttributes<HTMLElement>) => (
   <span {...rest} data-scope="meter" data-part="track">
     <span data-scope="meter" data-part="range" />
   </span>

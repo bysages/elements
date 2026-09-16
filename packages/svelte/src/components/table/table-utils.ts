@@ -1,8 +1,6 @@
-import type { RowData } from "@tanstack/svelte-table";
-
 /* --- Drag-to-reorder helpers ------------------------------------------- */
 
-export type TreeNode = RowData & { id?: unknown; subRows?: TreeNode[] };
+export type TreeNode = Record<string, any> & { id?: unknown; subRows?: TreeNode[] };
 
 /** The list holding `id` and the index inside it, or null when absent. */
 export function findNode(rows: TreeNode[], id: string): { list: TreeNode[]; index: number } | null {

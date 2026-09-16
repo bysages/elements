@@ -49,16 +49,6 @@ const STRENGTH_LABELS = ["Weak", "Fair", "Good", "Strong"] as const;
 
 const meterStyle = { display: "flex", gap: "0.25rem", marginTop: "0.375rem" };
 
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.25rem 0.625rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
-
 /** The masked field with its reveal eye — the indicator swaps eye for
  * eye-off in the same seat. */
 export const Basic = {

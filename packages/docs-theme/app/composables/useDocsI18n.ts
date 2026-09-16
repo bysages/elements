@@ -1,6 +1,6 @@
 import { useNuxtApp, useRuntimeConfig } from "nuxt/app";
 import type { Ref } from "vue";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 type DocsNuxtApp = ReturnType<typeof useNuxtApp> & {
   $i18n?: {

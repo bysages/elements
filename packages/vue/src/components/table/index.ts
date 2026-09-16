@@ -157,7 +157,12 @@ function removeById(rows: TreeNode[], id: string): TreeNode[] {
   const next: TreeNode[] = [];
   for (const row of rows) {
     if (String(row.id) === id) continue;
-    next.push(row.subRows ? { ...row, subRows: removeById(row.subRows, id) } : row);
+    if (!row.subRows) {
+      next.push(row);
+      continue;
+    }
+    const rest = row as Record<string, unknown>;
+    next.push({ ...rest, subRows: removeById(row.subRows, id) });
   }
   return next;
 }
@@ -170,7 +175,9 @@ function replaceById(
 ): TreeNode[] {
   return rows.map((row) => {
     if (String(row.id) === id) return patch(row);
-    return row.subRows ? { ...row, subRows: replaceById(row.subRows, id, patch) } : row;
+    if (!row.subRows) return row;
+    const rest = row as Record<string, unknown>;
+    return { ...rest, subRows: replaceById(row.subRows, id, patch) };
   });
 }
 
@@ -322,8 +329,8 @@ export const DataTable = defineComponent({
       columns,
       data: computed(() => props.data),
       enableSorting: props.sortable !== false,
-      getRowId: (row: any) => String(row.id),
-      getSubRows: (row: any) => row.subRows,
+      getRowId: (row) => String(row.id),
+      getSubRows: (row) => row.subRows,
       // Reordering swaps the whole data array; expansion is the user's
       // view state and must survive it.
       autoResetExpanded: false,
@@ -600,7 +607,7 @@ export const DataTable = defineComponent({
         let next = removeById(props.data as TreeNode[], dragRowId);
         if (zone === "inside") {
           next = replaceById(next, targetId, (node) => ({
-            ...node,
+            ...(node as Record<string, unknown>),
             subRows: [...(node.subRows ?? []), dragged],
           }));
         } else {

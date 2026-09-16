@@ -18,8 +18,8 @@ const outFile = path.resolve(docsRoot, "app/storybook-links.json");
 
 /** Slugs compare without their dashes — "auto-complete" and
  * "autocomplete" are the same family under two spellings. */
-const flat = (s) => s.replace(/[\s-]/g, "").toLowerCase();
-const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const flat = (s: string) => s.replace(/[\s-]/g, "").toLowerCase();
+const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
 const families = readdirSync(vueRoot, { withFileTypes: true })
   .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
@@ -32,15 +32,20 @@ if (!existsSync(workbenchIndex)) {
   process.exit(1);
 }
 
-const entries = JSON.parse(readFileSync(workbenchIndex, "utf8")).entries;
+type WorkbenchEntry = { type: string; title?: string; id: string };
+type Story = { id: string; demo: string; rank: number; name: string };
+
+const entries: Record<string, WorkbenchEntry> = JSON.parse(
+  readFileSync(workbenchIndex, "utf8"),
+).entries;
 
 // Per family (flattened title key): the stories, with a same-named one
 // first and the rest alphabetical, so a demo without its own story
 // still lands on the family's most representative one.
-const storiesOfFamily = new Map();
+const storiesOfFamily = new Map<string, Story[]>();
 for (const entry of Object.values(entries)) {
   if (entry.type !== "story" || !entry.title?.startsWith("Components/")) continue;
-  const [, section, familyTitle] = entry.title.split("/");
+  const [, , familyTitle] = entry.title.split("/");
   const [familyKey, storyKey] = [flat(familyTitle), kebab(entry.id.split("--")[1])];
   const stories = storiesOfFamily.get(familyKey) ?? [];
   stories.push({
@@ -55,7 +60,7 @@ for (const stories of storiesOfFamily.values()) {
   stories.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name));
 }
 
-const links = {};
+const links: Record<string, string> = {};
 let unlinked = 0;
 for (const family of families) {
   const examples = existsSync(path.join(examplesRoot, family))

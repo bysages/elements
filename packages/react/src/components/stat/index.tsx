@@ -19,6 +19,7 @@ const Description = part("Description", "p");
 
 export interface StatDeltaProps extends HTMLAttributes<HTMLElement> {
   direction?: "up" | "down" | "flat";
+  "data-direction"?: string;
 }
 
 /** The delta reads the direction in the fixed semantic pigments; an

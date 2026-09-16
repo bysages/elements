@@ -15,8 +15,12 @@ import { join, dirname } from "node:path";
 import {
   Project,
   SyntaxKind,
+  type ExpressionWithTypeArguments,
   type InterfaceDeclaration,
   type Node,
+  type ObjectLiteralElementLike,
+  type ObjectLiteralExpression,
+  type PropertyAssignment,
   type PropertySignature,
   type SourceFile,
 } from "ts-morph";
@@ -29,7 +33,6 @@ const CORE_STYLES = join(ROOT, "packages/core/src/styles/components");
 const project = new Project({ skipAddingFilesFromTsConfig: true });
 
 const pascal = (s: string) => s.replace(/(^|-)([a-z])/g, (_, h, c) => c.toUpperCase());
-const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
 function commentText(node: Node): string {
   return node
@@ -80,7 +83,7 @@ export interface FamilyDoc {
  * import table — no type checker involved (dist types trip it). */
 function extendedInterface(
   iface: InterfaceDeclaration,
-  ext: any,
+  ext: ExpressionWithTypeArguments,
 ): InterfaceDeclaration | undefined {
   const name = ext.getExpression().getText();
   const sourceFile = iface.getSourceFile();
@@ -135,7 +138,7 @@ function collectProps(
   return [...parents, ...iface.getProperties()];
 }
 
-function toDocs(props: PropertySignature[], scope: SourceFile): PropDoc[] {
+function toDocs(props: PropertySignature[], _scope: SourceFile): PropDoc[] {
   return props
     .map((prop) => {
       const description = commentText(prop);
@@ -201,13 +204,16 @@ function arkEmits(family: string, part: string): EmitDoc[] {
 
 /** Emits of a native primitive: the `emits` declaration in its
  * defineComponent, with each payload spelled as written. */
-function nativeEmits(component: any): EmitDoc[] {
+function nativeEmits(component: ObjectLiteralExpression): EmitDoc[] {
   const emitsEntry = component
     .getProperties()
-    .find((p: any) => p.isKind?.(SyntaxKind.PropertyAssignment) && p.getName() === "emits");
+    .find(
+      (p): p is PropertyAssignment =>
+        p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "emits",
+    );
   const literal = emitsEntry?.getInitializerIfKind?.(SyntaxKind.ObjectLiteralExpression);
   if (!literal) return [];
-  return literal.getProperties().flatMap((entry: any) => {
+  return literal.getProperties().flatMap((entry: ObjectLiteralElementLike) => {
     if (!entry.isKind(SyntaxKind.PropertyAssignment)) return [];
     const payload = entry.getInitializer()?.getText().replace(/\s+/g, " ") ?? "";
     return [{ name: entry.getName().replace(/^["']|["']$/g, ""), payload }];
@@ -217,7 +223,7 @@ function nativeEmits(component: any): EmitDoc[] {
 /** Named slots a native part reads: every `ctx.slots.X` call inside the
  * component's own source span. The default slot goes unreported — the
  * examples show it. */
-function nativeSlots(component: any): { name: string }[] {
+function nativeSlots(component: ObjectLiteralExpression): { name: string }[] {
   const sourceFile = component.getSourceFile();
   const start = component.getStart();
   const end = component.getEnd();
@@ -234,21 +240,27 @@ function nativeSlots(component: any): { name: string }[] {
 
 /** Props of a native primitive: the runtime declaration inside its
  * defineComponent, with constructor types and defaults. */
-function nativeProps(component: any): PropDoc[] {
+function nativeProps(component: ObjectLiteralExpression): PropDoc[] {
   const propsEntry = component
     .getProperties()
-    .find((p: any) => p.isKind?.(SyntaxKind.PropertyAssignment) && p.getName() === "props");
+    .find(
+      (p): p is PropertyAssignment =>
+        p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "props",
+    );
   if (!propsEntry) return [];
   const literal = propsEntry.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
   if (!literal) return [];
-  return literal.getProperties().flatMap((entry) => {
+  return literal.getProperties().flatMap((entry: ObjectLiteralElementLike) => {
     if (!entry.isKind(SyntaxKind.PropertyAssignment)) return [];
     const name = entry.getName().replace(/^["']|["']$/g, "");
     const body = entry.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
     const pick = (key: string) => {
       const found = body
         ?.getProperties()
-        .find((p: any) => p.isKind?.(SyntaxKind.PropertyAssignment) && p.getName() === key);
+        .find(
+          (p): p is PropertyAssignment =>
+            p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === key,
+        );
       return found?.getInitializer()?.getText();
     };
     const description = commentText(entry);
@@ -358,9 +370,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
           ?.getLiteralValue();
         if (partName) {
           const description = commentText(decl.getVariableStatement() ?? decl);
-          components[pascal(dir) + pascal(partName)] = {
-            ...(description ? { description } : {}),
-          };
+          components[pascal(dir) + pascal(partName)] = description ? { description } : {};
         }
         continue;
       }
@@ -369,7 +379,10 @@ export function documentFamily(dir: string): FamilyDoc | null {
       if (!arg) continue;
       const nameProp = arg
         .getProperties()
-        .find((p: any) => p.isKind?.(SyntaxKind.PropertyAssignment) && p.getName() === "name");
+        .find(
+          (p): p is PropertyAssignment =>
+            p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "name",
+        );
       const name = nameProp?.getInitializerIfKind(SyntaxKind.StringLiteral)?.getLiteralText();
       if (!name) continue;
       const props = nativeProps(arg);

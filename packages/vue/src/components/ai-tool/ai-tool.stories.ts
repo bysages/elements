@@ -17,7 +17,6 @@ export const Basic = {
           display: "grid",
           gap: "0.75rem",
           inlineSize: "100%",
-          inlineSize: "100%",
           maxInlineSize: "46rem",
         },
       },

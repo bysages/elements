@@ -10,5 +10,13 @@ export interface BsElementsOptions {
   theme?: ApplyThemeOptions;
 }
 
+// The config key is registered at runtime via `configKey` — this
+// declaration teaches `nuxt.config`'s type the same key.
+declare module "@nuxt/schema" {
+  interface NuxtConfig {
+    bsElements?: BsElementsOptions;
+  }
+}
+
 declare const _default: import("@nuxt/kit").NuxtModule<BsElementsOptions>;
 export default _default;
