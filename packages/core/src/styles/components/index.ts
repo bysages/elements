@@ -30,6 +30,7 @@ import { floatingPanelCss } from "./floating-panel";
 import { highlightCss } from "./highlight";
 import { hoverCardCss } from "./hover-card";
 import { imageCropperCss } from "./image-cropper";
+import { inputCss } from "./input";
 import { jsonTreeViewCss } from "./json-tree-view";
 import { kbdCss } from "./kbd";
 import { linkCss } from "./link";
@@ -37,7 +38,6 @@ import { listboxCss } from "./listbox";
 import { marqueeCss } from "./marquee";
 import { menuCss } from "./menu";
 import { meterCss } from "./meter";
-import { typographyCss } from "./typography";
 import { navigationMenuCss } from "./navigation-menu";
 import { numberInputCss } from "./number-input";
 import { pageHeaderCss } from "./page-header";
@@ -55,16 +55,17 @@ import { selectCss } from "./select";
 import { separatorCss } from "./separator";
 import { signaturePadCss } from "./signature-pad";
 import { skeletonCss } from "./skeleton";
-import { spinnerCss } from "./spinner";
-import { statCss } from "./stat";
 import { sliderCss } from "./slider";
+import { spinnerCss } from "./spinner";
 import { splitterCss } from "./splitter";
+import { statCss } from "./stat";
 import { stepsCss } from "./steps";
 import { swapCss } from "./swap";
 import { switchCss } from "./switch";
 import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
+import { textareaCss } from "./textarea";
 import { timelineCss } from "./timeline";
 import { timerCss } from "./timer";
 import { toastCss } from "./toast";
@@ -74,6 +75,7 @@ import { toggleGroupCss } from "./toggle-group";
 import { tooltipCss } from "./tooltip";
 import { tourCss } from "./tour";
 import { treeViewCss } from "./tree-view";
+import { typographyCss } from "./typography";
 
 /** Component style registry — every component contributes its stylesheet
  * here, keyed by the name wrappers pass to `injectComponentStyle`. */
@@ -90,7 +92,8 @@ export const componentStyles: Record<string, string> = {
   button: buttonCss,
   // The calendar is the date-picker's grid standing alone: same parts,
   // its own data-scope — re-scope the shared stylesheet, never copy it.
-  calendar: calendarCss + datePickerCss.replaceAll('data-scope="date-picker"', 'data-scope="calendar"'),
+  calendar:
+    calendarCss + datePickerCss.replaceAll('data-scope="date-picker"', 'data-scope="calendar"'),
   card: cardCss,
   carousel: carouselCss,
   checkbox: checkboxCss,
@@ -112,6 +115,7 @@ export const componentStyles: Record<string, string> = {
   highlight: highlightCss,
   "hover-card": hoverCardCss,
   "image-cropper": imageCropperCss,
+  input: inputCss,
   "json-tree-view": jsonTreeViewCss,
   kbd: kbdCss,
   link: linkCss,
@@ -146,6 +150,7 @@ export const componentStyles: Record<string, string> = {
   switch: switchCss,
   tabs: tabsCss,
   "tags-input": tagsInputCss,
+  textarea: textareaCss,
   timeline: timelineCss,
   timer: timerCss,
   table: tableCss,
@@ -190,6 +195,7 @@ export {
   highlightCss,
   hoverCardCss,
   imageCropperCss,
+  inputCss,
   jsonTreeViewCss,
   kbdCss,
   linkCss,
@@ -221,6 +227,7 @@ export {
   switchCss,
   tabsCss,
   tagsInputCss,
+  textareaCss,
   timelineCss,
   timerCss,
   toastCss,
