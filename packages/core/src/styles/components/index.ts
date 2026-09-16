@@ -12,6 +12,7 @@ import { calendarCss } from "./calendar";
 import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
 import { checkboxCss } from "./checkbox";
+import { checkboxGroupCss } from "./checkbox-group";
 import { chipCss } from "./chip";
 import { clipboardCss } from "./clipboard";
 import { collapsibleCss } from "./collapsible";
@@ -27,6 +28,7 @@ import { fieldCss } from "./field";
 import { fieldsetCss } from "./fieldset";
 import { fileUploadCss } from "./file-upload";
 import { floatingPanelCss } from "./floating-panel";
+import { formCss } from "./form";
 import { highlightCss } from "./highlight";
 import { hoverCardCss } from "./hover-card";
 import { imageCropperCss } from "./image-cropper";
@@ -44,6 +46,7 @@ import { pageHeaderCss } from "./page-header";
 import { paginationCss } from "./pagination";
 import { passwordInputCss } from "./password-input";
 import { pinInputCss } from "./pin-input";
+import { popconfirmCss } from "./popconfirm";
 import { popoverCss } from "./popover";
 import { progressCss } from "./progress";
 import { qrCodeCss } from "./qr-code";
@@ -97,6 +100,7 @@ export const componentStyles: Record<string, string> = {
   card: cardCss,
   carousel: carouselCss,
   checkbox: checkboxCss,
+  "checkbox-group": checkboxGroupCss,
   chip: chipCss,
   clipboard: clipboardCss,
   collapsible: collapsibleCss,
@@ -112,6 +116,7 @@ export const componentStyles: Record<string, string> = {
   fieldset: fieldsetCss,
   "file-upload": fileUploadCss,
   "floating-panel": floatingPanelCss,
+  form: formCss,
   highlight: highlightCss,
   "hover-card": hoverCardCss,
   "image-cropper": imageCropperCss,
@@ -130,6 +135,7 @@ export const componentStyles: Record<string, string> = {
   pagination: paginationCss,
   "password-input": passwordInputCss,
   "pin-input": pinInputCss,
+  popconfirm: popconfirmCss,
   popover: popoverCss,
   progress: progressCss,
   "qr-code": qrCodeCss,
@@ -177,6 +183,7 @@ export {
   cardCss,
   carouselCss,
   checkboxCss,
+  checkboxGroupCss,
   chipCss,
   clipboardCss,
   collapsibleCss,
@@ -192,6 +199,7 @@ export {
   fieldsetCss,
   fileUploadCss,
   floatingPanelCss,
+  formCss,
   highlightCss,
   hoverCardCss,
   imageCropperCss,
@@ -209,6 +217,7 @@ export {
   paginationCss,
   passwordInputCss,
   pinInputCss,
+  popconfirmCss,
   popoverCss,
   progressCss,
   qrCodeCss,
