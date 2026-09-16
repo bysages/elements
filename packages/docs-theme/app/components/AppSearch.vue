@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { PageCollections } from "@nuxt/content";
 import { Button, Combobox, Dialog } from "@bysages/vue";
+import type { PageCollections } from "@nuxt/content";
 import MiniSearch from "minisearch";
 import { computed, ref, watch } from "vue";
 
@@ -60,7 +60,9 @@ const items = computed<SearchItem[]>(() => {
   const seen = new Map<string, SearchSection>();
   for (const row of rows) {
     const section =
-      typeof row === "string" ? (engine.value.getStoredFields(row) as unknown as SearchSection) : row;
+      typeof row === "string"
+        ? (engine.value.getStoredFields(row) as unknown as SearchSection)
+        : row;
     if (!section) continue;
     const path = section.id.split("#")[0]!;
     if (!seen.has(path)) seen.set(path, section);
@@ -126,7 +128,11 @@ if (import.meta.client) {
           </Combobox.Control>
           <Combobox.Positioner class="bs-docs-search-combobox-positioner">
             <Combobox.Content class="bs-docs-search-combobox-content">
-              <Combobox.Empty v-if="!items.length">{{ t("docs.searchEmpty") }}</Combobox.Empty>
+              <!-- The index arrives lazily client-side; an empty list before it
+                lands means "not yet", not "nothing". -->
+              <Combobox.Empty v-if="!items.length">{{
+                sections ? t("docs.searchEmpty") : t("docs.searchLoading")
+              }}</Combobox.Empty>
               <Combobox.Item
                 v-for="item in items"
                 :key="item.value"

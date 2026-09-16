@@ -217,16 +217,6 @@ body {
 /* Page transition — ink bleeds between pages, never a hard cut      */
 /* ---------------------------------------------------------------- */
 
-.page-enter-active,
-.page-leave-active {
-  transition: opacity var(--bs-duration-base) var(--bs-ease-out);
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-}
-
 /* ---------------------------------------------------------------- */
 /* Sidebar — a NavigationMenu stood on its side                      */
 /* ---------------------------------------------------------------- */
@@ -1099,6 +1089,21 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--bs-gap-sm);
+}
+
+.bs-docs-assistant-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-gap-xs);
+}
+
+/* The drawer's close trigger ships absolutely positioned for the vessel's
+   corner; inside the tools row it must flow beside the clear control. The
+   extra class out-specifies the part rule — component styles inject after
+   this sheet, and a tie would let the corner placement win. */
+.bs-docs-assistant .bs-docs-assistant-tools [data-part="close-trigger"] {
+  position: static;
+  inset: auto;
 }
 
 .bs-docs-assistant-head h2 {

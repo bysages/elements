@@ -16,18 +16,16 @@
     },
     "search": "Search the docs…",
     "searchEmpty": "Nothing found.",
+    "searchLoading": "Indexing the docs…",
     "assistant": "Ask about the docs…",
     "assistantGreeting": "Ask the assistant — it reads these shelves.",
     "prev": "Previous",
     "next": "Next",
     "edit": "Edit this page",
     "assistantTitle": "Assistant",
+    "assistantClear": "Clear the conversation",
     "assistantThinking": "Thinking",
     "assistantError": "The ink ran dry — the assistant could not be reached.",
-    "starters": [
-      "What does this site cover?",
-      "Summarize this page.",
-      "How do I get started?"
-    ]
+    "starters": ["What does this site cover?", "Summarize this page.", "How do I get started?"]
   }
 }

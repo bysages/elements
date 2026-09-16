@@ -1,6 +1,6 @@
 import { createResolver, useNuxt } from "@nuxt/kit";
-import { defineNuxtConfig, type NuxtConfig } from "nuxt/config";
 import type { NitroOptions } from "nitropack";
+import { defineNuxtConfig, type NuxtConfig } from "nuxt/config";
 
 const { resolve } = createResolver(import.meta.url);
 
@@ -11,14 +11,14 @@ const { resolve } = createResolver(import.meta.url);
 // relative and the build warns — rather than leaking a localhost that
 // search engines would index as the canonical host.
 const RAW_SITE_URL =
-  process.env.NUXT_PUBLIC_SITE_URL
-  || process.env.NUXT_SITE_URL
-  || process.env.VERCEL_PROJECT_PRODUCTION_URL
-  || process.env.VERCEL_BRANCH_URL
-  || process.env.VERCEL_URL
-  || process.env.URL
-  || process.env.CI_PAGES_URL
-  || process.env.CF_PAGES_URL;
+  process.env.NUXT_PUBLIC_SITE_URL ||
+  process.env.NUXT_SITE_URL ||
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+  process.env.VERCEL_BRANCH_URL ||
+  process.env.VERCEL_URL ||
+  process.env.URL ||
+  process.env.CI_PAGES_URL ||
+  process.env.CF_PAGES_URL;
 const siteUrl = RAW_SITE_URL
   ? RAW_SITE_URL.startsWith("http")
     ? RAW_SITE_URL
@@ -50,12 +50,6 @@ const config = {
 
   css: [resolve("./assets/css/docs.css")],
 
-  app: {
-    // Pages dissolve rather than cut — the transition styles live in
-    // docs.css next to the rest of the motion grammar.
-    pageTransition: { name: "page", mode: "out-in" } as const,
-  },
-
   ogImage: {
     // Templates render on demand; the runtime bundle is dead weight.
     zeroRuntime: true,
@@ -78,7 +72,7 @@ const config = {
     // A deployment that forgot its URL variable still builds — but every
     // canonical, sitemap entry and llms.txt link goes relative, so say
     // so loudly instead of letting the site ship quietly un-absolute.
-    "ready"() {
+    ready() {
       if (!siteUrl) {
         console.warn(
           "[@bysages/docs-theme] site.url is not set: set NUXT_SITE_URL (or your platform's URL variable, e.g. CF_PAGES_URL) so canonical links, the sitemap and llms.txt point at the deployed origin.",
@@ -93,11 +87,16 @@ const config = {
         typeof entry === "string" ? entry : entry.code,
       );
       const roots = codes.length ? codes.map((c) => `/${c}`) : ["/"];
+      // One sitemap per locale leaves `/sitemap.xml` a redirect; letting the
+      // prerenderer chase it would write that redirect as an HTML file the
+      // CDN then serves for the XML URL (the same wall docus hit).
       nitroConfig.prerender = {
         ...nitroConfig.prerender,
         crawlLinks: true,
+        failOnError: false,
         autoSubfolderIndex: false,
         routes: [...(nitroConfig.prerender?.routes ?? []), ...roots],
+        ignore: [...(nitroConfig.prerender?.ignore ?? []), "/sitemap.xml"],
       };
     },
   } as NuxtConfig["hooks"],

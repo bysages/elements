@@ -69,8 +69,10 @@ const searchOpen = useDocsSearch();
       <ClientOnly>
         <AppAssistantButton />
         <LanguageSelect />
-        <ColorModeButton />
-        <ThemeSettingsButton />
+        <template v-if="appConfig.docs.themeControls !== false">
+          <ColorModeButton />
+          <ThemeSettingsButton />
+        </template>
       </ClientOnly>
 
       <IconMenuToggle class="bs-docs-header-menu" @click="menuOpen = true" />
