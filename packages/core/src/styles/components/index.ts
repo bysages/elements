@@ -20,6 +20,7 @@ import { colorPickerCss } from "./color-picker";
 import { comboboxCss } from "./combobox";
 import { dateInputCss } from "./date-input";
 import { datePickerCss } from "./date-picker";
+import { descriptionsCss } from "./descriptions";
 import { dialogCss } from "./dialog";
 import { drawerCss } from "./drawer";
 import { editableCss } from "./editable";
@@ -77,6 +78,7 @@ import { toggleCss } from "./toggle";
 import { toggleGroupCss } from "./toggle-group";
 import { tooltipCss } from "./tooltip";
 import { tourCss } from "./tour";
+import { treeSelectCss } from "./tree-select";
 import { treeViewCss } from "./tree-view";
 import { typographyCss } from "./typography";
 
@@ -108,6 +110,7 @@ export const componentStyles: Record<string, string> = {
   combobox: comboboxCss,
   "date-input": dateInputCss,
   "date-picker": datePickerCss,
+  descriptions: descriptionsCss,
   dialog: dialogCss,
   drawer: drawerCss,
   editable: editableCss,
@@ -166,6 +169,7 @@ export const componentStyles: Record<string, string> = {
   "toggle-group": toggleGroupCss,
   tooltip: tooltipCss,
   tour: tourCss,
+  "tree-select": treeSelectCss,
   "tree-view": treeViewCss,
 };
 
@@ -191,6 +195,7 @@ export {
   comboboxCss,
   dateInputCss,
   datePickerCss,
+  descriptionsCss,
   dialogCss,
   drawerCss,
   editableCss,
@@ -245,5 +250,6 @@ export {
   toggleGroupCss,
   tooltipCss,
   tourCss,
+  treeSelectCss,
   treeViewCss,
 };
