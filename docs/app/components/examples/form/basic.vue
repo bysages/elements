@@ -20,7 +20,7 @@ const formRef = ref();
         return errors;
       }
     "
-    style="max-width: 24rem"
+    style="inline-size: 100%"
   >
     <FormField name="title" label="Title" hint="One line, no period">
       <Input v-model="state.title" placeholder="Title of the piece" />

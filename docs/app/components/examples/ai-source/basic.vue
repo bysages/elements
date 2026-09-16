@@ -4,7 +4,7 @@ import { AiSource, AiSources } from "@bysages/vue";
 
 <template>
   <!-- The reading list under a response: where this ink came from. -->
-  <div style="inline-size: 100%; max-inline-size: 46rem">
+  <div style="inline-size: 100%">
     <AiSources>
       <AiSource href="https://example.com/ink">Ink release notes</AiSource>
       <AiSource href="https://example.com/paper">The paper-and-ink system</AiSource>

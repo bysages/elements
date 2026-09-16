@@ -4,20 +4,36 @@ export const editableCss =
   labelCss("editable") +
   /* css */ `
 [data-scope="editable"][data-part="root"] {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label label"
+    "area control";
   gap: var(--bs-space-2);
+  align-items: center;
   inline-size: 100%;
+}
+
+[data-scope="editable"][data-part="label"] {
+  grid-area: label;
 }
 
 [data-scope="editable"][data-part="root"][data-disabled] {
   color: var(--bs-color-text-disabled);
 }
 
+/* The text and its triggers share one row: the field stretches, the
+   seals sit at its right shoulder. */
 [data-scope="editable"][data-part="area"] {
+  grid-area: area;
   position: relative;
   display: flex;
   align-items: center;
+  min-inline-size: 0;
+}
+
+[data-scope="editable"][data-part="control"] {
+  grid-area: control;
 }
 
 /* Preview and input share one geometry so the swap never shifts the page;

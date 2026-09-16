@@ -12,10 +12,12 @@ export const switchCss =
 }
 
 /* The track geometry: thumb travel is derived here so the knob lands
-   flush against the far edge instead of drifting off-token. */
+   flush against the far edge instead of drifting off-token. The thumb
+   rides the small part size — a switch sits beside controls, not
+   among them, and 24px of track reads quiet at every density. */
 [data-scope="switch"][data-part="control"] {
   --bs-switch-track: calc(var(--bs-switch-thumb) * 2 + var(--bs-switch-inset) * 2);
-  --bs-switch-thumb: var(--bs-part-size-md);
+  --bs-switch-thumb: var(--bs-part-size-sm);
   --bs-switch-inset: var(--bs-space-1);
   display: inline-flex;
   align-items: center;

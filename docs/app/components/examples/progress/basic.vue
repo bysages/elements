@@ -3,7 +3,7 @@ import { Progress } from "@bysages/vue";
 </script>
 
 <template>
-  <Progress.Root :default-value="42" style="max-inline-size: 22rem">
+  <Progress.Root :default-value="42">
     <Progress.Label>Copying the archive</Progress.Label>
     <Progress.ValueText />
     <Progress.Track>

@@ -9,7 +9,6 @@ export const colorPickerCss =
   display: flex;
   flex-direction: column;
   gap: var(--bs-space-2);
-  max-inline-size: 17rem;
 }
 
 [data-scope="color-picker"][data-part="root"][data-disabled] {

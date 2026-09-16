@@ -9,7 +9,6 @@ export const fileUploadCss =
   align-items: flex-start;
   gap: var(--bs-space-3);
   inline-size: 100%;
-  max-inline-size: 24rem;
 }
 
 /* The choose-files button rides the control recipe: paper fill, one

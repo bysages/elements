@@ -11,7 +11,7 @@ const options = [
 </script>
 
 <template>
-  <div style="display: grid; gap: 1.5rem; max-width: 20rem">
+  <div style="display: grid; gap: 1.5rem; inline-size: 100%">
     <CheckboxGroup v-model="picked" :options="options" />
     <CheckboxGroup v-model="picked" :options="options" layout="horizontal" />
   </div>

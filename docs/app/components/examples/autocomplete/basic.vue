@@ -11,6 +11,6 @@ const items = ["Cobalt", "Celadon", "Cinnabar", "Ochre", "Ultramarine", "Bamboo"
     v-model="value"
     :items="items"
     placeholder="Pick a pigment…"
-    style="max-width: 20rem"
+    style="inline-size: 100%"
   />
 </template>

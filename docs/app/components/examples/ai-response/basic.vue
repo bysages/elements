@@ -3,7 +3,7 @@ import { AiResponse } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="inline-size: 100%; max-inline-size: 46rem">
+  <div style="inline-size: 100%">
     <AiResponse
       content="## The paper-and-ink system
 

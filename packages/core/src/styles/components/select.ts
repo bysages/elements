@@ -14,6 +14,7 @@ export const selectCss =
 /* The control is the field: the recipe's border, surface and focus halo
    ride on it, with the trigger and its passengers sitting inside. */
 [data-scope="select"][data-part="control"] {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--bs-space-1);

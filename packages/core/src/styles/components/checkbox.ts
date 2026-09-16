@@ -30,8 +30,8 @@ export const checkboxCss =
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  inline-size: var(--bs-part-size-md);
-  block-size: var(--bs-part-size-md);
+  inline-size: var(--bs-part-size-sm);
+  block-size: var(--bs-part-size-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -91,8 +91,8 @@ export const checkboxCss =
 }
 
 [data-scope="checkbox"][data-part="indicator"] svg {
-  inline-size: calc(var(--bs-part-size-md) * 0.7);
-  block-size: calc(var(--bs-part-size-md) * 0.7);
+  inline-size: calc(var(--bs-part-size-sm) * 0.7);
+  block-size: calc(var(--bs-part-size-sm) * 0.7);
 }
 
 [data-scope="checkbox"][data-part="root"]:has([data-disabled]) {

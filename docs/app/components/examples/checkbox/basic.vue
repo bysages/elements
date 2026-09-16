@@ -3,7 +3,7 @@ import { Checkbox } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.75rem; max-width: 20rem">
+  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
     <Checkbox.Root default-checked>
       <Checkbox.Control>
         <Checkbox.Indicator>

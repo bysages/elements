@@ -8,7 +8,7 @@ const sent = ref("");
 
 <template>
   <!-- The prompt vessel alone: controlled, self-growing, Enter to send. -->
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%; max-inline-size: 46rem">
+  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
     <AiPromptInput
       v-model="prompt"
       @submit="

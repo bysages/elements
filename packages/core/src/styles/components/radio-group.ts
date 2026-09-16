@@ -24,8 +24,8 @@ export const radioGroupCss =
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  inline-size: var(--bs-part-size-md);
-  block-size: var(--bs-part-size-md);
+  inline-size: var(--bs-part-size-sm);
+  block-size: var(--bs-part-size-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
@@ -54,8 +54,8 @@ export const radioGroupCss =
 
 [data-scope="radio-group"][data-part="item-control"][data-state="checked"]::before {
   content: "";
-  inline-size: calc(var(--bs-part-size-md) * 0.3);
-  block-size: calc(var(--bs-part-size-md) * 0.3);
+  inline-size: calc(var(--bs-part-size-sm) * 0.5);
+  block-size: calc(var(--bs-part-size-sm) * 0.5);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary-text);
 }
@@ -84,8 +84,8 @@ export const radioGroupCss =
    the spring — position comes from the machine. */
 [data-scope="radio-group"][data-part="indicator"] {
   position: absolute;
-  inline-size: var(--bs-part-size-md);
-  block-size: var(--bs-part-size-md);
+  inline-size: var(--bs-part-size-sm);
+  block-size: var(--bs-part-size-sm);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   transition:

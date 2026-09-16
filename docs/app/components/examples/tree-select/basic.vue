@@ -29,6 +29,6 @@ const value = ref();
     v-model="value"
     :data="data"
     placeholder="Choose a medium…"
-    style="max-width: 20rem"
+    style="inline-size: 100%"
   />
 </template>

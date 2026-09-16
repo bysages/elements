@@ -5,6 +5,21 @@ export const baseCss = /* css */ `
 [hidden] {
   display: none !important;
 }
+
+/* The field baseline: containers that hold text or choices fill their
+   container — width is the layout's decision, never the component's.
+   Zero specificity (:where), so a family's own declaration always wins
+   without a fight; intrinsic controls (buttons, chips, markers) are
+   simply not on the list. */
+:where([data-scope="select"], [data-scope="combobox"], [data-scope="listbox"],
+  [data-scope="cascade-select"], [data-scope="tree-select"],
+  [data-scope="number-input"], [data-scope="password-input"],
+  [data-scope="date-input"], [data-scope="date-picker"],
+  [data-scope="color-picker"], [data-scope="tags-input"],
+  [data-scope="fieldset"], [data-scope="file-upload"],
+  [data-scope="signature-pad"])[data-part="root"] {
+  inline-size: 100%;
+}
 `;
 
 /** Press feedback that rides the motion attribute, not any one component —
