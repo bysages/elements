@@ -24,7 +24,7 @@ Elements is the UI component library of By Sages — warm paper, ink that reads,
 Everything a product needs
 
 #description
-Every Ark component over one token system — interaction from headless state machines, every visual decision from the paper-and-ink layer.
+Every component over one token system — interaction from headless state machines, every visual decision from the paper-and-ink layer.
 
 #cards
   :::page-card
@@ -43,7 +43,7 @@ Every Ark component over one token system — interaction from headless state ma
   <Icon name="i-lucide-layout-grid" />
 
   #title
-  Every Ark component
+  Every component
 
   #description
   Actions, forms, overlays, navigation, and data — one stylesheet serves every framework from the same anatomy of `data-scope` and `data-part`.
