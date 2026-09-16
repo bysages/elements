@@ -78,6 +78,7 @@ import { toggleCss } from "./toggle";
 import { toggleGroupCss } from "./toggle-group";
 import { tooltipCss } from "./tooltip";
 import { tourCss } from "./tour";
+import { transferCss } from "./transfer";
 import { treeSelectCss } from "./tree-select";
 import { treeViewCss } from "./tree-view";
 import { typographyCss } from "./typography";
@@ -167,6 +168,7 @@ export const componentStyles: Record<string, string> = {
   toc: tocCss,
   toggle: toggleCss,
   "toggle-group": toggleGroupCss,
+  transfer: transferCss,
   tooltip: tooltipCss,
   tour: tourCss,
   "tree-select": treeSelectCss,
@@ -248,6 +250,7 @@ export {
   tocCss,
   toggleCss,
   toggleGroupCss,
+  transferCss,
   tooltipCss,
   tourCss,
   treeSelectCss,

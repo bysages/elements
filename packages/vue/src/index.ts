@@ -88,6 +88,7 @@ export * from "./components/toc";
 export * from "./components/toggle-group";
 export * from "./components/toggle";
 export * from "./components/typography";
+export * from "./components/transfer";
 export * from "./components/tooltip";
 export * from "./components/tour";
 export * from "./components/tree-select";
