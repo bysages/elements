@@ -43,7 +43,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "vp pack",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "publish": "basis publish"
   },
   "dependencies": {
     "@ark-ui/react": "5.39.1",

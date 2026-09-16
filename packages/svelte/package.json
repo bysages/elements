@@ -42,7 +42,8 @@
   "scripts": {
     "dev": "basis build --stub",
     "build": "tsx scripts/emit-svelte-dts.ts && vp pack",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "publish": "basis publish"
   },
   "dependencies": {
     "@ark-ui/svelte": "5.24.1",

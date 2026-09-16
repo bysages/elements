@@ -55,7 +55,8 @@
   },
   "scripts": {
     "dev": "basis build --stub",
-    "build": "vp pack"
+    "build": "vp pack",
+    "publish": "basis publish"
   },
   "dependencies": {
     "@bysages/core": "workspace:*",

@@ -42,6 +42,7 @@
   "scripts": {
     "dev": "basis build --stub",
     "build": "vp pack",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "publish": "basis publish"
   }
 }
