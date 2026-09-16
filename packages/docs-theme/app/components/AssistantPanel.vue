@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChat } from "@ai-sdk/vue";
-import { Ai, Drawer } from "@bysages/vue";
+import { Ai, Button, Drawer } from "@bysages/vue";
 import { DefaultChatTransport, type ToolUIPart } from "ai";
 
 const {
@@ -21,9 +21,18 @@ const { isOpen, close, draft } = useAssistant();
 
 const { t, tm, rt } = useDocsI18n();
 
-const { messages, sendMessage, status, error } = useChat({
+const { messages, sendMessage, stop, status, error } = useChat({
   transport: new DefaultChatTransport({ api: "/api/assistant" }),
 });
+
+/* The head's tools follow docus: a clear control beside the close one,
+   present only while there is something to clear. */
+const canClear = computed(() => messages.value.length > 0);
+
+function clearMessages() {
+  if (status.value === "streaming") stop();
+  messages.value = [];
+}
 
 const text = ref("");
 
@@ -35,6 +44,24 @@ watch(draft, (value) => {
 });
 
 const busy = computed(() => status.value !== "ready" && status.value !== "error");
+
+/* The floating input hands its text over on open, so the prompt starts
+   disabled while the reply streams — the focus trap has nothing to land
+   on and settles on the panel container. When the reply settles and the
+   prompt re-enables, hand the caret back, unless the reader already
+   moved it somewhere of their own choosing. */
+watch(
+  busy,
+  (isBusy, wasBusy) => {
+    if (wasBusy && !isBusy && isOpen.value) {
+      const active = document.activeElement as HTMLElement | null;
+      if (active?.closest(".bs-docs-assistant")) {
+        document.querySelector<HTMLElement>(".bs-docs-assistant textarea")?.focus();
+      }
+    }
+  },
+  { flush: "post" },
+);
 
 /** Zag-free mapping from a tool part's lifecycle to our status dot. */
 const TOOL_STATUS: Record<string, "running" | "completed" | "error"> = {
@@ -62,19 +89,32 @@ const starters = computed(() => {
 
 <template>
   <ClientOnly>
-    <Root
-      :open="isOpen"
-      swipe-direction="end"
-      @update:open="(value: boolean) => value || close()"
-    >
+    <Root :open="isOpen" swipe-direction="end" @update:open="(value: boolean) => value || close()">
       <Backdrop />
       <Positioner>
         <Content :aria-label="t('docs.assistantTitle')" class="bs-docs-assistant">
           <div class="bs-docs-assistant-head">
             <Title>{{ t("docs.assistantTitle") }}</Title>
-            <CloseTrigger as-child>
-              <Action :label="t('docs.assistantTitle')">✕</Action>
-            </CloseTrigger>
+            <!-- data-no-autofocus keeps the trap's first stop off the
+                 destructive tools and on the prompt; tabbing still
+                 reaches both. -->
+            <div class="bs-docs-assistant-tools">
+              <Button
+                v-if="canClear"
+                variant="ghost"
+                size="sm"
+                square
+                data-no-autofocus
+                :aria-label="t('docs.assistantClear')"
+                :title="t('docs.assistantClear')"
+                @click="clearMessages"
+              >
+                <Icon name="i-lucide-list-x" />
+              </Button>
+              <CloseTrigger as-child>
+                <Action data-no-autofocus :label="t('docs.assistantTitle')">✕</Action>
+              </CloseTrigger>
+            </div>
           </div>
 
           <Conversation class="bs-docs-assistant-log">
@@ -101,8 +141,15 @@ const starters = computed(() => {
                 </MessageContent>
                 <template v-else>
                   <template v-for="(part, index) in message.parts" :key="index">
-                    <Response v-if="part.type === 'text'" :content="part.text" :highlighter="highlightFence" />
-                    <Reasoning v-else-if="part.type === 'reasoning'" :label="t('docs.assistantThinking')">
+                    <Response
+                      v-if="part.type === 'text'"
+                      :content="part.text"
+                      :highlighter="highlightFence"
+                    />
+                    <Reasoning
+                      v-else-if="part.type === 'reasoning'"
+                      :label="t('docs.assistantThinking')"
+                    >
                       {{ part.text }}
                     </Reasoning>
                     <!-- A `tool-` prefix marks a tool invocation, but TS
@@ -131,7 +178,12 @@ const starters = computed(() => {
             </p>
           </Conversation>
 
-          <PromptInput v-model="text" :disabled="busy" @submit="sendMessage({ text: $event })" />
+          <PromptInput
+            v-model="text"
+            :placeholder="t('docs.assistant')"
+            :disabled="busy"
+            @submit="sendMessage({ text: $event })"
+          />
         </Content>
       </Positioner>
     </Root>

@@ -28,7 +28,11 @@ export const aiCss = /* css */ `
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
   inline-size: fit-content;
-  max-inline-size: min(75%, 30rem);
+  /* A fixed ceiling, not a percentage: the percentage feeds the
+     fit-content resolution a reference it cannot satisfy (the parent's
+     own width is being fit-content from this very box), and short
+     messages then collapse toward min-content — one glyph per line. */
+  max-inline-size: 30rem;
 }
 
 /* Markdown response: the ink is set with relaxed leading, code rides
