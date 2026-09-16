@@ -102,8 +102,8 @@ export function useSeo(options: UseSeoOptions = {}) {
 
   // Schema.org nodes take plain values (they resolve once), so the
   // computeds are unwrapped here.
-  const nodes = [
-    ...(type.value === "article"
+  const nodes =
+    type.value === "article"
       ? [
           defineArticle({
             "@type": "TechArticle",
@@ -131,8 +131,7 @@ export function useSeo(options: UseSeoOptions = {}) {
                 }),
               ]
             : []),
-        ]),
-  ];
+        ];
 
   useSchemaOrg(nodes);
 }
