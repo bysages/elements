@@ -26,11 +26,13 @@ Pick the wrapper for your framework; components import from the package
 root (`@bysages/vue`, `@bysages/react`, `@bysages/solid`, `@bysages/svelte`):
 
 ```sh
-pnpm add @bysages/vue @bysages/core   # (react / solid / svelte likewise)
+pnpm add @bysages/vue   # (react / solid / svelte likewise)
 ```
 
-`@bysages/tokens` ships the design tokens as CSS custom properties;
-`@bysages/core` injects the per-component styles that consume them.
+One package is enough: the first component import injects that
+component's styles plus the whole token layer, and the theme engine
+(`applyTheme`, `getTheme`) is re-exported from the same package root —
+`@bysages/core` and `@bysages/tokens` ride along as dependencies.
 
 The surface covers the usual families — actions, forms, overlays,
 navigation, data display — plus the `Ai` conversation parts (message,
@@ -62,6 +64,20 @@ response, reasoning, tool, sources, prompt input) and the data layer:
    element carries the dialog anatomy, so core ships delegation rules
    keyed on the Button seals (`data-variant`, `data-size`) that survive
    the takeover — don't re-style the host by hand.
+
+## Live documentation
+
+This skill covers the durable rules. For the current component list,
+props and examples, the docs site serves the same content in
+agent-readable form — prefer it over guessing an API:
+
+- **MCP server** — `https://elements.bysages.com/mcp` with `list-pages`
+  and `get-page`; add it once with
+  `claude mcp add --transport http elements https://elements.bysages.com/mcp`
+- **`llms.txt`** — `https://elements.bysages.com/llms.txt` indexes every
+  page; `llms-full.txt` is the whole site as one markdown document
+- **Raw markdown twins** — append `.md` to any page URL (or read the
+  `/raw/...` path) for the page without the chrome
 
 ## Where to look next
 

@@ -27,32 +27,33 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Packages
 
-| Package                                                | Version                                                                  | Description                                                                 |
-| ------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [@bysages/tokens](./packages/tokens/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/tokens)                     | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
-| [@bysages/core](./packages/core/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/core)                       | Theme engine, per-component styles, and the lighting engine                 |
-| [@bysages/react](./packages/react/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/react)                      | Components for React                                                        |
-| [@bysages/vue](./packages/vue/README.md)               | ![npm](https://img.shields.io/npm/v/@bysages/vue)                        | Components for Vue                                                          |
-| [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)                      | Components for Solid                                                        |
-| [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)                     | Components for Svelte                                                       |
-| [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)                     | Token-themed charts                                                         |
-| [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)                       | Nuxt module wrapping the Vue components                                     |
-| [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme)                 | Nuxt Content layer for Elements documentation sites                         |
+| Package                                                | Version                                                  | Description                                                                 |
+| ------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [@bysages/tokens](./packages/tokens/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/tokens)     | DTCG design tokens compiled with style-dictionary 4 → CSS variables + types |
+| [@bysages/core](./packages/core/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/core)       | Theme engine, per-component styles, and the lighting engine                 |
+| [@bysages/react](./packages/react/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/react)      | Components for React                                                        |
+| [@bysages/vue](./packages/vue/README.md)               | ![npm](https://img.shields.io/npm/v/@bysages/vue)        | Components for Vue                                                          |
+| [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)      | Components for Solid                                                        |
+| [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Components for Svelte                                                       |
+| [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | Token-themed charts                                                         |
+| [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | Nuxt module wrapping the Vue components                                     |
+| [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | Nuxt Content layer for Elements documentation sites                         |
 
 ## Quick Start
 
-Pick the package for your framework and add it with the core:
+Pick the package for your framework — the theme engine and the token
+layer ride along as its own dependencies:
 
 ```bash
-pnpm add @bysages/vue @bysages/core
+pnpm add @bysages/vue
 # or @bysages/react / @bysages/solid / @bysages/svelte
 ```
 
-Import the token stylesheet once and theme the document:
+Theme the document — the theme engine is re-exported from the same
+package, and the first component import carries the token layer in:
 
 ```ts
-import "@bysages/tokens/css";
-import { applyTheme } from "@bysages/core";
+import { applyTheme } from "@bysages/vue";
 
 applyTheme({ mode: "system", accent: "ink" });
 ```
@@ -147,6 +148,10 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full 
 - 💬 [Discussions](https://github.com/bysages/elements/discussions) — questions, ideas, and show-and-tell
 
 If Elements is useful to you, a [⭐ star](https://github.com/bysages/elements/stargazers) helps other developers find it.
+
+## Acknowledgments
+
+The documentation site stands on the shoulders of [Docus](https://github.com/nuxt-content/docus) — our Nuxt Content layer began as a study of its structure (docs shell, raw-markdown twins, assistant) and many of its ideas are re-implemented here in our own UI. Thank you to the Nuxt Content team and community.
 
 ## License
 
