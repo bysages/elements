@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Button, PageHeader } from ".";
+import { PageHeader } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Layout/PageHeader" };
+const meta: Meta = { title: "Components/Layout/Page Header" };
 export default meta;
 type Story = StoryObj<typeof PageHeader>;
 

@@ -133,3 +133,7 @@ dist
 
 # Playwright MCP snapshots (tool artifacts, regenerable)
 .playwright-mcp/
+
+# The interactive workbench is built straight into the docs' public/
+# directory at deploy time — never tracked.
+docs/public/storybook/

@@ -4,7 +4,7 @@ import { h, ref } from "vue";
 import { AutoComplete } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Forms/Auto Complete" };
+const meta: Meta = { title: "Components/Forms/Autocomplete" };
 export default meta;
 type Story = StoryObj<typeof AutoComplete>;
 

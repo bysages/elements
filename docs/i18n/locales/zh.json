@@ -20,6 +20,7 @@
     "assistantGreeting": "问问文档助手——它读过这些书架。",
     "prev": "上一篇",
     "next": "下一篇",
-    "edit": "编辑此页"
+    "edit": "编辑此页",
+    "workbench": "在 Storybook 中打开"
   }
 }

@@ -2,6 +2,8 @@
 import { Button, Tabs } from "@bysages/vue";
 import { computed, ref } from "vue";
 
+import workbenchLinks from "~/storybook-links.json";
+
 // A live example: the canvas renders the real example component from
 // app/components/examples, the code tab shows its source verbatim. The
 // name prop is the path under examples/ without the extension —
@@ -21,6 +23,12 @@ const sources = import.meta.glob<string>("~/components/examples/**/*.vue", {
 const path = computed(() => `/components/examples/${props.name}.vue`);
 const demo = computed(() => modules[path.value]?.default);
 const code = computed(() => sources[path.value] ?? "");
+
+// The interactive workbench rides the same domain at /storybook/ — the
+// links file is generated from the workbench's own build index, so a
+// demo deep-links to the exact story that renders it.
+const storyId = (workbenchLinks as Record<string, string>)[props.name];
+const workbenchHref = computed(() => (storyId ? `/storybook/?path=/story/${storyId}` : undefined));
 
 const copied = ref(false);
 const { t } = useDocsI18n();
@@ -47,6 +55,16 @@ const { data: highlighted } = await useAsyncData(
       <Tabs.List>
         <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
         <Tabs.Trigger v-if="code" value="code">Code</Tabs.Trigger>
+        <a
+          v-if="workbenchHref"
+          class="bs-docs-demo-workbench"
+          :href="workbenchHref"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {{ t("docs.workbench") }}
+          <Icon name="i-lucide-external-link" />
+        </a>
         <Tabs.Indicator />
       </Tabs.List>
       <Tabs.Content value="preview">

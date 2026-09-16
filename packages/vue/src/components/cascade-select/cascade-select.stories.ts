@@ -4,7 +4,7 @@ import { h, ref } from "vue";
 import { CascadeSelect, type CascadeSelectNode } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Forms/CascadeSelect" };
+const meta: Meta = { title: "Components/Forms/Cascade Select" };
 export default meta;
 type Story = StoryObj<typeof CascadeSelect>;
 

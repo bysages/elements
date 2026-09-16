@@ -20,6 +20,7 @@
     "assistantGreeting": "Ask the assistant — it reads these shelves.",
     "prev": "Previous",
     "next": "Next",
-    "edit": "Edit this page"
+    "edit": "Edit this page",
+    "workbench": "Open in Storybook"
   }
 }

@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt build"
+    "build:workbench": "pnpm --filter @bysages/vue build:workbench",
+    "build:links": "node scripts/generate-storybook-links.ts",
+    "build": "pnpm run build:workbench && pnpm run build:links && nuxt build"
   },
   "dependencies": {
     "@bysages/docs-theme": "workspace:*",

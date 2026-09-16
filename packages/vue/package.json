@@ -43,6 +43,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "vp pack",
+    "build:workbench": "storybook build -o ../../docs/public/storybook",
     "prepack": "pnpm build",
     "release": "basis publish"
   },
