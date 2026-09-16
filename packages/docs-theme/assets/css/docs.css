@@ -508,9 +508,14 @@ body {
   border-radius: var(--bs-radius-md);
 }
 
+/* Wide tables (API references with long type expressions) ride a
+   horizontal scroll instead of bursting the page: the block display
+   turns the table itself into the scroll container. */
 .bs-docs-prose table {
+  display: block;
   inline-size: 100%;
   margin: var(--bs-space-5) 0;
+  overflow-x: auto;
   border-collapse: collapse;
   font-size: var(--bs-font-size-sm);
 }
