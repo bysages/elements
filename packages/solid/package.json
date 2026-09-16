@@ -1,6 +1,6 @@
 {
   "name": "@bysages/solid",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -44,10 +44,11 @@
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build",
-    "publish": "basis publish"
+    "release": "basis publish"
   },
   "dependencies": {
     "@ark-ui/solid": "5.39.1",
+    "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/solid-table": "9.2.4",
     "@tanstack/solid-virtual": "3.13.40"

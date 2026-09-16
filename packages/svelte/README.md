@@ -18,27 +18,27 @@
 
 ```bash
 # pnpm
-pnpm add @bysages/svelte @bysages/core
+pnpm add @bysages/svelte
 
 # npm
-npm install @bysages/svelte @bysages/core
+npm install @bysages/svelte
 
 # yarn
-yarn add @bysages/svelte @bysages/core
+yarn add @bysages/svelte
 
 # bun
-bun add @bysages/svelte @bysages/core
+bun add @bysages/svelte
 ```
 
 ## Quick Start
 
-Import the token stylesheet once, theme the document, then use the components:
+Theme the document, then use the components — the component import
+carries the whole token layer in with it:
 
 ```ts
 // main.ts
-import "@bysages/tokens/css";
 import { mount } from "svelte";
-import { applyTheme } from "@bysages/core";
+import { applyTheme } from "@bysages/svelte";
 import App from "./App.svelte";
 
 applyTheme({ mode: "system", accent: "ink" });

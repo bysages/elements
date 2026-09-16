@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { getTheme, applyTheme } from "@bysages/core";
-import { Button } from "@bysages/vue";
+import { applyTheme, getTheme, Button } from "@bysages/vue";
 
 // The header and the footer each render a toggle; a per-instance ref
 // would let them drift apart, so the mode lives in shared app state.

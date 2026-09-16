@@ -1,6 +1,6 @@
 {
   "name": "@bysages/svelte",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "By Sages Elements components for Svelte — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -43,10 +43,11 @@
     "dev": "basis build --stub",
     "build": "tsx scripts/emit-svelte-dts.ts && vp pack",
     "prepack": "pnpm build",
-    "publish": "basis publish"
+    "release": "basis publish"
   },
   "dependencies": {
     "@ark-ui/svelte": "5.24.1",
+    "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/svelte-table": "9.2.4",
     "@tanstack/svelte-virtual": "3.13.39"

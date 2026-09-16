@@ -17,16 +17,16 @@
 
 ```bash
 # pnpm
-pnpm add @bysages/charts @bysages/core @bysages/tokens
+pnpm add @bysages/charts
 
 # npm
-npm install @bysages/charts @bysages/core @bysages/tokens
+npm install @bysages/charts
 
 # yarn
-yarn add @bysages/charts @bysages/core @bysages/tokens
+yarn add @bysages/charts
 
 # bun
-bun add @bysages/charts @bysages/core @bysages/tokens
+bun add @bysages/charts
 ```
 
 ## Quick Start

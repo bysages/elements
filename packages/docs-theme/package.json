@@ -1,6 +1,6 @@
 {
   "name": "@bysages/docs-theme",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Documentation theme for By Sages Elements — a Nuxt Content layer that turns a content folder into a paper-and-ink docs site",
   "keywords": [
     "design-system",
@@ -45,15 +45,13 @@
     "dev": "basis build --stub",
     "build": "nuxt prepare",
     "typecheck": "nuxt typecheck .",
-    "publish": "basis publish"
+    "release": "basis publish"
   },
   "dependencies": {
     "@ai-sdk/mcp": "2.0.49",
     "@ai-sdk/openai-compatible": "3.0.48",
     "@ai-sdk/vue": "4.0.99",
-    "@bysages/core": "workspace:*",
     "@bysages/nuxt": "workspace:*",
-    "@bysages/tokens": "workspace:*",
     "@bysages/vue": "workspace:*",
     "@iconify-json/lucide": "1.2.132",
     "@nuxt/content": "3.16.0",

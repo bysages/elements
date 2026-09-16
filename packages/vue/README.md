@@ -19,26 +19,26 @@
 
 ```bash
 # pnpm
-pnpm add @bysages/vue @bysages/core
+pnpm add @bysages/vue
 
 # npm
-npm install @bysages/vue @bysages/core
+npm install @bysages/vue
 
 # yarn
-yarn add @bysages/vue @bysages/core
+yarn add @bysages/vue
 
 # bun
-bun add @bysages/vue @bysages/core
+bun add @bysages/vue
 ```
 
 ## Quick Start
 
-Import the token stylesheet once, theme the document, then use the components:
+Theme the document, then use the components — the component import
+carries the whole token layer in with it:
 
 ```ts
 // main.ts
-import "@bysages/tokens/css";
-import { applyTheme } from "@bysages/core";
+import { applyTheme } from "@bysages/vue";
 
 applyTheme({ mode: "system", accent: "ink" });
 ```

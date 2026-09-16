@@ -33,13 +33,13 @@ bun add @bysages/solid @bysages/core
 
 ## Quick Start
 
-Import the token stylesheet once, theme the document, then use the components:
+Theme the document, then use the components — the component import
+carries the whole token layer in with it:
 
 ```tsx
 // index.tsx
-import "@bysages/tokens/css";
 import { render } from "solid-js/web";
-import { applyTheme } from "@bysages/core";
+import { applyTheme } from "@bysages/solid";
 import { Dialog } from "@bysages/solid";
 
 applyTheme({ mode: "system", accent: "ink" });

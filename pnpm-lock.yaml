@@ -77,7 +77,11 @@ importers:
         specifier: 5.57.0
         version: 5.57.0(@typescript-eslint/types@8.70.0)
 
-  packages/core: {}
+  packages/core:
+    dependencies:
+      '@bysages/tokens':
+        specifier: workspace:*
+        version: link:../tokens
 
   packages/docs-theme:
     dependencies:
@@ -90,15 +94,9 @@ importers:
       '@ai-sdk/vue':
         specifier: 4.0.99
         version: 4.0.99(vue@3.5.42(typescript@6.0.3))(zod@4.6.5)
-      '@bysages/core':
-        specifier: workspace:*
-        version: link:../core
       '@bysages/nuxt':
         specifier: workspace:*
         version: link:../nuxt
-      '@bysages/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@bysages/vue':
         specifier: workspace:*
         version: link:../vue
@@ -204,6 +202,9 @@ importers:
       '@ark-ui/react':
         specifier: 5.39.1
         version: 5.39.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@bysages/core':
+        specifier: workspace:*
+        version: link:../core
       '@tanstack/markdown':
         specifier: 0.0.15
         version: 0.0.15(react@19.3.0)
@@ -244,6 +245,9 @@ importers:
       '@ark-ui/solid':
         specifier: 5.39.1
         version: 5.39.1(solid-js@1.9.15)
+      '@bysages/core':
+        specifier: workspace:*
+        version: link:../core
       '@tanstack/markdown':
         specifier: 0.0.15
         version: 0.0.15(react@19.3.0)
@@ -269,6 +273,9 @@ importers:
       '@ark-ui/svelte':
         specifier: 5.24.1
         version: 5.24.1(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@bysages/core':
+        specifier: workspace:*
+        version: link:../core
       '@tanstack/markdown':
         specifier: 0.0.15
         version: 0.0.15(react@19.3.0)
@@ -306,6 +313,9 @@ importers:
       '@ark-ui/vue':
         specifier: 5.39.1
         version: 5.39.1(vue@3.5.42(typescript@6.0.3))
+      '@bysages/core':
+        specifier: workspace:*
+        version: link:../core
       '@tanstack/markdown':
         specifier: 0.0.15
         version: 0.0.15(react@19.3.0)

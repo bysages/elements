@@ -1,6 +1,6 @@
 {
   "name": "@bysages/vue",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "By Sages Elements components for Vue — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -44,10 +44,11 @@
     "dev": "storybook dev -p 6006",
     "build": "vp pack",
     "prepack": "pnpm build",
-    "publish": "basis publish"
+    "release": "basis publish"
   },
   "dependencies": {
     "@ark-ui/vue": "5.39.1",
+    "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/vue-table": "9.2.4",
     "@tanstack/vue-virtual": "3.13.38"

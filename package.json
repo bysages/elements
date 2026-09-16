@@ -48,8 +48,8 @@
     "docs:content": "node docs/scripts/generate-component-docs.ts",
     "docs:content:check": "node docs/scripts/generate-component-docs.ts --check",
     "version": "pnpm --filter \"./packages/**\" -r exec basis version",
-    "publish": "pnpm --filter \"./packages/**\" -r run publish",
-    "postinstall": "pnpm build && vp config && basis git setup"
+    "postinstall": "pnpm build && vp config && basis git setup",
+    "release": "pnpm --filter \"./packages/**\" -r run release"
   },
   "devDependencies": {
     "@funish/basis": "0.3.0",

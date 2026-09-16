@@ -19,26 +19,26 @@
 
 ```bash
 # pnpm
-pnpm add @bysages/react @bysages/core
+pnpm add @bysages/react
 
 # npm
-npm install @bysages/react @bysages/core
+npm install @bysages/react
 
 # yarn
-yarn add @bysages/react @bysages/core
+yarn add @bysages/react
 
 # bun
-bun add @bysages/react @bysages/core
+bun add @bysages/react
 ```
 
 ## Quick Start
 
-Import the token stylesheet once, theme the document, then use the components:
+Theme the document, then use the components — the component import
+carries the whole token layer in with it:
 
 ```tsx
 // main.tsx
-import "@bysages/tokens/css";
-import { applyTheme } from "@bysages/core";
+import { applyTheme } from "@bysages/react";
 
 applyTheme({ mode: "system", accent: "ink" });
 ```

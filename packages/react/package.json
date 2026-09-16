@@ -1,6 +1,6 @@
 {
   "name": "@bysages/react",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "By Sages Elements components for React — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -44,10 +44,11 @@
     "dev": "storybook dev -p 6006",
     "build": "vp pack",
     "prepack": "pnpm build",
-    "publish": "basis publish"
+    "release": "basis publish"
   },
   "dependencies": {
     "@ark-ui/react": "5.39.1",
+    "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/react-table": "9.2.4",
     "@tanstack/react-virtual": "3.14.12"

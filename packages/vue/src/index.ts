@@ -1,3 +1,9 @@
+/** The whole core rides along: a site installs this one package and gets
+ * the components plus the theme engine, the lighting engine and the style
+ * registry — @bysages/core stays a transitive dependency, re-exported
+ * rather than re-declared. */
+export * from "@bysages/core";
+
 export * from "./components/ai";
 export * from "./components/accordion";
 export * from "./components/alert";

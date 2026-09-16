@@ -1,6 +1,6 @@
 {
   "name": "@bysages/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Shared core of By Sages Elements — theme engine, per-component styles, and the lighting engine, all token-driven",
   "keywords": [
     "css",
@@ -43,6 +43,9 @@
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build",
-    "publish": "basis publish"
+    "release": "basis publish"
+  },
+  "dependencies": {
+    "@bysages/tokens": "workspace:*"
   }
 }

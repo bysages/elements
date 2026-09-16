@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { applyTheme, getTheme } from "@bysages/core";
-import type { ThemeAccent, ThemeDensity, ThemeScene } from "@bysages/core";
-import { Button, Popover, RadioGroup } from "@bysages/vue";
+import {
+  applyTheme,
+  getTheme,
+  Button,
+  Popover,
+  RadioGroup,
+  type ThemeAccent,
+  type ThemeDensity,
+  type ThemeScene,
+} from "@bysages/vue";
 
 // The whole control reads the theme engine on mount, so it must never
 // render on the server.
