@@ -53,13 +53,15 @@ export const Tones: Story = {
   render: () =>
     withState(
       () => () =>
-        h("div", { style: { display: "flex", gap: "1.5rem", alignItems: "center" } }, [
-          ...(["ink", "primary", "danger", "success"] as const).map((tone) =>
+        h(
+          "div",
+          { style: { display: "flex", gap: "1.5rem", alignItems: "center" } },
+          (["ink", "primary", "danger", "success"] as const).map((tone) =>
             h("span", { key: tone, style: { position: "relative", display: "inline-flex" } }, [
               "Drafts",
               h(Chip, { value: 3, tone, variant: "subtle" }),
             ]),
           ),
-        ]),
+        ),
     ),
 };

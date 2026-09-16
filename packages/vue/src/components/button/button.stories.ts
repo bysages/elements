@@ -36,11 +36,13 @@ export const Variants: Story = {
   render: () =>
     withState(
       () => () =>
-        h("div", { style: { display: "flex", gap: "0.75rem", alignItems: "center" } }, [
-          ...(["solid", "outline", "ghost", "subtle"] as const).map((variant) =>
+        h(
+          "div",
+          { style: { display: "flex", gap: "0.75rem", alignItems: "center" } },
+          (["solid", "outline", "ghost", "subtle"] as const).map((variant) =>
             h(Button, { key: variant, variant }, () => variant),
           ),
-        ]),
+        ),
     ),
 };
 
@@ -54,11 +56,13 @@ export const Tones: Story = {
   render: () =>
     withState(
       () => () =>
-        h("div", { style: { display: "flex", gap: "0.75rem", flexWrap: "wrap" } }, [
-          ...(["ink", "primary", "danger", "success", "warning", "info"] as const).map((tone) =>
+        h(
+          "div",
+          { style: { display: "flex", gap: "0.75rem", flexWrap: "wrap" } },
+          (["ink", "primary", "danger", "success", "warning", "info"] as const).map((tone) =>
             h(Button, { key: tone, tone }, () => tone),
           ),
-        ]),
+        ),
     ),
 };
 
@@ -67,11 +71,11 @@ export const Sizes: Story = {
   render: () =>
     withState(
       () => () =>
-        h("div", { style: { display: "flex", gap: "0.75rem", alignItems: "center" } }, [
-          ...(["sm", "md", "lg"] as const).map((size) =>
-            h(Button, { key: size, size }, () => size),
-          ),
-        ]),
+        h(
+          "div",
+          { style: { display: "flex", gap: "0.75rem", alignItems: "center" } },
+          (["sm", "md", "lg"] as const).map((size) => h(Button, { key: size, size }, () => size)),
+        ),
     ),
 };
 

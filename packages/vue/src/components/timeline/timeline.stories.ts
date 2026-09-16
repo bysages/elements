@@ -52,8 +52,8 @@ export const Compact: Story = {
   render: () =>
     withState(
       () => () =>
-        h(Timeline.Root as any, { style: { maxInlineSize: "24rem" } }, () => [
-          ...(
+        h(Timeline.Root as any, { style: { maxInlineSize: "24rem" } }, () =>
+          (
             [
               ["Doors open", "2026-09-14 08:30"],
               ["First reading", "2026-09-14 09:00"],
@@ -68,6 +68,6 @@ export const Compact: Story = {
               ]),
             ]),
           ),
-        ]),
+        ),
     ),
 };
