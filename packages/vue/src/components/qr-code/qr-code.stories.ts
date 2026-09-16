@@ -6,7 +6,7 @@ import { QrCode } from ".";
 import { RadioGroup } from "../radio-group";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Elements/Qr Code" };
+const meta: Meta = { title: "Components/Media/Qr Code" };
 export default meta;
 
 function frame(value: string, extraProps: Record<string, any> = {}) {
@@ -36,7 +36,7 @@ function sealGlyph() {
  * download control stays a quiet seal beneath it. */
 export const Basic = {
   args: {
-    value: "https://elements.bysages.com",
+    value: "https://www.bysages.com/",
   },
   render: (args: any) =>
     withState(
@@ -57,7 +57,7 @@ export const Basic = {
 export const Controlled = {
   render: () =>
     withState(() => {
-      const state = reactive({ value: "https://elements.bysages.com" });
+      const state = reactive({ value: "https://www.bysages.com/" });
       return () =>
         h("div", { style: { display: "grid", gap: "1rem", justifyItems: "start" } }, [
           h(
@@ -100,7 +100,7 @@ export const Controlled = {
 /** The quiet seal beneath: the pattern plus a download control. */
 export const DownloadTrigger = {
   render: () =>
-    h(QrCode.Root, { defaultValue: "https://elements.bysages.com" }, () => [
+    h(QrCode.Root, { defaultValue: "https://www.bysages.com/" }, () => [
       h(QrCode.Frame, () => h(QrCode.Pattern)),
       h(
         QrCode.DownloadTrigger,
@@ -118,7 +118,7 @@ export const ErrorCorrection = {
       const state = reactive({ ecc: "M" as "L" | "M" | "Q" | "H" });
       return () =>
         h("div", { style: { display: "grid", gap: "1rem", justifyItems: "start" } }, [
-          frame("https://elements.bysages.com", { encoding: { ecc: state.ecc } }),
+          frame("https://www.bysages.com/", { encoding: { ecc: state.ecc } }),
           h(
             RadioGroup.Root,
             {
@@ -150,10 +150,10 @@ export const ErrorCorrection = {
 export const Fill = {
   render: () =>
     h("div", { style: { display: "flex", gap: "1.5rem" } }, [
-      h(QrCode.Root, { defaultValue: "https://elements.bysages.com" }, () =>
+      h(QrCode.Root, { defaultValue: "https://www.bysages.com/" }, () =>
         h(QrCode.Frame, { style: { fill: "var(--bs-color-primary)" } }, () => h(QrCode.Pattern)),
       ),
-      h(QrCode.Root, { defaultValue: "https://elements.bysages.com" }, () =>
+      h(QrCode.Root, { defaultValue: "https://www.bysages.com/" }, () =>
         h(QrCode.Frame, { style: { fill: "var(--bs-color-info)" } }, () => h(QrCode.Pattern)),
       ),
     ]),
@@ -163,7 +163,7 @@ export const Fill = {
  * highest correction grade. */
 export const Overlay = {
   render: () =>
-    h(QrCode.Root, { defaultValue: "https://elements.bysages.com", encoding: { ecc: "H" } }, () => [
+    h(QrCode.Root, { defaultValue: "https://www.bysages.com/", encoding: { ecc: "H" } }, () => [
       h(QrCode.Frame, () => h(QrCode.Pattern)),
       h(QrCode.Overlay, () => sealGlyph()),
     ]),
@@ -175,7 +175,7 @@ export const RootProvider = {
     const Driver = {
       name: "QrCodeRootProvider",
       setup() {
-        const qrCode = useQrCode({ defaultValue: "https://elements.bysages.com" });
+        const qrCode = useQrCode({ defaultValue: "https://www.bysages.com/" });
         return () =>
           h(QrCode.RootProvider as any, { value: qrCode.value }, () =>
             h(QrCode.Frame, () => h(QrCode.Pattern)),

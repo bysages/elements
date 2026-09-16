@@ -46,13 +46,17 @@ export const LazyMount = {
 /** A fold inside a fold: each layer keeps its own open state. */
 export const Nested = {
   render: () =>
-    h(Collapsible.Root, { defaultOpen: true }, () => [
-      h(Collapsible.Trigger, () => ["Getting started", h(Collapsible.Indicator, chevron)]),
-      h(Collapsible.Content, () => [
-        h("p", "Welcome. Topics to explore:"),
-        h("div", { style: { marginTop: "0.75rem" } }, () => [panel("Installation")]),
-      ]),
-    ]),
+    h(
+      Collapsible.Root,
+      { defaultOpen: true, style: { inlineSize: "100%", maxInlineSize: "46rem" } },
+      () => [
+        h(Collapsible.Trigger, () => ["Getting started", h(Collapsible.Indicator, chevron)]),
+        h(Collapsible.Content, () => [
+          h("p", "Welcome. Topics to explore:"),
+          h("div", { style: { marginTop: "0.75rem" } }, () => [panel("Installation")]),
+        ]),
+      ],
+    ),
 };
 
 /** The fold never fully closes: collapsedHeight keeps a peephole open. */
@@ -71,6 +75,7 @@ export const Controlled = {
           {
             open: state.open,
             onOpenChange: (e: { open: boolean }) => (state.open = e.open),
+            style: { inlineSize: "100%", maxInlineSize: "46rem" },
           },
           () => [
             h(Collapsible.Trigger, () => ["Controlled fold", h(Collapsible.Indicator, chevron)]),
@@ -84,8 +89,12 @@ const BODY =
   "A headless component library for building accessible, high-quality UI components across frameworks — ours dresses its anatomy in paper and ink.";
 
 function panel(label: string, rootProps: any = {}) {
-  return h(Collapsible.Root, rootProps, () => [
-    h(Collapsible.Trigger, () => [label, h(Collapsible.Indicator, chevron)]),
-    h(Collapsible.Content, () => [h("p", BODY)]),
-  ]);
+  return h(
+    Collapsible.Root,
+    { style: { inlineSize: "100%", maxInlineSize: "46rem" }, ...rootProps },
+    () => [
+      h(Collapsible.Trigger, () => [label, h(Collapsible.Indicator, chevron)]),
+      h(Collapsible.Content, () => [h("p", BODY)]),
+    ],
+  );
 }
