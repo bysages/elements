@@ -1439,7 +1439,7 @@ body {
 
 @container (min-width: 1024px) {
   .bs-docs-body {
-    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-columns: 16.5rem minmax(0, 1fr);
     gap: var(--bs-gap-xl);
     padding: var(--bs-padding-xl);
   }
@@ -1451,6 +1451,9 @@ body {
     max-block-size: calc(100dvh - var(--bs-control-height-md) - var(--bs-space-12));
     overflow-block: auto;
     padding-block-end: var(--bs-space-8);
+    /* The lane breathes before the edge: entries end short of the
+       scrollbar, and a truncated title never kisses the border. */
+    padding-inline-end: var(--bs-space-3);
   }
 }
 
