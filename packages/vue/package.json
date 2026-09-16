@@ -51,7 +51,9 @@
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/vue-table": "9.2.4",
-    "@tanstack/vue-virtual": "3.13.38"
+    "@tanstack/vue-virtual": "3.13.38",
+    "@zag-js/cascade-select": "1.43.3",
+    "@zag-js/vue": "1.43.3"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.6.0",

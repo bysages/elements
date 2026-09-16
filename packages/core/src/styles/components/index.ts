@@ -11,6 +11,7 @@ import { buttonCss } from "./button";
 import { calendarCss } from "./calendar";
 import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
+import { cascadeSelectCss } from "./cascade-select";
 import { checkboxCss } from "./checkbox";
 import { checkboxGroupCss } from "./checkbox-group";
 import { chipCss } from "./chip";
@@ -100,6 +101,7 @@ export const componentStyles: Record<string, string> = {
   // its own data-scope — re-scope the shared stylesheet, never copy it.
   calendar:
     calendarCss + datePickerCss.replaceAll('data-scope="date-picker"', 'data-scope="calendar"'),
+  "cascade-select": cascadeSelectCss,
   card: cardCss,
   carousel: carouselCss,
   checkbox: checkboxCss,
@@ -186,6 +188,7 @@ export {
   breadcrumbCss,
   buttonCss,
   calendarCss,
+  cascadeSelectCss,
   cardCss,
   carouselCss,
   checkboxCss,

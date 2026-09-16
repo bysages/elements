@@ -17,6 +17,7 @@ export * from "./components/breadcrumb";
 export * from "./components/button";
 export * from "./components/banner";
 export * from "./components/calendar";
+export * from "./components/cascade-select";
 export * from "./components/card";
 export * from "./components/carousel";
 export * from "./components/checkbox";

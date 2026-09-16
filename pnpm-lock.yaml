@@ -325,6 +325,12 @@ importers:
       '@tanstack/vue-virtual':
         specifier: 3.13.38
         version: 3.13.38(vue@3.5.42(typescript@6.0.3))
+      '@zag-js/cascade-select':
+        specifier: 1.43.3
+        version: 1.43.3
+      '@zag-js/vue':
+        specifier: 1.43.3
+        version: 1.43.3(vue@3.5.42(typescript@6.0.3))
     devDependencies:
       '@storybook/addon-a11y':
         specifier: 10.6.0
