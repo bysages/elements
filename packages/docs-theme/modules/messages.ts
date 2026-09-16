@@ -15,10 +15,38 @@ const { resolve } = createResolver(import.meta.url);
 export default defineNuxtModule({
   meta: { name: "@bysages/docs-theme/messages" },
   setup(_, nuxt) {
+    const declared = (
+      nuxt.options.i18n as
+        | { locales?: Array<string | { code: string; name?: string }> }
+        | undefined
+    )?.locales;
+
+    /* `sitemap.md` groups pages by locale section; the section heading
+       reads the locale's display name ("## 中文", not "## zh"). This
+       module runs before the agent-discovery module reads its options,
+       and site-provided labels keep precedence. */
+    type Discovery = {
+      sitemap?: { markdown?: { labels?: Record<string, string> } };
+    };
+    const options = nuxt.options as { agentDiscovery?: Discovery };
+    const labels = Object.fromEntries(
+      (declared ?? [])
+        .map((entry) => (typeof entry === "string" ? { code: entry, name: entry } : entry))
+        .filter((entry) => entry.name)
+        .map((entry) => [entry.code, entry.name as string]),
+    );
+    options.agentDiscovery = {
+      ...options.agentDiscovery,
+      sitemap: {
+        ...options.agentDiscovery?.sitemap,
+        markdown: {
+          ...options.agentDiscovery?.sitemap?.markdown,
+          labels: { ...labels, ...options.agentDiscovery?.sitemap?.markdown?.labels },
+        },
+      },
+    };
+
     nuxt.hook("i18n:registerModule", (register) => {
-      const declared = (
-        nuxt.options.i18n as { locales?: Array<string | { code: string }> } | undefined
-      )?.locales;
       const codes = (declared ?? []).map((entry) =>
         typeof entry === "string" ? entry : entry.code,
       );

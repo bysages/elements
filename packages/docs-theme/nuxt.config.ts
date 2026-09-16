@@ -4,6 +4,27 @@ import type { NitroOptions } from "nitropack";
 
 const { resolve } = createResolver(import.meta.url);
 
+// Canonical, sitemap, llms.txt and the raw-markdown twins all need the
+// deployed origin. The chain mirrors docus: explicit runtime config
+// first, then whichever URL variable the hosting platform exports into
+// the build. With none of them set the url stays undefined — links go
+// relative and the build warns — rather than leaking a localhost that
+// search engines would index as the canonical host.
+const RAW_SITE_URL =
+  process.env.NUXT_PUBLIC_SITE_URL
+  || process.env.NUXT_SITE_URL
+  || process.env.VERCEL_PROJECT_PRODUCTION_URL
+  || process.env.VERCEL_BRANCH_URL
+  || process.env.VERCEL_URL
+  || process.env.URL
+  || process.env.CI_PAGES_URL
+  || process.env.CF_PAGES_URL;
+const siteUrl = RAW_SITE_URL
+  ? RAW_SITE_URL.startsWith("http")
+    ? RAW_SITE_URL
+    : `https://${RAW_SITE_URL}`
+  : undefined;
+
 // Held in a variable so the `content` / `llms` keys (augmented at build
 // time by their modules, not in this package's bare tsc pass) skip the
 // literal's excess property check.
@@ -54,6 +75,16 @@ const config = {
   // runtime — the assertion is the type layer catching up, not a cast
   // around a lie.
   hooks: {
+    // A deployment that forgot its URL variable still builds — but every
+    // canonical, sitemap entry and llms.txt link goes relative, so say
+    // so loudly instead of letting the site ship quietly un-absolute.
+    "ready"() {
+      if (!siteUrl) {
+        console.warn(
+          "[@bysages/docs-theme] site.url is not set: set NUXT_SITE_URL (or your platform's URL variable, e.g. CF_PAGES_URL) so canonical links, the sitemap and llms.txt point at the deployed origin.",
+        );
+      }
+    },
     "nitro:config"(nitroConfig: NitroOptions) {
       const i18n = useNuxt().options.i18n as
         | { locales?: Array<string | { code: string }> }
@@ -71,15 +102,16 @@ const config = {
     },
   } as NuxtConfig["hooks"],
 
-  // Agents discover the site by domain: deployment sets NUXT_SITE_URL,
-  // everything else (sitemap, robots, canonical links) follows it.
+  // Agents discover the site by domain: the platform's URL variable (or
+  // an explicit NUXT_SITE_URL) feeds everything — sitemap, robots,
+  // canonical links and the llms.txt domain.
   site: {
-    url: process.env.NUXT_SITE_URL || "http://localhost:3000",
+    url: siteUrl,
     name: "Elements",
   },
 
   llms: {
-    domain: process.env.NUXT_SITE_URL || "http://localhost:3000",
+    domain: siteUrl,
     title: "Elements",
     description:
       "The UI component library of By Sages — Ark UI headless components dressed in a paper-and-ink design language, with React, Vue, Solid and Svelte wrappers.",

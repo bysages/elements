@@ -4,10 +4,11 @@ description: |
   Use the Elements design system to build UI. Use when asked to:
   "add a dialog/menu/popover/tabs to my app", "use Elements", "install
   @bysages/*", "style a component with design tokens", "make the UI match
-  our paper-and-ink system", "build a themed data table or chart", or when
-  a project already depends on @bysages/react, @bysages/vue, @bysages/solid
-  or @bysages/svelte. Covers installation, the Ark-based wrapper API, and
-  the token discipline the components expect.
+  our paper-and-ink system", "build a themed data table or chart",
+  "build an AI chat or assistant UI", or when a project already depends
+  on @bysages/react, @bysages/vue, @bysages/solid or @bysages/svelte.
+  Covers installation, the Ark-based wrapper API, and the token
+  discipline the components expect.
 ---
 
 # Elements Components
@@ -31,6 +32,11 @@ pnpm add @bysages/vue @bysages/core   # (react / solid / svelte likewise)
 `@bysages/tokens` ships the design tokens as CSS custom properties;
 `@bysages/core` injects the per-component styles that consume them.
 
+The surface covers the usual families — actions, forms, overlays,
+navigation, data display — plus the `Ai` conversation parts (message,
+response, reasoning, tool, sources, prompt input) and the data layer:
+`@bysages/table` and `@bysages/charts`, themed from the same tokens.
+
 ## Rules that keep the paper and ink
 
 1. **Tokens are the only source of visual values.** Colors, spacing,
@@ -47,6 +53,15 @@ pnpm add @bysages/vue @bysages/core   # (react / solid / svelte likewise)
 5. **Components respond to their container, not the viewport.** Use the
    container queries the components establish; never media-query a
    component.
+6. **In the Vue wrapper, controlled values are `v-model`-shaped.** Bind
+   `:model-value` + `@update:model-value`; a `value` prop falls through
+   to a DOM attribute and never reaches the state machine. `@value-change`
+   is only reliable uncontrolled.
+7. **`as-child` triggers delegate styling, don't lose it.** With
+   `<Dialog.Trigger as-child><Button/></Dialog.Trigger>` the host
+   element carries the dialog anatomy, so core ships delegation rules
+   keyed on the Button seals (`data-variant`, `data-size`) that survive
+   the takeover — don't re-style the host by hand.
 
 ## Where to look next
 

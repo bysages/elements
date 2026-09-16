@@ -632,8 +632,15 @@ body {
   color: var(--bs-color-info);
 }
 
+/* Object keys (JSON's `property`, the bulk of any config block) ride the
+   primary — text-secondary reads as unhighlighted body ink next to a
+   plain string value, and a JSON fence then looks like no highlighting
+   happened at all. */
+.th-property {
+  color: var(--bs-color-primary);
+}
+
 .th-attr,
-.th-property,
 .th-operator {
   color: var(--bs-color-text-secondary);
 }

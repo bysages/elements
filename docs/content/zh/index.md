@@ -24,7 +24,7 @@ Elements 是 By Sages 的界面组件库——温暖的纸、可读的墨、由�
 产品所需，一应俱全
 
 #description
-七十余个组件共享一套令牌——交互来自无头状态机，每一个视觉决定都出自纸墨样式层。
+Ark 的每一个组件共享同一套令牌——交互来自无头状态机，每一个视觉决定都出自纸墨样式层。
 
 #cards
   :::page-card
@@ -43,7 +43,7 @@ Elements 是 By Sages 的界面组件库——温暖的纸、可读的墨、由�
   <Icon name="i-lucide-layout-grid" />
 
   #title
-  七十余个组件
+  Ark 全量组件
 
   #description
   动作、表单、浮层、导航与数据——同一份样式表，凭 `data-scope` 与 `data-part` 的同一套结构契约服务所有框架。
