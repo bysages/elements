@@ -163,7 +163,10 @@ import { DatePicker } from "@bysages/vue";
               </DatePicker.ViewControl>
               <DatePicker.Table>
                 <DatePicker.TableBody>
-                  <DatePicker.TableRow v-for="(years, i) in dp.getYearsGrid({ columns: 4 })" :key="i">
+                  <DatePicker.TableRow
+                    v-for="(years, i) in dp.getYearsGrid({ columns: 4 })"
+                    :key="i"
+                  >
                     <DatePicker.TableCell v-for="(year, j) in years" :key="j" :value="year.value">
                       <DatePicker.TableCellTrigger>{{ year.label }}</DatePicker.TableCellTrigger>
                     </DatePicker.TableCell>

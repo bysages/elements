@@ -17,11 +17,14 @@ export const Voices: Story = {
         h("div", { style: { display: "grid", gap: "var(--bs-space-4)", maxWidth: "36rem" } }, [
           h(Typography.Display, () => "以光为影"),
           h(Typography.Heading, () => "The paper-and-ink system"),
-          h(Typography.Lead, () =>
-            "Interfaces are warm paper, content is ink, hierarchy is light.",
+          h(
+            Typography.Lead,
+            () => "Interfaces are warm paper, content is ink, hierarchy is light.",
           ),
-          h(Typography.Body, () =>
-            "Surfaces are never pure white; the ground rests in ambient shade. Primary actions default to ink — monochrome, solemn — with mineral-pigment accents switchable by theme.",
+          h(
+            Typography.Body,
+            () =>
+              "Surfaces are never pure white; the ground rests in ambient shade. Primary actions default to ink — monochrome, solemn — with mineral-pigment accents switchable by theme.",
           ),
           h(Typography.Muted, () => "Revised autumn 2026 · Typeset in the eastern studio"),
           h(Typography.Label, () => "SECTION IV — MOTION GRAMMAR"),

@@ -1,10 +1,11 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import CardRoot from "./Card.svelte";
+import CardContent from "./CardContent.svelte";
+import CardDescription from "./CardDescription.svelte";
+import CardFooter from "./CardFooter.svelte";
 import CardHeader from "./CardHeader.svelte";
 import CardTitle from "./CardTitle.svelte";
-import CardDescription from "./CardDescription.svelte";
-import CardContent from "./CardContent.svelte";
-import CardFooter from "./CardFooter.svelte";
 
 /** A vessel: round, resting at the first elevation, one hairline for its
  * edge. Root, Header, Title, Description, Content, Footer — sections
@@ -18,11 +19,6 @@ export const Card = Object.assign(CardRoot, {
   Footer: CardFooter,
 });
 
-export type {
-  CardDescriptionProps,
-  CardPartProps,
-  CardProps,
-  CardTitleProps,
-} from "./props";
+export type { CardDescriptionProps, CardPartProps, CardProps, CardTitleProps } from "./props";
 
 injectComponentStyle("card");

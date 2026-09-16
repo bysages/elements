@@ -17,8 +17,9 @@ export const Basic: Story = {
         h(Banner.Root as any, {}, () => [
           h(Banner.Body, () => [
             h(Banner.Title, () => "Scheduled maintenance"),
-            h(Banner.Description, () =>
-              "The reading room closes early this Friday, at four in the afternoon.",
+            h(
+              Banner.Description,
+              () => "The reading room closes early this Friday, at four in the afternoon.",
             ),
             h(Banner.Actions, () => [
               h(Button as any, { variant: "outline", size: "sm" }, () => "View schedule"),
@@ -73,13 +74,15 @@ export const Dismissible: Story = {
           ? h(Banner.Root as any, { status: "warning" }, () => [
               h(Banner.Body, () => [
                 h(Banner.Title, () => "Two letters unanswered"),
-                h(Banner.Description, () =>
-                  "The registry flags correspondence past thirty days.",
-                ),
+                h(Banner.Description, () => "The registry flags correspondence past thirty days."),
               ]),
               h(Banner.Close as any, { onClick: () => (open.value = false) }),
             ])
-          : h(Button as any, { variant: "outline", size: "sm", onClick: () => (open.value = true) }, () => "Bring the notice back"),
+          : h(
+              Button as any,
+              { variant: "outline", size: "sm", onClick: () => (open.value = true) },
+              () => "Bring the notice back",
+            ),
     );
   },
 };

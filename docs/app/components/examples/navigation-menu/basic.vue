@@ -22,7 +22,9 @@ import { NavigationMenu } from "@bysages/vue";
           <NavigationMenu.Link href="#quick-start">
             <span style="display: flex; flex-direction: column; gap: var(--bs-space-1)">
               <strong>Quick start</strong>
-              <span style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)">
+              <span
+                style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)"
+              >
                 Install and assemble
               </span>
             </span>
@@ -30,7 +32,9 @@ import { NavigationMenu } from "@bysages/vue";
           <NavigationMenu.Link href="#styling">
             <span style="display: flex; flex-direction: column; gap: var(--bs-space-1)">
               <strong>Styling</strong>
-              <span style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)">
+              <span
+                style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)"
+              >
                 Tokens, hairlines, light
               </span>
             </span>
@@ -57,7 +61,9 @@ import { NavigationMenu } from "@bysages/vue";
           <NavigationMenu.Link href="#accessibility">
             <span style="display: flex; flex-direction: column; gap: var(--bs-space-1)">
               <strong>Accessibility</strong>
-              <span style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)">
+              <span
+                style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)"
+              >
                 Contrast and density tiers
               </span>
             </span>
@@ -65,7 +71,9 @@ import { NavigationMenu } from "@bysages/vue";
           <NavigationMenu.Link href="#releases">
             <span style="display: flex; flex-direction: column; gap: var(--bs-space-1)">
               <strong>Releases</strong>
-              <span style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)">
+              <span
+                style="color: var(--bs-color-text-secondary); font-size: var(--bs-font-size-sm)"
+              >
                 What settled into the paper
               </span>
             </span>

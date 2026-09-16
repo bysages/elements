@@ -1,5 +1,5 @@
-import type { HTMLAttributes } from "svelte/elements";
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
 export interface MeterRootProps extends HTMLAttributes<HTMLDivElement> {
   /** The measured value — clamped between min and max. */

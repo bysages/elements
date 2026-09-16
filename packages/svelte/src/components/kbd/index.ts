@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import KbdComponent from "./Kbd.svelte";
 
 /** A keycap in miniature, riding the type it annotates. */

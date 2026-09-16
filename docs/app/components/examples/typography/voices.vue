@@ -10,9 +10,8 @@ import { Typography } from "@bysages/vue";
       Interfaces are warm paper, content is ink, hierarchy is light.
     </Typography.Lead>
     <Typography.Body>
-      Surfaces are never pure white; the ground rests in ambient shade. Primary
-      actions default to ink — monochrome, solemn — with mineral-pigment accents
-      switchable by theme.
+      Surfaces are never pure white; the ground rests in ambient shade. Primary actions default to
+      ink — monochrome, solemn — with mineral-pigment accents switchable by theme.
     </Typography.Body>
     <Typography.Muted>Revised autumn 2026 · Typeset in the eastern studio</Typography.Muted>
     <Typography.Label>SECTION IV — MOTION GRAMMAR</Typography.Label>

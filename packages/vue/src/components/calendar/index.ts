@@ -1,6 +1,6 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/vue/date-picker";
-import { injectComponentStyle } from "@bysages/core";
 import type { DatePickerRootProps } from "@ark-ui/vue/date-picker";
+import { injectComponentStyle } from "@bysages/core";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 

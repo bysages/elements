@@ -1,6 +1,6 @@
 import type { DatePickerRootProps } from "@ark-ui/svelte/date-picker";
-import type { HTMLAttributes } from "svelte/elements";
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
 export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
   /** Selected date(s) — an array, as the machine speaks in ranges. */

@@ -91,10 +91,7 @@ const Response = defineComponent({
   },
   setup(props) {
     const html = computed(() =>
-      renderHtml(
-        props.content,
-        props.highlighter ? { highlighter: props.highlighter } : undefined,
-      ),
+      renderHtml(props.content, props.highlighter ? { highlighter: props.highlighter } : undefined),
     );
     return () => h("div", { "data-scope": "ai", "data-part": "response", innerHTML: html.value });
   },

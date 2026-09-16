@@ -24,7 +24,10 @@ export default defineSitemapEventHandler(async (event) => {
   for (const collection of collections) {
     // A consumer without a landing page has no such collection — skip.
     const pages = await (
-      queryCollection as unknown as (event: unknown, collection: string) => {
+      queryCollection as unknown as (
+        event: unknown,
+        collection: string,
+      ) => {
         all: () => Promise<Page[]>;
       }
     )(event, collection)

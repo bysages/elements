@@ -7,7 +7,11 @@ const toaster = createToaster({
 });
 
 function announce() {
-  toaster.create({ title: "Deposited", description: "The scroll joined the archive.", type: "success" });
+  toaster.create({
+    title: "Deposited",
+    description: "The scroll joined the archive.",
+    type: "success",
+  });
 }
 </script>
 

@@ -10,7 +10,11 @@ import { ImageCropper } from "@bysages/vue";
         alt="A mountain valley under morning light"
       />
       <ImageCropper.Selection>
-        <ImageCropper.Handle v-for="position in ['nw', 'ne', 'se', 'sw']" :key="position" :position="position">
+        <ImageCropper.Handle
+          v-for="position in ['nw', 'ne', 'se', 'sw']"
+          :key="position"
+          :position="position"
+        >
           <div />
         </ImageCropper.Handle>
         <ImageCropper.Grid axis="horizontal" />

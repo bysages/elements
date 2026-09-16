@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import ButtonComponent from "./Button.svelte";
 
 /** The control recipe as a standalone button: the variant chooses how it

@@ -282,9 +282,7 @@ export function DataTable(props: DataTableProps) {
     autoResetExpanded: false,
     initialState: {
       ...(props.initialSorting ? { sorting: props.initialSorting } : {}),
-      ...(props.paginated
-        ? { pagination: { pageIndex: 0, pageSize: props.pageSize ?? 10 } }
-        : {}),
+      ...(props.paginated ? { pagination: { pageIndex: 0, pageSize: props.pageSize ?? 10 } } : {}),
       ...(props.pinStart || props.pinEnd
         ? { columnPinning: { start: props.pinStart ?? [], end: props.pinEnd ?? [] } }
         : {}),
@@ -349,8 +347,7 @@ export function DataTable(props: DataTableProps) {
       .map((column) => {
         if (column.id === SELECT_COL_ID) return `${SELECT_COL_WIDTH}px`;
         const def = props.columns.find(
-          (d) =>
-            d.id === column.id || ("accessorKey" in d && String(d.accessorKey) === column.id),
+          (d) => d.id === column.id || ("accessorKey" in d && String(d.accessorKey) === column.id),
         );
         // A fixed `size` pins to px; an explicit `minSize` floors the
         // track; otherwise columns split evenly. The default must not
@@ -381,8 +378,7 @@ export function DataTable(props: DataTableProps) {
     const next = index < siblings.length - 1 ? table.getColumn(siblings[index + 1]!) : undefined;
     attrs["data-last-pinned"] =
       pinned === "start" && next?.getIsPinned() !== "start" ? "" : undefined;
-    attrs["data-first-pinned"] =
-      pinned === "end" && prev?.getIsPinned() !== "end" ? "" : undefined;
+    attrs["data-first-pinned"] = pinned === "end" && prev?.getIsPinned() !== "end" ? "" : undefined;
     attrs.style = { "--pin-offset": `${offset}px` };
     return attrs;
   }
@@ -606,7 +602,11 @@ export function DataTable(props: DataTableProps) {
       );
     } else if (isExpandHost) {
       content = (
-        <div data-scope="table" data-part="cell-main" style={{ "--bs-table-depth": String(row.depth) }}>
+        <div
+          data-scope="table"
+          data-part="cell-main"
+          style={{ "--bs-table-depth": String(row.depth) }}
+        >
           <button
             type="button"
             data-scope="table"
@@ -799,9 +799,9 @@ export function DataTable(props: DataTableProps) {
             ) : null}
           </div>
           {props.stickyFooter &&
-          table.getFooterGroups().some((group) =>
-            group.headers.some((header) => header.column.columnDef.footer),
-          ) ? (
+          table
+            .getFooterGroups()
+            .some((group) => group.headers.some((header) => header.column.columnDef.footer)) ? (
             <div role="rowgroup" data-scope="table" data-part="footer">
               <For each={table.getFooterGroups()}>
                 {(group) => (
@@ -851,7 +851,9 @@ export function DataTable(props: DataTableProps) {
             data-part="page-size"
             aria-label="Rows per page"
             value={table.atoms.pagination.get().pageSize}
-            onchange={(e: Event) => table.setPageSize(Number((e.target as HTMLSelectElement).value))}
+            onchange={(e: Event) =>
+              table.setPageSize(Number((e.target as HTMLSelectElement).value))
+            }
           >
             <For each={props.pageSizeOptions ?? [10, 20, 50]}>
               {(size) => <option value={size}>{`${size} / page`}</option>}

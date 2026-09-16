@@ -12,10 +12,7 @@ type Story = StoryObj<typeof Meter>;
  * primary, the value text closes the line. */
 export const Basic: Story = {
   render: () =>
-    withState(
-      () => () =>
-        h(Meter.Root as any, { value: 62, label: "Toner remaining" }),
-    ),
+    withState(() => () => h(Meter.Root as any, { value: 62, label: "Toner remaining" })),
 };
 
 /** At the thresholds the ink changes its pigment: plenty, low, empty. */

@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import SpinnerComponent from "./Spinner.svelte";
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by

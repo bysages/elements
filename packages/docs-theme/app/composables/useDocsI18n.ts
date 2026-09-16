@@ -65,9 +65,9 @@ export const useDocsI18n = () => {
   // every query honest — the locale is the path's first segment (i18n
   // folds it into per-locale route records, never a param); unknown
   // segments fall back to the i18n ref.
-  const codes = (
-    (config.i18n as { locales?: LocaleOption[] } | undefined)?.locales ?? []
-  ).map((entry) => entry.code);
+  const codes = ((config.i18n as { locales?: LocaleOption[] } | undefined)?.locales ?? []).map(
+    (entry) => entry.code,
+  );
   const localeOf = (path: string): string => {
     const segment = path.split("/")[1] ?? "";
     return codes.includes(segment) ? segment : nuxtApp.$i18n?.locale?.value || "en";
@@ -81,7 +81,12 @@ export const useDocsI18n = () => {
       ((config.i18n as { locales?: LocaleOption[] } | undefined)?.locales ?? []) as LocaleOption[],
     ),
     t: nuxtApp.$i18n?.t || ((key: string) => key),
-    tm: nuxtApp.$i18n?.tm || ((key: string) => key.split(".").reduce((acc: unknown, segment) => (acc as Record<string, unknown>)?.[segment], {})),
+    tm:
+      nuxtApp.$i18n?.tm ||
+      ((key: string) =>
+        key
+          .split(".")
+          .reduce((acc: unknown, segment) => (acc as Record<string, unknown>)?.[segment], {})),
     /* `tm` hands back compiled message values — for an array message
        each element is an AST/function, not the raw string. `rt`
        resolves one back; feeding it raw strings is also fine. */

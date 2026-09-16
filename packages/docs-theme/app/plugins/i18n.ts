@@ -25,9 +25,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       if (to.path === "/") {
         const locale =
           useCookie("i18n_redirected").value ||
-          (
-            nuxtApp.$config.public.i18n as { defaultLocale?: string } | undefined
-          )?.defaultLocale ||
+          (nuxtApp.$config.public.i18n as { defaultLocale?: string } | undefined)?.defaultLocale ||
           "en";
         return navigateTo(`/${locale}`);
       }

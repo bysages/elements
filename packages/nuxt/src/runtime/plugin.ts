@@ -1,5 +1,6 @@
-import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 import { applyTheme } from "@bysages/core";
+
+import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 
 /** Applies the theme configured through module options on the client.
  * The wrappers' own injection already stands down against the build-time

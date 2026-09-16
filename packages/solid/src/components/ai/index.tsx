@@ -1,9 +1,20 @@
 import { injectComponentStyle } from "@bysages/core";
 import { renderHtml } from "@tanstack/markdown/html";
+import type {
+  DataUIPart,
+  FileUIPart,
+  ReasoningUIPart,
+  SourceDocumentUIPart,
+  SourceUrlUIPart,
+  StepStartUIPart,
+  TextUIPart,
+  ToolUIPart,
+  UIMessage,
+  UIMessagePart,
+} from "ai";
 import type { JSX } from "solid-js";
 import { createMemo, splitProps } from "solid-js";
 
-import type { DataUIPart, FileUIPart, ReasoningUIPart, SourceDocumentUIPart, SourceUrlUIPart, StepStartUIPart, TextUIPart, ToolUIPart, UIMessage, UIMessagePart } from "ai";
 import { Button } from "../button";
 import { Collapsible } from "../collapsible";
 import { Field } from "../field";
@@ -65,9 +76,7 @@ export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
 export function Response(props: ResponseProps) {
   const [own, rest] = splitProps(props, ["content"]);
   const html = createMemo(() => renderHtml(own.content));
-  return (
-    <div {...rest} data-scope="ai" data-part="response" innerHTML={html()} />
-  );
+  return <div {...rest} data-scope="ai" data-part="response" innerHTML={html()} />;
 }
 
 export interface ReasoningProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -190,12 +199,7 @@ export interface SuggestionProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 export function Suggestion(props: SuggestionProps) {
   const [own, rest] = splitProps(props, ["prompt", "onSelect"]);
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      {...rest}
-      onClick={() => own.onSelect?.(own.prompt)}
-    >
+    <Button variant="outline" size="sm" {...rest} onClick={() => own.onSelect?.(own.prompt)}>
       {own.prompt}
     </Button>
   );

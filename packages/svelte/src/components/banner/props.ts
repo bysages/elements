@@ -1,5 +1,5 @@
-import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 import type { Snippet } from "svelte";
+import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
 

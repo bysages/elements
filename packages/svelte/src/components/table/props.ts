@@ -1,5 +1,5 @@
-import type { HTMLAttributes } from "svelte/elements";
 import type { ColumnDef, RowData, SortingState } from "@tanstack/svelte-table";
+import type { HTMLAttributes } from "svelte/elements";
 
 /** One-stop data table on TanStack Table v9, dressed in the paper-and-ink
  * system: rows are CSS grids under ARIA table semantics, so sticky headers,

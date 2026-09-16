@@ -2,10 +2,22 @@
 import { Alert } from "@bysages/vue";
 
 const notices = [
-  { status: "info", title: "Renewal scheduled", description: "The archive will be reindexed tonight." },
-  { status: "success", title: "Sealed and delivered", description: "Your petition reached the desk." },
+  {
+    status: "info",
+    title: "Renewal scheduled",
+    description: "The archive will be reindexed tonight.",
+  },
+  {
+    status: "success",
+    title: "Sealed and delivered",
+    description: "Your petition reached the desk.",
+  },
   { status: "warning", title: "Stamp expiring", description: "The permit lapses in seven days." },
-  { status: "danger", title: "Delivery refused", description: "The address could not be verified." },
+  {
+    status: "danger",
+    title: "Delivery refused",
+    description: "The address could not be verified.",
+  },
 ];
 </script>
 

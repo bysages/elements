@@ -231,7 +231,8 @@ function nativeSlots(component: any): { name: string }[] {
 
 /** Props of a native primitive: the runtime declaration inside its
  * defineComponent, with constructor types and defaults. */
-function nativeProps(component: any): PropDoc[] {  const propsEntry = component
+function nativeProps(component: any): PropDoc[] {
+  const propsEntry = component
     .getProperties()
     .find((p: any) => p.isKind?.(SyntaxKind.PropertyAssignment) && p.getName() === "props");
   if (!propsEntry) return [];
@@ -372,4 +373,3 @@ export function families(): string[] {
     .map((d) => d.name)
     .sort();
 }
-

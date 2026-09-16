@@ -45,7 +45,7 @@ themed from tokens) are the data layer on top.
    container and establish their own containment context.
 7. Every dismissible layer shares the overlay base:
    content and positioner `calc(var(--bs-z-overlay) +
-   var(--layer-index, 0))`, backdrop one below. Never give a component
+var(--layer-index, 0))`, backdrop one below. Never give a component
    its own base, and never fall back on `var(--z-index, …)` — Zag
    writes `--z-index: auto` inline when no nested layer is in play.
 

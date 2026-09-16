@@ -12,11 +12,7 @@ type Story = StoryObj<typeof Calendar>;
 /** The month grid on the page: the popup gone, the vessel a quiet card,
  * the machinery entirely the shared date-picker's. */
 export const Basic: Story = {
-  render: () =>
-    withState(
-      () => () =>
-        h(Calendar as any, { style: { maxInlineSize: "20rem" } }),
-    ),
+  render: () => withState(() => () => h(Calendar as any, { style: { maxInlineSize: "20rem" } })),
 };
 
 /** A controlled selection: the chosen day reports back through the
@@ -32,8 +28,11 @@ export const Controlled: Story = {
             "onUpdate:modelValue": (v: any) => (value.value = v),
             style: { maxInlineSize: "20rem" },
           }),
-          h("p", { style: { color: "var(--bs-color-text-secondary)", margin: 0 } },
-            `Selected: ${value.value?.[0]?.toString() ?? "nothing yet"}`),
+          h(
+            "p",
+            { style: { color: "var(--bs-color-text-secondary)", margin: 0 } },
+            `Selected: ${value.value?.[0]?.toString() ?? "nothing yet"}`,
+          ),
         ]),
     );
   },

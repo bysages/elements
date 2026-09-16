@@ -3,7 +3,7 @@ import { Button } from "@bysages/vue";
 
 const { t } = useDocsI18n();
 
-defineProps<{ surround?: Array<{ title: string; path: string; description?: string }> | null;}>();
+defineProps<{ surround?: Array<{ title: string; path: string; description?: string }> | null }>();
 </script>
 
 <template>

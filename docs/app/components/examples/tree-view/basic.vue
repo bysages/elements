@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { TreeView } from "@bysages/vue";
 import { createTreeCollection } from "@ark-ui/vue/tree-view";
+import { TreeView } from "@bysages/vue";
 
 interface Node {
   id: string;
@@ -43,7 +43,15 @@ const collection = createTreeCollection<Node>({
         <TreeView.Branch>
           <TreeView.BranchControl>
             <TreeView.BranchIndicator>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                aria-hidden="true"
+              >
                 <path d="m9 5 7 7-7 7" />
               </svg>
             </TreeView.BranchIndicator>

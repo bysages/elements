@@ -1,9 +1,10 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import AlertRoot from "./Alert.svelte";
-import AlertIcon from "./AlertIcon.svelte";
 import AlertBody from "./AlertBody.svelte";
-import AlertTitle from "./AlertTitle.svelte";
 import AlertDescription from "./AlertDescription.svelte";
+import AlertIcon from "./AlertIcon.svelte";
+import AlertTitle from "./AlertTitle.svelte";
 
 /** A notice drawn on the page: a wash of the status pigment, one heavier
  * hairline on the leading edge, the serif for its title. Root, Icon,

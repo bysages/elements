@@ -16,9 +16,7 @@ export default defineNuxtModule({
   meta: { name: "@bysages/docs-theme/messages" },
   setup(_, nuxt) {
     const declared = (
-      nuxt.options.i18n as
-        | { locales?: Array<string | { code: string; name?: string }> }
-        | undefined
+      nuxt.options.i18n as { locales?: Array<string | { code: string; name?: string }> } | undefined
     )?.locales;
 
     /* `sitemap.md` groups pages by locale section; the section heading

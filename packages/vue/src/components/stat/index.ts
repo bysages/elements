@@ -35,9 +35,7 @@ const Delta = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
-    const direction = computed(
-      () => (ctx.attrs["data-direction"] as string) ?? props.direction,
-    );
+    const direction = computed(() => (ctx.attrs["data-direction"] as string) ?? props.direction);
     return () =>
       h(
         "span",

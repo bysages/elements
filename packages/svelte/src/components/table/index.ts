@@ -1,7 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
-import DataTableComponent from "./DataTable.svelte";
-
 import type { CellData, RowData, TableFeatures } from "@tanstack/svelte-table";
+
+import DataTableComponent from "./DataTable.svelte";
 
 /** The control recipe as a one-stop data table: sorting, filtering,
  * pinning, merging, virtualization, and drag-to-reorder behind one

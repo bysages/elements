@@ -10,8 +10,8 @@ import { Card } from "@bysages/vue";
     </Card.Header>
     <Card.Content>
       <p>
-        A vessel rests at the first elevation, round where a control is square-cut. Sections
-        compose in any subset.
+        A vessel rests at the first elevation, round where a control is square-cut. Sections compose
+        in any subset.
       </p>
     </Card.Content>
     <Card.Footer style="display: flex; gap: 0.5rem; justify-content: flex-end">

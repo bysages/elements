@@ -7,7 +7,7 @@ import { highlightFence } from "../../../utils/highlight";
 // must land on the `pre` itself, not on the wrapping panel. The body
 // is re-inked at render time from the `code`/`language` props: the
 // stored AST keeps code blocks as plain text, so render is the only
- // place a highlighter can act.
+// place a highlighter can act.
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{
@@ -16,9 +16,7 @@ const props = defineProps<{
   filename?: string;
 }>();
 
-const html = computed(() =>
-  props.code ? highlightFence(props.code, props.language) : "",
-);
+const html = computed(() => (props.code ? highlightFence(props.code, props.language) : ""));
 
 const copied = ref(false);
 
@@ -41,7 +39,7 @@ async function copy() {
         :aria-label="copied ? t('docs.copy.copied') : t('docs.copy.code')"
         @click="copy"
       >
-        {{ copied ? t('docs.copy.copied') : t('docs.copy.code') }}
+        {{ copied ? t("docs.copy.copied") : t("docs.copy.code") }}
       </Button>
     </div>
     <pre v-bind="$attrs"><code v-if="code" class="th-code" v-html="html" /><slot v-else /></pre>

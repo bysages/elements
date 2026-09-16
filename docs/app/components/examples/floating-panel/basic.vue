@@ -29,9 +29,7 @@ import { FloatingPanel } from "@bysages/vue";
             </FloatingPanel.CloseTrigger>
           </FloatingPanel.Control>
         </FloatingPanel.Header>
-        <FloatingPanel.Body>
-          Drag the header to move; pull an edge to resize.
-        </FloatingPanel.Body>
+        <FloatingPanel.Body> Drag the header to move; pull an edge to resize. </FloatingPanel.Body>
       </FloatingPanel.Content>
     </FloatingPanel.Positioner>
   </FloatingPanel.Root>

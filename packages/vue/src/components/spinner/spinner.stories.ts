@@ -29,9 +29,17 @@ export const Inline: Story = {
   render: () =>
     withState(
       () => () =>
-        h("p", { style: { display: "flex", alignItems: "center", gap: "var(--bs-space-2)", color: "var(--bs-color-text-secondary)" } }, [
-          h(Spinner as any, { size: "sm" }),
-          "Fetching the letter…",
-        ]),
+        h(
+          "p",
+          {
+            style: {
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--bs-space-2)",
+              color: "var(--bs-color-text-secondary)",
+            },
+          },
+          [h(Spinner as any, { size: "sm" }), "Fetching the letter…"],
+        ),
     ),
 };

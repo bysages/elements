@@ -1,17 +1,18 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import AiConversation from "./Ai.svelte";
-import AiContent from "./AiContent.svelte";
-import AiMessage from "./AiMessage.svelte";
-import AiResponse from "./AiResponse.svelte";
-import AiReasoning from "./AiReasoning.svelte";
-import AiTool from "./AiTool.svelte";
-import AiSources from "./AiSources.svelte";
-import AiSource from "./AiSource.svelte";
-import AiActions from "./AiActions.svelte";
 import AiAction from "./AiAction.svelte";
-import AiSuggestion from "./AiSuggestion.svelte";
-import AiPromptInput from "./AiPromptInput.svelte";
+import AiActions from "./AiActions.svelte";
+import AiContent from "./AiContent.svelte";
 import AiLoader from "./AiLoader.svelte";
+import AiMessage from "./AiMessage.svelte";
+import AiPromptInput from "./AiPromptInput.svelte";
+import AiReasoning from "./AiReasoning.svelte";
+import AiResponse from "./AiResponse.svelte";
+import AiSource from "./AiSource.svelte";
+import AiSources from "./AiSources.svelte";
+import AiSuggestion from "./AiSuggestion.svelte";
+import AiTool from "./AiTool.svelte";
 
 /** A conversation column: Root is the log, Message carries a role, and
  * the speaking parts — Response, Reasoning, Tool, Sources — part the

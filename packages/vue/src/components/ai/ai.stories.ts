@@ -71,55 +71,59 @@ export const Basic = {
       };
 
       return () =>
-        h("div", { style: { display: "grid", gap: "2rem", inlineSize: "100%", maxInlineSize: "46rem" } }, [
-          h(Ai.Conversation, () => [
-            ...state.messages.map((message) =>
-              h(Ai.Message, { role: message.role }, () =>
-                message.role === "user"
-                  ? h(Ai.MessageContent, message.text)
-                  : [
-                      h(Ai.Response, { content: message.text }),
-                      h(Ai.Reasoning, { label: "Thought for 2s" }, () => reasoningText),
-                      h(
-                        Ai.Tool,
-                        { name: "search_web", status: "completed" },
-                        {
-                          input: () => '{"query": "ink release notes"}',
-                          output: () => '{"hits": 3}',
-                        },
-                      ),
-                      h(Ai.Sources, () => [
+        h(
+          "div",
+          { style: { display: "grid", gap: "2rem", inlineSize: "100%", maxInlineSize: "46rem" } },
+          [
+            h(Ai.Conversation, () => [
+              ...state.messages.map((message) =>
+                h(Ai.Message, { role: message.role }, () =>
+                  message.role === "user"
+                    ? h(Ai.MessageContent, message.text)
+                    : [
+                        h(Ai.Response, { content: message.text }),
+                        h(Ai.Reasoning, { label: "Thought for 2s" }, () => reasoningText),
                         h(
-                          Ai.Source,
-                          { href: "https://example.com/ink" },
-                          () => "Ink release notes",
+                          Ai.Tool,
+                          { name: "search_web", status: "completed" },
+                          {
+                            input: () => '{"query": "ink release notes"}',
+                            output: () => '{"hits": 3}',
+                          },
                         ),
-                        h(
-                          Ai.Source,
-                          { href: "https://example.com/paper" },
-                          () => "The paper-and-ink system",
-                        ),
-                      ]),
-                      h(Ai.Actions, () => [
-                        h(Ai.Action, { label: "Copy" }, () => copyIcon),
-                        h(Ai.Action, { label: "Retry" }, () => retryIcon),
-                        h(Ai.Action, { label: "Helpful" }, () => upIcon),
-                        h(Ai.Action, { label: "Not helpful" }, () => downIcon),
-                      ]),
-                    ],
+                        h(Ai.Sources, () => [
+                          h(
+                            Ai.Source,
+                            { href: "https://example.com/ink" },
+                            () => "Ink release notes",
+                          ),
+                          h(
+                            Ai.Source,
+                            { href: "https://example.com/paper" },
+                            () => "The paper-and-ink system",
+                          ),
+                        ]),
+                        h(Ai.Actions, () => [
+                          h(Ai.Action, { label: "Copy" }, () => copyIcon),
+                          h(Ai.Action, { label: "Retry" }, () => retryIcon),
+                          h(Ai.Action, { label: "Helpful" }, () => upIcon),
+                          h(Ai.Action, { label: "Not helpful" }, () => downIcon),
+                        ]),
+                      ],
+                ),
               ),
-            ),
-            state.pending ? h(Ai.Loader) : null,
-          ]),
-          h(Ai.PromptInput, {
-            modelValue: state.prompt,
-            "onUpdate:modelValue": (value: string) => {
-              state.prompt = value;
-            },
-            onSubmit: send,
-            placeholder: "Ask the paper…",
-          }),
-        ]);
+              state.pending ? h(Ai.Loader) : null,
+            ]),
+            h(Ai.PromptInput, {
+              modelValue: state.prompt,
+              "onUpdate:modelValue": (value: string) => {
+                state.prompt = value;
+              },
+              onSubmit: send,
+              placeholder: "Ask the paper…",
+            }),
+          ],
+        );
     }),
 };
 

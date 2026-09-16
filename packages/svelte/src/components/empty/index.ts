@@ -1,9 +1,10 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import EmptyRoot from "./Empty.svelte";
-import EmptyVisual from "./EmptyVisual.svelte";
-import EmptyTitle from "./EmptyTitle.svelte";
-import EmptyDescription from "./EmptyDescription.svelte";
 import EmptyActions from "./EmptyActions.svelte";
+import EmptyDescription from "./EmptyDescription.svelte";
+import EmptyTitle from "./EmptyTitle.svelte";
+import EmptyVisual from "./EmptyVisual.svelte";
 
 /** An empty state: the page holds its breath. Root centers the column,
  * Visual carries the mark, Title and Description carry the ink, Actions

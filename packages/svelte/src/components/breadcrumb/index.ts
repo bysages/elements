@@ -1,9 +1,10 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import BreadcrumbRoot from "./Breadcrumb.svelte";
-import BreadcrumbList from "./BreadcrumbList.svelte";
+import BreadcrumbCurrent from "./BreadcrumbCurrent.svelte";
 import BreadcrumbItem from "./BreadcrumbItem.svelte";
 import BreadcrumbLink from "./BreadcrumbLink.svelte";
-import BreadcrumbCurrent from "./BreadcrumbCurrent.svelte";
+import BreadcrumbList from "./BreadcrumbList.svelte";
 import BreadcrumbSeparator from "./BreadcrumbSeparator.svelte";
 
 /** A trail of waymarks: Root wraps the nav, List the ordered trail, and

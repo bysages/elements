@@ -5,7 +5,15 @@ import { Tooltip } from "@bysages/vue";
 <template>
   <Tooltip.Root :positioning="{ placement: 'bottom-start' }">
     <Tooltip.Trigger>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
         <path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16" />
       </svg>
       <span>Hover me</span>

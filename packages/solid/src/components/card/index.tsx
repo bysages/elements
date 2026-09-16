@@ -8,7 +8,11 @@ function part<P extends Record<string, unknown>>(name: string, tag: string): Com
   return ((props: P) => {
     const Tag = tag as "section";
     return (
-      <Tag {...(props as JSX.HTMLAttributes<HTMLElement>)} data-scope="card" data-part={name.toLowerCase()} />
+      <Tag
+        {...(props as JSX.HTMLAttributes<HTMLElement>)}
+        data-scope="card"
+        data-part={name.toLowerCase()}
+      />
     );
   }) as Component<P>;
 }

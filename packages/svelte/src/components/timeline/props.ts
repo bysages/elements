@@ -1,5 +1,5 @@
-import type { HTMLAttributes } from "svelte/elements";
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
 export interface TimelineProps extends HTMLAttributes<HTMLOListElement> {
   children?: Snippet;

@@ -18,8 +18,9 @@ export const Basic: Story = {
           h(PageHeader.Heading, () => [
             h("div", { style: { minWidth: 0 } }, () => [
               h(PageHeader.Title, () => "Ledger of correspondence"),
-              h(PageHeader.Description, () =>
-                "Every letter in and out of the house, logged and shelved.",
+              h(
+                PageHeader.Description,
+                () => "Every letter in and out of the house, logged and shelved.",
               ),
             ]),
             h(PageHeader.Actions, () => [
@@ -42,8 +43,9 @@ export const Eyebrow: Story = {
             h("div", { style: { minWidth: 0 } }, () => [
               h(PageHeader.Eyebrow, () => "Archive · Eastern cabinet"),
               h(PageHeader.Title, () => "Ledger of correspondence"),
-              h(PageHeader.Description, () =>
-                "Every letter in and out of the house, logged and shelved.",
+              h(
+                PageHeader.Description,
+                () => "Every letter in and out of the house, logged and shelved.",
               ),
             ]),
           ]),
@@ -56,9 +58,6 @@ export const Eyebrow: Story = {
 export const TitleOnly: Story = {
   render: () =>
     withState(
-      () => () =>
-        h(PageHeader.Root as any, {}, () => [
-          h(PageHeader.Title, () => "Settings"),
-        ]),
+      () => () => h(PageHeader.Root as any, {}, () => [h(PageHeader.Title, () => "Settings")]),
     ),
 };

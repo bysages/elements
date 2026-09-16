@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import { Button, Tabs } from "@bysages/vue";
+import { computed, ref } from "vue";
 
 // A live example: the canvas renders the real example component from
 // app/components/examples, the code tab shows its source verbatim. The
@@ -33,8 +33,10 @@ async function copy() {
 
 // The code tab rides the same shiki pipeline as the markdown blocks —
 // server-highlighted once, then carried in the payload.
-const { data: highlighted } = await useAsyncData(`demo-code:${props.name}`, () =>
-  $fetch<string>("/api/highlight", { method: "POST", body: { code: code.value, lang: "vue" } }),
+const { data: highlighted } = await useAsyncData(
+  `demo-code:${props.name}`,
+  () =>
+    $fetch<string>("/api/highlight", { method: "POST", body: { code: code.value, lang: "vue" } }),
   { default: () => "" },
 );
 </script>

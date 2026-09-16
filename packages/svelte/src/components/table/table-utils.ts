@@ -5,10 +5,7 @@ import type { RowData } from "@tanstack/svelte-table";
 export type TreeNode = RowData & { id?: unknown; subRows?: TreeNode[] };
 
 /** The list holding `id` and the index inside it, or null when absent. */
-export function findNode(
-  rows: TreeNode[],
-  id: string,
-): { list: TreeNode[]; index: number } | null {
+export function findNode(rows: TreeNode[], id: string): { list: TreeNode[]; index: number } | null {
   for (let index = 0; index < rows.length; index++) {
     const row = rows[index]!;
     if (String(row.id) === id) return { list: rows, index };

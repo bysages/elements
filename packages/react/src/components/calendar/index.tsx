@@ -1,6 +1,6 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/react/date-picker";
-import { injectComponentStyle } from "@bysages/core";
 import type { DatePickerRootProps } from "@ark-ui/react/date-picker";
+import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
 function chevron(dir: "left" | "right") {

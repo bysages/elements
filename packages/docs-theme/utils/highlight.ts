@@ -1,7 +1,4 @@
-import {
-  createHighlighter,
-} from "@tanstack/highlight/core";
-import { createTanStackMarkdownHighlighter } from "@tanstack/highlight/markdown";
+import { createHighlighter } from "@tanstack/highlight/core";
 import { css } from "@tanstack/highlight/languages/css";
 import { diff } from "@tanstack/highlight/languages/diff";
 import { html } from "@tanstack/highlight/languages/html";
@@ -17,6 +14,7 @@ import { ts } from "@tanstack/highlight/languages/ts";
 import { tsx } from "@tanstack/highlight/languages/tsx";
 import { vue } from "@tanstack/highlight/languages/vue";
 import { yaml } from "@tanstack/highlight/languages/yaml";
+import { createTanStackMarkdownHighlighter } from "@tanstack/highlight/markdown";
 
 /** The languages this site documents, registered selectively so the
  * engine stays a few kilobytes. */

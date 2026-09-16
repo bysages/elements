@@ -21,7 +21,12 @@ const aligns = [
 
 <template>
   <ToggleGroup.Root :default-value="['left']" aria-label="Text alignment">
-    <ToggleGroup.Item v-for="align in aligns" :key="align.value" :value="align.value" :aria-label="align.label">
+    <ToggleGroup.Item
+      v-for="align in aligns"
+      :key="align.value"
+      :value="align.value"
+      :aria-label="align.label"
+    >
       <svg v-bind="strokeAttrs"><path :d="align.d" /></svg>
     </ToggleGroup.Item>
   </ToggleGroup.Root>

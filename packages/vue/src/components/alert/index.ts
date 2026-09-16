@@ -38,7 +38,10 @@ const Root = defineComponent({
     status: { type: String, default: "ink" },
   },
   setup(props, ctx: SetupContext) {
-    provide(STATUS, computed(() => props.status));
+    provide(
+      STATUS,
+      computed(() => props.status),
+    );
     return () =>
       h(
         "div",
@@ -57,7 +60,10 @@ const Root = defineComponent({
 const Icon = defineComponent({
   name: "AlertIcon",
   setup() {
-    const status = inject(STATUS, computed(() => "ink"));
+    const status = inject(
+      STATUS,
+      computed(() => "ink"),
+    );
     return () => h("span", { "data-scope": "alert", "data-part": "icon" }, glyph(status.value));
   },
 });

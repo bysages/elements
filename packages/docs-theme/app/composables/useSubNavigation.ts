@@ -1,5 +1,6 @@
 import { useAppConfig, useRoute } from "nuxt/app";
 import { computed, inject, type Ref } from "vue";
+
 import { useDocsI18n } from "./useDocsI18n";
 
 interface NavItem {

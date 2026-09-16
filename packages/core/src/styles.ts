@@ -21,8 +21,7 @@ let injected = false;
  * marker in the head). The marker parses before any module script, so
  * the wrappers' import-time injection stands down at any load order. */
 const stylesShipped = () =>
-  typeof document !== "undefined" &&
-  !!document.querySelector("meta[name='bs-styles-shipped']");
+  typeof document !== "undefined" && !!document.querySelector("meta[name='bs-styles-shipped']");
 
 /** Inject the token layer into the document head once — the inheritance
  * root that carries themes, density, and the motion grammar. SSR is a

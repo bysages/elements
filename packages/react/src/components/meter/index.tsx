@@ -31,7 +31,15 @@ export interface MeterRootProps extends HTMLAttributes<HTMLElement> {
   label?: string;
 }
 
-const Root = ({ value, min = 0, max = 100, level = "normal", label, children, ...rest }: MeterRootProps) => {
+const Root = ({
+  value,
+  min = 0,
+  max = 100,
+  level = "normal",
+  label,
+  children,
+  ...rest
+}: MeterRootProps) => {
   const span = max - min;
   const ratio = span > 0 ? Math.min(Math.max((value - min) / span, 0), 1) : 0;
   return (

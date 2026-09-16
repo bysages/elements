@@ -1,8 +1,9 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import TimelineRoot from "./Timeline.svelte";
+import TimelineContent from "./TimelineContent.svelte";
 import TimelineItem from "./TimelineItem.svelte";
 import TimelineMarker from "./TimelineMarker.svelte";
-import TimelineContent from "./TimelineContent.svelte";
 
 /** A line of moments: Root is the ordered thread, Item one moment on it,
  * Marker the point where the thread passes, Content what the moment
@@ -14,6 +15,11 @@ export const Timeline = Object.assign(TimelineRoot, {
   Content: TimelineContent,
 });
 
-export type { TimelineProps, TimelineItemProps, TimelineMarkerProps, TimelineContentProps } from "./props";
+export type {
+  TimelineProps,
+  TimelineItemProps,
+  TimelineMarkerProps,
+  TimelineContentProps,
+} from "./props";
 
 injectComponentStyle("timeline");

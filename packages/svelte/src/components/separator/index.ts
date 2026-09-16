@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import SeparatorComponent from "./Separator.svelte";
 
 /** The paper-ink hairline as a component: a named rule between sections.

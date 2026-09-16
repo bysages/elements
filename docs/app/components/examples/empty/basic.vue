@@ -23,7 +23,9 @@ import { Button, Empty } from "@bysages/vue";
       </svg>
     </Empty.Visual>
     <Empty.Title>No letters yet</Empty.Title>
-    <Empty.Description>Letters addressed to the archive will rest here until they are read.</Empty.Description>
+    <Empty.Description
+      >Letters addressed to the archive will rest here until they are read.</Empty.Description
+    >
     <Empty.Actions>
       <Button variant="solid" tone="ink" size="sm">Write a letter</Button>
       <Button variant="ghost" tone="ink" size="sm">Learn more</Button>

@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import AvatarGroupComponent from "./AvatarGroup.svelte";
 
 /** Avatars overlapping one row, each rimmed in the ground so the pile

@@ -1,12 +1,9 @@
 import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
+
+import { documentFamily, type EmitDoc, type PropDoc } from "../../scripts/generate-api-docs.ts";
 import { componentNames } from "./component-names.ts";
 import { displayTitle } from "./display-title.ts";
-import {
-  documentFamily,
-  type EmitDoc,
-  type PropDoc,
-} from "../../scripts/generate-api-docs.ts";
 
 /** Generate the two component shelves into content/{zh,en}:
  * 02.components (one page per family: description, live demos, props)
@@ -26,8 +23,7 @@ const contentRoot = path.resolve(docsRoot, "content");
 
 // Byte order of the numbered filenames — the order component-order.ts
 // exports — where "avatar-group." precedes "avatar." because '-' < '.'.
-const byFileName = (a: string, b: string) =>
-  (a + ".") < (b + ".") ? -1 : (a + ".") > (b + ".") ? 1 : 0;
+const byFileName = (a: string, b: string) => (a + "." < b + "." ? -1 : a + "." > b + "." ? 1 : 0);
 
 const families = readdirSync(vueRoot, { withFileTypes: true })
   .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
@@ -69,7 +65,10 @@ const cell = (text: string) =>
 /** The Default column already carries it — the prose repeats "@default N".
  * Cells stay single-line, whatever the source comment wrapped. */
 const prose = (text: string) =>
-  text.replace(/@default\s+[\s\S]*$/, "").replace(/\s+/g, " ").trim() || "—";
+  text
+    .replace(/@default\s+[\s\S]*$/, "")
+    .replace(/\s+/g, " ")
+    .trim() || "—";
 
 /** The part as the sections title it — "item-trigger" → "ItemTrigger". */
 const partTitle = (part: string) =>
@@ -143,7 +142,10 @@ function render(): Map<string, string> {
       if (c.emits?.length) part.push("", ...markdownEmits(c.emits));
       if (c.slots?.length) part.push("", ...markdownSlots(c.slots));
       if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
-        part.push("", "A styled part — no props of its own; it takes the anatomy's shared styling.");
+        part.push(
+          "",
+          "A styled part — no props of its own; it takes the anatomy's shared styling.",
+        );
       }
       referenceSections.push(part.join("\n"));
     }

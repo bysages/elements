@@ -25,17 +25,17 @@
 
 ## 包
 
-| 包                                                     | 版本                                                                     | 说明                                                        |
-| ------------------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| [@bysages/tokens](./packages/tokens/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/tokens)                     | DTCG 设计令牌，经 style-dictionary 4 编译为 CSS 变量与类型   |
-| [@bysages/core](./packages/core/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/core)                       | 主题引擎、逐组件样式与光照引擎                               |
-| [@bysages/react](./packages/react/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/react)                      | React 组件                                                   |
-| [@bysages/vue](./packages/vue/README.md)               | ![npm](https://img.shields.io/npm/v/@bysages/vue)                        | Vue 组件                                                     |
-| [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)                      | Solid 组件                                                   |
-| [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)                     | Svelte 组件                                                  |
-| [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)                     | 令牌主题的图表                                               |
-| [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)                       | 包装 Vue 组件的 Nuxt 模块                                    |
-| [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme)                 | 构建文档站的 Nuxt Content 层                                 |
+| 包                                                     | 版本                                                     | 说明                                                       |
+| ------------------------------------------------------ | -------------------------------------------------------- | ---------------------------------------------------------- |
+| [@bysages/tokens](./packages/tokens/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/tokens)     | DTCG 设计令牌，经 style-dictionary 4 编译为 CSS 变量与类型 |
+| [@bysages/core](./packages/core/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/core)       | 主题引擎、逐组件样式与光照引擎                             |
+| [@bysages/react](./packages/react/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/react)      | React 组件                                                 |
+| [@bysages/vue](./packages/vue/README.md)               | ![npm](https://img.shields.io/npm/v/@bysages/vue)        | Vue 组件                                                   |
+| [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)      | Solid 组件                                                 |
+| [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Svelte 组件                                                |
+| [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | 令牌主题的图表                                             |
+| [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | 包装 Vue 组件的 Nuxt 模块                                  |
+| [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | 构建文档站的 Nuxt Content 层                               |
 
 ## 快速开始
 

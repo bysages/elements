@@ -19,16 +19,23 @@ const navigation =
 // The docs collection is per-locale under i18n, read off the URL at
 // query time — setup runs mid-transition, before refs settle.
 const collectionName = () =>
-  isEnabled.value ? (`docs_${localeOf(route.path).replace("-", "_")}` as keyof Collections) : "docs";
+  isEnabled.value
+    ? (`docs_${localeOf(route.path).replace("-", "_")}` as keyof Collections)
+    : "docs";
 
 // Reactive keys: every path owns its own payload entry, so switching
 // back to a visited page reads its cached data instead of refetching.
 const [pageData, surroundData] = await Promise.all([
-  useAsyncData(() => route.path, () => queryCollection(collectionName()).path(route.path).first()),
-  useAsyncData(() => `surround:${route.path}`, () =>
-    queryCollectionItemSurroundings(collectionName(), route.path, {
-      fields: ["description"],
-    }),
+  useAsyncData(
+    () => route.path,
+    () => queryCollection(collectionName()).path(route.path).first(),
+  ),
+  useAsyncData(
+    () => `surround:${route.path}`,
+    () =>
+      queryCollectionItemSurroundings(collectionName(), route.path, {
+        fields: ["description"],
+      }),
   ),
 ]);
 const { data: page, refresh: refreshPage } = pageData;

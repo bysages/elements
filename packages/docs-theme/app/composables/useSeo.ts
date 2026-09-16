@@ -68,7 +68,9 @@ export function useSeo(options: UseSeoOptions = {}) {
               rel: "alternate" as const,
               type: "text/markdown",
               href:
-                route.path === "/" ? `${baseUrl}${rawPrefix}/index.md` : `${baseUrl}${route.path}.md`,
+                route.path === "/"
+                  ? `${baseUrl}${rawPrefix}/index.md`
+                  : `${baseUrl}${route.path}.md`,
             },
           ]
         : []),
@@ -90,7 +92,10 @@ export function useSeo(options: UseSeoOptions = {}) {
         }));
       const fallback = i18n.switchLocalePath(i18n.locales.value[0]?.code ?? "en");
       return fallback
-        ? [...alternates, { rel: "alternate" as const, hreflang: "x-default", href: joinURL(baseUrl, fallback) }]
+        ? [
+            ...alternates,
+            { rel: "alternate" as const, hreflang: "x-default", href: joinURL(baseUrl, fallback) },
+          ]
         : alternates;
     }),
   });

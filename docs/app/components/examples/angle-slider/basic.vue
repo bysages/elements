@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { AngleSlider } from "@bysages/vue";
+import { ref } from "vue";
 
 const value = ref(45);
 </script>

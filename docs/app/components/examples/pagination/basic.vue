@@ -9,7 +9,15 @@ function chevron(direction: "left" | "right") {
 <template>
   <Pagination.Root :count="5000" :page-size="10" :sibling-count="2">
     <Pagination.PrevTrigger aria-label="Previous page">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
         <path :d="chevron('left')" />
       </svg>
     </Pagination.PrevTrigger>
@@ -20,7 +28,15 @@ function chevron(direction: "left" | "right") {
       </template>
     </Pagination.Context>
     <Pagination.NextTrigger aria-label="Next page">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
         <path :d="chevron('right')" />
       </svg>
     </Pagination.NextTrigger>

@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+
 import SkeletonComponent from "./Skeleton.svelte";
 
 /** A waiting sheet of unset paper. Size it from the outside; the breath

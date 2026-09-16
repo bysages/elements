@@ -1,6 +1,7 @@
-import { createRequire } from "node:module";
 import { readdirSync, rmSync } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
+
 import { emitDts } from "svelte2tsx";
 
 /** Emit a `.svelte.d.ts` beside every `.svelte` source under `src`, the

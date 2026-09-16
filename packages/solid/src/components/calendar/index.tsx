@@ -1,6 +1,6 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/solid/date-picker";
-import { injectComponentStyle } from "@bysages/core";
 import type { DatePickerRootProps } from "@ark-ui/solid/date-picker";
+import { injectComponentStyle } from "@bysages/core";
 import { For, Show } from "solid-js";
 
 function chevron(dir: "left" | "right") {
@@ -104,7 +104,9 @@ export function Calendar(props: CalendarProps) {
                         <For each={week}>
                           {(day: any, id2) => (
                             <ArkDatePicker.TableCell value={day}>
-                              <ArkDatePicker.TableCellTrigger>{day.day}</ArkDatePicker.TableCellTrigger>
+                              <ArkDatePicker.TableCellTrigger>
+                                {day.day}
+                              </ArkDatePicker.TableCellTrigger>
                             </ArkDatePicker.TableCell>
                           )}
                         </For>
@@ -128,7 +130,9 @@ export function Calendar(props: CalendarProps) {
                         <For each={months}>
                           {(month: any, id2) => (
                             <ArkDatePicker.TableCell value={month.value} columns={3}>
-                              <ArkDatePicker.TableCellTrigger>{month.label}</ArkDatePicker.TableCellTrigger>
+                              <ArkDatePicker.TableCellTrigger>
+                                {month.label}
+                              </ArkDatePicker.TableCellTrigger>
                             </ArkDatePicker.TableCell>
                           )}
                         </For>
@@ -152,7 +156,9 @@ export function Calendar(props: CalendarProps) {
                         <For each={years}>
                           {(year: any, id2) => (
                             <ArkDatePicker.TableCell value={year.value} columns={3}>
-                              <ArkDatePicker.TableCellTrigger>{year.label}</ArkDatePicker.TableCellTrigger>
+                              <ArkDatePicker.TableCellTrigger>
+                                {year.label}
+                              </ArkDatePicker.TableCellTrigger>
                             </ArkDatePicker.TableCell>
                           )}
                         </For>
