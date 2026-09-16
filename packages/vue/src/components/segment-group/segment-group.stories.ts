@@ -5,7 +5,7 @@ import { h, reactive } from "vue";
 import { SegmentGroup } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Actions/Segment Group" };
+const meta: Meta = { title: "Components/Forms/Segment Group" };
 export default meta;
 
 const frameworks = ["React", "Solid", "Svelte", "Vue"];

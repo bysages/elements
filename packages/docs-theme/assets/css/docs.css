@@ -229,12 +229,15 @@ body {
   inline-size: 100%;
 }
 
-/* Sidebar entries wrap instead of pushing the lane wider — the register is
-   a column of titles, not a menubar. */
+/* Sidebar entries truncate with an ellipsis instead of wrapping or
+   pushing the lane wider — the register is a column of single-line
+   titles; the full name still reads in the page and the browser's own
+   title tooltip. */
 .bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"] {
   max-inline-size: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* The entry under the reader's eye holds the accent ink. Hover must not
@@ -725,6 +728,29 @@ body {
 .bs-docs-demo [data-part="trigger"] {
   font-family: var(--bs-font-mono);
   font-size: var(--bs-font-size-sm);
+}
+
+/* The workbench door sits in the tab row, after the triggers: a quiet
+   exit link, not another tab — it reads as navigation, not as a pane. */
+.bs-docs-demo-workbench {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-space-1);
+  margin-inline-start: auto;
+  padding-inline: var(--bs-space-2);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+  white-space: nowrap;
+  transition: color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-docs-demo-workbench:hover {
+  color: var(--bs-color-primary);
+}
+
+.bs-docs-demo-workbench [data-part] {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
 }
 
 /* The canvas is the paper the component stands on: one step brighter

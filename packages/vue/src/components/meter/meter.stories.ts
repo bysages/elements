@@ -4,7 +4,7 @@ import { h } from "vue";
 import { Meter } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Meter" };
+const meta: Meta = { title: "Components/Feedback/Meter" };
 export default meta;
 type Story = StoryObj<typeof Meter>;
 

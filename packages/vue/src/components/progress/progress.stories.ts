@@ -4,7 +4,7 @@ import { h } from "vue";
 import { Progress } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Progress" };
+const meta: Meta = { title: "Components/Feedback/Progress" };
 export default meta;
 
 /** Linear progress: label and value sit on one line, the groove runs the

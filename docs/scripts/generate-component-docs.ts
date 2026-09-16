@@ -3,18 +3,22 @@ import path from "node:path";
 
 import { documentFamily, type EmitDoc, type PropDoc } from "../../scripts/generate-api-docs.ts";
 import { componentNames } from "./component-names.ts";
+import { componentSections } from "./component-sections.ts";
 import { displayTitle } from "./display-title.ts";
 
 /** Generate the two component shelves into content/{zh,en}:
  * 02.components (one page per family: description, live demos, props)
  * and 03.reference (the full per-part API as plain markdown tables —
  * search-indexable, no render component between the reader and the
- * data). The family list and every fact come from the vue wrappers (the
+ * data). Files stay flat — the shelf route is the family's route —
+ * while each page's frontmatter carries its section label (the same
+ * partition the Storybook sidebar uses) for the sidebar to group by.
+ * The family list and every fact come from the vue wrappers (the
  * reference implementation) via the api extractor; examples are
  * discovered under app/components/examples/<family>. Both directories
  * are wiped and rebuilt on every run — the vue package is the single
- * source of truth, and hand edits here would drift. `--check` regenerates
- * in memory and fails if anything on disk differs. */
+ * source of truth, and hand edits here would drift. `--check`
+ * regenerates in memory and fails if anything on disk differs. */
 
 const docsRoot = path.resolve(import.meta.dirname, "..");
 const vueRoot = path.resolve(docsRoot, "../packages/vue/src/components");
@@ -25,10 +29,29 @@ const contentRoot = path.resolve(docsRoot, "content");
 // exports — where "avatar-group." precedes "avatar." because '-' < '.'.
 const byFileName = (a: string, b: string) => (a + "." < b + "." ? -1 : a + "." > b + "." ? 1 : 0);
 
-const families = readdirSync(vueRoot, { withFileTypes: true })
+const discovered = readdirSync(vueRoot, { withFileTypes: true })
   .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
   .map((e) => e.name)
   .sort(byFileName);
+
+// The section map must partition the discovered families exactly — a
+// family missing from it or listed twice is a bug in the map, not a
+// reason to silently drop or duplicate a page.
+const families = componentSections.flatMap((s) => s.families);
+const partitioned = new Set(families);
+for (const family of discovered) {
+  if (!partitioned.has(family)) {
+    throw new Error(`family "${family}" is missing from component-sections.ts`);
+  }
+}
+for (const family of families) {
+  if (!discovered.includes(family)) {
+    throw new Error(`component-sections.ts lists "${family}" but no such family exists`);
+  }
+}
+if (partitioned.size !== families.length) {
+  throw new Error("component-sections.ts lists a family in more than one section");
+}
 
 const locales = ["zh", "en"] as const;
 
@@ -49,8 +72,7 @@ const examplesOf = (family: string): string[] => {
     .map((f) => f.replace(/\.vue$/, ""));
 };
 
-// The zh pages carry both scripts — TDesign style — so each page answers
-// to either name in search and navigation.
+// Both shelves as { relative path → content }, relative to docs/.
 const titleOf = (family: string, locale: string): string => {
   const display = displayTitle(family);
   const zhName = componentNames[family];
@@ -95,16 +117,28 @@ const markdownSlots = (slots: { name: string }[]): string[] => [
   ...slots.map((s) => `| \`#${s.name}\` |`),
 ];
 
-const page = (title: string, description: string, sections: string[]): string => {
+const page = (
+  title: string,
+  description: string,
+  sections: string[],
+  navSection?: { locale: string; label: string },
+): string => {
   const frontmatter = [
     "---",
     `title: ${JSON.stringify(title)}`,
     `description: ${JSON.stringify(description.replace(/\s*\n\s*/g, " ").trim())}`,
+    ...(navSection ? ["navigation:", `  section: ${JSON.stringify(navSection.label)}`] : []),
     "---",
   ];
   if (!sections.length) return [...frontmatter, ""].join("\n");
   return [...frontmatter, "", sections.join("\n\n"), ""].join("\n");
 };
+
+const stemOf = (index: number, slug: string) => `${String(index + 1).padStart(2, "0")}.${slug}`;
+
+/** The line a prop-less part carries in both shelves — the same words
+ * the reference tables have always given them. */
+const propslessLine = "A styled part — no props of its own; it takes the anatomy's shared styling.";
 
 /** Both shelves as { relative path → content }, relative to docs/. */
 function render(): Map<string, string> {
@@ -118,59 +152,75 @@ function render(): Map<string, string> {
     }
   }
 
-  for (const [index, family] of families.entries()) {
-    const doc = documentFamily(family);
-    if (!doc) continue;
+  // The files stay flat — the shelf route is the family's route — while
+  // each page's frontmatter carries its section label, which the sidebar
+  // groups by. Sections number first: the prefixes walk the sections in
+  // order, so the flat file order already reads grouped.
+  let order = 0;
+  for (const section of componentSections) {
+    for (const [index, family] of section.families.entries()) {
+      const doc = documentFamily(family);
+      if (!doc) continue;
 
-    // Props ride the component page too — only the parts that own some,
-    // the same rule the old render component filtered by.
-    const propsGroups = Object.entries(doc.components)
-      .filter(([, c]) => (c.props?.length ?? 0) > 0)
-      .map(([name, c]) => [`### ${name}`, "", ...markdownProps(c.props!)].join("\n"));
+      // Every exported part rides the component page — its own words
+      // first, then the API tables; the ones without props of their own
+      // still belong to the list the reader scans.
+      const propsGroups = Object.entries(doc.components).map(([name, c]) => {
+        const head = [`### ${name}`];
+        if (c.description) head.push("", c.description);
+        if (c.props?.length) head.push("", ...markdownProps(c.props));
+        else head.push("", propslessLine);
+        return head.join("\n");
+      });
 
-    const demos = examplesOf(family).map(
-      (name) => `<ComponentDemo name="${family}/${name}"></ComponentDemo>`,
-    );
-
-    const referenceSections: string[] = [];
-    if (doc.anatomy?.parts?.length) {
-      referenceSections.push(doc.anatomy.parts.map((p) => `\`${partTitle(p)}\``).join(" · "));
-    }
-    for (const [name, c] of Object.entries(doc.components)) {
-      const part = [`## ${name}`];
-      if (c.props?.length) part.push("", ...markdownProps(c.props));
-      if (c.emits?.length) part.push("", ...markdownEmits(c.emits));
-      if (c.slots?.length) part.push("", ...markdownSlots(c.slots));
-      if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
-        part.push(
-          "",
-          "A styled part — no props of its own; it takes the anatomy's shared styling.",
-        );
-      }
-      referenceSections.push(part.join("\n"));
-    }
-
-    const stem = `${String(index + 1).padStart(2, "0")}.${family}`;
-    for (const locale of locales) {
-      const title = titleOf(family, locale);
-      const usage = locale === "zh" ? "基础用法" : "Basic usage";
-      const propsTitle = locale === "zh" ? "属性" : "Props";
-
-      const componentSections: string[] = [];
-      if (demos.length) {
-        componentSections.push([`## ${usage}`, ...demos].join("\n"));
-      }
-      if (propsGroups.length) {
-        componentSections.push([`## ${propsTitle}`, "", ...propsGroups].join("\n\n"));
-      }
-      files.set(
-        path.join("content", locale, "02.components", `${stem}.md`),
-        page(title, doc.description, componentSections),
+      const demos = examplesOf(family).map(
+        (name) => `<ComponentDemo name="${family}/${name}"></ComponentDemo>`,
       );
-      files.set(
-        path.join("content", locale, "03.reference", `${stem}.md`),
-        page(title, doc.description, referenceSections),
-      );
+
+      const referenceSections: string[] = [];
+      if (doc.anatomy?.parts?.length) {
+        referenceSections.push(doc.anatomy.parts.map((p) => `\`${partTitle(p)}\``).join(" · "));
+      }
+      for (const [name, c] of Object.entries(doc.components)) {
+        const part = [`## ${name}`];
+        if (c.description) part.push("", c.description);
+        if (c.props?.length) part.push("", ...markdownProps(c.props));
+        if (c.emits?.length) part.push("", ...markdownEmits(c.emits));
+        if (c.slots?.length) part.push("", ...markdownSlots(c.slots));
+        if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
+          part.push(
+            "",
+            "A styled part — no props of its own; it takes the anatomy's shared styling.",
+          );
+        }
+        referenceSections.push(part.join("\n"));
+      }
+
+      const stem = stemOf(order++, family);
+      for (const locale of locales) {
+        const title = titleOf(family, locale);
+        const usage = locale === "zh" ? "基础用法" : "Basic usage";
+        const propsTitle = locale === "zh" ? "属性" : "Props";
+        const navSection = {
+          locale,
+          label: locale === "zh" ? section.zh : section.en,
+        };
+
+        const componentPage: string[] = [];
+        if (demos.length) {
+          componentPage.push([`## ${usage}`, ...demos].join("\n"));
+        }
+        if (propsGroups.length) {
+          componentPage.push([`## ${propsTitle}`, "", ...propsGroups].join("\n\n"));
+        }
+        for (const dir of Object.keys(shelves)) {
+          const body = dir === "02.components" ? componentPage : referenceSections;
+          files.set(
+            path.join("content", locale, dir, `${stem}.md`),
+            page(title, doc.description, body, navSection),
+          );
+        }
+      }
     }
   }
   return files;

@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Skeleton } from ".";
 
-const meta: Meta = { title: "Components/Elements/Skeleton" };
+const meta: Meta = { title: "Components/Feedback/Skeleton" };
 export default meta;
 
 export const Basic = {

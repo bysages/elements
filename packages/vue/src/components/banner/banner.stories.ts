@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { h, ref } from "vue";
 
-import { Banner, Button } from ".";
+import { Banner } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Feedback/Banner" };

@@ -16,6 +16,7 @@ import {
   Project,
   SyntaxKind,
   type InterfaceDeclaration,
+  type Node,
   type PropertySignature,
   type SourceFile,
 } from "ts-morph";
@@ -30,7 +31,7 @@ const project = new Project({ skipAddingFilesFromTsConfig: true });
 const pascal = (s: string) => s.replace(/(^|-)([a-z])/g, (_, h, c) => c.toUpperCase());
 const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
-function commentText(node: PropertySignature | PropertyAssignment): string {
+function commentText(node: Node): string {
   return node
     .getLeadingCommentRanges()
     .map((r) => r.getText())
@@ -60,6 +61,8 @@ export interface EmitDoc {
 }
 
 export interface ComponentDoc {
+  /** The part's own comment — the "why" above its API tables. */
+  description?: string;
   props?: PropDoc[];
   emits?: EmitDoc[];
   slots?: { name: string }[];
@@ -269,7 +272,13 @@ function wrapperHeaderComment(indexText: string): string {
 /** Parts our stylesheet actually styles, from the data-part selectors. */
 function styledParts(family: string): string[] {
   const file = join(CORE_STYLES, `${family}.ts`);
-  if (!existsSync(file)) return [];
+  if (!existsSync(file)) {
+    // A family split out of a shared scope ("ai-message" out of "ai")
+    // dresses from the scope's stylesheet — fall back to its stem.
+    const stem = family.split("-")[0];
+    if (stem === family || !existsSync(join(CORE_STYLES, `${stem}.ts`))) return [];
+    return styledParts(stem);
+  }
   const css = readFileSync(file, "utf8");
   return [...new Set([...css.matchAll(/\[data-part="([\w-]+)"\]/g)].map((m) => m[1]))].sort();
 }
@@ -337,7 +346,25 @@ export function documentFamily(dir: string): FamilyDoc | null {
     components = {};
     for (const decl of indexFile.getVariableDeclarations()) {
       const call = decl.getInitializer()?.asKind(SyntaxKind.CallExpression);
-      if (call?.getExpression().getText() !== "defineComponent") continue;
+      if (!call) continue;
+      const callee = call.getExpression().getText();
+      // A part factory ("part(\"Icon\", \"span\")") contributes a styled
+      // part with no API of its own — its runtime name is the family's
+      // prefix, the same convention every native wrapper follows.
+      if (callee === "part") {
+        const partName = call
+          .getArguments()[0]
+          ?.asKind(SyntaxKind.StringLiteral)
+          ?.getLiteralValue();
+        if (partName) {
+          const description = commentText(decl.getVariableStatement() ?? decl);
+          components[pascal(dir) + pascal(partName)] = {
+            ...(description ? { description } : {}),
+          };
+        }
+        continue;
+      }
+      if (callee !== "defineComponent") continue;
       const arg = call.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
       if (!arg) continue;
       const nameProp = arg
@@ -348,7 +375,9 @@ export function documentFamily(dir: string): FamilyDoc | null {
       const props = nativeProps(arg);
       const emits = nativeEmits(arg);
       const slots = nativeSlots(arg);
+      const description = commentText(decl.getVariableStatement() ?? decl);
       components[name] = {
+        ...(description ? { description } : {}),
         ...(props.length ? { props } : {}),
         ...(emits.length ? { emits } : {}),
         ...(slots.length ? { slots } : {}),

@@ -7,6 +7,34 @@ interface NavItem {
   title: string;
   path?: string;
   children?: NavItem[];
+  /** An optional sidebar group label (from the page's `navigation.section`
+   * frontmatter). Present only on shelves that declare it — guide pages
+   * and unmarked shelves never carry one, and stay ungrouped. */
+  section?: string;
+}
+
+/** Fold the flat shelf into sidebar groups by each page's `section`
+ * label, in first-appearance order. Pages without a label pass through
+ * untouched — the grouping only appears where the content declares it,
+ * so a theme consumer needs no configuration to keep its plain shelf. */
+export function groupSections(items: NavItem[]): NavItem[] {
+  if (!items.some((item) => item.section)) return items;
+  const grouped: NavItem[] = [];
+  const seen = new Map<string, NavItem>();
+  for (const item of items) {
+    if (!item.section) {
+      grouped.push(item);
+      continue;
+    }
+    let group = seen.get(item.section);
+    if (!group) {
+      group = { title: item.section, children: [] };
+      seen.set(item.section, group);
+      grouped.push(group);
+    }
+    group.children!.push(item);
+  }
+  return grouped;
 }
 
 /** The page a folder opens on: descend until a real path shows up. */
@@ -68,8 +96,8 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
     // In header mode the lane carries the active section only — the whole
     // tree must never flash in during a locale-switch refresh, so a miss
     // renders empty rather than falling back to the full tree.
-    if (subNavigationMode.value) return currentSection.value?.children ?? [];
-    return navigation?.value ?? [];
+    if (subNavigationMode.value) return groupSections(currentSection.value?.children ?? []);
+    return groupSections(navigation?.value ?? []);
   });
 
   return { subNavigationMode, sections, currentSection, sidebarNavigation };

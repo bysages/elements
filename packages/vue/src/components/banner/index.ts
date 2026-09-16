@@ -45,10 +45,15 @@ function part(name: string, tag: string) {
   });
 }
 
+/** The status pigment's glyph. */
 const Icon = part("Icon", "span");
+/** The column the title and description stack in. */
 const Body = part("Body", "div");
+/** The bold serif line — what the notice says at a glance. */
 const Title = part("Title", "p");
+/** The supporting line, in the quiet register. */
 const Description = part("Description", "p");
+/** Where the reader answers — the row of buttons a banner may carry. */
 const Actions = part("Actions", "div");
 
 /** The quiet close: a plain square-cut button; dismissal stays the

@@ -5,7 +5,7 @@ import { defineComponent, h, reactive } from "vue";
 import { Carousel } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Carousel" };
+const meta: Meta = { title: "Components/Media/Carousel" };
 export default meta;
 
 const slides = [

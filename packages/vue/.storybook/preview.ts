@@ -67,7 +67,17 @@ const preview: Preview = {
       storySort: (a, b) => {
         // Sections inside "Components" sort by this ladder; anything
         // outside keeps its place below, alphabetical within a section.
-        const ladder = ["Elements", "Actions", "Forms", "Overlay", "Navigation", "Data", "Layout"];
+        const ladder = [
+          "Elements",
+          "Actions",
+          "Forms",
+          "Navigation",
+          "Overlay",
+          "Data",
+          "Media",
+          "Feedback",
+          "Layout",
+        ];
         const section = (s) => {
           const name = (s.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
           const index = ladder.indexOf(name);

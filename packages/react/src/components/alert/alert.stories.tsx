@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Alert } from ".";
 
-const meta: Meta = { title: "Components/Elements/Alert" };
+const meta: Meta = { title: "Components/Feedback/Alert" };
 export default meta;
 
 function notice(status: any, title: string, description: string) {

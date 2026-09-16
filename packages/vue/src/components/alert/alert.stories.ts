@@ -4,7 +4,7 @@ import { h } from "vue";
 import { Alert } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Elements/Alert" };
+const meta: Meta = { title: "Components/Feedback/Alert" };
 export default meta;
 
 function notice(status: string, title: string, description: string) {

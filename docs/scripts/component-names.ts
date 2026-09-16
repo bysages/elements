@@ -4,7 +4,15 @@
  * order — the generator's page ordering follows the vue package. */
 export const componentNames: Record<string, string> = {
   accordion: "手风琴",
-  ai: "会话",
+  ai: "AI 会话",
+  "ai-action": "AI 操作",
+  "ai-message": "AI 消息",
+  "ai-prompt-input": "AI 提示输入",
+  "ai-reasoning": "AI 思考",
+  "ai-response": "AI 回复",
+  "ai-source": "AI 来源",
+  "ai-suggestion": "AI 建议",
+  "ai-tool": "AI 工具调用",
   alert: "提醒",
   "angle-slider": "角度滑块",
   autocomplete: "自动补全",

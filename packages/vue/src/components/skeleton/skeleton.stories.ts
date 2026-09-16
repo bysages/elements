@@ -5,7 +5,7 @@ import { Skeleton } from ".";
 import { withState } from "../with-state.js";
 
 const meta: Meta<typeof Skeleton> = {
-  title: "Components/Elements/Skeleton",
+  title: "Components/Feedback/Skeleton",
   component: Skeleton,
 };
 export default meta;
