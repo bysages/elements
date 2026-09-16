@@ -135,7 +135,9 @@ const Tool = defineComponent({
         { ...ctx.attrs, "data-ai": "tool", ...(status ? { "data-status": status } : {}) },
         () => [
           h(Collapsible.Trigger, () => [
-            h("span", props.name),
+            /* The raw tool name by default; a `label` slot lets the site
+               speak friendlier words ("Searching pages…"). */
+            h("span", ctx.slots.label?.() ?? props.name),
             status
               ? h(
                   "span",

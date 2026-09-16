@@ -20,6 +20,14 @@
     "assistantGreeting": "问问文档助手——它读过这些书架。",
     "prev": "上一篇",
     "next": "下一篇",
-    "edit": "编辑此页"
+    "edit": "编辑此页",
+    "assistantTitle": "助手",
+    "assistantThinking": "思考中",
+    "assistantError": "墨水枯竭——助手暂时无法联系。",
+    "starters": [
+      "这个网站涵盖什么？",
+      "总结这一页。",
+      "我该如何上手？"
+    ]
   }
 }

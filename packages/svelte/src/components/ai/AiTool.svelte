@@ -2,7 +2,7 @@
 import { Collapsible } from "../collapsible";
 import type { ToolProps } from "./props";
 
-let { name, status, input, output, ...rest }: ToolProps = $props();
+let { name, label, status, input, output, ...rest }: ToolProps = $props();
 </script>
 
 <!-- A tool call: the shared collapsible as the vessel — the name it was
@@ -10,7 +10,7 @@ reached by and the state it reached in on the trigger, its input and
 output folded inside. -->
 <Collapsible.Root {...rest} data-ai="tool" data-status={status}>
   <Collapsible.Trigger>
-    <span>{name}</span>
+    <span>{label ?? name}</span>
     {#if status}
       <span data-scope="ai" data-part="tool-status">
         {status.charAt(0).toUpperCase() + status.slice(1)}

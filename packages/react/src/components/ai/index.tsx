@@ -106,17 +106,20 @@ export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningPr
  * output folded inside. */
 export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
+  /** Friendlier trigger words than the raw tool name (a `label` slot
+   * in the Vue/Svelte wrappers). */
+  label?: ReactNode;
   status?: ToolStatus;
   defaultOpen?: boolean;
   input?: ReactNode;
   output?: ReactNode;
 }
 
-export function Tool({ name, status, input, output, ...rest }: ToolProps) {
+export function Tool({ name, label, status, input, output, ...rest }: ToolProps) {
   return (
     <Collapsible.Root {...rest} data-ai="tool" data-status={status}>
       <Collapsible.Trigger>
-        <span>{name}</span>
+        <span>{label ?? name}</span>
         {status ? (
           <span data-scope="ai" data-part="tool-status">
             {status.charAt(0).toUpperCase() + status.slice(1)}

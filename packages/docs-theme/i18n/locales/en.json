@@ -20,6 +20,14 @@
     "assistantGreeting": "Ask the assistant — it reads these shelves.",
     "prev": "Previous",
     "next": "Next",
-    "edit": "Edit this page"
+    "edit": "Edit this page",
+    "assistantTitle": "Assistant",
+    "assistantThinking": "Thinking",
+    "assistantError": "The ink ran dry — the assistant could not be reached.",
+    "starters": [
+      "What does this site cover?",
+      "Summarize this page.",
+      "How do I get started?"
+    ]
   }
 }

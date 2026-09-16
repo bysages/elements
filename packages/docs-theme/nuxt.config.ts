@@ -10,6 +10,7 @@ const { resolve } = createResolver(import.meta.url);
 const config = {
   modules: [
     resolve("./modules/routing"),
+    resolve("./modules/messages"),
     "@nuxt/content",
     "@nuxt/icon",
     "@bysages/nuxt",

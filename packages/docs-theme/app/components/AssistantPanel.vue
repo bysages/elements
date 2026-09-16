@@ -3,8 +3,6 @@ import { useChat } from "@ai-sdk/vue";
 import { Ai, Drawer } from "@bysages/vue";
 import { DefaultChatTransport, type ToolUIPart } from "ai";
 
-import { highlightFence } from "../../utils/highlight";
-
 const {
   Conversation,
   Message,
@@ -21,7 +19,7 @@ const { Root, Backdrop, Positioner, Content, Title, CloseTrigger } = Drawer;
 
 const { isOpen, close, draft } = useAssistant();
 
-const { t } = useDocsI18n();
+const { t, tm, rt } = useDocsI18n();
 
 const { messages, sendMessage, status, error } = useChat({
   transport: new DefaultChatTransport({ api: "/api/assistant" }),
@@ -50,7 +48,16 @@ function format(value: unknown): string {
   return typeof value === "string" ? value : JSON.stringify(value, null, 2);
 }
 
-const STARTERS = ["What does this site cover?", "Summarize this page.", "How do I get started?"];
+/* highlightFence arrives by Nuxt auto-import from the theme's `utils/` —
+   a relative import here would break for a site that overrides this
+   component. The starter questions live in the locale files, read with
+   `tm` since they are an array — and each element is a compiled message
+   value, so `rt` resolves it back to the string before it reaches a
+   component prop. */
+const starters = computed(() => {
+  const messages = tm("docs.starters");
+  return Array.isArray(messages) ? messages.map((message) => rt(message)) : [];
+});
 </script>
 
 <template>
@@ -62,11 +69,11 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
     >
       <Backdrop />
       <Positioner>
-        <Content aria-label="AI assistant" class="bs-docs-assistant">
+        <Content :aria-label="t('docs.assistantTitle')" class="bs-docs-assistant">
           <div class="bs-docs-assistant-head">
-            <Title>Assistant</Title>
+            <Title>{{ t("docs.assistantTitle") }}</Title>
             <CloseTrigger as-child>
-              <Action label="Close assistant">✕</Action>
+              <Action :label="t('docs.assistantTitle')">✕</Action>
             </CloseTrigger>
           </div>
 
@@ -75,7 +82,7 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
               <div class="bs-docs-assistant-empty">
                 <p class="bs-docs-assistant-greeting">{{ t("docs.assistantGreeting") }}</p>
                 <Suggestion
-                  v-for="starter in STARTERS"
+                  v-for="starter in starters"
                   :key="starter"
                   :prompt="starter"
                   @select="sendMessage({ text: $event })"
@@ -95,7 +102,7 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
                 <template v-else>
                   <template v-for="(part, index) in message.parts" :key="index">
                     <Response v-if="part.type === 'text'" :content="part.text" :highlighter="highlightFence" />
-                    <Reasoning v-else-if="part.type === 'reasoning'" label="Thinking">
+                    <Reasoning v-else-if="part.type === 'reasoning'" :label="t('docs.assistantThinking')">
                       {{ part.text }}
                     </Reasoning>
                     <!-- A `tool-` prefix marks a tool invocation, but TS
@@ -120,7 +127,7 @@ const STARTERS = ["What does this site cover?", "Summarize this page.", "How do 
 
             <Loader v-if="status === 'submitted'" />
             <p v-if="error" class="bs-docs-assistant-error" role="alert">
-              The ink ran dry — the assistant could not be reached.
+              {{ t("docs.assistantError") }}
             </p>
           </Conversation>
 

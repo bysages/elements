@@ -24,6 +24,8 @@ export interface ReasoningProps extends HTMLAttributes<HTMLDivElement> {
 
 export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
   name: string;
+  /** Friendlier trigger words than the raw tool name. */
+  label?: string;
   status?: ToolStatus;
   input?: string;
   output?: string;

@@ -6,6 +6,8 @@ type DocsNuxtApp = ReturnType<typeof useNuxtApp> & {
   $i18n?: {
     locale: Ref<string>;
     t: (key: string) => string;
+    tm: (key: string) => unknown;
+    rt: (message: unknown) => string;
   };
   /* @nuxtjs/i18n hangs its routing helpers on the app, not on $i18n. */
   $localePath?: (path: string) => string;
@@ -43,6 +45,15 @@ export const useDocsI18n = () => {
           messages,
         ) as string;
       },
+      tm: (key: string): unknown => {
+        const segments = key.split(".");
+        return segments.reduce(
+          (acc: unknown, segment) => (acc as Record<string, unknown>)?.[segment],
+          messages,
+        );
+      },
+      /* Fallback messages are raw JSON, so a passthrough is exact. */
+      rt: (message: unknown): string => (typeof message === "string" ? message : ""),
     };
   }
 
@@ -70,6 +81,11 @@ export const useDocsI18n = () => {
       ((config.i18n as { locales?: LocaleOption[] } | undefined)?.locales ?? []) as LocaleOption[],
     ),
     t: nuxtApp.$i18n?.t || ((key: string) => key),
+    tm: nuxtApp.$i18n?.tm || ((key: string) => key.split(".").reduce((acc: unknown, segment) => (acc as Record<string, unknown>)?.[segment], {})),
+    /* `tm` hands back compiled message values — for an array message
+       each element is an AST/function, not the raw string. `rt`
+       resolves one back; feeding it raw strings is also fine. */
+    rt: nuxtApp.$i18n?.rt || ((message: unknown) => (typeof message === "string" ? message : "")),
     localePath: nuxtApp.$localePath || ((path: string) => path),
     switchLocalePath: nuxtApp.$switchLocalePath || (() => ""),
   };

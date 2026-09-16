@@ -97,6 +97,8 @@ export type ToolStatus = "pending" | "running" | "completed" | "error";
 
 export interface ToolProps extends JSX.HTMLAttributes<HTMLDivElement> {
   name: string;
+  /** Friendlier trigger words than the raw tool name. */
+  label?: JSX.Element;
   status?: ToolStatus;
   input?: string;
   output?: string;
@@ -106,7 +108,7 @@ export interface ToolProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * reached by and the state it reached in on the trigger, its input and
  * output folded inside. */
 export function Tool(props: ToolProps) {
-  const [own, rest] = splitProps(props, ["name", "status", "input", "output"]);
+  const [own, rest] = splitProps(props, ["name", "label", "status", "input", "output"]);
   return (
     <Collapsible.Root
       {...rest}
@@ -114,7 +116,7 @@ export function Tool(props: ToolProps) {
       {...(own.status ? { "data-status": own.status } : {})}
     >
       <Collapsible.Trigger>
-        <span>{own.name}</span>
+        <span>{own.label ?? own.name}</span>
         {own.status ? (
           <span data-scope="ai" data-part="tool-status">
             {own.status.charAt(0).toUpperCase() + own.status.slice(1)}
