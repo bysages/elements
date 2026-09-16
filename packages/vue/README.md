@@ -4,11 +4,11 @@
 ![npm downloads](https://img.shields.io/npm/dw/@bysages/vue)
 ![npm license](https://img.shields.io/npm/l/@bysages/vue)
 
-> By Sages Elements for Vue — 70+ accessible component families, headless by construction, dressed by the paper-and-ink style layer. The reference implementation of the library.
+> By Sages Elements for Vue — 90+ accessible component families, headless by construction, dressed by the paper-and-ink style layer. The reference implementation of the library.
 
 ## Features
 
-- 🧩 **70+ families** — actions, forms, overlays, navigation, data, layout, and an AI conversation family on ai-sdk formats
+- 🧩 **90+ families** — actions, forms, overlays, navigation, data, layout, and an AI conversation family on ai-sdk formats
 - 🏛️ **Headless inside** — interaction, state, ARIA, and positioning come from proven headless state machines; wrappers add API narrowing and style injection, no DOM of their own
 - 🎨 **Token-styled** — every visual value is a CSS custom property from `@bysages/core`; light/dark, accent pigments, contrast and density tiers are data, never hardcoded styles
 - 📦 **Container-driven** — components respond to `@container`, not the viewport; the same component composes in a sidebar, a card, or a page

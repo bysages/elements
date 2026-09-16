@@ -8,7 +8,7 @@
 
 ## Features
 
-- 🧩 **Every family, auto-imported** — all 70+ `@bysages/vue` families register as Nuxt components; use `<Button>`, `<Dialog.Root>`, `<DataTable>` with no import lines
+- 🧩 **Every family, auto-imported** — all 90+ `@bysages/vue` families register as Nuxt components; use `<Button>`, `<Dialog.Root>`, `<DataTable>` with no import lines
 - 🖥️ **Styled SSR out of the box** — the core style layer compiles into the build as a single stylesheet, so server-rendered pages carry styled HTML and the first paint never waits on runtime injection
 - 🌗 **Theme before mount** — an optional `theme` option applies mode, accent, scene, density, and contrast on the client before the app mounts
 - 🔤 **Prefixed names on demand** — a `prefix` option namespaces the registrations (`<BsButton>`) when they must not collide
