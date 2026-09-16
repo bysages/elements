@@ -62,11 +62,20 @@ function applyGlobals(globals: Globals): void {
 }
 
 const preview: Preview = {
+  // Every component gets a generated docs page: the stories' source,
+  // rendered per story with a copy affordance.
+  tags: ["autodocs"],
+
   parameters: {
     options: {
+      // Sections inside "Components" sort by this ladder; anything
+      // outside keeps its place below, alphabetical within a section.
+      // Storybook extracts this comparator's text and evals it against
+      // the stories index, so it must be defined inline and its body
+      // must stay plain JavaScript — the parameters ride untyped
+      // because annotations would break the eval.
+      // @ts-expect-error untyped params keep the extracted text eval-safe
       storySort: (a, b) => {
-        // Sections inside "Components" sort by this ladder; anything
-        // outside keeps its place below, alphabetical within a section.
         const ladder = [
           "Elements",
           "Actions",
@@ -78,12 +87,12 @@ const preview: Preview = {
           "Feedback",
           "Layout",
         ];
-        const section = (s) => {
-          const name = (s.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
-          const index = ladder.indexOf(name);
-          return index === -1 ? ladder.length : index;
-        };
-        const bySection = section(a) - section(b);
+        const nameA = (a.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
+        const nameB = (b.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
+        const idxA = ladder.indexOf(nameA);
+        const idxB = ladder.indexOf(nameB);
+        const bySection =
+          (idxA === -1 ? ladder.length : idxA) - (idxB === -1 ? ladder.length : idxB);
         if (bySection !== 0) return bySection;
         if (a.title !== b.title) return (a.title ?? "").localeCompare(b.title ?? "");
         return (a.name ?? "").localeCompare(b.name ?? "");
