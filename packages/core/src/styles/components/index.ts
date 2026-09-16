@@ -26,7 +26,7 @@ import { dialogCss } from "./dialog";
 import { drawerCss } from "./drawer";
 import { editableCss } from "./editable";
 import { emptyCss } from "./empty";
-import { fieldCss } from "./field";
+import { fieldControlCss, fieldCss } from "./field";
 import { fieldsetCss } from "./fieldset";
 import { fileUploadCss } from "./file-upload";
 import { floatingPanelCss } from "./floating-panel";
@@ -34,7 +34,6 @@ import { formCss } from "./form";
 import { highlightCss } from "./highlight";
 import { hoverCardCss } from "./hover-card";
 import { imageCropperCss } from "./image-cropper";
-import { inputCss } from "./input";
 import { jsonTreeViewCss } from "./json-tree-view";
 import { kbdCss } from "./kbd";
 import { linkCss } from "./link";
@@ -70,7 +69,6 @@ import { switchCss } from "./switch";
 import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
-import { textareaCss } from "./textarea";
 import { timelineCss } from "./timeline";
 import { timerCss } from "./timer";
 import { toastCss } from "./toast";
@@ -126,7 +124,12 @@ export const componentStyles: Record<string, string> = {
   highlight: highlightCss,
   "hover-card": hoverCardCss,
   "image-cropper": imageCropperCss,
-  input: inputCss,
+  // The bare Input and Textarea are the field's control recipe standing
+  // alone: same stylesheet, their own data-scope and root part — re-scope
+  // it, never copy.
+  input: fieldControlCss
+    .replaceAll('data-scope="field"', 'data-scope="input"')
+    .replaceAll('data-part="input"', 'data-part="root"'),
   "json-tree-view": jsonTreeViewCss,
   kbd: kbdCss,
   link: linkCss,
@@ -134,7 +137,6 @@ export const componentStyles: Record<string, string> = {
   marquee: marqueeCss,
   menu: menuCss,
   meter: meterCss,
-  typography: typographyCss,
   "navigation-menu": navigationMenuCss,
   "number-input": numberInputCss,
   "page-header": pageHeaderCss,
@@ -162,7 +164,9 @@ export const componentStyles: Record<string, string> = {
   switch: switchCss,
   tabs: tabsCss,
   "tags-input": tagsInputCss,
-  textarea: textareaCss,
+  textarea: fieldControlCss
+    .replaceAll('data-scope="field"', 'data-scope="textarea"')
+    .replaceAll('data-part="textarea"', 'data-part="root"'),
   timeline: timelineCss,
   timer: timerCss,
   table: tableCss,
@@ -175,6 +179,7 @@ export const componentStyles: Record<string, string> = {
   tour: tourCss,
   "tree-select": treeSelectCss,
   "tree-view": treeViewCss,
+  typography: typographyCss,
 };
 
 export {
@@ -213,7 +218,6 @@ export {
   highlightCss,
   hoverCardCss,
   imageCropperCss,
-  inputCss,
   jsonTreeViewCss,
   kbdCss,
   linkCss,
@@ -246,7 +250,6 @@ export {
   switchCss,
   tabsCss,
   tagsInputCss,
-  textareaCss,
   timelineCss,
   timerCss,
   toastCss,

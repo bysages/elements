@@ -216,4 +216,7 @@ export const FormField = defineComponent({
   },
 });
 
+// The fields inside are the field family's own recipe — the form
+// stylesheet only lays the grid and routes the errors.
 injectComponentStyle("form");
+injectComponentStyle("field");

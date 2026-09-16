@@ -69,15 +69,17 @@ export const sliderCss =
 }
 
 /* The thumb is a paper seal riding the ink: surface fill, primary hairline,
-   focus turns the ring primary — never a background change. Its size is a
-   part size, not a control height, so density and scene actually shrink it. */
+   focus turns the ring primary — never a background change. Its size rides
+   the control height at a fixed share (five eighths), not the density
+   scale — scenes that grow the targets grow the thumb with them, never
+   past the track it sits on. */
 [data-scope="slider"][data-part="thumb"] {
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: var(--bs-part-size-md);
-  block-size: var(--bs-part-size-md);
+  inline-size: calc(var(--bs-control-height-md) * 0.625);
+  block-size: calc(var(--bs-control-height-md) * 0.625);
   border: 1px solid var(--bs-color-primary);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);

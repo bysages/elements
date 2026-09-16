@@ -1,18 +1,9 @@
 import { labelCss } from "./shared";
 
-export const fieldCss =
-  labelCss("field") +
-  /* css */ `
-[data-scope="field"][data-part="root"] {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: var(--bs-space-2);
-  inline-size: 100%;
-}
-
-/* The control itself: inputs rely on border + surface + focus halo, never
-   a shadow — a field sits on the paper, it does not float above it. */
+/** The control recipe alone: border + surface + focus halo, the register
+ * every text entry rides. The bare Input and Textarea families re-scope
+ * this to their own anatomy instead of copying it. */
+export const fieldControlCss = /* css */ `
 [data-scope="field"][data-part="input"],
 [data-scope="field"][data-part="textarea"],
 [data-scope="field"][data-part="select"] {
@@ -34,6 +25,20 @@ export const fieldCss =
 [data-scope="field"][data-part="input"],
 [data-scope="field"][data-part="select"] {
   block-size: var(--bs-control-height-md);
+}
+
+/* Size tiers ride the control-height ladder, as anywhere. */
+[data-scope="field"][data-part="input"][data-size="sm"],
+[data-scope="field"][data-part="select"][data-size="sm"] {
+  block-size: var(--bs-control-height-sm);
+  padding-inline: var(--bs-padding-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="field"][data-part="input"][data-size="lg"],
+[data-scope="field"][data-part="select"][data-size="lg"] {
+  block-size: var(--bs-control-height-lg);
+  padding-inline: var(--bs-padding-lg);
 }
 
 [data-scope="field"][data-part="textarea"] {
@@ -76,7 +81,21 @@ export const fieldCss =
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
 }
+`;
 
+export const fieldCss =
+  labelCss("field") +
+  /* css */ `
+[data-scope="field"][data-part="root"] {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--bs-space-2);
+  inline-size: 100%;
+}
+` +
+  fieldControlCss +
+  /* css */ `
 /* The required mark whispers, never shouts: a quiet pigment point after
    the label. */
 [data-scope="field"][data-part="required-indicator"] {

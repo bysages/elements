@@ -38,13 +38,8 @@ export const Number = {
   args: {
     locale: undefined,
   },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        stack(
-          row("Plain", () => h(BSFormat.Number, { value: 1450.45, locale: args.locale } as any)),
-        ),
-    ),
+  render: (args: { locale?: string }) =>
+    stack(row("Plain", () => h(BSFormat.Number, { value: 1450.45, locale: args.locale }))),
 };
 
 /** Grand totals compressed to their headline. */

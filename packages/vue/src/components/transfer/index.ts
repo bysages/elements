@@ -100,14 +100,14 @@ export const Transfer = defineComponent({
       checked: Set<string>,
       items: TransferItem[],
     ) {
-      return h("div", { "data-part": "panel", "data-side": side }, [
-        h("div", { "data-part": "head" }, [
-          h("span", { "data-part": "title" }, title),
-          h("span", { "data-part": "count" }, `${items.length}`),
+      return h("div", { "data-scope": "transfer", "data-part": "panel", "data-side": side }, [
+        h("div", { "data-scope": "transfer", "data-part": "head" }, [
+          h("span", { "data-scope": "transfer", "data-part": "title" }, title),
+          h("span", { "data-scope": "transfer", "data-part": "count" }, `${items.length}`),
         ]),
         ...(props.searchable
           ? [
-              h("div", { "data-part": "search" }, [
+              h("div", { "data-scope": "transfer", "data-part": "search" }, [
                 h(Input, {
                   size: "sm",
                   modelValue: query.value,
@@ -120,9 +120,9 @@ export const Transfer = defineComponent({
           : []),
         h(
           "div",
-          { "data-part": "list" },
+          { "data-scope": "transfer", "data-part": "list" },
           items.length === 0
-            ? [h("p", { "data-part": "empty" }, "Nothing here")]
+            ? [h("p", { "data-scope": "transfer", "data-part": "empty" }, "Nothing here")]
             : items.map((item) => {
                 const locked = props.disabled || item.disabled === true;
                 return h(
@@ -164,7 +164,7 @@ export const Transfer = defineComponent({
 
       return h("div", { ...ctx.attrs, "data-scope": "transfer", "data-part": "root" }, [
         sourcePanel,
-        h("div", { "data-part": "operations" }, [
+        h("div", { "data-scope": "transfer", "data-part": "operations" }, [
           h(
             Button,
             {
@@ -196,4 +196,7 @@ export const Transfer = defineComponent({
   },
 });
 
+// The rows are the checkbox family's own seals — the transfer stylesheet
+// only dresses the ledgers around them.
 injectComponentStyle("transfer");
+injectComponentStyle("checkbox");
