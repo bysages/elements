@@ -1,6 +1,6 @@
 {
   "name": "@bysages/docs-theme",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Documentation theme for By Sages Elements — a Nuxt Content layer that turns a content folder into a paper-and-ink docs site",
   "keywords": [
     "design-system",

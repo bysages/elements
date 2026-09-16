@@ -1,4 +1,9 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "#imports": ["./playground/.nuxt/imports.d.ts"]
+    }
+  },
   "include": ["src"]
 }
