@@ -11,6 +11,7 @@ import { badgeCss } from "./badge";
 import { bannerCss } from "./banner";
 import { breadcrumbCss } from "./breadcrumb";
 import { buttonCss } from "./button";
+import { buttonGroupCss } from "./button-group";
 import { calendarCss } from "./calendar";
 import { cardCss } from "./card";
 import { carouselCss } from "./carousel";
@@ -30,12 +31,14 @@ import { datePickerCss } from "./date-picker";
 import { descriptionsCss } from "./descriptions";
 import { dialogCss } from "./dialog";
 import { drawerCss } from "./drawer";
+import { dynamicInputCss } from "./dynamic-input";
 import { editableCss } from "./editable";
 import { ellipsisCss } from "./ellipsis";
 import { emptyCss } from "./empty";
 import { fieldControlCss, fieldCss } from "./field";
 import { fieldsetCss } from "./fieldset";
 import { fileUploadCss } from "./file-upload";
+import { floatButtonCss } from "./float-button";
 import { floatingPanelCss } from "./floating-panel";
 import { formCss } from "./form";
 import { gridCss } from "./grid";
@@ -45,8 +48,10 @@ import { iconCss } from "./icon";
 import { imageCss } from "./image";
 import { imageCropperCss } from "./image-cropper";
 import { imageViewerCss } from "./image-viewer";
+import { inputGroupCss } from "./input-group";
 import { jsonTreeViewCss } from "./json-tree-view";
 import { kbdCss } from "./kbd";
+import { layoutCss } from "./layout";
 import { linkCss } from "./link";
 import { listCss } from "./list";
 import { listboxCss } from "./listbox";
@@ -77,6 +82,7 @@ import { signaturePadCss } from "./signature-pad";
 import { skeletonCss } from "./skeleton";
 import { sliderCss } from "./slider";
 import { spinnerCss } from "./spinner";
+import { splitButtonCss } from "./split-button";
 import { splitterCss } from "./splitter";
 import { stackCss } from "./stack";
 import { statCss } from "./stat";
@@ -216,6 +222,12 @@ export const componentStyles: Record<string, string> = {
   command: commandCss,
   mentions: mentionsCss,
   menubar: menubarCss,
+  "input-group": inputGroupCss,
+  "dynamic-input": dynamicInputCss,
+  "button-group": buttonGroupCss,
+  "split-button": splitButtonCss,
+  "float-button": floatButtonCss,
+  layout: layoutCss,
 };
 
 export {
