@@ -7,6 +7,15 @@ import { injectTokens } from "@bysages/core";
  * live theme, so mode, accent, and scene retune the ink with no redraw. */
 export const chartThemeCss = /* css */ `
 .ts-chart {
+  /* The categorical slots the engine fills when a mark names no paint —
+     without these the engine falls back to its own default palette.
+     They ride the pigments in reading order, then one mixed ink tone. */
+  --ts-chart-1: var(--bs-color-primary);
+  --ts-chart-2: var(--bs-color-danger);
+  --ts-chart-3: var(--bs-color-success);
+  --ts-chart-4: var(--bs-color-warning);
+  --ts-chart-5: var(--bs-color-info);
+  --ts-chart-6: color-mix(in oklab, var(--bs-color-primary) 60%, var(--bs-color-surface-0));
   --ts-chart-tooltip-background: var(--bs-color-surface-2);
   --ts-chart-tooltip-border: 1px solid var(--bs-color-border);
   --ts-chart-tooltip-border-radius: var(--bs-radius-lg);
