@@ -1,6 +1,6 @@
 {
   "name": "@bysages/solid",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -51,7 +51,9 @@
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/solid-table": "9.2.4",
-    "@tanstack/solid-virtual": "3.13.40"
+    "@tanstack/solid-virtual": "3.13.40",
+    "@zag-js/cascade-select": "1.43.3",
+    "@zag-js/solid": "1.43.3"
   },
   "devDependencies": {
     "ai": "7.0.99",

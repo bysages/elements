@@ -1,6 +1,6 @@
 {
   "name": "@bysages/monorepo",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "By Sages Elements monorepo — accessible UI components styled by design tokens, responsive via container queries, with a dynamic lighting engine, shipped as React, Vue, Solid, and Svelte components",
   "keywords": [

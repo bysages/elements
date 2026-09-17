@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Collapsible } from "../collapsible";
+import ChevronIcon from "../ai/ChevronIcon.svelte";
 import type { ReasoningProps } from "./props";
 
 let { label = "Thinking", children, ...rest }: ReasoningProps = $props();
@@ -11,15 +12,7 @@ register: bare ink for a trigger, the thought on one hairline. -->
   <Collapsible.Trigger>
     <span>{label}</span>
     <Collapsible.Indicator>
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path
-          d="M6 4l4 4-4 4"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <ChevronIcon />
     </Collapsible.Indicator>
   </Collapsible.Trigger>
   <Collapsible.Content>

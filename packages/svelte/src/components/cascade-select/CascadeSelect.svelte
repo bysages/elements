@@ -1,0 +1,152 @@
+<script lang="ts">
+import { useEnvironmentContext } from "@ark-ui/svelte/environment";
+import { useLocaleContext } from "@ark-ui/svelte/locale";
+import Portal from "@ark-ui/svelte/portal";
+import * as cascade from "@zag-js/cascade-select";
+import { normalizeProps, useMachine } from "@zag-js/svelte";
+
+import type { CascadeSelectNode, CascadeSelectProps } from "./props";
+
+let {
+  value = $bindable(),
+  data,
+  placeholder = "Select…",
+  highlightTrigger,
+  multiple = false,
+  disabled = false,
+  ...rest
+}: CascadeSelectProps = $props();
+
+const id = $props.id();
+const locale = useLocaleContext();
+const env = useEnvironmentContext();
+
+const collection = $derived(
+  cascade.collection<CascadeSelectNode>({
+    nodeToValue: (node) => node.value,
+    nodeToString: (node) => node.label,
+    nodeToChildren: (node) => node.children ?? [],
+    rootNode: { value: "ROOT", label: "", children: data },
+  }),
+);
+
+const service = useMachine(cascade.machine, () => ({
+  id,
+  collection: collection,
+  dir: locale().dir,
+  getRootNode: env().getRootNode,
+  disabled: disabled || undefined,
+  multiple: multiple || undefined,
+  ...(value !== undefined ? { value } : null),
+  ...(highlightTrigger != null ? { highlightTrigger } : null),
+  onValueChange(details) {
+    value = details.value;
+  },
+}));
+
+const api = $derived(cascade.connect(service, normalizeProps));
+
+/** The machine's `valueAsString` only updates through its select event,
+ * so an externally-set `value` would render the placeholder forever —
+ * resolve the labels from the data instead. */
+function labelsFor(path: string[]): string[] | null {
+  const out: string[] = [];
+  let nodes: CascadeSelectNode[] | undefined = data;
+  for (const segment of path) {
+    const node: CascadeSelectNode | undefined = nodes?.find((n) => n.value === segment);
+    if (!node) return null;
+    out.push(node.label);
+    nodes = node.children;
+  }
+  return out;
+}
+
+const display = $derived.by(() => {
+  const parts = (value ?? [])
+    .map((path) => labelsFor(path)?.join(" / "))
+    .filter((label): label is string => label != null);
+  return parts.length > 0 ? parts.join(", ") : null;
+});
+</script>
+
+{#snippet column(node: CascadeSelectNode, indexPath: number[], valuePath: string[])}
+  {@const nodeState = api.getItemState({ item: node, indexPath, value: valuePath })}
+  {@const children = collection.getNodeChildren(node)}
+  <ul {...api.getListProps({ item: node, indexPath, value: valuePath })}>
+    {#each children as item, index (collection.getNodeValue(item))}
+      {@const itemValue = collection.getNodeValue(item)}
+      {@const itemProps = { item, indexPath: [...indexPath, index], value: [...valuePath, itemValue] }}
+      {@const itemState = api.getItemState(itemProps)}
+      <li {...api.getItemProps(itemProps)}>
+        <span {...api.getItemTextProps(itemProps)}>{item.label}</span>
+        {#if itemState.hasChildren}
+          <span data-part="branch-indicator" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
+        {/if}
+        <span {...api.getItemIndicatorProps(itemProps)}>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m5 12.5 5 5L19 7" />
+          </svg>
+        </span>
+      </li>
+    {/each}
+  </ul>
+  {#if nodeState.highlightedChild != null && collection.isBranchNode(nodeState.highlightedChild)}
+    {@render column(
+      nodeState.highlightedChild,
+      [...indexPath, nodeState.highlightedIndex],
+      [...valuePath, collection.getNodeValue(nodeState.highlightedChild)],
+    )}
+  {/if}
+{/snippet}
+
+<!-- A corridor of linked columns: pick a branch and the next column
+dissolves open beside it, until a leaf click settles the whole path.
+`value` is the selected path (or paths, when `multiple`) — the joined
+labels ride the trigger. -->
+<div {...rest} {...api.getRootProps()}>
+  <div {...api.getControlProps()}>
+    <button {...api.getTriggerProps()} disabled={disabled || undefined}>
+      <span {...api.getValueTextProps()}>{display ?? placeholder}</span>
+      <span {...api.getIndicatorProps()}>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </span>
+    </button>
+  </div>
+  <Portal>
+    <div {...api.getPositionerProps()}>
+      <div {...api.getContentProps()}>
+        {@render column(collection.rootNode, [], [])}
+      </div>
+    </div>
+  </Portal>
+</div>

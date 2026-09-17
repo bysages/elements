@@ -1,6 +1,6 @@
 {
   "name": "@bysages/react",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "By Sages Elements components for React — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -51,7 +51,9 @@
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/react-table": "9.2.4",
-    "@tanstack/react-virtual": "3.14.12"
+    "@tanstack/react-virtual": "3.14.12",
+    "@zag-js/cascade-select": "1.43.3",
+    "@zag-js/react": "1.43.3"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.6.0",

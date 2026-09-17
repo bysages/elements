@@ -1,6 +1,6 @@
 {
   "name": "@bysages/tokens",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Design tokens for By Sages Elements — DTCG source compiled to CSS variables and JavaScript: surface ramps, elevation from light, density tiers, themes",
   "keywords": [
     "css",

@@ -7,8 +7,9 @@ let { content, ...rest }: ResponseProps = $props();
 const html = $derived(renderHtml(content));
 </script>
 
-<!-- Rendering goes through @tanstack/markdown, whose defaults leave raw
-HTML and executable links inert — streaming-safe by construction. -->
+<!-- Markdown set on the paper. Rendering goes through
+@tanstack/markdown, whose defaults leave raw HTML and executable links
+inert — streaming-safe by construction. -->
 <div {...rest} data-scope="ai" data-part="response">
   {@html html}
 </div>
