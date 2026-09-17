@@ -1,9 +1,11 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { Component, SetupContext, VNode } from "vue";
-import { defineComponent, h } from "vue";
+import type { Component, PropType, SetupContext, VNode } from "vue";
+import { computed, defineComponent, h, ref } from "vue";
 
 import { Button } from "../button";
 import { Field } from "../field";
+import { MentionsVessel, type MentionEntry } from "../mentions";
+import { useMentions } from "../mentions/use-mentions";
 
 const arrowUpGlyph = () =>
   h(
@@ -51,6 +53,14 @@ export const PromptInput = defineComponent({
     /** The machine is working — the seal becomes a stop seal and
      * Enter holds its breath. */
     busy: { type: Boolean, default: false },
+    /** Mention candidates for the field: pass the roster and the summon
+     * character (`@` unless told otherwise) and the vessel rides the
+     * textarea. While candidates are up, Enter inserts and the send
+     * waits. */
+    mentions: {
+      type: Object as PropType<{ items: MentionEntry[]; trigger?: string }>,
+      default: undefined,
+    },
   },
   emits: {
     "update:modelValue": (_value: string) => true,
@@ -58,6 +68,22 @@ export const PromptInput = defineComponent({
     stop: () => true,
   },
   setup(props, { emit, attrs, slots }: SetupContext) {
+    // The field part is a component; its root element rides `$el`.
+    const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
+    const el = (): HTMLTextAreaElement | null =>
+      (fieldRef.value?.$el as HTMLTextAreaElement | undefined) ?? null;
+
+    const mentions = useMentions(
+      () => ({ items: props.mentions?.items ?? [], trigger: props.mentions?.trigger }),
+      el,
+      {
+        getText: () => el()?.value ?? props.modelValue,
+        setText: (next) => emit("update:modelValue", next),
+      },
+    );
+    // The vessel only rides along when a roster was actually given.
+    const mentionsActive = computed(() => props.mentions != null);
+
     const submit = () => {
       const value = props.modelValue.trim();
       if (!value || props.disabled || props.busy) return;
@@ -122,13 +148,18 @@ export const PromptInput = defineComponent({
             row("prompt-leading", slots.leading?.()),
             h(Field.Root as Component, () =>
               h(Field.Textarea as Component, {
+                ref: fieldRef,
                 autoresize: true,
                 rows: 1,
                 modelValue: props.modelValue,
                 placeholder: props.placeholder,
                 disabled: props.disabled,
                 "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
+                onInput: () => mentions.onInput(),
                 onKeydown: (event: KeyboardEvent) => {
+                  // The candidates eat their keys first; only on a
+                  // quiet field does Enter become the send.
+                  if (mentions.onKeydown(event)) return;
                   if (event.key === "Enter" && !event.shiftKey) {
                     event.preventDefault();
                     submit();
@@ -136,6 +167,19 @@ export const PromptInput = defineComponent({
                 },
               }),
             ),
+            mentionsActive.value
+              ? h(MentionsVessel, {
+                  open: mentions.open.value,
+                  matches: mentions.matches.value,
+                  active: mentions.active.value,
+                  anchor: el(),
+                  onInsert: mentions.insert,
+                  "onUpdate:active": (index: number) => (mentions.active.value = index),
+                  "onUpdate:open": (open: boolean) => {
+                    if (!open) mentions.close();
+                  },
+                })
+              : null,
             // With a tool row beneath, the seal sinks into it — the
             // send belongs at the row's far end, with the tools.
             row(

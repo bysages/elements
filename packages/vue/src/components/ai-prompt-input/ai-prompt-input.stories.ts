@@ -286,3 +286,57 @@ export const Compose = {
         );
     }),
 };
+
+/** The composer mentions: pass a roster and `@` summons the candidates
+ * over the field; Enter inserts the chosen name while the vessel is up
+ * and only sends once it stands down. */
+export const Mentions = {
+  render: () =>
+    withState(() => {
+      const state = reactive({ prompt: "", sent: "" });
+      const team = [
+        { label: "Lin Hua", value: "lin" },
+        { label: "Mei Chen", value: "mei" },
+        { label: "Hong Wei", value: "hong" },
+      ];
+      return () =>
+        h(
+          "div",
+          {
+            style: {
+              display: "grid",
+              gap: "0.75rem",
+              inlineSize: "100%",
+              maxInlineSize: "46rem",
+            },
+          },
+          [
+            h(AiPromptInput, {
+              modelValue: state.prompt,
+              placeholder: "Ask the room — @who should weigh in…",
+              mentions: { items: team },
+              "onUpdate:modelValue": (value: string) => {
+                state.prompt = value;
+              },
+              onSubmit: (value: string) => {
+                state.sent = value;
+                state.prompt = "";
+              },
+            }),
+            h(
+              "p",
+              {
+                role: "status",
+                style: {
+                  fontSize: "var(--bs-font-size-sm)",
+                  color: "var(--bs-color-text-tertiary)",
+                },
+              },
+              state.sent
+                ? `Sent: ${state.sent}`
+                : "Type @ and a name; Enter sends only after the vessel closes.",
+            ),
+          ],
+        );
+    }),
+};
