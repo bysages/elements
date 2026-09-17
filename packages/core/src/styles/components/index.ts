@@ -1,9 +1,12 @@
 import { accordionCss } from "./accordion";
+import { affixCss } from "./affix";
 import { aiCss } from "./ai";
 import { alertCss } from "./alert";
 import { angleSliderCss } from "./angle-slider";
+import { aspectRatioCss } from "./aspect-ratio";
 import { avatarCss } from "./avatar";
 import { avatarGroupCss } from "./avatar-group";
+import { backTopCss } from "./back-top";
 import { badgeCss } from "./badge";
 import { bannerCss } from "./banner";
 import { breadcrumbCss } from "./breadcrumb";
@@ -19,27 +22,39 @@ import { clipboardCss } from "./clipboard";
 import { collapsibleCss } from "./collapsible";
 import { colorPickerCss } from "./color-picker";
 import { comboboxCss } from "./combobox";
+import { commandCss } from "./command";
+import { commentCss } from "./comment";
+import { containerCss } from "./container";
 import { dateInputCss } from "./date-input";
 import { datePickerCss } from "./date-picker";
 import { descriptionsCss } from "./descriptions";
 import { dialogCss } from "./dialog";
 import { drawerCss } from "./drawer";
 import { editableCss } from "./editable";
+import { ellipsisCss } from "./ellipsis";
 import { emptyCss } from "./empty";
 import { fieldControlCss, fieldCss } from "./field";
 import { fieldsetCss } from "./fieldset";
 import { fileUploadCss } from "./file-upload";
 import { floatingPanelCss } from "./floating-panel";
 import { formCss } from "./form";
+import { gridCss } from "./grid";
 import { highlightCss } from "./highlight";
 import { hoverCardCss } from "./hover-card";
+import { iconCss } from "./icon";
+import { imageCss } from "./image";
 import { imageCropperCss } from "./image-cropper";
+import { imageViewerCss } from "./image-viewer";
 import { jsonTreeViewCss } from "./json-tree-view";
 import { kbdCss } from "./kbd";
 import { linkCss } from "./link";
+import { listCss } from "./list";
 import { listboxCss } from "./listbox";
 import { marqueeCss } from "./marquee";
+import { masonryCss } from "./masonry";
+import { mentionsCss } from "./mentions";
 import { menuCss } from "./menu";
+import { menubarCss } from "./menubar";
 import { meterCss } from "./meter";
 import { navigationMenuCss } from "./navigation-menu";
 import { numberInputCss } from "./number-input";
@@ -50,6 +65,7 @@ import { pinInputCss } from "./pin-input";
 import { popconfirmCss } from "./popconfirm";
 import { popoverCss } from "./popover";
 import { progressCss } from "./progress";
+import { progressGroupCss } from "./progress-group";
 import { qrCodeCss } from "./qr-code";
 import { radioGroupCss } from "./radio-group";
 import { ratingGroupCss } from "./rating-group";
@@ -62,6 +78,7 @@ import { skeletonCss } from "./skeleton";
 import { sliderCss } from "./slider";
 import { spinnerCss } from "./spinner";
 import { splitterCss } from "./splitter";
+import { stackCss } from "./stack";
 import { statCss } from "./stat";
 import { stepsCss } from "./steps";
 import { swapCss } from "./swap";
@@ -81,6 +98,7 @@ import { transferCss } from "./transfer";
 import { treeSelectCss } from "./tree-select";
 import { treeViewCss } from "./tree-view";
 import { typographyCss } from "./typography";
+import { watermarkCss } from "./watermark";
 
 /** Component style registry — every component contributes its stylesheet
  * here, keyed by the name wrappers pass to `injectComponentStyle`. */
@@ -180,6 +198,24 @@ export const componentStyles: Record<string, string> = {
   "tree-select": treeSelectCss,
   "tree-view": treeViewCss,
   typography: typographyCss,
+  container: containerCss,
+  stack: stackCss,
+  grid: gridCss,
+  "aspect-ratio": aspectRatioCss,
+  masonry: masonryCss,
+  icon: iconCss,
+  ellipsis: ellipsisCss,
+  image: imageCss,
+  "image-viewer": imageViewerCss,
+  list: listCss,
+  comment: commentCss,
+  watermark: watermarkCss,
+  "progress-group": progressGroupCss,
+  "back-top": backTopCss,
+  affix: affixCss,
+  command: commandCss,
+  mentions: mentionsCss,
+  menubar: menubarCss,
 };
 
 export {

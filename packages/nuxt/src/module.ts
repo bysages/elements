@@ -1,79 +1,20 @@
 import { componentStyles, tokensCss, type ApplyThemeOptions } from "@bysages/core";
 import { addComponent, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 
-/** Every family @bysages/vue exports, with the name it is exported by. */
-const FAMILIES = [
-  "Accordion",
-  "Ai",
-  "Alert",
-  "AngleSlider",
-  "AvatarGroup",
-  "Avatar",
-  "Badge",
-  "Breadcrumb",
-  "Button",
-  "Card",
-  "Carousel",
-  "Checkbox",
-  "Chip",
-  "Clipboard",
-  "Collapsible",
-  "ColorPicker",
-  "Combobox",
-  "DateInput",
-  "DatePicker",
-  "Dialog",
-  "Drawer",
-  "Editable",
-  "Empty",
-  "Field",
-  "Fieldset",
-  "FileUpload",
-  "FloatingPanel",
-  "Format",
-  "Frame",
-  "Highlight",
-  "HoverCard",
-  "ImageCropper",
-  "JsonTreeView",
-  "Kbd",
-  "Listbox",
-  "Marquee",
-  "Menu",
-  "NavigationMenu",
-  "NumberInput",
-  "Pagination",
-  "PasswordInput",
-  "PinInput",
-  "Popover",
-  "Progress",
-  "QrCode",
-  "RadioGroup",
-  "RatingGroup",
-  "ScrollArea",
-  "SegmentGroup",
-  "Select",
-  "Separator",
-  "SignaturePad",
-  "Skeleton",
-  "Slider",
-  "Splitter",
-  "Steps",
-  "Swap",
-  "Switch",
-  "Tabs",
-  "TagsInput",
-  "DataTable",
-  "Timeline",
-  "Timer",
-  "Toast",
-  "Toc",
-  "ToggleGroup",
-  "Toggle",
-  "Tooltip",
-  "Tour",
-  "TreeView",
-];
+/** Whether a value exported by @bysages/vue is a component or a family
+ * namespace: a component itself, or an object holding components one
+ * level deep. Theme constants and plain data fail the check; types
+ * never reach the runtime. */
+function isComponentExport(value: unknown): boolean {
+  if (typeof value === "function") return true;
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  if ("render" in value || "setup" in value) return true;
+  return Object.values(value).some(
+    (member) =>
+      typeof member === "function" ||
+      (typeof member === "object" && member !== null && ("render" in member || "setup" in member)),
+  );
+}
 
 export interface BsElementsOptions {
   /** Prefix for the auto-imported components — "Bs" renders `<BsButton>`.
@@ -92,10 +33,17 @@ export default defineNuxtModule<BsElementsOptions>({
   defaults: {
     prefix: "",
   },
-  setup(options, nuxt) {
+  async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
 
-    for (const name of FAMILIES) {
+    // The registry is the library's own export surface, read live: a new
+    // family lands in @bysages/vue and every consuming app picks it up
+    // without this module changing. Family namespaces (Object.assign
+    // products) and plain components both pass the shape check; the
+    // PascalCase rule keeps composables and factories out.
+    const families = (await import("@bysages/vue")) as unknown as Record<string, unknown>;
+    for (const name of Object.keys(families)) {
+      if (!/^[A-Z]/.test(name) || !isComponentExport(families[name])) continue;
       addComponent({
         name: options.prefix + name,
         export: name,
