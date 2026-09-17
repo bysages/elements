@@ -554,15 +554,21 @@ const WithTreeViewStory = defineComponent({
       h(Toc.Item, { key: node.id, item: node, style: { paddingInlineStart: "1rem" } }, () =>
         h(Toc.Link, { href: `#${node.id}`, style: linkStyle }, () => node.name),
       );
-    const branchRow = (node: any) =>
-      h(TreeView.Branch, { key: node.id }, () => [
-        h(TreeView.BranchControl, () => [
-          h(TreeView.BranchTrigger, () => node.name),
-          h(TreeView.BranchIndicator, () => "▸"),
+    const branchRow = (node: any, indexPath: number[]) =>
+      h(TreeView.NodeProvider, { node, indexPath }, () => [
+        h(TreeView.Branch, () => [
+          h(TreeView.BranchControl, () => [
+            h(TreeView.BranchTrigger, () => node.name),
+            h(TreeView.BranchIndicator, () => "▸"),
+          ]),
+          h(TreeView.BranchContent, () =>
+            (node.children ?? []).map((child: any, index: number) =>
+              child.children?.length
+                ? branchRow(collection.findNode(child.id), [...indexPath, index])
+                : leafRow(child),
+            ),
+          ),
         ]),
-        h(TreeView.BranchContent, () =>
-          node.children.map((child: any) => (child.children ? branchRow(child) : leafRow(child))),
-        ),
       ]);
     return () =>
       h(Toc.Root, { items: flat, scrollEl: pg.scrollEl }, () => [
@@ -572,7 +578,10 @@ const WithTreeViewStory = defineComponent({
           h(
             TreeView.Root,
             { collection, defaultExpandedValue: TREE_SECTIONS.map((s) => s.id) } as any,
-            () => h(TreeView.Tree, () => TREE_SECTIONS.map((s) => branchRow(s))),
+            () =>
+              h(TreeView.Tree, () =>
+                TREE_SECTIONS.map((s, index) => branchRow(collection.findNode(s.id), [index])),
+              ),
           ),
         ]),
       ]);

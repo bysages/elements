@@ -115,9 +115,7 @@ export const Basic = {
     body: "A sheet of paper you can move: drag the header, pull the rim.",
   },
   render: (args: any) =>
-    withState(
-      () => () => panel({}, { trigger: args.triggerText, title: args.title, body: args.body }),
-    ),
+    withState(() => panel({}, { trigger: args.triggerText, title: args.title, body: args.body })),
 };
 
 /** The bar reads its own state: the paragraph names the panel open or
