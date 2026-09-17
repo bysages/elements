@@ -118,4 +118,47 @@ export const fieldCss =
 [data-scope="field"][data-part="root"][data-disabled] {
   color: var(--bs-color-text-disabled);
 }
+
+/* The floating-label variant, opted in per field with [data-float]. The
+   label starts riding the control at placeholder height and floats to
+   the control's top edge once the reader focuses or types. :has() reads
+   the real input element so the pairing survives whatever part marks the
+   machine writes; the empty-looking space placeholder keeps
+   :placeholder-shown honest for an untouched field. */
+[data-scope="field"][data-float][data-part="root"] {
+  position: relative;
+  /* Room above the control edge for the label once it is afloat. */
+  margin-block-start: var(--bs-space-4);
+}
+
+[data-scope="field"][data-float][data-part="root"] [data-part="label"] {
+  position: absolute;
+  inset-inline-start: var(--bs-padding-md);
+  inset-block-start: calc(var(--bs-control-height-md) / 2);
+  translate: 0 -50%;
+  color: var(--bs-color-text-tertiary);
+  pointer-events: none;
+  /* The control's own paper under the label cuts the hairline it rides,
+     the way a legend cuts a fieldset border. */
+  padding: 0 var(--bs-space-1);
+  background: var(--bs-color-surface-2);
+  transition:
+    inset-block-start var(--bs-duration-fast) var(--bs-ease-out),
+    color var(--bs-duration-fast) var(--bs-ease-out),
+    font-size var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="field"][data-float][data-part="root"]:has(input:focus) [data-part="label"],
+[data-scope="field"][data-float][data-part="root"]:has(input:not(:placeholder-shown)) [data-part="label"],
+[data-scope="field"][data-float][data-part="root"]:has(textarea:not(:placeholder-shown)) [data-part="label"] {
+  inset-block-start: 0;
+  font-size: var(--bs-font-size-xs);
+  color: var(--bs-color-text-secondary);
+}
+
+/* While the reader is in the field, the afloat label carries the same
+   pigment as the haloed hairline. */
+[data-scope="field"][data-float][data-part="root"]:has(input:focus) [data-part="label"] {
+  color: var(--bs-color-primary);
+}
 `;

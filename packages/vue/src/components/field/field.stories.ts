@@ -146,3 +146,23 @@ export const CustomControl = {
     return h("div", { style: column }, [h(Custom)]);
   },
 };
+
+/** The floating-label variant: `data-float` opts the field in and the
+ * label rides inside the control until the reader types. The space
+ * placeholder keeps :placeholder-shown honest, so the empty field holds
+ * its label down and the prefilled one keeps it afloat. */
+export const FloatingLabel = {
+  render: () =>
+    h("div", { style: column }, [
+      h(Field.Root, { "data-float": "" } as any, () => [
+        h(Field.Label, () => "Cardholder name"),
+        h(Field.Input as any, { placeholder: " " }),
+        h(Field.HelperText, () => "The label rides the field until the reader types."),
+      ]),
+      h(Field.Root, { "data-float": "" } as any, () => [
+        h(Field.Label, () => "Serial number"),
+        h(Field.Input as any, { placeholder: " ", defaultValue: "BS-0001" }),
+        h(Field.HelperText, () => "A filled field keeps its label afloat."),
+      ]),
+    ]),
+};
