@@ -3,6 +3,7 @@ export const emptyCss = /* css */ `
    ink, and room for the next action. Centered, generous with whitespace. */
 [data-scope="empty"][data-part="root"] {
   /* Full width is the component's own property, not the stage's stretch. */
+  box-sizing: border-box;
   inline-size: 100%;
   display: flex;
   flex-direction: column;

@@ -11,6 +11,7 @@ export const collapsibleCss = /* css */ `
 /* A collapsible stands alone, so its trigger is a full control: paper
    surface, one hairline, resting on xs. */
 [data-scope="collapsible"][data-part="trigger"] {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;

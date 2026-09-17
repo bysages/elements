@@ -21,6 +21,7 @@ export const accordionCss = /* css */ `
 /* Triggers are quiet rows on the paper — no chrome of their own; the
    hairline rule carries the structure instead. */
 [data-scope="accordion"][data-part="item-trigger"] {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
