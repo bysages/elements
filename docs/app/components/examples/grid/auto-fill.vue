@@ -1,0 +1,23 @@
+<script setup lang="ts">
+import { Grid } from "@bysages/vue";
+</script>
+
+<template>
+  <!-- With minChildWidth the container counts the tracks itself: grow
+       and shrink the canvas and the lattice re-counts. -->
+  <Grid min-child-width="10rem" style="inline-size: 100%">
+    <div v-for="n in 6" :key="n" class="tile">{{ n }}</div>
+  </Grid>
+</template>
+
+<style scoped>
+.tile {
+  display: grid;
+  place-items: center;
+  padding: var(--bs-space-3);
+  background: var(--bs-color-surface-3);
+  border: 1px solid var(--bs-color-border);
+  font-size: var(--bs-font-size-sm);
+  color: var(--bs-color-text-secondary);
+}
+</style>
