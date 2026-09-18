@@ -152,7 +152,16 @@ export const componentSections: Array<{
     slug: "feedback",
     zh: "反馈",
     en: "Feedback",
-    families: ["alert", "banner", "meter", "progress-group", "progress", "skeleton", "spinner"],
+    families: [
+      "alert",
+      "banner",
+      "meter",
+      "progress-group",
+      "progress",
+      "skeleton",
+      "spinner",
+      "watermark",
+    ],
   },
   {
     slug: "layout",
@@ -175,12 +184,6 @@ export const componentSections: Array<{
       "stack",
       "typography",
     ],
-  },
-  {
-    slug: "utilities",
-    zh: "工具",
-    en: "Utilities",
-    families: ["watermark"],
   },
   {
     slug: "ai",
