@@ -58,6 +58,7 @@
   "descriptions/basic": "components-data-descriptions--basic",
   "dialog/basic": "components-overlay-dialog--basic",
   "drawer/basic": "components-overlay-drawer--basic",
+  "drawer/direction": "components-overlay-drawer--basic",
   "dynamic-input/basic": "components-forms-dynamicinput--basic",
   "dynamic-input/min-max": "components-forms-dynamicinput--min-max",
   "editable/basic": "components-forms-editable--basic",

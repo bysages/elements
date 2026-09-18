@@ -5,7 +5,7 @@ import { defineComponent, h } from "vue";
 import { Marquee } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Marquee" };
+const meta: Meta = { title: "Components/Media/Marquee" };
 export default meta;
 
 const entries = ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indigo"];

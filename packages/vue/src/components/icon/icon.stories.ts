@@ -5,7 +5,7 @@ import { Icon } from ".";
 import { withState } from "../with-state.js";
 
 const meta: Meta = {
-  title: "Components/Layout/Icon",
+  title: "Components/Elements/Icon",
   component: Icon,
   argTypes: {
     size: { control: "radio", options: ["inherit", "sm", "md", "lg"] },

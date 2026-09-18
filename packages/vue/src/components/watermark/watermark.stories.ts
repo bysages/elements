@@ -4,7 +4,7 @@ import { h } from "vue";
 import { Watermark } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Watermark" };
+const meta: Meta = { title: "Components/Utilities/Watermark" };
 export default meta;
 type Story = StoryObj<typeof Watermark>;
 

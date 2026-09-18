@@ -246,6 +246,25 @@ export const SwipeDirection = {
     ]),
 };
 
+/** One anatomy, four edges: the sheet rises from whichever edge
+ * `swipeDirection` names. */
+export const Directions = {
+  render: () => {
+    const edges = { down: "bottom", up: "top", start: "left", end: "right" };
+    return h("div", { style: "display: flex; flex-wrap: wrap; gap: var(--bs-space-3)" }, () =>
+      (Object.keys(edges) as Array<keyof typeof edges>).map((direction) =>
+        h(Drawer.Root, { swipeDirection: direction } as any, () => [
+          trigger(`From the ${edges[direction]}`),
+          ...sheet(
+            `The ${edges[direction]} sheet`,
+            h(Drawer.Description, () => "The same anatomy serves every edge."),
+          ),
+        ]),
+      ),
+    );
+  },
+};
+
 /** Without a grabber the sheet becomes a plain panel — content may be
  * scrolled instead of dragged. */
 export const NonDraggable = {

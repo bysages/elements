@@ -5,7 +5,7 @@ import { ButtonGroup } from ".";
 import { Button } from "../button";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Actions/Button Group" };
+const meta: Meta = { title: "Components/Elements/Button Group" };
 export default meta;
 
 function chevronDown() {

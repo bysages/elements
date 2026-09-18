@@ -4,7 +4,7 @@ import { h } from "vue";
 import { ProgressGroup } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Data/Progress Group" };
+const meta: Meta = { title: "Components/Feedback/Progress Group" };
 export default meta;
 type Story = StoryObj<typeof ProgressGroup>;
 

@@ -125,6 +125,31 @@ export const drawerCss =
   background: var(--bs-color-text-tertiary);
 }
 
+/* A side sheet's handle turns on its side and rides the leading edge:
+   the hand drags along the same axis it dismisses, so the bar reads as
+   a rail, not a lid. */
+[data-scope="drawer"][data-part="content"][data-swipe-direction="left"] [data-scope="drawer"][data-part="grabber"],
+[data-scope="drawer"][data-part="content"][data-swipe-direction="right"] [data-scope="drawer"][data-part="grabber"] {
+  position: absolute;
+  inset-block: 0;
+  inline-size: auto;
+  padding-inline: var(--bs-space-2);
+}
+
+[data-scope="drawer"][data-part="content"][data-swipe-direction="left"] [data-scope="drawer"][data-part="grabber"] {
+  inset-inline-start: 0;
+}
+
+[data-scope="drawer"][data-part="content"][data-swipe-direction="right"] [data-scope="drawer"][data-part="grabber"] {
+  inset-inline-end: 0;
+}
+
+[data-scope="drawer"][data-part="content"][data-swipe-direction="left"] [data-scope="drawer"][data-part="grabber-indicator"],
+[data-scope="drawer"][data-part="content"][data-swipe-direction="right"] [data-scope="drawer"][data-part="grabber-indicator"] {
+  inline-size: var(--bs-space-1);
+  block-size: var(--bs-space-8);
+}
+
 /* The trigger is a seal-cut control: paper on a hairline, deepening on
    hover, the shadow letting go under the press. */
 [data-scope="drawer"][data-part="trigger"] {
