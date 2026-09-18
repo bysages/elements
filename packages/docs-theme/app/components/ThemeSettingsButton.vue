@@ -16,10 +16,15 @@ const theme = reactive(getTheme());
 
 const scenes: Array<{ value: ThemeScene; label: string }> = [
   { value: "auto", label: "Auto — paper, top light" },
-  { value: "civic", label: "Civic — zhusha, high contrast" },
-  { value: "enterprise", label: "Enterprise — qinghua" },
-  { value: "studio", label: "Studio — celadon" },
-  { value: "tech", label: "Tech — ink" },
+  { value: "civic", label: "Civic 典章 — zhusha, high contrast" },
+  { value: "enterprise", label: "Enterprise 信笺 — qinghua" },
+  { value: "studio", label: "Studio 雅集 — celadon" },
+  { value: "tech", label: "Tech 司南 — ink" },
+  { value: "cupertino", label: "Cupertino 圆融 — ink" },
+  { value: "expressive", label: "Expressive 飞白 — zhusha" },
+  { value: "fluent", label: "Fluent 流水 — qinghua" },
+  { value: "material", label: "Material 格物 — celadon" },
+  { value: "sketch", label: "Sketch 写意 — zhusha" },
 ];
 
 const accents: Array<{ value: ThemeAccent; label: string }> = [

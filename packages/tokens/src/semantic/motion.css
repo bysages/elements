@@ -7,8 +7,13 @@
    Tokens drive all transitions; the reduced-motion block retunes them instead
    of removing states, so opacity still communicates elevation changes. */
 
-:root,
-:host {
+/* Defaults sit at zero specificity (:where): the motion sheet can appear
+   twice in the compiled bundle — once before and once after scene.css —
+   and a plain :root would tie [data-scene] on specificity and, in that
+   second copy, outrank it by file order, silencing every scene that
+   retunes the curves below. */
+:where(:root),
+:where(:host) {
   /* Durations ride --bs-motion-scale so a scene preset can tune the pace
      (a snappier instrument, an unhurried civic register) without touching
      the reduced-motion floor below, which declares 1ms directly. */
@@ -25,6 +30,21 @@
   /* Stagger step for lists and menus — each follower comes up 24ms after
      the one before it, like puppets lifted in sequence. */
   --bs-stagger-step: 24ms;
+
+  /* The press wash (ink-ripple) reads its pigment, reach, curve, and pace
+     from these, so a scene preset can retune the feedback — a smaller,
+     crisper wave in the flat content color for material, or silence for
+     registers that press without a wash — without touching the keyframes
+     in the core. The pigment is an opaque color and --bs-ripple-opacity
+     is the whole concentration — the two never double-deduct. */
+  --bs-ripple-pigment: var(--bs-color-primary);
+  --bs-ripple-opacity: 0.27;
+  --bs-ripple-core: 0%;
+  --bs-ripple-fade: 80%;
+  --bs-ripple-duration: calc(650ms * var(--bs-motion-scale, 1));
+  --bs-ripple-release: calc(320ms * var(--bs-motion-scale, 1));
+  --bs-ripple-ease: var(--bs-ease-out);
+  --bs-ripple-spread: 1;
 }
 
 /* Surfaces dissolve in like ink settling into paper: a fade, a soft focus

@@ -68,7 +68,7 @@ export const stepsCss = /* css */ `
   place-items: center;
   inline-size: var(--bs-control-height-sm);
   block-size: var(--bs-control-height-sm);
-  border-radius: calc(var(--bs-radius-lg) * 100);
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
   box-shadow: inset 0 0 0 1px var(--bs-color-border);
   color: var(--bs-color-text-secondary);

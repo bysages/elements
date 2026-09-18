@@ -377,7 +377,7 @@ Theme is token data, never a component fork:
 - `[data-accent]` — ink _(default)_ / qinghua / celadon / zhusha
 - `[data-contrast]` — normal / high
 - `[data-density]` — compact / default / comfortable / spacious
-- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech
+- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech / cupertino / expressive / fluent / material
 
 Future brand themes change color, surface, lighting, typography, and density —
 never interaction. Dark mode is lacquer night: warm blacks (never `#000`),
@@ -385,25 +385,41 @@ paper-white text, the same hue relationships lifted to lighter steps, and
 separation carried by the surface ladder plus a faint warm hairline of light.
 
 **Scene presets.** A `[data-scene]` attribute retunes the temperament of the
-whole interface for its audience — shape, density, pace, where the key light
-stands, and how far it reaches, with a paired pigment and contrast tier as
-the scene's voice. Scenes are audiences, not decorations: civic serves
-elders, tech serves modern efficiency:
+whole interface — shape, density, pace and its curves, where the key light
+stands and how far it reaches, and how the press wash spreads — with a
+paired pigment and contrast tier as the scene's voice. Three of the style
+scenes also retint the paper itself toward their borrowed stock: cupertino
+the cool neutral handheld white, material the M3 violet-tinged neutral,
+fluent the calm neutral gray, sketch the warm cream of a used sketchbook —
+each carrying a light and a dark face. Two families ride
+the same levers: audience scenes serve a desk, and style scenes borrow the
+temperament of the major design languages — named for the open specs and
+places, never the companies. They are lever homages, not clones (no
+frosted materials, no imported fonts — a scene's voice goes only to the
+platform's own stack):
 
-| Scene        | 官名 | For                                 | Paired accent | Contrast | Moves                                                                                                 |
-| ------------ | ---- | ----------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------- |
-| `civic`      | 典章 | elders and civic desks              | zhusha        | high     | true square-cut corners (0–8px), spacious targets (48px controls), pace ×1.25, flat light ×0.7        |
-| `enterprise` | 信笺 | quiet commercial long sessions      | qinghua       | normal   | default geometry, calm light ×0.85                                                                    |
-| `studio`     | 雅集 | design and editorial, literati 留白 | celadon       | normal   | controls keep the 6px seal edge, rounder vessels (20/28px), comfortable ×1.25, upper-left light ×1.25 |
-| `tech`       | 司南 | modern precision and efficiency     | ink _(none)_  | normal   | near-square (2/4/8px), compact (24px controls), pace ×0.85, flat light ×0.5                           |
+| Scene        | 官名 | For                                 | Paired accent | Contrast | Moves                                                                                                                                                                                                                                                       |
+| ------------ | ---- | ----------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `civic`      | 典章 | elders and civic desks              | zhusha        | high     | true square-cut corners (0–8px), spacious targets (48px controls), pace ×1.25, flat light ×0.7                                                                                                                                                              |
+| `enterprise` | 信笺 | quiet commercial long sessions      | qinghua       | normal   | default geometry, calm light ×0.85                                                                                                                                                                                                                          |
+| `studio`     | 雅集 | design and editorial, literati 留白 | celadon       | normal   | controls keep the 6px seal edge, rounder vessels (20/28px), comfortable ×1.25, upper-left light ×1.25                                                                                                                                                       |
+| `tech`       | 司南 | modern precision and efficiency     | ink _(none)_  | normal   | near-square (2/4/8px), compact (24px controls), pace ×0.85, flat light ×0.5                                                                                                                                                                                 |
+| `cupertino`  | 圆融 | the soft airy handheld register     | ink _(none)_  | normal   | the capsule as the action signal (controls round full, vessels 18/36px), the 44px touch ladder (36–50px controls), sheet-spring glides ×1.1, frontal diffuse light ×0.8, no press wash, cool neutral paper, system voice (sans headlines, untracked labels) |
+| `expressive` | 飞白 | playful, motion-forward products    | zhusha        | normal   | generous rounding (6–24px), pace ×0.8 on spring curves, warm key light from above                                                                                                                                                                           |
+| `fluent`     | 流水 | measured productivity suites        | qinghua       | normal   | the corner ladder 2/4/8/12 (shapes under 32px round to 2), measured rows on the 24–40px control ladder, decelerate and standard curves ×0.85, soft top light ×0.7, no ripple, calm neutral gray paper                                                       |
+| `material`   | 格物 | the elevation-led layered register  | celadon       | normal   | the M3 shape ladder token for token (4/8/12/16/28px, pill presses), the 32/40/48 container ladder, emphasized curves ×0.9, key light directly overhead ×1.5, a solid wave that holds then leaves, the violet-tinged neutral paper                           |
+| `sketch`     | 写意 | hand-drawn playfulness              | zhusha        | normal   | no frame straight — uneven four-corner wobble radii (5–48px), hard spring bounce ×0.9, loosened whitespace, off-axis sticker light, sketchbook-cream paper                                                                                                  |
 
 The pairings are applied by the theme engine (`SCENE_DEFAULT_ACCENT`,
 `SCENE_DEFAULT_CONTRAST`) as plain data attributes, so accent and contrast
 rules — including their dark variants — carry them unchanged. Explicit
 attributes always outrank the scene: a `data-accent`, `data-contrast`, or
-`data-density` set alongside `data-scene` wins. Controls stay square-cut and
-vessels round in every scene — 方寸为章，器物为圆 holds per scene, only the
-measures change.
+`data-density` set alongside `data-scene` wins. In the audience scenes,
+controls stay square-cut and vessels round — 方寸为章，器物为圆 holds, only
+the measures change. The style scenes may bend it where the borrowed
+register demands — material's pill press is its fingerprint, and
+cupertino speaks in the system voice: headlines stand down from the
+serif, labels lose their brush tracking.
 
 ## Tokens
 

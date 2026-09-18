@@ -77,7 +77,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="swatch"] {
   position: absolute;
   inset: var(--bs-space-1);
-  border-radius: calc(var(--bs-radius-sm) - 2px);
+  border-radius: var(--bs-radius-xs);
   box-shadow: inset 0 0 0 1px var(--bs-color-border);
 }
 
@@ -87,7 +87,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="transparency-grid"] {
   position: absolute;
   inset: var(--bs-space-1);
-  border-radius: calc(var(--bs-radius-sm) - 2px);
+  border-radius: var(--bs-radius-xs);
 }
 
 /* The geometry vars live on the content: the popup teleports to body, out
@@ -122,7 +122,7 @@ export const colorPickerCss =
   position: absolute;
   inline-size: var(--bs-color-picker-thumb);
   block-size: var(--bs-color-picker-thumb);
-  border-radius: 9999px;
+  border-radius: var(--bs-radius-full);
   outline: none;
   transform: translate(-50%, -50%);
   box-shadow:
@@ -154,7 +154,7 @@ export const colorPickerCss =
   position: absolute;
   inline-size: var(--bs-color-picker-thumb);
   block-size: var(--bs-color-picker-thumb);
-  border-radius: 9999px;
+  border-radius: var(--bs-radius-full);
   outline: none;
   transform: translate(-50%, -50%);
   box-shadow:

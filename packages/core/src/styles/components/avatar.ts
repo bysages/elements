@@ -11,7 +11,7 @@ export const avatarCss = /* css */ `
   justify-content: center;
   inline-size: var(--bs-avatar-size);
   block-size: var(--bs-avatar-size);
-  border-radius: calc(var(--bs-radius-lg) * 100);
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-inset);
   color: var(--bs-color-text-secondary);
   font-size: calc(var(--bs-font-size-sm) * 1.125);

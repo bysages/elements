@@ -134,7 +134,7 @@ export const carouselCss = /* css */ `
   block-size: calc(var(--bs-space-2) + 2px);
   padding: 0;
   border: none;
-  border-radius: calc(var(--bs-radius-lg) * 100);
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-border-strong);
   cursor: pointer;
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);

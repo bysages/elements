@@ -3,6 +3,7 @@ import {
   SCENE_DEFAULT_CONTRAST,
   attachDynamicLight,
   attachInkRipple,
+  attachSketchWobble,
 } from "@bysages/core";
 import type { Preview } from "@storybook/vue3-vite";
 import "@bysages/tokens/css";
@@ -117,6 +118,11 @@ const preview: Preview = {
           { value: "enterprise", title: "Enterprise 信笺 — console" },
           { value: "studio", title: "Studio 雅集 — design & editorial" },
           { value: "tech", title: "Tech 司南 — precision product" },
+          { value: "cupertino", title: "Cupertino 圆融 — soft & airy" },
+          { value: "expressive", title: "Expressive 飞白 — spring & vivid" },
+          { value: "fluent", title: "Fluent 流水 — crisp depth" },
+          { value: "material", title: "Material 格物 — layered elevation" },
+          { value: "sketch", title: "Sketch 写意 — hand-drawn bounce" },
         ],
       },
     },
@@ -176,6 +182,7 @@ const preview: Preview = {
       applyGlobals(context.globals as Globals);
       attachInkRipple();
       attachDynamicLight();
+      attachSketchWobble();
       return Story();
     },
   ],

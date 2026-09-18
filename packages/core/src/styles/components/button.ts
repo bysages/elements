@@ -29,7 +29,7 @@ export const buttonCss = /* css */ `
      systems use 15-16px at this height, 24px at large). */
   padding: 0 var(--bs-padding-lg);
   border: 1px solid var(--_edge);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--_fill);
   color: var(--_ink);
   font: inherit;
@@ -109,8 +109,9 @@ export const buttonCss = /* css */ `
   --_fill-hover: var(--bs-color-primary-fill-hover);
   --_ink: var(--bs-color-primary-text);
   /* On a filled body the wash must read against the fill, not sink into
-     it — the ink that blooms on a fill is the fill's own ink. */
-  --_ripple-pigment: color-mix(in oklab, var(--_ink) 30%, transparent);
+     it — the ink that blooms on a fill is the fill's own ink (opaque; the
+     wash's concentration lives in --bs-ripple-opacity alone). */
+  --bs-ripple-pigment: var(--_ink);
   box-shadow: none;
 }
 
@@ -210,7 +211,7 @@ export const buttonCss = /* css */ `
   /* One step wider than the shell register, like the body above. */
   padding: 0 var(--bs-padding-lg);
   border: 1px solid var(--_edge);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--_fill);
   color: var(--_ink);
   font: inherit;

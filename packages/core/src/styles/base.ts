@@ -43,38 +43,60 @@ export const inkRippleCss = /* css */ `
   border-radius: 100%;
   background: radial-gradient(
     circle closest-side,
-    var(--_ripple-pigment, color-mix(in oklab, var(--bs-color-primary) 30%, transparent)),
-    transparent 80%
+    var(--bs-ripple-pigment) var(--bs-ripple-core, 0%),
+    transparent var(--bs-ripple-fade, 80%)
   );
   scale: 0;
   opacity: 0;
   pointer-events: none;
 }
 
-[data-motion~="ink-ripple"][data-ripple="run"]::after {
-  animation: bs-ink-ripple calc(650ms * var(--bs-motion-scale, 1)) var(--bs-ease-out);
+[data-motion~="ink-ripple"][data-ripple="press"]::after {
+  animation: bs-ripple-press var(--bs-ripple-duration, calc(650ms * var(--bs-motion-scale, 1)))
+    var(--bs-ripple-ease, var(--bs-ease-out)) forwards;
 }
 
-/* Ink into water: the wash sweeps across the whole surface at full
-   strength first, and only once it has covered the body does it start
-   dissolving — never fading while it still has ground to cover. */
-@keyframes bs-ink-ripple {
-  0% {
-    scale: 0.15;
-    opacity: 0.9;
+/* On release the press phase keeps running to full cover — re-declaring
+   the same-name animation carries it over instead of restarting — while
+   the dissolve fades on top of it. */
+[data-motion~="ink-ripple"][data-ripple="release"]::after {
+  animation: bs-ripple-press var(--bs-ripple-duration, calc(650ms * var(--bs-motion-scale, 1)))
+      var(--bs-ripple-ease, var(--bs-ease-out)) forwards,
+    bs-ripple-fade var(--bs-ripple-release, calc(320ms * var(--bs-motion-scale, 1))) ease-out
+      forwards;
+}
+
+/* Ink wells up from the fingertip: the wash starts small at the press
+   point and grows while drifting toward the element's center (--bs-ripple-dx/dy,
+   set by the press watcher), staying at full strength while the pointer
+   holds — the paper is wet until the hand lifts. Peak opacity rides
+   --bs-ripple-opacity so a scene can quiet the wash or silence it
+   entirely; --bs-ripple-spread caps how far it reaches. */
+@keyframes bs-ripple-press {
+  from {
+    translate: -50% -50%;
+    scale: 0.2;
+    opacity: var(--bs-ripple-opacity, 0.9);
   }
-  45% {
-    scale: 1;
-    opacity: 0.9;
+  to {
+    translate: calc(-50% + var(--bs-ripple-dx, 0px)) calc(-50% + var(--bs-ripple-dy, 0px));
+    scale: var(--bs-ripple-spread, 1);
+    opacity: var(--bs-ripple-opacity, 0.9);
   }
-  100% {
-    scale: 1;
+}
+
+@keyframes bs-ripple-fade {
+  from {
+    opacity: var(--bs-ripple-opacity, 0.9);
+  }
+  to {
     opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-motion~="ink-ripple"][data-ripple="run"]::after {
+  [data-motion~="ink-ripple"][data-ripple="press"]::after,
+  [data-motion~="ink-ripple"][data-ripple="release"]::after {
     animation-duration: 1ms;
   }
 }

@@ -9,4 +9,5 @@
 export * from "./theme";
 export * from "./lighting";
 export * from "./ink-ripple";
+export * from "./sketch-wobble";
 export * from "./styles";

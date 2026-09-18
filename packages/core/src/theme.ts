@@ -10,7 +10,17 @@
 export type ThemeMode = "light" | "dark" | "system";
 export type ThemeContrast = "auto" | "normal" | "high";
 export type ThemeDensity = "compact" | "default" | "comfortable" | "spacious";
-export type ThemeScene = "auto" | "civic" | "enterprise" | "studio" | "tech";
+export type ThemeScene =
+  | "auto"
+  | "civic"
+  | "enterprise"
+  | "studio"
+  | "tech"
+  | "cupertino"
+  | "expressive"
+  | "fluent"
+  | "material"
+  | "sketch";
 export type ThemeAccent = "auto" | "ink" | "qinghua" | "celadon" | "zhusha";
 
 export interface Theme {
@@ -29,6 +39,11 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   enterprise: "qinghua",
   studio: "celadon",
   tech: "ink",
+  cupertino: "ink",
+  expressive: "zhusha",
+  fluent: "qinghua",
+  material: "celadon",
+  sketch: "zhusha",
 };
 
 /** Each scene also pairs with a contrast tier — civic serves elders, so it
@@ -39,6 +54,11 @@ export const SCENE_DEFAULT_CONTRAST: Record<Exclude<ThemeScene, "auto">, "normal
   enterprise: "normal",
   studio: "normal",
   tech: "normal",
+  cupertino: "normal",
+  expressive: "normal",
+  fluent: "normal",
+  material: "normal",
+  sketch: "normal",
 };
 
 export interface ApplyThemeOptions extends Partial<Theme> {

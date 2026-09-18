@@ -1,16 +1,25 @@
 /* Scene presets — one attribute that retunes the temperament of the whole
-   interface for its audience: civic serves elders and civic desks (square
-   seal-cut geometry, generous targets, loud contrast, an unhurried pace),
-   tech serves modern efficiency products (sharp, dense, quick), enterprise
-   is the quiet commercial baseline, studio the literati gathering for
-   design and editorial work.
+   interface. Two families share the same five levers: the audience scenes
+   serve a desk (civic for elders and civic desks, tech for modern
+   efficiency products, enterprise the quiet commercial baseline, studio
+   the literati gathering for design and editorial work), and the style
+   scenes borrow the temperament of the major design languages — named for
+   the open specs and the places their platforms are built, never the
+   companies: cupertino for the soft airy handheld register, expressive
+   for motion-forward spring, fluent for measured productivity depth,
+   material for the elevation-led android-era look.
 
    A scene moves only what the paper allows: shape (radius), density, motion
-   pace, where the key light stands, and how far it reaches — never
-   interaction, never the semantic pigments. Each scene pairs with a default
-   accent and (for civic) the high-contrast tier; those pairings are applied
-   by the theme engine as plain data attributes, so the accent and contrast
-   rules — including their dark variants — carry them unchanged.
+   pace and its curves, where the key light stands and how far it reaches,
+   and how the press wash spreads — never interaction, never the semantic
+   pigments. A style scene may also retint the paper itself (the surface
+   ladder, light and dark) where the borrowed register demands its own
+   stock, and let the type follow the register's voice — the one font move
+   allowed is the platform's own stack, which is what the register would
+   speak in anyway. Each scene pairs with a default accent and (for civic) the
+   high-contrast tier; those pairings are applied by the theme engine as
+   plain data attributes, so the accent and contrast rules — including
+   their dark variants — carry them unchanged.
 
    Explicit attributes always outrank the scene's bundled defaults: a
    `[data-accent]`, `[data-contrast]`, or `[data-density]` set alongside
@@ -87,4 +96,271 @@
   --bs-light-x: 0px;
   --bs-light-y: 0px;
   --bs-light-reach: 0.5;
+}
+
+/* The style scenes — five-lever homages, never clones: no frosted
+   materials, no imported fonts (a scene's voice goes only to the
+   platform's own stack), just the temperament a scene's levers can
+   honestly reach. */
+
+[data-scene="cupertino"] {
+  /* 圆融 — the soft airy register of handheld design: the capsule is the
+     action signal (every pressable thing rounds full), vessels round out
+     dramatically, targets grow to the 44px touch ladder, and motion
+     glides on the long sheet-spring curve. The interface stays light and
+     airy — separation reads as gentle diffuse depth, not cast shadow,
+     and presses answer through the fill change, never a wash. */
+  --bs-radius-md: 0.75rem;
+  --bs-radius-lg: 1.125rem;
+  --bs-radius-xl: 1.5rem;
+  --bs-radius-2xl: 2.25rem;
+  --bs-radius-control: var(--bs-radius-full);
+  --bs-control-height-sm: 2.25rem;
+  --bs-control-height-md: 2.75rem;
+  --bs-control-height-lg: 3.125rem;
+  --bs-density-scale: 1.25;
+  --bs-motion-scale: 1.1;
+  --bs-ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --bs-ease-spring: cubic-bezier(0.34, 1.1, 0.64, 1);
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.8;
+  --bs-ripple-opacity: 0;
+  /* The handheld register speaks in the system voice: headlines stand
+     down from the serif — everything rides the sans stack, whose
+     platform faces are SF Pro and PingFang — and labels lose their
+     brush tracking. */
+  --bs-font-serif: var(--bs-font-sans);
+  --bs-tracking-label: 0em;
+}
+
+/* The borrowed papers. Four of the style scenes retint the surface
+   ladder toward the register they borrow from — cupertino's clean
+   handheld white, material's neutral violet-gray, sketch's warm
+   sketchbook stock — while the paper-and-ink scenes keep the house
+   stock. Custom properties on the root resolve per theme attribute, so
+   each paper carries a light and a dark face. */
+[data-scene="cupertino"][data-theme="light"],
+[data-scene="cupertino"]:not([data-theme]) {
+  --bs-color-surface-0: oklch(0.973 0.001 265);
+  --bs-color-surface-1: oklch(0.981 0.001 265);
+  --bs-color-surface-2: oklch(0.992 0.001 265);
+  --bs-color-surface-3: oklch(0.992 0.001 265);
+  --bs-color-surface-4: oklch(0.992 0.001 265);
+  --bs-color-surface-5: oklch(0.992 0.001 265);
+}
+
+[data-scene="cupertino"][data-theme="dark"] {
+  --bs-color-surface-0: oklch(0.165 0.004 262);
+  --bs-color-surface-1: oklch(0.205 0.004 262);
+  --bs-color-surface-2: oklch(0.245 0.004 262);
+  --bs-color-surface-3: oklch(0.272 0.004 262);
+  --bs-color-surface-4: oklch(0.29 0.004 262);
+  --bs-color-surface-5: oklch(0.31 0.004 262);
+}
+
+[data-scene="expressive"] {
+  /* 飞白 — the motion-forward register: the dry brush that races ahead of
+     the ink. Generous rounding, a quick pace, and curves that overshoot
+     on the spring — the interface answers like an instrument, not a
+     form — under a warm key light from above. */
+  --bs-radius-sm: 0.375rem;
+  --bs-radius-md: 0.5rem;
+  --bs-radius-lg: 0.75rem;
+  --bs-radius-xl: 1rem;
+  --bs-radius-2xl: 1.5rem;
+  --bs-motion-scale: 0.8;
+  --bs-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --bs-ease-spring: cubic-bezier(0.34, 1.56, 0.5, 1);
+  --bs-light-x: 0.1875rem;
+  --bs-light-y: 0.1875rem;
+  --bs-light-reach: 1;
+}
+
+[data-scene="fluent"] {
+  /* 流水 — the measured productivity register, 行云流水: the corner
+     ladder runs 2/4/8/12 (shapes under 32px round to 2, controls 4,
+     vessels 8, sheets 12), measured rows on the 24/32/40 control ladder,
+     a brisk pace on the decelerate and standard curves, and a soft key
+     light from straight above whose shadows fall close to the element —
+     depth as quiet layering, no ripple. The paper goes neutral, both
+     faces, the register's own calm gray. */
+  --bs-radius-sm: 0.125rem;
+  --bs-radius-md: 0.25rem;
+  --bs-radius-lg: 0.5rem;
+  --bs-radius-xl: 0.75rem;
+  --bs-radius-2xl: 1rem;
+  --bs-control-height-sm: 1.5rem;
+  --bs-control-height-md: 2rem;
+  --bs-control-height-lg: 2.5rem;
+  --bs-density-scale: 0.9;
+  --bs-motion-scale: 0.85;
+  --bs-ease-out: cubic-bezier(0.1, 0.9, 0.2, 1);
+  --bs-ease-in-out: cubic-bezier(0.33, 0, 0.67, 1);
+  --bs-light-x: 0px;
+  --bs-light-y: 0.125rem;
+  --bs-light-reach: 0.7;
+  --bs-ripple-opacity: 0;
+}
+
+/* The Fluent layers: light sits on the calm #f3f3f3 ground with layered
+   whites rising above it; dark climbs #202020 → #272727 → #323232, the
+   window/card/flyout ladder. Chroma zero — this register keeps no
+   pigment in its paper. */
+[data-scene="fluent"][data-theme="light"],
+[data-scene="fluent"]:not([data-theme]) {
+  --bs-color-surface-0: oklch(0.956 0 0);
+  --bs-color-surface-1: oklch(0.973 0 0);
+  --bs-color-surface-2: oklch(0.992 0 0);
+  --bs-color-surface-3: oklch(0.992 0 0);
+  --bs-color-surface-4: oklch(0.992 0 0);
+  --bs-color-surface-5: oklch(0.992 0 0);
+}
+
+[data-scene="fluent"][data-theme="dark"] {
+  --bs-color-surface-0: oklch(0.224 0 0);
+  --bs-color-surface-1: oklch(0.251 0 0);
+  --bs-color-surface-2: oklch(0.29 0 0);
+  --bs-color-surface-3: oklch(0.315 0 0);
+  --bs-color-surface-4: oklch(0.34 0 0);
+  --bs-color-surface-5: oklch(0.365 0 0);
+}
+
+[data-scene="material"] {
+  /* 格物 — the elevation-led register, 格物致知: the M3 shape ladder,
+     token for token — 4px small, 8px medium, 12px medium-large vessels,
+     16px large, 28px extra-large — with pill presses on M3's container
+     ladder (32 / 40 / 48, the touch minimum the register is built
+     around), the emphasized curves, and the signature that gives the
+     look its name: the key light stands directly overhead, so every
+     raised surface casts a soft shadow straight down a tall ladder.
+     Presses answer with the water ripple — a crisp solid wave that
+     holds while the finger holds, then leaves quickly. */
+  --bs-radius-sm: 0.25rem;
+  --bs-radius-md: 0.5rem;
+  --bs-radius-lg: 0.75rem;
+  --bs-radius-xl: 1rem;
+  --bs-radius-2xl: 1.75rem;
+  --bs-radius-control: var(--bs-radius-full);
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.5rem;
+  --bs-control-height-lg: 3rem;
+  --bs-motion-scale: 0.9;
+  --bs-ease-out: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --bs-ease-in-out: cubic-bezier(0.2, 0, 0, 1);
+  --bs-light-x: 0px;
+  --bs-light-y: 0.125rem;
+  --bs-light-reach: 1.5;
+  --bs-ripple-pigment: var(--bs-color-text-primary);
+  --bs-ripple-opacity: 0.12;
+  --bs-ripple-core: 97%;
+  --bs-ripple-fade: 100%;
+  --bs-ripple-duration: calc(450ms * var(--bs-motion-scale, 1));
+  --bs-ripple-release: calc(300ms * var(--bs-motion-scale, 1));
+  --bs-ripple-ease: cubic-bezier(0.2, 0, 0, 1);
+  --bs-ripple-spread: 0.8;
+}
+
+/* The M3 surface: neutral, tinted faintly violet instead of the house's
+   warm paper — the elevation-led register reads against cooler ground. */
+[data-scene="material"][data-theme="light"],
+[data-scene="material"]:not([data-theme]) {
+  --bs-color-surface-0: oklch(0.966 0.006 300);
+  --bs-color-surface-1: oklch(0.976 0.005 300);
+  --bs-color-surface-2: oklch(0.986 0.004 300);
+  --bs-color-surface-3: oklch(0.986 0.004 300);
+  --bs-color-surface-4: oklch(0.986 0.004 300);
+  --bs-color-surface-5: oklch(0.986 0.004 300);
+}
+
+[data-scene="material"][data-theme="dark"] {
+  --bs-color-surface-0: oklch(0.165 0.009 300);
+  --bs-color-surface-1: oklch(0.205 0.01 300);
+  --bs-color-surface-2: oklch(0.245 0.011 300);
+  --bs-color-surface-3: oklch(0.272 0.011 300);
+  --bs-color-surface-4: oklch(0.29 0.011 300);
+  --bs-color-surface-5: oklch(0.31 0.011 300);
+}
+
+[data-scene="sketch"] {
+  /* 写意 — the hand-drawn register, 不求形似求神韵: the loose brush of
+     sketchbooks and comics. No frame stays straight — every radius is an
+     uneven four-corner oval (the asymmetric slash syntax of a drawn
+     box), the fully-round tokens wobble too, moving parts bounce hard on
+     the spring, whitespace loosens, and the light sits off-axis like a
+     sticker's cast shadow. This block is the first of four wobble sets —
+     the other three follow, rotated by sibling position so no two
+     elements sway alike. */
+  --bs-radius-xs: 0.3rem 0.5rem 0.4rem 0.55rem / 0.5rem 0.35rem 0.55rem 0.4rem;
+  --bs-radius-sm: 0.5rem 0.9rem 0.625rem 0.8rem / 0.8rem 0.55rem 0.9rem 0.625rem;
+  --bs-radius-md: 0.625rem 1.125rem 0.75rem 1rem / 1rem 0.625rem 1.125rem 0.75rem;
+  --bs-radius-lg: 1rem 1.625rem 1.25rem 1.875rem / 1.625rem 1rem 1.875rem 1.25rem;
+  --bs-radius-xl: 1.5rem 2.25rem 1.75rem 2.5rem / 2.25rem 1.5rem 2.5rem 1.75rem;
+  --bs-radius-2xl: 2rem 2.875rem 2.375rem 3rem / 2.875rem 2rem 3rem 2.375rem;
+  --bs-radius-full: 1.25rem 1.75rem 1.5rem 1.875rem / 1.75rem 1.25rem 1.875rem 1.5rem;
+  --bs-density-scale: 1.15;
+  --bs-motion-scale: 0.9;
+  --bs-ease-spring: cubic-bezier(0.34, 1.66, 0.64, 1);
+  --bs-stagger-step: 40ms;
+  --bs-light-x: 0.1875rem;
+  --bs-light-y: 0.1875rem;
+  --bs-light-reach: 0.85;
+  --bs-ripple-opacity: 0.18;
+  --bs-ripple-duration: calc(450ms * var(--bs-motion-scale, 1));
+}
+
+/* The sketchbook stock: warmer and yellower than the house paper — the
+   slightly grubby cream of a well-used drawing pad, night bleeding
+   warmer still. */
+[data-scene="sketch"][data-theme="light"],
+[data-scene="sketch"]:not([data-theme]) {
+  --bs-color-surface-0: oklch(0.958 0.014 92);
+  --bs-color-surface-1: oklch(0.972 0.013 93);
+  --bs-color-surface-2: oklch(0.982 0.012 95);
+  --bs-color-surface-3: oklch(0.982 0.012 95);
+  --bs-color-surface-4: oklch(0.982 0.012 95);
+  --bs-color-surface-5: oklch(0.982 0.012 95);
+}
+
+[data-scene="sketch"][data-theme="dark"] {
+  --bs-color-surface-0: oklch(0.165 0.012 85);
+  --bs-color-surface-1: oklch(0.205 0.013 85);
+  --bs-color-surface-2: oklch(0.245 0.014 85);
+  --bs-color-surface-3: oklch(0.272 0.014 85);
+  --bs-color-surface-4: oklch(0.29 0.014 85);
+  --bs-color-surface-5: oklch(0.31 0.014 85);
+}
+
+/* The three sibling sets. CSS has no random, but an element's seat among
+   its siblings is a good enough dice roll: the same layout never repeats
+   the same sway, while any one element stays put — the frame is drawn
+   once, then holds. */
+[data-scene="sketch"] :nth-child(4n + 2) {
+  --bs-radius-xs: 0.5rem 0.35rem 0.45rem 0.55rem / 0.4rem 0.55rem 0.35rem 0.5rem;
+  --bs-radius-sm: 0.85rem 0.6rem 0.95rem 0.7rem / 0.6rem 0.9rem 0.7rem 0.95rem;
+  --bs-radius-md: 1.05rem 0.7rem 1.2rem 0.8rem / 0.7rem 1.15rem 0.8rem 1.2rem;
+  --bs-radius-lg: 1.7rem 1.15rem 1.9rem 1.3rem / 1.15rem 1.8rem 1.3rem 1.95rem;
+  --bs-radius-xl: 2.4rem 1.65rem 2.6rem 1.8rem / 1.65rem 2.55rem 1.8rem 2.6rem;
+  --bs-radius-2xl: 3.05rem 2.1rem 3.25rem 2.2rem / 2.1rem 3.15rem 2.2rem 3.3rem;
+  --bs-radius-full: 1.65rem 1.3rem 1.8rem 1.35rem / 1.3rem 1.7rem 1.35rem 1.85rem;
+}
+
+[data-scene="sketch"] :nth-child(4n + 3) {
+  --bs-radius-xs: 0.45rem 0.3rem 0.55rem 0.4rem / 0.35rem 0.5rem 0.45rem 0.55rem;
+  --bs-radius-sm: 0.7rem 1rem 0.55rem 0.85rem / 0.95rem 0.65rem 0.85rem 0.6rem;
+  --bs-radius-md: 0.85rem 1.25rem 0.7rem 1.1rem / 1.2rem 0.75rem 1.05rem 0.7rem;
+  --bs-radius-lg: 1.35rem 1.95rem 1.1rem 1.7rem / 1.9rem 1.2rem 1.75rem 1.15rem;
+  --bs-radius-xl: 2rem 2.8rem 1.7rem 2.5rem / 2.75rem 1.8rem 2.5rem 1.7rem;
+  --bs-radius-2xl: 2.7rem 3.6rem 2.3rem 3.3rem / 3.5rem 2.3rem 3.2rem 2.2rem;
+  --bs-radius-full: 1.4rem 1.9rem 1.3rem 1.75rem / 1.85rem 1.35rem 1.8rem 1.3rem;
+}
+
+[data-scene="sketch"] :nth-child(4n) {
+  --bs-radius-xs: 0.35rem 0.55rem 0.3rem 0.5rem / 0.55rem 0.4rem 0.5rem 0.35rem;
+  --bs-radius-sm: 0.6rem 0.8rem 0.5rem 0.9rem / 0.75rem 0.55rem 0.95rem 0.65rem;
+  --bs-radius-md: 0.75rem 1rem 0.6rem 1.15rem / 0.95rem 0.7rem 1.1rem 0.8rem;
+  --bs-radius-lg: 1.2rem 1.6rem 1.05rem 1.8rem / 1.55rem 1.1rem 1.85rem 1.25rem;
+  --bs-radius-xl: 1.8rem 2.4rem 1.6rem 2.6rem / 2.3rem 1.7rem 2.7rem 1.9rem;
+  --bs-radius-2xl: 2.4rem 3.2rem 2.15rem 3.5rem / 3.1rem 2.3rem 3.6rem 2.4rem;
+  --bs-radius-full: 1.35rem 1.8rem 1.25rem 1.7rem / 1.75rem 1.4rem 1.9rem 1.45rem;
 }

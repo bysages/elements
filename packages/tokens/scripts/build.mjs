@@ -58,15 +58,19 @@ await sd.buildAllPlatforms();
 // decisions expressed directly in CSS. Everything ships in one cascade layer
 // so any consumer stylesheet — and every shadow root — outranks tokens
 // without specificity fights.
+// Order is load-bearing: scene.css re-declares variables that typography.css
+// and motion.css own on :root at equal specificity, so it must follow them;
+// density.css and contrast.css are explicit tiers that must outrank the
+// scene's bundled defaults, so they follow it.
 const semanticFiles = [
   "theme-light.css",
   "theme-dark.css",
   "accent.css",
+  "typography.css",
+  "motion.css",
   "scene.css",
   "density.css",
   "contrast.css",
-  "typography.css",
-  "motion.css",
   "z-index.css",
 ];
 
