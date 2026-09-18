@@ -4,7 +4,6 @@ import { h } from "vue";
 import { ConfigProvider } from ".";
 import { Button } from "../button";
 import { Card } from "../card";
-import { withState } from "../with-state.js";
 
 const meta: Meta = {
   title: "Components/Elements/Config Provider",
@@ -38,22 +37,18 @@ function demo(label: string) {
 }
 
 /** Compact controls under the qinghua pigment, set against the page's
- * own defaults — the provider carries both attributes at once. */
+ * own defaults — the provider carries both attributes at once. The
+ * controls panel retiers the inside live. */
 export const Basic: Story = {
   args: { density: "compact", accent: "qinghua" },
   render: (args) =>
-    withState(
-      () => () =>
-        h(
-          "div",
-          { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
-          () => [
-            demo("Outside — the page's own density and ink"),
-            h(ConfigProvider, args, () =>
-              demo("Inside — compact controls under the qinghua accent"),
-            ),
-          ],
-        ),
+    h(
+      "div",
+      { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
+      () => [
+        demo("Outside — the page's own density and ink"),
+        h(ConfigProvider, args, () => demo("Inside — compact controls under the qinghua accent")),
+      ],
     ),
 };
 
@@ -62,19 +57,16 @@ export const Basic: Story = {
  * to the host element and its descendants. */
 export const Nested: Story = {
   render: () =>
-    withState(
-      () => () =>
-        h(ConfigProvider, { density: "comfortable" }, () =>
-          h(
-            "div",
-            { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
-            () => [
-              demo("Comfortable — the outer provider's tier"),
-              h(ConfigProvider, { density: "compact" }, () =>
-                demo("Compact — the inner provider, its own scope only"),
-              ),
-            ],
+    h(ConfigProvider, { density: "comfortable" }, () =>
+      h(
+        "div",
+        { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
+        () => [
+          demo("Comfortable — the outer provider's tier"),
+          h(ConfigProvider, { density: "compact" }, () =>
+            demo("Compact — the inner provider, its own scope only"),
           ),
-        ),
+        ],
+      ),
     ),
 };

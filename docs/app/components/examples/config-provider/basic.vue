@@ -21,7 +21,8 @@ import { Button, Card, ConfigProvider } from "@bysages/vue";
         <Card.Header>
           <Card.Title>Inside — compact controls under the qinghua accent</Card.Title>
           <Card.Description>
-            The provider carries both attributes; the subtree retiers.
+            Density and pigment are fixed in here — mode, scene and paper still ride the page around
+            them.
           </Card.Description>
         </Card.Header>
         <Card.Content style="display: flex; flex-wrap: wrap; gap: var(--bs-gap-sm)">
