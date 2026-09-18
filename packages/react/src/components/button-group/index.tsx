@@ -7,6 +7,9 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   /** One register for every member: falls onto data-size for the
    * stylesheet to retune the buttons' heights. */
   size?: "sm" | "md" | "lg";
+  /** The members' corner register: retunes --bs-radius-control for the
+   * whole fused shape — edges and trimmed seams keep one story. */
+  radius?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
   children?: ReactNode;
 }
 
@@ -16,7 +19,7 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
  * beside an outline one and the seam still reads. Selection belongs to
  * the toggle group; this is layout alone.
  */
-function Root({ orientation = "horizontal", size, children, ...rest }: ButtonGroupProps) {
+function Root({ orientation = "horizontal", size, radius, children, ...rest }: ButtonGroupProps) {
   return (
     <div
       {...rest}
@@ -25,6 +28,7 @@ function Root({ orientation = "horizontal", size, children, ...rest }: ButtonGro
       data-part="root"
       data-orientation={orientation}
       data-size={size}
+      data-radius={radius}
     >
       {children}
     </div>

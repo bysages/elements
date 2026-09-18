@@ -16,6 +16,12 @@ const Root = defineComponent({
     /** One register for every member: falls onto data-size for the
      * stylesheet to retune the buttons' heights. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: undefined },
+    /** The members' corner register: retunes --bs-radius-control for the
+     * whole fused shape — edges and trimmed seams keep one story. */
+    radius: {
+      type: String as PropType<"sm" | "md" | "lg" | "xl" | "2xl" | "full">,
+      default: undefined,
+    },
   },
   setup(props, ctx: SetupContext) {
     return () =>
@@ -28,6 +34,7 @@ const Root = defineComponent({
           "data-part": "root",
           "data-orientation": props.orientation,
           "data-size": props.size,
+          "data-radius": props.radius,
         },
         ctx.slots.default?.(),
       );

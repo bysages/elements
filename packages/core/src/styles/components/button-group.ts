@@ -68,4 +68,15 @@ export const buttonGroupCss = /* css */ `
 [data-scope="button-group"][data-part="root"] > [data-scope="button"][data-part="root"]:focus-visible {
   z-index: 1;
 }
+
+/* The group may set the members' corner register: data-radius retunes
+   --bs-radius-control, which every member's border-radius consumes, so
+   the fused whole — first edge, last edge, and the trimmed seams —
+   keeps one corner story. */
+[data-scope="button-group"][data-part="root"][data-radius="sm"] { --bs-radius-control: var(--bs-radius-sm); }
+[data-scope="button-group"][data-part="root"][data-radius="md"] { --bs-radius-control: var(--bs-radius-md); }
+[data-scope="button-group"][data-part="root"][data-radius="lg"] { --bs-radius-control: var(--bs-radius-lg); }
+[data-scope="button-group"][data-part="root"][data-radius="xl"] { --bs-radius-control: var(--bs-radius-xl); }
+[data-scope="button-group"][data-part="root"][data-radius="2xl"] { --bs-radius-control: var(--bs-radius-2xl); }
+[data-scope="button-group"][data-part="root"][data-radius="full"] { --bs-radius-control: var(--bs-radius-full); }
 `;

@@ -8,6 +8,9 @@ export interface ButtonGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** One register for every member: falls onto data-size for the
    * stylesheet to retune the buttons' heights. */
   size?: "sm" | "md" | "lg";
+  /** The members' corner register: retunes --bs-radius-control for the
+   * whole fused shape — edges and trimmed seams keep one story. */
+  radius?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
 
 /**
@@ -17,7 +20,7 @@ export interface ButtonGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * the toggle group; this is layout alone.
  */
 export function ButtonGroupRoot(props: ButtonGroupProps) {
-  const [own, rest] = splitProps(props, ["orientation", "size"]);
+  const [own, rest] = splitProps(props, ["orientation", "size", "radius"]);
   return (
     <div
       {...rest}
@@ -26,6 +29,7 @@ export function ButtonGroupRoot(props: ButtonGroupProps) {
       data-part="root"
       data-orientation={own.orientation ?? "horizontal"}
       data-size={own.size}
+      data-radius={own.radius}
     />
   );
 }

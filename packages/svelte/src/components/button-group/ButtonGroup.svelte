@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { ButtonGroupProps } from "./props";
 
-let { orientation = "horizontal", size, children, ...rest }: ButtonGroupProps = $props();
+let { orientation = "horizontal", size, radius, children, ...rest }: ButtonGroupProps = $props();
 </script>
 
 <!-- Buttons fused into one control: the group owns only the joinery, so
@@ -15,6 +15,7 @@ the toggle group; this is layout alone. -->
   data-part="root"
   data-orientation={orientation}
   data-size={size}
+  data-radius={radius}
 >
   {@render children?.()}
 </div>
