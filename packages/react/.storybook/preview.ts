@@ -3,7 +3,6 @@ import {
   SCENE_DEFAULT_CONTRAST,
   attachDynamicLight,
   attachInkRipple,
-  attachSketchWobble,
 } from "@bysages/core";
 import type { Preview } from "@storybook/react-vite";
 import "@bysages/tokens/css";
@@ -168,7 +167,6 @@ const preview: Preview = {
       applyGlobals(context.globals as Globals);
       attachInkRipple();
       attachDynamicLight();
-      attachSketchWobble();
       return Story();
     },
   ],
