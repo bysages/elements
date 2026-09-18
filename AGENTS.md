@@ -103,7 +103,7 @@ Several trees in the repo are **build output — never edit them by hand**; chan
 
 Rules that follow:
 
-- `component-sections.ts` must partition every discovered family exactly once — the generator fails loudly on a miss or a duplicate. Moving a family re-derives every page's numeric filename prefix (URLs are unaffected; the slug is the name's last segment).
+- `component-sections.ts` must partition every discovered family exactly once — the generator fails loudly on a miss or a duplicate. Page numbers follow the families' global byte order, not the shelves: moving a family between shelves renames only that family's files (URLs are unaffected; the slug is the name's last segment).
 - A new demo is just a `.vue` file in `examples/<family>/`; the generator picks it up on the next `docs:content`.
 - React stories mirror the vue stories (same titles, same story export names — they are the deep-link keys). `solid`/`svelte` have no storybook.
 

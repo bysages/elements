@@ -73,6 +73,14 @@ if (partitioned.size !== families.length) {
   throw new Error("component-sections.ts lists a family in more than one section");
 }
 
+// The page number is the family's place in the global byte order, not
+// its section: sections only label the sidebar, so moving a family
+// between shelves renames just that family's files and every other
+// prefix stands still.
+const globalOrder = new Map(
+  [...discovered, ...Object.keys(extraFamilies)].sort(byFileName).map((f, i) => [f, i]),
+);
+
 const locales = ["zh", "en"] as const;
 
 /** The shelf is a navigation group with no landing page — the header
@@ -174,9 +182,8 @@ function render(): Map<string, string> {
 
   // The files stay flat — the shelf route is the family's route — while
   // each page's frontmatter carries its section label, which the sidebar
-  // groups by. Sections number first: the prefixes walk the sections in
-  // order, so the flat file order already reads grouped.
-  let order = 0;
+  // groups by. The prefixes read as one alphabetical shelf across the
+  // sections; the sidebar's grouping never moves a number.
   for (const section of componentSections) {
     for (const family of section.families) {
       const doc = extraFamilies[family] ?? documentFamily(family);
@@ -216,7 +223,7 @@ function render(): Map<string, string> {
         referenceSections.push(part.join("\n"));
       }
 
-      const stem = stemOf(order++, family);
+      const stem = stemOf(globalOrder.get(family)!, family);
       for (const locale of locales) {
         const title = titleOf(family, locale);
         const usage = locale === "zh" ? "基础用法" : "Basic usage";
