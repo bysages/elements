@@ -5,6 +5,7 @@ import {
   Button,
   Popover,
   RadioGroup,
+  SegmentGroup,
   type ThemeAccent,
   type ThemeDensity,
   type ThemeScene,
@@ -14,17 +15,19 @@ import {
 // render on the server.
 const theme = reactive(getTheme());
 
-const scenes: Array<{ value: ThemeScene; label: string }> = [
-  { value: "auto", label: "Auto — paper, top light" },
-  { value: "civic", label: "Civic 典章 — zhusha, high contrast" },
-  { value: "enterprise", label: "Enterprise 信笺 — qinghua" },
-  { value: "studio", label: "Studio 雅集 — celadon" },
-  { value: "tech", label: "Tech 司南 — ink" },
-  { value: "cupertino", label: "Cupertino 圆融 — ink" },
-  { value: "expressive", label: "Expressive 飞白 — zhusha" },
-  { value: "fluent", label: "Fluent 流水 — qinghua" },
-  { value: "material", label: "Material 格物 — celadon" },
-  { value: "sketch", label: "Sketch 写意 — zhusha" },
+// dot: the pigment a scene pairs with, shown as a small swatch — "ink"
+// renders as the text ink (the accent's absence), undefined hides the dot.
+const scenes: Array<{ value: ThemeScene; en: string; zh: string; dot?: string }> = [
+  { value: "auto", en: "Auto", zh: "纸墨" },
+  { value: "civic", en: "Civic", zh: "典章", dot: "zhusha" },
+  { value: "enterprise", en: "Enterprise", zh: "信笺", dot: "qinghua" },
+  { value: "studio", en: "Studio", zh: "雅集", dot: "celadon" },
+  { value: "tech", en: "Tech", zh: "司南", dot: "ink" },
+  { value: "cupertino", en: "Cupertino", zh: "圆融", dot: "ink" },
+  { value: "expressive", en: "Expressive", zh: "飞白", dot: "zhusha" },
+  { value: "fluent", en: "Fluent", zh: "流水", dot: "qinghua" },
+  { value: "material", en: "Material", zh: "格物", dot: "celadon" },
+  { value: "sketch", en: "Sketch", zh: "写意", dot: "zhusha" },
 ];
 
 const accents: Array<{ value: ThemeAccent; label: string }> = [
@@ -74,41 +77,74 @@ function setScene(scene: ThemeScene) {
         <section>
           <h3>Scene</h3>
           <RadioGroup.Root
+            class="bs-docs-theme-scene-grid"
+            orientation="horizontal"
             :model-value="theme.scene"
             @update:model-value="(v) => setScene(v as ThemeScene)"
           >
-            <RadioGroup.Item v-for="s in scenes" :key="s.value" :value="s.value">
+            <RadioGroup.Item
+              v-for="s in scenes"
+              :key="s.value"
+              :value="s.value"
+              class="bs-docs-theme-scene"
+            >
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemControl />
-              <RadioGroup.ItemText>{{ s.label }}</RadioGroup.ItemText>
+              <RadioGroup.ItemText>
+                <span class="bs-docs-theme-scene-name">{{ s.en }}</span>
+                <span class="bs-docs-theme-scene-glyph">{{ s.zh }}</span>
+              </RadioGroup.ItemText>
+              <span
+                v-if="s.dot"
+                class="bs-docs-theme-dot"
+                :data-accent="s.dot === 'ink' ? undefined : s.dot"
+                :data-ink-dot="s.dot === 'ink' ? '' : undefined"
+              />
             </RadioGroup.Item>
           </RadioGroup.Root>
         </section>
         <section>
           <h3>Accent</h3>
           <RadioGroup.Root
+            class="bs-docs-theme-swatch-row"
+            orientation="horizontal"
             :model-value="theme.accent"
             @update:model-value="(v) => set({ accent: v as ThemeAccent })"
           >
-            <RadioGroup.Item v-for="a in accents" :key="a.value" :value="a.value">
+            <RadioGroup.Item
+              v-for="a in accents"
+              :key="a.value"
+              :value="a.value"
+              class="bs-docs-theme-swatch"
+              :title="a.label"
+              :aria-label="a.label"
+            >
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemControl />
-              <RadioGroup.ItemText>{{ a.label }}</RadioGroup.ItemText>
+              <RadioGroup.ItemText />
+              <span
+                class="bs-docs-theme-dot"
+                :data-accent="a.value === 'auto' || a.value === 'ink' ? undefined : a.value"
+                :data-swatch="a.value"
+                :data-ink-dot="a.value === 'ink' ? '' : undefined"
+              />
             </RadioGroup.Item>
           </RadioGroup.Root>
         </section>
         <section>
           <h3>Density</h3>
-          <RadioGroup.Root
+          <SegmentGroup.Root
+            orientation="horizontal"
             :model-value="theme.density"
             @update:model-value="(v) => set({ density: v as ThemeDensity })"
           >
-            <RadioGroup.Item v-for="d in densities" :key="d.value" :value="d.value">
-              <RadioGroup.ItemHiddenInput />
-              <RadioGroup.ItemControl />
-              <RadioGroup.ItemText>{{ d.label }}</RadioGroup.ItemText>
-            </RadioGroup.Item>
-          </RadioGroup.Root>
+            <SegmentGroup.Indicator />
+            <SegmentGroup.Item v-for="d in densities" :key="d.value" :value="d.value">
+              <SegmentGroup.ItemHiddenInput />
+              <SegmentGroup.ItemControl />
+              <SegmentGroup.ItemText>{{ d.label }}</SegmentGroup.ItemText>
+            </SegmentGroup.Item>
+          </SegmentGroup.Root>
         </section>
       </Popover.Content>
     </Popover.Positioner>

@@ -881,14 +881,17 @@ body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Theme panel — scene, accent, density over the stock SegmentGroup  */
+/* Theme panel — scenes as a tile grid, pigments as a swatch row,    */
+/* density on the stock segmented control — an instrument, not a list */
 /* ---------------------------------------------------------------- */
 
 .bs-docs-theme-panel {
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-md);
-  min-inline-size: 18rem;
+  /* Wide enough for the three-tile scene row; fixed, so the density
+     segment's hug can't stretch the sheet past the trigger. */
+  inline-size: 20rem;
 }
 
 .bs-docs-theme-panel section {
@@ -906,23 +909,160 @@ body {
   color: var(--bs-color-text-tertiary);
 }
 
-/* The radio text rides quiet until its row is chosen — shared with the
-   language menu, the same popover speaking one radio. */
-.bs-docs-theme-panel [data-scope="radio-group"] [data-part="item-text"],
+/* The language menu still speaks one radio list — its text rides quiet
+   until its row is chosen. */
 .bs-docs-language-menu [data-scope="radio-group"] [data-part="item-text"] {
   font-size: var(--bs-font-size-sm);
   color: var(--bs-color-text-secondary);
 }
 
-.bs-docs-theme-panel
-  [data-scope="radio-group"]
-  [data-part="item"][data-state="checked"]
-  [data-part="item-text"],
 .bs-docs-language-menu
   [data-scope="radio-group"]
   [data-part="item"][data-state="checked"]
   [data-part="item-text"] {
   color: var(--bs-color-text-primary);
+}
+
+/* Scene tiles: the English name over the Chinese 官名, the paired
+   pigment as a small dot at the row's end. Checked reads as the primary
+   wash under a primary hairline. The root wears the class, so the rules
+   bind the part attributes onto it — the stock root's flex column and
+   bare rows lose on specificity. */
+.bs-docs-theme-scene-grid[data-scope="radio-group"][data-part="root"] {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--bs-space-1);
+}
+
+.bs-docs-theme-scene-grid[data-scope="radio-group"] [data-part="item"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-1);
+  min-inline-size: 0;
+  padding: 0.25rem 0.375rem;
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  background: var(--bs-color-surface-2);
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    background-color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-docs-theme-scene-grid[data-scope="radio-group"] [data-part="item"]:hover {
+  border-color: var(--bs-color-border-strong);
+}
+
+.bs-docs-theme-scene-grid[data-scope="radio-group"] [data-part="item"][data-state="checked"] {
+  border-color: var(--bs-color-primary);
+  background: var(--bs-color-primary-subtle);
+}
+
+.bs-docs-theme-scene-grid[data-scope="radio-group"] [data-part="item-control"] {
+  display: none;
+}
+
+.bs-docs-theme-scene-grid[data-scope="radio-group"] [data-part="item-text"] {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-inline-size: 0;
+  gap: 0;
+}
+
+.bs-docs-theme-scene-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-medium);
+  line-height: 1.2;
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-theme-scene-glyph {
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  color: var(--bs-color-text-tertiary);
+}
+
+.bs-docs-theme-scene-grid [data-state="checked"] .bs-docs-theme-scene-glyph {
+  color: var(--bs-color-primary-subtle-text);
+}
+
+/* The pigment dots read the real accent colors by wearing the
+   [data-accent] attribute themselves; the ink dot wears the text ink,
+   which is what "no accent" looks like. */
+.bs-docs-theme-dot {
+  flex: none;
+  display: block;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border-radius: 100%;
+  background: var(--bs-color-primary);
+  box-shadow: inset 0 0 0 1px var(--bs-color-border);
+}
+
+.bs-docs-theme-scene-grid .bs-docs-theme-dot {
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+}
+
+.bs-docs-theme-dot[data-ink-dot] {
+  background: var(--bs-color-text-primary);
+}
+
+/* Pigment swatches: one row of round chips, the chosen one ringed in the
+   pigment it stands for. Auto is a hollow chip — it holds no color of
+   its own. The part attributes bind onto the root for the same reason
+   as the scene grid: the stock root's flex column must lose. */
+.bs-docs-theme-swatch-row[data-scope="radio-group"][data-part="root"] {
+  display: flex;
+  flex-direction: row;
+  gap: var(--bs-space-2);
+  padding: 0.125rem 0;
+}
+
+.bs-docs-theme-swatch-row[data-scope="radio-group"] [data-part="item"] {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.bs-docs-theme-swatch-row[data-scope="radio-group"] [data-part="item-control"] {
+  display: none;
+}
+
+.bs-docs-theme-swatch-row .bs-docs-theme-dot {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  transition: box-shadow var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-docs-theme-swatch-row [data-state="checked"] .bs-docs-theme-dot {
+  box-shadow:
+    0 0 0 2px var(--bs-color-surface-1),
+    0 0 0 3.5px var(--bs-color-primary);
+}
+
+.bs-docs-theme-swatch-row .bs-docs-theme-dot[data-swatch="auto"] {
+  background: transparent;
+  border: 1px dashed var(--bs-color-border-strong);
+  box-shadow: none;
+}
+
+/* The four density names are the panel's longest words; the segment
+   steps down to the compact register so the row fits its tray — a half
+   space of side padding keeps the labels off the ink plate without
+   overflowing the 20rem sheet. */
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="root"] {
+  gap: var(--bs-space-1);
+}
+
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {
+  padding: 0 var(--bs-space-2);
+  font-size: var(--bs-font-size-xs);
 }
 
 /* The header rail's ghost icons — mode, assistant — share one register. */
