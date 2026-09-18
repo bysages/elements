@@ -1,6 +1,6 @@
 {
   "name": "@bysages/svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "By Sages Elements components for Svelte — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",

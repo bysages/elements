@@ -1,6 +1,6 @@
 {
   "name": "@bysages/charts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus thin framework adapters",
   "keywords": [
     "charts",
@@ -56,6 +56,7 @@
   "scripts": {
     "dev": "basis build --stub",
     "build": "vp pack",
+    "prepack": "pnpm build",
     "release": "basis publish"
   },
   "dependencies": {
