@@ -16,6 +16,10 @@ function isComponentExport(value: unknown): boolean {
   );
 }
 
+/** Global component names this module must not claim: they belong to the
+ * Nuxt ecosystem, and the site templates are written against them. */
+const RESERVED = new Set(["Icon"]);
+
 export interface BsElementsOptions {
   /** Prefix for the auto-imported components — "Bs" renders `<BsButton>`.
    * Empty by default. */
@@ -44,6 +48,11 @@ export default defineNuxtModule<BsElementsOptions>({
     const families = (await import("@bysages/vue")) as unknown as Record<string, unknown>;
     for (const name of Object.keys(families)) {
       if (!/^[A-Z]/.test(name) || !isComponentExport(families[name])) continue;
+      // @nuxt/icon owns the global `Icon` name — every docs template
+      // writes `<Icon name="i-lucide-*">` against it, and our inkwell
+      // shell (a bare box that carries children, no `name` prop) would
+      // shadow it into silence. It stays import-only.
+      if (RESERVED.has(name)) continue;
       addComponent({
         name: options.prefix + name,
         export: name,
