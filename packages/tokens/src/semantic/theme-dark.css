@@ -26,6 +26,11 @@
   --bs-color-text-tertiary: var(--bs-color-gray-400);
   --bs-color-text-disabled: var(--bs-color-gray-500);
   --bs-color-text-inverse: var(--bs-color-gray-900);
+  /* Ink over the scrim — the dimmed room behind dialogs and lightboxes.
+     The scrim never lightens with the theme, so neither may the ink on
+     it: this stays paper-bright in both registers, unlike the mirror
+     ink above, which answers the page it floats over. */
+  --bs-color-text-on-scrim: var(--bs-color-gray-100);
   /* Ink on a solid pigment fill: pigments knead a fifth of ink into their
      bodies at night (a mid-tone fill carries neither deep nor pale text
      past 4.5:1), so the ink turns bright paper. */

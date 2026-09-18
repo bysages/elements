@@ -19,6 +19,10 @@ export const imageViewerCss = /* css */ `
   inset: 0;
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
   display: grid;
+  /* One row capped at the viewport: an auto row would let the picture's
+     intrinsic height stretch the content past the screen, carrying the
+     toolbar out of reach below the fold. */
+  grid-template-rows: minmax(0, 1fr);
   padding: 0;
 }
 
@@ -26,6 +30,7 @@ export const imageViewerCss = /* css */ `
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: var(--bs-space-4);
   box-sizing: border-box;
   inline-size: 100%;
   block-size: 100%;
@@ -49,15 +54,20 @@ export const imageViewerCss = /* css */ `
   animation: bs-ink-in var(--bs-duration-slow) var(--bs-ease-out);
 }
 
-/* The picture, centered in what the toolbar leaves: the hand's zoom
-   and quarter-turns compose on one transform. The transform itself
-   never animates into place on open — zoom is the reader's hand, not
-   the ink's. */
+/* The picture takes the row the toolbar leaves and keeps its shape
+   inside it — contain centers whatever the frame cannot hold. The
+   minimum height must be let go of explicitly, or the picture's own
+   height would pin the row and push the tools off the screen. The
+   hand's zoom and quarter-turns compose on one transform, which never
+   animates into place on open — zoom is the reader's hand, not the
+   ink's. */
 [data-scope="image-viewer"][data-part="viewport"] {
   display: block;
-  margin: auto;
-  max-inline-size: calc(100% - var(--bs-space-10));
-  max-block-size: calc(100% - var(--bs-space-16));
+  flex: 1 1 auto;
+  min-block-size: 0;
+  min-inline-size: 0;
+  inline-size: 100%;
+  object-fit: contain;
   user-select: none;
   transition: transform var(--bs-duration-base) var(--bs-ease-out);
 }
@@ -67,13 +77,22 @@ export const imageViewerCss = /* css */ `
   flex: none;
   justify-content: center;
   gap: var(--bs-space-2);
-  padding-block-end: var(--bs-space-6);
+  /* The tools ride a small lacquer tray: a translucent ink that keeps
+     the room dark in either register, held clear of the picture above
+     and of the page's edge below. The group inside carries the joinery;
+     its corners stay at the control register. */
+  inline-size: max-content;
+  margin-inline: auto;
+  margin-block-end: var(--bs-space-6);
+  padding: var(--bs-space-1);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
+  background: color-mix(in oklab, var(--bs-color-gray-900) 72%, transparent);
 }
 
-/* Ghost ink is the page's own ink — over the dark scrim it must turn
-   to paper, and the hover wash follows as a pale breath. */
+/* Ghost ink over the dark scrim must be the paper-bright ink that never
+   flips with the theme, and the hover wash follows as a pale breath. */
 [data-scope="image-viewer"][data-part="toolbar"] [data-scope="button"][data-part="root"] {
-  --_ink: var(--bs-color-text-inverse);
+  --_ink: var(--bs-color-text-on-scrim);
   --_fill-hover: color-mix(in oklab, var(--bs-color-surface-2) 16%, transparent);
 }
 `;

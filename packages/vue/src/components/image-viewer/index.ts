@@ -5,6 +5,7 @@ import { defineComponent, h, ref, watch } from "vue";
 import { Teleport } from "vue";
 
 import { Button } from "../button";
+import { ButtonGroup } from "../button-group";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -124,7 +125,19 @@ export const ImageViewer = defineComponent({
             h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>
               h(
                 ArkDialog.Content,
-                { class: "bs-image-viewer-content", "aria-label": props.alt || "Image preview" },
+                {
+                  class: "bs-image-viewer-content",
+                  "aria-label": props.alt || "Image preview",
+                  // The content owns the whole screen, so the machine's
+                  // outside-click never fires — the scrim is always
+                  // "inside". A bare click on the content itself (the
+                  // page around the picture and its toolbar) reads as
+                  // the scrim and closes; clicks on the picture or the
+                  // tools carry their own targets and stay.
+                  onClick: (event: MouseEvent) => {
+                    if (event.target === event.currentTarget) setOpen(false);
+                  },
+                },
                 () => [
                   h("img", {
                     "data-scope": "image-viewer",
@@ -135,15 +148,20 @@ export const ImageViewer = defineComponent({
                       transform: `scale(${scale.value}) rotate(${rotation.value}deg)`,
                     },
                   }),
-                  h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, () => [
-                    ...(props.zoomable
-                      ? [
-                          toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP)),
-                          toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP)),
-                        ]
-                      : []),
-                    toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate),
-                    toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false)),
+                  // The tray's children ride an array: an element's function
+                  // children that return a single vnode are dropped by the
+                  // runtime in silence.
+                  h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, [
+                    h(ButtonGroup, () => [
+                      ...(props.zoomable
+                        ? [
+                            toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP)),
+                            toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP)),
+                          ]
+                        : []),
+                      toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate),
+                      toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false)),
+                    ]),
                   ]),
                 ],
               ),

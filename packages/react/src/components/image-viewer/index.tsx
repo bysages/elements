@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { Button } from "../button";
+import { ButtonGroup } from "../button-group";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -127,6 +128,15 @@ export function ImageViewer({
           <ArkDialog.Content
             className="bs-image-viewer-content"
             aria-label={alt || "Image preview"}
+            // The content owns the whole screen, so the machine's
+            // outside-click never fires — the scrim is always "inside".
+            // A bare click on the content itself (the page around the
+            // picture and its toolbar) reads as the scrim and closes;
+            // clicks on the picture or the tools carry their own
+            // targets and stay.
+            onClick={(event) => {
+              if (event.target === event.currentTarget) setOpen(false);
+            }}
           >
             <img
               data-scope="image-viewer"
@@ -136,14 +146,16 @@ export function ImageViewer({
               style={{ transform: `scale(${scale}) rotate(${rotation}deg)` }}
             />
             <div data-scope="image-viewer" data-part="toolbar">
-              {zoomable
-                ? [
-                    toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP)),
-                    toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP)),
-                  ]
-                : null}
-              {toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate)}
-              {toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false))}
+              <ButtonGroup>
+                {zoomable
+                  ? [
+                      toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP)),
+                      toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP)),
+                    ]
+                  : null}
+                {toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate)}
+                {toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false))}
+              </ButtonGroup>
             </div>
           </ArkDialog.Content>
         </ArkDialog.Positioner>
