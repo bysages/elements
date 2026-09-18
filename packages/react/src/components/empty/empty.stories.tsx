@@ -45,3 +45,14 @@ export const WithoutAction = {
     </Empty.Root>
   ),
 };
+
+/** Only the words: title and description alone, the whitespace doing
+ * the rest of the work. */
+export const Minimal = {
+  render: () => (
+    <Empty.Root>
+      <Empty.Title>Nothing on the desk</Empty.Title>
+      <Empty.Description>The paper is clear. Begin whenever you are ready.</Empty.Description>
+    </Empty.Root>
+  ),
+};

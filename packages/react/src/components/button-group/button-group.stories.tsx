@@ -3,7 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { ButtonGroup } from ".";
 import { Button } from "../button";
 
-const meta: Meta = { title: "Components/Actions/Button Group" };
+const meta: Meta = { title: "Components/Elements/Button Group" };
 export default meta;
 
 function chevronDown() {

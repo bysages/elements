@@ -16,3 +16,12 @@ export const Combination = {
     </p>
   ),
 };
+
+/** Inside a sentence, the caps inherit the running size. */
+export const Inline = {
+  render: () => (
+    <p style={{ maxWidth: "26rem" }}>
+      Press <Kbd>Enter</Kbd> to seal the draft, or <Kbd>Tab</Kbd> to move along.
+    </p>
+  ),
+};

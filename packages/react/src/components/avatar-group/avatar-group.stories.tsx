@@ -42,3 +42,13 @@ export const Basic = {
     </AvatarGroup>
   ),
 };
+
+/** Size them from the outside: one font-size resizes the whole pile. */
+export const Large = {
+  render: () => (
+    <AvatarGroup style={{ fontSize: "1.25rem" }}>
+      {face("Lin", "var(--bs-color-primary)")}
+      {face("Mo", "var(--bs-color-warning)")}
+    </AvatarGroup>
+  ),
+};

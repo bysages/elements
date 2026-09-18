@@ -45,3 +45,25 @@ export const Sizes = {
 export const Disabled = {
   render: () => <Button disabled>Sealed shut</Button>,
 };
+
+/** With a leading mark: the icon inherits the ink of its tone. */
+export const WithIcon = {
+  render: () => (
+    <Button variant="subtle">
+      <svg
+        width={16}
+        height={16}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m4 12.5 5 5L20 6.5" />
+      </svg>
+      Save
+    </Button>
+  ),
+};

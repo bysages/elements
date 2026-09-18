@@ -42,3 +42,25 @@ export const LongTrail = {
     </Breadcrumb.Root>
   ),
 };
+
+/** The separator is a slot: any mark the trail needs, this one a
+ * chevron pointing the way forward. */
+export const CustomSeparator = {
+  render: () => (
+    <Breadcrumb.Root>
+      <Breadcrumb.List>
+        <Breadcrumb.Item>
+          <Breadcrumb.Link href="#home">Home</Breadcrumb.Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Separator>›</Breadcrumb.Separator>
+        <Breadcrumb.Item>
+          <Breadcrumb.Link href="#library">Library</Breadcrumb.Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Separator>›</Breadcrumb.Separator>
+        <Breadcrumb.Item>
+          <Breadcrumb.Current>Archives</Breadcrumb.Current>
+        </Breadcrumb.Item>
+      </Breadcrumb.List>
+    </Breadcrumb.Root>
+  ),
+};

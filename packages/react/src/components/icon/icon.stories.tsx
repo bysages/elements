@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Icon } from ".";
 
-const meta: Meta = { title: "Components/Layout/Icon" };
+const meta: Meta = { title: "Components/Elements/Icon" };
 export default meta;
 
 /** A fresh glyph per render — an element created inline keeps every

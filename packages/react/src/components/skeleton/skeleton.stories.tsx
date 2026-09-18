@@ -19,3 +19,24 @@ export const Composition = {
     </div>
   ),
 };
+
+/** A card-shaped placeholder: cover block, heading, two lines of body. */
+export const Card = {
+  render: () => (
+    <div
+      style={{
+        display: "grid",
+        gap: "0.75rem",
+        inlineSize: "18rem",
+        padding: "1rem",
+        border: "1px solid var(--bs-color-border)",
+        borderRadius: "var(--bs-radius-lg)",
+      }}
+    >
+      <Skeleton style={{ blockSize: "7rem", inlineSize: "100%" }} />
+      <Skeleton style={{ blockSize: "1.125rem", inlineSize: "55%" }} />
+      <Skeleton style={{ blockSize: "0.875rem", inlineSize: "100%" }} />
+      <Skeleton style={{ blockSize: "0.875rem", inlineSize: "80%" }} />
+    </div>
+  ),
+};

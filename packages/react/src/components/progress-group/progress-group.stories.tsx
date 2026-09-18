@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { ProgressGroup } from ".";
 
-const meta: Meta = { title: "Components/Data/Progress Group" };
+const meta: Meta = { title: "Components/Feedback/Progress Group" };
 export default meta;
 
 /** The house's ledger at a glance: each segment its own pigment, the

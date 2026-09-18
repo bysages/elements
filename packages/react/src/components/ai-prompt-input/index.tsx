@@ -1,8 +1,11 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useRef } from "react";
 
 import { Button } from "../button";
 import { Field } from "../field";
+import { MentionsVessel, useMentions } from "../mentions";
+import type { MentionEntry } from "../mentions";
 
 const arrowUpGlyph = (
   <svg
@@ -63,6 +66,11 @@ export interface PromptInputProps extends Omit<HTMLAttributes<HTMLFormElement>, 
   /** The machine is working — the seal becomes a stop seal and Enter
    * holds its breath. */
   busy?: boolean;
+  /** Mention candidates for the field: pass the roster and the summon
+   * character (`@` unless told otherwise) and the vessel rides the
+   * textarea. While candidates are up, Enter inserts and the send
+   * waits. */
+  mentions?: { items: MentionEntry[]; trigger?: string };
   header?: ReactNode;
   leading?: ReactNode;
   trailing?: ReactNode;
@@ -78,6 +86,7 @@ export function PromptInput({
   placeholder = "Send a message",
   disabled = false,
   busy = false,
+  mentions,
   header,
   leading,
   trailing,
@@ -85,6 +94,20 @@ export function PromptInput({
   footerEnd,
   ...rest
 }: PromptInputProps) {
+  // The field part is a component; its ref carries the textarea itself.
+  const fieldRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const mentionState = useMentions(
+    () => ({ items: mentions?.items ?? [], trigger: mentions?.trigger }),
+    () => fieldRef.current,
+    {
+      getText: () => fieldRef.current?.value ?? value,
+      setText: (next) => onValueChange?.(next),
+    },
+  );
+  // The vessel only rides along when a roster was actually given.
+  const mentionsActive = mentions != null;
+
   const submit = () => {
     const text = value.trim();
     if (!text || disabled || busy) return;
@@ -134,13 +157,20 @@ export function PromptInput({
         {row("prompt-leading", leading)}
         <Field.Root>
           <Field.Textarea
+            ref={fieldRef}
             autoresize
             rows={1}
             value={value}
             placeholder={placeholder}
             disabled={disabled}
-            onChange={(event) => onValueChange?.(event.target.value)}
+            onChange={(event) => {
+              onValueChange?.(event.target.value);
+              mentionState.onInput();
+            }}
             onKeyDown={(event) => {
+              // The candidates eat their keys first; only on a quiet
+              // field does Enter become the send.
+              if (mentionState.onKeydown(event)) return;
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
                 submit();
@@ -148,6 +178,19 @@ export function PromptInput({
             }}
           />
         </Field.Root>
+        {mentionsActive ? (
+          <MentionsVessel
+            open={mentionState.open}
+            matches={mentionState.matches}
+            active={mentionState.active}
+            anchor={fieldRef.current}
+            onInsert={mentionState.insert}
+            onActiveChange={mentionState.setActive}
+            onOpenChange={(open) => {
+              if (!open) mentionState.close();
+            }}
+          />
+        ) : null}
         {/* With a tool row beneath, the seal sinks into it — the send
             belongs at the row's far end, with the tools. */}
         {row("prompt-trailing", hasFooter ? trailing : (trailing ?? seal))}

@@ -21,6 +21,23 @@ export const Basic = {
   render: () => notice("ink", "A quiet note", "Ink on paper, no pigment shouting."),
 };
 
+/** Without a status the alert rests in ink: quiet, monochrome. */
+export const Plain = {
+  render: () => notice("ink", "Draft restored", "Recovered from the last session."),
+};
+
+/** Description only: the wash and the edge still announce the pigment. */
+export const WithoutTitle = {
+  render: () => (
+    <Alert status="warning" style={{ maxWidth: "34rem" }}>
+      <Alert.Icon />
+      <Alert.Body>
+        <Alert.Description>Save your work before the session times out.</Alert.Description>
+      </Alert.Body>
+    </Alert>
+  ),
+};
+
 export const Statuses = {
   render: () => (
     <div style={{ display: "grid", gap: "1rem" }}>

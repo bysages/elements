@@ -226,3 +226,47 @@ export const Compose = {
     );
   },
 };
+
+/** Type @ and the vessel offers the room; a pick plants the name, and
+ * Enter sends only after the vessel stands down. */
+export const Mentions = {
+  render: () => {
+    const [prompt, setPrompt] = useState("");
+    const [sent, setSent] = useState("");
+    const team = [
+      { label: "Lin Hua", value: "lin" },
+      { label: "Mei Chen", value: "mei" },
+      { label: "Hong Wei", value: "hong" },
+    ];
+    return (
+      <div
+        style={{
+          display: "grid",
+          gap: "0.75rem",
+          inlineSize: "100%",
+          maxInlineSize: "46rem",
+        }}
+      >
+        <PromptInput
+          value={prompt}
+          placeholder="Ask the room — @who should weigh in…"
+          mentions={{ items: team }}
+          onValueChange={setPrompt}
+          onSubmit={(value) => {
+            setSent(value);
+            setPrompt("");
+          }}
+        />
+        <p
+          role="status"
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
+          {sent ? `Sent: ${sent}` : "Type @ and a name; Enter sends only after the vessel closes."}
+        </p>
+      </div>
+    );
+  },
+};
