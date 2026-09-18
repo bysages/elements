@@ -180,3 +180,4 @@ export function Calendar(props: CalendarProps) {
 }
 
 injectComponentStyle("calendar");
+injectComponentStyle("date-picker");

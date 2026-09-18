@@ -180,3 +180,4 @@ export const Calendar = defineComponent({
 });
 
 injectComponentStyle("calendar");
+injectComponentStyle("date-picker");

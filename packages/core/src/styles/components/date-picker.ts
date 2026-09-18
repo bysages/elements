@@ -266,6 +266,10 @@ export const datePickerCss =
 }
 
 [data-scope="date-picker"][data-part="table"] {
+  /* Table layout is the geometry here — the columns must share the
+     panel — so a host's prose reset that blockifies tables (docs sites
+     do this for their markdown tables) must not reach inside. */
+  display: table;
   inline-size: 100%;
   border-collapse: separate;
   border-spacing: 0;

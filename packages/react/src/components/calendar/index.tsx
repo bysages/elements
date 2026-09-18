@@ -160,3 +160,4 @@ export function Calendar({ value, min, max, onValueChange, children, ...rest }: 
 }
 
 injectComponentStyle("calendar");
+injectComponentStyle("date-picker");
