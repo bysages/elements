@@ -987,9 +987,9 @@ body {
 }
 
 /* The trigger poses as a field — the hairline box readers expect to type
-   into — so it out-ranks the ghost-host delegation from core. The center
+   into — outranking the ghost variant's defaults from core. The center
    lane flexes it into the header's middle, docus's register. */
-.bs-docs-header-center [data-scope="dialog"][data-part="trigger"].bs-docs-search-trigger {
+.bs-docs-header-center .bs-docs-search-trigger[data-scope="button"][data-part="root"] {
   display: inline-flex;
   align-items: center;
   gap: var(--bs-space-2);
@@ -1005,7 +1005,7 @@ body {
   box-shadow: var(--bs-shadow-xs);
 }
 
-.bs-docs-header-center [data-scope="dialog"][data-part="trigger"].bs-docs-search-trigger:hover {
+.bs-docs-header-center .bs-docs-search-trigger[data-scope="button"][data-part="root"]:hover {
   border-color: var(--bs-color-border-strong);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);
@@ -1013,86 +1013,6 @@ body {
 
 .bs-docs-search-trigger kbd {
   margin-inline-start: auto;
-}
-
-/* Inside the panel the combobox sheds its own chrome — the dialog is the
-   vessel; the control is just the typing line. */
-.bs-docs-search-panel [data-scope="combobox"][data-part="root"] {
-  display: flex;
-  flex-direction: column;
-}
-
-.bs-docs-search-panel [data-scope="combobox"][data-part="control"] {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-3) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border);
-  border-inline: none;
-  border-block-start: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  color: var(--bs-color-text-tertiary);
-}
-
-.bs-docs-search-panel [data-scope="combobox"][data-part="input"] {
-  flex: 1;
-  border: none;
-  background: none;
-  box-shadow: none;
-  color: var(--bs-color-text-primary);
-}
-
-.bs-docs-search-panel [data-scope="combobox"][data-part="input"]:focus,
-.bs-docs-search-panel [data-scope="combobox"][data-part="input"]:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-/* The list flows inside the panel, not as a floating popper: the machine
-   parks position/inset/transform inline, so only !important un-parks it. */
-.bs-docs-search-combobox-positioner {
-  position: static !important;
-  inset: auto !important;
-  inline-size: 100%;
-  transform: none !important;
-}
-
-.bs-docs-search-panel [data-scope="combobox"][data-part="content"] {
-  max-block-size: 46vh;
-  padding: var(--bs-space-2);
-  background: transparent;
-  box-shadow: none;
-  border: none;
-  /* The machine parks pointer-events on the popper it thinks is floating;
-     this list lives in the panel, so the rows take clicks again. */
-  pointer-events: auto !important;
-}
-
-.bs-docs-search-trail {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-xs);
-}
-
-.bs-docs-search-panel [data-scope="combobox"][data-part="empty"] {
-  padding: var(--bs-space-4);
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-  text-align: center;
-}
-
-/* The panel seats near the top of the viewport, like an editor palette —
-   the scope key lifts these over the stock dialog chrome. */
-.bs-docs-search-positioner[data-scope="dialog"][data-part="positioner"] {
-  align-items: flex-start;
-  padding-block-start: 14vh;
-}
-
-.bs-docs-search-panel[data-scope="dialog"][data-part="content"] {
-  inline-size: min(36rem, 100%);
-  padding: 0;
-  overflow: hidden;
 }
 
 /* ---------------------------------------------------------------- */

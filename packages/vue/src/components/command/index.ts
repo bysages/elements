@@ -22,6 +22,15 @@ export interface CommandProps {
   /** Whether the palette is up. Supply it to control the palette;
    * changes are reported via `update:open`. */
   open?: boolean;
+  /** Whether the shell narrows `items` as the reader types. Turn it off
+   * when the caller owns the searching — a ranked engine or a remote
+   * source — and hands down the already-narrowed list. */
+  autoFilter?: boolean;
+  /** The field's text under the caller's control; changes are reported
+   * via `update:inputValue`. */
+  inputValue?: string;
+  /** What the list whispers when nothing matches. */
+  emptyText?: string;
   /** Called with the chosen entry's `value`; the palette closes after. */
   onSelect?: (value: string) => void;
 }
@@ -44,9 +53,12 @@ export const Command = defineComponent({
     items: { type: Array as PropType<CommandEntry[]>, default: () => [] },
     placeholder: { type: String, default: undefined },
     open: { type: Boolean, default: undefined },
+    autoFilter: { type: Boolean, default: true },
+    inputValue: { type: String, default: undefined },
+    emptyText: { type: String, default: "No matching commands" },
     onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },
   },
-  emits: ["update:open"],
+  emits: ["update:open", "update:inputValue"],
   setup(props, ctx: SetupContext) {
     const internalOpen = ref(false);
     // The list has no popup of its own, but the machine still opens and
@@ -54,7 +66,11 @@ export const Command = defineComponent({
     // re-entry through the field brings it back.
     const listOpen = ref(true);
 
-    const { collection, filter } = useListCollection({
+    // The field's live text, kept so a caller's new list can be
+    // re-narrowed against it (the collection's `set` clears the filter).
+    const fieldText = ref("");
+
+    const { collection, set, filter } = useListCollection({
       initialItems: props.items.map((entry) => entry.value),
       filter: (value: string, input: string) => {
         const entry = props.items.find((candidate) => candidate.value === value);
@@ -63,6 +79,17 @@ export const Command = defineComponent({
         return entry.label.toLowerCase().includes(query) || value.toLowerCase().includes(query);
       },
     });
+
+    // The caller's list is live — an index landing after mount or a
+    // search that re-ranks per keystroke must reach the collection
+    // without a remount.
+    watch(
+      () => props.items,
+      (items) => {
+        set(items.map((entry) => entry.value));
+        if (props.autoFilter) filter(fieldText.value);
+      },
+    );
 
     const setOpen = (value: boolean) => {
       if (props.open === undefined) internalOpen.value = value;
@@ -120,9 +147,7 @@ export const Command = defineComponent({
               ),
         );
         if (groups.size === 0) {
-          nodes.push(
-            h("div", { "data-scope": "command", "data-part": "empty" }, "No matching commands"),
-          );
+          nodes.push(h("div", { "data-scope": "command", "data-part": "empty" }, props.emptyText));
         }
         return nodes;
       };
@@ -149,12 +174,16 @@ export const Command = defineComponent({
                         // ListCollection<unknown>; ours is ListCollection<string>
                         // and the two don't relate by variance.
                         collection: collection.value as ListCollection<unknown>,
+                        inputValue: props.inputValue,
                         open: listOpen.value,
                         "onUpdate:open": (value: boolean) => (listOpen.value = value),
                         autoHighlight: true,
                         loopFocus: true,
-                        onInputValueChange: (details: { inputValue: string }) =>
-                          filter(details.inputValue),
+                        onInputValueChange: (details: { inputValue: string }) => {
+                          fieldText.value = details.inputValue;
+                          if (props.autoFilter) filter(details.inputValue);
+                          ctx.emit("update:inputValue", details.inputValue);
+                        },
                         onValueChange: (details: { value: string[] }) => {
                           const [first] = details.value;
                           if (first == null) return;

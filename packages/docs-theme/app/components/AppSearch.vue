@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Combobox, Dialog } from "@bysages/vue";
+import { Button, Command, type CommandEntry } from "@bysages/vue";
 import type { PageCollections } from "@nuxt/content";
 import MiniSearch from "minisearch";
 import { computed, ref, watch } from "vue";
@@ -15,7 +15,7 @@ interface SearchSection {
 const { t, isEnabled, localeOf } = useDocsI18n();
 const route = useRoute();
 
-// The rail's square trigger shares this state — the dialog is opened
+// The rail's square trigger shares this state — the palette is opened
 // from the header's field or its folded trigger alike.
 const open = useDocsSearch();
 const query = ref("");
@@ -43,15 +43,10 @@ const engine = computed(() => {
   return mini;
 });
 
-interface SearchItem {
-  value: string;
-  label: string;
-  trail: string;
-}
-
-// No query turns the dialog into a page picker; otherwise the best
-// section per page wins — one row per destination.
-const items = computed<SearchItem[]>(() => {
+// No query turns the palette into a page picker; otherwise the best
+// section per page wins — one row per destination, its shelf the group
+// heading above it.
+const items = computed<CommandEntry[]>(() => {
   const list = sections.value ?? [];
   const rows: Array<SearchSection | string> = !query.value.trim()
     ? list.filter((s) => s.level <= 1)
@@ -71,7 +66,7 @@ const items = computed<SearchItem[]>(() => {
   return [...seen.values()].slice(0, 12).map((section) => ({
     value: section.id,
     label: section.title,
-    trail:
+    group:
       section.titles.length > 1
         ? section.titles.slice(0, -1).join(" › ")
         : section.id.split("#")[0]!,
@@ -82,12 +77,9 @@ watch(open, (isOpen) => {
   if (isOpen) query.value = "";
 });
 
-// zag hands over the selection as the machine's value array.
-function pick(details: { value?: string[] }) {
-  const id = details.value?.[0];
-  if (!id) return;
+function pick(value: string) {
   open.value = false;
-  navigateTo(id);
+  navigateTo(value);
 }
 
 function onKeydown(event: KeyboardEvent) {
@@ -104,48 +96,22 @@ if (import.meta.client) {
 </script>
 
 <template>
-  <Dialog.Root :open="open" @update:open="open = $event">
-    <Dialog.Trigger as-child>
-      <Button variant="ghost" size="sm" class="bs-docs-search-trigger">
-        <Icon name="i-lucide-search" />
-        <span>{{ t("docs.search") }}</span>
-        <kbd>⌘K</kbd>
-      </Button>
-    </Dialog.Trigger>
-    <Dialog.Positioner class="bs-docs-search-positioner">
-      <Dialog.Content class="bs-docs-search-panel">
-        <Combobox.Root
-          :items="items"
-          :auto-filter="false"
-          :open="true"
-          :input-value="query"
-          @value-change="pick"
-          @update:input-value="query = $event ?? ''"
-        >
-          <Combobox.Control class="bs-docs-search-control">
-            <Icon name="i-lucide-search" />
-            <Combobox.Input :placeholder="t('docs.search')" />
-          </Combobox.Control>
-          <Combobox.Positioner class="bs-docs-search-combobox-positioner">
-            <Combobox.Content class="bs-docs-search-combobox-content">
-              <!-- The index arrives lazily client-side; an empty list before it
-                lands means "not yet", not "nothing". -->
-              <Combobox.Empty v-if="!items.length">{{
-                sections ? t("docs.searchEmpty") : t("docs.searchLoading")
-              }}</Combobox.Empty>
-              <Combobox.Item
-                v-for="item in items"
-                :key="item.value"
-                :item="item"
-                :value="item.value"
-              >
-                <Combobox.ItemText>{{ item.label }}</Combobox.ItemText>
-                <span class="bs-docs-search-trail">{{ item.trail }}</span>
-              </Combobox.Item>
-            </Combobox.Content>
-          </Combobox.Positioner>
-        </Combobox.Root>
-      </Dialog.Content>
-    </Dialog.Positioner>
-  </Dialog.Root>
+  <!-- The trigger poses as a field; the palette itself is the Command
+       component — its sheet, ledger and keycap hints carry the rest. -->
+  <Button variant="ghost" size="sm" class="bs-docs-search-trigger" @click="open = true">
+    <Icon name="i-lucide-search" />
+    <span>{{ t("docs.search") }}</span>
+    <kbd>⌘K</kbd>
+  </Button>
+  <Command
+    :items="items"
+    :open="open"
+    :auto-filter="false"
+    :input-value="query"
+    :empty-text="sections ? t('docs.searchEmpty') : t('docs.searchLoading')"
+    :placeholder="t('docs.search')"
+    @update:open="open = $event"
+    @update:input-value="query = $event ?? ''"
+    @select="pick"
+  />
 </template>
