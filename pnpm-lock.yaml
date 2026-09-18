@@ -35,6 +35,9 @@ importers:
 
   docs:
     dependencies:
+      '@bysages/charts':
+        specifier: workspace:*
+        version: link:../packages/charts
       '@bysages/docs-theme':
         specifier: workspace:*
         version: link:../packages/docs-theme

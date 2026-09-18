@@ -1,7 +1,12 @@
 import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 
-import { documentFamily, type EmitDoc, type PropDoc } from "../../scripts/generate-api-docs.ts";
+import {
+  documentFamily,
+  type EmitDoc,
+  type FamilyDoc,
+  type PropDoc,
+} from "../../scripts/generate-api-docs.ts";
 import { componentNames } from "./component-names.ts";
 import { componentSections } from "./component-sections.ts";
 import { displayTitle } from "./display-title.ts";
@@ -34,6 +39,21 @@ const discovered = readdirSync(vueRoot, { withFileTypes: true })
   .map((e) => e.name)
   .sort(byFileName);
 
+// Families the directory scan cannot discover, with their pages
+// synthesized here: the chart family lives in @bysages/charts, whose
+// vue entry exports the Chart component, so the extractor has no
+// wrapper to read. The page carries this description and the demos;
+// the API tables stay with the package's published reference.
+const extraFamilies: Record<string, FamilyDoc> = {
+  chart: {
+    family: "chart",
+    source: "native",
+    description:
+      "Token-themed charts on the paper-and-ink tokens: the Chart component renders a ChartDefinition built from the mark factories, and the palette (chartColors, chartSeriesRange) hands the marks the live theme's pigments.",
+    components: {},
+  },
+};
+
 // The section map must partition the discovered families exactly — a
 // family missing from it or listed twice is a bug in the map, not a
 // reason to silently drop or duplicate a page.
@@ -45,7 +65,7 @@ for (const family of discovered) {
   }
 }
 for (const family of families) {
-  if (!discovered.includes(family)) {
+  if (!discovered.includes(family) && !extraFamilies[family]) {
     throw new Error(`component-sections.ts lists "${family}" but no such family exists`);
   }
 }
@@ -159,7 +179,7 @@ function render(): Map<string, string> {
   let order = 0;
   for (const section of componentSections) {
     for (const family of section.families) {
-      const doc = documentFamily(family);
+      const doc = extraFamilies[family] ?? documentFamily(family);
       if (!doc) continue;
 
       // Every exported part rides the component page — its own words
@@ -208,10 +228,10 @@ function render(): Map<string, string> {
 
         const componentPage: string[] = [];
         if (demos.length) {
-          componentPage.push([`## ${usage}`, ...demos].join("\n"));
+          componentPage.push([`## ${usage}`, "", ...demos].join("\n\n"));
         }
         if (propsGroups.length) {
-          componentPage.push([`## ${propsTitle}`, "", ...propsGroups].join("\n\n"));
+          componentPage.push([`## ${propsTitle}`, ...propsGroups].join("\n\n"));
         }
         for (const dir of Object.keys(shelves)) {
           const body = dir === "02.components" ? componentPage : referenceSections;

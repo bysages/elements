@@ -12,8 +12,11 @@ export default defineConfig({
     },
   },
   fmt: {
-    // Landing pages carry MDC component slots a formatter would flatten.
-    ignorePatterns: ["**/docs/content/*/index.md"],
+    // Landing pages carry MDC component slots a formatter would flatten;
+    // the component shelves are generator output (the generator's own
+    // --check guards them, and a formatter's table realignment would
+    // fight every regeneration).
+    ignorePatterns: ["**/docs/content/*/index.md", "docs/content/**"],
     sortImports: {
       type: "natural",
     },

@@ -1,0 +1,11 @@
+<script setup lang="ts">
+import { Button, ButtonGroup } from "@bysages/vue";
+</script>
+
+<template>
+  <ButtonGroup orientation="vertical" style="max-inline-size: 12rem">
+    <Button variant="outline">Align left</Button>
+    <Button variant="outline">Align center</Button>
+    <Button variant="outline">Align right</Button>
+  </ButtonGroup>
+</template>
