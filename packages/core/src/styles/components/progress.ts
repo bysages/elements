@@ -19,14 +19,16 @@ export const progressCss =
   text-align: end;
 }
 
-/* The track is a hairline groove pressed into the paper — ink will run
-   through it, so it stays quiet until the fill arrives. */
+/* The track is a groove pressed into the paper — ink will run through it,
+   so it stays quiet until the fill arrives. It sits one mix-step below the
+   ground it is drawn on (the ground itself), or the groove reads as
+   nothing; the pressed depth keeps it visible like M3's tone-based track. */
 [data-scope="progress"][data-part="track"] {
   grid-column: 1 / -1;
   overflow: hidden;
   block-size: var(--bs-space-1);
   border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-surface-0) 96%, black);
 }
 
 [data-scope="progress"][data-part="track"][data-orientation="vertical"] {
@@ -93,7 +95,7 @@ export const progressCss =
 }
 
 [data-scope="progress"][data-part="circle-track"] {
-  stroke: var(--bs-color-surface-0);
+  stroke: color-mix(in oklab, var(--bs-color-surface-0) 92%, black);
 }
 
 [data-scope="progress"][data-part="circle-range"] {
