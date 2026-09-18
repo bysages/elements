@@ -34,11 +34,11 @@ function face(label: string, background: string) {
  * legible. */
 export const Basic = {
   render: () => (
-    <AvatarGroup style={{ fontSize: "2rem" }}>
-      {face("Qinghua", "var(--bs-color-info)")}
-      {face("Celadon", "var(--bs-color-success)")}
-      {face("Zhusha", "var(--bs-color-danger)")}
-      {face("Tielan", "var(--bs-color-warning)")}
+    <AvatarGroup>
+      {face("Q", "var(--bs-color-info)")}
+      {face("C", "var(--bs-color-success)")}
+      {face("Z", "var(--bs-color-danger)")}
+      {face("T", "var(--bs-color-warning)")}
     </AvatarGroup>
   ),
 };
@@ -47,8 +47,8 @@ export const Basic = {
 export const Large = {
   render: () => (
     <AvatarGroup style={{ fontSize: "1.25rem" }}>
-      {face("Lin", "var(--bs-color-primary)")}
-      {face("Mo", "var(--bs-color-warning)")}
+      {face("L", "var(--bs-color-primary)")}
+      {face("M", "var(--bs-color-warning)")}
     </AvatarGroup>
   ),
 };
