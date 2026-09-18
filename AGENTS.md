@@ -91,6 +91,22 @@ Commands live in [CONTRIBUTING.md](./CONTRIBUTING.md) → Development Setup. The
 
 > Wrapper packages import `@bysages/core` by package name (→ `dist`), so **core src changes need `pnpm --filter @bysages/core build`** before they show in the wrappers.
 
+## Generated Files
+
+Several trees in the repo are **build output — never edit them by hand**; change the source the generator reads, then re-run the generator:
+
+| Generated                            | Source of truth                                                                                                                                   | Regenerate                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `docs/content/**` (both shelves)     | wrapper JSDoc/types (via docgen) · `docs/scripts/component-sections.ts` (shelf partition) · `docs/app/components/examples/<family>/*.vue` (demos) | `pnpm docs:content` (`docs:content:check` to verify) |
+| `docs/app/storybook-links.json`      | vue stories (demo → story deep links)                                                                                                             | `pnpm --filter @bysages/docs-site build:links`       |
+| `docs/public/storybook/` (workbench) | vue stories, static build                                                                                                                         | `pnpm --filter @bysages/docs-site build:workbench`   |
+
+Rules that follow:
+
+- `component-sections.ts` must partition every discovered family exactly once — the generator fails loudly on a miss or a duplicate. Moving a family re-derives every page's numeric filename prefix (URLs are unaffected; the slug is the name's last segment).
+- A new demo is just a `.vue` file in `examples/<family>/`; the generator picks it up on the next `docs:content`.
+- React stories mirror the vue stories (same titles, same story export names — they are the deep-link keys). `solid`/`svelte` have no storybook.
+
 ## Behavioral Guidelines
 
 - State assumptions explicitly. If uncertain, ask before implementing.
