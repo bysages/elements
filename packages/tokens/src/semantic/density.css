@@ -13,7 +13,14 @@
 }
 
 :root,
-:host {
+:host,
+/* Custom properties resolve their var() references at the declaring
+   element, so these derived tokens must re-declare on any element that
+   carries a density of its own — declared only on :root, they freeze at
+   the root's scale and a provider re-tuning --bs-density-scale on a
+   subtree would move nothing but the control heights. */
+[data-density],
+:host([data-density]) {
   /* Interior control parts (thumbs, knobs, check boxes, close buttons) are
      decoration riding a control, not the control itself: they scale with
      density and keep no readable floor, so a compact density actually

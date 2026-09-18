@@ -10,6 +10,12 @@
   --bs-color-primary: var(--bs-color-brand-600);
   --bs-color-primary-hover: var(--bs-color-brand-700);
   --bs-color-primary-active: var(--bs-color-brand-800);
+  /* The fill derives here, not only on :root: custom properties resolve
+     var() at the declaring element, so a fill declared only on :root
+     freezes the ink default and never follows an accent that sits below
+     the root (ConfigProvider). */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
   --bs-color-primary-text: oklch(0.988 0.004 95);
   --bs-color-primary-subtle: var(--bs-color-brand-100);
   --bs-color-primary-subtle-text: var(--bs-color-brand-800);
@@ -23,11 +29,12 @@
   --bs-color-primary: var(--bs-color-brand-500);
   --bs-color-primary-hover: var(--bs-color-brand-600);
   --bs-color-primary-active: var(--bs-color-brand-700);
-  /* A mid-tone pigment body carries neither deep nor pale text past
-     4.5:1, so the solid fill kneads toward black and reads with bright
-     paper ink. */
-  --bs-color-primary-fill: color-mix(in oklab, var(--bs-color-brand-500) 80%, black);
-  --bs-color-primary-fill-hover: color-mix(in oklab, var(--bs-color-brand-500) 70%, black);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-brand-700);
+  --bs-color-primary-fill-hover: var(--bs-color-brand-800);
   --bs-color-primary-text: var(--bs-color-gray-25);
   --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
   --bs-color-primary-subtle-text: var(--bs-color-brand-300);
@@ -38,6 +45,9 @@
   --bs-color-primary: var(--bs-color-celadon-600);
   --bs-color-primary-hover: var(--bs-color-celadon-700);
   --bs-color-primary-active: var(--bs-color-celadon-800);
+  /* See qinghua: the fill must derive at the accent host, not the root. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
   --bs-color-primary-text: oklch(0.988 0.004 95);
   --bs-color-primary-subtle: var(--bs-color-celadon-100);
   --bs-color-primary-subtle-text: var(--bs-color-celadon-800);
@@ -51,11 +61,12 @@
   --bs-color-primary: var(--bs-color-celadon-500);
   --bs-color-primary-hover: var(--bs-color-celadon-600);
   --bs-color-primary-active: var(--bs-color-celadon-700);
-  /* A mid-tone pigment body carries neither deep nor pale text past
-     4.5:1, so the solid fill kneads toward black and reads with bright
-     paper ink. */
-  --bs-color-primary-fill: color-mix(in oklab, var(--bs-color-celadon-500) 80%, black);
-  --bs-color-primary-fill-hover: color-mix(in oklab, var(--bs-color-celadon-500) 70%, black);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-celadon-700);
+  --bs-color-primary-fill-hover: var(--bs-color-celadon-800);
   --bs-color-primary-text: var(--bs-color-gray-25);
   --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
   --bs-color-primary-subtle-text: var(--bs-color-celadon-300);
@@ -66,6 +77,9 @@
   --bs-color-primary: var(--bs-color-zhusha-600);
   --bs-color-primary-hover: var(--bs-color-zhusha-700);
   --bs-color-primary-active: var(--bs-color-zhusha-800);
+  /* See qinghua: the fill must derive at the accent host, not the root. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
   --bs-color-primary-text: oklch(0.988 0.004 95);
   --bs-color-primary-subtle: var(--bs-color-zhusha-100);
   --bs-color-primary-subtle-text: var(--bs-color-zhusha-800);
@@ -79,11 +93,12 @@
   --bs-color-primary: var(--bs-color-zhusha-500);
   --bs-color-primary-hover: var(--bs-color-zhusha-600);
   --bs-color-primary-active: var(--bs-color-zhusha-700);
-  /* A mid-tone pigment body carries neither deep nor pale text past
-     4.5:1, so the solid fill kneads toward black and reads with bright
-     paper ink. */
-  --bs-color-primary-fill: color-mix(in oklab, var(--bs-color-zhusha-500) 80%, black);
-  --bs-color-primary-fill-hover: color-mix(in oklab, var(--bs-color-zhusha-500) 70%, black);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-zhusha-700);
+  --bs-color-primary-fill-hover: var(--bs-color-zhusha-800);
   --bs-color-primary-text: var(--bs-color-gray-25);
   --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
   --bs-color-primary-subtle-text: var(--bs-color-zhusha-300);
