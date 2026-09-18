@@ -1,0 +1,16 @@
+import { injectComponentStyle } from "@bysages/core";
+
+import AffixComponent from "./Affix.svelte";
+
+/** A nail: the wrapped content travels with the page until it reaches
+ * its offset, then stays put while the page moves on. The semantics are
+ * plain `position: sticky` — pinning is relative to the nearest
+ * *scrolling* ancestor, so the element works inside a scrollable panel
+ * exactly as it does on the page itself, and a parent with
+ * `overflow: hidden` clips the pin. Both offsets may be given: the
+ * content then holds its place inside that band. */
+export const Affix = AffixComponent;
+
+export type { AffixProps } from "./props";
+
+injectComponentStyle("affix");
