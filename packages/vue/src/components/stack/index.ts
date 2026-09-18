@@ -2,8 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/** Whitespace chosen by name: the named steps point at the space ramp so
- * siblings are held apart by one token, never by ad-hoc margins. */
 const gapVars: Record<string, string> = {
   none: "0",
   xs: "var(--bs-gap-xs)",
@@ -21,6 +19,8 @@ export interface StackProps {
   justify?: string;
 }
 
+/** Whitespace chosen by name: the named steps point at the space ramp so
+ * siblings are held apart by one token, never by ad-hoc margins. */
 export const Stack = defineComponent({
   name: "Stack",
   props: {

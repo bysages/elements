@@ -2,11 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/** A ledger of rows: Root is the list, Item one row, Leading the mark
- * before the words, Content the title and its quiet echo, Actions the
- * way out. The bordered variant draws the hairlines; the hoverable
- * variant gives every row the wash — and any row the caller makes
- * clickable (role="button") answers the pointer on its own. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "List" + name,
@@ -66,6 +61,12 @@ const Content = defineComponent({
       ]);
   },
 });
+
+/** A ledger of rows: Root is the list, Item one row, Leading the mark
+ * before the words, Content the title and its quiet echo, Actions the
+ * way out. The bordered variant draws the hairlines; the hoverable
+ * variant gives every row the wash — and any row the caller makes
+ * clickable (role="button") answers the pointer on its own. */
 
 export const List = Object.assign(Root, { Root, Item, Leading, Content, Actions });
 

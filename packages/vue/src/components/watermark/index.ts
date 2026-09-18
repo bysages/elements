@@ -12,13 +12,6 @@ function toPx(size: string): number {
   return value;
 }
 
-/**
- * The paper bears its seal beneath the content: a canvas draws the
- * text once into a tile (rotated, faint, crisp at the screen's pixel
- * density) and the marks layer repeats it over the default slot. The
- * seal redraws itself when a prop turns — and it never takes a
- * pointer.
- */
 export interface WatermarkProps {
   content: string;
   opacity?: number;
@@ -26,6 +19,13 @@ export interface WatermarkProps {
   fontSize?: string;
 }
 
+/**
+ * The paper bears its seal beneath the content: a canvas draws the
+ * text once into a tile (rotated, faint, crisp at the screen's pixel
+ * density) and the marks layer repeats it over the default slot. The
+ * seal redraws itself when a prop turns — and it never takes a
+ * pointer.
+ */
 export const Watermark = defineComponent({
   name: "Watermark",
   props: {

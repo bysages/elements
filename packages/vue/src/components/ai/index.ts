@@ -11,6 +11,12 @@ import { AiSource as Source, AiSources as Sources } from "../ai-source";
 import { Suggestion } from "../ai-suggestion";
 import { Tool } from "../ai-tool";
 
+/** A conversation column: Root is the log, Message carries a role, and
+ * the speaking parts — Response, Reasoning, Tool, Sources — part the
+ * stream. The interactive folds are the shared Collapsible wearing a
+ * `data-ai` marker, so the machine work is never ours. Parts stay
+ * agnostic of any client; consumers map their message format (e.g. the
+ * `UIMessage` parts re-exported here) onto these primitives. */
 export type {
   DataUIPart,
   FileUIPart,
@@ -24,12 +30,6 @@ export type {
   UIMessagePart,
 } from "ai";
 
-/** A conversation column: Root is the log, Message carries a role, and
- * the speaking parts — Response, Reasoning, Tool, Sources — part the
- * stream. The interactive folds are the shared Collapsible wearing a
- * `data-ai` marker, so the machine work is never ours. Parts stay
- * agnostic of any client; consumers map their message format (e.g. the
- * `UIMessage` parts re-exported here) onto these primitives. */
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
     name: "Ai" + name,

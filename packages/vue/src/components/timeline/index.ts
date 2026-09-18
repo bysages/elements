@@ -2,9 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/** A line of moments: Root is the ordered thread, Item one moment on it,
- * Marker the point where the thread passes, Content what the moment
- * holds. The hairline between markers is drawn by the stylesheet. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Timeline" + name,
@@ -24,6 +21,9 @@ const Item = part("Item", "li");
 const Marker = part("Marker", "span");
 const Content = part("Content", "div");
 
+/** A line of moments: Root is the ordered thread, Item one moment on it,
+ * Marker the point where the thread passes, Content what the moment
+ * holds. The hairline between markers is drawn by the stylesheet. */
 export const Timeline = Object.assign(Root, { Root, Item, Marker, Content });
 
 injectComponentStyle("timeline");

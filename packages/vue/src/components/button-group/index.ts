@@ -2,12 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/**
- * Buttons fused into one control: the group owns only the joinery, so
- * members keep every variant they were given — a solid action can sit
- * beside an outline one and the seam still reads. Selection belongs to
- * the toggle group; this is layout alone.
- */
 const Root = defineComponent({
   name: "ButtonGroup",
   props: {
@@ -40,6 +34,13 @@ const Root = defineComponent({
       );
   },
 });
+
+/**
+ * Buttons fused into one control: the group owns only the joinery, so
+ * members keep every variant they were given — a solid action can sit
+ * beside an outline one and the seam still reads. Selection belongs to
+ * the toggle group; this is layout alone.
+ */
 
 export const ButtonGroup = Object.assign(Root, { Root });
 

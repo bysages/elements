@@ -2,9 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/** The typographic voices, named so prose can ask for one: display and
- * heading ride the song-serif, the rest ride the hei. Nothing here is
- * decorative — hierarchy is size, weight, and space. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Typography" + name,
@@ -25,6 +22,10 @@ const Lead = part("Lead", "p");
 const Body = part("Body", "p");
 const Muted = part("Muted", "p");
 const Label = part("Label", "p");
+
+/** The typographic voices, named so prose can ask for one: display and
+ * heading ride the song-serif, the rest ride the hei. Nothing here is
+ * decorative — hierarchy is size, weight, and space. */
 
 export const Typography = Object.assign(Display, {
   Display,

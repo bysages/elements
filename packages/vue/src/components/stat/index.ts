@@ -2,9 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, type PropType } from "vue";
 
-/** One figure on the page: the label whispers what it is, the value
- * states it plainly in tabular figures, the delta reads the direction
- * in the fixed semantic pigments. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Stat" + name,
@@ -50,6 +47,9 @@ const Delta = defineComponent({
   },
 });
 
+/** One figure on the page: the label whispers what it is, the value
+ * states it plainly in tabular figures, the delta reads the direction
+ * in the fixed semantic pigments. */
 export const Stat = Object.assign(Root, {
   Root,
   Label,

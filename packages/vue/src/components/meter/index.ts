@@ -2,10 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, type PropType } from "vue";
 
-/** A measure in the world, not a task in flight: how much of the toner
- * remains, how full the cistern stands. The level chooses the pigment —
- * primary while all is well, the fixed semantic pigments at the
- * thresholds. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Meter" + name,
@@ -80,6 +76,11 @@ const Root = defineComponent({
     };
   },
 });
+
+/** A measure in the world, not a task in flight: how much of the toner
+ * remains, how full the cistern stands. The level chooses the pigment —
+ * primary while all is well, the fixed semantic pigments at the
+ * thresholds. */
 
 export const Meter = Object.assign(Root, { Root, Label, ValueText, Track });
 

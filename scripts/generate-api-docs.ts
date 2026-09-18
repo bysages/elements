@@ -17,7 +17,7 @@ import {
   SyntaxKind,
   type ExpressionWithTypeArguments,
   type InterfaceDeclaration,
-  type Node,
+  Node,
   type ObjectLiteralElementLike,
   type ObjectLiteralExpression,
   type PropertyAssignment,
@@ -270,15 +270,25 @@ function nativeProps(component: ObjectLiteralExpression): PropDoc[] {
   });
 }
 
-function wrapperHeaderComment(indexText: string): string {
-  // The dressing note sits above the export, after the imports.
-  const block = indexText.match(/\/\*\*([\s\S]*?)\*\//);
-  if (!block) return "";
-  return block[1]
-    .split("\n")
-    .map((line) => line.replace(/^\s*\*?\s?/, ""))
-    .join("\n")
-    .trim();
+/** A statement the family dressing note may sit above: an export
+ * declaration, or a declaration carrying the export keyword. ts-morph
+ * types `getModifiers` loosely across the statement union, so probe it
+ * by shape. */
+function exportedStatement(statement: Node): boolean {
+  if (Node.isExportDeclaration(statement)) return true;
+  const modifiers = (statement as { getModifiers?: () => readonly Node[] }).getModifiers?.() ?? [];
+  return modifiers.some((m) => m.getKind() === SyntaxKind.ExportKeyword);
+}
+
+function wrapperHeaderComment(file: SourceFile): string {
+  // The dressing note sits above the family's first commented export —
+  // the file's first comment would hand the page a private helper's.
+  for (const statement of file.getStatements()) {
+    if (!exportedStatement(statement)) continue;
+    const text = commentText(statement);
+    if (text) return text;
+  }
+  return "";
 }
 
 /** Parts our stylesheet actually styles, from the data-part selectors. */
@@ -326,7 +336,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
   const indexText = readFileSync(indexPath, "utf8");
 
   const arkImport = indexText.match(/import \{[^}]*as Ark\w+[^}]*\} from "@ark-ui\/vue\/([\w-]+)"/);
-  const description = wrapperHeaderComment(indexText);
+  const description = wrapperHeaderComment(indexFile);
   // A family that merely composes an Ark part under another name (the
   // calendar wears the date-picker) is still its own native family —
   // only a re-export of the matching module is a wrapped one.

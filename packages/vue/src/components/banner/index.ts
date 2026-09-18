@@ -2,10 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, type PropType } from "vue";
 
-/** A page-level notice, spoken across the full measure: a wash of the
- * status pigment, one heavier hairline on the leading edge, and room
- * for actions and a quiet close. Ink is the neutral register; the four
- * semantic pigments are fixed. */
 const Root = defineComponent({
   name: "BannerRoot",
   props: {
@@ -84,6 +80,11 @@ const Close = defineComponent({
       );
   },
 });
+
+/** A page-level notice, spoken across the full measure: a wash of the
+ * status pigment, one heavier hairline on the leading edge, and room
+ * for actions and a quiet close. Ink is the neutral register; the four
+ * semantic pigments are fixed. */
 
 export const Banner = Object.assign(Root, {
   Root,

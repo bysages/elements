@@ -2,9 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-/** The page's face: an eyebrow whisper, a serif title, one line of
- * description, and the actions resting beside the title on the same
- * baseline. Heading groups title and actions; the rest compose below. */
 function part(name: string, tag: string) {
   return defineComponent({
     name: "PageHeader" + name,
@@ -25,6 +22,10 @@ const Eyebrow = part("Eyebrow", "p");
 const Title = part("Title", "h1");
 const Description = part("Description", "p");
 const Actions = part("Actions", "div");
+
+/** The page's face: an eyebrow whisper, a serif title, one line of
+ * description, and the actions resting beside the title on the same
+ * baseline. Heading groups title and actions; the rest compose below. */
 
 export const PageHeader = Object.assign(Root, {
   Root,

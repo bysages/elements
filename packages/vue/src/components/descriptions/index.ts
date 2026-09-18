@@ -2,11 +2,6 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
-/**
- * A ledger laid flat: term and detail pairs in one quiet grid. The
- * horizontal layout reads as a table of two columns; the vertical one
- * stacks each pair for narrow measures.
- */
 const Root = defineComponent({
   name: "Descriptions",
   props: {
@@ -44,6 +39,12 @@ function part(name: string, tag: string) {
 const Item = part("Item", "div");
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
+
+/**
+ * A ledger laid flat: term and detail pairs in one quiet grid. The
+ * horizontal layout reads as a table of two columns; the vertical one
+ * stacks each pair for narrow measures.
+ */
 
 export const Descriptions = { Root, Item, Term, Detail };
 

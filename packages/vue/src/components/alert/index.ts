@@ -30,8 +30,6 @@ function glyph(status: string) {
   );
 }
 
-/** A notice drawn on the page: a wash of the status pigment, one heavier
- * hairline on the leading edge, the serif for its title. */
 const Root = defineComponent({
   name: "AlertRoot",
   props: {
@@ -95,6 +93,9 @@ const Description = defineComponent({
       );
   },
 });
+
+/** A notice drawn on the page: a wash of the status pigment, one heavier
+ * hairline on the leading edge, the serif for its title. */
 
 export const Alert = Object.assign(Root, { Root, Icon, Body, Title, Description });
 
