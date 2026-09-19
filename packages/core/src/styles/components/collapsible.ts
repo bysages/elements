@@ -1,5 +1,6 @@
 export const collapsibleCss = /* css */ `
 [data-scope="collapsible"][data-part="root"] {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   /* Fill the parent at rest too: an auto width would refit to the

@@ -364,6 +364,7 @@ export const aiCss = /* css */ `
    and its switches) are slots — absent when empty, so the bare vessel
    stays one quiet line. The halo answers the vessel, not the control. */
 [data-scope="ai"][data-part="prompt"] {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
