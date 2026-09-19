@@ -229,6 +229,16 @@ const Demo = defineComponent({
             zoomButton("⤢", "Fit view", () =>
               canvas?.graph.zoomToFit({ padding: 24, maxScale: 1 }),
             ),
+            h(
+              Button,
+              {
+                variant: "outline",
+                size: "sm",
+                "aria-label": "Auto layout",
+                onClick: () => void canvas?.layout(),
+              },
+              () => "Auto layout",
+            ),
           ],
         ),
         h("div", {

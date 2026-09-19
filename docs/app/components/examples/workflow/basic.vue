@@ -113,6 +113,15 @@ const fit = () => canvas?.graph.zoomToFit({ padding: 24, maxScale: 1 });
         >+</Button
       >
       <Button variant="outline" size="sm" square aria-label="Fit view" @click="fit">⤢</Button>
+      <Button
+        variant="outline"
+        size="sm"
+        aria-label="Auto layout"
+        style="margin-inline-start: 0.25rem"
+        @click="canvas?.layout()"
+      >
+        Auto layout
+      </Button>
     </div>
     <div
       ref="mapHost"

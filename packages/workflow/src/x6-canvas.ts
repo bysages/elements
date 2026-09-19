@@ -6,6 +6,16 @@ import { createWorkflowStore } from "./store";
 import type { WorkflowChange, WorkflowStore } from "./store";
 import type { NodeState, WorkflowEdge, WorkflowGraph, WorkflowNode } from "./types";
 
+/** How the layered engine should sweep the graph. Top-to-bottom suits
+ * the node anatomy — out handles on the bottom, in handles on top. */
+export interface WorkflowAutoLayoutOptions {
+  direction?: "TB" | "LR" | "BT" | "RL";
+  /** The gap between layers, in px. */
+  rankSep?: number;
+  /** The gap between siblings on one layer, in px. */
+  nodeSep?: number;
+}
+
 /** The framework mount point: the host mounts its components into the
  * node's card and returns an unmount cleanup (optional). Content updates
  * stay with the host — subscribe to the store in the closure. */
@@ -22,6 +32,10 @@ export interface WorkflowCanvas {
   readonly store: WorkflowStore;
   /** Read-only escape hatch; the lifecycle stays with the canvas. */
   readonly graph: Graph;
+  /** Sweeps the graph with the ELK layered algorithm and writes every
+   * node's new position back through the store. Async: the layout
+   * engine is heavy, so it's pulled in only when this runs. */
+  layout(options?: WorkflowAutoLayoutOptions): Promise<void>;
   destroy(): void;
 }
 
@@ -368,9 +382,42 @@ export function createWorkflowCanvas(
     apply(change);
   });
 
+  const layout = async (options?: WorkflowAutoLayoutOptions) => {
+    const direction = options?.direction ?? "TB";
+    const rankSep = options?.rankSep ?? 80;
+    const nodeSep = options?.nodeSep ?? 40;
+    const { default: ELK } = await import("elkjs");
+    const result = await new ELK().layout({
+      id: "workflow",
+      layoutOptions: {
+        "elk.algorithm": "layered",
+        "elk.direction": { TB: "DOWN", LR: "RIGHT", BT: "UP", RL: "LEFT" }[direction],
+        "elk.spacing.nodeNode": String(nodeSep),
+        "elk.layered.spacing.nodeNodeBetweenLayers": String(rankSep),
+      },
+      children: store.getGraph().nodes.map((node) => ({
+        id: node.id,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
+      })),
+      edges: store.getGraph().edges.map((edge) => ({
+        id: edge.id,
+        sources: [edge.source.node],
+        targets: [edge.target.node],
+      })),
+    });
+    // ELK hands back top-left corners. Moves go through the store — the
+    // single writer — so the canvas replays them like any other change.
+    for (const child of result.children ?? []) {
+      if (child.x == null || child.y == null) continue;
+      store.moveNode(child.id, { x: child.x, y: child.y });
+    }
+  };
+
   return {
     store,
     graph,
+    layout,
     destroy() {
       // Mute the removal echoes before tearing the model down — the store
       // outlives the canvas.
