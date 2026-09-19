@@ -6,8 +6,11 @@ import { createWorkflowStore } from "./store";
 import type { WorkflowChange, WorkflowStore } from "./store";
 import type { NodeState, WorkflowEdge, WorkflowGraph, WorkflowNode } from "./types";
 
-/** How the layered engine should sweep the graph. Top-to-bottom suits
- * the node anatomy — out handles on the bottom, in handles on top. */
+/** How the layered engine should sweep the graph. Left out, the
+ * direction is read off the graph: edges drawn between side handles
+ * vote horizontal, edges between the top/bottom handles vote
+ * vertical. Top-to-bottom suits the node's first in/out pair — out
+ * handles on the bottom, in handles on top. */
 export interface WorkflowAutoLayoutOptions {
   direction?: "TB" | "LR" | "BT" | "RL";
   /** The gap between layers, in px. */
@@ -450,8 +453,43 @@ export function createWorkflowCanvas(
   let elkLoader: Promise<import("elkjs").ELK> | undefined;
   let layoutRun: Promise<void> = Promise.resolve();
 
+  // Which way the graph flows is the edges' own story: a line pulled
+  // from a side handle to a side handle reads horizontally, and the
+  // sweep should follow it. Each edge votes through the sides its
+  // endpoints sit on; vertical wins ties — the first in/out pair tops
+  // and bottoms the node, so the anatomy's default stays the default.
+  const inferDirection = (): "TB" | "LR" => {
+    const sideOf = (nodeId: string, portId: string, dir: "in" | "out") => {
+      const node = store.getNode(nodeId);
+      if (!node) return dir === "in" ? "top" : "bottom";
+      let ordinal = -1;
+      let found = -1;
+      for (const port of node.ports) {
+        if (port.dir !== dir) continue;
+        ordinal++;
+        if (port.id === portId) {
+          found = ordinal;
+          break;
+        }
+      }
+      if (found < 0) return dir === "in" ? "top" : "bottom";
+      const first = found % 2 === 0;
+      if (dir === "in") return first ? "top" : "left";
+      return first ? "bottom" : "right";
+    };
+    let horizontal = 0;
+    let vertical = 0;
+    for (const edge of store.getGraph().edges) {
+      const out = sideOf(edge.source.node, edge.source.port, "out");
+      const into = sideOf(edge.target.node, edge.target.port, "in");
+      if (out === "right" || into === "left") horizontal++;
+      else vertical++;
+    }
+    return horizontal > vertical ? "LR" : "TB";
+  };
+
   const doLayout = async (options?: WorkflowAutoLayoutOptions) => {
-    const direction = options?.direction ?? "TB";
+    const direction = options?.direction ?? inferDirection();
     const rankSep = options?.rankSep ?? 80;
     const nodeSep = options?.nodeSep ?? 40;
     elkLoader ??= import("elkjs").then(({ default: ELK }) => new ELK());

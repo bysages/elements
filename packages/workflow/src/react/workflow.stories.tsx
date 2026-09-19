@@ -60,6 +60,54 @@ const fixture = (): WorkflowGraph => ({
   ],
 });
 
+/** The same chain, wired left-to-right: the edges run from the second
+ * out handle (the node's right side) to the second in handle (the left
+ * side), so the auto layout sweeps horizontally. */
+const flowFixture = (): WorkflowGraph => ({
+  nodes: [
+    {
+      id: "start",
+      type: "start",
+      position: { x: 400, y: 60 },
+      ports: [
+        { id: "out-1", dir: "out" },
+        { id: "out-2", dir: "out" },
+      ],
+      data: { label: "Start" },
+    },
+    {
+      id: "prompt",
+      type: "prompt",
+      position: { x: 80, y: 260 },
+      ports: [
+        { id: "in-1", dir: "in" },
+        { id: "in-2", dir: "in" },
+        { id: "out-1", dir: "out" },
+        { id: "out-2", dir: "out" },
+      ],
+      data: { label: "Draft the reply" },
+    },
+    {
+      id: "tool",
+      type: "tool",
+      position: { x: 560, y: 380 },
+      ports: [
+        { id: "in-1", dir: "in" },
+        { id: "in-2", dir: "in" },
+      ],
+      data: { label: "search_web" },
+    },
+  ],
+  edges: [
+    {
+      id: "e1",
+      source: { node: "start", port: "out-2" },
+      target: { node: "prompt", port: "in-2" },
+    },
+    { id: "e2", source: { node: "prompt", port: "out-2" }, target: { node: "tool", port: "in-2" } },
+  ],
+});
+
 /** NodeState → AiTool's status vocabulary. */
 const toolStatus = (state: NodeState): "pending" | "running" | "completed" | "error" =>
   state === "idle" ? "pending" : state === "success" ? "completed" : state;
@@ -67,7 +115,7 @@ const toolStatus = (state: NodeState): "pending" | "running" | "completed" | "er
 const labelOf = (data: WorkflowNodeData, fallback: string) =>
   typeof data.label === "string" ? data.label : fallback;
 
-const Demo = ({ run = false }: { run?: boolean }) => {
+const Demo = ({ run = false, flow = false }: { run?: boolean; flow?: boolean }) => {
   const hostRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<WorkflowCanvas | null>(null);
@@ -159,10 +207,14 @@ const Demo = ({ run = false }: { run?: boolean }) => {
       });
     };
 
-    const canvas = createWorkflowCanvas(host, createWorkflowStore(fixture()), {
-      renderNode,
-      ...(mapRef.current ? { minimap: { container: mapRef.current } } : {}),
-    });
+    const canvas = createWorkflowCanvas(
+      host,
+      createWorkflowStore(flow ? flowFixture() : fixture()),
+      {
+        renderNode,
+        ...(mapRef.current ? { minimap: { container: mapRef.current } } : {}),
+      },
+    );
     canvasRef.current = canvas;
     canvas.graph.on("scale", () => setZoom(Math.round(canvas.graph.zoom() * 100)));
     if (run) runSequence(canvas);
@@ -172,7 +224,7 @@ const Demo = ({ run = false }: { run?: boolean }) => {
       canvas.destroy();
       canvasRef.current = null;
     };
-  }, [run]);
+  }, [run, flow]);
 
   const stepZoom = (factor: number) => canvasRef.current?.zoomBy(factor);
   const fit = () => canvasRef.current?.fitView();
@@ -253,4 +305,11 @@ export const Basic = {
  * enter the undo stack. */
 export const Run = {
   render: () => <Demo run />,
+};
+
+/** The same chain wired through the side handles — a horizontal flow.
+ * Auto layout reads the edges and sweeps left to right without being
+ * told to. */
+export const Flow = {
+  render: () => <Demo flow />,
 };
