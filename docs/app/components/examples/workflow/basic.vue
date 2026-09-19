@@ -51,12 +51,15 @@ const host = ref<HTMLElement | null>(null);
 const mapHost = ref<HTMLElement | null>(null);
 const zoom = ref(100);
 let canvas: WorkflowCanvas | null = null;
+let disposed = false;
 
 // X6 is browser-only, so the engine is pulled in from the client only —
 // a static import here would drag it into the server module graph.
 onMounted(async () => {
   if (!host.value) return;
   const { createWorkflowCanvas, createWorkflowStore } = await import("@bysages/workflow");
+  // The chunk load may outlive the visit — never mount onto a departed host.
+  if (disposed || !host.value) return;
   canvas = createWorkflowCanvas(host.value, createWorkflowStore(fixture()), {
     // The host mounts its own content into each card — a plain label
     // here; any component works through this one hook.
@@ -72,7 +75,10 @@ onMounted(async () => {
   });
 });
 
-onBeforeUnmount(() => canvas?.destroy());
+onBeforeUnmount(() => {
+  disposed = true;
+  canvas?.destroy();
+});
 
 const zoomTo = (factor: number) => canvas?.graph.zoomTo(canvas.graph.zoom() * factor);
 const fit = () => canvas?.graph.zoomToFit({ padding: 24, maxScale: 1 });

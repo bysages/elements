@@ -45,7 +45,52 @@ const NODE_WIDTH = 256;
 const NODE_HEIGHT = 88;
 const HANDLE = 12;
 
-let shapeSeq = 0;
+/** The html() callback resolves its canvas from the cell's graph, so one
+ * registration serves every canvas: X6's module-private html registry has
+ * no unregister, and a per-canvas closure there would pin the whole dead
+ * canvas for the page's lifetime. */
+interface CanvasContext {
+  store: WorkflowStore;
+  cleanups: Map<string, () => void>;
+  renderNode?: WorkflowCanvasOptions["renderNode"];
+}
+const canvasContexts = new WeakMap<Graph, CanvasContext>();
+const SHAPE_NAME = "workflow-html-node";
+
+Shape.HTML.register({
+  shape: SHAPE_NAME,
+  // `effect: []` pins the html() callback to the initial render — X6's
+  // html view otherwise re-runs it on every cell change, drag frames
+  // included, tearing down the host's mounted content (a prompt draft,
+  // an input focus) each time. State travels through a data attribute.
+  effect: [],
+  width: NODE_WIDTH,
+  height: NODE_HEIGHT,
+  html(cell: Cell) {
+    const model = cell.model;
+    const context = model ? canvasContexts.get(model.graph) : undefined;
+    if (!context) return document.createElement("div");
+    const node = context.store.getNode(cell.id);
+    if (!node) return document.createElement("div");
+
+    const host = document.createElement("div");
+    host.dataset.scope = "workflow";
+    host.dataset.part = "node";
+    const card = document.createElement("div");
+    card.className = "workflow-node-card";
+    card.dataset.state = node.state ?? "idle";
+    host.append(card);
+
+    const dispose = context.renderNode?.(card, node);
+    if (dispose) context.cleanups.set(cell.id, dispose);
+
+    cell.on("change:data", ({ current }) => {
+      const data = (current ?? {}) as { workflowState?: NodeState };
+      card.dataset.state = data.workflowState ?? "idle";
+    });
+    return host;
+  },
+});
 
 /** One live canvas per container — re-creating over an existing canvas
  * (hot reload does this) tears the old one down first. */
@@ -69,39 +114,6 @@ export function createWorkflowCanvas(
   const store: WorkflowStore = "getGraph" in source ? source : createWorkflowStore(source);
 
   const cleanups = new Map<string, () => void>();
-  const shape = `workflow-html-node-${++shapeSeq}`;
-
-  // One host per canvas: Shape.HTML.register is global, so every canvas
-  // claims its own shape name. The html() callback runs once per cell —
-  // never on data changes, or the host's mounted content (a prompt draft,
-  // a scroll position) would be torn down on every state write. State
-  // travels through a data attribute instead.
-  Shape.HTML.register({
-    shape,
-    width: NODE_WIDTH,
-    height: NODE_HEIGHT,
-    html(cell: Cell) {
-      const node = store.getNode(cell.id);
-      if (!node) return document.createElement("div");
-
-      const host = document.createElement("div");
-      host.dataset.scope = "workflow";
-      host.dataset.part = "node";
-      const card = document.createElement("div");
-      card.className = "workflow-node-card";
-      card.dataset.state = node.state ?? "idle";
-      host.append(card);
-
-      const dispose = options.renderNode?.(card, node);
-      if (dispose) cleanups.set(cell.id, dispose);
-
-      cell.on("change:data", ({ current }) => {
-        const data = (current ?? {}) as { state?: NodeState };
-        card.dataset.state = data.state ?? "idle";
-      });
-      return host;
-    },
-  });
 
   // Handles sit at the four edge midpoints, centered on the box edge.
   // X6 anchors a port's layout box at its top-left corner, so the rect
@@ -143,12 +155,17 @@ export function createWorkflowCanvas(
 
   const toNodeConfig = (node: WorkflowNode): NodeMetadata => ({
     id: node.id,
-    shape,
+    shape: SHAPE_NAME,
     x: node.position.x,
     y: node.position.y,
     // The X6 copy carries everything an undo restore needs to rebuild the
-    // protocol node; `type` rides along for the same reason.
-    data: { ...node.data, type: node.type, state: node.state ?? "idle" },
+    // protocol node. The reserved workflow* keys can't collide with a
+    // host's own data fields.
+    data: {
+      ...node.data,
+      workflowType: node.type,
+      workflowState: node.state ?? "idle",
+    },
     ports: {
       groups: portGroups,
       items: (() => {
@@ -173,10 +190,18 @@ export function createWorkflowCanvas(
     id: edge.id,
     source: { cell: edge.source.node, port: edge.source.port },
     target: { cell: edge.target.node, port: edge.target.port },
-    attrs: edgeAttrs,
+    attrs: {
+      line: {
+        ...edgeAttrs.line,
+        ...(edge.state ? { "data-state": edge.state } : {}),
+      },
+    },
   });
 
-  const graph = new Graph({
+  // The annotation breaks the inference cycle: connecting.createEdge
+  // closes over the graph, so without it every handler below degrades
+  // to implicit any.
+  const graph: Graph = new Graph({
     container,
     grid: false,
     // No autoResize: X6 writes its size back onto the container, which
@@ -211,8 +236,13 @@ export function createWorkflowCanvas(
     panning: { enabled: true },
   });
 
+  canvasContexts.set(graph, { store, cleanups, renderNode: options.renderNode });
+
   container.dataset.scope = "workflow";
   container.dataset.part = "canvas";
+  // The handle geometry is the adapter's; publish it so the stylesheet's
+  // inward padding derives from the same number instead of a comment.
+  container.style.setProperty("--bs-workflow-handle", `${HANDLE}px`);
 
   // The rubberband yields the bare blank drag to panning — it rides
   // shift instead, as canvas editors conventionally do. X6's own
@@ -222,12 +252,19 @@ export function createWorkflowCanvas(
   graph.use(
     new Selection({ enabled: true, rubberband: true, modifiers: ["shift"], multiple: true }),
   );
-  // Execution states ride data changes — runtime truth from the server,
-  // not user edits — so data writes never enter the undo stack.
+  // Execution states ride data changes and the edge's data-state attr —
+  // runtime truth from the server, not user edits — so neither enters
+  // the undo stack. History hands this check the wildcard event name
+  // (the per-key rewrite happens after it), so the exclusion reads the
+  // change key off the args; position changes must stay undoable.
   graph.use(
     new History({
       enabled: true,
-      beforeAddCommand: (event) => event !== "cell:change:data",
+      beforeAddCommand: (event, args) => {
+        if (event !== "cell:change:*") return true;
+        const key = (args as { key?: string }).key;
+        return key !== "data" && key !== "attrs";
+      },
     }),
   );
   const keyboard = new Keyboard({ enabled: true });
@@ -255,11 +292,13 @@ export function createWorkflowCanvas(
 
   options.onReady?.(graph);
 
-  // The canvas follows the host's box: read the container, size the SVG,
-  // never write the container back.
+  // The canvas follows the host's box: observe the container, size the
+  // SVG, never write the container back. A container that changes size
+  // without a window resize (a sidebar toggle) still reaches us.
   const followHost = () => graph.resize(container.clientWidth, container.clientHeight);
   followHost();
-  window.addEventListener("resize", followHost);
+  const hostResize = new ResizeObserver(followHost);
+  hostResize.observe(container);
 
   for (const node of store.getGraph().nodes) graph.addNode(toNodeConfig(node));
   for (const edge of store.getGraph().edges) graph.addEdge(toEdgeConfig(edge));
@@ -281,6 +320,12 @@ export function createWorkflowCanvas(
   };
 
   graph.on("node:moved", ({ node }) => guard(() => store.moveNode(node.id, node.getPosition())));
+  // Undo, redo, and programmatic moves bypass the drag pipeline: they
+  // land as plain position changes without the ui flag a drag sets.
+  graph.on("node:change:position", ({ node, options }) => {
+    if (options?.ui) return;
+    guard(() => store.moveNode(node.id, node.getPosition()));
+  });
   graph.on("node:removed", ({ node }) => {
     cleanups.get(node.id)?.();
     cleanups.delete(node.id);
@@ -292,19 +337,19 @@ export function createWorkflowCanvas(
   graph.on("node:added", ({ node }) =>
     guard(() => {
       const data = (node.getData() ?? {}) as Record<string, unknown> & {
-        type?: string;
-        state?: NodeState;
+        workflowType?: string;
+        workflowState?: NodeState;
       };
-      const { type, state, ...rest } = data;
+      const { workflowType, workflowState, ...rest } = data;
       store.addNode({
         id: node.id,
-        type: type ?? "unknown",
+        type: workflowType ?? "unknown",
         position: node.getPosition(),
         ports: node.getPorts().map((p) => ({
           id: p.id ?? "",
           dir: (String(p.group ?? "").startsWith("out") ? "out" : "in") as "in" | "out",
         })),
-        state,
+        state: workflowState,
         data: rest,
       });
     }),
@@ -360,13 +405,19 @@ export function createWorkflowCanvas(
           break;
         }
         case "node:state":
-          graph.getCellById(change.id)?.setData({ state: change.state });
+          graph.getCellById(change.id)?.setData({ workflowState: change.state });
           break;
         case "node:data":
-          // Content is the host's business; the canvas only carries state.
+          // Content is the host's business; the canvas only carries
+          // state. The patch still lands in the X6 copy — that copy is
+          // what an undo restore rebuilds the protocol node from.
+          graph.getCellById(change.id)?.setData({ ...change.patch });
           break;
         case "edge:connect":
           graph.addEdge(toEdgeConfig(change.edge));
+          break;
+        case "edge:state":
+          graph.getCellById(change.id)?.attr("line/data-state", change.state);
           break;
         case "edge:remove":
           graph.removeCell(change.id);
@@ -382,12 +433,20 @@ export function createWorkflowCanvas(
     apply(change);
   });
 
-  const layout = async (options?: WorkflowAutoLayoutOptions) => {
+  // The layout engine is heavy — one shared instance for the process,
+  // not one worker per sweep. Sweeps also queue behind each other: two
+  // overlapping runs would interleave their coordinates.
+  let elkLoader: Promise<import("elkjs").ELK> | undefined;
+  let layoutRun: Promise<void> = Promise.resolve();
+
+  const doLayout = async (options?: WorkflowAutoLayoutOptions) => {
     const direction = options?.direction ?? "TB";
     const rankSep = options?.rankSep ?? 80;
     const nodeSep = options?.nodeSep ?? 40;
-    const { default: ELK } = await import("elkjs");
-    const result = await new ELK().layout({
+    elkLoader ??= import("elkjs").then(({ default: ELK }) => new ELK());
+    const elk = await elkLoader;
+    const { nodes, edges } = store.getGraph();
+    const result = await elk.layout({
       id: "workflow",
       layoutOptions: {
         "elk.algorithm": "layered",
@@ -395,35 +454,53 @@ export function createWorkflowCanvas(
         "elk.spacing.nodeNode": String(nodeSep),
         "elk.layered.spacing.nodeNodeBetweenLayers": String(rankSep),
       },
-      children: store.getGraph().nodes.map((node) => ({
+      children: nodes.map((node) => ({
         id: node.id,
         width: NODE_WIDTH,
         height: NODE_HEIGHT,
       })),
-      edges: store.getGraph().edges.map((edge) => ({
+      edges: edges.map((edge) => ({
         id: edge.id,
         sources: [edge.source.node],
         targets: [edge.target.node],
       })),
     });
     // ELK hands back top-left corners. Moves go through the store — the
-    // single writer — so the canvas replays them like any other change.
-    for (const child of result.children ?? []) {
-      if (child.x == null || child.y == null) continue;
-      store.moveNode(child.id, { x: child.x, y: child.y });
+    // single writer — so the canvas replays them like any other change,
+    // and one undo takes back the whole sweep. A sweep that lands after
+    // destroy() still updates the store; only the dead graph is skipped.
+    if (destroyed) return;
+    graph.startBatch("workflow-layout");
+    try {
+      for (const child of result.children ?? []) {
+        if (child.x == null || child.y == null) continue;
+        store.moveNode(child.id, { x: child.x, y: child.y });
+      }
+    } finally {
+      graph.stopBatch("workflow-layout");
     }
   };
 
-  return {
+  const layout = (options?: WorkflowAutoLayoutOptions): Promise<void> => {
+    const run = layoutRun.catch(() => {}).then(() => doLayout(options));
+    layoutRun = run;
+    return run;
+  };
+
+  let destroyed = false;
+  const canvas: WorkflowCanvas = {
     store,
     graph,
     layout,
     destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      live.delete(container);
       // Mute the removal echoes before tearing the model down — the store
       // outlives the canvas.
       replaying = true;
       unsubscribe();
-      window.removeEventListener("resize", followHost);
+      hostResize.disconnect();
       graph.dispose();
       // X6 leaves its layers behind — sweep them so a re-created canvas
       // on this container starts from clean paper. A snapshot: removing
@@ -431,8 +508,13 @@ export function createWorkflowCanvas(
       for (const child of Array.from(container.children)) {
         if (child.classList.value.startsWith("x6-")) child.remove();
       }
+      // Drop the html() context — the shared registration outlives us,
+      // our graph must not.
+      canvasContexts.delete(graph);
       for (const dispose of cleanups.values()) dispose();
       cleanups.clear();
     },
   };
+  live.set(container, canvas);
+  return canvas;
 }

@@ -17,6 +17,7 @@ export type WorkflowChange =
   | { kind: "node:state"; id: string; state: NodeState }
   | { kind: "node:data"; id: string; patch: WorkflowNodeData }
   | { kind: "edge:connect"; edge: WorkflowEdge }
+  | { kind: "edge:state"; id: string; state: NodeState }
   | { kind: "edge:remove"; id: string };
 
 export interface WorkflowStore {
@@ -33,8 +34,10 @@ export interface WorkflowStore {
   /** Shallow-merges into the node's data. */
   setNodeData(id: string, patch: WorkflowNodeData): void;
   /** Connects two ports and returns the edge; an already existing
-   * source→target pair returns that edge untouched. */
+   * source→target pair (or id) returns that edge untouched. */
   connect(edge: Omit<WorkflowEdge, "id"> & { id?: string }): WorkflowEdge | undefined;
+  /** Marks an edge's execution state — the edge twin of setNodeState. */
+  setEdgeState(id: string, state: NodeState): void;
   disconnect(id: string): void;
   subscribe(listener: (change: WorkflowChange) => void): () => void;
 }
@@ -43,7 +46,15 @@ export interface WorkflowStore {
  * ids are silent no-ops, redundant writes don't re-emit) so event loops
  * between the canvas and the store die on their own. */
 export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
-  const nodes = new Map<string, WorkflowNode>(graph?.nodes.map((n) => [n.id, { ...n }]) ?? []);
+  // Copies at the boundary keep a caller's source graph from mutating a
+  // live record underneath the change log.
+  const copyNode = (node: WorkflowNode): WorkflowNode => ({
+    ...node,
+    position: { ...node.position },
+    ports: node.ports.map((port) => ({ ...port })),
+    data: { ...node.data },
+  });
+  const nodes = new Map<string, WorkflowNode>(graph?.nodes.map((n) => [n.id, copyNode(n)]) ?? []);
   const edges = new Map<string, WorkflowEdge>(graph?.edges.map((e) => [e.id, { ...e }]) ?? []);
   const listeners = new Set<(change: WorkflowChange) => void>();
   let edgeSeq = 0;
@@ -69,8 +80,8 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
 
     addNode(node) {
       if (nodes.has(node.id)) return;
-      nodes.set(node.id, { ...node });
-      commit({ kind: "node:add", node: { ...node } });
+      nodes.set(node.id, copyNode(node));
+      commit({ kind: "node:add", node: copyNode(node) });
     },
 
     removeNode(id) {
@@ -85,6 +96,7 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
     moveNode(id, position) {
       const node = nodes.get(id);
       if (!node) return;
+      if (node.position.x === position.x && node.position.y === position.y) return;
       node.position = { ...position };
       commit({ kind: "node:move", id, position: { ...position } });
     },
@@ -104,6 +116,11 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
     },
 
     connect(edge) {
+      // An id is an identity: a connect carrying one that already exists
+      // returns that edge. Silently overwriting it would strand the
+      // canvas rendering a record the store no longer holds.
+      const byId = edge.id != null ? edges.get(edge.id) : undefined;
+      if (byId) return byId;
       const source = { ...edge.source };
       const target = { ...edge.target };
       for (const existing of edges.values()) {
@@ -117,9 +134,17 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
         }
       }
       const record: WorkflowEdge = { id: edge.id ?? nextEdgeId(), source, target };
+      if (edge.state) record.state = edge.state;
       edges.set(record.id, record);
       commit({ kind: "edge:connect", edge: { ...record } });
       return record;
+    },
+
+    setEdgeState(id, state) {
+      const edge = edges.get(id);
+      if (!edge || edge.state === state) return;
+      edge.state = state;
+      commit({ kind: "edge:state", id, state });
     },
 
     disconnect(id) {

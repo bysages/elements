@@ -48,6 +48,9 @@ export interface WorkflowEdge {
   id: string;
   source: WorkflowEndpoint;
   target: WorkflowEndpoint;
+  /** Runtime state — the same `data-state` contract the CSS reads on the
+   * edge line. The canvas only displays it; the executor writes it. */
+  state?: NodeState;
 }
 
 export interface WorkflowGraph {

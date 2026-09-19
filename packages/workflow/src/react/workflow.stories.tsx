@@ -139,25 +139,23 @@ const Demo = ({ run = false }: { run?: boolean }) => {
     };
 
     const runSequence = (canvas: WorkflowCanvas) => {
-      const { store, graph } = canvas;
-      const edgeState = (id: string, state: string) =>
-        graph.getCellById(id)?.attr("line/data-state", state);
+      const { store } = canvas;
 
       at(600, () => {
         store.setNodeState("prompt", "running");
-        edgeState("e1", "running");
+        store.setEdgeState("e1", "running");
       });
       at(2000, () => {
         store.setNodeState("prompt", "success");
-        edgeState("e1", "success");
+        store.setEdgeState("e1", "success");
       });
       at(2400, () => {
         store.setNodeState("tool", "running");
-        edgeState("e2", "running");
+        store.setEdgeState("e2", "running");
       });
       at(4200, () => {
         store.setNodeState("tool", "success");
-        edgeState("e2", "success");
+        store.setEdgeState("e2", "success");
       });
     };
 

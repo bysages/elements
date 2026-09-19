@@ -13,12 +13,14 @@ export const workflowCss = /* css */ `
 }
 
 /* The node host fills the cell's bounding box; the inward padding keeps
- * the handles (12px, centered on the box edge) clear of the card. */
+ * the handles (centered on the box edge) clear of the card. The handle
+ * size is the adapter's geometry — it arrives as a variable so this
+ * padding can never drift away from it. */
 [data-scope="workflow"][data-part="node"] {
   box-sizing: border-box;
   inline-size: 100%;
   block-size: 100%;
-  padding: var(--bs-space-3);
+  padding: var(--bs-workflow-handle, var(--bs-space-3));
 }
 
 /* The vessel: round, resting on paper, one hairline. State rules below
@@ -89,16 +91,22 @@ export const workflowCss = /* css */ `
   transition: stroke var(--bs-duration-base) var(--bs-ease-out);
 }
 
-[data-scope="workflow"] .workflow-node-card[data-state="running"] {
+/* The :hover twins match the plain hover rule's specificity, so the
+ * state pigment wins the cascade at the same (0,4,0) rank by order —
+ * hovering a mid-flight node never repaints it back to a hairline. */
+[data-scope="workflow"] .workflow-node-card[data-state="running"],
+[data-scope="workflow"] .workflow-node-card[data-state="running"]:hover {
   border-color: var(--bs-color-primary);
   animation: workflow-breathe var(--bs-duration-slow) var(--bs-ease-in-out) infinite alternate;
 }
 
-[data-scope="workflow"] .workflow-node-card[data-state="success"] {
+[data-scope="workflow"] .workflow-node-card[data-state="success"],
+[data-scope="workflow"] .workflow-node-card[data-state="success"]:hover {
   border-color: var(--bs-color-success);
 }
 
-[data-scope="workflow"] .workflow-node-card[data-state="error"] {
+[data-scope="workflow"] .workflow-node-card[data-state="error"],
+[data-scope="workflow"] .workflow-node-card[data-state="error"]:hover {
   border-color: var(--bs-color-danger);
 }
 
@@ -157,7 +165,7 @@ export const workflowCss = /* css */ `
 
 [data-scope="workflow"][data-part="minimap"] .x6-widget-minimap-viewport {
   border: 1px solid var(--bs-color-primary);
-  background-color: color-mix(in srgb, var(--bs-color-primary) 12%, transparent);
+  background-color: color-mix(in oklab, var(--bs-color-primary) 12%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

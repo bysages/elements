@@ -79,6 +79,7 @@ packages/react/src/     @bysages/react — Ark wrappers for React
 packages/vue/src/       @bysages/vue — Ark wrappers for Vue
 packages/solid/src/     @bysages/solid — Ark wrappers for Solid
 packages/svelte/src/    @bysages/svelte — Ark wrappers for Svelte
+packages/workflow/src/  @bysages/workflow — headless workflow graph protocol (store/serialize) + the X6 canvas adapter, styled from core
 ```
 
 Each package develops and demonstrates its components through **Storybook** — stories are colocated next to the source (`src/components/**/*.stories.tsx`) and served with `pnpm dev` from the package root (dev-only, never published). One story file per component, mirroring the wrapper layout. The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) joins the workspace later.
