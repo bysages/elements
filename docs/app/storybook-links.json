@@ -161,5 +161,12 @@
   "tree-view/basic": "components-data-tree-view--basic",
   "typography/voices": "components-layout-typography--voices",
   "watermark/basic": "components-feedback-watermark--basic",
-  "watermark/tuned": "components-feedback-watermark--tuned"
+  "watermark/tuned": "components-feedback-watermark--tuned",
+  "chart/area": "components-data-chart--area",
+  "chart/bars": "components-data-chart--bars",
+  "chart/boxes": "components-data-chart--boxes",
+  "chart/line": "components-data-chart--line",
+  "chart/series": "components-data-chart--series",
+  "chart/waffle": "components-data-chart--waffle",
+  "workflow/basic": "components-data-workflow--basic"
 }

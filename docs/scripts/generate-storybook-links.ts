@@ -21,9 +21,19 @@ const outFile = path.resolve(docsRoot, "app/storybook-links.json");
 const flat = (s: string) => s.replace(/[\s-]/g, "").toLowerCase();
 const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
-const families = readdirSync(vueRoot, { withFileTypes: true })
-  .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
-  .map((e) => e.name);
+// The families with demos: the vue components tree, plus the extra
+// families (chart, workflow) that live in their own packages — their
+// demo directories are the superset, and a family without demos
+// matches nothing anyway.
+const families = [
+  ...readdirSync(vueRoot, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
+    .map((e) => e.name),
+  ...readdirSync(examplesRoot, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name),
+];
+const uniqueFamilies = [...new Set(families)];
 
 if (!existsSync(workbenchIndex)) {
   console.error(
@@ -62,7 +72,7 @@ for (const stories of storiesOfFamily.values()) {
 
 const links: Record<string, string> = {};
 let unlinked = 0;
-for (const family of families) {
+for (const family of uniqueFamilies) {
   const examples = existsSync(path.join(examplesRoot, family))
     ? readdirSync(path.join(examplesRoot, family))
         .filter((f) => f.endsWith(".vue"))
