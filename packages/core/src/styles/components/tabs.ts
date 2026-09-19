@@ -43,8 +43,13 @@ export const tabsCss = /* css */ `
   border-radius: var(--bs-radius-sm);
 }
 
+/* The weight keeps the selected tab legible when the color cue collapses:
+ * the high-contrast tier (civic pairs with it) promotes tertiary text to
+ * primary strength, so ink alone can't carry the state — the breadcrumb's
+ * current page makes the same move. */
 [data-scope="tabs"][data-part="trigger"][data-selected] {
   color: var(--bs-color-text-primary);
+  font-weight: var(--bs-font-weight-semibold);
 }
 
 [data-scope="tabs"][data-part="trigger"][data-disabled] {
