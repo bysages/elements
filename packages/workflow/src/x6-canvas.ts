@@ -449,8 +449,10 @@ export function createWorkflowCanvas(
 
   // The layout engine is heavy — one shared instance for the process,
   // not one worker per sweep. Sweeps also queue behind each other: two
-  // overlapping runs would interleave their coordinates.
-  let elkLoader: Promise<import("elkjs").ELK> | undefined;
+  // overlapping runs would interleave their coordinates. The bundled
+  // build is the browser entry: it carries its own worker shim, while
+  // the bare main entry requires the unpackaged "web-worker" package.
+  let elkLoader: Promise<import("elkjs/lib/elk.bundled.js").ELK> | undefined;
   let layoutRun: Promise<void> = Promise.resolve();
 
   // Which way the graph flows is the edges' own story: a line pulled
@@ -492,7 +494,7 @@ export function createWorkflowCanvas(
     const direction = options?.direction ?? inferDirection();
     const rankSep = options?.rankSep ?? 80;
     const nodeSep = options?.nodeSep ?? 40;
-    elkLoader ??= import("elkjs").then(({ default: ELK }) => new ELK());
+    elkLoader ??= import("elkjs/lib/elk.bundled.js").then(({ default: ELK }) => new ELK());
     const elk = await elkLoader;
     const { nodes, edges } = store.getGraph();
     const result = await elk.layout({
