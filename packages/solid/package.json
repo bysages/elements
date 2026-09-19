@@ -47,16 +47,16 @@
     "release": "basis publish"
   },
   "dependencies": {
-    "@ark-ui/solid": "5.39.1",
+    "@ark-ui/solid": "5.39.2",
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/solid-table": "9.2.4",
     "@tanstack/solid-virtual": "3.13.40",
-    "@zag-js/cascade-select": "1.43.3",
-    "@zag-js/solid": "1.43.3"
+    "@zag-js/cascade-select": "1.44.0",
+    "@zag-js/solid": "1.44.0"
   },
   "devDependencies": {
-    "ai": "7.0.99",
+    "ai": "7.0.107",
     "solid-js": "1.9.15",
     "unplugin-solid": "2.0.0"
   },
