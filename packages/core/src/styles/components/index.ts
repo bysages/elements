@@ -105,6 +105,7 @@ import { treeSelectCss } from "./tree-select";
 import { treeViewCss } from "./tree-view";
 import { typographyCss } from "./typography";
 import { watermarkCss } from "./watermark";
+import { workflowCss } from "./workflow";
 
 /** Component style registry — every component contributes its stylesheet
  * here, keyed by the name wrappers pass to `injectComponentStyle`. */
@@ -228,6 +229,7 @@ export const componentStyles: Record<string, string> = {
   "split-button": splitButtonCss,
   "float-button": floatButtonCss,
   layout: layoutCss,
+  workflow: workflowCss,
 };
 
 export {
@@ -309,4 +311,5 @@ export {
   tourCss,
   treeSelectCss,
   treeViewCss,
+  workflowCss,
 };
