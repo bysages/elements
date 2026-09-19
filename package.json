@@ -45,8 +45,8 @@
     "check": "vp check --fix",
     "test": "vp test run",
     "bench": "vp test bench",
-    "docs:content": "node docs/scripts/generate-component-docs.ts",
-    "docs:content:check": "node docs/scripts/generate-component-docs.ts --check",
+    "docs:content": "tsx docs/scripts/generate-component-docs.ts",
+    "docs:content:check": "tsx docs/scripts/generate-component-docs.ts --check",
     "version": "pnpm --filter \"./packages/**\" -r exec basis version",
     "postinstall": "pnpm build && vp config && basis git setup",
     "release": "pnpm --filter \"./packages/**\" -r run release"
