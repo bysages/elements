@@ -52,6 +52,13 @@ const extraFamilies: Record<string, FamilyDoc> = {
       "Token-themed charts on the paper-and-ink tokens: the Chart component renders a ChartDefinition built from the mark factories, and the palette (chartColors, chartSeriesRange) hands the marks the live theme's pigments.",
     components: {},
   },
+  workflow: {
+    family: "workflow",
+    source: "native",
+    description:
+      "A workflow canvas on the paper-and-ink tokens: createWorkflowCanvas mounts an X6 graph into any element and keeps a headless protocol store in step with every gesture — drag, connect, select, undo. The host mounts any component into a node through renderNode; the executor writes states back through the store, and the canvas only displays them.",
+    components: {},
+  },
 };
 
 // The section map must partition the discovered families exactly — a

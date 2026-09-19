@@ -140,6 +140,7 @@ export const componentSections: Array<{
       "timer",
       "transfer",
       "tree-view",
+      "workflow",
     ],
   },
   {

@@ -130,4 +130,5 @@ export const componentNames: Record<string, string> = {
   "tree-view": "树形控件",
   typography: "排版",
   watermark: "水印",
+  workflow: "工作流",
 };

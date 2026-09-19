@@ -13,6 +13,7 @@
   "dependencies": {
     "@bysages/charts": "workspace:*",
     "@bysages/docs-theme": "workspace:*",
+    "@bysages/workflow": "workspace:*",
     "@nuxtjs/i18n": "10.6.0",
     "minisearch": "7.2.0"
   },

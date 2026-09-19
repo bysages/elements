@@ -90,4 +90,5 @@ export const componentOrder: string[] = [
   "tree-select",
   "tree-view",
   "typography",
+  "workflow",
 ];
