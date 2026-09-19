@@ -36,6 +36,7 @@ English | [简体中文](./README.zh-CN.md)
 | [@bysages/solid](./packages/solid/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/solid)      | Components for Solid                                                        |
 | [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Components for Svelte                                                       |
 | [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | Token-themed charts                                                         |
+| [@bysages/workflow](./packages/workflow/README.md)     | ![npm](https://img.shields.io/npm/v/@bysages/workflow)   | Headless workflow graph protocol + X6 canvas editor                         |
 | [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | Nuxt module wrapping the Vue components                                     |
 | [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | Nuxt Content layer for Elements documentation sites                         |
 

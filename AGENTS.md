@@ -79,12 +79,13 @@ packages/react/src/     @bysages/react — Ark wrappers for React
 packages/vue/src/       @bysages/vue — Ark wrappers for Vue
 packages/solid/src/     @bysages/solid — Ark wrappers for Solid
 packages/svelte/src/    @bysages/svelte — Ark wrappers for Svelte
+packages/charts/src/    @bysages/charts — TanStack Charts re-exported per framework, inked from the tokens
 packages/workflow/src/  @bysages/workflow — headless workflow graph protocol (store/serialize) + the X6 canvas adapter, styled from core
 ```
 
-Each package develops and demonstrates its components through **Storybook** — stories are colocated next to the source (`src/components/**/*.stories.tsx`) and served with `pnpm dev` from the package root (dev-only, never published). One story file per component, mirroring the wrapper layout. The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) joins the workspace later.
+Each package develops and demonstrates its components through **Storybook** — stories are colocated next to the source (`src/components/**/*.stories.tsx`) and served with `pnpm dev` from the package root (dev-only, never published). One story file per component, mirroring the wrapper layout. The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) lives in `docs/` and consumes `@bysages/docs-theme`.
 
-Tokens are real today; the wrapper packages and the core style layer are the current build-out. `@bysages/table` (TanStack Table) and `@bysages/charts` (TanStack Charts themed from tokens) are planned data-layer packages on top.
+Tokens are real today; the wrapper packages and the core style layer are the current build-out. `@bysages/charts` (TanStack Charts themed from tokens) ships on top of the wrappers; `@bysages/table` (TanStack Table) is planned next.
 
 ## Build
 
