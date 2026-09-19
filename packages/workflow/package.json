@@ -1,0 +1,54 @@
+{
+  "name": "@bysages/workflow",
+  "version": "0.1.0",
+  "description": "AI-ready workflow graphs for By Sages Elements — a headless graph protocol dressed in the paper-and-ink system, rendered by a swappable canvas engine",
+  "keywords": [
+    "ai",
+    "design-system",
+    "design-tokens",
+    "diagram",
+    "flowchart",
+    "graph",
+    "theming",
+    "ui",
+    "workflow"
+  ],
+  "homepage": "https://github.com/bysages/elements#readme",
+  "bugs": {
+    "url": "https://github.com/bysages/elements/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "By Sages",
+    "email": "contact@bysages.com",
+    "url": "https://www.bysages.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bysages/elements"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "basis build --stub",
+    "build": "vp pack",
+    "prepack": "pnpm build",
+    "release": "basis publish"
+  },
+  "dependencies": {
+    "@antv/x6": "3.1.8",
+    "@bysages/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@bysages/vue": "workspace:*",
+    "vue": "3.5.42"
+  }
+}
