@@ -80,8 +80,8 @@ onBeforeUnmount(() => {
   canvas?.destroy();
 });
 
-const zoomTo = (factor: number) => canvas?.graph.zoomTo(canvas.graph.zoom() * factor);
-const fit = () => canvas?.graph.zoomToFit({ padding: 24, maxScale: 1 });
+const zoomTo = (factor: number) => canvas?.zoomBy(factor);
+const fit = () => canvas?.fitView();
 </script>
 
 <template>

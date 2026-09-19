@@ -210,7 +210,7 @@ const Demo = defineComponent({
             },
           },
           [
-            zoomButton("−", "Zoom out", () => canvas?.graph.zoomTo(canvas.graph.zoom() / 1.2)),
+            zoomButton("−", "Zoom out", () => canvas?.zoomBy(1 / 1.2)),
             h(
               "span",
               {
@@ -223,10 +223,8 @@ const Demo = defineComponent({
               },
               `${zoom.value}%`,
             ),
-            zoomButton("+", "Zoom in", () => canvas?.graph.zoomTo(canvas.graph.zoom() * 1.2)),
-            zoomButton("⤢", "Fit view", () =>
-              canvas?.graph.zoomToFit({ padding: 24, maxScale: 1 }),
-            ),
+            zoomButton("+", "Zoom in", () => canvas?.zoomBy(1.2)),
+            zoomButton("⤢", "Fit view", () => canvas?.fitView()),
             h(
               Button,
               {

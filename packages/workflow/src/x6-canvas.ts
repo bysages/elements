@@ -28,10 +28,25 @@ export interface WorkflowCanvasOptions {
   minimap?: { container: HTMLElement };
 }
 
+/** Viewport options for fitView. X6's own fit options are accepted in
+ * full through the graph escape hatch; these cover the calls a toolbar
+ * actually makes. */
+export interface WorkflowFitViewOptions {
+  padding?: number;
+  maxScale?: number;
+  minScale?: number;
+}
+
 export interface WorkflowCanvas {
   readonly store: WorkflowStore;
   /** Read-only escape hatch; the lifecycle stays with the canvas. */
   readonly graph: Graph;
+  /** Multiplies the current zoom — the relative step X6's own API
+   * doesn't offer, and what every zoom toolbar button is. */
+  zoomBy(factor: number): void;
+  /** Frames the whole graph. Defaults to what a toolbar wants: a
+   * breathing margin and no magnifying past 100%. */
+  fitView(options?: WorkflowFitViewOptions): void;
   /** Sweeps the graph with the ELK layered algorithm and writes every
    * node's new position back through the store. Async: the layout
    * engine is heavy, so it's pulled in only when this runs. */
@@ -304,19 +319,15 @@ export function createWorkflowCanvas(
   for (const edge of store.getGraph().edges) graph.addEdge(toEdgeConfig(edge));
 
   // Canvas → protocol. Guarded on two axes: `replaying` mutes the echoes
-  // of our own replay, `viaCanvas` mutes the replay of the canvas's own
-  // facts back onto it.
+  // of our own replay, and gesture-driven writes are attributed to the
+  // canvas so this subscription doesn't replay the canvas's own facts
+  // back onto it. A host listener reacting to a gesture writes back as
+  // the host — its follow-ups still reach apply.
   let replaying = false;
-  let viaCanvas = false;
 
   const guard = (fn: () => void) => {
     if (replaying) return;
-    viaCanvas = true;
-    try {
-      fn();
-    } finally {
-      viaCanvas = false;
-    }
+    store.asSource("canvas", fn);
   };
 
   graph.on("node:moved", ({ node }) => guard(() => store.moveNode(node.id, node.getPosition())));
@@ -428,8 +439,8 @@ export function createWorkflowCanvas(
     }
   };
 
-  const unsubscribe = store.subscribe((change) => {
-    if (viaCanvas) return;
+  const unsubscribe = store.subscribe((change, source) => {
+    if (source === "canvas") return;
     apply(change);
   });
 
@@ -491,6 +502,16 @@ export function createWorkflowCanvas(
   const canvas: WorkflowCanvas = {
     store,
     graph,
+    zoomBy(factor) {
+      graph.zoomTo(graph.zoom() * factor);
+    },
+    fitView(options) {
+      graph.zoomToFit({
+        padding: 24,
+        maxScale: 1,
+        ...options,
+      });
+    },
     layout,
     destroy() {
       if (destroyed) return;

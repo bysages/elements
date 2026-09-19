@@ -174,11 +174,8 @@ const Demo = ({ run = false }: { run?: boolean }) => {
     };
   }, [run]);
 
-  const stepZoom = (factor: number) => {
-    const canvas = canvasRef.current;
-    if (canvas) canvas.graph.zoomTo(canvas.graph.zoom() * factor);
-  };
-  const fit = () => canvasRef.current?.graph.zoomToFit({ padding: 24, maxScale: 1 });
+  const stepZoom = (factor: number) => canvasRef.current?.zoomBy(factor);
+  const fit = () => canvasRef.current?.fitView();
 
   // The chrome echoes the workflow editors people know: the minimap and
   // the zoom controls anchored inside the canvas, bottom right.

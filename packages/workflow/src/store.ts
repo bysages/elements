@@ -20,6 +20,12 @@ export type WorkflowChange =
   | { kind: "edge:state"; id: string; state: NodeState }
   | { kind: "edge:remove"; id: string };
 
+/** Who set a change in motion: the canvas translating one of its own
+ * gestures, or anything else (the host, an executor, a future undo
+ * stack). Listeners read it to skip echoing a change back to where it
+ * came from — the same office Yjs' transaction origin serves. */
+export type WorkflowChangeSource = "canvas" | "host";
+
 export interface WorkflowStore {
   getGraph(): WorkflowGraph;
   getNode(id: string): Readonly<WorkflowNode> | undefined;
@@ -39,7 +45,13 @@ export interface WorkflowStore {
   /** Marks an edge's execution state — the edge twin of setNodeState. */
   setEdgeState(id: string, state: NodeState): void;
   disconnect(id: string): void;
-  subscribe(listener: (change: WorkflowChange) => void): () => void;
+  /** Runs fn, attributing every change it commits to `source`. The
+   * attribution covers this one synchronous call only: a listener the
+   * changes notify writes back as the host, never as `source` — which
+   * is what keeps a listener's own follow-up writes from being
+   * silently swallowed by the listener that skips echoes. */
+  asSource<T>(source: WorkflowChangeSource, fn: () => T): T;
+  subscribe(listener: (change: WorkflowChange, source: WorkflowChangeSource) => void): () => void;
 }
 
 /** The single writer of the graph. Every operation is idempotent (unknown
@@ -56,8 +68,9 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
   });
   const nodes = new Map<string, WorkflowNode>(graph?.nodes.map((n) => [n.id, copyNode(n)]) ?? []);
   const edges = new Map<string, WorkflowEdge>(graph?.edges.map((e) => [e.id, { ...e }]) ?? []);
-  const listeners = new Set<(change: WorkflowChange) => void>();
+  const listeners = new Set<(change: WorkflowChange, source: WorkflowChangeSource) => void>();
   let edgeSeq = 0;
+  let changeSource: WorkflowChangeSource = "host";
 
   const nextEdgeId = () => {
     let id: string;
@@ -68,9 +81,17 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
   };
 
   const commit = (change: WorkflowChange) => {
-    // A snapshot: listeners may unsubscribe (or trigger further commits)
-    // while the change is still being delivered.
-    for (const listener of Array.from(listeners)) listener(change);
+    const source = changeSource;
+    // A listener's own writes are the host's, never the initiator's —
+    // attribution doesn't flow through the notification. A snapshot:
+    // listeners may unsubscribe (or trigger further commits) while the
+    // change is still being delivered.
+    changeSource = "host";
+    try {
+      for (const listener of Array.from(listeners)) listener(change, source);
+    } finally {
+      changeSource = source;
+    }
   };
 
   const store: WorkflowStore = {
@@ -150,6 +171,16 @@ export function createWorkflowStore(graph?: WorkflowGraph): WorkflowStore {
     disconnect(id) {
       if (!edges.delete(id)) return;
       commit({ kind: "edge:remove", id });
+    },
+
+    asSource(source, fn) {
+      const outer = changeSource;
+      changeSource = source;
+      try {
+        return fn();
+      } finally {
+        changeSource = outer;
+      }
     },
 
     subscribe(listener) {
