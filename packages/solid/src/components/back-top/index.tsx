@@ -10,6 +10,10 @@ export interface BackTopProps extends JSX.HTMLAttributes<HTMLButtonElement> {
   threshold?: number;
   /** The accessible name; the control is icon-only by default. */
   label?: string;
+  /** Ride a scrolling element of your own instead of the page: the
+   * control moors inside that element's corner and watches its
+   * scrollTop. The host supplies the positioning context. */
+  scrollEl?: () => HTMLElement | null;
 }
 
 /**
@@ -17,29 +21,57 @@ export interface BackTopProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * floating control rises at the page's corner and returns the reader to
  * the top. The scroll itself stays native — `window.scrollTo` defers to
  * the stylesheet's `scroll-behavior: smooth`, which reduced motion turns
- * back into an instant jump. The button stays mounted either way so the
- * entrance is a transition, never a pop.
+ * back into an instant jump (a moored control asks the media query
+ * directly, since a scroller of its own has no stylesheet to defer to).
+ * The button stays mounted either way so the entrance is a transition,
+ * never a pop.
  *
  * The control itself is the shared `Button` (outline, square) — the
  * paper, hairline and halo are its; this family owns only the floating
  * and the entrance.
  */
 export function BackTop(props: BackTopProps) {
-  const [own, rest] = splitProps(props, ["threshold", "label"]);
+  const [own, rest] = splitProps(props, ["threshold", "label", "scrollEl"]);
   const [visible, setVisible] = createSignal(false);
 
+  const scroller = () => own.scrollEl?.() ?? null;
+
   const onScroll = () => {
-    setVisible(window.scrollY > (own.threshold ?? 400));
+    const el = scroller();
+    setVisible((el ? el.scrollTop : window.scrollY) > (own.threshold ?? 400));
+  };
+
+  // A moored control has no stylesheet contract for smooth scrolling,
+  // so the return trip asks the media query itself.
+  const toTop = () => {
+    const el = scroller();
+    if (!el) {
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   };
 
   onMount(() => {
+    const el = scroller();
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    if (el) el.addEventListener("scroll", onScroll, { passive: true });
+    else window.addEventListener("scroll", onScroll, { passive: true });
   });
-  onCleanup(() => window.removeEventListener("scroll", onScroll));
+  onCleanup(() => {
+    const el = scroller();
+    if (el) el.removeEventListener("scroll", onScroll);
+    else window.removeEventListener("scroll", onScroll);
+  });
 
   return (
-    <div data-scope="back-top" data-part="root" data-state={visible() ? "shown" : "hidden"}>
+    <div
+      data-scope="back-top"
+      data-part="root"
+      data-state={visible() ? "shown" : "hidden"}
+      {...(scroller() ? { "data-container": "" } : {})}
+    >
       <Button
         {...rest}
         variant="outline"
@@ -48,7 +80,7 @@ export function BackTop(props: BackTopProps) {
         aria-label={own.label ?? "Back to top"}
         aria-hidden={visible() ? undefined : "true"}
         tabindex={visible() ? 0 : -1}
-        onClick={() => window.scrollTo({ top: 0 })}
+        onClick={toTop}
       >
         {rest.children ?? chevronUp()}
       </Button>

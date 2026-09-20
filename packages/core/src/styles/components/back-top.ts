@@ -13,6 +13,17 @@ export const backTopCss = /* css */ `
     translate var(--bs-duration-base) var(--bs-ease-spring);
 }
 
+/* Given a scroller of its own, the control moors inside that element
+   instead of the viewport: sticky keeps it at the scroller's visible
+   corner while the content travels underneath. */
+[data-scope="back-top"][data-part="root"][data-container] {
+  position: sticky;
+  inset-block-end: var(--bs-space-4);
+  z-index: auto;
+  margin-inline-start: auto;
+  inline-size: fit-content;
+}
+
 /* Hidden sinks below the page and steps out of the reading order —
    states remain, animation does not. */
 [data-scope="back-top"][data-part="root"][data-state="hidden"] {

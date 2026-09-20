@@ -10,6 +10,10 @@ export interface BackTopProps {
   threshold?: number;
   /** The accessible name; the control is icon-only by default. */
   label?: string;
+  /** Ride a scrolling element of your own instead of the page: the
+   * control moors inside that element's corner and watches its
+   * scrollTop. The host supplies the positioning context. */
+  scrollEl?: () => HTMLElement | null;
 }
 
 /**
@@ -17,8 +21,10 @@ export interface BackTopProps {
  * floating control rises at the page's corner and returns the reader to
  * the top. The scroll itself stays native — `window.scrollTo` defers to
  * the stylesheet's `scroll-behavior: smooth`, which reduced motion turns
- * back into an instant jump. The button stays mounted either way so the
- * entrance is a transition, never a pop.
+ * back into an instant jump (a moored control asks the media query
+ * directly, since a scroller of its own has no stylesheet to defer to).
+ * The button stays mounted either way so the entrance is a transition,
+ * never a pop.
  *
  * The control itself is the shared `Button` (outline, square) — the
  * paper, hairline and halo are its; this family owns only the floating
@@ -29,23 +35,43 @@ export const BackTop = defineComponent({
   props: {
     threshold: { type: Number, default: 400 },
     label: { type: String, default: "Back to top" },
+    scrollEl: { type: Function, default: undefined },
   },
   setup(props, ctx: SetupContext) {
     const visible = ref(false);
 
+    const scroller = () => props.scrollEl?.() ?? null;
+
     const onScroll = () => {
-      visible.value = window.scrollY > props.threshold;
+      const el = scroller();
+      visible.value = el ? el.scrollTop > props.threshold : window.scrollY > props.threshold;
+    };
+
+    // A moored control has no stylesheet contract for smooth scrolling,
+    // so the return trip asks the media query itself.
+    const toTop = () => {
+      const el = scroller();
+      if (!el) {
+        window.scrollTo({ top: 0 });
+        return;
+      }
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
     };
 
     onMounted(() => {
       if (typeof window === "undefined") return;
+      const el = scroller();
       onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
+      if (el) el.addEventListener("scroll", onScroll, { passive: true });
+      else window.addEventListener("scroll", onScroll, { passive: true });
     });
 
     onBeforeUnmount(() => {
       if (typeof window === "undefined") return;
-      window.removeEventListener("scroll", onScroll);
+      const el = scroller();
+      if (el) el.removeEventListener("scroll", onScroll);
+      else window.removeEventListener("scroll", onScroll);
     });
 
     return () =>
@@ -55,6 +81,7 @@ export const BackTop = defineComponent({
           "data-scope": "back-top",
           "data-part": "root",
           "data-state": visible.value ? "shown" : "hidden",
+          ...(scroller() ? { "data-container": "" } : {}),
         },
         [
           h(
@@ -68,7 +95,7 @@ export const BackTop = defineComponent({
               "aria-label": props.label,
               "aria-hidden": visible.value ? undefined : "true",
               tabindex: visible.value ? 0 : -1,
-              onClick: () => window.scrollTo({ top: 0 }),
+              onClick: toTop,
             },
             () => ctx.slots.default?.() ?? [chevronUp()],
           ),
