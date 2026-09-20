@@ -13,8 +13,10 @@ const scrollEl = () => scroller.value;
 </script>
 
 <template>
-  <div style="display: flex; gap: var(--bs-space-8)">
-    <Toc.Root :items="items" :scroll-el="scrollEl">
+  <div
+    style="display: flex; inline-size: 100%; justify-content: flex-start; gap: var(--bs-space-6)"
+  >
+    <Toc.Root :items="items" :scroll-el="scrollEl" style="inline-size: 12rem; flex: none">
       <Toc.Nav>
         <Toc.Title>On this page</Toc.Title>
         <Toc.List>
@@ -26,7 +28,7 @@ const scrollEl = () => scroller.value;
     </Toc.Root>
     <div
       ref="scroller"
-      style="height: 16rem; overflow-y: auto; padding-inline-end: var(--bs-space-4)"
+      style="flex: 1; height: 16rem; overflow-y: auto; padding-inline-end: var(--bs-space-4)"
     >
       <section v-for="item in items" :id="item.value" :key="item.value">
         <h3>{{ item.label }}</h3>

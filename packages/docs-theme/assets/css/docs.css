@@ -909,6 +909,20 @@ body {
   color: var(--bs-color-text-tertiary);
 }
 
+/* Four density labels cannot share one row once the reader's own
+   density choice widens the paddings — the tray wraps to two rows and
+   each seal takes its half. */
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="root"] {
+  display: flex;
+  flex-wrap: wrap;
+  inline-size: 100%;
+}
+
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {
+  flex: 1 1 40%;
+  justify-content: center;
+}
+
 /* The language menu still speaks one radio list — its text rides quiet
    until its row is chosen. */
 .bs-docs-language-menu [data-scope="radio-group"] [data-part="item-text"] {

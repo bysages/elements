@@ -6,7 +6,16 @@ import { HoverCard } from "@bysages/vue";
   <HoverCard.Root>
     <p style="margin: 0">
       Liked by
-      <HoverCard.Trigger>@sarah_chen</HoverCard.Trigger>
+      <HoverCard.Trigger
+        style="
+          color: var(--bs-color-primary);
+          text-decoration: underline;
+          text-decoration-color: var(--bs-color-border-strong);
+          text-underline-offset: 0.2em;
+          cursor: pointer;
+        "
+        >@sarah_chen</HoverCard.Trigger
+      >
       and 3 others.
     </p>
     <HoverCard.Positioner>

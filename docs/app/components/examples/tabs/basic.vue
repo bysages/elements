@@ -3,8 +3,9 @@ import { Tabs } from "@bysages/vue";
 </script>
 
 <template>
-  <Tabs.Root default-value="ink">
-    <Tabs.List>
+  <!-- The strip rides the full width, the way a page's own tabs do. -->
+  <Tabs.Root default-value="ink" style="inline-size: 100%">
+    <Tabs.List style="inline-size: 100%">
       <Tabs.Trigger value="ink">Ink</Tabs.Trigger>
       <Tabs.Trigger value="paper">Paper</Tabs.Trigger>
       <Tabs.Trigger value="light">Light</Tabs.Trigger>
