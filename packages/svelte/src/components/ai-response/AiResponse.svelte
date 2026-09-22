@@ -7,13 +7,14 @@ import type { ResponseProps } from "./props";
 
 let {
   content,
+  highlighter,
   copyLabel = "Copy code",
   copiedLabel = "Copied",
   onclick,
   ...rest
 }: ResponseProps = $props();
 
-const html = $derived(renderHtml(content));
+const html = $derived(renderHtml(content, highlighter ? { highlighter } : undefined));
 
 let root: HTMLDivElement | undefined;
 

@@ -10,6 +10,8 @@ export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
   /** The state the call reached — stamped on the fold and whispered
    * in the status chip. */
   status?: ToolStatus;
+  /** The fold arrives open when set — rides the shared collapsible. */
+  defaultOpen?: boolean;
   input?: string;
   output?: string;
 }

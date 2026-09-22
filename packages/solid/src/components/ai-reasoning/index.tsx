@@ -8,6 +8,8 @@ import { Collapsible } from "../collapsible";
 export interface ReasoningProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The trigger's words — the fold arrives open under them. */
   label?: string;
+  /** The fold arrives open when set — rides the shared collapsible. */
+  defaultOpen?: boolean;
 }
 
 /** The model's thought, folded by the shared collapsible in its quiet

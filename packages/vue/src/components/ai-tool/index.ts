@@ -17,13 +17,20 @@ export const Tool = defineComponent({
     /** The state the call reached — pending, running, completed, or
      * error; stamped on the fold and whispered in the status chip. */
     status: { type: String as PropType<"pending" | "running" | "completed" | "error"> },
+    /** The fold arrives open when set — rides the shared collapsible. */
+    defaultOpen: { type: Boolean, default: false },
   },
   setup(props, ctx: SetupContext) {
     return () => {
       const status = props.status;
       return h(
         Collapsible.Root,
-        { ...ctx.attrs, "data-ai": "tool", ...(status ? { "data-status": status } : {}) },
+        {
+          ...ctx.attrs,
+          ...(props.defaultOpen ? { defaultOpen: true } : {}),
+          "data-ai": "tool",
+          ...(status ? { "data-status": status } : {}),
+        },
         () => [
           h(Collapsible.Trigger, () => [
             /* The raw tool name by default; a `label` slot lets the site
