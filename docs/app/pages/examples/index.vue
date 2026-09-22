@@ -41,7 +41,7 @@ const apps = [
     title: "Blog",
     description:
       "An editorial site: a filterable post grid, an article view with a tracked table of contents, and a comment thread.",
-    components: ["Card", "Chip", "Pagination", "Typography", "Toc", "Comment", "Avatar"],
+    components: ["Card", "Badge", "Pagination", "Typography", "Toc", "Comment", "Avatar"],
   },
   {
     name: "chat",
