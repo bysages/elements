@@ -50,10 +50,13 @@ export function getFirstPagePath(item: NavItem): string {
 export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
   const route = useRoute();
   const appConfig = useAppConfig();
-  const { isEnabled, localeOf } = useDocsI18n();
+  const { isEnabled, localeOf, t, localePath } = useDocsI18n();
   const navigation = provided ?? inject<Ref<NavItem[]>>("navigation");
 
-  const isDocsPage = computed(() => route.meta.layout === "docs");
+  // Example pages opt into the chrome with `examples: true` in their page
+  // meta — full-width, no sidebar, but the sections row (with its Examples
+  // entry) stays so the reader can walk back into the docs.
+  const isDocsPage = computed(() => route.meta.layout === "docs" || route.meta.examples === true);
 
   const subNavigationMode = computed(() => {
     if (!isDocsPage.value) return undefined;
@@ -83,13 +86,25 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
 
   const sections = computed(() => {
     if (!subNavigationMode.value || !navigation?.value) return [];
-    return navigation.value
+    const shelf = navigation.value
       .filter((item) => item.children?.length)
       .map((item) => ({
         label: item.title,
         to: getFirstPagePath(item),
         active: !!item.path && onShelf(route.path, item.path),
       }));
+    // The examples gallery is a real page tree, not a content shelf, so
+    // it can't ride the content tree — it joins the row here. The label
+    // comes from the messages (`docs.examples`), overridable per site
+    // through `navigation.examples.label` in the app config.
+    const examplesLabel =
+      (appConfig.navigation as { examples?: { label?: string } } | undefined)?.examples?.label ??
+      (t("docs.examples") as string);
+    const examplesTo = localePath("/examples");
+    return [
+      ...shelf,
+      { label: examplesLabel, to: examplesTo, active: onShelf(route.path, examplesTo) },
+    ];
   });
 
   const sidebarNavigation = computed(() => {
