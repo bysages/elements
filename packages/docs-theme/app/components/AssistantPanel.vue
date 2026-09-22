@@ -145,6 +145,8 @@ const starters = computed(() => {
                       v-if="part.type === 'text'"
                       :content="part.text"
                       :highlighter="highlightFence"
+                      :copy-label="t('docs.copy.code')"
+                      :copied-label="t('docs.copy.copied')"
                     />
                     <Reasoning
                       v-else-if="part.type === 'reasoning'"

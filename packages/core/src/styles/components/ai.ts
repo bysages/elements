@@ -109,10 +109,52 @@ export const aiCss = /* css */ `
   line-height: var(--bs-line-height-relaxed);
 }
 
+/* The scroll guard: a quiet wrapper that gives the copy stamp its
+   positioning box — inside the scrolling pre, the stamp would anchor
+   to the overflow area and travel out of view with the code. */
+[data-scope="ai"][data-part="code-body"] {
+  position: relative;
+}
+
 [data-scope="ai"][data-part="response"] pre code {
   padding: 0;
   background: none;
   font-size: inherit;
+}
+
+/* The way out of a fenced block: a quiet overlay stamp in the block's
+   corner, re-inked in the success pigment once the text has landed on
+   the clipboard. */
+[data-scope="ai"][data-part="code-copy"] {
+  position: absolute;
+  inset-block-start: var(--bs-space-2);
+  inset-inline-end: var(--bs-space-2);
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-tertiary);
+  cursor: pointer;
+}
+
+[data-scope="ai"][data-part="code-copy"]:hover {
+  border-color: var(--bs-color-border-strong);
+  background: var(--bs-color-surface-2);
+  color: var(--bs-color-text-primary);
+}
+
+[data-scope="ai"][data-part="code-copy"]:focus-visible {
+  outline: none;
+  border-color: var(--bs-color-primary);
+  box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="ai"][data-part="code-copy"][data-state="copied"] {
+  color: var(--bs-color-success);
 }
 
 [data-scope="ai"][data-part="response"] blockquote {
