@@ -1,16 +1,29 @@
-import { queryCollection } from "@nuxt/content/server";
 import { defineMcpTool } from "@nuxtjs/mcp-toolkit/server";
-import { useEvent, useRuntimeConfig } from "nitropack/runtime";
+import { useEvent } from "nitropack/runtime";
 import { z } from "zod";
 
-import { getCollectionsToQuery, getAvailableLocales } from "../../utils/content";
+import { listAgentPages } from "#agent-discovery";
+
+import { getAvailableLocales } from "../../utils/content";
 
 export default defineMcpTool({
-  description: `Lists all documentation pages with their titles, paths, and descriptions.
+  description: `Lists all available documentation pages with their basic information.
 
-WHEN TO USE: Use this tool to EXPLORE or SEARCH the documentation when you don't know the exact page path — e.g. "find the button component docs", "show me the getting started guide". After finding relevant paths, call get-page for the full content.
+WHEN TO USE: Use this tool when you need to EXPLORE or SEARCH for documentation about a topic but don't know the exact page path. Common scenarios:
+- "Find documentation about markdown features" - explore available guides
+- "Show me all getting started guides" - browse introductory content
+- User asks general questions without specifying exact pages
+- You need to understand the overall documentation structure
 
-WHEN NOT TO USE: If you already know the exact page path, call get-page directly.`,
+WHEN NOT TO USE: If you already know the specific page path (e.g., "/en/guide/installation"), use get-page directly instead.
+
+WORKFLOW: This tool returns page titles, paths, and URLs. After finding relevant pages, use get-page to retrieve the full content of specific pages that match the user's needs.
+
+OUTPUT: Returns a structured list with:
+- title: Human-readable page name
+- path: Exact path for use with get-page
+- locale: The locale the page belongs to, when the site is multilingual
+- url: Full URL for reference`,
   annotations: {
     readOnlyHint: true,
     destructiveHint: false,
@@ -24,28 +37,23 @@ WHEN NOT TO USE: If you already know the exact page path, call get-page directly
   handler: async ({ locale }) => {
     const event = useEvent();
     const available = getAvailableLocales(event);
-    const collections = getCollectionsToQuery(locale, available);
-    const domain = (useRuntimeConfig(event) as { llms?: { domain?: string } }).llms?.domain;
+    const localeOf = (path: string) =>
+      available.find((code) => path === `/${code}` || path.startsWith(`/${code}/`));
 
-    const rows = await Promise.all(
-      collections.map(async (collection) => {
-        // The collection names are runtime-computed (per-locale), so the
-        // statically-typed query builder is bridged once, locally.
-        const builder = queryCollection(event, collection as never) as unknown as {
-          select: (...fields: string[]) => {
-            all: () => Promise<Array<{ title?: string; description?: string; path: string }>>;
-          };
-        };
-        return builder.select("title", "description", "path").all();
-      }),
-    );
+    // Landing pages (`/`, `/en`) are not documentation, and never were
+    // listed here.
+    const isLanding = (path: string) => path === "/" || available.includes(path.slice(1));
 
-    return rows.flat().map((row) => ({
-      title: row.title,
-      path: row.path,
-      description: row.description,
-      locale: available.find((code) => row.path === `/${code}` || row.path.startsWith(`/${code}/`)),
-      url: domain ? `${domain}${row.path}` : row.path,
-    }));
+    const pages = await listAgentPages(event);
+
+    return pages
+      .filter((page) => !isLanding(page.route))
+      .map((page) => ({
+        title: page.title,
+        path: page.route,
+        locale: localeOf(page.route),
+        url: page.url,
+      }))
+      .filter((page) => !locale || !available.includes(locale) || page.locale === locale);
   },
 });

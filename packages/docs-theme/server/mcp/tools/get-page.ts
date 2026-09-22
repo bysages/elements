@@ -1,13 +1,12 @@
 import { defineMcpTool } from "@nuxtjs/mcp-toolkit/server";
 import { createError } from "h3";
-import { useEvent, useRuntimeConfig } from "nitropack/runtime";
+import { useEvent } from "nitropack/runtime";
 import { z } from "zod";
+
+import { getAgentDocument } from "#agent-discovery";
 
 import { isNavigationPath } from "../../utils/content";
 
-/** The same bytes the `/raw/<path>.md` route serves, fetched in-process —
- * one markdown pipeline, maintained by the Content module's llms
- * integration, never re-implemented here. */
 export default defineMcpTool({
   description: `Retrieves the full markdown content of one documentation page.
 
@@ -29,20 +28,26 @@ WHEN NOT TO USE: If you don't know the exact path, call list-pages first.`,
       throw createError({ statusCode: 404, message: "Page not found" });
     }
 
+    // The discovery index resolves in-process: the same markdown the
+    // `/raw/<path>.md` route serves, plus the page's frontmatter.
     const event = useEvent();
-    const raw = path === "/" ? "/raw/index.md" : `/raw${path}.md`;
+    const document = await getAgentDocument(event, path);
 
-    const markdown = await event.$fetch<string>(raw, { responseType: "text" }).catch(() => {
+    if (!document) {
       throw createError({ statusCode: 404, message: "Page not found" });
-    });
-
-    const domain = (useRuntimeConfig(event) as { llms?: { domain?: string } }).llms?.domain;
+    }
+    if ("redirect" in document) {
+      throw createError({
+        statusCode: 404,
+        message: `${path} is a section, try ${document.redirect}`,
+      });
+    }
 
     return {
       path,
-      title: /^#\s+(.+)$/m.exec(markdown)?.[1],
-      markdown,
-      url: domain ? `${domain}${path}` : path,
+      title: document.title,
+      markdown: document.markdown,
+      url: document.canonicalUrl,
     };
   },
 });

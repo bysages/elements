@@ -113,6 +113,15 @@ const config = {
     name: "Elements",
   },
 
+  // The assistant's MCP endpoint: a path uses this site's own server,
+  // a full URL points the assistant at an external one. Declared so a
+  // consuming site (or NUXT_ASSISTANT_MCP_SERVER) can override it.
+  runtimeConfig: {
+    assistant: {
+      mcpServer: "/mcp",
+    },
+  },
+
   llms: {
     domain: siteUrl,
     title: "Elements",

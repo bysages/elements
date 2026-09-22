@@ -41,6 +41,28 @@ function createLocalFetch(event: H3Event): typeof fetch {
   };
 }
 
+/** The MCP server the assistant browses the docs through: a path
+ * (default `/mcp`) means this site's own server, a full URL an
+ * external one. Dev rides the network like any MCP client; the
+ * in-process fetch is a production-only affordance. */
+function resolveMcpTransport(event: H3Event) {
+  const config = useRuntimeConfig(event) as {
+    assistant?: { mcpServer?: string };
+    app?: { baseURL?: string };
+  };
+  const mcpServer = config.assistant?.mcpServer ?? "/mcp";
+  const baseURL = config.app?.baseURL?.replace(/\/$/, "") || "";
+
+  if (mcpServer.startsWith("http://") || mcpServer.startsWith("https://")) {
+    return { type: "http", url: mcpServer } as const;
+  }
+  const url = `${getRequestURL(event).origin}${baseURL}${mcpServer}`;
+  if (import.meta.dev) {
+    return { type: "http", url } as const;
+  }
+  return { type: "http", url, fetch: createLocalFetch(event) } as const;
+}
+
 /** Docus's documentation-tuned prompt: a firm identity, terse output
  * rules and a hard "no walls of text" register. Loose prompts are why
  * reasoning models ramble. */
@@ -97,14 +119,8 @@ export default defineEventHandler(async (event) => {
   const provider = createOpenAICompatible({ name: "bs-docs", baseURL, apiKey });
 
   // The assistant browses this site the same way an agent does: through
-  // our own /mcp server (list-pages, get-page).
-  const mcpClient = await createMCPClient({
-    transport: {
-      type: "http",
-      url: `${getRequestURL(event).origin}/mcp`,
-      fetch: createLocalFetch(event),
-    },
-  });
+  // an MCP server (ours by default, `assistant.mcpServer` to redirect).
+  const mcpClient = await createMCPClient({ transport: resolveMcpTransport(event) });
   const tools = (await mcpClient.tools()) as ToolSet;
   // waitUntil keeps the close alive past the response, as the runtime
   // may recycle the context as soon as the stream ends.
