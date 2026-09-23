@@ -58,7 +58,7 @@
   "devDependencies": {
     "ai": "7.0.107",
     "solid-js": "1.9.15",
-    "unplugin-solid": "2.0.0"
+    "unplugin-solid": "3.0.0"
   },
   "peerDependencies": {
     "solid-js": "^1.9"
