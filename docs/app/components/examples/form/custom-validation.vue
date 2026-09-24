@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { Button, Form, FormField, Input, Textarea } from "@bysages/vue";
 import { reactive, ref } from "vue";
-import { z } from "zod";
-
-const schema = z.object({
-  title: z.string().min(1, "The title is required."),
-  abstract: z.string().min(8, "Write at least 8 characters."),
-});
 
 const state = reactive({ title: "", abstract: "" });
 const status = ref("");
+
+function validate(v: Record<string, unknown>) {
+  const errors: { name: string; message: string }[] = [];
+  if (!v.title) errors.push({ name: "title", message: "Title is required" });
+  if (!v.abstract) errors.push({ name: "abstract", message: "The abstract is required" });
+  else if (v.abstract.length < 8)
+    errors.push({ name: "abstract", message: "At least 8 characters" });
+  return errors;
+}
 </script>
 
 <template>
   <Form
-    :schema="schema"
     :state="state"
+    :validate="validate"
     style="inline-size: 100%"
     @submit="status = 'Submitted.'"
     @error="status = 'Fix the errors below.'"
