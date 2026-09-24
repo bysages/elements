@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
 import { Badge, Button, createColumnHelper, DataTable, Select, type ColumnDef } from "@bysages/vue";
-import { computed, h, ref } from "vue";
+import { computed, Fragment, h, ref } from "vue";
 
 import { type OrderRow, type OrderStatus } from "./data";
 
@@ -61,35 +61,42 @@ const columns: ColumnDef<OrderRow, any, any>[] = [
   helper.display({
     id: "actions",
     header: "",
-    cell: ({ row }) => [
-      h(
-        Button,
-        {
-          variant: "ghost",
-          size: "sm",
-          square: true,
-          "aria-label": `View ${row.original.customer}`,
-          onClick: () => emit("detail", row.original),
-        },
-        () => [
-          h("svg", actionIcon, () => [
-            h("path", { d: "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" }),
-            h("circle", { cx: 12, cy: 12, r: 2.5 }),
-          ]),
-        ],
-      ),
-      h(
-        Button,
-        {
-          variant: "ghost",
-          size: "sm",
-          square: true,
-          "aria-label": `Edit ${row.original.customer}`,
-          onClick: () => emit("edit", row.original),
-        },
-        () => [h("svg", actionIcon, () => [h("path", { d: "M14.5 4.5l5 5L8 21H3v-5L14.5 4.5Z" })])],
-      ),
-    ],
+    // vue-table v9's flexRender h()es non-vnode objects — an array of
+    // buttons must ride a Fragment, not a bare array.
+    cell: ({ row }) =>
+      h(Fragment, [
+        h(
+          Button,
+          {
+            variant: "ghost",
+            size: "sm",
+            square: true,
+            "aria-label": `View ${row.original.customer}`,
+            onClick: () => emit("detail", row.original),
+          },
+          () => [
+            h("svg", actionIcon, () => [
+              h("path", {
+                d: "M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z",
+              }),
+              h("circle", { cx: 12, cy: 12, r: 2.5 }),
+            ]),
+          ],
+        ),
+        h(
+          Button,
+          {
+            variant: "ghost",
+            size: "sm",
+            square: true,
+            "aria-label": `Edit ${row.original.customer}`,
+            onClick: () => emit("edit", row.original),
+          },
+          () => [
+            h("svg", actionIcon, () => [h("path", { d: "M14.5 4.5l5 5L8 21H3v-5L14.5 4.5Z" })]),
+          ],
+        ),
+      ]),
   }),
 ];
 
