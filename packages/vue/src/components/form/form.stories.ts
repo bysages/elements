@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { h, ref, type Ref } from "vue";
+import { z } from "zod";
 
 import { Form } from ".";
 import { Button } from "../button";
+import { CheckboxGroup } from "../checkbox-group";
 import { FormField } from "../form";
 import { Input } from "../input";
+import { Switch } from "../switch";
 import { Textarea } from "../textarea";
 import { withState } from "../with-state.js";
 
@@ -27,9 +30,61 @@ function statusLine(text: Ref<string>) {
   );
 }
 
-/** The validate function: submit runs it first; errors land on the
- * FormField whose name matches. */
+function switchControl() {
+  return h(Switch.Control, () => h(Switch.Thumb));
+}
+
+/** The schema path: any Standard Schema (zod here) describes the shape;
+ * submit validates against it and errors land on the FormField whose
+ * name matches the issue path. */
 export const Basic: Story = {
+  render: () =>
+    withState(() => {
+      const schema = z.object({
+        title: z.string().min(1, "The title is required."),
+        abstract: z.string().min(8, "Write at least 8 characters."),
+      });
+      const state = ref<z.infer<typeof schema>>({ title: "", abstract: "" });
+      const status = ref("");
+      return () => [
+        h(
+          Form as never,
+          {
+            state: state.value,
+            schema,
+            onSubmit: () => (status.value = "Submitted."),
+            onError: (errors: unknown) =>
+              (status.value = `${(errors as unknown[]).length} error(s).`),
+          },
+          () => [
+            h(
+              FormField,
+              { name: "title", label: "Title", hint: "One line, no period", required: true },
+              () =>
+                h(Input, {
+                  modelValue: state.value.title,
+                  "onUpdate:modelValue": (v: string) => (state.value.title = v),
+                }),
+            ),
+            h(FormField, { name: "abstract", label: "Abstract" }, () =>
+              h(Textarea, {
+                rows: 3,
+                modelValue: state.value.abstract,
+                "onUpdate:modelValue": (v: string) => (state.value.abstract = v),
+              }),
+            ),
+            submitButton(),
+          ],
+        ),
+        statusLine(status),
+      ];
+    }),
+};
+
+/** The validate function: submit runs it first; errors land on the
+ * FormField whose name matches. Composes with a schema when one is
+ * present for the checks a schema can't express. */
+export const CustomValidation: Story = {
   render: () =>
     withState(() => {
       const state = ref({ email: "", abstract: "" });
@@ -75,25 +130,25 @@ export const Basic: Story = {
     }),
 };
 
-/** The Standard Schema shape: this story fakes the slice of the spec the
- * Form reads — the same object a valibot or zod schema passes as. */
-export const StandardSchemaShape: Story = {
+/** One schema over every input register: text, prose, a checkbox group
+ * bound to an array, and a switch bound to a boolean. Each field keeps
+ * its own binding; the form keeps one error map. */
+export const WithInputs: Story = {
   render: () =>
     withState(() => {
-      const state = ref({ title: "", year: "" });
+      const schema = z.object({
+        title: z.string().min(1, "The title is required."),
+        summary: z.string().min(8, "Write at least 8 characters."),
+        topics: z.array(z.string()).min(1, "Pick at least one topic."),
+        consent: z.boolean().refine((v) => v, "Please accept the terms."),
+      });
+      const state = ref<z.infer<typeof schema>>({
+        title: "",
+        summary: "",
+        topics: [],
+        consent: false,
+      });
       const status = ref("");
-      const schema = {
-        "~standard": {
-          validate: (value: unknown) => {
-            const issues = [] as { message: string; path: string[] }[];
-            const record = value as Record<string, string>;
-            if (!record.title) issues.push({ message: "The title is required.", path: ["title"] });
-            if (!/^\d{4}$/.test(record.year ?? ""))
-              issues.push({ message: "Year must be four digits.", path: ["year"] });
-            return issues.length ? { issues } : { value };
-          },
-        },
-      };
       return () => [
         h(
           Form as never,
@@ -101,7 +156,8 @@ export const StandardSchemaShape: Story = {
             state: state.value,
             schema,
             onSubmit: () => (status.value = "Submitted."),
-            onError: (errors: unknown) => (status.value = `${(errors as []).length} error(s).`),
+            onError: (errors: unknown) =>
+              (status.value = `${(errors as unknown[]).length} error(s).`),
           },
           () => [
             h(FormField, { name: "title", label: "Title", required: true }, () =>
@@ -110,11 +166,37 @@ export const StandardSchemaShape: Story = {
                 "onUpdate:modelValue": (v: string) => (state.value.title = v),
               }),
             ),
-            h(FormField, { name: "year", label: "Year" }, () =>
-              h(Input, {
-                modelValue: state.value.year,
-                "onUpdate:modelValue": (v: string) => (state.value.year = v),
+            h(FormField, { name: "summary", label: "Summary" }, () =>
+              h(Textarea, {
+                rows: 2,
+                modelValue: state.value.summary,
+                "onUpdate:modelValue": (v: string) => (state.value.summary = v),
               }),
+            ),
+            h(FormField, { name: "topics", label: "Topics", required: true }, () =>
+              h(CheckboxGroup as never, {
+                modelValue: state.value.topics,
+                "onUpdate:modelValue": (v: string[]) => (state.value.topics = v),
+                options: [
+                  { label: "Typography", value: "typography" },
+                  { label: "Lighting", value: "lighting" },
+                  { label: "Motion", value: "motion" },
+                ],
+              }),
+            ),
+            h(FormField, { name: "consent" }, () =>
+              h(
+                Switch.Root as never,
+                {
+                  checked: state.value.consent,
+                  onCheckedChange: (e: { checked: boolean }) => (state.value.consent = e.checked),
+                },
+                () => [
+                  switchControl(),
+                  h(Switch.Label, () => "I accept the terms"),
+                  h(Switch.HiddenInput),
+                ],
+              ),
             ),
             submitButton(),
           ],

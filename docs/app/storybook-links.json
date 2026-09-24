@@ -72,6 +72,8 @@
   "float-button/controlled-open": "components-actions-float-button--controlled-open",
   "floating-panel/basic": "components-overlay-floating-panel--basic",
   "form/basic": "components-forms-form--basic",
+  "form/custom-validation": "components-forms-form--custom-validation",
+  "form/inputs": "components-forms-form--basic",
   "format/basic": "components-elements-format--byte",
   "frame/basic": "components-layout-frame--basic",
   "grid/auto-fill": "components-layout-grid--auto-fill",
