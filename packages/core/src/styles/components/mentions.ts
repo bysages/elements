@@ -33,7 +33,7 @@ export const mentionsCss = /* css */ `
 [data-scope="mentions"][data-part="textarea"]:focus,
 [data-scope="mentions"][data-part="textarea"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

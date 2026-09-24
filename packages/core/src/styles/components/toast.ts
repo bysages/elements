@@ -115,7 +115,7 @@ export const toastCss = /* css */ `
 
 [data-scope="toast"][data-part="action-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

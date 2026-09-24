@@ -45,7 +45,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="global-filter"]:focus {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -135,7 +135,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="header-filter"]:focus {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring-inset);
 }
 

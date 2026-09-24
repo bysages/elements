@@ -57,7 +57,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -213,7 +213,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="channel-input"]:focus,
 [data-scope="color-picker"][data-part="channel-input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -326,7 +326,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="eye-dropper-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -369,7 +369,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="format-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -394,7 +394,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="format-select"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 `;

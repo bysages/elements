@@ -39,7 +39,7 @@ export const listboxCss =
 [data-scope="listbox"][data-part="input"]:focus,
 [data-scope="listbox"][data-part="input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

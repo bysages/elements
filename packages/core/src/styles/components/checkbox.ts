@@ -49,7 +49,7 @@ export const checkboxCss =
 
 [data-scope="checkbox"][data-part="control"][data-focus-visible] {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

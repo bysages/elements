@@ -40,7 +40,7 @@ export const selectCss =
 [data-scope="select"][data-part="control"]:focus-within,
 [data-scope="select"][data-part="control"]:has([data-part="trigger"][data-state="open"]) {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

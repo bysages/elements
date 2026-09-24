@@ -43,7 +43,7 @@ export const pinInputCss =
 [data-scope="pin-input"][data-part="input"]:focus,
 [data-scope="pin-input"][data-part="input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

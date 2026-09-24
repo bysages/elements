@@ -45,6 +45,7 @@
 
   /* The halo reads brighter at night, like any light source does. */
   --bs-color-focus: var(--bs-color-primary);
+  --bs-focus-edge: var(--bs-color-primary);
   --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 26%, transparent);
   --bs-focus-ring-width: 8px;
   --bs-focus-ring:

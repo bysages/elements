@@ -24,7 +24,7 @@ export const inputGroupCss = /* css */ `
 /* Focus is light arriving at the group: one halo, however many controls
    sit inside. */
 [data-scope="input-group"][data-part="root"]:focus-within {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

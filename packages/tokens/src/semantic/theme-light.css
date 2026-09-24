@@ -52,6 +52,10 @@
      inset variant serves parts flush against a container edge, where
      an outer halo would spill past it. */
   --bs-color-focus: var(--bs-color-primary);
+  /* The hairline a focused control wears. A scene that borrows another
+     system's focus language re-points it — Fluent keeps the edge neutral
+     and lets the underline speak. */
+  --bs-focus-edge: var(--bs-color-primary);
   --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 20%, transparent);
   --bs-focus-ring-width: 8px;
   --bs-focus-ring:

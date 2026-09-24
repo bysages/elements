@@ -43,7 +43,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="input"]:focus,
 [data-scope="date-picker"][data-part="input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -88,7 +88,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="trigger"]:focus-visible,
 [data-scope="date-picker"][data-part="trigger"][data-state="open"] {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -261,7 +261,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="month-select"]:focus-visible,
 [data-scope="date-picker"][data-part="year-select"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

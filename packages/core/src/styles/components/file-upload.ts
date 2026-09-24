@@ -43,7 +43,7 @@ export const fileUploadCss =
 
 [data-scope="file-upload"][data-part="trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -92,7 +92,7 @@ export const fileUploadCss =
 
 [data-scope="file-upload"][data-part="clear-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

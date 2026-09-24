@@ -39,7 +39,7 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   enterprise: "qinghua",
   studio: "celadon",
   tech: "ink",
-  cupertino: "ink",
+  cupertino: "qinghua",
   expressive: "zhusha",
   fluent: "qinghua",
   material: "celadon",

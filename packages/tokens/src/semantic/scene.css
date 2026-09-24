@@ -11,15 +11,18 @@
 
    A scene moves only what the paper allows: shape (radius), density, motion
    pace and its curves, where the key light stands and how far it reaches,
-   and how the press wash spreads — never interaction, never the semantic
-   pigments. A style scene may also retint the paper itself (the surface
-   ladder, light and dark) where the borrowed register demands its own
-   stock, and let the type follow the register's voice — the one font move
-   allowed is the platform's own stack, which is what the register would
-   speak in anyway. Each scene pairs with a default accent and (for civic) the
-   high-contrast tier; those pairings are applied by the theme engine as
-   plain data attributes, so the accent and contrast rules — including
-   their dark variants — carry them unchanged.
+   and how the press wash spreads. A style scene follows the register it
+   borrows whole — so it may also re-point the focus tokens, speaking
+   focus in the register's own dialect instead of the house halo — and it
+   may retint the paper itself (the surface ladder, light and dark) where
+   the borrowed register demands its own stock, and let the type follow
+   the register's voice — the one font move allowed is the platform's own
+   stack, which is what the register would speak in anyway. No scene
+   touches interaction logic or the semantic pigments. Each scene pairs
+   with a default accent and (for civic) the high-contrast tier; those
+   pairings are applied by the theme engine as plain data attributes, so
+   the accent and contrast rules — including their dark variants — carry
+   them unchanged.
 
    Explicit attributes always outrank the scene's bundled defaults: a
    `[data-accent]`, `[data-contrast]`, or `[data-density]` set alongside
@@ -104,7 +107,8 @@
    honestly reach. */
 
 [data-scene="cupertino"] {
-  /* 圆融 — the soft airy register of handheld design: the capsule is the
+  /* 圆融 — the soft airy register of handheld design, after Apple's
+     Cupertino platform: the capsule is the
      action signal (every pressable thing rounds full), vessels round out
      dramatically, targets grow to the 44px touch ladder, and motion
      glides on the long sheet-spring curve. The interface stays light and
@@ -126,6 +130,10 @@
   --bs-light-y: 0px;
   --bs-light-reach: 0.8;
   --bs-ripple-opacity: 0;
+  /* Focus speaks the platform dialect, measured on apple.com: a crisp
+     2px accent outline pulled inside the control's edge — no halo. */
+  --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
   /* The handheld register speaks in the system voice: headlines stand
      down from the serif — everything rides the sans stack, whose
      platform faces are SF Pro and PingFang — and labels lose their
@@ -160,21 +168,31 @@
 }
 
 [data-scene="expressive"] {
-  /* 飞白 — the motion-forward register: the dry brush that races ahead of
+  /* 飞白 — the motion-forward register, after M3 Expressive: the dry
+     brush that races ahead of
      the ink. Generous rounding, a quick pace, and curves that overshoot
      on the spring — the interface answers like an instrument, not a
-     form — under a warm key light from above. */
+     form — under a warm key light from above. Focus speaks the same
+     M3 dialect as material: the solid pigment outline. */
   --bs-radius-sm: 0.375rem;
   --bs-radius-md: 0.5rem;
   --bs-radius-lg: 0.75rem;
   --bs-radius-xl: 1rem;
   --bs-radius-2xl: 1.5rem;
+  /* Every press is a pill in the expressive register (the official
+     components ship full-round), on the 32/40/48 container ladder. */
+  --bs-radius-control: var(--bs-radius-full);
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.5rem;
+  --bs-control-height-lg: 3rem;
   --bs-motion-scale: 0.8;
   --bs-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --bs-ease-spring: cubic-bezier(0.34, 1.56, 0.5, 1);
   --bs-light-x: 0.1875rem;
   --bs-light-y: 0.1875rem;
   --bs-light-reach: 1;
+  --bs-focus-ring: 0 0 0 3px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 3px var(--bs-color-focus);
 }
 
 [data-scene="fluent"] {
@@ -201,6 +219,11 @@
   --bs-light-y: 0.125rem;
   --bs-light-reach: 0.7;
   --bs-ripple-opacity: 0;
+  /* Focus speaks the register's dialect: the edge stays neutral while a
+     2px brand underline carries the state — structure, not glow. */
+  --bs-focus-edge: var(--bs-color-border);
+  --bs-focus-ring: inset 0 -2px 0 0 var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 -2px 0 0 var(--bs-color-focus);
 }
 
 /* The Fluent layers: light sits on the calm #f3f3f3 ground with layered
@@ -251,6 +274,10 @@
   --bs-light-x: 0px;
   --bs-light-y: 0.125rem;
   --bs-light-reach: 1.5;
+  /* Focus speaks the register's dialect: a solid pigment outline riding
+     just outside the part — M3's focus indicator, no glow. */
+  --bs-focus-ring: 0 0 0 3px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 3px var(--bs-color-focus);
   --bs-ripple-pigment: var(--bs-color-text-primary);
   --bs-ripple-opacity: 0.12;
   --bs-ripple-core: 97%;

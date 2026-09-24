@@ -123,7 +123,7 @@ export const splitterCss = /* css */ `
 }
 
 [data-scope="splitter"][data-part="resize-trigger"]:focus-visible [data-scope="splitter"][data-part="resize-trigger-indicator"] {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

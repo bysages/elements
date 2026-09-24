@@ -69,7 +69,7 @@ export const fieldControlCss = /* css */ `
 [data-scope="field"][data-part="textarea"]:focus,
 [data-scope="field"][data-part="select"]:focus {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
   transition: none;
 }
@@ -93,6 +93,53 @@ export const fieldControlCss = /* css */ `
   background: var(--bs-color-surface-inset);
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
+}
+
+/* The fluent dialect draws its underline as its own mark, not a shadow:
+   a 2px bar painted on the field's own background (inputs are replaced
+   elements — no pseudo-element would render), growing from the center
+   on the register's decelerate curve and retreating quickly on blur.
+   Focus arriving with motion is the register's own signature; the
+   box-shadow underline stands down where the mark runs, and invalid
+   keeps its danger edge and paints the bar in the error's pigment. */
+[data-scene="fluent"] [data-scope="field"][data-part="input"],
+[data-scene="fluent"] [data-scope="field"][data-part="textarea"],
+[data-scene="fluent"] [data-scope="field"][data-part="select"] {
+  box-shadow: none;
+  background-image: linear-gradient(var(--bs-color-focus), var(--bs-color-focus));
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 0% 2px;
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    background-size var(--bs-duration-instant) var(--bs-ease-in);
+}
+
+[data-scene="fluent"] [data-scope="field"][data-part="input"]:focus,
+[data-scene="fluent"] [data-scope="field"][data-part="textarea"]:focus,
+[data-scene="fluent"] [data-scope="field"][data-part="select"]:focus {
+  background-size: 100% 2px;
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    background-size var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scene="fluent"] [data-scope="field"][data-part="input"][data-invalid]:focus,
+[data-scene="fluent"] [data-scope="field"][data-part="textarea"][data-invalid]:focus,
+[data-scene="fluent"] [data-scope="field"][data-part="select"][data-invalid]:focus {
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
+  background-image: linear-gradient(var(--bs-color-danger), var(--bs-color-danger));
+}
+
+/* The material dialect speaks M3's outlined field, measured on
+   material-web.dev: at focus the whole hairline turns the pigment and
+   thickens to its 2dp active width — no outer ring, no halo. The inset
+   hairline doubled over the pigment border is that 2dp edge; invalid
+   keeps the generic danger edge instead of the pigment one. */
+[data-scene="material"] [data-scope="field"][data-part="input"]:focus:not([data-invalid]),
+[data-scene="material"] [data-scope="field"][data-part="textarea"]:focus:not([data-invalid]),
+[data-scene="material"] [data-scope="field"][data-part="select"]:focus:not([data-invalid]) {
+  box-shadow: inset 0 0 0 1px var(--bs-focus-edge);
 }
 `;
 

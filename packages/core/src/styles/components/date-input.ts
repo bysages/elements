@@ -40,7 +40,7 @@ export const dateInputCss =
 }
 
 [data-scope="date-input"][data-part="segment-group"][data-focus] {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

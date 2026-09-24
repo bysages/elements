@@ -52,7 +52,7 @@ export const imageCropperCss =
 }
 
 [data-scope="image-cropper"][data-part="selection"]:focus-visible {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
 }
 
 [data-scope="image-cropper"][data-part="selection"][data-dragging] {

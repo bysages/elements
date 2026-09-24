@@ -65,7 +65,7 @@ export const carouselCss = /* css */ `
 [data-scope="carousel"][data-part="next-trigger"]:focus-visible,
 [data-scope="carousel"][data-part="autoplay-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

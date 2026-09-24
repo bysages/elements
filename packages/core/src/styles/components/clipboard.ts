@@ -44,7 +44,7 @@ export const clipboardCss =
 [data-scope="clipboard"][data-part="input"]:focus,
 [data-scope="clipboard"][data-part="input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -89,7 +89,7 @@ export const clipboardCss =
 
 [data-scope="clipboard"][data-part="trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

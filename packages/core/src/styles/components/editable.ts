@@ -87,7 +87,7 @@ export const editableCss =
 }
 
 [data-scope="editable"][data-part="input"]:focus {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -143,7 +143,7 @@ export const editableCss =
 [data-scope="editable"][data-part="submit-trigger"]:focus-visible,
 [data-scope="editable"][data-part="cancel-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

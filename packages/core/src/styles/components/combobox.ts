@@ -46,7 +46,7 @@ export const comboboxCss =
 [data-scope="combobox"][data-part="input"]:focus,
 [data-scope="combobox"][data-part="input"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -92,7 +92,7 @@ export const comboboxCss =
 [data-scope="combobox"][data-part="trigger"]:focus-visible,
 [data-scope="combobox"][data-part="clear-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

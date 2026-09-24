@@ -82,7 +82,7 @@ export const qrCodeCss = /* css */ `
 
 [data-scope="qr-code"][data-part="download-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

@@ -65,7 +65,7 @@ export const floatingPanelCss =
 
 [data-scope="floating-panel"][data-part="trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -143,7 +143,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="stage-trigger"]:focus-visible,
 [data-scope="floating-panel"][data-part="close-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

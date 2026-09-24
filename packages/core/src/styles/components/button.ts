@@ -181,7 +181,7 @@ export const buttonCss = /* css */ `
    ease in. */
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
   transition: none;
 }
@@ -270,7 +270,7 @@ export const buttonCss = /* css */ `
 [data-scope][data-part="trigger"][data-variant]:focus-visible,
 [data-scope][data-part="trigger"][data-variant][data-state="open"] {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

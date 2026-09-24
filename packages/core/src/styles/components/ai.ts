@@ -149,7 +149,7 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="code-copy"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -421,7 +421,7 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="prompt"]:focus-within {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

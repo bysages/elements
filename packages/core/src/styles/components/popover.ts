@@ -68,7 +68,7 @@ export const popoverCss =
 [data-scope="popover"][data-part="trigger"]:focus-visible,
 [data-scope="popover"][data-part="trigger"][data-state="open"] {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 

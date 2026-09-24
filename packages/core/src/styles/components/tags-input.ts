@@ -35,7 +35,7 @@ export const tagsInputCss =
 }
 
 [data-scope="tags-input"][data-part="control"]:focus-within {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
@@ -121,7 +121,7 @@ export const tagsInputCss =
 
 [data-scope="tags-input"][data-part="item-input"]:focus,
 [data-scope="tags-input"][data-part="item-input"]:focus-visible {
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring-inset);
 }
 

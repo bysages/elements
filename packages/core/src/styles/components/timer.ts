@@ -65,7 +65,7 @@ export const timerCss = /* css */ `
 
 [data-scope="timer"][data-part="action-trigger"]:focus-visible {
   outline: none;
-  border-color: var(--bs-color-primary);
+  border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
 
