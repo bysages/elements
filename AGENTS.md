@@ -38,12 +38,13 @@ Shape is a signature: 方寸为章，器物为圆 — controls are square-cut at
 The full system — principles, spacing, typography, surface ladder, lighting model, motion grammar, density, a11y, review checklist — is specified in [DESIGN.md](./DESIGN.md). The control recipe every interactive component follows:
 
 - **Rest state** — paper-white surface (`--bs-color-surface-2`), one hairline (`--bs-color-border`), `--bs-shadow-xs`. Nothing else.
-- **Hover** — the hairline deepens (`--bs-color-border-strong`); filled states deepen their fill and let the ink bleed (the shadow spreads on a slower transition than the fill — light needs time). No background swaps on outline controls.
-- **Focus** — the hairline turns `--bs-color-primary` plus the focus halo (`--bs-focus-ring`: a crisp inner line inside a soft, wide glow). Never a background change.
+- **Hover** — the hairline deepens (`--bs-color-border-strong`) and the control takes a breath of lift (`--bs-shadow-hover`); filled states deepen their fill and let the ink bleed (the shadow spreads on a slower transition than the fill — light needs time). No background swaps on outline controls.
+- **Focus** — the hairline turns `--bs-color-primary` plus the focus halo (`--bs-focus-ring`: a crisp inner line inside a soft, wide glow). Never a background change. Every default scene carries the halo, text inputs included.
 - **Pressed** — the shadow lets go (the control settles into the page).
 - **Selected/checked** — flat primary fill, on-primary content, no inner shadow, no lit edge.
 - **Invalid** — hairline turns `--bs-color-danger`; disabled — muted surface, no shadow, no cursor tricks.
 - **Inputs rely on border + surface + focus halo**, not shadow, to read as fields.
+- **A scene that borrows another system's style follows that system whole** — a Fluent-drawn field thickens its edge and casts no halo; our default scenes always do.
 
 Three constraints from the spec that bite in CSS specifically:
 

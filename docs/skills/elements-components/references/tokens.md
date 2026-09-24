@@ -30,7 +30,8 @@ property. Reference these names; never invent literals.
   `--bs-color-info`, each with `-hover`, `-subtle`, `-subtle-text` and a
   numeric ramp (`-100` … `-800`).
 - `--bs-color-focus` and `--bs-focus-ring` / `--bs-focus-ring-inset` —
-  the focus halo. Never fake it with a `box-shadow` literal; the inset
+  the focus halo: a crisp inner line inside a soft, wide glow. Never fake
+  it with a `box-shadow` literal; the inset
   variant is its own token (do not prefix `var(--bs-focus-ring)` with
   `inset`).
 
