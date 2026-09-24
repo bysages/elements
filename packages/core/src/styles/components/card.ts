@@ -11,6 +11,13 @@ export const cardCss = /* css */ `
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   box-shadow: var(--bs-elevation-1);
+  transition: box-shadow var(--bs-duration-base) var(--bs-ease-out);
+}
+
+/* A vessel under the hand rises a level — the ladder does the lifting,
+   not a new shadow (light needs time, so the rise eases in slowly). */
+[data-scope="card"][data-part="root"]:hover {
+  box-shadow: var(--bs-elevation-2);
 }
 
 [data-scope="card"][data-part="header"] {

@@ -45,6 +45,7 @@ export const toggleGroupCss = /* css */ `
 
 [data-scope="toggle-group"][data-part="item"]:hover:not([data-state="on"], [data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   color: var(--bs-color-text-primary);
 }
 

@@ -53,6 +53,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="color-picker"][data-part="trigger"]:focus-visible {
@@ -208,6 +209,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="channel-input"]:hover {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="color-picker"][data-part="channel-input"]:focus,
@@ -321,6 +323,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="eye-dropper-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   color: var(--bs-color-text-primary);
 }
 
@@ -365,6 +368,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="format-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="color-picker"][data-part="format-trigger"]:focus-visible {

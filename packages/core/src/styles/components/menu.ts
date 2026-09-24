@@ -53,6 +53,7 @@ export const menuCss =
 
 [data-scope="menu"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="menu"][data-part="trigger"]:active {

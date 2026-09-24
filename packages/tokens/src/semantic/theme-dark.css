@@ -10,6 +10,9 @@
 
   /* Lacquer surfaces: warm black at every step, never pure #000. */
   --bs-color-surface-0: oklch(0.165 0.008 75);
+  /* The page paper itself — the alias floating bodies read, mirroring
+     --bs-color-surface-inverse below. */
+  --bs-color-surface: var(--bs-color-surface-0);
   --bs-color-surface-1: oklch(0.205 0.009 75);
   --bs-color-surface-2: oklch(0.245 0.01 76);
   --bs-color-surface-3: oklch(0.272 0.01 76);
@@ -42,7 +45,7 @@
 
   /* The halo reads brighter at night, like any light source does. */
   --bs-color-focus: var(--bs-color-primary);
-  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 22%, transparent);
+  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 26%, transparent);
   --bs-focus-ring-width: 8px;
   --bs-focus-ring:
     0 0 0 1px var(--bs-color-focus), 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
@@ -95,6 +98,10 @@
   --bs-hairline-strong: 3px;
   --bs-shadow-xs: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 35%, transparent);
+  /* The breath of lift a control takes under the cursor — same parts,
+     deeper ink: light needs time, so hover eases into this shadow. */
+  --bs-shadow-hover: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+    calc(3px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 45%, transparent);
   --bs-elevation-0: none;
   --bs-elevation-1:
     0 0 0 1px oklch(0.95 0.01 90 / 0.04),

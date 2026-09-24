@@ -58,6 +58,7 @@ export const carouselCss = /* css */ `
 [data-scope="carousel"][data-part="next-trigger"]:hover:not([data-disabled]),
 [data-scope="carousel"][data-part="autoplay-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-3);
 }
 

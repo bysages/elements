@@ -28,6 +28,7 @@ export const mentionsCss = /* css */ `
 
 [data-scope="mentions"][data-part="textarea"]:hover:not([disabled], [readonly]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="mentions"][data-part="textarea"]:focus,

@@ -135,6 +135,7 @@ export const editableCss =
 [data-scope="editable"][data-part="submit-trigger"]:hover:not([data-disabled]),
 [data-scope="editable"][data-part="cancel-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
 }

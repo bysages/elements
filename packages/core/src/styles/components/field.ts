@@ -1,8 +1,8 @@
 import { labelCss } from "./shared";
 
-/** The control recipe alone: border + surface + focus halo, the register
- * every text entry rides. The bare Input and Textarea families re-scope
- * this to their own anatomy instead of copying it. */
+/** The control recipe alone: border + surface + the focus halo, the
+ * register every text entry rides. The bare Input and Textarea
+ * families re-scope this to their own anatomy instead of copying it. */
 export const fieldControlCss = /* css */ `
 [data-scope="field"][data-part="input"],
 [data-scope="field"][data-part="textarea"],
@@ -57,8 +57,12 @@ export const fieldControlCss = /* css */ `
 [data-scope="field"][data-part="textarea"]:hover:not(:disabled),
 [data-scope="field"][data-part="select"]:hover:not(:disabled) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
+/* Focus carries the halo like any control. Invalid keeps its edge in
+   danger while focused and foregoes the halo, so the error reads in
+   one pigment. */
 [data-scope="field"][data-part="input"]:focus,
 [data-scope="field"][data-part="textarea"]:focus,
 [data-scope="field"][data-part="select"]:focus {
@@ -71,6 +75,12 @@ export const fieldControlCss = /* css */ `
 [data-scope="field"][data-part="textarea"][data-invalid],
 [data-scope="field"][data-part="select"][data-invalid] {
   border-color: var(--bs-color-danger);
+}
+
+[data-scope="field"][data-part="input"][data-invalid]:focus,
+[data-scope="field"][data-part="textarea"][data-invalid]:focus,
+[data-scope="field"][data-part="select"][data-invalid]:focus {
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
 }
 
 [data-scope="field"][data-part="input"]:disabled,

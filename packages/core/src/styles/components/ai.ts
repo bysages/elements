@@ -143,6 +143,7 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="code-copy"]:hover {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
 }
@@ -346,6 +347,7 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="attachment"]:hover {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="ai"][data-part="attachment"] svg {

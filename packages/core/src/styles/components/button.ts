@@ -172,19 +172,23 @@ export const buttonCss = /* css */ `
 
 [data-scope="button"][data-part="root"]:hover:not(:disabled) {
   background: var(--_fill-hover);
+  box-shadow: var(--bs-shadow-hover);
 }
 
-[data-scope="button"][data-part="root"]:focus-visible {
+/* The state branches ride the same :is() skeleton as the variants — a
+   variant's rest shadow (0,4,0) would otherwise out-specify a bare
+   :focus-visible (0,3,0) and silence the ring on filled buttons. */
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:focus-visible {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);
 }
 
-[data-scope="button"][data-part="root"]:active:not(:disabled) {
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:active:not(:disabled) {
   box-shadow: none;
 }
 
-[data-scope="button"][data-part="root"]:disabled {
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:disabled {
   --_fill: var(--bs-color-surface-inset);
   --_fill-hover: var(--bs-color-surface-inset);
   --_ink: var(--bs-color-text-disabled);

@@ -32,6 +32,7 @@ export const tagsInputCss =
 
 [data-scope="tags-input"][data-part="control"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="tags-input"][data-part="control"]:focus-within {

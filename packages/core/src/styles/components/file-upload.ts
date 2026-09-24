@@ -39,6 +39,7 @@ export const fileUploadCss =
 
 [data-scope="file-upload"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="file-upload"][data-part="trigger"]:focus-visible {
@@ -129,6 +130,7 @@ export const fileUploadCss =
 
 [data-scope="file-upload"][data-part="dropzone"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="file-upload"][data-part="dropzone"][data-dragging] {

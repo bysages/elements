@@ -44,7 +44,7 @@ export const checkboxCss =
 
 [data-scope="checkbox"][data-part="control"]:hover:not([data-disabled], [data-state="checked"], [data-state="indeterminate"]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-xs);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="checkbox"][data-part="control"][data-focus-visible] {

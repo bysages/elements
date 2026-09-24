@@ -1,6 +1,6 @@
 /* Contrast tier — softness comes from light and shadow, never from low contrast: the aesthetic softens through
    light, never through gray-on-gray. The high tier pulls secondary text and
-   borders up to primary strength and widens the focus halo; it exists so
+   borders up to primary strength and deepens the focus halo; it exists so
    older and low-vision users get the same design, just louder. Surface
    steps stay untouched — rows signal hover by one step of shade, and
    flattening the ladder would silence every hover in the system. */
@@ -10,7 +10,7 @@
   --bs-color-text-secondary: var(--bs-color-text-primary);
   --bs-color-text-tertiary: var(--bs-color-text-secondary);
   --bs-color-border: var(--bs-color-border-strong);
-  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 30%, transparent);
+  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 34%, transparent);
 }
 
 [data-theme="light"][data-contrast="high"],

@@ -46,6 +46,7 @@ export const numberInputCss =
 
 [data-scope="number-input"][data-part="input"]:hover {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="number-input"][data-part="input"]:focus,

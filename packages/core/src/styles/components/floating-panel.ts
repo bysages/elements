@@ -57,6 +57,7 @@ export const floatingPanelCss =
 
 [data-scope="floating-panel"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="floating-panel"][data-part="trigger"]:active {
@@ -136,6 +137,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="stage-trigger"]:hover:not([data-disabled]),
 [data-scope="floating-panel"][data-part="close-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
 }

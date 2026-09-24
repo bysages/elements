@@ -15,6 +15,9 @@
      light. Warm paper whites throughout — pure #ffffff never appears, it
      would read clinical against the ink. */
   --bs-color-surface-0: var(--bs-color-gray-50);
+  /* The page paper itself — the alias floating bodies read, mirroring
+     --bs-color-surface-inverse below. */
+  --bs-color-surface: var(--bs-color-surface-0);
   --bs-color-surface-1: var(--bs-color-gray-25);
   --bs-color-surface-2: oklch(0.988 0.004 95);
   --bs-color-surface-3: oklch(0.988 0.004 95);
@@ -44,11 +47,12 @@
   --bs-color-border: var(--bs-color-gray-200);
   --bs-color-border-strong: var(--bs-color-gray-300);
 
-  /* Focus is a halo of light: a crisp inner line inside a soft, wide glow.
-     The inset variant serves parts flush against a container edge (steppers),
-     where an outer halo would spill past it. */
+  /* Focus is a halo of light: a crisp inner line inside a soft, wide
+     glow. Every default scene carries it, text inputs included. The
+     inset variant serves parts flush against a container edge, where
+     an outer halo would spill past it. */
   --bs-color-focus: var(--bs-color-primary);
-  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
+  --bs-focus-ring-color: color-mix(in oklab, var(--bs-color-focus) 20%, transparent);
   --bs-focus-ring-width: 8px;
   --bs-focus-ring:
     0 0 0 1px var(--bs-color-focus), 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
@@ -113,6 +117,10 @@
   --bs-hairline-strong: 3px;
   --bs-shadow-xs: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 5%, transparent);
+  /* The breath of lift a control takes under the cursor — same parts,
+     deeper ink: light needs time, so hover eases into this shadow. */
+  --bs-shadow-hover: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
+    calc(3px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent);
   --bs-elevation-0: none;
   --bs-elevation-1: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent);

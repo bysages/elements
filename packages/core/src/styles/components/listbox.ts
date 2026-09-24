@@ -34,6 +34,7 @@ export const listboxCss =
 
 [data-scope="listbox"][data-part="input"]:hover {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="listbox"][data-part="input"]:focus,

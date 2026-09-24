@@ -37,6 +37,7 @@ export const dateInputCss =
 
 [data-scope="date-input"][data-part="segment-group"]:hover:not([data-disabled], [data-readonly]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="date-input"][data-part="segment-group"][data-focus] {

@@ -32,6 +32,7 @@ export const treeSelectCss =
 
 [data-scope="tree-select"][data-part="control"]:hover:not(:focus):not(:disabled) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="tree-select"][data-part="control"]:focus-visible {

@@ -41,6 +41,7 @@ export const comboboxCss =
 
 [data-scope="combobox"][data-part="input"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="combobox"][data-part="input"]:focus,
@@ -87,6 +88,7 @@ export const comboboxCss =
 [data-scope="combobox"][data-part="trigger"]:hover:not([data-disabled]),
 [data-scope="combobox"][data-part="clear-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="combobox"][data-part="trigger"]:focus-visible,

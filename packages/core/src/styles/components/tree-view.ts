@@ -163,6 +163,7 @@ export const treeViewCss =
 
 [data-scope="tree-view"][data-part="node-checkbox"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="tree-view"][data-part="node-checkbox"]:focus-visible {

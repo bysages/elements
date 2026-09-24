@@ -32,6 +32,7 @@ export const toggleCss = /* css */ `
 
 [data-scope="toggle"][data-part="root"]:hover:not([data-state="on"], [data-disabled]) {
   border-color: var(--bs-color-border-strong);
+  box-shadow: var(--bs-shadow-hover);
   color: var(--bs-color-text-primary);
 }
 
