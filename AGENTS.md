@@ -38,7 +38,7 @@ Shape is a signature: 方寸为章，器物为圆 — controls are square-cut at
 The full system — principles, spacing, typography, surface ladder, lighting model, motion grammar, density, a11y, review checklist — is specified in [DESIGN.md](./DESIGN.md). The control recipe every interactive component follows:
 
 - **Rest state** — paper-white surface (`--bs-color-surface-2`), one hairline (`--bs-color-border`), `--bs-shadow-xs`. Nothing else.
-- **Hover** — the hairline deepens (`--bs-color-border-strong`) and the control takes a breath of lift (`--bs-shadow-hover`); filled states deepen their fill and let the ink bleed (the shadow spreads on a slower transition than the fill — light needs time). No background swaps on outline controls.
+- **Hover** — the hairline deepens (`--bs-color-border-strong`); filled states deepen their fill and let the ink bleed (the shadow spreads on a slower transition than the fill — light needs time). No background swaps on outline controls.
 - **Focus** — the hairline turns `--bs-color-primary` plus the focus halo (`--bs-focus-ring`: a crisp inner line inside a soft, wide glow). Never a background change. Every default scene carries the halo, text inputs included.
 - **Pressed** — the shadow lets go (the control settles into the page).
 - **Selected/checked** — flat primary fill, on-primary content, no inner shadow, no lit edge.
@@ -52,7 +52,7 @@ Three constraints from the spec that bite in CSS specifically:
 - Hover specificity overrides `[data-state]` rules — selected/invalid rules must exclude hover explicitly (`:hover:not([data-state="on"])` pattern).
 - The inset ring variant is its own token (`--bs-focus-ring-inset`) — never prefix `var(--bs-focus-ring)` with `inset`, which corrupts the multi-layer shadow.
 
-Motion grammar: light needs time (shadows transition ~1.5× slower than the property that raised them); ink bleeds (panel entrances use `bs-ink-in` — fade + blur dissolve, never pop); puppets have strings (moving parts overshoot on `--bs-ease-spring`; lists stagger on `--bs-stagger-step`). Reduced-motion retunes durations to 1ms — states remain, animation does not.
+Motion grammar: the focus halo arrives at once and fades slowly (focus indicators never ease in; state shadows exit through the rest transition); ink bleeds (panel entrances use `bs-ink-in` — fade + blur dissolve, never pop); puppets have strings (moving parts overshoot on `--bs-ease-spring`; lists stagger on `--bs-stagger-step`). Reduced-motion retunes durations to 1ms — states remain, animation does not.
 
 Sizing: control heights sm 28 / md 32 / lg 36 px (`--bs-control-height-*`); buttons and inputs default to md, chips and segmented items to sm. Density has four tiers (compact / default / comfortable / spacious via `[data-density]`); it scales whitespace, never type size or contrast.
 

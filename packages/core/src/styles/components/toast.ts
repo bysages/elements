@@ -109,7 +109,6 @@ export const toastCss = /* css */ `
 
 [data-scope="toast"][data-part="action-trigger"]:hover {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
 }

@@ -32,7 +32,6 @@ export const signaturePadCss =
 
 [data-scope="signature-pad"][data-part="control"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="signature-pad"][data-part="control"][data-disabled] {

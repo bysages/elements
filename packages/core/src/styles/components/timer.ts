@@ -61,7 +61,6 @@ export const timerCss = /* css */ `
 
 [data-scope="timer"][data-part="action-trigger"]:hover:not(:disabled) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="timer"][data-part="action-trigger"]:focus-visible {

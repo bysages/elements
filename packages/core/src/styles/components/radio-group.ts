@@ -37,7 +37,7 @@ export const radioGroupCss =
 
 [data-scope="radio-group"][data-part="item-control"]:hover:not([data-disabled], [data-state="checked"]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
+  box-shadow: var(--bs-shadow-xs);
 }
 
 [data-scope="radio-group"][data-part="item-control"][data-focus-visible] {

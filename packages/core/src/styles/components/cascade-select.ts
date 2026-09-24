@@ -39,7 +39,6 @@ export const cascadeSelectCss =
 
 [data-scope="cascade-select"][data-part="trigger"]:hover:not(:focus):not(:disabled) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="cascade-select"][data-part="trigger"]:focus-visible {

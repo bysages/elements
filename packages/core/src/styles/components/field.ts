@@ -53,22 +53,25 @@ export const fieldControlCss = /* css */ `
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="field"][data-part="input"]:hover:not(:disabled),
-[data-scope="field"][data-part="textarea"]:hover:not(:disabled),
-[data-scope="field"][data-part="select"]:hover:not(:disabled) {
+/* Hover deepens the hairline and leaves a focused control alone, so its
+   pigment hairline never trades places with the hover shade. */
+[data-scope="field"][data-part="input"]:hover:not(:disabled):not(:focus),
+[data-scope="field"][data-part="textarea"]:hover:not(:disabled):not(:focus),
+[data-scope="field"][data-part="select"]:hover:not(:disabled):not(:focus) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
-/* Focus carries the halo like any control. Invalid keeps its edge in
-   danger while focused and foregoes the halo, so the error reads in
-   one pigment. */
+/* The focus halo announces at once — it is the keyboard's cursor, not
+   an effect to ease in — while its exit keeps the rest transition, so
+   it fades rather than pops off. Invalid keeps its edge in danger while
+   focused and foregoes the halo, so the error reads in one pigment. */
 [data-scope="field"][data-part="input"]:focus,
 [data-scope="field"][data-part="textarea"]:focus,
 [data-scope="field"][data-part="select"]:focus {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);
+  transition: none;
 }
 
 [data-scope="field"][data-part="input"][data-invalid],

@@ -117,10 +117,6 @@
   --bs-hairline-strong: 3px;
   --bs-shadow-xs: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 5%, transparent);
-  /* The breath of lift a control takes under the cursor — same parts,
-     deeper ink: light needs time, so hover eases into this shadow. */
-  --bs-shadow-hover: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
-    calc(3px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 10%, transparent);
   --bs-elevation-0: none;
   --bs-elevation-1: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(2px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--bs-shadow-ink) 7%, transparent);

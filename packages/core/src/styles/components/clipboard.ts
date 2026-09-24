@@ -39,7 +39,6 @@ export const clipboardCss =
 
 [data-scope="clipboard"][data-part="input"]:hover {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="clipboard"][data-part="input"]:focus,
@@ -85,7 +84,6 @@ export const clipboardCss =
 
 [data-scope="clipboard"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
   color: var(--bs-color-text-primary);
 }
 

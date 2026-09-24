@@ -19,7 +19,6 @@ export const inputGroupCss = /* css */ `
 
 [data-scope="input-group"][data-part="root"]:hover {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 /* Focus is light arriving at the group: one halo, however many controls

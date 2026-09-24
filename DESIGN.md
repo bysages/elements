@@ -263,19 +263,23 @@ Every interactive component defines its applicable states among: Rest / Hover
 
 The control recipe:
 
+States announce at once and recede slowly: the focus halo arrives with
+no transition — feedback is not an effect to ease in — and fades on exit
+through the rest transition.
+
 - **Rest** — paper-white surface (`--bs-color-surface-2`), one hairline
   (`--bs-color-border`), `--bs-shadow-xs`. Nothing else.
-- **Hover** — the hairline deepens (`--bs-color-border-strong`) and the
-  control takes a breath of lift (`--bs-shadow-hover`); filled states deepen
-  their fill and let the ink bleed (the shadow spreads while the color
-  deepens). Outline controls never swap background.
+- **Hover** — the hairline deepens (`--bs-color-border-strong`); filled
+  states deepen their fill and let the ink bleed (the shadow spreads while
+  the color deepens). Outline controls never swap background.
 - **Focus** — the hairline turns primary plus the focus halo
   (`--bs-focus-ring`): a crisp inner line inside a soft, wide glow. Every
   default scene carries the halo, text inputs included. A scene that
   borrows another system's style follows that system whole — a
   Fluent-drawn field thickens its edge and casts no halo; ours always do.
-  Focus is light arriving — never a background change, never
-  `outline: none` without a replacement. Focus and selection stay distinct.
+  Focus is the keyboard's cursor: light arriving, never a background
+  change, never `outline: none` without a replacement. Focus and
+  selection stay distinct.
 - **Pressed** — the shadow lets go; the control settles into the page.
 - **Selected/checked** — flat primary fill, on-primary content, no inner
   shadow, no lit edge.

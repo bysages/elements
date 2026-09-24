@@ -38,7 +38,6 @@ export const pinInputCss =
 
 [data-scope="pin-input"][data-part="input"]:hover {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="pin-input"][data-part="input"]:focus,

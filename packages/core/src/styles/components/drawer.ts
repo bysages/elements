@@ -176,7 +176,6 @@ export const drawerCss =
 
 [data-scope="drawer"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="drawer"][data-part="trigger"]:active {

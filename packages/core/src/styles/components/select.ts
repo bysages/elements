@@ -32,7 +32,6 @@ export const selectCss =
 
 [data-scope="select"][data-part="control"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 /* Zag moves focus into the list once the select opens, so :focus-within

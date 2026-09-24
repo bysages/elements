@@ -38,7 +38,6 @@ export const datePickerCss =
 
 [data-scope="date-picker"][data-part="input"]:hover {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 [data-scope="date-picker"][data-part="input"]:focus,
@@ -82,7 +81,6 @@ export const datePickerCss =
 
 [data-scope="date-picker"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 /* Open keeps the focus look: the calendar takes focus once the popup is

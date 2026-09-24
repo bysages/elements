@@ -172,16 +172,18 @@ export const buttonCss = /* css */ `
 
 [data-scope="button"][data-part="root"]:hover:not(:disabled) {
   background: var(--_fill-hover);
-  box-shadow: var(--bs-shadow-hover);
 }
 
 /* The state branches ride the same :is() skeleton as the variants — a
    variant's rest shadow (0,4,0) would otherwise out-specify a bare
-   :focus-visible (0,3,0) and silence the ring on filled buttons. */
+   :focus-visible (0,3,0) and silence the ring on filled buttons. The
+   halo arrives at once: it is the keyboard's cursor, not an effect to
+   ease in. */
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:focus-visible {
   outline: none;
   border-color: var(--bs-color-primary);
   box-shadow: var(--bs-focus-ring);
+  transition: none;
 }
 
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:active:not(:disabled) {

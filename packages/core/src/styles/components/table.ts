@@ -337,7 +337,6 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="page-button"]:hover:not(:disabled) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
   color: var(--bs-color-text-primary);
 }
 

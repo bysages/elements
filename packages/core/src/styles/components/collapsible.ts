@@ -39,9 +39,7 @@ export const collapsibleCss = /* css */ `
 
 [data-scope="collapsible"][data-part="trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  box-shadow: var(--bs-shadow-hover);
   background: var(--bs-color-surface-3);
-  box-shadow: var(--bs-shadow-sm);
 }
 
 [data-scope="collapsible"][data-part="trigger"]:focus-visible {
