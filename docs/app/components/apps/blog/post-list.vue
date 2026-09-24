@@ -40,26 +40,26 @@ function toggleTag(tag: string) {
 
 <template>
   <div class="post-list">
-    <ul class="post-list-tags" aria-label="Filter by tag">
-      <li>
-        <button
-          class="post-list-tag"
-          :class="{ 'post-list-tag--active': !activeTag }"
-          @click="emit('update:activeTag', null)"
-        >
-          All
-        </button>
-      </li>
-      <li v-for="tag in tags" :key="tag">
-        <button
-          class="post-list-tag"
-          :class="{ 'post-list-tag--active': activeTag === tag }"
-          @click="toggleTag(tag)"
-        >
-          {{ tag }}
-        </button>
-      </li>
-    </ul>
+    <div class="post-list-tags" role="group" aria-label="Filter by tag">
+      <Button
+        :variant="!activeTag ? 'solid' : 'ghost'"
+        size="sm"
+        :aria-pressed="!activeTag"
+        @click="emit('update:activeTag', null)"
+      >
+        All
+      </Button>
+      <Button
+        v-for="tag in tags"
+        :key="tag"
+        :variant="activeTag === tag ? 'solid' : 'ghost'"
+        size="sm"
+        :aria-pressed="activeTag === tag"
+        @click="toggleTag(tag)"
+      >
+        {{ tag }}
+      </Button>
+    </div>
 
     <div v-if="visible.length" class="post-list-grid">
       <PostCard v-for="post in visible" :key="post.id" :post="post" @open="emit('open', post)" />
@@ -131,29 +131,6 @@ function toggleTag(tag: string) {
   display: flex;
   flex-wrap: wrap;
   gap: var(--bs-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.post-list-tag {
-  border: none;
-  background: none;
-  padding: var(--bs-space-1) var(--bs-space-3);
-  color: var(--bs-color-text-secondary);
-  font-size: var(--bs-font-size-sm);
-  cursor: pointer;
-  border-radius: 999px;
-}
-
-.post-list-tag:hover {
-  color: var(--bs-color-text-primary);
-  background: var(--bs-color-surface-2);
-}
-
-.post-list-tag--active {
-  color: var(--bs-color-on-primary);
-  background: var(--bs-color-primary);
 }
 
 .post-list-grid {
@@ -169,9 +146,5 @@ function toggleTag(tag: string) {
 .post-list-pages {
   display: flex;
   justify-content: center;
-}
-
-.post-list-tag:focus-visible {
-  box-shadow: var(--bs-focus-ring);
 }
 </style>

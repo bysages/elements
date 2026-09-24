@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Link } from "@bysages/vue";
+
 import Workbench from "../../components/apps/chat/workbench.vue";
 
 definePageMeta({ layout: "default", examples: true });
@@ -9,7 +11,19 @@ useSeoMeta({
     "A simulated assistant conversation — streamed responses, tool calls, reasoning, and suggestion chips — composed from the Elements AI family.",
 });
 
-const sourceUrl = "https://github.com/bysages/elements/tree/main/docs/app/components/apps/chat";
+const config = useAppConfig() as {
+  github?: { url?: string; branch?: string; rootDir?: string };
+};
+
+const sourceUrl = [
+  config.github?.url,
+  "tree",
+  config.github?.branch,
+  config.github?.rootDir,
+  "app/components/apps/chat",
+]
+  .filter(Boolean)
+  .join("/");
 </script>
 
 <template>
@@ -22,7 +36,9 @@ const sourceUrl = "https://github.com/bysages/elements/tree/main/docs/app/compon
         suggestion chips. A scripted assistant plays the model locally — the docs assistant on the
         real site speaks the same parts.
       </p>
-      <a :href="sourceUrl" target="_blank" rel="noopener" class="example-source">View source</a>
+      <Link :href="sourceUrl" target="_blank" rel="noopener" class="example-source"
+        >View source</Link
+      >
     </header>
 
     <Workbench class="chat-stage" />

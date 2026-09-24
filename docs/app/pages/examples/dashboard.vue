@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, Toast, Toaster } from "@bysages/vue";
+import { Card, Link, Toast, Toaster } from "@bysages/vue";
 import { ref } from "vue";
 
 import { orders, type OrderRow } from "../../components/apps/dashboard/data";
@@ -20,8 +20,19 @@ useSeoMeta({
     "A complete revenue console — stat cards, charts, and a data table with filtering, selection, and editing — built from Elements components.",
 });
 
-const sourceUrl =
-  "https://github.com/bysages/elements/tree/main/docs/app/components/apps/dashboard";
+const config = useAppConfig() as {
+  github?: { url?: string; branch?: string; rootDir?: string };
+};
+
+const sourceUrl = [
+  config.github?.url,
+  "tree",
+  config.github?.branch,
+  config.github?.rootDir,
+  "app/components/apps/dashboard",
+]
+  .filter(Boolean)
+  .join("/");
 
 // The ledger is the page's state: edits and archives land here and the
 // table re-renders from the narrowed prop.
@@ -75,7 +86,9 @@ function archiveSelected(selected: OrderRow[]) {
         sorting, searching, selection, and editing all run live. No server — the ledger is local
         state.
       </p>
-      <a :href="sourceUrl" target="_blank" rel="noopener" class="example-source">View source</a>
+      <Link :href="sourceUrl" target="_blank" rel="noopener" class="example-source"
+        >View source</Link
+      >
     </header>
 
     <Shell>

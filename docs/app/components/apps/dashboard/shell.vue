@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, AvatarGroup, Badge, Button, Layout, Typography } from "@bysages/vue";
+import { Avatar, AvatarGroup, Badge, Button, Layout, SegmentGroup, Typography } from "@bysages/vue";
 import { ref } from "vue";
 
 const stops = ["Overview", "Accounts", "Billing", "Reports", "Settings"];
@@ -12,18 +12,20 @@ const collapsed = ref(false);
 <template>
   <Layout.Root sider="start" class="shell">
     <Layout.Sider v-model:collapsed="collapsed" collapsed-width="0rem">
-      <nav class="shell-nav">
-        <Button
-          v-for="stop in stops"
-          :key="stop"
-          :variant="activeStop === stop ? 'solid' : 'ghost'"
-          class="shell-stop"
-          :aria-current="activeStop === stop ? 'page' : undefined"
-          @click="activeStop = stop"
-        >
-          {{ stop }}
-        </Button>
-      </nav>
+      <SegmentGroup.Root
+        orientation="vertical"
+        :model-value="activeStop"
+        class="shell-nav"
+        aria-label="Console sections"
+        @update:model-value="(value: string | null) => value && (activeStop = value)"
+      >
+        <SegmentGroup.Indicator />
+        <SegmentGroup.Item v-for="stop in stops" :key="stop" :value="stop">
+          <SegmentGroup.ItemText>{{ stop }}</SegmentGroup.ItemText>
+          <SegmentGroup.ItemControl />
+          <SegmentGroup.ItemHiddenInput />
+        </SegmentGroup.Item>
+      </SegmentGroup.Root>
     </Layout.Sider>
     <Layout.Header>
       <Button
@@ -72,14 +74,13 @@ const collapsed = ref(false);
   min-block-size: 100%;
 }
 
-.shell-nav {
-  display: grid;
-  gap: var(--bs-gap-xs);
-  padding: var(--bs-padding-sm);
+/* Folded to zero the rail is absent — its hairline goes with it. */
+.shell :deep([data-part="sider"][data-collapsed]) {
+  border-inline-end: none;
 }
 
-.shell-stop {
-  justify-content: flex-start;
+.shell-nav {
+  inline-size: 100%;
 }
 
 .shell-title {

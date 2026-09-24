@@ -83,15 +83,15 @@ const tocItems = computed(() =>
 
 <style scoped>
 .article {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 44rem) 1fr;
   gap: var(--bs-space-8);
-  align-items: flex-start;
+  align-items: start;
 }
 
 .article-body {
-  flex: 1;
+  grid-column: 2;
   min-inline-size: 0;
-  max-inline-size: 44rem;
 }
 
 .article-back {
@@ -141,10 +141,10 @@ const tocItems = computed(() =>
 }
 
 .article-rail {
+  grid-column: 3;
   position: sticky;
   inset-block-start: 6rem;
   inline-size: 13rem;
-  flex: none;
 }
 
 @container (max-width: 60rem) {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from "@bysages/vue";
 import { computed, ref } from "vue";
 
 import ArticleView from "../../components/apps/blog/article-view.vue";
@@ -14,7 +15,19 @@ useSeoMeta({
     "A complete editorial site — filterable post grid, article view with a tracked table of contents, and a comment thread — built from Elements components.",
 });
 
-const sourceUrl = "https://github.com/bysages/elements/tree/main/docs/app/components/apps/blog";
+const config = useAppConfig() as {
+  github?: { url?: string; branch?: string; rootDir?: string };
+};
+
+const sourceUrl = [
+  config.github?.url,
+  "tree",
+  config.github?.branch,
+  config.github?.rootDir,
+  "app/components/apps/blog",
+]
+  .filter(Boolean)
+  .join("/");
 
 // The page owns the list state so a round trip to an article and back
 // keeps the tag filter and page the reader left.
@@ -50,7 +63,9 @@ function backToList() {
         An editorial site in the paper-and-ink register: a filterable post grid, an article view
         whose table of contents tracks the window, and a living comment thread.
       </p>
-      <a :href="sourceUrl" target="_blank" rel="noopener" class="example-source">View source</a>
+      <Link :href="sourceUrl" target="_blank" rel="noopener" class="example-source"
+        >View source</Link
+      >
     </header>
 
     <div class="blog-canvas">
