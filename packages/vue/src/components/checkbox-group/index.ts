@@ -1,4 +1,5 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
+import { useFieldContext } from "@ark-ui/vue/field";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, type PropType } from "vue";
@@ -29,7 +30,9 @@ function checkGlyph() {
  * One question, many answers: a labelled stack (or row) of the seal-cut
  * checkboxes bound to a single array. Toggling a box adds or removes its
  * value; the group itself is semantics (`role="group"`), the boxes stay
- * the machine-driven originals.
+ * the machine-driven originals. Inside a `Field.Root` the group picks up
+ * the field context, so the invalid and disabled states a Form routes to
+ * its name dress every box at once.
  */
 export const CheckboxGroup = defineComponent({
   name: "CheckboxGroup",
@@ -37,11 +40,15 @@ export const CheckboxGroup = defineComponent({
     modelValue: { type: Array as PropType<string[]>, default: () => [] },
     options: { type: Array as PropType<CheckboxOption[]>, required: true },
     layout: { type: String as PropType<"vertical" | "horizontal">, default: "vertical" },
+    invalid: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    const field = useFieldContext();
     const selected = computed(() => new Set(props.modelValue));
+    const invalid = computed(() => props.invalid || field?.value?.invalid === true);
+    const disabled = computed(() => props.disabled || field?.value?.disabled === true);
     function toggle(value: string) {
       const next = new Set(selected.value);
       if (next.has(value)) next.delete(value);
@@ -57,11 +64,13 @@ export const CheckboxGroup = defineComponent({
           "data-scope": "checkbox-group",
           "data-part": "root",
           "data-layout": props.layout,
+          "data-invalid": invalid.value ? "" : undefined,
         },
         props.options.map((option) => {
           const boxProps: Record<string, unknown> = {
             checked: selected.value.has(option.value),
-            disabled: props.disabled || option.disabled === true,
+            invalid: invalid.value,
+            disabled: disabled.value || option.disabled === true,
             onCheckedChange: () => toggle(option.value),
           };
           // `as never` sidesteps TS2590 — the compiler cannot unroll the
