@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
-import { Button, Dialog, Input, Select } from "@bysages/vue";
+import { Button, Dialog, Form, FormField, Input, Select } from "@bysages/vue";
 import { reactive, watch } from "vue";
+import { z } from "zod";
 
 import { type OrderRow, type OrderStatus } from "./data";
 
@@ -11,6 +12,12 @@ const emit = defineEmits<{
   close: [];
   save: [patch: Pick<OrderRow, "customer" | "status" | "mrr">];
 }>();
+
+const schema = z.object({
+  customer: z.string().min(1, "The customer name is required."),
+  mrr: z.number().min(0, "Cannot be negative."),
+  status: z.string(),
+});
 
 const form = reactive({
   customer: "",
@@ -30,8 +37,9 @@ watch(
   },
 );
 
-function save() {
-  if (!form.customer.trim()) return;
+// The Form only emits submit once the schema passes, so this handler is
+// the save itself — no silent early returns anymore.
+function submit() {
   emit("save", { customer: form.customer.trim(), status: form.status, mrr: form.mrr });
   emit("close");
 }
@@ -55,58 +63,55 @@ const statusCollection = createListCollection({
           <Dialog.Title>Edit account</Dialog.Title>
           <Dialog.Description>Changes apply to the ledger immediately.</Dialog.Description>
 
-          <label class="editor-field">
-            <span>Customer</span>
-            <Input v-model="form.customer" placeholder="Customer name" />
-          </label>
+          <Form :state="form" :schema="schema" @submit="submit">
+            <FormField name="customer" label="Customer" required>
+              <Input v-model="form.customer" placeholder="Customer name" />
+            </FormField>
 
-          <label class="editor-field">
-            <span>Monthly recurring (USD)</span>
-            <Input
-              :model-value="form.mrr ? String(form.mrr) : ''"
-              type="number"
-              min="0"
-              placeholder="0"
-              @update:model-value="(value: string) => (form.mrr = Number(value) || 0)"
-            />
-          </label>
+            <FormField name="mrr" label="Monthly recurring (USD)">
+              <Input
+                :model-value="form.mrr ? String(form.mrr) : ''"
+                type="number"
+                min="0"
+                placeholder="0"
+                @update:model-value="(value: string) => (form.mrr = Number(value) || 0)"
+              />
+            </FormField>
 
-          <div class="editor-field">
-            <span>Status</span>
-            <Select.Root
-              :collection="statusCollection"
-              :model-value="[form.status]"
-              @update:model-value="(values: string[]) => (form.status = values[0] as OrderStatus)"
-            >
-              <Select.Control>
-                <Select.Trigger>
-                  <Select.ValueText placeholder="Status" />
-                </Select.Trigger>
-              </Select.Control>
-              <Teleport to="body">
-                <Select.Positioner>
-                  <Select.Content>
-                    <Select.Item
-                      v-for="item in statusCollection.items"
-                      :key="item.value"
-                      :item="item"
-                    >
-                      <Select.ItemText>{{ item.label }}</Select.ItemText>
-                      <Select.ItemIndicator>✓</Select.ItemIndicator>
-                    </Select.Item>
-                  </Select.Content>
-                </Select.Positioner>
-              </Teleport>
-              <Select.HiddenSelect />
-            </Select.Root>
-          </div>
+            <FormField name="status" label="Status">
+              <Select.Root
+                :collection="statusCollection"
+                :model-value="[form.status]"
+                @update:model-value="(values: string[]) => (form.status = values[0] as OrderStatus)"
+              >
+                <Select.Control>
+                  <Select.Trigger>
+                    <Select.ValueText placeholder="Status" />
+                  </Select.Trigger>
+                </Select.Control>
+                <Teleport to="body">
+                  <Select.Positioner>
+                    <Select.Content>
+                      <Select.Item
+                        v-for="item in statusCollection.items"
+                        :key="item.value"
+                        :item="item"
+                      >
+                        <Select.ItemText>{{ item.label }}</Select.ItemText>
+                        <Select.ItemIndicator>✓</Select.ItemIndicator>
+                      </Select.Item>
+                    </Select.Content>
+                  </Select.Positioner>
+                </Teleport>
+                <Select.HiddenSelect />
+              </Select.Root>
+            </FormField>
 
-          <div class="editor-actions">
-            <Dialog.CloseTrigger>
-              <Button variant="ghost">Cancel</Button>
-            </Dialog.CloseTrigger>
-            <Button @click="save">Save changes</Button>
-          </div>
+            <div class="editor-actions">
+              <Button variant="ghost" @click="emit('close')">Cancel</Button>
+              <Button type="submit">Save account</Button>
+            </div>
+          </Form>
         </Dialog.Content>
       </Dialog.Positioner>
     </Teleport>
@@ -117,17 +122,6 @@ const statusCollection = createListCollection({
 .editor {
   display: grid;
   gap: var(--bs-space-5);
-}
-
-.editor-field {
-  display: grid;
-  gap: var(--bs-space-2);
-}
-
-.editor-field > span {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-  letter-spacing: var(--bs-tracking-label);
 }
 
 .editor-actions {

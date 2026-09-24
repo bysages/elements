@@ -104,13 +104,15 @@ function archiveSelected(selected: OrderRow[]) {
       </div>
     </Shell>
 
-    <OrderDetailDrawer :open="detailOpen" :row="detailRow" @close="detailOpen = false" />
-    <OrderEditDialog
-      :open="editOpen"
-      :row="editingRow"
-      @close="editOpen = false"
-      @save="saveEdit"
-    />
+    <ClientOnly>
+      <OrderDetailDrawer :open="detailOpen" :row="detailRow" @close="detailOpen = false" />
+      <OrderEditDialog
+        :open="editOpen"
+        :row="editingRow"
+        @close="editOpen = false"
+        @save="saveEdit"
+      />
+    </ClientOnly>
     <Toaster :toaster="toaster" v-slot="toast">
       <Toast.Root>
         <Toast.Title>{{ toast.title }}</Toast.Title>

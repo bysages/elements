@@ -38,7 +38,7 @@ const statusTone: Record<OrderStatus, string> = {
             <dd>{{ row.since }}</dd>
           </dl>
 
-          <Drawer.CloseTrigger>
+          <Drawer.CloseTrigger asChild>
             <Button variant="outline" size="sm">Close</Button>
           </Drawer.CloseTrigger>
         </Drawer.Content>
