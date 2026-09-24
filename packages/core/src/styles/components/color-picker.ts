@@ -258,7 +258,7 @@ export const colorPickerCss =
   outline: none;
 }
 
-[data-scope="color-picker"][data-part="swatch-trigger"]:hover:not([data-disabled]) {
+[data-scope="color-picker"][data-part="swatch-trigger"]:hover:not([data-disabled], :focus-visible) {
   box-shadow: 0 0 0 1px var(--bs-color-border-strong);
 }
 
@@ -266,8 +266,8 @@ export const colorPickerCss =
   box-shadow: var(--bs-focus-ring);
 }
 
-[data-scope="color-picker"][data-part="swatch-trigger"][data-state="checked"],
-[data-scope="color-picker"][data-part="swatch-trigger"]:hover:not([data-disabled])[data-state="checked"] {
+[data-scope="color-picker"][data-part="swatch-trigger"][data-state="checked"]:not(:focus-visible),
+[data-scope="color-picker"][data-part="swatch-trigger"]:hover:not([data-disabled], :focus-visible)[data-state="checked"] {
   box-shadow: 0 0 0 1px var(--bs-color-primary);
 }
 

@@ -35,13 +35,14 @@ export const radioGroupCss =
     box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
-[data-scope="radio-group"][data-part="item-control"]:hover:not([data-disabled], [data-state="checked"]) {
+[data-scope="radio-group"][data-part="item-control"]:hover:not([data-disabled], [data-state="checked"], [data-focus-visible]) {
   border-color: var(--bs-color-border-strong);
   box-shadow: var(--bs-shadow-xs);
 }
 
 [data-scope="radio-group"][data-part="item-control"][data-focus-visible] {
   outline: none;
+  transition: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }

@@ -42,7 +42,7 @@ export const checkboxCss =
     box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
-[data-scope="checkbox"][data-part="control"]:hover:not([data-disabled], [data-state="checked"], [data-state="indeterminate"]) {
+[data-scope="checkbox"][data-part="control"]:hover:not([data-disabled], [data-state="checked"], [data-state="indeterminate"], [data-focus-visible]) {
   border-color: var(--bs-color-border-strong);
   box-shadow: var(--bs-shadow-xs);
 }
@@ -51,6 +51,7 @@ export const checkboxCss =
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+  transition: none;
 }
 
 /* Checked is a flat primary fill — ink, not chrome: no inner shadow, no

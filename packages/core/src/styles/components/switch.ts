@@ -34,13 +34,14 @@ export const switchCss =
     box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
-[data-scope="switch"][data-part="control"]:hover:not([data-disabled], [data-state="checked"]) {
+[data-scope="switch"][data-part="control"]:hover:not([data-disabled], [data-state="checked"], [data-focus-visible]) {
   box-shadow: var(--bs-shadow-sm);
 }
 
 [data-scope="switch"][data-part="control"][data-focus-visible] {
   outline: none;
   box-shadow: var(--bs-focus-ring);
+  transition: none;
 }
 
 /* On is flat primary ink; off rests in the inset shade of the paper. */
