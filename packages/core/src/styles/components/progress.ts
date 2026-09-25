@@ -22,7 +22,7 @@ export const progressCss =
 /* The track is a groove pressed into the paper — ink will run through it,
    so it stays quiet until the fill arrives. It sits one mix-step below the
    ground it is drawn on (the ground itself), or the groove reads as
-   nothing; the pressed depth keeps it visible like M3's tone-based track. */
+   nothing; the pressed depth keeps it visible. */
 [data-scope="progress"][data-part="track"] {
   grid-column: 1 / -1;
   overflow: hidden;

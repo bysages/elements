@@ -19,10 +19,9 @@ const LAYOUT_CONTEXT = createContext<LayoutContextValue | null>(null);
 
 /**
  * The application skeleton: Root, Header, Sider, Content, Footer —
- * the admin arrangement (Element Plus / AntD keep the same anatomy)
- * dressed in the paper-and-ink surfaces. The root is a full-height
- * grid; a declared `sider` turns the columns around to meet whichever
- * edge the rail stands on.
+ * the admin arrangement dressed in the paper-and-ink surfaces. The
+ * root is a full-height grid; a declared `sider` turns the columns
+ * around to meet whichever edge the rail stands on.
  */
 function Root({ sider, children, ...rest }: LayoutRootProps) {
   return (

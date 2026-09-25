@@ -4,10 +4,9 @@ import { computed, defineComponent, h, inject, provide, ref, watch, type PropTyp
 
 /**
  * The application skeleton: Root, Header, Sider, Content, Footer —
- * the admin arrangement (Element Plus / AntD keep the same anatomy)
- * dressed in the paper-and-ink surfaces. The root is a full-height
- * grid; a declared `sider` turns the columns around to meet whichever
- * edge the rail stands on.
+ * the admin arrangement dressed in the paper-and-ink surfaces. The
+ * root is a full-height grid; a declared `sider` turns the columns
+ * around to meet whichever edge the rail stands on.
  */
 export interface LayoutRootProps {
   /** Declare which edge the skeleton reserves for its sider — without

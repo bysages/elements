@@ -59,7 +59,7 @@ const statusCollection = createListCollection({
     <Teleport to="body">
       <Dialog.Backdrop />
       <Dialog.Positioner>
-        <Dialog.Content class="grid gap-5">
+        <Dialog.Content>
           <Dialog.Title>Edit account</Dialog.Title>
           <Dialog.Description>Changes apply to the ledger immediately.</Dialog.Description>
 

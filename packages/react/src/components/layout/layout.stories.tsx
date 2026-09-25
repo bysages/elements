@@ -60,11 +60,10 @@ const stops = [
 ];
 
 /** The rail answers the fold without a single hard cut — every change
- * rides a transition that runs at the same pace as the rail itself
- * (shadcn's icon mode works the same way: width, padding and label
- * opacity animate in parallel, so nothing snaps while the edge moves).
- * The stops shrink toward a centered seal while their labels fold into
- * nothing. */
+ * rides a transition that runs at the same pace as the rail itself:
+ * width, padding and label opacity animate in parallel, so nothing
+ * snaps while the edge moves. The stops shrink toward a centered seal
+ * while their labels fold into nothing. */
 const railTransition =
   "inline-size var(--bs-duration-slow) var(--bs-ease-out), padding-inline var(--bs-duration-slow) var(--bs-ease-out)";
 

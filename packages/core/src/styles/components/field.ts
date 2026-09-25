@@ -131,11 +131,11 @@ export const fieldControlCss = /* css */ `
   background-image: linear-gradient(var(--bs-color-danger), var(--bs-color-danger));
 }
 
-/* The material dialect speaks M3's outlined field, measured on
-   material-web.dev: at focus the whole hairline turns the pigment and
-   thickens to its 2dp active width — no outer ring, no halo. The inset
-   hairline doubled over the pigment border is that 2dp edge; invalid
-   keeps the generic danger edge instead of the pigment one. */
+/* The material dialect outlines: at focus the whole hairline turns the
+   pigment and thickens to double its resting width — no outer ring, no
+   halo. The inset hairline doubled over the pigment border is that
+   thickened edge; invalid keeps the generic danger edge instead of the
+   pigment one. */
 [data-scene="material"] [data-scope="field"][data-part="input"]:focus:not([data-invalid]),
 [data-scene="material"] [data-scope="field"][data-part="textarea"]:focus:not([data-invalid]),
 [data-scene="material"] [data-scope="field"][data-part="select"]:focus:not([data-invalid]) {

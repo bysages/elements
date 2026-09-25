@@ -20,7 +20,7 @@ const statusTone: Record<OrderStatus, string> = {
     <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
-        <Drawer.Content class="grid gap-5">
+        <Drawer.Content>
           <Drawer.Grabber><Drawer.GrabberIndicator /></Drawer.Grabber>
           <Drawer.Title>{{ row?.customer ?? "Account" }}</Drawer.Title>
           <Drawer.Description>Account detail — everything the ledger knows.</Drawer.Description>

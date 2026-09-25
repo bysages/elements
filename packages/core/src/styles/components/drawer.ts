@@ -45,10 +45,14 @@ export const drawerCss =
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  /* Section rhythm — 16px, shared with the dialog; the sheet's own
+     margins are generous enough at the padding below. */
+  gap: var(--bs-space-4);
   inline-size: 100%;
   max-block-size: 92dvh;
   overflow: auto;
-  padding: var(--bs-padding-lg);
+  /* Vessel padding — 24px, room for the sheet's full measure. */
+  padding: var(--bs-padding-xl);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg) var(--bs-radius-lg) 0 0;
   background: var(--bs-color-surface-2);
@@ -197,7 +201,7 @@ export const drawerCss =
 }
 
 [data-scope="drawer"][data-part="title"] {
-  margin: 0 0 var(--bs-space-2);
+  margin: 0;
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-lg);
   font-weight: var(--bs-font-weight-semibold);
@@ -205,7 +209,9 @@ export const drawerCss =
 }
 
 [data-scope="drawer"][data-part="description"] {
-  margin: 0 0 var(--bs-space-4);
+  /* The description belongs to the title, not to the body — pull it out
+     of the section rhythm so the pair reads as one header (8px). */
+  margin: calc(var(--bs-space-2) - var(--bs-space-4)) 0 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

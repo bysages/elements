@@ -75,10 +75,15 @@ export const dialogCss = /* css */ `
 [data-scope="dialog"][data-part="content"] {
   position: relative;
   box-sizing: border-box;
+  display: grid;
+  /* Section rhythm — 16px between header, body, and actions; the sheet's
+     own margins are generous enough at the padding below. */
+  gap: var(--bs-space-4);
   inline-size: min(32rem, 100%);
   max-block-size: 80dvh;
   overflow: auto;
-  padding: var(--bs-padding-lg);
+  /* Vessel padding — 24px; a 512px sheet reads cramped on 16. */
+  padding: var(--bs-padding-xl);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
@@ -97,7 +102,7 @@ export const dialogCss = /* css */ `
 }
 
 [data-scope="dialog"][data-part="title"] {
-  margin: 0 0 var(--bs-space-2);
+  margin: 0;
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-lg);
   font-weight: var(--bs-font-weight-semibold);
@@ -105,7 +110,9 @@ export const dialogCss = /* css */ `
 }
 
 [data-scope="dialog"][data-part="description"] {
-  margin: 0 0 var(--bs-space-4);
+  /* The description belongs to the title, not to the body — pull it out
+     of the section rhythm so the pair reads as one header (8px). */
+  margin: calc(var(--bs-space-2) - var(--bs-space-4)) 0 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
@@ -113,8 +120,8 @@ export const dialogCss = /* css */ `
 
 [data-scope="dialog"][data-part="close-trigger"] {
   position: absolute;
-  inset-block-start: var(--bs-space-2);
-  inset-inline-end: var(--bs-space-2);
+  inset-block-start: var(--bs-space-3);
+  inset-inline-end: var(--bs-space-3);
   display: grid;
   place-items: center;
   inline-size: var(--bs-part-size-lg);
