@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/react/select";
 import { injectComponentStyle } from "@bysages/core";
 import type { SortingState } from "@tanstack/react-table";
 import {
@@ -44,6 +45,28 @@ import type {
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useLayoutEffect, useMemo, useReducer, useRef, type CSSProperties } from "react";
+
+import { Pagination as ArkPagination } from "../pagination";
+import { Select as ArkSelect } from "../select";
+
+/** The pagination bar's arrows — thin chevrons for the row of seals. */
+function pageGlyph(direction: "start" | "end") {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={14}
+      height={14}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+    </svg>
+  );
+}
 
 export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
@@ -851,43 +874,66 @@ export function DataTable(rawProps: DataTableProps) {
     ? (() => {
         const pagination = table.atoms.pagination.get();
         const rowCount = table.getRowCount();
-        const pageCount = table.getPageCount();
+        const sizeItems = createListCollection({
+          items: pageSizeOptions.map((size) => ({ label: `${size} / page`, value: String(size) })),
+        });
+        const pageSize = (
+          <ArkSelect.Root
+            collection={sizeItems}
+            value={[String(pagination.pageSize)]}
+            onValueChange={(details) => table.setPageSize(Number(details.value[0]))}
+            positioning={{ placement: "top-start" }}
+          >
+            <ArkSelect.Control>
+              <ArkSelect.Trigger aria-label="Rows per page">
+                <ArkSelect.ValueText />
+              </ArkSelect.Trigger>
+            </ArkSelect.Control>
+            <ArkSelect.Positioner>
+              <ArkSelect.Content>
+                {sizeItems.items.map((item) => (
+                  <ArkSelect.Item key={item.value} item={item}>
+                    <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                    <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
+                  </ArkSelect.Item>
+                ))}
+              </ArkSelect.Content>
+            </ArkSelect.Positioner>
+          </ArkSelect.Root>
+        );
+        const pager = (
+          <ArkPagination.Root
+            count={rowCount}
+            pageSize={pagination.pageSize}
+            page={pagination.pageIndex + 1}
+            onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
+          >
+            <ArkPagination.PrevTrigger>{pageGlyph("start")}</ArkPagination.PrevTrigger>
+            <ArkPagination.Context>
+              {(scope) =>
+                scope.pages.map((page, index) =>
+                  page.type === "ellipsis" ? (
+                    <ArkPagination.Ellipsis key={`e${index}`} index={index} />
+                  ) : (
+                    <ArkPagination.Item key={page.value} type="page" value={page.value}>
+                      {String(page.value)}
+                    </ArkPagination.Item>
+                  ),
+                )
+              }
+            </ArkPagination.Context>
+            <ArkPagination.NextTrigger>{pageGlyph("end")}</ArkPagination.NextTrigger>
+          </ArkPagination.Root>
+        );
         return (
           <div data-scope="table" data-part="pagination">
-            <button
-              type="button"
-              data-scope="table"
-              data-part="page-button"
-              disabled={!table.getCanPreviousPage()}
-              onClick={() => table.previousPage()}
-            >
-              Prev
-            </button>
-            <button
-              type="button"
-              data-scope="table"
-              data-part="page-button"
-              disabled={!table.getCanNextPage()}
-              onClick={() => table.nextPage()}
-            >
-              Next
-            </button>
-            <select
-              data-scope="table"
-              data-part="page-size"
-              aria-label="Rows per page"
-              value={pagination.pageSize}
-              onChange={(e) => table.setPageSize(Number((e.target as HTMLSelectElement).value))}
-            >
-              {pageSizeOptions.map((size) => (
-                <option key={size} value={size}>
-                  {size} / page
-                </option>
-              ))}
-            </select>
             <span data-scope="table" data-part="page-status">
-              Page {pagination.pageIndex + 1} of {pageCount} · {rowCount} rows
+              {rowCount} rows
             </span>
+            <div data-scope="table" data-part="page-nav">
+              {pageSize}
+              {pager}
+            </div>
           </div>
         );
       })()

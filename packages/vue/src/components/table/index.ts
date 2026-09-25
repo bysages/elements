@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/vue/select";
 import { injectComponentStyle } from "@bysages/core";
 import type { SortingState } from "@tanstack/vue-table";
 import {
@@ -49,12 +50,35 @@ import {
   h,
   onScopeDispose,
   ref,
+  Teleport,
   type CSSProperties,
   type PropType,
 } from "vue";
 
+import { Pagination as ArkPagination } from "../pagination";
+import { Select as ArkSelect } from "../select";
+
 export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
+
+/** The pagination bar's arrows — thin chevrons for the row of seals. */
+function pageGlyph(direction: "start" | "end") {
+  return h(
+    "svg",
+    {
+      viewBox: "0 0 24 24",
+      width: 14,
+      height: 14,
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": 2,
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": true,
+    },
+    [h("path", { d: direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6" })],
+  );
+}
 
 /** Column metadata understood by this table: mark columns whose values
  * read right-aligned in tabular figures. The type parameters mirror the
@@ -893,52 +917,82 @@ export const DataTable = defineComponent({
           : null;
 
       /** The bar only exists when the pagination feature is registered;
-       * its state reads stay inside this branch. */
+       * its state reads stay inside this branch. The left tells how much
+       * there is; the right is the navigator — the page-size select and
+       * the page seals. */
       const paginationBar = props.paginated
         ? (() => {
             const pagination = table.atoms.pagination.get();
             const rowCount = table.getRowCount();
-            const pageCount = table.getPageCount();
-            return h("div", { "data-scope": "table", "data-part": "pagination" }, [
-              h(
-                "button",
-                {
-                  type: "button",
-                  "data-scope": "table",
-                  "data-part": "page-button",
-                  disabled: !table.getCanPreviousPage(),
-                  onClick: () => table.previousPage(),
+            const sizeItems = props.pageSizeOptions.map((size) => ({
+              label: `${size} / page`,
+              value: String(size),
+            }));
+            const pageSize = h(
+              ArkSelect.Root as never,
+              {
+                collection: createListCollection({ items: sizeItems }),
+                modelValue: [String(pagination.pageSize)],
+                "onUpdate:modelValue": (values: string[]) => {
+                  const size = Number(values[0]);
+                  if (size && size !== pagination.pageSize) table.setPageSize(size);
                 },
-                "Prev",
-              ),
-              h(
-                "button",
-                {
-                  type: "button",
-                  "data-scope": "table",
-                  "data-part": "page-button",
-                  disabled: !table.getCanNextPage(),
-                  onClick: () => table.nextPage(),
-                },
-                "Next",
-              ),
-              h(
-                "select",
-                {
-                  "data-scope": "table",
-                  "data-part": "page-size",
-                  "aria-label": "Rows per page",
-                  value: pagination.pageSize,
-                  onChange: (e: Event) =>
-                    table.setPageSize(Number((e.target as HTMLSelectElement).value)),
-                },
-                props.pageSizeOptions.map((size) =>
-                  h("option", { key: size, value: size }, `${size} / page`),
+                positioning: { placement: "top-start" },
+              },
+              () => [
+                h(
+                  ArkSelect.Control as never,
+                  {},
+                  h(ArkSelect.Trigger as never, { "aria-label": "Rows per page" }, () => [
+                    h(ArkSelect.ValueText as never),
+                  ]),
                 ),
-              ),
-              h("span", { "data-scope": "table", "data-part": "page-status" }, [
-                `Page ${pagination.pageIndex + 1} of ${pageCount} · ${rowCount} rows`,
-              ]),
+                h(Teleport, { to: "body" }, [
+                  h(ArkSelect.Positioner as never, () =>
+                    h(ArkSelect.Content as never, () =>
+                      sizeItems.map((item) =>
+                        h(
+                          ArkSelect.Item as never,
+                          { key: item.value, item, value: item.value },
+                          () => [
+                            h(ArkSelect.ItemText as never, () => item.label),
+                            h(ArkSelect.ItemIndicator as never, () => "✓"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+              ],
+            );
+            const pager = h(
+              ArkPagination.Root,
+              {
+                count: rowCount,
+                pageSize: pagination.pageSize,
+                page: pagination.pageIndex + 1,
+                onPageChange: (details: { page: number }) => table.setPageIndex(details.page - 1),
+              },
+              () => [
+                h(ArkPagination.PrevTrigger, null, () => pageGlyph("start")),
+                h(ArkPagination.Context, null, {
+                  default: (scope: { pages: { type: string; value: number }[] }) =>
+                    scope.pages.map((page, index) =>
+                      page.type === "ellipsis"
+                        ? h(ArkPagination.Ellipsis, { key: `e${index}`, index })
+                        : h(
+                            ArkPagination.Item,
+                            { key: page.value, type: "page", value: page.value },
+                            () => String(page.value),
+                          ),
+                    ),
+                }),
+                h(ArkPagination.NextTrigger, null, () => pageGlyph("end")),
+              ],
+            );
+            return h("div", { "data-scope": "table", "data-part": "pagination" }, [
+              h("span", { "data-scope": "table", "data-part": "page-status" }, `${rowCount} rows`),
+              h("div", { "data-scope": "table", "data-part": "page-nav" }, [pageSize, pager]),
             ]);
           })()
         : null;

@@ -1,3 +1,4 @@
+import { createListCollection } from "@ark-ui/solid/select";
 import { injectComponentStyle } from "@bysages/core";
 import type { SortingState } from "@tanstack/solid-table";
 import {
@@ -44,6 +45,28 @@ import type {
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createMemo, createSignal, onCleanup, onMount, type JSX } from "solid-js";
+
+import { Pagination as ArkPagination } from "../pagination";
+import { Select as ArkSelect } from "../select";
+
+/** The pagination bar's arrows — thin chevrons for the row of seals. */
+function pageGlyph(direction: "start" | "end") {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={14}
+      height={14}
+      fill="none"
+      stroke="currentColor"
+      stroke-width={2}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+    </svg>
+  );
+}
 
 export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
@@ -848,40 +871,69 @@ export function DataTable(props: DataTableProps) {
       </div>
       {props.paginated ? (
         <div data-scope="table" data-part="pagination">
-          <button
-            type="button"
-            data-scope="table"
-            data-part="page-button"
-            disabled={!table.getCanPreviousPage()}
-            onclick={() => table.previousPage()}
-          >
-            Prev
-          </button>
-          <button
-            type="button"
-            data-scope="table"
-            data-part="page-button"
-            disabled={!table.getCanNextPage()}
-            onclick={() => table.nextPage()}
-          >
-            Next
-          </button>
-          <select
-            data-scope="table"
-            data-part="page-size"
-            aria-label="Rows per page"
-            value={table.atoms.pagination.get().pageSize}
-            onchange={(e: Event) =>
-              table.setPageSize(Number((e.target as HTMLSelectElement).value))
-            }
-          >
-            <For each={props.pageSizeOptions ?? [10, 20, 50]}>
-              {(size) => <option value={size}>{`${size} / page`}</option>}
-            </For>
-          </select>
           <span data-scope="table" data-part="page-status">
-            {`Page ${table.atoms.pagination.get().pageIndex + 1} of ${table.getPageCount()} · ${table.getRowCount()} rows`}
+            {`${table.getRowCount()} rows`}
           </span>
+          <div data-scope="table" data-part="page-nav">
+            <ArkSelect.Root
+              collection={createListCollection({
+                items: (props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({
+                  label: `${size} / page`,
+                  value: String(size),
+                })),
+              })}
+              value={[String(table.atoms.pagination.get().pageSize)]}
+              onValueChange={(details) => table.setPageSize(Number(details.value[0]))}
+              positioning={{ placement: "top-start" }}
+            >
+              <ArkSelect.Control>
+                <ArkSelect.Trigger aria-label="Rows per page">
+                  <ArkSelect.ValueText />
+                </ArkSelect.Trigger>
+              </ArkSelect.Control>
+              <ArkSelect.Positioner>
+                <ArkSelect.Content>
+                  <For
+                    each={(props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({
+                      label: `${size} / page`,
+                      value: String(size),
+                    }))}
+                  >
+                    {(item) => (
+                      <ArkSelect.Item item={item}>
+                        <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                        <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
+                      </ArkSelect.Item>
+                    )}
+                  </For>
+                </ArkSelect.Content>
+              </ArkSelect.Positioner>
+            </ArkSelect.Root>
+            <ArkPagination.Root
+              count={table.getRowCount()}
+              pageSize={table.atoms.pagination.get().pageSize}
+              page={table.atoms.pagination.get().pageIndex + 1}
+              onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
+            >
+              <ArkPagination.PrevTrigger>{pageGlyph("start")}</ArkPagination.PrevTrigger>
+              <ArkPagination.Context>
+                {(scope) => (
+                  <For each={scope().pages}>
+                    {(page, index) =>
+                      page.type === "ellipsis" ? (
+                        <ArkPagination.Ellipsis index={index()} />
+                      ) : (
+                        <ArkPagination.Item type="page" value={page.value}>
+                          {String(page.value)}
+                        </ArkPagination.Item>
+                      )
+                    }
+                  </For>
+                )}
+              </ArkPagination.Context>
+              <ArkPagination.NextTrigger>{pageGlyph("end")}</ArkPagination.NextTrigger>
+            </ArkPagination.Root>
+          </div>
         </div>
       ) : null}
     </div>

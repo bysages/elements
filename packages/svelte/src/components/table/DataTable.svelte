@@ -39,7 +39,10 @@ import type {
   RowData,
 } from "@tanstack/svelte-table";
 import { createVirtualizer } from "@tanstack/svelte-virtual";
+import { createListCollection } from "@ark-ui/svelte/select";
 import { get } from "svelte/store";
+import { Pagination as ArkPagination } from "../pagination";
+import { Select as ArkSelect } from "../select";
 import { containsNode, findNode, mark, removeById, replaceById, type TreeNode } from "./table-utils";
 import type { DataTableProps } from "./props";
 
@@ -623,39 +626,72 @@ function cellStyle(column: TColumn, span: number) {
   </div>
   {#if paginated}
     {@const pagination = table.atoms.pagination.get()}
+    {@const sizeItems = createListCollection({
+      items: pageSizeOptions.map((size) => ({ label: `${size} / page`, value: String(size) })),
+    })}
     <div data-scope="table" data-part="pagination">
-      <button
-        type="button"
-        data-scope="table"
-        data-part="page-button"
-        disabled={!table.getCanPreviousPage()}
-        onclick={() => table.previousPage()}
-      >
-        Prev
-      </button>
-      <button
-        type="button"
-        data-scope="table"
-        data-part="page-button"
-        disabled={!table.getCanNextPage()}
-        onclick={() => table.nextPage()}
-      >
-        Next
-      </button>
-      <select
-        data-scope="table"
-        data-part="page-size"
-        aria-label="Rows per page"
-        value={pagination.pageSize}
-        onchange={(e) => table.setPageSize(Number((e.currentTarget as HTMLSelectElement).value))}
-      >
-        {#each pageSizeOptions as size (size)}
-          <option value={size}>{`${size} / page`}</option>
-        {/each}
-      </select>
       <span data-scope="table" data-part="page-status">
-        {`Page ${pagination.pageIndex + 1} of ${table.getPageCount()} · ${table.getRowCount()} rows`}
+        {`${table.getRowCount()} rows`}
       </span>
+      <div data-scope="table" data-part="page-nav">
+        <ArkSelect.Root
+          collection={sizeItems}
+          value={[String(pagination.pageSize)]}
+          onValueChange={(details) => table.setPageSize(Number(details.value[0]))}
+          positioning={{ placement: "top-start" }}
+        >
+          <ArkSelect.Control>
+            <ArkSelect.Trigger aria-label="Rows per page">
+              <ArkSelect.ValueText />
+            </ArkSelect.Trigger>
+          </ArkSelect.Control>
+          <ArkSelect.Positioner>
+            <ArkSelect.Content>
+              {#each sizeItems.items as item (item.value)}
+                <ArkSelect.Item item={item} value={item.value}>
+                  <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                  <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
+                </ArkSelect.Item>
+              {/each}
+            </ArkSelect.Content>
+          </ArkSelect.Positioner>
+        </ArkSelect.Root>
+        <ArkPagination.Root
+          count={table.getRowCount()}
+          pageSize={pagination.pageSize}
+          page={pagination.pageIndex + 1}
+          onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
+        >
+          {#snippet glyph(direction: "start" | "end")}
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+            </svg>
+          {/snippet}
+          <ArkPagination.PrevTrigger>{@render glyph("start")}</ArkPagination.PrevTrigger>
+          <ArkPagination.Context>
+            {#snippet children(scope: { pages: { type: string; value: number }[] })}
+              {#each scope.pages as page, index (page.type === "ellipsis" ? `e${index}` : page.value)}
+                {#if page.type === "ellipsis"}
+                  <ArkPagination.Ellipsis index={index} />
+                {:else}
+                  <ArkPagination.Item value={page.value}>{String(page.value)}</ArkPagination.Item>
+                {/if}
+              {/each}
+            {/snippet}
+          </ArkPagination.Context>
+          <ArkPagination.NextTrigger>{@render glyph("end")}</ArkPagination.NextTrigger>
+        </ArkPagination.Root>
+      </div>
     </div>
   {/if}
 </div>

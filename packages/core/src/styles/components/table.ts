@@ -305,11 +305,13 @@ export const tableCss = /* css */ `
   font-size: var(--bs-font-size-sm);
 }
 
-/* The pagination bar rests outside the scroll, one hairline up. */
+/* The pagination bar rests outside the scroll, one hairline up: how
+   much there is on the left, the navigator on the right — the page-size
+   select and the row of page seals. */
 [data-scope="table"][data-part="pagination"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-space-3);
   padding: var(--bs-space-2) var(--bs-padding-md);
   border-block-start: 1px solid var(--bs-color-border);
   background: var(--bs-color-surface-1);
@@ -317,51 +319,30 @@ export const tableCss = /* css */ `
   font-size: var(--bs-font-size-sm);
 }
 
-[data-scope="table"][data-part="pagination"] [data-part="page-button"] {
-  display: inline-grid;
-  place-items: center;
-  min-inline-size: var(--bs-control-height-sm);
-  block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-surface-2);
-  color: var(--bs-color-text-secondary);
-  font: inherit;
-  font-size: var(--bs-font-size-sm);
-  cursor: pointer;
-  transition:
-    border-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="table"][data-part="page-button"]:hover:not(:disabled) {
-  border-color: var(--bs-color-border-strong);
-  color: var(--bs-color-text-primary);
-}
-
-[data-scope="table"][data-part="page-button"]:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* The page-size selector pushes to the far edge; the status reads next
-   to it in tabular figures. */
-[data-scope="table"][data-part="pagination"] [data-part="page-size"] {
-  margin-inline-start: auto;
-  block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-padding-xs, 0.25rem);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-surface-2);
-  color: var(--bs-color-text-secondary);
-  font: inherit;
-  font-size: var(--bs-font-size-sm);
-  cursor: pointer;
-}
-
-[data-scope="table"][data-part="pagination"] [data-part="page-status"] {
+[data-scope="table"][data-part="page-status"] {
   font-variant-numeric: tabular-nums;
+}
+
+[data-scope="table"][data-part="page-nav"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-space-3);
+  margin-inline-start: auto;
+}
+
+/* The page-size select rides the seals' compact register: a 28px field
+   beside 28px pages, never filling the bar. */
+[data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="root"] {
+  inline-size: auto;
+}
+
+[data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="table"][data-part="pagination"] [data-scope="pagination"][data-part="root"] {
+  font-size: var(--bs-font-size-sm);
 }
 
 /* Drag reordering: the lifted source dims; the candidate slot answers
