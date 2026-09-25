@@ -99,7 +99,7 @@ const collapsed = ref(false);
             <div class="flex min-w-0 flex-col">
               <span class="text-sm font-medium">Sage Wei</span>
               <span class="overflow-hidden text-ellipsis text-xs text-tertiary"
-                >sage@bysages.dev</span
+                >sage@example.com</span
               >
             </div>
           </div>
