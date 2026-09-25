@@ -1559,3 +1559,14 @@ body {
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* Across the snapshot window the toggle suspends every control's own
+   color transition (see ColorModeButton): the fading surfaces would race
+   the reveal and smear it — the new snapshot must capture the theme's
+   destination, not a mid-fade frame. */
+[data-theme-flipping],
+[data-theme-flipping] *,
+[data-theme-flipping]::before,
+[data-theme-flipping]::after {
+  transition: none !important;
+}

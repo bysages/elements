@@ -31,7 +31,18 @@ function toggle(event: MouseEvent) {
   const x = event.clientX || rect.left + rect.width / 2;
   const y = event.clientY || rect.top + rect.height / 2;
 
-  const transition = doc.startViewTransition(apply);
+  // Every control transitions its colors over ~200ms; left running they
+  // start the instant the theme flips, so the new snapshot captures the
+  // theme mid-fade (the reveal would spread a near-start color) and the
+  // fades race the clip animation. The flipping attribute suspends them
+  // across the snapshot window; ready means both snapshots are taken and
+  // the attribute can go again.
+  const root = document.documentElement;
+  const transition = doc.startViewTransition(() => {
+    root.dataset.themeFlipping = "";
+    apply();
+  });
+  transition.ready.finally(() => delete root.dataset.themeFlipping);
   transition.ready.then(() => {
     const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
     document.documentElement.animate(
