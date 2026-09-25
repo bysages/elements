@@ -11,26 +11,16 @@ defineProps<{ kicker?: string; title: string; lede?: string; sourceUrl?: string 
     </p>
     <h1 class="m-0 mb-3 font-serif text-4xl leading-tight">{{ title }}</h1>
     <p v-if="lede" class="m-0 mb-3 text-secondary">{{ lede }}</p>
-    <Link v-if="sourceUrl" :href="sourceUrl" target="_blank" rel="noopener" class="example-source"
+    <!-- Important flags outrank the unlayered link stylesheet: the source
+         door is quiet ink that darkens under the hand, never the
+         primary dye the library paints by default. -->
+    <Link
+      v-if="sourceUrl"
+      :href="sourceUrl"
+      target="_blank"
+      rel="noopener"
+      class="text-tertiary! text-sm! no-underline! hover:text-secondary! hover:underline! hover:underline-offset-[0.2em]!"
       >View source</Link
     >
   </header>
 </template>
-
-<style scoped>
-/* The library's Link dyes itself primary and deepens on hover; the source
- * door is quiet ink that darkens under the hand. A layered utility cannot
- * win this cascade — the link's own stylesheet is unlayered — so the
- * override rides a scoped rule. */
-.example-source {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-  text-decoration: none;
-}
-
-.example-source:hover {
-  color: var(--bs-color-text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-</style>

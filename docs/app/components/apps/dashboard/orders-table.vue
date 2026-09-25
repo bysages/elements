@@ -135,7 +135,11 @@ function archiveSelected() {
 <template>
   <div class="grid gap-4">
     <div class="flex flex-wrap items-center gap-4">
+      <!-- w-auto! outranks the unlayered field baseline that makes select
+           roots fill their container — a toolbar slot is a layout
+           decision, and this flex line decides the width. -->
       <Select.Root
+        class="w-auto!"
         :collection="statusCollection"
         :model-value="statusFilter ? [statusFilter] : []"
         @update:model-value="(values: string[]) => (statusFilter = values[0] ?? null)"
@@ -183,12 +187,3 @@ function archiveSelected() {
     />
   </div>
 </template>
-
-<style scoped>
-/* The field baseline makes select roots fill their container (unlayered,
- * so a width utility on the root cannot win) — a toolbar slot is a layout
- * decision, and the flex line decides the width here. */
-:deep([data-scope="select"][data-part="root"]) {
-  inline-size: auto;
-}
-</style>

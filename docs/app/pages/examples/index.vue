@@ -83,7 +83,9 @@ const apps = [
             </li>
           </ul>
         </Card.Content>
-        <Card.Footer class="examples-card-foot">
+        <!-- gap-4! outranks the unlayered core footer gap — the open/source
+             pair wants a wider berth than the default. -->
+        <Card.Footer class="gap-4!">
           <NuxtLink
             :to="`/examples/${app.name}`"
             class="font-medium text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
@@ -103,12 +105,3 @@ const apps = [
     </div>
   </div>
 </template>
-
-<style scoped>
-/* The core stylesheet paints the card footer's gap (unlayered) and wins
- * the cascade against a layered gap utility; the open/source pair wants
- * a wider berth than the footer's default. */
-.examples-card-foot {
-  gap: var(--bs-space-4);
-}
-</style>

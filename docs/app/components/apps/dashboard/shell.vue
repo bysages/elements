@@ -23,10 +23,13 @@ const collapsed = ref(false);
 <template>
   <!-- The library's Layout has no automatic responsive behavior — the
        shell owns it. @container makes this root the containment context
-       the sider folds against. -->
-  <Layout.Root sider="start" class="@container min-h-full">
-    <!-- The class fallthrough lands the variant on the sider part itself;
-         no :deep needed for the fold. -->
+       the sider folds against, and the arbitrary variant strips the
+       folded rail's hairline (the important flag outranks the
+       unlayered core stylesheet). -->
+  <Layout.Root
+    sider="start"
+    class="@container min-h-full [&_[data-part=sider][data-collapsed]]:border-e-0!"
+  >
     <Layout.Sider v-model:collapsed="collapsed" collapsed-width="0rem" class="@max-[60rem]:hidden">
       <div class="flex h-full flex-col">
         <div class="flex items-center gap-2 p-4">
@@ -43,7 +46,7 @@ const collapsed = ref(false);
             v-for="stop in stops"
             :key="stop.label"
             :variant="activeStop === stop.label ? 'subtle' : 'ghost'"
-            class="shell-stop"
+            class="justify-start!"
             :aria-current="activeStop === stop.label ? 'page' : undefined"
             @click="activeStop = stop.label"
           >
@@ -67,7 +70,7 @@ const collapsed = ref(false);
         <div class="mt-auto flex flex-col gap-2 border-t border-border px-2 py-3">
           <Button
             variant="ghost"
-            class="shell-stop"
+            class="justify-start!"
             :aria-current="activeStop === 'Settings' ? 'page' : undefined"
             @click="activeStop = 'Settings'"
           >
@@ -133,17 +136,3 @@ const collapsed = ref(false);
     </Layout.Content>
   </Layout.Root>
 </template>
-
-<style scoped>
-/* Two overrides the utilities layer cannot win — the core stylesheet is
- * unlayered and beats any layered utility on the same element:
- *  1. Folded to zero the rail is absent — its hairline goes with it.
- *  2. Core paints buttons centered; the rail's stops read left-aligned. */
-:deep([data-part="sider"][data-collapsed]) {
-  border-inline-end: none;
-}
-
-.shell-stop {
-  justify-content: flex-start;
-}
-</style>
