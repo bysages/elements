@@ -710,7 +710,14 @@ export const DataTable = defineComponent({
       const canSort = column.getCanSort();
       const canFilter = props.filterable && column.getCanFilter();
       const canDrag = !!props.reorderable && column.id !== SELECT_COL_ID && !column.getIsPinned();
-      const children = [header.isPlaceholder ? null : h(FlexRender, { header })];
+      // Leaf headers are never placeholders in TanStack v9, so a static
+      // empty-string header reaches FlexRender and renders an empty text
+      // node on the client — while SSR serializes it to nothing. Treat it
+      // as the placeholder it means, or hydration counts a child that
+      // isn't there.
+      const children = [
+        header.isPlaceholder || column.columnDef.header === "" ? null : h(FlexRender, { header }),
+      ];
       if (canFilter) {
         children.push(
           h("input", {
