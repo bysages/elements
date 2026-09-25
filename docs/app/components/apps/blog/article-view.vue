@@ -21,68 +21,75 @@ const tocItems = computed(() =>
 
 <template>
   <article class="article">
-    <div class="article-body">
-      <Button variant="ghost" size="sm" class="article-back" @click="emit('back')">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m15 18-6-6 6-6" />
-        </svg>
-        All posts
-      </Button>
+    <Button variant="ghost" size="sm" class="article-back" @click="emit('back')">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      All posts
+    </Button>
 
-      <Typography.Display class="article-title">{{ post.title }}</Typography.Display>
+    <div class="article-grid">
+      <div class="article-body">
+        <Typography.Display class="article-title">{{ post.title }}</Typography.Display>
 
-      <p class="article-meta">
-        <Avatar.Root>
-          <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
-        </Avatar.Root>
-        <span>{{ post.author }}</span>
-        <span aria-hidden="true">·</span>
-        <span>{{ post.date }}</span>
-        <span aria-hidden="true">·</span>
-        <span>{{ post.readingTime }} read</span>
-      </p>
+        <p class="article-meta">
+          <Avatar.Root>
+            <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
+          </Avatar.Root>
+          <span>{{ post.author }}</span>
+          <span aria-hidden="true">·</span>
+          <span>{{ post.date }}</span>
+          <span aria-hidden="true">·</span>
+          <span>{{ post.readingTime }} read</span>
+        </p>
 
-      <template v-for="(block, index) in post.blocks" :key="index">
-        <Typography.Heading v-if="block.type === 'h2'" :id="block.id" class="article-heading">
-          {{ block.text }}
-        </Typography.Heading>
-        <Typography.Body v-else-if="block.type === 'p'" class="article-paragraph">
-          {{ block.text }}
-        </Typography.Body>
-        <blockquote v-else-if="block.type === 'quote'" class="article-quote">
-          {{ block.text }}
-        </blockquote>
-        <pre v-else class="article-code"><code>{{ block.text }}</code></pre>
-      </template>
+        <template v-for="(block, index) in post.blocks" :key="index">
+          <Typography.Heading v-if="block.type === 'h2'" :id="block.id" class="article-heading">
+            {{ block.text }}
+          </Typography.Heading>
+          <Typography.Body v-else-if="block.type === 'p'" class="article-paragraph">
+            {{ block.text }}
+          </Typography.Body>
+          <blockquote v-else-if="block.type === 'quote'" class="article-quote">
+            {{ block.text }}
+          </blockquote>
+          <pre v-else class="article-code"><code>{{ block.text }}</code></pre>
+        </template>
 
-      <CommentThread :comments="post.comments" />
+        <CommentThread :comments="post.comments" />
+      </div>
+
+      <aside class="article-rail">
+        <Toc.Root :items="tocItems">
+          <Toc.Nav>
+            <Toc.Title>On this page</Toc.Title>
+            <Toc.List>
+              <Toc.Item v-for="item in tocItems" :key="item.value" :item="item">
+                <Toc.Link :href="`#${item.value}`">{{ item.label }}</Toc.Link>
+              </Toc.Item>
+            </Toc.List>
+          </Toc.Nav>
+        </Toc.Root>
+      </aside>
     </div>
-
-    <aside class="article-rail">
-      <Toc.Root :items="tocItems">
-        <Toc.Nav>
-          <Toc.Title>On this page</Toc.Title>
-          <Toc.List>
-            <Toc.Item v-for="item in tocItems" :key="item.value" :item="item">
-              <Toc.Link :href="`#${item.value}`">{{ item.label }}</Toc.Link>
-            </Toc.Item>
-          </Toc.List>
-        </Toc.Nav>
-      </Toc.Root>
-    </aside>
   </article>
 </template>
 
 <style scoped>
 .article {
+  display: grid;
+  gap: var(--bs-space-5);
+}
+
+.article-grid {
   display: grid;
   grid-template-columns: 1fr minmax(0, 44rem) 1fr;
   gap: var(--bs-space-8);
@@ -95,7 +102,7 @@ const tocItems = computed(() =>
 }
 
 .article-back {
-  margin-block-end: var(--bs-space-4);
+  justify-self: start;
 }
 
 .article-title {

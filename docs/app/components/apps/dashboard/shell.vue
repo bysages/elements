@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, AvatarGroup, Badge, Button, Layout, SegmentGroup, Typography } from "@bysages/vue";
+import { Avatar, AvatarGroup, Badge, Button, Layout, Typography } from "@bysages/vue";
 import { ref } from "vue";
 
 const stops = ["Overview", "Accounts", "Billing", "Reports", "Settings"];
@@ -12,20 +12,18 @@ const collapsed = ref(false);
 <template>
   <Layout.Root sider="start" class="shell">
     <Layout.Sider v-model:collapsed="collapsed" collapsed-width="0rem">
-      <SegmentGroup.Root
-        orientation="vertical"
-        :model-value="activeStop"
-        class="shell-nav"
-        aria-label="Console sections"
-        @update:model-value="(value: string | null) => value && (activeStop = value)"
-      >
-        <SegmentGroup.Indicator />
-        <SegmentGroup.Item v-for="stop in stops" :key="stop" :value="stop">
-          <SegmentGroup.ItemText>{{ stop }}</SegmentGroup.ItemText>
-          <SegmentGroup.ItemControl />
-          <SegmentGroup.ItemHiddenInput />
-        </SegmentGroup.Item>
-      </SegmentGroup.Root>
+      <nav class="shell-nav" aria-label="Console sections">
+        <Button
+          v-for="stop in stops"
+          :key="stop"
+          :variant="activeStop === stop ? 'subtle' : 'ghost'"
+          class="shell-stop"
+          :aria-current="activeStop === stop ? 'page' : undefined"
+          @click="activeStop = stop"
+        >
+          {{ stop }}
+        </Button>
+      </nav>
     </Layout.Sider>
     <Layout.Header>
       <Button
@@ -80,7 +78,13 @@ const collapsed = ref(false);
 }
 
 .shell-nav {
-  inline-size: 100%;
+  display: grid;
+  gap: var(--bs-space-1);
+  padding: var(--bs-space-3);
+}
+
+.shell-stop {
+  justify-content: flex-start;
 }
 
 .shell-title {
