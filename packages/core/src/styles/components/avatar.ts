@@ -36,4 +36,15 @@ export const avatarCss = /* css */ `
   font-size: inherit;
   font-weight: inherit;
 }
+
+/* Size rungs ride the control heights: the default (large) stands as
+   tall as the biggest control; the smaller rungs let a credit line or a
+   dense toolbar shrink the seal without re-tuning the variable. */
+[data-scope="avatar"][data-part="root"][data-size="sm"] {
+  --bs-avatar-size: var(--bs-control-height-sm);
+}
+
+[data-scope="avatar"][data-part="root"][data-size="md"] {
+  --bs-avatar-size: var(--bs-control-height-md);
+}
 `;

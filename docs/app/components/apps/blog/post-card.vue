@@ -23,7 +23,7 @@ const emit = defineEmits<{ open: [] }>();
     </Card.Content>
     <Card.Footer class="post-card-foot">
       <span class="post-card-meta">
-        <Avatar.Root>
+        <Avatar.Root size="sm">
           <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
         </Avatar.Root>
         <span>{{ post.author }}</span>
