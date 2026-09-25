@@ -14,7 +14,9 @@ export const avatarCss = /* css */ `
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-inset);
   color: var(--bs-color-text-secondary);
-  font-size: calc(var(--bs-font-size-sm) * 1.125);
+  /* The initials scale with the seal, not the page: a fixed point size
+     would crowd the small rungs and float in the large one. */
+  font-size: calc(var(--bs-avatar-size) * 0.4);
   font-weight: var(--bs-font-weight-medium);
   letter-spacing: var(--bs-tracking-label);
   user-select: none;
