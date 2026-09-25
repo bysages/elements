@@ -33,6 +33,15 @@ export const baseCss = /* css */ `
   [data-scope="signature-pad"])[data-part="root"] {
   inline-size: 100%;
 }
+
+/* The chrome face: a component's text speaks the hei stack because it is a
+   component, not because the host document remembered to wire the stack into
+   its body. Declared once here and zero specificity, so a part that names
+   its own face (serif titles, mono code) or a host that sets one wins as
+   usual. */
+:where([data-scope]) {
+  font-family: var(--bs-font-sans);
+}
 `;
 
 /** Press feedback that rides the motion attribute, not any one component —

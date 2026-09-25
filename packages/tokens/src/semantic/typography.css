@@ -1,16 +1,19 @@
 /* Typography — two tracks: the voice and the chrome. The voice is the song
    stack (upright, structured strokes — Noto Serif SC falling back through the
    platform faces); headings and editorial narrative ride it, the way Western
-   systems let a serif carry voice. The chrome is the modern hei stack — MiSans
-   and HarmonyOS Sans lead, falling back into PingFang / YaHei so mixed CJK-Latin lines stay
-   on one rhythm. Sizes are fixed rem values outside the density scale; compact
-   UI may choose --bs-font-size-sm but never below it. */
+   systems let a serif carry voice. The chrome is the modern hei stack: the
+   platform UI faces lead so Latin letters and figures hold one rhythm with the
+   CJK around them — a Chinese face reaching Latin first drops its digits onto
+   a taller, heavier cut, and the line reads out of true. The CJK set falls in
+   behind — MiSans and HarmonyOS Sans into PingFang / YaHei. Sizes are fixed
+   rem values outside the density scale; compact UI may choose
+   --bs-font-size-sm but never below it. */
 
 :root,
 :host {
   --bs-font-sans:
-    MiSans, "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system,
-    "Segoe UI", Roboto, "Noto Sans CJK SC", sans-serif;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, MiSans, "HarmonyOS Sans SC",
+    "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   --bs-font-serif:
     "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, "Times New Roman", Georgia, serif;
   --bs-font-mono:

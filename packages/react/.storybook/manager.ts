@@ -11,7 +11,7 @@ addons.setConfig({
     // UI chrome rides the hei stack, code rides the mono stack — same
     // split as --bs-font-sans / --bs-font-mono.
     fontBase:
-      'MiSans, "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans CJK SC", sans-serif',
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, MiSans, "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif',
     fontCode:
       'ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, "PingFang SC", "Microsoft YaHei", monospace',
 

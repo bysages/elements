@@ -112,9 +112,11 @@ Two tracks:
   Han Serif SC → Songti SC → SimSun. Upright, structured strokes that survive
   typesetting; headings and editorial narrative ride it, the way Western
   systems let a serif carry voice.
-- **The chrome** — the modern hei stack (`--bs-font-sans`): MiSans →
-  HarmonyOS Sans SC → PingFang SC → Microsoft YaHei → system. Clear and dense;
-  all UI text rides it.
+- **The chrome** — the modern hei stack (`--bs-font-sans`): the platform UI
+  faces lead (Segoe UI / SF / Roboto), then MiSans → HarmonyOS Sans SC →
+  PingFang SC → Microsoft YaHei. Clear and dense; all UI text rides it. Latin
+  letters and figures ride the platform face so a mixed line keeps one rhythm —
+  digits falling onto a Chinese cut read tall and out of true.
 
 Both stacks fall through into CJK platform faces, so 中西混排 keeps one rhythm.
 Sizes are fixed rem steps (`--bs-font-size-xs` 0.75rem … `--bs-font-size-4xl`
