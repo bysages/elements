@@ -387,7 +387,7 @@ Theme is token data, never a component fork:
 - `[data-accent]` — ink _(default)_ / qinghua / celadon / zhusha
 - `[data-contrast]` — normal / high
 - `[data-density]` — compact / default / comfortable / spacious
-- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech / cupertino / expressive / fluent / material
+- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech / cupertino / expressive / fluent / material / sketch
 
 Future brand themes change color, surface, lighting, typography, and density —
 never interaction. Dark mode is lacquer night: warm blacks (never `#000`),
