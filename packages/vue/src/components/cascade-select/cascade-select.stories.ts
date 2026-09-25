@@ -152,3 +152,20 @@ export const Disabled: Story = {
         });
     }),
 };
+
+/** While a query runs the corridor folds into one flat column: every
+   leaf whose route matches, each hit reading as its full path. */
+export const Filterable: Story = {
+  render: () =>
+    withState(() => {
+      const picked = ref<string[][]>([]);
+      return () =>
+        h(CascadeSelect, {
+          modelValue: picked.value,
+          "onUpdate:modelValue": (v: string[][]) => (picked.value = v),
+          data: REGIONS,
+          filterable: true,
+          placeholder: "选择省 / 市 / 区",
+        });
+    }),
+};

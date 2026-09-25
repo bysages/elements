@@ -1,19 +1,24 @@
 <script lang="ts">
+import { useFilter } from "@ark-ui/svelte/locale";
 import Portal from "@ark-ui/svelte/portal";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/svelte/tree-view";
 
+import Input from "../input/Input.svelte";
 import type { TreeSelectNode, TreeSelectProps } from "./props";
 
 let {
   value = $bindable(),
   data,
   placeholder = "Select…",
+  filterable = false,
   disabled = false,
   ...rest
 }: TreeSelectProps = $props();
 
 let open = $state(false);
+let query = $state("");
+const filterFns = useFilter({ sensitivity: "base" });
 
 const collection = $derived(
   createTreeCollection<TreeSelectNode>({
@@ -23,7 +28,36 @@ const collection = $derived(
   }),
 );
 
+const filtering = $derived(filterable && query.trim().length > 0);
+
+/** The collection pruned to the matches — each hit keeping its
+ * ancestors, so a deep match still reads inside its hierarchy. */
+const visibleCollection = $derived(
+  filtering
+    ? collection.filter((node) => filterFns.contains(node.label, query.trim()))
+    : collection,
+);
+
 const firstLevel = $derived((data ?? []).map((node) => node.value));
+
+// While the filter runs, every branch on a hit's path stands open —
+// a deep match must not hide behind a collapsed fold. The expanded
+// prop is only supplied while filtering, so the rest state keeps the
+// machine's own remember-where-you-folded behavior.
+const expandedWhileFiltering = $derived.by(() => {
+  if (!filtering) return undefined;
+  const values: string[] = [];
+  const walk = (nodes: TreeSelectNode[]) => {
+    for (const node of nodes) {
+      if (node.children?.length) {
+        values.push(node.value);
+        walk(node.children);
+      }
+    }
+  };
+  walk(visibleCollection.rootNode.children ?? []);
+  return values;
+});
 
 const label = $derived.by(() => {
   let found: string | undefined;
@@ -87,11 +121,15 @@ function pick(details: { selectedValue: string[] }) {
 <!-- A tree behind a field: the control reads like an input, the vessel
 below walks the hierarchy, and one leaf click closes the deal. Single
 selection — the chosen label rides on the control, its value rides in
-`value`. -->
+`value`. `filterable` puts a filter line at the top of the vessel;
+matches keep their ancestors and the branches fan open. -->
 <ArkPopover.Root
   open={open}
   positioning={{ sameWidth: true, placement: "bottom-start" }}
-  onOpenChange={(details) => (open = details.open)}
+  onOpenChange={(details) => {
+    open = details.open;
+    if (!details.open) query = "";
+  }}
 >
   <ArkPopover.Trigger {disabled}>
     {#snippet asChild(props)}
@@ -125,19 +163,31 @@ selection — the chosen label rides on the control, its value rides in
   <Portal>
     <ArkPopover.Positioner>
       <ArkPopover.Content data-scope="tree-select" data-part="content">
-        <ArkTreeView.Root
-          collection={collection}
-          selectionMode="single"
-          selectedValue={value ? [value] : []}
-          defaultExpandedValue={firstLevel}
-          onSelectionChange={pick}
-        >
-          <ArkTreeView.Tree>
-            {#each collection.rootNode.children ?? [] as node, index (node.value)}
-              {@render row(node, [index])}
-            {/each}
-          </ArkTreeView.Tree>
-        </ArkTreeView.Root>
+        {#if filterable}
+          <div data-scope="tree-select" data-part="search">
+            <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
+          </div>
+        {/if}
+        <div data-scope="tree-select" data-part="body">
+          {#if (visibleCollection.rootNode.children ?? []).length === 0}
+            <p data-scope="tree-select" data-part="empty">Nothing matches</p>
+          {:else}
+            <ArkTreeView.Root
+              collection={visibleCollection}
+              selectionMode="single"
+              selectedValue={value ? [value] : []}
+              expandedValue={filtering ? expandedWhileFiltering : undefined}
+              defaultExpandedValue={filtering ? undefined : firstLevel}
+              onSelectionChange={pick}
+            >
+              <ArkTreeView.Tree>
+                {#each visibleCollection.rootNode.children ?? [] as node, index (node.value)}
+                  {@render row(node, [index])}
+                {/each}
+              </ArkTreeView.Tree>
+            </ArkTreeView.Root>
+          {/if}
+        </div>
       </ArkPopover.Content>
     </ArkPopover.Positioner>
   </Portal>

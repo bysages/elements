@@ -13,5 +13,8 @@ export interface TreeSelectProps extends HTMLAttributes<HTMLButtonElement> {
   value?: string;
   data: TreeSelectNode[];
   placeholder?: string;
+  /** Put a filter line at the top of the vessel; matches keep their
+   * ancestors and the branches fan open. */
+  filterable?: boolean;
   disabled?: boolean;
 }

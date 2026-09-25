@@ -77,9 +77,51 @@ export const cascadeSelectCss =
 }
 
 /* The vessel is a corridor: one column per walked level, a hairline
-   between neighbours, each column scrolling past its own grove. */
+   between neighbours, each column scrolling past its own grove. While a
+   query runs the corridor folds into one flat column of matching paths. */
 [data-scope="cascade-select"][data-part="content"] {
   display: flex;
+  flex-wrap: wrap;
+}
+
+[data-scope="cascade-select"][data-part="search"] {
+  flex: none;
+  inline-size: 100%;
+  padding: var(--bs-space-2);
+  border-block-end: 1px solid var(--bs-color-border);
+}
+
+[data-scope="cascade-select"][data-part="match"] {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  min-block-size: var(--bs-control-height-sm);
+  padding: 0 var(--bs-space-2);
+  border: none;
+  border-radius: var(--bs-radius-sm);
+  background: transparent;
+  color: var(--bs-color-text-primary);
+  font: inherit;
+  font-size: var(--bs-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+[data-scope="cascade-select"][data-part="match"]:hover {
+  background: var(--bs-color-surface-0);
+}
+
+[data-scope="cascade-select"][data-part="match"][data-selected] {
+  background: var(--bs-color-primary);
+  color: var(--bs-color-primary-text);
+}
+
+[data-scope="cascade-select"][data-part="empty"] {
+  margin: 0;
+  padding: var(--bs-space-4) var(--bs-space-2);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+  text-align: center;
 }
 
 [data-scope="cascade-select"][data-part="list"] {

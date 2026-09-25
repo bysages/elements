@@ -61,3 +61,27 @@ export const Disabled = {
     <TreeSelect value="hangzhou" data={REGIONS} disabled style={{ maxWidth: "18rem" }} />
   ),
 };
+
+/** A filter line at the top of the vessel; matches keep their ancestors
+ * and every branch on the way stands open, so a deep hit still reads in
+ * its hierarchy. */
+export const Filterable = {
+  render: () => {
+    const [picked, setPicked] = useState("");
+    return (
+      <>
+        <TreeSelect
+          value={picked}
+          onValueChange={setPicked}
+          data={REGIONS}
+          filterable
+          placeholder="Choose a region…"
+          style={{ maxWidth: "18rem" }}
+        />
+        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+          value: {JSON.stringify(picked)}
+        </p>
+      </>
+    );
+  },
+};

@@ -148,3 +148,20 @@ export const Disabled = {
     );
   },
 };
+
+/** The corridor flattens into matching routes while a query runs — each
+ * hit still reads as its full path. */
+export const Filterable = {
+  render: () => {
+    const [picked, setPicked] = useState<string[][]>([]);
+    return (
+      <CascadeSelect
+        value={picked}
+        onValueChange={setPicked}
+        data={REGIONS}
+        filterable
+        placeholder="选择省 / 市 / 区"
+      />
+    );
+  },
+};

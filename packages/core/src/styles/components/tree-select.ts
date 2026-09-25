@@ -63,11 +63,26 @@ export const treeSelectCss =
   transform: rotate(90deg);
 }
 
-/* Inside the shared popup vessel, the tree keeps its own height and
-   scrolls past a small grove. */
+/* Inside the shared popup vessel the sheet is a column: an optional
+   filter line holds the top, the grove scrolls under it. */
 [data-scope="tree-select"][data-part="content"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-space-2);
   max-block-size: 16rem;
-  overflow-block: auto;
   padding: var(--bs-space-2);
+}
+
+[data-scope="tree-select"][data-part="body"] {
+  min-block-size: 0;
+  overflow-block: auto;
+}
+
+[data-scope="tree-select"][data-part="empty"] {
+  margin: 0;
+  padding: var(--bs-space-4) var(--bs-space-2);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+  text-align: center;
 }
 `;

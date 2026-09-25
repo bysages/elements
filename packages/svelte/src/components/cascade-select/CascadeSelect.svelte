@@ -1,10 +1,11 @@
 <script lang="ts">
 import { useEnvironmentContext } from "@ark-ui/svelte/environment";
-import { useLocaleContext } from "@ark-ui/svelte/locale";
+import { useFilter, useLocaleContext } from "@ark-ui/svelte/locale";
 import Portal from "@ark-ui/svelte/portal";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/svelte";
 
+import Input from "../input/Input.svelte";
 import type { CascadeSelectNode, CascadeSelectProps } from "./props";
 
 let {
@@ -12,6 +13,7 @@ let {
   data,
   placeholder = "Select…",
   highlightTrigger,
+  filterable = false,
   multiple = false,
   disabled = false,
   ...rest
@@ -45,6 +47,54 @@ const service = useMachine(cascade.machine, () => ({
 }));
 
 const api = $derived(cascade.connect(service, normalizeProps));
+
+let query = $state("");
+const filterFns = useFilter({ sensitivity: "base" });
+const filtering = $derived(filterable && query.trim().length > 0);
+
+/** The corridor's answer to a query: every leaf whose route matches —
+ * the query may land on any hop, and the whole route still shows. */
+const matchPaths = $derived.by(() => {
+  if (!filtering) return [];
+  const q = query.trim();
+  const hits: { path: string[]; labels: string[] }[] = [];
+  const walk = (
+    nodes: CascadeSelectNode[] | undefined,
+    path: string[],
+    labels: string[],
+    matched: boolean,
+  ) => {
+    for (const node of nodes ?? []) {
+      const hit = matched || filterFns.contains(node.label, q);
+      const nextPath = [...path, node.value];
+      const nextLabels = [...labels, node.label];
+      if (node.children?.length) {
+        walk(node.children, nextPath, nextLabels, hit);
+      } else if (hit) {
+        hits.push({ path: nextPath, labels: nextLabels });
+      }
+    }
+  };
+  walk(data, [], [], false);
+  return hits;
+});
+
+const isSelected = (path: string[]) =>
+  (value ?? []).some((p) => p.join("/") === path.join("/"));
+
+function pickMatch(path: string[]) {
+  if (multiple) {
+    const current = value ?? [];
+    const key = path.join("/");
+    const next = current.some((p) => p.join("/") === key)
+      ? current.filter((p) => p.join("/") !== key)
+      : [...current, path];
+    api.setValue(next);
+  } else {
+    api.selectValue(path);
+    api.setOpen(false);
+  }
+}
 
 /** The machine's `valueAsString` only updates through its select event,
  * so an externally-set `value` would render the placeholder forever —
@@ -122,10 +172,19 @@ const display = $derived.by(() => {
 <!-- A corridor of linked columns: pick a branch and the next column
 dissolves open beside it, until a leaf click settles the whole path.
 `value` is the selected path (or paths, when `multiple`) — the joined
-labels ride the trigger. -->
+labels ride the trigger. `filterable` swaps the corridor for a flat
+list of matching paths while a query runs — each hit still reads as
+its full route. -->
 <div {...rest} {...api.getRootProps()}>
   <div {...api.getControlProps()}>
-    <button {...api.getTriggerProps()} disabled={disabled || undefined}>
+    <button
+      {...api.getTriggerProps()}
+      onclick={(event) => {
+        api.getTriggerProps().onclick?.(event);
+        query = "";
+      }}
+      disabled={disabled || undefined}
+    >
       <span {...api.getValueTextProps()}>{display ?? placeholder}</span>
       <span {...api.getIndicatorProps()}>
         <svg
@@ -145,7 +204,29 @@ labels ride the trigger. -->
   <Portal>
     <div {...api.getPositionerProps()}>
       <div {...api.getContentProps()}>
-        {@render column(collection.rootNode, [], [])}
+        {#if filterable}
+          <div data-part="search">
+            <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
+          </div>
+        {/if}
+        {#if filtering}
+          {#if matchPaths.length === 0}
+            <p data-part="empty">Nothing matches</p>
+          {:else}
+            {#each matchPaths as hit (hit.path.join("/"))}
+              <button
+                type="button"
+                data-part="match"
+                data-selected={isSelected(hit.path) || undefined}
+                onclick={() => pickMatch(hit.path)}
+              >
+                {hit.labels.join(" / ")}
+              </button>
+            {/each}
+          {/if}
+        {:else}
+          {@render column(collection.rootNode, [], [])}
+        {/if}
       </div>
     </div>
   </Portal>

@@ -1,6 +1,6 @@
 {
   "name": "@bysages/core",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Shared core of By Sages Elements — theme engine, per-component styles, and the lighting engine, all token-driven",
   "keywords": [
     "css",

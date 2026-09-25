@@ -1,6 +1,6 @@
 {
   "name": "@bysages/nuxt",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Nuxt module for By Sages Elements — auto-imports the paper-and-ink Vue components and applies the theme",
   "keywords": [
     "components",

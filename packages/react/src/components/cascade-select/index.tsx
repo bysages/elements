@@ -1,11 +1,13 @@
 import { useEnvironmentContext } from "@ark-ui/react/environment";
-import { useLocaleContext } from "@ark-ui/react/locale";
+import { useFilter, useLocaleContext } from "@ark-ui/react/locale";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/react";
-import { useId } from "react";
+import { useId, useMemo, useState } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
+
+import { Input } from "../input";
 
 export interface CascadeSelectNode {
   label: string;
@@ -61,13 +63,16 @@ const checkGlyph = (
  * dissolves open beside it, until a leaf click settles the whole path.
  * `value` is the selected path (or paths, when `multiple`) — the joined
  * labels ride the trigger. `highlightTrigger: "hover"` turns the
- * classic cascading menu: pointing is enough to unfold.
+ * classic cascading menu: pointing is enough to unfold. `filterable`
+ * swaps the corridor for a flat list of matching paths while a query
+ * runs — each hit still reads as its full route.
  */
 export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
   value?: string[][];
   data: CascadeSelectNode[];
   placeholder?: string;
   highlightTrigger?: "click" | "hover";
+  filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
   onValueChange?: (value: string[][]) => void;
@@ -78,6 +83,7 @@ export function CascadeSelect({
   data,
   placeholder = "Select…",
   highlightTrigger,
+  filterable = false,
   multiple = false,
   disabled = false,
   onValueChange,
@@ -108,6 +114,53 @@ export function CascadeSelect({
     },
   });
   const api = cascade.connect(service, normalizeProps);
+
+  const [query, setQuery] = useState("");
+  const filterFns = useFilter({ sensitivity: "base" });
+  const filtering = filterable && query.trim().length > 0;
+
+  /** The corridor's answer to a query: every leaf whose route matches —
+   * the query may land on any hop, and the whole route still shows. */
+  const matchPaths = useMemo(() => {
+    if (!filtering) return [];
+    const q = query.trim();
+    const hits: { path: string[]; labels: string[] }[] = [];
+    const walk = (
+      nodes: CascadeSelectNode[] | undefined,
+      path: string[],
+      labels: string[],
+      matched: boolean,
+    ) => {
+      for (const node of nodes ?? []) {
+        const hit = matched || filterFns.contains(node.label, q);
+        const nextPath = [...path, node.value];
+        const nextLabels = [...labels, node.label];
+        if (node.children?.length) {
+          walk(node.children, nextPath, nextLabels, hit);
+        } else if (hit) {
+          hits.push({ path: nextPath, labels: nextLabels });
+        }
+      }
+    };
+    walk(data, [], [], false);
+    return hits;
+  }, [filtering, query, filterFns, data]);
+
+  const isSelected = (path: string[]) => (value ?? []).some((p) => p.join("/") === path.join("/"));
+
+  function pickMatch(path: string[]) {
+    if (multiple) {
+      const current = value ?? [];
+      const key = path.join("/");
+      const next = current.some((p) => p.join("/") === key)
+        ? current.filter((p) => p.join("/") !== key)
+        : [...current, path];
+      api.setValue(next);
+    } else {
+      api.selectValue(path);
+      api.setOpen(false);
+    }
+  }
 
   /** The machine's `valueAsString` only updates through its select
    * event, so an externally-set `value` would render the placeholder
@@ -178,14 +231,52 @@ export function CascadeSelect({
   return (
     <div {...rest} {...api.getRootProps()}>
       <div {...api.getControlProps()}>
-        <button {...api.getTriggerProps()} disabled={disabled || undefined}>
+        <button
+          {...api.getTriggerProps()}
+          onClick={(event) => {
+            api.getTriggerProps().onClick?.(event);
+            setQuery("");
+          }}
+          disabled={disabled || undefined}
+        >
           <span {...api.getValueTextProps()}>{display || placeholder}</span>
           <span {...api.getIndicatorProps()}>{chevronDown}</span>
         </button>
       </div>
       <Portal>
         <div {...api.getPositionerProps()}>
-          <div {...api.getContentProps()}>{renderColumn(collection.rootNode, [], [])}</div>
+          <div {...api.getContentProps()}>
+            {filterable ? (
+              <div data-part="search">
+                <Input
+                  size="sm"
+                  value={query}
+                  onValueChange={setQuery}
+                  placeholder="Filter…"
+                  aria-label="Filter options"
+                />
+              </div>
+            ) : null}
+            {filtering ? (
+              matchPaths.length === 0 ? (
+                <p data-part="empty">Nothing matches</p>
+              ) : (
+                matchPaths.map((hit) => (
+                  <button
+                    key={hit.path.join("/")}
+                    type="button"
+                    data-part="match"
+                    data-selected={isSelected(hit.path) || undefined}
+                    onClick={() => pickMatch(hit.path)}
+                  >
+                    {hit.labels.join(" / ")}
+                  </button>
+                ))
+              )
+            ) : (
+              renderColumn(collection.rootNode, [], [])
+            )}
+          </div>
         </div>
       </Portal>
     </div>

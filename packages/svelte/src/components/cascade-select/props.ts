@@ -16,6 +16,9 @@ export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
   /** `"hover"` turns the classic cascading menu: pointing is enough to
    * unfold. */
   highlightTrigger?: "click" | "hover";
+  /** Flattens the corridor into matching routes while a query runs —
+   * each hit still reads as its full path. */
+  filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
 }

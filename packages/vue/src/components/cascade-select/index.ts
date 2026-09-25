@@ -1,11 +1,13 @@
 import { DEFAULT_ENVIRONMENT, useEnvironmentContext } from "@ark-ui/vue/environment";
-import { DEFAULT_LOCALE, useLocaleContext } from "@ark-ui/vue/locale";
+import { DEFAULT_LOCALE, useLocaleContext, useFilter } from "@ark-ui/vue/locale";
 import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/vue";
 import type { SetupContext, VNodeArrayChildren } from "vue";
-import { computed, defineComponent, h, useId, type PropType } from "vue";
+import { computed, defineComponent, h, useId, ref, watch, type PropType } from "vue";
 import { Teleport } from "vue";
+
+import { Input } from "../input";
 
 export interface CascadeSelectNode {
   label: string;
@@ -67,7 +69,9 @@ function checkGlyph() {
  * dissolves open beside it, until a leaf click settles the whole path.
  * `modelValue` is the selected path (or paths, when `multiple`) — the
  * joined labels ride the trigger. `highlightTrigger: "hover"` turns the
- * classic cascading menu: pointing is enough to unfold.
+ * classic cascading menu: pointing is enough to unfold. `filterable`
+ * swaps the corridor for a flat list of matching paths while a query
+ * runs — each hit still reads as its full route.
  */
 export const CascadeSelect = defineComponent({
   name: "CascadeSelect",
@@ -76,6 +80,7 @@ export const CascadeSelect = defineComponent({
     data: { type: Array as PropType<CascadeSelectNode[]>, required: true },
     placeholder: { type: String, default: "Select…" },
     highlightTrigger: { type: String as PropType<"click" | "hover">, default: undefined },
+    filterable: { type: Boolean, default: false },
     multiple: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
@@ -111,6 +116,63 @@ export const CascadeSelect = defineComponent({
       })),
     );
     const api = computed(() => cascade.connect(service, normalizeProps));
+
+    const query = ref("");
+    const filterFns = useFilter({ sensitivity: "base" });
+    // Every opening starts from an empty query — the corridor is the
+    // resting face; the filter line is a visitor.
+    watch(
+      () => api.value.open,
+      (open) => {
+        if (open) query.value = "";
+      },
+    );
+
+    const filtering = computed(() => props.filterable && query.value.trim().length > 0);
+
+    /** The corridor's answer to a query: every leaf whose route matches —
+     * the query may land on any hop, and the whole route still shows. */
+    const matchPaths = computed(() => {
+      if (!filtering.value) return [];
+      const q = query.value.trim();
+      const hits: { path: string[]; labels: string[] }[] = [];
+      const walk = (
+        nodes: CascadeSelectNode[] | undefined,
+        path: string[],
+        labels: string[],
+        matched: boolean,
+      ) => {
+        for (const node of nodes ?? []) {
+          const hit = matched || filterFns.value.contains(node.label, q);
+          const nextPath = [...path, node.value];
+          const nextLabels = [...labels, node.label];
+          if (node.children?.length) {
+            walk(node.children, nextPath, nextLabels, hit);
+          } else if (hit) {
+            hits.push({ path: nextPath, labels: nextLabels });
+          }
+        }
+      };
+      walk(props.data, [], [], false);
+      return hits;
+    });
+
+    const isSelected = (path: string[]) =>
+      (props.modelValue ?? []).some((p) => p.join("/") === path.join("/"));
+
+    function pickMatch(path: string[]) {
+      if (props.multiple) {
+        const current = props.modelValue ?? [];
+        const key = path.join("/");
+        const next = current.some((p) => p.join("/") === key)
+          ? current.filter((p) => p.join("/") !== key)
+          : [...current, path];
+        api.value.setValue(next);
+      } else {
+        api.value.selectValue(path);
+        api.value.setOpen(false);
+      }
+    }
 
     /** The machine's `valueAsString` only updates through its select
      * event, so an externally-set `modelValue` would render the
@@ -186,7 +248,42 @@ export const CascadeSelect = defineComponent({
         ]),
         h(Teleport, { to: "body" }, () => [
           h("div", api.value.getPositionerProps(), [
-            h("div", api.value.getContentProps(), renderColumn(collection.value.rootNode, [], [])),
+            h(
+              "div",
+              api.value.getContentProps(),
+              [
+                ...(props.filterable
+                  ? [
+                      h("div", { "data-part": "search" }, [
+                        h(Input, {
+                          size: "sm",
+                          modelValue: query.value,
+                          "onUpdate:modelValue": (value: string) => (query.value = value),
+                          placeholder: "Filter…",
+                          "aria-label": "Filter options",
+                        }),
+                      ]),
+                    ]
+                  : []),
+                filtering.value
+                  ? matchPaths.value.length === 0
+                    ? [h("p", { "data-part": "empty" }, "Nothing matches")]
+                    : matchPaths.value.map((hit) =>
+                        h(
+                          "button",
+                          {
+                            key: hit.path.join("/"),
+                            type: "button",
+                            "data-part": "match",
+                            "data-selected": isSelected(hit.path) || undefined,
+                            onClick: () => pickMatch(hit.path),
+                          },
+                          hit.labels.join(" / "),
+                        ),
+                      )
+                  : renderColumn(collection.value.rootNode, [], []),
+              ].flat(),
+            ),
           ]),
         ]),
       ]);

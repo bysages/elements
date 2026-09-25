@@ -1,9 +1,12 @@
+import { useFilter } from "@ark-ui/vue/locale";
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/vue/tree-view";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 import { Teleport } from "vue";
+
+import { Input } from "../input";
 
 export interface TreeSelectNode {
   label: string;
@@ -36,7 +39,8 @@ function chevronDown() {
  * A tree behind a field: the control reads like an input, the vessel
  * below walks the hierarchy, and one leaf click closes the deal. Single
  * selection — the chosen label rides on the control, its value rides in
- * `modelValue`.
+ * `modelValue`. `filterable` puts a filter line at the top of the
+ * vessel; matches keep their ancestors and the branches fan open.
  */
 export const TreeSelect = defineComponent({
   name: "TreeSelect",
@@ -44,11 +48,14 @@ export const TreeSelect = defineComponent({
     modelValue: { type: String, default: undefined },
     data: { type: Array as PropType<TreeSelectNode[]>, required: true },
     placeholder: { type: String, default: "Select…" },
+    filterable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     const open = ref(false);
+    const query = ref("");
+    const filterFns = useFilter({ sensitivity: "base" });
 
     const collection = computed(() =>
       createTreeCollection<TreeSelectNode>({
@@ -58,7 +65,38 @@ export const TreeSelect = defineComponent({
       }),
     );
 
+    const filtering = computed(() => props.filterable && query.value.trim().length > 0);
+
+    /** The collection pruned to the matches — each hit keeping its
+     * ancestors, so a deep match still reads inside its hierarchy. */
+    const visibleCollection = computed(() =>
+      filtering.value
+        ? collection.value.filter((node) =>
+            filterFns.value.contains(node.label, query.value.trim()),
+          )
+        : collection.value,
+    );
+
     const firstLevel = computed(() => (props.data ?? []).map((node) => node.value));
+
+    // While the filter runs, every branch on a hit's path stands open —
+    // a deep match must not hide behind a collapsed fold. The expanded
+    // prop is only supplied while filtering, so the rest state keeps the
+    // machine's own remember-where-you-folded behavior.
+    const expandedWhileFiltering = computed(() => {
+      if (!filtering.value) return undefined;
+      const values: string[] = [];
+      const walk = (nodes: TreeSelectNode[]) => {
+        for (const node of nodes) {
+          if (node.children?.length) {
+            values.push(node.value);
+            walk(node.children);
+          }
+        }
+      };
+      walk(visibleCollection.value.rootNode.children ?? []);
+      return values;
+    });
 
     const label = computed(() => {
       let found: string | undefined;
@@ -123,7 +161,10 @@ export const TreeSelect = defineComponent({
         ArkPopover.Root,
         {
           open: open.value,
-          "onUpdate:open": (value: boolean) => (open.value = value),
+          "onUpdate:open": (value: boolean) => {
+            open.value = value;
+            if (!value) query.value = "";
+          },
           positioning: { sameWidth: true, placement: "bottom-start" },
         },
         () => [
@@ -144,23 +185,50 @@ export const TreeSelect = defineComponent({
           h(Teleport, { to: "body" }, [
             h(ArkPopover.Positioner, () => [
               h(ArkPopover.Content, { "data-scope": "tree-select", "data-part": "content" }, () => [
-                h(
-                  ArkTreeView.Root,
-                  {
-                    collection: collection.value,
-                    selectionMode: "single",
-                    selectedValue: props.modelValue ? [props.modelValue] : [],
-                    defaultExpandedValue: firstLevel.value,
-                    onSelectionChange: pick,
-                  } as never,
-                  () => [
-                    h(ArkTreeView.Tree, () =>
-                      collection.value.rootNode.children?.map((node, index) =>
-                        h(Row, { key: node.value, node, indexPath: [index] }),
-                      ),
-                    ),
-                  ],
-                ),
+                ...(props.filterable
+                  ? [
+                      h("div", { "data-scope": "tree-select", "data-part": "search" }, [
+                        h(Input, {
+                          size: "sm",
+                          modelValue: query.value,
+                          "onUpdate:modelValue": (value: string) => (query.value = value),
+                          placeholder: "Filter…",
+                          "aria-label": "Filter options",
+                        }),
+                      ]),
+                    ]
+                  : []),
+                h("div", { "data-scope": "tree-select", "data-part": "body" }, [
+                  (visibleCollection.value.rootNode.children ?? []).length === 0
+                    ? [
+                        h(
+                          "p",
+                          { "data-scope": "tree-select", "data-part": "empty" },
+                          "Nothing matches",
+                        ),
+                      ]
+                    : [
+                        h(
+                          ArkTreeView.Root,
+                          {
+                            collection: visibleCollection.value,
+                            selectionMode: "single",
+                            selectedValue: props.modelValue ? [props.modelValue] : [],
+                            ...(filtering.value
+                              ? { expandedValue: expandedWhileFiltering.value }
+                              : { defaultExpandedValue: firstLevel.value }),
+                            onSelectionChange: pick,
+                          } as never,
+                          () => [
+                            h(ArkTreeView.Tree, () =>
+                              visibleCollection.value.rootNode.children?.map((node, index) =>
+                                h(Row, { key: node.value, node, indexPath: [index] }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                ]),
               ]),
             ]),
           ]),

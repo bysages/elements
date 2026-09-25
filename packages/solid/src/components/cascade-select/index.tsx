@@ -1,11 +1,21 @@
 import { useEnvironmentContext } from "@ark-ui/solid/environment";
-import { useLocaleContext } from "@ark-ui/solid/locale";
+import { useFilter, useLocaleContext } from "@ark-ui/solid/locale";
 import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/solid";
-import { For, Show, createMemo, createUniqueId, mergeProps, splitProps } from "solid-js";
+import {
+  For,
+  Show,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  mergeProps,
+  splitProps,
+} from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+
+import { Input } from "../input";
 
 export interface CascadeSelectNode {
   label: string;
@@ -67,6 +77,7 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
   data: CascadeSelectNode[];
   placeholder?: string;
   highlightTrigger?: "click" | "hover";
+  filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
   onValueChange?: (value: string[][]) => void;
@@ -77,7 +88,9 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * dissolves open beside it, until a leaf click settles the whole path.
  * `value` is the selected path (or paths, when `multiple`) — the
  * joined labels ride the trigger. `highlightTrigger: "hover"` turns the
- * classic cascading menu: pointing is enough to unfold.
+ * classic cascading menu: pointing is enough to unfold. `filterable`
+ * swaps the corridor for a flat list of matching paths while a query
+ * runs — each hit still reads as its full route.
  */
 export function CascadeSelect(props: CascadeSelectProps) {
   const [own, rest] = splitProps(props, [
@@ -85,6 +98,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
     "data",
     "placeholder",
     "highlightTrigger",
+    "filterable",
     "multiple",
     "disabled",
     "onValueChange",
@@ -116,6 +130,54 @@ export function CascadeSelect(props: CascadeSelectProps) {
     },
   }));
   const api = createMemo(() => cascade.connect(service, normalizeProps));
+
+  const [query, setQuery] = createSignal("");
+  const filterFns = useFilter({ sensitivity: "base" });
+  const filtering = () => own.filterable && query().trim().length > 0;
+
+  /** The corridor's answer to a query: every leaf whose route matches —
+   * the query may land on any hop, and the whole route still shows. */
+  const matchPaths = createMemo(() => {
+    if (!filtering()) return [];
+    const q = query().trim();
+    const hits: { path: string[]; labels: string[] }[] = [];
+    const walk = (
+      nodes: CascadeSelectNode[] | undefined,
+      path: string[],
+      labels: string[],
+      matched: boolean,
+    ) => {
+      for (const node of nodes ?? []) {
+        const hit = matched || filterFns().contains(node.label, q);
+        const nextPath = [...path, node.value];
+        const nextLabels = [...labels, node.label];
+        if (node.children?.length) {
+          walk(node.children, nextPath, nextLabels, hit);
+        } else if (hit) {
+          hits.push({ path: nextPath, labels: nextLabels });
+        }
+      }
+    };
+    walk(own.data, [], [], false);
+    return hits;
+  });
+
+  const isSelected = (path: string[]) =>
+    (own.value ?? []).some((p) => p.join("/") === path.join("/"));
+
+  function pickMatch(path: string[]) {
+    if (own.multiple) {
+      const current = own.value ?? [];
+      const key = path.join("/");
+      const next = current.some((p) => p.join("/") === key)
+        ? current.filter((p) => p.join("/") !== key)
+        : [...current, path];
+      api().setValue(next);
+    } else {
+      api().selectValue(path);
+      api().setOpen(false);
+    }
+  }
 
   /** The machine's `valueAsString` only updates through its select
    * event, so an externally-set `value` would render the
@@ -202,6 +264,10 @@ export function CascadeSelect(props: CascadeSelectProps) {
             get disabled() {
               return own.disabled || undefined;
             },
+            onclick(event: MouseEvent & { currentTarget: HTMLButtonElement }) {
+              (api().getTriggerProps() as { onclick?: (e: unknown) => void }).onclick?.(event);
+              setQuery("");
+            },
           })}
         >
           <span {...mergeProps(() => api().getValueTextProps())}>
@@ -213,7 +279,41 @@ export function CascadeSelect(props: CascadeSelectProps) {
       <Portal>
         <div {...mergeProps(() => api().getPositionerProps())}>
           <div {...mergeProps(() => api().getContentProps())}>
-            {renderColumn(collection().rootNode, [], [])}
+            <Show when={own.filterable}>
+              <div data-part="search">
+                <Input
+                  size="sm"
+                  value={query()}
+                  onValueChange={setQuery}
+                  placeholder="Filter…"
+                  aria-label="Filter options"
+                />
+              </div>
+            </Show>
+            <Show
+              when={!filtering()}
+              fallback={
+                <Show
+                  when={matchPaths().length > 0}
+                  fallback={<p data-part="empty">Nothing matches</p>}
+                >
+                  <For each={matchPaths()}>
+                    {(hit) => (
+                      <button
+                        type="button"
+                        data-part="match"
+                        data-selected={isSelected(hit.path) || undefined}
+                        onclick={() => pickMatch(hit.path)}
+                      >
+                        {hit.labels.join(" / ")}
+                      </button>
+                    )}
+                  </For>
+                </Show>
+              }
+            >
+              {renderColumn(collection().rootNode, [], [])}
+            </Show>
           </div>
         </div>
       </Portal>

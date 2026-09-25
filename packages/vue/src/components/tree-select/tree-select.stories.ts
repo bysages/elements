@@ -68,3 +68,28 @@ export const Disabled: Story = {
       style: { maxInlineSize: "18rem" },
     }),
 };
+
+/** A filter line at the top of the vessel: matches keep their ancestors
+   and every branch on the way stands open, so a deep hit still reads in
+   its hierarchy. */
+export const Filterable: Story = {
+  render: () =>
+    withState(() => {
+      const picked = ref("");
+      return () => [
+        h(TreeSelect, {
+          modelValue: picked.value,
+          "onUpdate:modelValue": (v: string) => (picked.value = v),
+          data: REGIONS,
+          filterable: true,
+          placeholder: "Choose a region…",
+          style: { maxInlineSize: "18rem" },
+        }),
+        h(
+          "p",
+          { style: "font-size: var(--bs-font-size-sm); color: var(--bs-color-text-tertiary);" },
+          [`value: ${JSON.stringify(picked.value)}`],
+        ),
+      ];
+    }),
+};
