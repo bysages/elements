@@ -44,6 +44,10 @@ export const cardCss = /* css */ `
 }
 
 [data-scope="card"][data-part="content"] {
+  /* Growing to the footer keeps a run of equal-height cards honest —
+     the credits across a grid row line up instead of trailing whitespace
+     after whichever body ran longest. */
+  flex: 1;
   padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
