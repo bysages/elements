@@ -135,7 +135,10 @@ function toggleTag(tag: string) {
 
 .post-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  /* Three abreast on the example canvas: wide-enough tracks keep the
+     grid balanced (six posts read 3 + 3, not 4 + 2) and give a card's
+     title room to breathe. */
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
   gap: var(--bs-space-5);
 }
 
