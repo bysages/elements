@@ -18,8 +18,8 @@ const trapped = ref(false);
         While the trap is on, Tab cycles inside this panel — the way out is the button below, and
         focus returns to where it came from.
       </p>
-      <Input placeholder="First stop" class="w-64" />
-      <Input placeholder="Second stop" class="w-64" />
+      <Input placeholder="First stop" class="w-64!" />
+      <Input placeholder="Second stop" class="w-64!" />
       <Button variant="outline" @click="trapped = false">Done — release</Button>
     </FocusTrap>
   </div>

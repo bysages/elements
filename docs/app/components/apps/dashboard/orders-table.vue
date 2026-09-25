@@ -169,7 +169,7 @@ function archiveSelected() {
 
       <span class="flex-1" />
 
-      <Input v-model="search" class="w-60" placeholder="Search customers…" />
+      <Input v-model="search" class="w-60!" placeholder="Search customers…" />
     </div>
 
     <DataTable
@@ -178,8 +178,8 @@ function archiveSelected() {
       :columns="columns"
       selectable
       paginated
-      :page-size="8"
-      :page-size-options="[8, 16, 32]"
+      :page-size="10"
+      :page-size-options="[10, 20, 50]"
       filterable
       :show-toolbar="false"
       empty-text="No accounts match."
