@@ -93,6 +93,11 @@ export interface DataTableProps {
   sortable?: boolean;
   /** Render a global-filter toolbar and per-column filter inputs. */
   filterable?: boolean;
+  /** Keep the built-in toolbar row above the table (default true when
+   * `filterable`). Turn it off to host the global filter in your own
+   * toolbar — the feature stays registered and the instance methods
+   * keep working. */
+  showToolbar?: boolean;
   /** Enable tree expansion over `subRows`; the first column hosts the
    * expander and depth indent. */
   tree?: boolean;
@@ -225,6 +230,7 @@ export const DataTable = defineComponent({
     selectable: Boolean,
     sortable: { type: Boolean, default: true },
     filterable: Boolean,
+    showToolbar: { type: Boolean, default: true },
     tree: Boolean,
     merge: { type: Array as PropType<string[]> },
     pinStart: { type: Array as PropType<string[]> },
@@ -937,19 +943,20 @@ export const DataTable = defineComponent({
           })()
         : null;
 
-      const toolbar = props.filterable
-        ? h("div", { "data-scope": "table", "data-part": "toolbar" }, [
-            h("input", {
-              type: "search",
-              "data-scope": "table",
-              "data-part": "global-filter",
-              "aria-label": "Filter all columns",
-              placeholder: props.globalFilterPlaceholder,
-              value: (table.atoms.globalFilter.get() as string) ?? "",
-              onInput: (e: Event) => table.setGlobalFilter((e.target as HTMLInputElement).value),
-            }),
-          ])
-        : null;
+      const toolbar =
+        props.filterable && props.showToolbar
+          ? h("div", { "data-scope": "table", "data-part": "toolbar" }, [
+              h("input", {
+                type: "search",
+                "data-scope": "table",
+                "data-part": "global-filter",
+                "aria-label": "Filter all columns",
+                placeholder: props.globalFilterPlaceholder,
+                value: (table.atoms.globalFilter.get() as string) ?? "",
+                onInput: (e: Event) => table.setGlobalFilter((e.target as HTMLInputElement).value),
+              }),
+            ])
+          : null;
 
       return h(
         "div",
