@@ -55,6 +55,10 @@ const { data: highlighted } = await useAsyncData(
       <Tabs.List>
         <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
         <Tabs.Trigger v-if="code" value="code">Code</Tabs.Trigger>
+        <!-- The demo's path under examples/, quiet ink between the tabs
+             and the workbench door — a family page stacks several demos
+             and the reader should know which one is on stage. -->
+        <span class="font-mono text-xs text-tertiary">{{ name }}</span>
         <a
           v-if="workbenchHref"
           class="bs-docs-demo-workbench"
@@ -80,7 +84,7 @@ const { data: highlighted } = await useAsyncData(
              the highlight route is unreachable. -->
         <div class="bs-docs-pre bs-docs-demo-code-panel">
           <div class="bs-docs-pre-bar">
-            <span class="bs-docs-pre-label">vue</span>
+            <span class="bs-docs-pre-label">{{ name }}.vue</span>
             <Button
               variant="ghost"
               size="sm"
