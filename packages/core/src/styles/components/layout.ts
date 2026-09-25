@@ -52,14 +52,14 @@ export const layoutCss = /* css */ `
 }
 
 /* The rail: its own quiet slot. Navigation is a tool the eye visits,
-   not the content it rests on — the rail sits one step below the page
-   (surface-inset) while vessels above rise toward the light, so the
-   three depths — tool, ground, vessel — never blur. Ghost controls on
-   the rail hover to surface-0 and read as points of light. The inline
-   size rides the variable the wrapper writes — a layout parameter, not
-   a visual token — so the collapse animates by re-pointing it, and the
-   resizable rail's floor and ceiling clamp it between the caller's
-   bounds. */
+   not the content it rests on — the rail leans a step below the page,
+   blended from ground toward inset, while vessels rise above the
+   ground. The blend keeps the step perceptible but subordinated: a
+   full inset rung turns the rail into the page's loudest surface. The
+   inline size rides the variable the wrapper writes — a layout
+   parameter, not a visual token — so the collapse animates by
+   re-pointing it, and the resizable rail's floor and ceiling clamp it
+   between the caller's bounds. */
 [data-scope="layout"][data-part="sider"] {
   position: relative;
   grid-area: sider;
@@ -69,7 +69,7 @@ export const layoutCss = /* css */ `
     var(--bs-layout-sider-max, 24rem)
   );
   overflow: hidden;
-  background: var(--bs-color-surface-inset);
+  background: color-mix(in oklab, var(--bs-color-surface-0) 60%, var(--bs-color-surface-inset));
   border-inline-end: 1px solid var(--bs-color-border);
   transition: inline-size var(--bs-duration-slow) var(--bs-ease-out);
 }
