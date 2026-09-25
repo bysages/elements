@@ -10,6 +10,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Reserve the scrollbar lane even on pages that don't scroll yet —
+     hopping between a short page and a long one must not shove the
+     centered canvas sideways as the classic scrollbar comes and goes. */
+  scrollbar-gutter: stable;
 }
 
 body {

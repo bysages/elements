@@ -6,6 +6,19 @@ export const baseCss = /* css */ `
   display: none !important;
 }
 
+/* Every scrollbar speaks the same ink: a thin rail and a quiet
+   hairline thumb over transparent track — present enough to grab,
+   quiet enough to ignore. The standard properties (Firefox, Chrome
+   121+, Safari 18+) are the whole story: once scrollbar-color is set,
+   the engine retires its own classic scrollbar, so no ::-webkit
+   duplicates ride along. The universal selector matters because
+   scrollbar-width does not inherit — inner scrollers (code blocks,
+   table viewports, rails) need their own declaration. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bs-color-border-strong) transparent;
+}
+
 /* The field baseline: containers that hold text or choices fill their
    container — width is the layout's decision, never the component's.
    Zero specificity (:where), so a family's own declaration always wins
