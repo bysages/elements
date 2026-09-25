@@ -71,6 +71,24 @@ function pageGlyph(direction: "start" | "end") {
 export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
 
+/** The page-size select's pointing chevron. */
+function chevronDownGlyph() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={14}
+      height={14}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
 /** Column metadata understood by this table: mark columns whose values
  * read right-aligned in tabular figures. The type parameters mirror the
  * library's own declaration — augmentation merging demands an identical
@@ -887,6 +905,7 @@ export function DataTable(rawProps: DataTableProps) {
             <ArkSelect.Control>
               <ArkSelect.Trigger aria-label="Rows per page">
                 <ArkSelect.ValueText />
+                <ArkSelect.Indicator>{chevronDownGlyph()}</ArkSelect.Indicator>
               </ArkSelect.Trigger>
             </ArkSelect.Control>
             <ArkSelect.Positioner>

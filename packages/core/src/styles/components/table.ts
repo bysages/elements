@@ -331,14 +331,21 @@ export const tableCss = /* css */ `
 }
 
 /* The page-size select rides the seals' compact register: a 28px field
-   beside 28px pages, never filling the bar. */
+   beside 28px pages, never filling the bar. flex:none keeps the field at
+   its content width — the value line reads whole, never squeezed. */
 [data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="root"] {
   inline-size: auto;
+  flex: none;
 }
 
 [data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="trigger"] {
   block-size: var(--bs-control-height-sm);
   font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="indicator"] {
+  inline-size: auto;
+  padding-inline-end: var(--bs-space-2);
 }
 
 [data-scope="table"][data-part="pagination"] [data-scope="pagination"][data-part="root"] {
