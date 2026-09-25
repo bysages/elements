@@ -33,6 +33,19 @@ export const chartThemeCss = /* css */ `
   --ts-chart-crosshair-label-halo: var(--bs-color-surface-1);
   --ts-chart-focus-fill: var(--bs-color-primary);
 }
+
+/* The chart svg is focusable for keyboard crosshair steering, but the
+ * browser's default focus outline reads as a black frame on click. A
+ * pointer press stays quiet; keyboard arrival wears the system halo. */
+.ts-chart:focus {
+  outline: none;
+}
+
+.ts-chart:focus-visible {
+  outline: none;
+  border-radius: var(--bs-radius-sm);
+  box-shadow: var(--bs-focus-ring);
+}
 `;
 
 let injected = false;
