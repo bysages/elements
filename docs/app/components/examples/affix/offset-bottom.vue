@@ -17,8 +17,8 @@ const passages = 16;
         <span>Share</span>
       </div>
     </Affix>
-    <div class="pt-6">
-      <p v-for="n in passages" :key="n" class="mb-4 leading-relaxed text-secondary">
+    <div class="pt-4">
+      <p v-for="n in passages" :key="n" class="leading-relaxed text-secondary">
         Passage {{ n }} — with both offsets given, the row holds its place inside the band between
         them: clear of the header, clear of the page's end.
       </p>

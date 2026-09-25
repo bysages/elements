@@ -12,7 +12,7 @@ The premise: **Ark's headless components, dressed in our design system.** Intera
 | ---------- | ------------------------------------------- | --------------------------------------------------------------------- |
 | Components | [Ark UI](https://ark-ui.com) (`@ark-ui/*`)  | interaction, state, ARIA, popper positioning — headless, unstyled     |
 | Styling    | `@bysages/core` component styles            | the only visual layer: native CSS scoped by `[data-scope][data-part]` |
-| Lighting   | `@bysages/core` lighting engine (planned)   | dynamic light: source model + a state → CSS-variable pipeline         |
+| Lighting   | `@bysages/core` lighting engine             | dynamic light: source model + a state → CSS-variable pipeline         |
 | Theming    | design tokens → CSS custom properties       | palettes, light/dark, contrast & density tiers, `@layer`              |
 | Responsive | native CSS Container Queries (`@container`) | components respond to their container, not the viewport               |
 | Frameworks | React, Vue, Solid, Svelte                   | thin wrappers: API narrowing + style injection, no DOM of our own     |
@@ -75,18 +75,20 @@ Elements must stay legible to coding agents — achieved by how components and d
 
 ```
 packages/tokens/src/    @bysages/tokens — DTCG design-token source compiled with style-dictionary 4 → CSS variables + types (elevation/lighting, density, themes)
-packages/core/src/      @bysages/core — theme engine, per-component styles + injection, and (planned) the lighting engine
+packages/core/src/      @bysages/core — theme engine, lighting engine, per-component styles + injection
 packages/react/src/     @bysages/react — Ark wrappers for React
 packages/vue/src/       @bysages/vue — Ark wrappers for Vue
 packages/solid/src/     @bysages/solid — Ark wrappers for Solid
 packages/svelte/src/    @bysages/svelte — Ark wrappers for Svelte
 packages/charts/src/    @bysages/charts — TanStack Charts re-exported per framework, inked from the tokens
 packages/workflow/src/  @bysages/workflow — headless workflow graph protocol (store/serialize) + the X6 canvas adapter, styled from core
+packages/nuxt/src/      @bysages/nuxt — Nuxt module: auto-imports every Vue family, one build-time stylesheet
+packages/docs-theme/    @bysages/docs-theme — Nuxt Content layer that renders a documentation site in the design system
 ```
 
 Each package develops and demonstrates its components through **Storybook** — stories are colocated next to the source (`src/components/**/*.stories.tsx`) and served with `pnpm dev` from the package root (dev-only, never published). One story file per component, mirroring the wrapper layout. The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) lives in `docs/` and consumes `@bysages/docs-theme`.
 
-Tokens are real today; the wrapper packages and the core style layer are the current build-out. `@bysages/charts` (TanStack Charts themed from tokens) ships on top of the wrappers; `@bysages/table` (TanStack Table) is planned next.
+The whole matrix is real today — wrappers for the four frameworks, charts, workflow, the Nuxt module, and the docs layer. `@bysages/table` (TanStack Table) ships in the vue and react wrappers; the solid and svelte ports are pending.
 
 ## Build
 

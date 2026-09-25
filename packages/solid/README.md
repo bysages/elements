@@ -19,16 +19,16 @@
 
 ```bash
 # pnpm
-pnpm add @bysages/solid @bysages/core
+pnpm add @bysages/solid
 
 # npm
-npm install @bysages/solid @bysages/core
+npm install @bysages/solid
 
 # yarn
-yarn add @bysages/solid @bysages/core
+yarn add @bysages/solid
 
 # bun
-bun add @bysages/solid @bysages/core
+bun add @bysages/solid
 ```
 
 ## Quick Start
