@@ -5,10 +5,15 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
 </script>
 
 <template>
-  <Layout.Root sider="start" class="min-h-96">
+  <!-- The border and paper make the skeleton read as a window on the
+       demo canvas — a bare grid melts into the page around it. -->
+  <Layout.Root
+    sider="start"
+    class="min-h-72 overflow-clip rounded-lg border border-border bg-surface-0"
+  >
     <Layout.Sider>
-      <nav class="grid gap-[var(--bs-gap-xs)] p-[var(--bs-padding-sm)]">
-        <Button v-for="stop in stops" :key="stop" variant="ghost" class="justify-start">
+      <nav class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)">
+        <Button v-for="stop in stops" :key="stop" variant="ghost" class="justify-start!">
           {{ stop }}
         </Button>
       </nav>
@@ -17,7 +22,7 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
       <strong class="text-lg">The workbench</strong>
     </Layout.Header>
     <Layout.Content>
-      <div class="grid gap-[var(--bs-gap-md)] max-w-[72ch]">
+      <div class="grid gap-(--bs-gap-md) max-w-[72ch]">
         <p class="m-0">
           The content area takes the flow's full measure and holds it to a readable column.
         </p>

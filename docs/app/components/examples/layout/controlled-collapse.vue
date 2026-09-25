@@ -11,21 +11,24 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
     <Button variant="ghost" class="justify-self-start" @click="state.collapsed = !state.collapsed">
       {{ state.collapsed ? "Expand the rail" : "Fold the rail" }}
     </Button>
-    <Layout.Root sider="start" class="min-h-96">
+    <Layout.Root
+      sider="start"
+      class="min-h-72 overflow-clip rounded-lg border border-border bg-surface-0"
+    >
       <Layout.Sider
         v-model:collapsed="state.collapsed"
         v-model:width="state.width"
         resizable
         class="min-h-full"
       >
-        <nav class="grid gap-[var(--bs-gap-xs)] p-[var(--bs-padding-sm)]">
+        <nav class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)">
           <Button
             v-for="stop in stops"
             :key="stop"
             variant="ghost"
+            class="justify-start!"
             :aria-label="state.collapsed ? stop : undefined"
             :style="{
-              justifyContent: 'flex-start',
               inlineSize: state.collapsed ? '2rem' : '100%',
               paddingInline: state.collapsed ? '0.5rem' : 'var(--bs-padding-sm)',
               overflow: 'hidden',
@@ -40,7 +43,7 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
         <strong class="text-lg">The workbench</strong>
       </Layout.Header>
       <Layout.Content>
-        <div class="grid gap-[var(--bs-gap-md)] max-w-[72ch]">
+        <div class="grid gap-(--bs-gap-md) max-w-[72ch]">
           <p class="m-0">
             The rail folds on the caller's word and resizes by hand — drag the hairline at its edge,
             or hold an arrow key.
