@@ -2,7 +2,22 @@
 import { Avatar, AvatarGroup, Badge, Button, Layout, Typography } from "@bysages/vue";
 import { ref } from "vue";
 
-const stops = ["Overview", "Accounts", "Billing", "Reports", "Settings"];
+const stops = [
+  { label: "Overview", icon: "M3 3v18h18M7 14l4-4 3 3 5-6" },
+  {
+    label: "Accounts",
+    icon: "M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM21 21v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75",
+  },
+  { label: "Billing", icon: "M2 5h20v14H2zM2 10h20" },
+  {
+    label: "Reports",
+    icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 15h6M9 11h2",
+  },
+  {
+    label: "Settings",
+    icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z",
+  },
+];
 
 const activeStop = ref("Overview");
 
@@ -15,13 +30,26 @@ const collapsed = ref(false);
       <nav class="shell-nav" aria-label="Console sections">
         <Button
           v-for="stop in stops"
-          :key="stop"
-          :variant="activeStop === stop ? 'subtle' : 'ghost'"
+          :key="stop.label"
+          :variant="activeStop === stop.label ? 'subtle' : 'ghost'"
           class="shell-stop"
-          :aria-current="activeStop === stop ? 'page' : undefined"
-          @click="activeStop = stop"
+          :aria-current="activeStop === stop.label ? 'page' : undefined"
+          @click="activeStop = stop.label"
         >
-          {{ stop }}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path :d="stop.icon" />
+          </svg>
+          {{ stop.label }}
         </Button>
       </nav>
     </Layout.Sider>
