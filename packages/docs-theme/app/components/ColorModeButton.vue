@@ -43,13 +43,20 @@ function toggle(event: MouseEvent) {
     apply();
   });
   transition.ready.finally(() => delete root.dataset.themeFlipping);
-  transition.ready.then(() => {
-    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    document.documentElement.animate(
-      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-      { duration: 450, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" },
-    );
-  });
+  // Linear, never an eased curve: the ripple is a physical wavefront, and a
+  // wavefront travels at a constant rate. Every stock curve starts at zero
+  // velocity, and that first stretch of barely-moving circle reads as the
+  // animation stalling — the stall, not the frame rate, is what "janky"
+  // means here.
+  transition.ready
+    .then(() => {
+      const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 500, easing: "linear", pseudoElement: "::view-transition-new(root)" },
+      );
+    })
+    .catch(() => {});
 }
 
 onMounted(() => {
