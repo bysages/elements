@@ -1,9 +1,12 @@
 import type { Meta } from "@storybook/react-vite";
 import { useRef, useState } from "react";
+import { z } from "zod";
 
-import { Form, FormField, type FormHandle, type StandardSchema } from ".";
+import { Form, FormField, type FormHandle } from ".";
 import { Button } from "../button";
+import { CheckboxGroup } from "../checkbox-group";
 import { Input } from "../input";
+import { Switch } from "../switch";
 import { Textarea } from "../textarea";
 
 const meta: Meta = { title: "Components/Forms/Form" };
@@ -14,9 +17,52 @@ const statusStyle = {
   color: "var(--bs-color-text-tertiary)",
 } as const;
 
-/** The validate function: submit runs it first; errors land on the
- * FormField whose name matches. */
+/** The schema path: any Standard Schema (zod here) describes the shape;
+ * submit validates against it and errors land on the FormField whose
+ * name matches the issue path. */
 export const Basic = {
+  render: () => {
+    const schema = z.object({
+      title: z.string().min(1, "The title is required."),
+      abstract: z.string().min(8, "Write at least 8 characters."),
+    });
+    const [state, setState] = useState<z.infer<typeof schema>>({ title: "", abstract: "" });
+    const [status, setStatus] = useState("");
+    return (
+      <>
+        <Form
+          state={state}
+          schema={schema}
+          onSubmit={() => setStatus("Submitted.")}
+          onError={(errors) => setStatus(`${errors.length} error(s).`)}
+        >
+          <FormField name="title" label="Title" hint="One line, no period" required>
+            <Input
+              value={state.title}
+              onValueChange={(title) => setState((s) => ({ ...s, title }))}
+            />
+          </FormField>
+          <FormField name="abstract" label="Abstract">
+            <Textarea
+              rows={3}
+              value={state.abstract}
+              onValueChange={(abstract) => setState((s) => ({ ...s, abstract }))}
+            />
+          </FormField>
+          <Button type="submit">Submit</Button>
+        </Form>
+        <p role="status" style={statusStyle}>
+          {status}
+        </p>
+      </>
+    );
+  },
+};
+
+/** The validate function: submit runs it first; errors land on the
+ * FormField whose name matches. Composes with a schema when one is
+ * present for the checks a schema can't express. */
+export const CustomValidation = {
   render: () => {
     const [state, setState] = useState({ email: "", abstract: "" });
     const [status, setStatus] = useState("");
@@ -58,24 +104,24 @@ export const Basic = {
   },
 };
 
-/** The Standard Schema shape: this story fakes the slice of the spec the
- * Form reads — the same object a valibot or zod schema passes as. */
-export const StandardSchemaShape = {
+/** One schema over every input register: text, prose, a checkbox group
+ * bound to an array, and a switch bound to a boolean. Each field keeps
+ * its own binding; the form keeps one error map. */
+export const WithInputs = {
   render: () => {
-    const [state, setState] = useState({ title: "", year: "" });
+    const schema = z.object({
+      title: z.string().min(1, "The title is required."),
+      summary: z.string().min(8, "Write at least 8 characters."),
+      topics: z.array(z.string()).min(1, "Pick at least one topic."),
+      consent: z.boolean().refine((v) => v, "Please accept the terms."),
+    });
+    const [state, setState] = useState<z.infer<typeof schema>>({
+      title: "",
+      summary: "",
+      topics: [],
+      consent: false,
+    });
     const [status, setStatus] = useState("");
-    const schema: StandardSchema = {
-      "~standard": {
-        validate: (value: unknown) => {
-          const issues = [] as { message: string; path: string[] }[];
-          const record = value as Record<string, string>;
-          if (!record.title) issues.push({ message: "The title is required.", path: ["title"] });
-          if (!/^\d{4}$/.test(record.year ?? ""))
-            issues.push({ message: "Year must be four digits.", path: ["year"] });
-          return issues.length ? { issues } : { value };
-        },
-      },
-    };
     return (
       <>
         <Form
@@ -90,8 +136,35 @@ export const StandardSchemaShape = {
               onValueChange={(title) => setState((s) => ({ ...s, title }))}
             />
           </FormField>
-          <FormField name="year" label="Year">
-            <Input value={state.year} onValueChange={(year) => setState((s) => ({ ...s, year }))} />
+          <FormField name="summary" label="Summary">
+            <Textarea
+              rows={2}
+              value={state.summary}
+              onValueChange={(summary) => setState((s) => ({ ...s, summary }))}
+            />
+          </FormField>
+          <FormField name="topics" label="Topics" required>
+            <CheckboxGroup
+              value={state.topics}
+              onValueChange={(topics) => setState((s) => ({ ...s, topics }))}
+              options={[
+                { label: "Typography", value: "typography" },
+                { label: "Lighting", value: "lighting" },
+                { label: "Motion", value: "motion" },
+              ]}
+            />
+          </FormField>
+          <FormField name="consent">
+            <Switch.Root
+              checked={state.consent}
+              onCheckedChange={(e) => setState((s) => ({ ...s, consent: e.checked }))}
+            >
+              <Switch.Control>
+                <Switch.Thumb />
+              </Switch.Control>
+              <Switch.Label>I accept the terms</Switch.Label>
+              <Switch.HiddenInput />
+            </Switch.Root>
           </FormField>
           <Button type="submit">Submit</Button>
         </Form>

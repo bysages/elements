@@ -63,7 +63,8 @@
     "ai": "7.0.107",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "storybook": "10.6.0"
+    "storybook": "10.6.0",
+    "zod": "4.6.5"
   },
   "peerDependencies": {
     "react": ">=18",
