@@ -84,6 +84,11 @@ export interface DataTableProps {
   sortable?: boolean;
   /** Render a global-filter toolbar and per-column filter inputs. */
   filterable?: boolean;
+  /** Keep the built-in toolbar row above the table (default true when
+   * `filterable`). Turn it off to host the global filter in your own
+   * toolbar — the feature stays registered and the instance methods
+   * keep working. */
+  showToolbar?: boolean;
   /** Enable tree expansion over `subRows`; the first column hosts the
    * expander and depth indent. */
   tree?: boolean;
@@ -222,6 +227,7 @@ export function DataTable(rawProps: DataTableProps) {
     selectable = false,
     sortable = true,
     filterable = false,
+    showToolbar = true,
     tree = false,
     virtual: virtualProp = false,
     rowHeight = 40,
@@ -711,7 +717,9 @@ export function DataTable(rawProps: DataTableProps) {
         onDrop={canDrag ? (e) => onColDrop(column, e) : undefined}
         onDragEnd={canDrag ? onColDragEnd : undefined}
       >
-        {header.isPlaceholder ? null : <FlexRender header={header} />}
+        {header.isPlaceholder || header.column.columnDef.header === "" ? null : (
+          <FlexRender header={header} />
+        )}
         {canFilter ? (
           <input
             type="text"
@@ -885,19 +893,20 @@ export function DataTable(rawProps: DataTableProps) {
       })()
     : null;
 
-  const toolbar = filterable ? (
-    <div data-scope="table" data-part="toolbar">
-      <input
-        type="search"
-        data-scope="table"
-        data-part="global-filter"
-        aria-label="Filter all columns"
-        placeholder={globalFilterPlaceholder}
-        value={(table.atoms.globalFilter.get() as string) ?? ""}
-        onInput={(e) => table.setGlobalFilter((e.target as HTMLInputElement).value)}
-      />
-    </div>
-  ) : null;
+  const toolbar =
+    filterable && showToolbar ? (
+      <div data-scope="table" data-part="toolbar">
+        <input
+          type="search"
+          data-scope="table"
+          data-part="global-filter"
+          aria-label="Filter all columns"
+          placeholder={globalFilterPlaceholder}
+          value={(table.atoms.globalFilter.get() as string) ?? ""}
+          onInput={(e) => table.setGlobalFilter((e.target as HTMLInputElement).value)}
+        />
+      </div>
+    ) : null;
 
   return (
     <div

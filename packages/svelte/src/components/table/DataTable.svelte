@@ -49,6 +49,7 @@ let {
   selectable = false,
   sortable = true,
   filterable = false,
+  showToolbar = true,
   tree = false,
   merge,
   pinStart,
@@ -483,7 +484,7 @@ function cellStyle(column: TColumn, span: number) {
   data-reorderable={reorderable || undefined}
   style:--bs-table-row-height={`calc(${baseRowHeight()}px * var(--bs-density-scale, 1))`}
 >
-  {#if filterable}
+  {#if filterable && showToolbar}
     <div data-scope="table" data-part="toolbar">
       <input
         type="search"
@@ -551,7 +552,9 @@ function cellStyle(column: TColumn, span: number) {
                   ondrop={canDrag ? (e) => onColDrop(column, e) : undefined}
                   ondragend={canDrag ? onColDragEnd : undefined}
                 >
-                  {#if !header.isPlaceholder}<FlexRender header={header} />{/if}
+                  {#if !header.isPlaceholder && header.column.columnDef.header !== ""}
+                    <FlexRender header={header} />
+                  {/if}
                   {#if canFilter}
                     <!-- svelte-ignore a11y_no_static_element_interactions -->
                     <input

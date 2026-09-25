@@ -1,6 +1,7 @@
-import { Avatar as ArkAvatar } from "@ark-ui/react/avatar";
+import { Avatar as ArkAvatar } from "@ark-ui/solid/avatar";
 import { injectComponentStyle } from "@bysages/core";
-import type { ComponentProps } from "react";
+import { splitProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 
 /** Avatar, dressed in the paper-and-ink system: a circular seal on
  * inset paper that holds initials until the image loads over them.
@@ -16,8 +17,9 @@ export interface AvatarProps extends ComponentProps<typeof ArkAvatar.Root> {
   size?: AvatarSize;
 }
 
-function AvatarRoot({ size, ...rest }: AvatarProps) {
-  return <ArkAvatar.Root {...rest} data-size={size} />;
+function AvatarRoot(props: AvatarProps) {
+  const [own, rest] = splitProps(props, ["size"]);
+  return <ArkAvatar.Root {...rest} data-size={own.size} />;
 }
 
 /* Ark's namespace is frozen — Object.assign copies the members so Root

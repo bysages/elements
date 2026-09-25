@@ -23,6 +23,11 @@ export interface DataTableProps extends HTMLAttributes<HTMLDivElement> {
   sortable?: boolean;
   /** Render a global-filter toolbar and per-column filter inputs. */
   filterable?: boolean;
+  /** Keep the built-in toolbar row above the table (default true when
+   * `filterable`). Turn it off to host the global filter in your own
+   * toolbar — the feature stays registered and the instance methods
+   * keep working. */
+  showToolbar?: boolean;
   /** Enable tree expansion over `subRows`; the first column hosts the
    * expander and depth indent. */
   tree?: boolean;

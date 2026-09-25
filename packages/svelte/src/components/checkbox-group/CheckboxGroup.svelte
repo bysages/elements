@@ -1,16 +1,22 @@
 <script lang="ts">
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
+import { useFieldContext } from "@ark-ui/svelte/field";
 import type { CheckboxGroupProps } from "./props";
 
 let {
   value = $bindable([]),
   options,
   layout = "vertical",
+  invalid = false,
   disabled = false,
   ...rest
 }: CheckboxGroupProps = $props();
 
+const field = useFieldContext();
+
 const selected = $derived(new Set(value));
+const isInvalid = $derived(invalid || field?.()?.invalid === true);
+const isDisabled = $derived(disabled || field?.()?.disabled === true);
 
 function toggle(option: string) {
   const next = new Set(selected);
@@ -23,12 +29,22 @@ function toggle(option: string) {
 <!-- One question, many answers: a labelled stack (or row) of the
 seal-cut checkboxes bound to a single array. The group itself is
 semantics (`role="group"`), the boxes stay the machine-driven
-originals. -->
-<div {...rest} role="group" data-scope="checkbox-group" data-part="root" data-layout={layout}>
+originals. Inside a Field.Root the group picks up the field context,
+so the invalid and disabled states a Form routes to its name dress
+every box at once. -->
+<div
+  {...rest}
+  role="group"
+  data-scope="checkbox-group"
+  data-part="root"
+  data-layout={layout}
+  data-invalid={isInvalid ? "" : undefined}
+>
   {#each options as option (option.value)}
     <ArkCheckbox.Root
       checked={selected.has(option.value)}
-      disabled={disabled || option.disabled === true}
+      invalid={isInvalid}
+      disabled={isDisabled || option.disabled === true}
       onCheckedChange={() => toggle(option.value)}
     >
       <ArkCheckbox.Control>

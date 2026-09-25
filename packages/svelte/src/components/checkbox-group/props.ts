@@ -13,6 +13,7 @@ export interface CheckboxGroupProps extends HTMLAttributes<HTMLDivElement> {
   value?: string[];
   options: CheckboxOption[];
   layout?: "vertical" | "horizontal";
+  invalid?: boolean;
   disabled?: boolean;
   children?: Snippet;
 }

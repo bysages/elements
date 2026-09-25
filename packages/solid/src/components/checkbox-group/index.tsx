@@ -1,4 +1,5 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/solid/checkbox";
+import { useFieldContext } from "@ark-ui/solid/field";
 import { injectComponentStyle } from "@bysages/core";
 import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
@@ -29,6 +30,7 @@ export interface CheckboxGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value?: string[];
   options: CheckboxOption[];
   layout?: "vertical" | "horizontal";
+  invalid?: boolean;
   disabled?: boolean;
   onValueChange?: (value: string[]) => void;
 }
@@ -37,17 +39,23 @@ export interface CheckboxGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * One question, many answers: a labelled stack (or row) of the seal-cut
  * checkboxes bound to a single array. Toggling a box adds or removes its
  * value; the group itself is semantics (`role="group"`), the boxes stay
- * the machine-driven originals.
+ * the machine-driven originals. Inside a `Field.Root` the group picks up
+ * the field context, so the invalid and disabled states a Form routes to
+ * its name dress every box at once.
  */
 export function CheckboxGroup(props: CheckboxGroupProps) {
+  const field = useFieldContext();
   const [own, rest] = splitProps(props, [
     "value",
     "options",
     "layout",
+    "invalid",
     "disabled",
     "onValueChange",
   ]);
   const selected = () => new Set(own.value ?? []);
+  const isInvalid = () => own.invalid || field?.().invalid === true;
+  const isDisabled = () => own.disabled || field?.().disabled === true;
   function toggle(value: string) {
     const next = new Set(selected());
     if (next.has(value)) next.delete(value);
@@ -61,12 +69,14 @@ export function CheckboxGroup(props: CheckboxGroupProps) {
       data-scope="checkbox-group"
       data-part="root"
       data-layout={own.layout ?? "vertical"}
+      data-invalid={isInvalid() ? "" : undefined}
     >
       <For each={own.options}>
         {(option) => (
           <ArkCheckbox.Root
             checked={selected().has(option.value)}
-            disabled={own.disabled || option.disabled === true}
+            invalid={isInvalid()}
+            disabled={isDisabled() || option.disabled === true}
             onCheckedChange={() => toggle(option.value)}
           >
             <ArkCheckbox.Control>

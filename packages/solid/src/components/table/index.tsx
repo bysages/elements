@@ -85,6 +85,11 @@ export interface DataTableProps {
   sortable?: boolean;
   /** Render a global-filter toolbar and per-column filter inputs. */
   filterable?: boolean;
+  /** Keep the built-in toolbar row above the table (default true when
+   * `filterable`). Turn it off to host the global filter in your own
+   * toolbar — the feature stays registered and the instance methods
+   * keep working. */
+  showToolbar?: boolean;
   /** Enable tree expansion over `subRows`; the first column hosts the
    * expander and depth indent. */
   tree?: boolean;
@@ -707,7 +712,9 @@ export function DataTable(props: DataTableProps) {
         ondrop={canDrag ? (e: DragEvent) => onColDrop(column, e) : undefined}
         ondragend={canDrag ? onColDragEnd : undefined}
       >
-        {header.isPlaceholder ? null : <FlexRender header={header} />}
+        {header.isPlaceholder || header.column.columnDef.header === "" ? null : (
+          <FlexRender header={header} />
+        )}
         {canFilter ? (
           <input
             type="text"
@@ -734,7 +741,7 @@ export function DataTable(props: DataTableProps) {
       data-reorderable={props.reorderable || undefined}
       style={{ "--bs-table-row-height": `calc(${baseRowHeight()}px * var(--bs-density-scale, 1))` }}
     >
-      {props.filterable ? (
+      {props.filterable && (props.showToolbar ?? true) ? (
         <div data-scope="table" data-part="toolbar">
           <input
             type="search"
