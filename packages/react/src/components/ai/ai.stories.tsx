@@ -107,64 +107,6 @@ export const Basic = {
 
 /** Every prose register the response may be asked to set — headings,
  * code, quote, table — each in its hairline dress. */
-export const Markdown = {
-  render: () => (
-    <div style={{ maxWidth: "46rem" }}>
-      <Ai.Response
-        content={
-          "## The paper-and-ink system\n\n" +
-          "Interfaces are warm paper; content is ink. A `hairline` divides, " +
-          "light elevates, and nothing pops.\n\n" +
-          "1. Ground in ambient shade\n" +
-          "2. Ink carries hierarchy\n" +
-          "3. Pigment only where it means\n\n" +
-          "```css\n.token { color: var(--bs-color-text-primary); }\n```\n\n" +
-          "> 方寸为章，器物为圆 — controls are seal-cut; vessels stay round.\n\n" +
-          "Read the full spec in [DESIGN.md](https://example.com/design)."
-        }
-      />
-    </div>
-  ),
-};
-
-/** A tool call in each state; the dot pairs color with the word. */
-export const ToolCall = {
-  render: () => (
-    <div style={{ display: "grid", gap: "0.75rem", maxWidth: "34rem" }}>
-      <Ai.Tool name="search_web" status="running" input='{"query": "paper stock"}' />
-      <Ai.Tool
-        name="search_web"
-        status="completed"
-        defaultOpen
-        input='{"query": "paper stock"}'
-        output='{"hits": 12}'
-      />
-      <Ai.Tool name="send_fax" status="error" input='{"to": "+86 …"}' output="Error: line busy" />
-      <Ai.Tool name="read_file" output='{"path": "/etc/colophon"}' />
-    </div>
-  ),
-};
-
-/** Chips proposing the next stroke; selecting one drafts it into the
- * prompt vessel below. */
-export const Suggestions = {
-  render: () => {
-    const [prompt, setPrompt] = useState("");
-    const prompts = ["Summarize the release", "What changed in core?", "Draft the changelog entry"];
-    return (
-      <div style={{ display: "grid", gap: "1rem", maxWidth: "34rem" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-          {prompts.map((p) => (
-            <Ai.Suggestion key={p} prompt={p} onSelect={setPrompt} />
-          ))}
-        </div>
-        <Ai.PromptInput value={prompt} onValueChange={setPrompt} />
-      </div>
-    );
-  },
-};
-
-/** Two beads of ink breathing while the answer is on its way. */
 export const Loader = {
   render: () => <Ai.Loader />,
 };

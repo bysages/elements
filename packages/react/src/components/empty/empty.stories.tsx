@@ -36,18 +36,6 @@ export const Basic = {
   ),
 };
 
-export const WithoutAction = {
-  render: () => (
-    <Empty.Root>
-      <Empty.Visual>{tray}</Empty.Visual>
-      <Empty.Title>Nothing to show</Empty.Title>
-      <Empty.Description>The search returned no pages.</Empty.Description>
-    </Empty.Root>
-  ),
-};
-
-/** Only the words: title and description alone, the whitespace doing
- * the rest of the work. */
 export const Minimal = {
   render: () => (
     <Empty.Root>

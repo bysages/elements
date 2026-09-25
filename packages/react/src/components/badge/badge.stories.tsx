@@ -9,18 +9,6 @@ export const Basic = {
   render: () => <Badge>Default</Badge>,
 };
 
-export const Tones = {
-  render: () => (
-    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-      <Badge>Default</Badge>
-      <Badge tone="info">Info</Badge>
-      <Badge tone="success">Success</Badge>
-      <Badge tone="warning">Warning</Badge>
-      <Badge tone="danger">Danger</Badge>
-    </div>
-  ),
-};
-
 export const Variants = {
   render: () => (
     <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>

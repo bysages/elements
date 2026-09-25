@@ -26,13 +26,3 @@ export const Vertical = {
     </div>
   ),
 };
-
-export const Decorative = {
-  render: () => (
-    <div style={{ maxWidth: "34rem" }}>
-      <p style={{ margin: "0 0 1rem" }}>The rule is drawn for the eye alone.</p>
-      <Separator decorative />
-      <p style={{ margin: "1rem 0 0" }}>Screen readers pass over it.</p>
-    </div>
-  ),
-};

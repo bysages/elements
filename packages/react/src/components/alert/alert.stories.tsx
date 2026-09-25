@@ -17,11 +17,6 @@ function notice(status: any, title: string, description: string) {
   );
 }
 
-export const Basic = {
-  render: () => notice("ink", "A quiet note", "Ink on paper, no pigment shouting."),
-};
-
-/** Without a status the alert rests in ink: quiet, monochrome. */
 export const Plain = {
   render: () => notice("ink", "Draft restored", "Recovered from the last session."),
 };

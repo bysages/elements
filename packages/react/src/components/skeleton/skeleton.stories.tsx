@@ -9,18 +9,6 @@ export const Basic = {
   render: () => <Skeleton style={{ width: "100%", height: "1rem" }} />,
 };
 
-export const Composition = {
-  render: () => (
-    <div style={{ display: "grid", gap: "0.75rem", maxWidth: "24rem" }}>
-      <Skeleton style={{ width: "40%", height: "1.25rem" }} />
-      <Skeleton style={{ width: "100%", height: "1rem" }} />
-      <Skeleton style={{ width: "100%", height: "1rem" }} />
-      <Skeleton style={{ width: "72%", height: "1rem" }} />
-    </div>
-  ),
-};
-
-/** A card-shaped placeholder: cover block, heading, two lines of body. */
 export const Card = {
   render: () => (
     <div
