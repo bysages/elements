@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
-import { Badge, Button, createColumnHelper, DataTable, Select, type ColumnDef } from "@bysages/vue";
+import { Button, createColumnHelper, DataTable, Input, Select, type ColumnDef } from "@bysages/vue";
 import { computed, Fragment, h, ref } from "vue";
 
-import { type OrderRow, type OrderStatus } from "./data";
+import { type OrderRow } from "./data";
 
 const props = defineProps<{ rows: OrderRow[] }>();
 
@@ -14,13 +14,6 @@ const emit = defineEmits<{
 }>();
 
 const helper = createColumnHelper<OrderRow>();
-
-const statusTone: Record<OrderStatus, string> = {
-  active: "success",
-  trial: "info",
-  paused: "warning",
-  churned: "danger",
-};
 
 const actionIcon = {
   width: 15,
@@ -33,18 +26,11 @@ const actionIcon = {
 };
 
 /** Every column opts out of the built-in header filters — the toolbar's
- * global search and the status select above the table are the only
- * filters this panel shows. */
+ * status select and global search are the only filters this panel
+ * shows, so no column carries a status of its own. */
 const columns: ColumnDef<OrderRow, any, any>[] = [
   helper.accessor("customer", { id: "customer", header: "Customer", enableColumnFilter: false }),
   helper.accessor("region", { id: "region", header: "Region", enableColumnFilter: false }),
-  helper.accessor("status", {
-    id: "status",
-    header: "Status",
-    enableColumnFilter: false,
-    cell: (info) =>
-      h(Badge, { tone: statusTone[info.getValue()], variant: "subtle" }, () => info.getValue()),
-  }),
   helper.accessor("mrr", {
     id: "mrr",
     header: "MRR",
@@ -120,14 +106,21 @@ const filteredRows = computed(() =>
     : props.rows,
 );
 
-// DataTable exposes its TanStack instance; reading the selection through
-// it keeps the count reactive (the Vue-aware atoms re-render this).
+// DataTable exposes its TanStack instance; reading through the Vue-aware
+// atoms keeps the selection count and the search box reactive.
 const tableRef = ref<{
   table: {
+    atoms: { globalFilter: { get: () => unknown } };
+    setGlobalFilter: (value: string) => void;
     getSelectedRowModel: () => { rows: { original: OrderRow }[] };
     toggleAllRowsSelected: (value: boolean) => void;
   };
 } | null>(null);
+
+const search = computed({
+  get: () => (tableRef.value?.table.atoms.globalFilter.get() as string) ?? "",
+  set: (value: string) => tableRef.value?.table.setGlobalFilter(value),
+});
 
 const selectedRows = computed(
   () => tableRef.value?.table.getSelectedRowModel().rows.map((row) => row.original) ?? [],
@@ -169,6 +162,10 @@ function archiveSelected() {
         {{ selectedRows.length }} selected
         <Button variant="outline" size="sm" @click="archiveSelected">Archive selected</Button>
       </p>
+
+      <span class="orders-toolbar-spacer" />
+
+      <Input v-model="search" class="orders-search" placeholder="Search customers…" />
     </div>
 
     <DataTable
@@ -180,7 +177,7 @@ function archiveSelected() {
       :page-size="8"
       :page-size-options="[8, 16, 32]"
       filterable
-      global-filter-placeholder="Search customers…"
+      :show-toolbar="false"
       empty-text="No accounts match."
       :initial-sorting="[{ id: 'since', desc: true }]"
     />
@@ -200,8 +197,22 @@ function archiveSelected() {
   gap: var(--bs-space-4);
 }
 
+/* The field baseline makes select roots fill their container — a toolbar
+ * slot is a layout decision, so the flex line decides the width here. */
+.orders-toolbar :deep([data-scope="select"][data-part="root"]) {
+  inline-size: auto;
+}
+
+.orders-toolbar-spacer {
+  flex: 1;
+}
+
 .orders-status {
   inline-size: 11rem;
+}
+
+.orders-search {
+  inline-size: 15rem;
 }
 
 .orders-selection {
