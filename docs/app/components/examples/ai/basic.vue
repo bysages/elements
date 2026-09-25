@@ -5,7 +5,7 @@ import { Ai } from "@bysages/vue";
 <template>
   <!-- One stable measure: the canvas shrink-wraps its children, so an
        expanding fold would breathe the whole conversation wider. -->
-  <div class="bs-docs-ai-demo">
+  <div class="w-full max-w-[46rem]">
     <Ai.Conversation>
       <Ai.Message role="assistant">
         <Ai.Response content="The draft is ready — three sections, one summary." />
@@ -17,10 +17,3 @@ import { Ai } from "@bysages/vue";
     </Ai.Conversation>
   </div>
 </template>
-
-<style scoped>
-.bs-docs-ai-demo {
-  inline-size: 100%;
-  max-inline-size: 46rem;
-}
-</style>

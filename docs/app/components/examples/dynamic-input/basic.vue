@@ -6,10 +6,8 @@ const emails = ref<string[]>(["lin@example.com", ""]);
 </script>
 
 <template>
-  <div style="display: grid; gap: var(--bs-space-3); max-inline-size: 24rem">
+  <div class="grid gap-3 max-w-96">
     <DynamicInput v-model="emails" placeholder="name@example.com" />
-    <p style="margin: 0; font-size: var(--bs-font-size-sm); color: var(--bs-color-text-tertiary)">
-      values: {{ JSON.stringify(emails) }}
-    </p>
+    <p class="m-0 text-sm text-tertiary">values: {{ JSON.stringify(emails) }}</p>
   </div>
 </template>

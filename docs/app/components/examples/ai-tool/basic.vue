@@ -5,7 +5,7 @@ import { AiTool } from "@bysages/vue";
 <template>
   <!-- The tool call in its states: running and completed. The dot
        pairs color with the word — never color alone. -->
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+  <div class="grid gap-3 w-full">
     <AiTool name="search_web" status="running">
       <template #input>{{ '{"query": "paper stock"}' }}</template>
     </AiTool>

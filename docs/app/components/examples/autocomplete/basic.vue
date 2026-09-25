@@ -7,10 +7,5 @@ const items = ["Cobalt", "Celadon", "Cinnabar", "Ochre", "Ultramarine", "Bamboo"
 </script>
 
 <template>
-  <AutoComplete
-    v-model="value"
-    :items="items"
-    placeholder="Pick a pigment…"
-    style="inline-size: 100%"
-  />
+  <AutoComplete v-model="value" :items="items" placeholder="Pick a pigment…" class="w-full" />
 </template>

@@ -9,5 +9,5 @@ const segments: ProgressSegment[] = [
 
 <template>
   <!-- A larger whole leaves the remainder as groove. -->
-  <ProgressGroup :segments="segments" :max="200" style="inline-size: 100%" />
+  <ProgressGroup :segments="segments" :max="200" class="w-full" />
 </template>

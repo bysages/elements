@@ -3,19 +3,13 @@ import { Grid } from "@bysages/vue";
 </script>
 
 <template>
-  <Grid :columns="12" style="inline-size: 100%">
-    <div v-for="n in 12" :key="n" class="tile">{{ n }}</div>
+  <Grid :columns="12" class="w-full">
+    <div
+      v-for="n in 12"
+      :key="n"
+      class="grid place-items-center border border-border bg-surface-3 p-3 text-sm text-secondary"
+    >
+      {{ n }}
+    </div>
   </Grid>
 </template>
-
-<style scoped>
-.tile {
-  display: grid;
-  place-items: center;
-  padding: var(--bs-space-3);
-  background: var(--bs-color-surface-3);
-  border: 1px solid var(--bs-color-border);
-  font-size: var(--bs-font-size-sm);
-  color: var(--bs-color-text-secondary);
-}
-</style>

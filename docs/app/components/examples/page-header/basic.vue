@@ -5,7 +5,7 @@ import { Button, PageHeader } from "@bysages/vue";
 <template>
   <PageHeader.Root>
     <PageHeader.Heading>
-      <div style="min-width: 0">
+      <div class="min-w-0">
         <PageHeader.Title>Ledger of correspondence</PageHeader.Title>
         <PageHeader.Description>
           Every letter in and out of the house, logged and shelved.

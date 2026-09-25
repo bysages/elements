@@ -17,14 +17,8 @@ const commands = [
 </script>
 
 <template>
-  <div style="inline-size: 100%">
-    <p
-      style="
-        margin: 0 0 var(--bs-space-4);
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+  <div class="w-full">
+    <p class="mb-4 text-sm text-tertiary">
       Open the palette and type “the”, “app”, or nothing at all — typing narrows the ledger across
       every group, and the empty state speaks when nothing answers.
     </p>

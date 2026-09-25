@@ -9,7 +9,7 @@ const PORTRAIT =
 </script>
 
 <template>
-  <div style="display: flex; gap: 0.75rem; align-items: center">
+  <div class="flex gap-3 items-center">
     <Avatar.Root>
       <Avatar.Fallback>S</Avatar.Fallback>
       <Avatar.Image :src="PORTRAIT" alt="Portrait of Sage" />

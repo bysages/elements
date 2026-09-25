@@ -3,18 +3,9 @@ import { Stack } from "@bysages/vue";
 </script>
 
 <template>
-  <Stack direction="row" style="inline-size: 100%">
-    <div class="tile">First</div>
-    <div class="tile">Second</div>
-    <div class="tile">Third</div>
+  <Stack direction="row" class="w-full">
+    <div class="border border-border bg-surface-3 px-3 py-2 text-sm">First</div>
+    <div class="border border-border bg-surface-3 px-3 py-2 text-sm">Second</div>
+    <div class="border border-border bg-surface-3 px-3 py-2 text-sm">Third</div>
   </Stack>
 </template>
-
-<style scoped>
-.tile {
-  padding: var(--bs-space-2) var(--bs-space-3);
-  background: var(--bs-color-surface-3);
-  border: 1px solid var(--bs-color-border);
-  font-size: var(--bs-font-size-sm);
-}
-</style>

@@ -54,14 +54,7 @@ const status = ref("Nothing chosen yet.");
         </svg>
       </FloatButton.Item>
     </FloatButton>
-    <p
-      role="status"
-      style="
-        margin-block-start: var(--bs-space-4);
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+    <p role="status" class="mt-4 text-sm text-tertiary">
       {{ status }}
     </p>
   </div>

@@ -39,8 +39,8 @@ function toggleTag(tag: string) {
 </script>
 
 <template>
-  <div class="post-list">
-    <div class="post-list-tags" role="group" aria-label="Filter by tag">
+  <div class="grid gap-6">
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by tag">
       <Button
         :variant="!activeTag ? 'solid' : 'ghost'"
         size="sm"
@@ -61,11 +61,11 @@ function toggleTag(tag: string) {
       </Button>
     </div>
 
-    <div v-if="visible.length" class="post-list-grid">
+    <div v-if="visible.length" class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(22rem,1fr))]">
       <PostCard v-for="post in visible" :key="post.id" :post="post" @open="emit('open', post)" />
     </div>
 
-    <Empty.Root v-else class="post-list-empty">
+    <Empty.Root v-else class="py-16">
       <Empty.Title>Nothing under this tag yet.</Empty.Title>
       <Empty.Description>The shelf fills as the ink dries.</Empty.Description>
       <Empty.Actions>
@@ -75,7 +75,7 @@ function toggleTag(tag: string) {
       </Empty.Actions>
     </Empty.Root>
 
-    <div v-if="pageCount > 1" class="post-list-pages">
+    <div v-if="pageCount > 1" class="flex justify-center">
       <Pagination.Root
         :count="filtered.length"
         :page-size="PAGE_SIZE"
@@ -120,34 +120,3 @@ function toggleTag(tag: string) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.post-list {
-  display: grid;
-  gap: var(--bs-space-6);
-}
-
-.post-list-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bs-space-2);
-}
-
-.post-list-grid {
-  display: grid;
-  /* Three abreast on the example canvas: wide-enough tracks keep the
-     grid balanced (six posts read 3 + 3, not 4 + 2) and give a card's
-     title room to breathe. */
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: var(--bs-space-5);
-}
-
-.post-list-empty {
-  padding-block: var(--bs-space-10);
-}
-
-.post-list-pages {
-  display: flex;
-  justify-content: center;
-}
-</style>

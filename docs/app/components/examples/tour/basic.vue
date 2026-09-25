@@ -25,12 +25,7 @@ const tour = useTour({
 <template>
   <Tour.Root :tour="tour">
     <Button @click="tour.start()">Start tour</Button>
-    <div
-      id="tour-anchor"
-      style="padding: var(--bs-space-4); border: 1px dashed var(--bs-color-border)"
-    >
-      Anchor element
-    </div>
+    <div id="tour-anchor" class="p-4 border border-dashed border-border">Anchor element</div>
     <Teleport to="body">
       <Tour.Backdrop />
       <Tour.Spotlight />

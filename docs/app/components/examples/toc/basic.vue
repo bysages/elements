@@ -13,10 +13,8 @@ const scrollEl = () => scroller.value;
 </script>
 
 <template>
-  <div
-    style="display: flex; inline-size: 100%; justify-content: flex-start; gap: var(--bs-space-6)"
-  >
-    <Toc.Root :items="items" :scroll-el="scrollEl" style="inline-size: 12rem; flex: none">
+  <div class="flex w-full justify-start gap-6">
+    <Toc.Root :items="items" :scroll-el="scrollEl" class="w-48 flex-none">
       <Toc.Nav>
         <Toc.Title>On this page</Toc.Title>
         <Toc.List>
@@ -26,10 +24,7 @@ const scrollEl = () => scroller.value;
         </Toc.List>
       </Toc.Nav>
     </Toc.Root>
-    <div
-      ref="scroller"
-      style="flex: 1; height: 16rem; overflow-y: auto; padding-inline-end: var(--bs-space-4)"
-    >
+    <div ref="scroller" class="h-64 flex-1 overflow-y-auto pe-4">
       <section v-for="item in items" :id="item.value" :key="item.value">
         <h3>{{ item.label }}</h3>
         <p>Warm paper, ink that reads, hierarchy carried by light.</p>

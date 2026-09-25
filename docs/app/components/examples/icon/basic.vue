@@ -3,7 +3,7 @@ import { Icon } from "@bysages/vue";
 </script>
 
 <template>
-  <p style="margin: 0">
+  <p class="m-0">
     The stroke falls where the light leaves it
     <Icon label="Ink drop">
       <svg viewBox="0 0 24 24" aria-hidden="true">

@@ -29,7 +29,7 @@ const topics = [
   <Form
     :schema="schema"
     :state="state"
-    style="inline-size: 100%"
+    class="w-full"
     @submit="status = 'Submitted.'"
     @error="status = 'Fix the errors below.'"
   >
@@ -53,14 +53,7 @@ const topics = [
     </FormField>
     <Button type="submit">Submit</Button>
   </Form>
-  <p
-    role="status"
-    style="
-      margin-block-start: var(--bs-space-3);
-      font-size: var(--bs-font-size-sm);
-      color: var(--bs-color-text-tertiary);
-    "
-  >
+  <p role="status" class="mt-3 text-sm text-tertiary">
     {{ status }}
   </p>
 </template>

@@ -16,8 +16,8 @@ const open = (title: string) => {
 </script>
 
 <template>
-  <div style="inline-size: 100%">
-    <List.Root bordered hoverable style="inline-size: 100%">
+  <div class="w-full">
+    <List.Root bordered hoverable class="w-full">
       <List.Item
         v-for="row in ledger"
         :key="row.title"
@@ -33,14 +33,7 @@ const open = (title: string) => {
         </List.Content>
       </List.Item>
     </List.Root>
-    <p
-      role="status"
-      style="
-        margin-block-start: var(--bs-space-4);
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+    <p role="status" class="mt-4 text-sm text-tertiary">
       {{ opened ? `Opened “${opened}”.` : "Nothing opened yet." }}
     </p>
   </div>

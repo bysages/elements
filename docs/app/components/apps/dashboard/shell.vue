@@ -21,15 +21,24 @@ const collapsed = ref(false);
 </script>
 
 <template>
-  <Layout.Root sider="start" class="shell">
-    <Layout.Sider v-model:collapsed="collapsed" collapsed-width="0rem">
-      <div class="shell-side">
-        <div class="shell-workspace">
-          <span class="shell-mark" aria-hidden="true">S</span>
-          <span class="shell-org">By Sages</span>
+  <!-- The library's Layout has no automatic responsive behavior — the
+       shell owns it. @container makes this root the containment context
+       the sider folds against. -->
+  <Layout.Root sider="start" class="@container min-h-full">
+    <!-- The class fallthrough lands the variant on the sider part itself;
+         no :deep needed for the fold. -->
+    <Layout.Sider v-model:collapsed="collapsed" collapsed-width="0rem" class="@max-[60rem]:hidden">
+      <div class="flex h-full flex-col">
+        <div class="flex items-center gap-2 p-4">
+          <span
+            class="grid size-5 place-items-center rounded-sm bg-primary text-[0.6875rem] font-semibold text-primary-text"
+            aria-hidden="true"
+            >S</span
+          >
+          <span class="text-sm font-semibold">By Sages</span>
         </div>
 
-        <nav class="shell-nav" aria-label="Console sections">
+        <nav class="flex flex-col gap-[2px] px-2" aria-label="Console sections">
           <Button
             v-for="stop in stops"
             :key="stop.label"
@@ -55,7 +64,7 @@ const collapsed = ref(false);
           </Button>
         </nav>
 
-        <div class="shell-side-foot">
+        <div class="mt-auto flex flex-col gap-2 border-t border-border px-2 py-3">
           <Button
             variant="ghost"
             class="shell-stop"
@@ -80,13 +89,15 @@ const collapsed = ref(false);
             Settings
           </Button>
 
-          <div class="shell-user">
+          <div class="flex items-center gap-2 px-2 py-1">
             <Avatar.Root>
               <Avatar.Fallback>SG</Avatar.Fallback>
             </Avatar.Root>
-            <div class="shell-user-meta">
-              <span class="shell-user-name">Sage Wei</span>
-              <span class="shell-user-mail">sage@bysages.dev</span>
+            <div class="flex min-w-0 flex-col">
+              <span class="text-sm font-medium">Sage Wei</span>
+              <span class="overflow-hidden text-ellipsis text-xs text-tertiary"
+                >sage@bysages.dev</span
+              >
             </div>
           </div>
         </div>
@@ -112,10 +123,10 @@ const collapsed = ref(false);
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </Button>
-      <Typography.Heading class="shell-title">Revenue console</Typography.Heading>
+      <Typography.Heading>Revenue console</Typography.Heading>
       <Badge tone="info" variant="subtle">Q3</Badge>
-      <span class="shell-spacer" />
-      <span class="shell-crew-note">Finance team</span>
+      <span class="flex-1" />
+      <span class="text-sm text-tertiary">Finance team</span>
     </Layout.Header>
     <Layout.Content>
       <slot />
@@ -124,110 +135,15 @@ const collapsed = ref(false);
 </template>
 
 <style scoped>
-/* The library's Layout has no automatic responsive behavior — the shell
- * owns it. A local container query folds the sider away on narrow
- * canvases, matching the collapse button. */
-.shell {
-  container-type: inline-size;
-  min-block-size: 100%;
-}
-
-/* Folded to zero the rail is absent — its hairline goes with it. */
-.shell :deep([data-part="sider"][data-collapsed]) {
+/* Two overrides the utilities layer cannot win — the core stylesheet is
+ * unlayered and beats any layered utility on the same element:
+ *  1. Folded to zero the rail is absent — its hairline goes with it.
+ *  2. Core paints buttons centered; the rail's stops read left-aligned. */
+:deep([data-part="sider"][data-collapsed]) {
   border-inline-end: none;
-}
-
-.shell-side {
-  display: flex;
-  flex-direction: column;
-  block-size: 100%;
-}
-
-.shell-workspace {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-4) var(--bs-space-4);
-}
-
-.shell-mark {
-  display: grid;
-  place-items: center;
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-primary);
-  color: var(--bs-color-primary-text);
-  font-size: 0.6875rem;
-  font-weight: 600;
-}
-
-.shell-org {
-  font-size: var(--bs-font-size-sm);
-  font-weight: 600;
-}
-
-.shell-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 var(--bs-space-2);
 }
 
 .shell-stop {
   justify-content: flex-start;
-}
-
-.shell-side-foot {
-  margin-block-start: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-3) var(--bs-space-2);
-  border-block-start: 1px solid var(--bs-color-border);
-}
-
-.shell-user {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-1) var(--bs-space-2);
-}
-
-.shell-user-meta {
-  display: flex;
-  flex-direction: column;
-  min-inline-size: 0;
-}
-
-.shell-user-name {
-  font-size: var(--bs-font-size-sm);
-  font-weight: 500;
-}
-
-.shell-user-mail {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-xs);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell-title {
-  margin: 0;
-}
-
-.shell-spacer {
-  flex: 1;
-}
-
-.shell-crew-note {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-}
-
-@container (max-width: 60rem) {
-  .shell :deep([data-part="sider"]) {
-    display: none;
-  }
 }
 </style>

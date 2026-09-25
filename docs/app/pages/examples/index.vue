@@ -54,35 +54,48 @@ const apps = [
 </script>
 
 <template>
-  <div class="examples-page">
-    <header class="examples-head">
-      <h1 class="examples-title">Examples</h1>
-      <p class="examples-lede">
+  <div class="mx-auto w-full max-w-[90rem] px-6 pb-12 pt-8">
+    <header class="mb-8 max-w-[44rem]">
+      <h1 class="m-0 mb-3 font-serif text-4xl leading-tight">Examples</h1>
+      <p class="m-0 text-secondary">
         Complete applications assembled from the library — each one is the real components, styled
         only by the design system, running live in this page.
       </p>
     </header>
 
-    <div class="examples-grid">
-      <Card.Root v-for="app in apps" :key="app.name" class="examples-card">
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-5">
+      <Card.Root v-for="app in apps" :key="app.name">
         <Card.Header>
           <Card.Title>
-            <NuxtLink :to="`/examples/${app.name}`" class="examples-card-link">
+            <NuxtLink
+              :to="`/examples/${app.name}`"
+              class="text-inherit no-underline hover:underline hover:underline-offset-[0.2em]"
+            >
               {{ app.title }}
             </NuxtLink>
           </Card.Title>
           <Card.Description>{{ app.description }}</Card.Description>
         </Card.Header>
         <Card.Content>
-          <ul class="examples-tags">
+          <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
             <li v-for="component in app.components" :key="component">
               <Badge tone="ink" variant="outline">{{ component }}</Badge>
             </li>
           </ul>
         </Card.Content>
         <Card.Footer class="examples-card-foot">
-          <NuxtLink :to="`/examples/${app.name}`" class="examples-open">Open the example</NuxtLink>
-          <a :href="sourceUrl(app.name)" target="_blank" rel="noopener" class="examples-source">
+          <NuxtLink
+            :to="`/examples/${app.name}`"
+            class="font-medium text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
+          >
+            Open the example
+          </NuxtLink>
+          <a
+            :href="sourceUrl(app.name)"
+            target="_blank"
+            rel="noopener"
+            class="text-tertiary no-underline hover:text-secondary hover:underline hover:underline-offset-[0.2em]"
+          >
             View source
           </a>
         </Card.Footer>
@@ -92,79 +105,10 @@ const apps = [
 </template>
 
 <style scoped>
-.examples-page {
-  inline-size: 100%;
-  max-inline-size: 90rem;
-  margin-inline: auto;
-  padding: var(--bs-space-8) var(--bs-space-6) var(--bs-space-12);
-}
-
-.examples-head {
-  max-inline-size: 44rem;
-  margin-block-end: var(--bs-space-8);
-}
-
-.examples-title {
-  font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-4xl);
-  line-height: var(--bs-line-height-tight);
-  margin-block-end: var(--bs-space-3);
-}
-
-.examples-lede {
-  color: var(--bs-color-text-secondary);
-}
-
-.examples-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  gap: var(--bs-space-5);
-}
-
-.examples-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bs-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+/* The core stylesheet paints the card footer's gap (unlayered) and wins
+ * the cascade against a layered gap utility; the open/source pair wants
+ * a wider berth than the footer's default. */
 .examples-card-foot {
-  display: flex;
-  align-items: center;
   gap: var(--bs-space-4);
-}
-
-.examples-card-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.examples-card-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-.examples-open {
-  color: var(--bs-color-primary);
-  font-weight: var(--bs-font-weight-medium);
-  text-decoration: none;
-}
-
-.examples-open:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-.examples-source {
-  color: var(--bs-color-text-tertiary);
-  text-decoration: none;
-}
-
-.examples-source:hover {
-  color: var(--bs-color-text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }
 </style>

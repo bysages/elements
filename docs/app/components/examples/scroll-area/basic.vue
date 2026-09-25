@@ -3,7 +3,7 @@ import { ScrollArea } from "@bysages/vue";
 </script>
 
 <template>
-  <ScrollArea.Root style="height: 120px">
+  <ScrollArea.Root class="h-30">
     <ScrollArea.Viewport>
       <ScrollArea.Content>
         <p>

@@ -3,7 +3,7 @@ import { Collapsible } from "@bysages/vue";
 </script>
 
 <template>
-  <Collapsible.Root style="inline-size: 100%">
+  <Collapsible.Root class="w-full">
     <Collapsible.Trigger>
       What is a design token?
       <Collapsible.Indicator>

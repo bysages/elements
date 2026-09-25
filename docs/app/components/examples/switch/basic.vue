@@ -3,7 +3,7 @@ import { Switch } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+  <div class="grid gap-3 w-full">
     <Switch.Root default-checked>
       <Switch.Control>
         <Switch.Thumb />

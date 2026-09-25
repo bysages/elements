@@ -3,7 +3,7 @@ import { Card } from "@bysages/vue";
 </script>
 
 <template>
-  <Card.Root style="inline-size: 26rem">
+  <Card.Root class="w-104">
     <Card.Header>
       <Card.Title>The four treasures</Card.Title>
       <Card.Description>Brush, ink, paper, and the inkstone.</Card.Description>
@@ -14,8 +14,6 @@ import { Card } from "@bysages/vue";
         in any subset.
       </p>
     </Card.Content>
-    <Card.Footer style="display: flex; gap: 0.5rem; justify-content: flex-end">
-      Updated this morning
-    </Card.Footer>
+    <Card.Footer class="flex gap-2 justify-end"> Updated this morning </Card.Footer>
   </Card.Root>
 </template>

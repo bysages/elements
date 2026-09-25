@@ -12,11 +12,9 @@ const units = [
     <Timer.Area>
       <template v-for="(unit, index) in units" :key="unit.type">
         <Timer.Separator v-if="index > 0">:</Timer.Separator>
-        <div style="display: grid; justify-items: center; gap: 0.125rem">
+        <div class="grid justify-items-center gap-[0.125rem]">
           <Timer.Item :type="unit.type" />
-          <span style="font-size: var(--bs-font-size-xs); color: var(--bs-color-text-tertiary)">{{
-            unit.label
-          }}</span>
+          <span class="text-xs text-tertiary">{{ unit.label }}</span>
         </div>
       </template>
     </Timer.Area>

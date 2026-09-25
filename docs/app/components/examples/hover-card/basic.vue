@@ -4,16 +4,10 @@ import { HoverCard } from "@bysages/vue";
 
 <template>
   <HoverCard.Root>
-    <p style="margin: 0">
+    <p class="m-0">
       Liked by
       <HoverCard.Trigger
-        style="
-          color: var(--bs-color-primary);
-          text-decoration: underline;
-          text-decoration-color: var(--bs-color-border-strong);
-          text-underline-offset: 0.2em;
-          cursor: pointer;
-        "
+        class="cursor-pointer text-primary underline underline-offset-[0.2em] decoration-border-strong"
         >@sarah_chen</HoverCard.Trigger
       >
       and 3 others.
@@ -23,19 +17,19 @@ import { HoverCard } from "@bysages/vue";
         <HoverCard.Arrow>
           <HoverCard.ArrowTip />
         </HoverCard.Arrow>
-        <h3 style="margin: 0 0 0.25rem; font-family: var(--bs-font-serif)">Sarah Chen</h3>
-        <p style="margin: 0 0 0.5rem; color: var(--bs-color-text-secondary)">@sarah_chen</p>
-        <p style="margin: 0 0 0.75rem">
+        <h3 class="m-0 mb-1 font-serif">Sarah Chen</h3>
+        <p class="m-0 mb-2 text-secondary">@sarah_chen</p>
+        <p class="mb-3">
           Design engineer. Building quiet interfaces where the ink settles before the eye arrives.
         </p>
-        <div style="display: flex; gap: 1rem">
-          <div style="display: flex; gap: 0.25rem">
+        <div class="flex gap-4">
+          <div class="flex gap-1">
             <strong>2,456</strong>
-            <span style="color: var(--bs-color-text-secondary)">Following</span>
+            <span class="text-secondary">Following</span>
           </div>
-          <div style="display: flex; gap: 0.25rem">
+          <div class="flex gap-1">
             <strong>14.5K</strong>
-            <span style="color: var(--bs-color-text-secondary)">Followers</span>
+            <span class="text-secondary">Followers</span>
           </div>
         </div>
       </HoverCard.Content>

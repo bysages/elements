@@ -3,7 +3,7 @@ import { Button, Input, InputGroup } from "@bysages/vue";
 </script>
 
 <template>
-  <InputGroup style="max-inline-size: 24rem">
+  <InputGroup class="max-w-96">
     <InputGroup.Addon>
       <Button variant="ghost" square aria-label="Insert handle">
         <svg

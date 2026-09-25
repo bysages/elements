@@ -133,15 +133,15 @@ function archiveSelected() {
 </script>
 
 <template>
-  <div class="orders">
-    <div class="orders-toolbar">
+  <div class="grid gap-4">
+    <div class="flex flex-wrap items-center gap-4">
       <Select.Root
         :collection="statusCollection"
         :model-value="statusFilter ? [statusFilter] : []"
         @update:model-value="(values: string[]) => (statusFilter = values[0] ?? null)"
       >
         <Select.Control>
-          <Select.Trigger class="orders-status">
+          <Select.Trigger class="w-44">
             <Select.ValueText placeholder="All statuses" />
           </Select.Trigger>
         </Select.Control>
@@ -158,14 +158,14 @@ function archiveSelected() {
         <Select.HiddenSelect />
       </Select.Root>
 
-      <p v-if="selectedRows.length" class="orders-selection">
+      <p v-if="selectedRows.length" class="m-0 flex items-center gap-3 text-sm text-secondary">
         {{ selectedRows.length }} selected
         <Button variant="outline" size="sm" @click="archiveSelected">Archive selected</Button>
       </p>
 
-      <span class="orders-toolbar-spacer" />
+      <span class="flex-1" />
 
-      <Input v-model="search" class="orders-search" placeholder="Search customers…" />
+      <Input v-model="search" class="w-60" placeholder="Search customers…" />
     </div>
 
     <DataTable
@@ -185,42 +185,10 @@ function archiveSelected() {
 </template>
 
 <style scoped>
-.orders {
-  display: grid;
-  gap: var(--bs-space-4);
-}
-
-.orders-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--bs-space-4);
-}
-
-/* The field baseline makes select roots fill their container — a toolbar
- * slot is a layout decision, so the flex line decides the width here. */
-.orders-toolbar :deep([data-scope="select"][data-part="root"]) {
+/* The field baseline makes select roots fill their container (unlayered,
+ * so a width utility on the root cannot win) — a toolbar slot is a layout
+ * decision, and the flex line decides the width here. */
+:deep([data-scope="select"][data-part="root"]) {
   inline-size: auto;
-}
-
-.orders-toolbar-spacer {
-  flex: 1;
-}
-
-.orders-status {
-  inline-size: 11rem;
-}
-
-.orders-search {
-  inline-size: 15rem;
-}
-
-.orders-selection {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-3);
-  margin: 0;
-  color: var(--bs-color-text-secondary);
-  font-size: var(--bs-font-size-sm);
 }
 </style>

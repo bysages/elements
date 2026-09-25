@@ -21,7 +21,7 @@ const rows = [
 </script>
 
 <template>
-  <List.Root style="inline-size: 100%">
+  <List.Root class="w-full">
     <List.Item v-for="row in rows" :key="row.title">
       <List.Leading>
         <Avatar.Root>

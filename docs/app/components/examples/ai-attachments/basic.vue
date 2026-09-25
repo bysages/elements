@@ -25,7 +25,7 @@ const remove = (name: string) => {
 </script>
 
 <template>
-  <div style="display: grid; gap: 1rem; inline-size: 100%">
+  <div class="grid gap-4 w-full">
     <AiAttachments>
       <AiAttachment
         v-for="file in files"
@@ -36,7 +36,7 @@ const remove = (name: string) => {
         @remove="remove(file.name)"
       />
     </AiAttachments>
-    <p style="margin: 0; color: var(--bs-color-text-tertiary); font-size: var(--bs-font-size-sm)">
+    <p class="m-0 text-tertiary text-sm">
       {{ removed ? `Removed: ${removed}` : "Click a chip's × to remove it." }}
     </p>
   </div>

@@ -10,18 +10,7 @@ const swapped = ref(false);
     type="button"
     aria-label="Toggle check"
     :aria-pressed="swapped"
-    style="
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      inline-size: 2.5rem;
-      block-size: 2.5rem;
-      border: 1px solid var(--bs-color-border);
-      border-radius: var(--bs-radius-sm);
-      background: var(--bs-color-surface-2);
-      color: var(--bs-color-text-primary);
-      cursor: pointer;
-    "
+    class="inline-flex size-10 cursor-pointer items-center justify-center rounded-sm border border-border bg-surface-2 text-foreground"
     @click="swapped = !swapped"
   >
     <Swap.Root :swap="swapped">

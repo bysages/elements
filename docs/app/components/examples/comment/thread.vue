@@ -3,7 +3,7 @@ import { Avatar, Comment } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.5rem; inline-size: 100%">
+  <div class="grid gap-2 w-full">
     <Comment author="Sage Wei" datetime="Today, 09:12">
       <template #avatar>
         <Avatar.Root>
@@ -12,7 +12,7 @@ import { Avatar, Comment } from "@bysages/vue";
       </template>
       Shall the hairlines run through the annex as well?
     </Comment>
-    <div style="padding-inline-start: 2.75rem">
+    <div class="ps-11">
       <Comment author="Archive keeper" datetime="Today, 10:03">
         <template #avatar>
           <Avatar.Root>

@@ -1,0 +1,157 @@
+/* The Tailwind v4 entry for the site's own app code (app/pages/examples,
+ * app/components/{apps,examples}). The theme layer's docs.css and the
+ * library's core.css stay authoritative — both are unlayered, so they beat
+ * anything layered; utilities only ever dress elements the library does
+ * not paint. Preflight stays out: the shell ships its own box-sizing and
+ * every control is a library component. */
+
+@layer theme, base, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* The one preflight slice v4 utilities assume: border-style must default
+ * to solid or every `border` width utility is invisible, and v4 defaults
+ * border-color to currentColor while this design language hairlines in
+ * --bs-color-border. Layered in base, so any unlayered rule — the core
+ * component borders included — still paints over it. */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border: 0 solid var(--bs-color-border);
+  }
+}
+
+/* Generated markdown and agent notes carry no utilities; scanning them
+ * would only mint dead classes from prose words on every content regen. */
+@source not "../../../content";
+@source not "../../../skills";
+
+/* The cascade switches on data-attributes, never media queries — the
+ * utilities below reference --bs-* variables and follow every flip at
+ * runtime. This variant is only the escape hatch for genuinely
+ * mode-specific styling. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  /* -- surfaces ------------------------------------------------------ */
+  --color-surface: var(--bs-color-surface);
+  --color-surface-0: var(--bs-color-surface-0);
+  --color-surface-1: var(--bs-color-surface-1);
+  --color-surface-2: var(--bs-color-surface-2);
+  --color-surface-3: var(--bs-color-surface-3);
+  --color-surface-4: var(--bs-color-surface-4);
+  --color-surface-5: var(--bs-color-surface-5);
+  --color-surface-inset: var(--bs-color-surface-inset);
+  --color-surface-inverse: var(--bs-color-surface-inverse);
+  --color-scrim: var(--bs-color-scrim);
+
+  /* -- ink (text tones) ----------------------------------------------
+   * `text-secondary` reads as "secondary text" in markup and keeps the
+   * migration mechanical. Deliberate divergence from shadcn, where
+   * `secondary` is a surface and `muted-foreground` a text tone: this
+   * palette has no secondary surface, and body ink maps to `foreground`
+   * so it never collides with the primary accent block below. */
+  --color-foreground: var(--bs-color-text-primary);
+  --color-secondary: var(--bs-color-text-secondary);
+  --color-tertiary: var(--bs-color-text-tertiary);
+  --color-disabled: var(--bs-color-text-disabled);
+  --color-inverse: var(--bs-color-text-inverse);
+
+  /* -- hairlines ------------------------------------------------------ */
+  --color-border: var(--bs-color-border);
+  --color-border-strong: var(--bs-color-border-strong);
+
+  /* -- primary accent block ------------------------------------------- */
+  --color-primary: var(--bs-color-primary);
+  --color-primary-hover: var(--bs-color-primary-hover);
+  --color-primary-active: var(--bs-color-primary-active);
+  --color-primary-text: var(--bs-color-primary-text);
+  --color-primary-subtle: var(--bs-color-primary-subtle);
+  --color-primary-subtle-text: var(--bs-color-primary-subtle-text);
+  --color-primary-border: var(--bs-color-primary-border);
+
+  /* -- status pigments ------------------------------------------------- */
+  --color-success: var(--bs-color-success);
+  --color-success-hover: var(--bs-color-success-hover);
+  --color-success-subtle: var(--bs-color-success-subtle);
+  --color-success-subtle-text: var(--bs-color-success-subtle-text);
+  --color-warning: var(--bs-color-warning);
+  --color-warning-hover: var(--bs-color-warning-hover);
+  --color-warning-subtle: var(--bs-color-warning-subtle);
+  --color-warning-subtle-text: var(--bs-color-warning-subtle-text);
+  --color-danger: var(--bs-color-danger);
+  --color-danger-hover: var(--bs-color-danger-hover);
+  --color-danger-subtle: var(--bs-color-danger-subtle);
+  --color-danger-subtle-text: var(--bs-color-danger-subtle-text);
+  --color-info: var(--bs-color-info);
+  --color-info-hover: var(--bs-color-info-hover);
+  --color-info-subtle: var(--bs-color-info-subtle);
+  --color-info-subtle-text: var(--bs-color-info-subtle-text);
+
+  /* -- radius (per-scene values ride the vars) ------------------------- */
+  --radius-xs: var(--bs-radius-xs);
+  --radius-sm: var(--bs-radius-sm);
+  --radius-md: var(--bs-radius-md);
+  --radius-lg: var(--bs-radius-lg);
+  --radius-xl: var(--bs-radius-xl);
+  --radius-2xl: var(--bs-radius-2xl);
+  --radius-full: var(--bs-radius-full);
+  --radius-control: var(--bs-radius-control);
+
+  /* -- families --------------------------------------------------------- */
+  --font-sans: var(--bs-font-sans);
+  --font-serif: var(--bs-font-serif);
+  --font-mono: var(--bs-font-mono);
+
+  /* -- sizes: token-driven, denser than stock Tailwind ------------------
+   * Pairs pin utilities to the body's rhythm — without them a size
+   * utility would impose Tailwind's default pairing and quietly change
+   * leading on elements that today only set font-size. */
+  --text-xs: var(--bs-font-size-xs);
+  --text-xs--line-height: var(--bs-line-height-normal);
+  --text-sm: var(--bs-font-size-sm);
+  --text-sm--line-height: var(--bs-line-height-normal);
+  --text-md: var(--bs-font-size-md);
+  --text-md--line-height: var(--bs-line-height-normal);
+  --text-base: var(--bs-font-size-base);
+  --text-base--line-height: var(--bs-line-height-normal);
+  --text-lg: var(--bs-font-size-lg);
+  --text-lg--line-height: var(--bs-line-height-normal);
+  --text-xl: var(--bs-font-size-xl);
+  --text-xl--line-height: var(--bs-line-height-normal);
+  --text-2xl: var(--bs-font-size-2xl);
+  --text-2xl--line-height: var(--bs-line-height-normal);
+  --text-3xl: var(--bs-font-size-3xl);
+  --text-3xl--line-height: var(--bs-line-height-normal);
+  --text-4xl: var(--bs-font-size-4xl);
+  --text-4xl--line-height: var(--bs-line-height-normal);
+
+  /* leading-* defaults already match the tokens
+   * (tight 1.25 / snug 1.375 / normal 1.5 / relaxed 1.625) — no mapping.
+   * font-weight defaults match too (400/500/600/700) — no mapping. */
+
+  /* -- tracking --------------------------------------------------------- */
+  --tracking-label: var(--bs-tracking-label);
+
+  /* -- light model ------------------------------------------------------- */
+  --shadow-xs: var(--bs-shadow-xs);
+  --shadow-e0: var(--bs-elevation-0);
+  --shadow-e1: var(--bs-elevation-1);
+  --shadow-e2: var(--bs-elevation-2);
+  --shadow-e3: var(--bs-elevation-3);
+  --shadow-e4: var(--bs-elevation-4);
+  --shadow-e5: var(--bs-elevation-5);
+
+  /* Deliberately NOT mapped:
+   * - spacing: stock --spacing (0.25rem) is numerically identical to
+   *   --bs-space-1..24 (p-4 == space-4) — copied code stays stock;
+   * - --bs-gap-* / --bs-padding-*: density-scaled layout parameters;
+   *   reach them with the var shorthand (gap-(--bs-gap-sm),
+   *   p-(--bs-padding-lg));
+   * - control heights (--bs-control-height-*): no height theme namespace
+   *   in v4 — use h-[var(--bs-control-height-md)] where a hand-made row
+   *   must align with the library's controls;
+   * - focus ring parts: focus styling stays library-owned.
+   */
+}

@@ -6,12 +6,12 @@ const layouts = [2, 4];
 </script>
 
 <template>
-  <div style="display: grid; gap: var(--bs-space-6); inline-size: 100%">
+  <div class="grid w-full gap-6">
     <Masonry v-for="columns in layouts" :key="columns" :columns="columns">
       <div
         v-for="(height, index) in heights"
         :key="index"
-        class="stone"
+        class="grid place-items-center border border-border bg-surface-3 text-sm text-secondary"
         :style="{ blockSize: `${height}rem` }"
       >
         {{ index + 1 }}
@@ -19,14 +19,3 @@ const layouts = [2, 4];
     </Masonry>
   </div>
 </template>
-
-<style scoped>
-.stone {
-  display: grid;
-  place-items: center;
-  background: var(--bs-color-surface-3);
-  border: 1px solid var(--bs-color-border);
-  font-size: var(--bs-font-size-sm);
-  color: var(--bs-color-text-secondary);
-}
-</style>

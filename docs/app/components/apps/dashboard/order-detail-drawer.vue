@@ -20,22 +20,22 @@ const statusTone: Record<OrderStatus, string> = {
     <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
-        <Drawer.Content class="detail">
+        <Drawer.Content class="grid gap-5">
           <Drawer.Grabber><Drawer.GrabberIndicator /></Drawer.Grabber>
           <Drawer.Title>{{ row?.customer ?? "Account" }}</Drawer.Title>
           <Drawer.Description>Account detail — everything the ledger knows.</Drawer.Description>
 
-          <dl v-if="row" class="detail-grid">
-            <dt>Status</dt>
-            <dd>
+          <dl v-if="row" class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2">
+            <dt class="text-sm text-tertiary">Status</dt>
+            <dd class="m-0 flex">
               <Badge :tone="statusTone[row.status]" variant="subtle">{{ row.status }}</Badge>
             </dd>
-            <dt>Region</dt>
-            <dd>{{ row.region }}</dd>
-            <dt>Monthly recurring</dt>
-            <dd>{{ row.mrr ? `$${row.mrr.toLocaleString("en-US")}` : "—" }}</dd>
-            <dt>Customer since</dt>
-            <dd>{{ row.since }}</dd>
+            <dt class="text-sm text-tertiary">Region</dt>
+            <dd class="m-0 flex">{{ row.region }}</dd>
+            <dt class="text-sm text-tertiary">Monthly recurring</dt>
+            <dd class="m-0 flex">{{ row.mrr ? `$${row.mrr.toLocaleString("en-US")}` : "—" }}</dd>
+            <dt class="text-sm text-tertiary">Customer since</dt>
+            <dd class="m-0 flex">{{ row.since }}</dd>
           </dl>
 
           <Drawer.CloseTrigger asChild>
@@ -46,27 +46,3 @@ const statusTone: Record<OrderStatus, string> = {
     </Teleport>
   </Drawer.Root>
 </template>
-
-<style scoped>
-.detail {
-  display: grid;
-  gap: var(--bs-space-5);
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--bs-space-2) var(--bs-space-6);
-  margin: 0;
-}
-
-.detail-grid dt {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-}
-
-.detail-grid dd {
-  display: flex;
-  margin: 0;
-}
-</style>

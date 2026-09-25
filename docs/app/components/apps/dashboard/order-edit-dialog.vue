@@ -59,7 +59,7 @@ const statusCollection = createListCollection({
     <Teleport to="body">
       <Dialog.Backdrop />
       <Dialog.Positioner>
-        <Dialog.Content class="editor">
+        <Dialog.Content class="grid gap-5">
           <Dialog.Title>Edit account</Dialog.Title>
           <Dialog.Description>Changes apply to the ledger immediately.</Dialog.Description>
 
@@ -107,7 +107,7 @@ const statusCollection = createListCollection({
               </Select.Root>
             </FormField>
 
-            <div class="editor-actions">
+            <div class="flex justify-end gap-3">
               <Button variant="ghost" @click="emit('close')">Cancel</Button>
               <Button type="submit">Save account</Button>
             </div>
@@ -117,16 +117,3 @@ const statusCollection = createListCollection({
     </Teleport>
   </Dialog.Root>
 </template>
-
-<style scoped>
-.editor {
-  display: grid;
-  gap: var(--bs-space-5);
-}
-
-.editor-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--bs-space-3);
-}
-</style>

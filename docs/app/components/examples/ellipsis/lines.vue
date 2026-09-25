@@ -8,9 +8,7 @@ const prose =
 </script>
 
 <template>
-  <div
-    style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--bs-space-4); inline-size: 100%"
-  >
+  <div class="grid grid-cols-2 gap-4 w-full">
     <Ellipsis :lines="2">{{ prose }}</Ellipsis>
     <Ellipsis :lines="4">{{ prose }}</Ellipsis>
   </div>

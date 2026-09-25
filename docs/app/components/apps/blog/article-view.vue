@@ -20,8 +20,8 @@ const tocItems = computed(() =>
 </script>
 
 <template>
-  <article class="article">
-    <Button variant="ghost" size="sm" class="article-back" @click="emit('back')">
+  <article class="grid gap-5">
+    <Button variant="ghost" size="sm" class="justify-self-start" @click="emit('back')">
       <svg
         width="14"
         height="14"
@@ -36,11 +36,11 @@ const tocItems = computed(() =>
       All posts
     </Button>
 
-    <div class="article-grid">
-      <div class="article-body">
-        <Typography.Display class="article-title">{{ post.title }}</Typography.Display>
+    <div class="grid grid-cols-[1fr_minmax(0,44rem)_1fr] items-start gap-8">
+      <div class="col-start-2 min-w-0">
+        <Typography.Display class="mb-3">{{ post.title }}</Typography.Display>
 
-        <p class="article-meta">
+        <p class="m-0 mb-7 flex items-center gap-2 text-sm text-tertiary">
           <Avatar.Root>
             <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
           </Avatar.Root>
@@ -52,22 +52,32 @@ const tocItems = computed(() =>
         </p>
 
         <template v-for="(block, index) in post.blocks" :key="index">
-          <Typography.Heading v-if="block.type === 'h2'" :id="block.id" class="article-heading">
+          <Typography.Heading
+            v-if="block.type === 'h2'"
+            :id="block.id"
+            class="mb-3 mt-7 scroll-mt-20"
+          >
             {{ block.text }}
           </Typography.Heading>
-          <Typography.Body v-else-if="block.type === 'p'" class="article-paragraph">
+          <Typography.Body v-else-if="block.type === 'p'" class="m-0 mb-4">
             {{ block.text }}
           </Typography.Body>
-          <blockquote v-else-if="block.type === 'quote'" class="article-quote">
+          <blockquote
+            v-else-if="block.type === 'quote'"
+            class="mx-0 my-5 border-s-2 border-s-border-strong ps-4 font-serif text-lg text-secondary"
+          >
             {{ block.text }}
           </blockquote>
-          <pre v-else class="article-code"><code>{{ block.text }}</code></pre>
+          <pre
+            v-else
+            class="my-5 overflow-x-auto rounded-lg border border-border bg-surface-2 p-4 text-sm leading-relaxed"
+          ><code>{{ block.text }}</code></pre>
         </template>
 
         <CommentThread :comments="post.comments" />
       </div>
 
-      <aside class="article-rail">
+      <aside class="col-start-3 sticky top-24 w-52 @max-[60rem]:hidden">
         <Toc.Root :items="tocItems">
           <Toc.Nav>
             <Toc.Title>On this page</Toc.Title>
@@ -82,81 +92,3 @@ const tocItems = computed(() =>
     </div>
   </article>
 </template>
-
-<style scoped>
-.article {
-  display: grid;
-  gap: var(--bs-space-5);
-}
-
-.article-grid {
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 44rem) 1fr;
-  gap: var(--bs-space-8);
-  align-items: start;
-}
-
-.article-body {
-  grid-column: 2;
-  min-inline-size: 0;
-}
-
-.article-back {
-  justify-self: start;
-}
-
-.article-title {
-  margin: 0 0 var(--bs-space-3);
-}
-
-.article-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
-  margin: 0 0 var(--bs-space-7);
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-}
-
-.article-heading {
-  margin-block: var(--bs-space-7) var(--bs-space-3);
-  scroll-margin-block-start: 5rem;
-}
-
-.article-paragraph {
-  margin: 0 0 var(--bs-space-4);
-}
-
-.article-quote {
-  margin: var(--bs-space-5) 0;
-  padding-inline-start: var(--bs-space-4);
-  border-inline-start: 2px solid var(--bs-color-border-strong);
-  color: var(--bs-color-text-secondary);
-  font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-lg);
-}
-
-.article-code {
-  margin: var(--bs-space-5) 0;
-  padding: var(--bs-space-4);
-  background: var(--bs-color-surface-2);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-lg);
-  overflow-x: auto;
-  font-size: var(--bs-font-size-sm);
-  line-height: var(--bs-line-height-relaxed);
-}
-
-.article-rail {
-  grid-column: 3;
-  position: sticky;
-  inset-block-start: 6rem;
-  inline-size: 13rem;
-}
-
-@container (max-width: 60rem) {
-  .article-rail {
-    display: none;
-  }
-}
-</style>

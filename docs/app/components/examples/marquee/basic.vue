@@ -7,7 +7,7 @@ const entries = ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indi
 <template>
   <Marquee.Root spacing="1.5rem">
     <Marquee.Viewport>
-      <Marquee.Content style="gap: 1.5rem">
+      <Marquee.Content class="gap-6">
         <Marquee.Item v-for="name in entries" :key="name">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 3 3 9l9 12 9-12-9-6Z" />

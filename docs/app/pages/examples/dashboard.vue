@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, Link, Toast, Toaster } from "@bysages/vue";
+import { Card, Toast, Toaster } from "@bysages/vue";
 import { ref } from "vue";
 
 import { orders, type OrderRow } from "../../components/apps/dashboard/data";
@@ -12,6 +12,7 @@ import StatRow from "../../components/apps/dashboard/stat-row.vue";
 import { toaster } from "../../components/apps/dashboard/toast";
 import TrendChart from "../../components/apps/dashboard/trend-chart.vue";
 import ExampleCanvas from "../../components/example-canvas.vue";
+import ExampleHeader from "../../components/example-header.vue";
 
 definePageMeta({ layout: "default", examples: true });
 
@@ -78,25 +79,20 @@ function archiveSelected(selected: OrderRow[]) {
 </script>
 
 <template>
-  <div class="example-page">
-    <header class="example-head">
-      <p class="example-kicker">Example</p>
-      <h1 class="example-title">Admin Dashboard</h1>
-      <p class="example-lede">
-        A revenue console assembled from the library: stat cards, charts, and a data table whose
-        sorting, searching, selection, and editing all run live. No server — the ledger is local
-        state.
-      </p>
-      <Link :href="sourceUrl" target="_blank" rel="noopener" class="example-source"
-        >View source</Link
-      >
-    </header>
+  <div class="mx-auto w-full max-w-[90rem] px-6 pb-12 pt-8">
+    <ExampleHeader
+      kicker="Example"
+      title="Admin Dashboard"
+      lede="A revenue console assembled from the library: stat cards, charts, and a data table whose sorting, searching, selection, and editing all run live. No server — the ledger is local state."
+      :source-url="sourceUrl"
+      class="mb-7"
+    />
 
     <ExampleCanvas>
       <Shell>
-        <div class="dash-stack">
+        <div class="grid gap-5">
           <StatRow />
-          <div class="dash-charts">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(22rem,1fr))] gap-5">
             <RevenueChart />
             <TrendChart />
           </div>
@@ -138,60 +134,3 @@ function archiveSelected(selected: OrderRow[]) {
     </Toaster>
   </div>
 </template>
-
-<style scoped>
-.example-page {
-  inline-size: 100%;
-  max-inline-size: 90rem;
-  margin-inline: auto;
-  padding: var(--bs-space-8) var(--bs-space-6) var(--bs-space-12);
-}
-
-.example-head {
-  max-inline-size: 44rem;
-  margin-block-end: var(--bs-space-7);
-}
-
-.example-kicker {
-  margin: 0 0 var(--bs-space-2);
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-  letter-spacing: var(--bs-tracking-label);
-  text-transform: uppercase;
-}
-
-.example-title {
-  font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-4xl);
-  line-height: var(--bs-line-height-tight);
-  margin: 0 0 var(--bs-space-3);
-}
-
-.example-lede {
-  color: var(--bs-color-text-secondary);
-  margin: 0 0 var(--bs-space-3);
-}
-
-.example-source {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-  text-decoration: none;
-}
-
-.example-source:hover {
-  color: var(--bs-color-text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-.dash-stack {
-  display: grid;
-  gap: var(--bs-space-5);
-}
-
-.dash-charts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-  gap: var(--bs-space-5);
-}
-</style>

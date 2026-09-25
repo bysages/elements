@@ -9,20 +9,22 @@ const emit = defineEmits<{ open: [] }>();
 </script>
 
 <template>
-  <Card.Root class="post-card">
+  <Card.Root>
     <Card.Header>
       <Card.Title>{{ post.title }}</Card.Title>
       <Card.Description>{{ post.excerpt }}</Card.Description>
     </Card.Header>
     <Card.Content>
-      <ul class="post-card-tags">
+      <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
         <li v-for="tag in post.tags" :key="tag">
           <Badge tone="ink" variant="outline">{{ tag }}</Badge>
         </li>
       </ul>
     </Card.Content>
-    <Card.Footer class="post-card-foot">
-      <span class="post-card-meta">
+    <!-- Core paints the footer's flex + items-center + gap (unlayered);
+         only the space-between is ours, and no core rule competes for it. -->
+    <Card.Footer class="justify-between">
+      <span class="flex items-center gap-2 text-sm text-tertiary">
         <Avatar.Root size="sm">
           <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
         </Avatar.Root>
@@ -34,27 +36,3 @@ const emit = defineEmits<{ open: [] }>();
     </Card.Footer>
   </Card.Root>
 </template>
-
-<style scoped>
-.post-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bs-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.post-card-foot {
-  align-items: center;
-  justify-content: space-between;
-}
-
-.post-card-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--bs-space-2);
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-}
-</style>

@@ -22,28 +22,13 @@ const run = (value: string) => {
 </script>
 
 <template>
-  <div style="inline-size: 100%">
+  <div class="w-full">
     <Button @click="open = true">
       Open command palette
-      <span
-        style="
-          margin-inline-start: var(--bs-space-2);
-          font-size: var(--bs-font-size-xs);
-          color: var(--bs-color-text-tertiary);
-        "
-      >
-        Ctrl K
-      </span>
+      <span class="ms-2 text-xs text-tertiary"> Ctrl K </span>
     </Button>
     <Command v-model:open="open" :items="commands" placeholder="Type a command…" @select="run" />
-    <p
-      role="status"
-      style="
-        margin-block-start: var(--bs-space-4);
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+    <p role="status" class="mt-4 text-sm text-tertiary">
       {{ status }}
     </p>
   </div>

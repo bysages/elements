@@ -4,7 +4,7 @@ import { Icon } from "@bysages/vue";
 
 <template>
   <!-- `inherit` takes its measure from the type it sits in. -->
-  <h2 style="margin: 0; font-family: var(--bs-font-serif); font-size: var(--bs-font-size-xl)">
+  <h2 class="m-0 font-serif text-xl">
     Moonlight fills the vessel
     <Icon label="Ink drop">
       <svg viewBox="0 0 24 24" aria-hidden="true">

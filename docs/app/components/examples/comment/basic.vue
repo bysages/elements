@@ -3,7 +3,7 @@ import { Avatar, Button, Comment } from "@bysages/vue";
 </script>
 
 <template>
-  <Comment author="Sage Wei" datetime="Today, 09:12" style="inline-size: 100%">
+  <Comment author="Sage Wei" datetime="Today, 09:12" class="w-full">
     <template #avatar>
       <Avatar.Root>
         <Avatar.Fallback>SW</Avatar.Fallback>

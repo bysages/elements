@@ -10,5 +10,5 @@ const segments: ProgressSegment[] = [
 </script>
 
 <template>
-  <ProgressGroup :segments="segments" style="inline-size: 100%" />
+  <ProgressGroup :segments="segments" class="w-full" />
 </template>

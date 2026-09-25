@@ -16,14 +16,7 @@ const compose = () => {
     <Button variant="outline" @click="open = !open">
       {{ open ? "Fold the group" : "Unfold the group" }}
     </Button>
-    <p
-      role="status"
-      style="
-        margin: var(--bs-space-4) 0;
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+    <p role="status" class="my-4 text-sm text-tertiary">
       {{ status }}
     </p>
     <FloatButton v-model:open="open" placement="bottom-start">

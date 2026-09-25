@@ -61,7 +61,7 @@ const send = (value: string) => {
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+  <div class="grid gap-3 w-full">
     <input ref="picker" type="file" multiple hidden @change="onPicked" />
     <AiPromptInput v-model="prompt" :busy="busy" @submit="send" @stop="busy = false">
       <template #header>
@@ -152,7 +152,7 @@ const send = (value: string) => {
         </Select.Root>
       </template>
     </AiPromptInput>
-    <p style="margin: 0; color: var(--bs-color-text-tertiary); font-size: var(--bs-font-size-sm)">
+    <p class="m-0 text-tertiary text-sm">
       {{
         busy
           ? "Working — the seal is a stop now; Enter holds its breath."

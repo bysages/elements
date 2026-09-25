@@ -19,6 +19,6 @@ const reviews = [
     :items="reviews"
     trigger="#"
     placeholder="Tag a review…"
-    style="inline-size: 100%"
+    class="w-full"
   />
 </template>

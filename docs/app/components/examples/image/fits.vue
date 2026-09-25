@@ -11,28 +11,10 @@ const fits = [
 </script>
 
 <template>
-  <div
-    style="
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--bs-space-4);
-      inline-size: 100%;
-    "
-  >
-    <figure v-for="entry in fits" :key="entry.fit" style="margin: 0">
-      <Image
-        :src="SAMPLE"
-        :alt="entry.caption"
-        :fit="entry.fit"
-        style="inline-size: 100%; aspect-ratio: 1 / 1"
-      />
-      <figcaption
-        style="
-          margin-block-start: 0.5rem;
-          font-size: var(--bs-font-size-sm);
-          color: var(--bs-color-text-secondary);
-        "
-      >
+  <div class="grid w-full grid-cols-3 gap-4">
+    <figure v-for="entry in fits" :key="entry.fit" class="m-0">
+      <Image :src="SAMPLE" :alt="entry.caption" :fit="entry.fit" class="w-full aspect-square" />
+      <figcaption class="mt-2 text-sm text-secondary">
         {{ entry.caption }}
       </figcaption>
     </figure>

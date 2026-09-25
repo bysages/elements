@@ -3,7 +3,7 @@ import { Typography } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: grid; gap: var(--bs-space-4); max-inline-size: 36rem">
+  <div class="grid gap-4 max-w-144">
     <Typography.Display>以光为影</Typography.Display>
     <Typography.Heading>The paper-and-ink system</Typography.Heading>
     <Typography.Lead>

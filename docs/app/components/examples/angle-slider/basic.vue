@@ -6,7 +6,7 @@ const value = ref(45);
 </script>
 
 <template>
-  <AngleSlider.Root v-model="value" style="width: 160px">
+  <AngleSlider.Root v-model="value" class="w-40">
     <AngleSlider.Label>Light angle</AngleSlider.Label>
     <AngleSlider.ValueText />
     <AngleSlider.Control>

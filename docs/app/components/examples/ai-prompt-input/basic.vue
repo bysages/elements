@@ -8,7 +8,7 @@ const sent = ref("");
 
 <template>
   <!-- The prompt vessel alone: controlled, self-growing, Enter to send. -->
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+  <div class="grid gap-3 w-full">
     <AiPromptInput
       v-model="prompt"
       @submit="
@@ -16,7 +16,7 @@ const sent = ref("");
         prompt = '';
       "
     />
-    <p style="margin: 0; color: var(--bs-color-text-tertiary); font-size: var(--bs-font-size-sm)">
+    <p class="m-0 text-tertiary text-sm">
       {{ sent ? `Sent: ${sent}` : "Type and press Enter." }}
     </p>
   </div>

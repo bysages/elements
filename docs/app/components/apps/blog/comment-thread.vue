@@ -30,11 +30,11 @@ function submitReply() {
 </script>
 
 <template>
-  <section class="thread" aria-label="Comments">
-    <h2 class="thread-title">Comments</h2>
+  <section class="mt-9" aria-label="Comments">
+    <h2 class="m-0 mb-5 font-serif text-xl">Comments</h2>
 
-    <div class="thread-tree">
-      <div v-for="comment in comments" :key="comment.id" class="thread-branch">
+    <div class="grid gap-5">
+      <div v-for="comment in comments" :key="comment.id">
         <Comment :author="comment.author" :datetime="comment.datetime">
           <template #avatar>
             <Avatar.Root>
@@ -43,7 +43,7 @@ function submitReply() {
           </template>
           {{ comment.body }}
         </Comment>
-        <div v-for="reply in comment.replies ?? []" :key="reply.id" class="thread-nested">
+        <div v-for="reply in comment.replies ?? []" :key="reply.id" class="mt-3 ps-8">
           <Comment :author="reply.author" :datetime="reply.datetime">
             <template #avatar>
               <Avatar.Root>
@@ -55,7 +55,7 @@ function submitReply() {
         </div>
       </div>
 
-      <div v-for="reply in replies" :key="reply.id" class="thread-branch">
+      <div v-for="reply in replies" :key="reply.id">
         <Comment :author="reply.author" :datetime="reply.datetime">
           <template #avatar>
             <Avatar.Root>
@@ -67,41 +67,14 @@ function submitReply() {
       </div>
     </div>
 
-    <form class="thread-composer" @submit.prevent="submitReply">
-      <Input v-model="draft" placeholder="Add a comment…" aria-label="Add a comment" />
+    <form class="mt-6 flex gap-3" @submit.prevent="submitReply">
+      <Input
+        v-model="draft"
+        class="flex-1"
+        placeholder="Add a comment…"
+        aria-label="Add a comment"
+      />
       <Button type="submit">Post</Button>
     </form>
   </section>
 </template>
-
-<style scoped>
-.thread {
-  margin-block-start: var(--bs-space-9);
-}
-
-.thread-title {
-  font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-xl);
-  margin: 0 0 var(--bs-space-5);
-}
-
-.thread-tree {
-  display: grid;
-  gap: var(--bs-space-5);
-}
-
-.thread-nested {
-  padding-inline-start: var(--bs-space-8);
-  margin-block-start: var(--bs-space-3);
-}
-
-.thread-composer {
-  display: flex;
-  gap: var(--bs-space-3);
-  margin-block-start: var(--bs-space-6);
-}
-
-.thread-composer :first-child {
-  flex: 1;
-}
-</style>

@@ -7,7 +7,7 @@ const open = ref(false);
 </script>
 
 <template>
-  <div style="inline-size: 100%">
+  <div class="w-full">
     <Button variant="outline" @click="open = true">Open (no zoom)</Button>
     <ImageViewer
       v-model:open="open"

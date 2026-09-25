@@ -3,7 +3,7 @@ import { Button, Popconfirm } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: flex; gap: 1rem">
+  <div class="flex gap-4">
     <Popconfirm message="Discard this draft?">
       <Button variant="outline">Discard</Button>
     </Popconfirm>

@@ -15,11 +15,9 @@ const viewport = computed(() =>
 <template>
   <ClientOnly>
     <template #fallback>
-      <p style="margin: 0; font-size: var(--bs-font-size-sm); color: var(--bs-color-text-tertiary)">
-        Measuring the window…
-      </p>
+      <p class="m-0 text-sm text-tertiary">Measuring the window…</p>
     </template>
-    <p style="margin: 0">
+    <p class="m-0">
       Rendered on the client — this window measures
       <strong>{{ viewport }}</strong> pixels.
     </p>

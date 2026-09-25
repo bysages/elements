@@ -5,7 +5,7 @@ import { AiAction } from "@bysages/vue";
 <template>
   <!-- The quiet row under a message: copy, retry, and the two ways a
        reader can answer. -->
-  <div style="display: flex; gap: 0.5rem">
+  <div class="flex gap-2">
     <AiAction label="Copy">✎</AiAction>
     <AiAction label="Retry">↻</AiAction>
     <AiAction label="Helpful">👍</AiAction>

@@ -9,10 +9,8 @@ const segments: ProgressSegment[] = [
 </script>
 
 <template>
-  <div style="display: grid; gap: 0.75rem; inline-size: 100%">
+  <div class="grid gap-3 w-full">
     <ProgressGroup :segments="segments" :show-legend="false" />
-    <span style="font-size: var(--bs-font-size-sm); color: var(--bs-color-text-tertiary)">
-      Six in ten entries pass the first reading.
-    </span>
+    <span class="text-sm text-tertiary"> Six in ten entries pass the first reading. </span>
   </div>
 </template>

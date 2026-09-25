@@ -22,7 +22,7 @@ const definition = defineChart({
 </script>
 
 <template>
-  <div style="max-inline-size: 34rem">
+  <div class="max-w-136">
     <Chart :definition="definition" aria-label="Monthly orders, bars" />
   </div>
 </template>

@@ -22,8 +22,8 @@ const notices = [
 </script>
 
 <template>
-  <div style="display: grid; gap: 1rem">
-    <Alert.Root v-for="n in notices" :key="n.status" :status="n.status" style="inline-size: 30rem">
+  <div class="grid gap-4">
+    <Alert.Root v-for="n in notices" :key="n.status" :status="n.status" class="w-120">
       <Alert.Icon />
       <Alert.Body>
         <Alert.Title>{{ n.title }}</Alert.Title>

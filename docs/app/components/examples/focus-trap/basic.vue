@@ -6,30 +6,20 @@ const trapped = ref(false);
 </script>
 
 <template>
-  <div style="display: grid; gap: var(--bs-space-4); inline-size: 100%">
+  <div class="grid gap-4 w-full">
     <Button @click="trapped = !trapped">
       {{ trapped ? "Release the trap" : "Trap the focus" }}
     </Button>
     <FocusTrap
       :disabled="!trapped"
-      style="
-        display: grid;
-        gap: var(--bs-space-3);
-        justify-items: start;
-        inline-size: 100%;
-        padding: var(--bs-space-4);
-        border: 1px dashed var(--bs-color-border-strong);
-        border-radius: var(--bs-radius-sm);
-      "
+      class="grid gap-3 justify-items-start w-full p-4 border border-dashed border-border-strong rounded-sm"
     >
-      <p
-        style="margin: 0; font-size: var(--bs-font-size-sm); color: var(--bs-color-text-secondary)"
-      >
+      <p class="m-0 text-sm text-secondary">
         While the trap is on, Tab cycles inside this panel — the way out is the button below, and
         focus returns to where it came from.
       </p>
-      <Input placeholder="First stop" style="inline-size: 16rem" />
-      <Input placeholder="Second stop" style="inline-size: 16rem" />
+      <Input placeholder="First stop" class="w-64" />
+      <Input placeholder="Second stop" class="w-64" />
       <Button variant="outline" @click="trapped = false">Done — release</Button>
     </FocusTrap>
   </div>

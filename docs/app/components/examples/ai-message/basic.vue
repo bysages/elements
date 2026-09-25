@@ -5,7 +5,7 @@ import { AiContent, AiMessage } from "@bysages/vue";
 <template>
   <!-- Whose stroke this is: the user's words in a recessed bubble, the
        assistant speaking flat on the paper. -->
-  <div style="display: grid; gap: 1rem; inline-size: 100%">
+  <div class="grid gap-4 w-full">
     <AiMessage role="user">
       <AiContent>Draft a short note announcing the ink release.</AiContent>
     </AiMessage>

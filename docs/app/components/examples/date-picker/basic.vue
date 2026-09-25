@@ -37,7 +37,7 @@ import { DatePicker } from "@bysages/vue";
                     stroke="currentColor"
                     stroke-width="1.75"
                     aria-hidden="true"
-                    style="transform: rotate(180deg)"
+                    class="rotate-180"
                   >
                     <path d="m9 5 7 7-7 7" />
                   </svg>
@@ -91,7 +91,7 @@ import { DatePicker } from "@bysages/vue";
                     stroke="currentColor"
                     stroke-width="1.75"
                     aria-hidden="true"
-                    style="transform: rotate(180deg)"
+                    class="rotate-180"
                   >
                     <path d="m9 5 7 7-7 7" />
                   </svg>
@@ -141,7 +141,7 @@ import { DatePicker } from "@bysages/vue";
                     stroke="currentColor"
                     stroke-width="1.75"
                     aria-hidden="true"
-                    style="transform: rotate(180deg)"
+                    class="rotate-180"
                   >
                     <path d="m9 5 7 7-7 7" />
                   </svg>

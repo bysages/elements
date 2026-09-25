@@ -5,8 +5,8 @@ import { Watermark } from "@bysages/vue";
 <template>
   <!-- The seal redraws itself from the theme's computed styles; it
        never takes a pointer. -->
-  <Watermark content="BY SAGES · 内部资料" style="inline-size: 100%">
-    <div class="draft">
+  <Watermark content="BY SAGES · 内部资料" class="w-full">
+    <div class="grid gap-3 p-(--bs-padding-lg) text-sm leading-relaxed text-secondary">
       <p>
         The registry holds each entry twice: once in the ledger, once in the seal that marks it as
         the house's own. The mark beneath the words is quiet by design — it claims the page without
@@ -19,14 +19,3 @@ import { Watermark } from "@bysages/vue";
     </div>
   </Watermark>
 </template>
-
-<style scoped>
-.draft {
-  display: grid;
-  gap: var(--bs-space-3);
-  padding: var(--bs-padding-lg);
-  font-size: var(--bs-font-size-sm);
-  line-height: var(--bs-line-height-relaxed);
-  color: var(--bs-color-text-secondary);
-}
-</style>

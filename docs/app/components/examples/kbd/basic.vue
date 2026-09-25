@@ -3,7 +3,7 @@ import { Kbd } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: flex; gap: 0.375rem; align-items: center">
+  <div class="flex gap-[0.375rem] items-center">
     <Kbd>K</Kbd>
     <span>K</span>
   </div>

@@ -10,7 +10,7 @@ const directions = [
 </script>
 
 <template>
-  <div style="display: flex; flex-wrap: wrap; gap: var(--bs-space-3)">
+  <div class="flex flex-wrap gap-3">
     <Drawer.Root v-for="d in directions" :key="d.value" :swipe-direction="d.value">
       <Drawer.Trigger>From the {{ d.edge }}</Drawer.Trigger>
       <Teleport to="body">

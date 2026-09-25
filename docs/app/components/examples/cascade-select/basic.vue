@@ -42,10 +42,5 @@ const path = ref();
 </script>
 
 <template>
-  <CascadeSelect
-    v-model="path"
-    :data="data"
-    placeholder="选择省 / 市 / 区"
-    style="inline-size: 100%"
-  />
+  <CascadeSelect v-model="path" :data="data" placeholder="选择省 / 市 / 区" class="w-full" />
 </template>

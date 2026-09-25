@@ -25,10 +25,5 @@ const value = ref();
 </script>
 
 <template>
-  <TreeSelect
-    v-model="value"
-    :data="data"
-    placeholder="Choose a medium…"
-    style="inline-size: 100%"
-  />
+  <TreeSelect v-model="value" :data="data" placeholder="Choose a medium…" class="w-full" />
 </template>

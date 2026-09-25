@@ -1,8 +1,13 @@
+import tailwindcss from "@tailwindcss/vite";
 import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   extends: ["@bysages/docs-theme"],
   modules: ["@nuxtjs/i18n"],
+  css: ["~/assets/css/tailwind.css"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   i18n: {
     // The theme's collections are prefixed per locale (`/en/…`,
     // `/zh/…`), so every language lives under its own segment.

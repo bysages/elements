@@ -133,8 +133,12 @@ onBeforeUnmount(abort);
 </script>
 
 <template>
-  <div class="workbench">
-    <div ref="logEl" class="workbench-log" aria-label="Conversation">
+  <div class="grid gap-4">
+    <div
+      ref="logEl"
+      class="max-h-[min(60dvh,40rem)] overflow-y-auto bg-surface p-5"
+      aria-label="Conversation"
+    >
       <Ai.Conversation>
         <template v-for="entry in entries" :key="entry.id">
           <Ai.Message v-if="entry.role === 'user'" role="user">
@@ -162,7 +166,7 @@ onBeforeUnmount(abort);
       </Ai.Conversation>
     </div>
 
-    <div v-if="suggestions.length && !busy" class="workbench-suggestions">
+    <div v-if="suggestions.length && !busy" class="flex flex-wrap gap-2">
       <AiSuggestion
         v-for="suggestion in suggestions"
         :key="suggestion"
@@ -178,23 +182,3 @@ onBeforeUnmount(abort);
     </AiPromptInput>
   </div>
 </template>
-
-<style scoped>
-.workbench {
-  display: grid;
-  gap: var(--bs-space-4);
-}
-
-.workbench-log {
-  max-block-size: min(60dvh, 40rem);
-  overflow-y: auto;
-  padding: var(--bs-space-5);
-  background: var(--bs-color-surface);
-}
-
-.workbench-suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bs-space-2);
-}
-</style>

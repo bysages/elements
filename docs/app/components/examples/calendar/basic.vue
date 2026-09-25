@@ -3,5 +3,5 @@ import { Calendar } from "@bysages/vue";
 </script>
 
 <template>
-  <Calendar style="max-inline-size: 20rem" />
+  <Calendar class="max-w-80" />
 </template>

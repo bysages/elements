@@ -85,36 +85,15 @@ const fit = () => canvas?.fitView();
 </script>
 
 <template>
-  <div style="position: relative; inline-size: 100%; block-size: 36rem">
-    <div ref="host" style="position: absolute; inset: 0"></div>
+  <div class="relative w-full h-144">
+    <div ref="host" class="absolute inset-0"></div>
     <div
-      style="
-        position: absolute;
-        inset-block-end: 0.75rem;
-        inset-inline-start: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.25rem;
-        background: var(--bs-color-surface-2);
-        border: 1px solid var(--bs-color-border);
-        border-radius: var(--bs-radius-md);
-        box-shadow: var(--bs-shadow-xs);
-      "
+      class="absolute bottom-3 start-3 flex items-center gap-1 rounded-md border border-border bg-surface-2 p-1 shadow-xs"
     >
       <Button variant="outline" size="sm" square aria-label="Zoom out" @click="zoomTo(1 / 1.2)">
         −
       </Button>
-      <span
-        style="
-          min-inline-size: 3em;
-          text-align: center;
-          font-size: 0.75rem;
-          color: var(--bs-color-text-secondary);
-        "
-      >
-        {{ zoom }}%
-      </span>
+      <span class="min-w-[3em] text-center text-xs text-secondary"> {{ zoom }}% </span>
       <Button variant="outline" size="sm" square aria-label="Zoom in" @click="zoomTo(1.2)"
         >+</Button
       >
@@ -123,21 +102,12 @@ const fit = () => canvas?.fitView();
         variant="outline"
         size="sm"
         aria-label="Auto layout"
-        style="margin-inline-start: 0.25rem"
+        class="ms-1"
         @click="canvas?.layout()"
       >
         Auto layout
       </Button>
     </div>
-    <div
-      ref="mapHost"
-      style="
-        position: absolute;
-        inset-block-end: 0.75rem;
-        inset-inline-end: 0.75rem;
-        inline-size: 13rem;
-        block-size: 9rem;
-      "
-    ></div>
+    <div ref="mapHost" class="absolute bottom-3 end-3 h-36 w-52"></div>
   </div>
 </template>

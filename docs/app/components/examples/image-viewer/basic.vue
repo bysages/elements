@@ -7,7 +7,7 @@ const open = ref(false);
 </script>
 
 <template>
-  <div style="inline-size: 100%">
+  <div class="w-full">
     <Button @click="open = true">Open viewer</Button>
     <ImageViewer v-model:open="open" :src="SAMPLE" alt="A photograph from the archive" />
   </div>

@@ -3,7 +3,7 @@ import { Descriptions } from "@bysages/vue";
 </script>
 
 <template>
-  <div style="display: grid; gap: 1.5rem; inline-size: 100%">
+  <div class="grid gap-6 w-full">
     <Descriptions.Root>
       <Descriptions.Item>
         <Descriptions.Term>Medium</Descriptions.Term>

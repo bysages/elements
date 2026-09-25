@@ -7,7 +7,7 @@ const cardStyle = { inlineSize: "26rem" };
 
 <template>
   <ConfigProvider density="comfortable">
-    <div style="display: grid; gap: var(--bs-space-4); justify-items: start">
+    <div class="grid gap-4 justify-items-start">
       <Card.Root :style="cardStyle">
         <Card.Header>
           <Card.Title>Comfortable — the outer provider's tier</Card.Title>

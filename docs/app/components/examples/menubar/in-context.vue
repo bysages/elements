@@ -37,32 +37,10 @@ const choose = (value: string) => {
 </script>
 
 <template>
-  <section
-    style="
-      background: var(--bs-color-surface-1);
-      border: 1px solid var(--bs-color-border);
-      border-radius: var(--bs-radius-lg);
-      padding: var(--bs-space-4);
-    "
-  >
-    <h2
-      style="
-        margin: 0 0 var(--bs-space-4);
-        font-family: var(--bs-font-serif);
-        font-size: var(--bs-font-size-lg);
-      "
-    >
-      Draft: The paper-and-ink system
-    </h2>
+  <section class="bg-surface-1 border border-border rounded-lg p-4">
+    <h2 class="mb-4 font-serif text-lg">Draft: The paper-and-ink system</h2>
     <Menubar :items="menus" @select="choose" />
-    <p
-      role="status"
-      style="
-        margin-block-start: var(--bs-space-4);
-        font-size: var(--bs-font-size-sm);
-        color: var(--bs-color-text-tertiary);
-      "
-    >
+    <p role="status" class="mt-4 text-sm text-tertiary">
       {{ status }}
     </p>
   </section>

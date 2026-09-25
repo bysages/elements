@@ -4,7 +4,7 @@ import { Slider } from "@bysages/vue";
 
 <template>
   <Slider.Root :default-value="[40]" :min="0" :max="100" :step="1">
-    <div style="display: flex; justify-content: space-between; align-items: baseline">
+    <div class="flex justify-between items-baseline">
       <Slider.Label>Volume</Slider.Label>
       <Slider.ValueText />
     </div>

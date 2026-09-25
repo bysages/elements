@@ -16,7 +16,7 @@ const teammates = [
 <template>
   <!-- Inside a Field.Root the field picks up the label wiring and the
        invalid state on its own. -->
-  <Field.Root invalid style="inline-size: 100%">
+  <Field.Root invalid class="w-full">
     <Field.Label>Describe the task</Field.Label>
     <Mentions
       v-model="text"
