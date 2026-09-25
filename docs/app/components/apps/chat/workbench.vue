@@ -190,8 +190,6 @@ onBeforeUnmount(abort);
   overflow-y: auto;
   padding: var(--bs-space-5);
   background: var(--bs-color-surface);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-lg);
 }
 
 .workbench-suggestions {

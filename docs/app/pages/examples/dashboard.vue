@@ -11,6 +11,7 @@ import Shell from "../../components/apps/dashboard/shell.vue";
 import StatRow from "../../components/apps/dashboard/stat-row.vue";
 import { toaster } from "../../components/apps/dashboard/toast";
 import TrendChart from "../../components/apps/dashboard/trend-chart.vue";
+import ExampleCanvas from "../../components/example-canvas.vue";
 
 definePageMeta({ layout: "default", examples: true });
 
@@ -91,31 +92,33 @@ function archiveSelected(selected: OrderRow[]) {
       >
     </header>
 
-    <Shell>
-      <div class="dash-stack">
-        <StatRow />
-        <div class="dash-charts">
-          <RevenueChart />
-          <TrendChart />
+    <ExampleCanvas>
+      <Shell>
+        <div class="dash-stack">
+          <StatRow />
+          <div class="dash-charts">
+            <RevenueChart />
+            <TrendChart />
+          </div>
+          <Card.Root>
+            <Card.Header>
+              <Card.Title>Accounts</Card.Title>
+              <Card.Description>
+                Sort any column, search across customers, and edit or archive from the row.
+              </Card.Description>
+            </Card.Header>
+            <Card.Content>
+              <OrdersTable
+                :rows="rows"
+                @detail="openDetail"
+                @edit="openEdit"
+                @archive="archiveSelected"
+              />
+            </Card.Content>
+          </Card.Root>
         </div>
-        <Card.Root>
-          <Card.Header>
-            <Card.Title>Accounts</Card.Title>
-            <Card.Description>
-              Sort any column, search across customers, and edit or archive from the row.
-            </Card.Description>
-          </Card.Header>
-          <Card.Content>
-            <OrdersTable
-              :rows="rows"
-              @detail="openDetail"
-              @edit="openEdit"
-              @archive="archiveSelected"
-            />
-          </Card.Content>
-        </Card.Root>
-      </div>
-    </Shell>
+      </Shell>
+    </ExampleCanvas>
 
     <ClientOnly>
       <OrderDetailDrawer :open="detailOpen" :row="detailRow" @close="detailOpen = false" />

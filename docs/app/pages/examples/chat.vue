@@ -2,6 +2,7 @@
 import { Link } from "@bysages/vue";
 
 import Workbench from "../../components/apps/chat/workbench.vue";
+import ExampleCanvas from "../../components/example-canvas.vue";
 
 definePageMeta({ layout: "default", examples: true });
 
@@ -41,7 +42,9 @@ const sourceUrl = [
       >
     </header>
 
-    <Workbench class="chat-stage" />
+    <ExampleCanvas class="chat-canvas">
+      <Workbench />
+    </ExampleCanvas>
   </div>
 </template>
 
@@ -90,7 +93,11 @@ const sourceUrl = [
   text-underline-offset: 0.2em;
 }
 
-.chat-stage {
-  max-inline-size: 46rem;
+/* The conversation sits on its own canvas, centered like a product
+ * window rather than stretched into the prose measure. */
+.chat-canvas {
+  max-inline-size: 48rem;
+  margin-inline: auto;
+  padding: var(--bs-space-6);
 }
 </style>

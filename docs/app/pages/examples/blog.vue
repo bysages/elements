@@ -6,6 +6,7 @@ import ArticleView from "../../components/apps/blog/article-view.vue";
 import type { Post } from "../../components/apps/blog/data";
 import { allTags, posts } from "../../components/apps/blog/data";
 import PostList from "../../components/apps/blog/post-list.vue";
+import ExampleCanvas from "../../components/example-canvas.vue";
 
 definePageMeta({ layout: "default", examples: true });
 
@@ -68,7 +69,7 @@ function backToList() {
       >
     </header>
 
-    <div class="blog-canvas">
+    <ExampleCanvas class="blog-canvas">
       <ArticleView v-if="activePost" :post="activePost" @back="backToList" />
       <PostList
         v-else
@@ -80,7 +81,7 @@ function backToList() {
         @update:active-tag="activeTag = $event"
         @update:page="page = $event"
       />
-    </div>
+    </ExampleCanvas>
   </div>
 </template>
 
@@ -129,7 +130,10 @@ function backToList() {
   text-underline-offset: 0.2em;
 }
 
+/* Editorial examples rest on the canvas paper with their own margin;
+ * the canvas itself (border, radius, containment) is the shared
+ * ExampleCanvas component. */
 .blog-canvas {
-  container-type: inline-size;
+  padding: var(--bs-space-6);
 }
 </style>
