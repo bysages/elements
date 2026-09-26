@@ -55,8 +55,8 @@
     "@zag-js/svelte": "1.44.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "7.3.0",
-    "ai": "7.0.107",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "ai": "7.0.116",
     "rollup-plugin-svelte": "7.2.3",
     "svelte": "5.57.1",
     "svelte2tsx": "0.7.61"

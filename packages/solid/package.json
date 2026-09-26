@@ -56,7 +56,7 @@
     "@zag-js/solid": "1.44.0"
   },
   "devDependencies": {
-    "ai": "7.0.107",
+    "ai": "7.0.116",
     "solid-js": "1.9.15",
     "unplugin-solid": "2.0.0"
   },
