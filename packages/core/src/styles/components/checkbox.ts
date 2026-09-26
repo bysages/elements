@@ -96,6 +96,28 @@ export const checkboxCss =
   block-size: calc(var(--bs-part-size-sm) * 0.7);
 }
 
+/* Size rungs: the root's data-size re-points the box; the tick rides
+   its own share of whatever box it is given. */
+[data-scope="checkbox"][data-part="root"][data-size="sm"] [data-part="control"] {
+  inline-size: calc(var(--bs-part-size-sm) * 0.875);
+  block-size: calc(var(--bs-part-size-sm) * 0.875);
+}
+
+[data-scope="checkbox"][data-part="root"][data-size="sm"] [data-part="indicator"] svg {
+  inline-size: calc(var(--bs-part-size-sm) * 0.6);
+  block-size: calc(var(--bs-part-size-sm) * 0.6);
+}
+
+[data-scope="checkbox"][data-part="root"][data-size="lg"] [data-part="control"] {
+  inline-size: var(--bs-part-size-md);
+  block-size: var(--bs-part-size-md);
+}
+
+[data-scope="checkbox"][data-part="root"][data-size="lg"] [data-part="indicator"] svg {
+  inline-size: calc(var(--bs-part-size-md) * 0.7);
+  block-size: calc(var(--bs-part-size-md) * 0.7);
+}
+
 [data-scope="checkbox"][data-part="root"]:has([data-disabled]) {
   color: var(--bs-color-text-disabled);
 }

@@ -32,7 +32,10 @@ export const SplitButton = defineComponent({
     /** How both halves rest; the arrow always reads as one control with
      * the main button. */
     variant: { type: String, default: "solid" },
+    /** The pigment the halves are inked with; ink is the solemn
+     * default, and the fixed pigments speak for their meaning. */
     tone: { type: String, default: "ink" },
+    /** One rung of the control-height ladder for both halves. */
     size: { type: String, default: "md" },
     disabled: { type: Boolean, default: false },
   },

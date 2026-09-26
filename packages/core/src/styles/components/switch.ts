@@ -80,4 +80,13 @@ export const switchCss =
   background: var(--bs-color-surface-0);
   box-shadow: none;
 }
+/* Size rungs: the thumb is the one measure — the track, the travel
+   and the inset all derive from it. */
+[data-scope="switch"][data-part="root"][data-size="sm"] [data-part="control"] {
+  --bs-switch-thumb: calc(var(--bs-part-size-sm) * 0.875);
+}
+
+[data-scope="switch"][data-part="root"][data-size="lg"] [data-part="control"] {
+  --bs-switch-thumb: var(--bs-part-size-md);
+}
 `;

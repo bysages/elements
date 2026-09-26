@@ -8,8 +8,14 @@ import { cloneVNode, defineComponent, h } from "vue";
 export const Button = defineComponent({
   name: "Button",
   props: {
+    /** How the button rests: a solid ink fill, an outline shell, a
+     * quiet ghost, or a subtle wash. */
     variant: { type: String, default: "solid" },
+    /** The pigment the variant is inked with; ink is the solemn
+     * default, and the fixed pigments speak for their meaning. */
     tone: { type: String, default: "ink" },
+    /** One rung of the control-height ladder: the small, medium, or
+     * large register. */
     size: { type: String, default: "md" },
     /** Icon-only: the silhouette squares to the control height. */
     square: { type: Boolean, default: false },

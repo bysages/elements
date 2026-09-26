@@ -178,6 +178,37 @@ function arkProps(family: string, part: string): PropDoc[] {
   return [];
 }
 
+/** Parts a wrapped family dresses in its own defineComponent — the
+ * `{ ...Ark, Root: SizedRoot }` spread. The object's key names the part,
+ * and the wrapper's props are API the dist types cannot know about. */
+function dressedProps(file: SourceFile): Record<string, PropDoc[]> {
+  const out: Record<string, PropDoc[]> = {};
+  for (const decl of file.getVariableDeclarations()) {
+    const literal = decl.getInitializer()?.asKind(SyntaxKind.ObjectLiteralExpression);
+    if (!literal) continue;
+    for (const prop of literal.getProperties()) {
+      if (!prop.isKind(SyntaxKind.PropertyAssignment)) continue;
+      const ref = prop.getInitializer()?.asKind(SyntaxKind.Identifier);
+      const comp = ref ? file.getVariableDeclaration(ref.getText()) : undefined;
+      const call = comp?.getInitializer()?.asKind(SyntaxKind.CallExpression);
+      if (call?.getExpression().getText() !== "defineComponent") continue;
+      const arg = call.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
+      if (!arg) continue;
+      const props = nativeProps(arg);
+      const part = pascal(prop.getName());
+      if (props.length) out[part] = props;
+    }
+  }
+  return out;
+}
+
+/** The family's own face reads first; the dist props fill in the rest,
+ * minus any the wrapper re-declares (its default may differ). */
+function mergeProps(own: PropDoc[], ark: PropDoc[]): PropDoc[] {
+  const seen = new Set(own.map((p) => p.name));
+  return [...own, ...ark.filter((p) => !seen.has(p.name))];
+}
+
 /** Emits of a wrapped part: the dist `.vue.d.ts` spells them out either
  * as a literal object of handler signatures (older emit blocks) or as a
  * chain of `(evt: "name", details) => void` overloads on the render
@@ -284,9 +315,44 @@ function exportedStatement(statement: Node): boolean {
   return modifiers.some((m) => m.getKind() === SyntaxKind.ExportKeyword);
 }
 
+function isComponentStatement(statement: Node): boolean {
+  return (
+    Node.isVariableStatement(statement) &&
+    statement
+      .getDeclarations()
+      .some(
+        (d) =>
+          d.getInitializer()?.asKind(SyntaxKind.CallExpression)?.getExpression().getText() ===
+          "defineComponent",
+      )
+  );
+}
+
 function wrapperHeaderComment(file: SourceFile): string {
-  // The dressing note sits above the family's first commented export —
-  // the file's first comment would hand the page a private helper's.
+  // The dressing note sits above the family's main face. Native
+  // families document it on the export — the Object.assign vessel or
+  // the props type. A spread namespace can carry it too (editable), or
+  // the dressing sits on the sized Root wrapper instead (the sized
+  // families) — the spread's own plumbing note is a fixed template and
+  // never dresses anything.
+  for (const statement of file.getStatements()) {
+    if (!exportedStatement(statement)) continue;
+    if (isComponentStatement(statement)) continue;
+    const text = commentText(statement);
+    if (
+      Node.isVariableStatement(statement) &&
+      statement.getDeclarations().some((d) => Node.isObjectLiteralExpression(d.getInitializer())) &&
+      text.startsWith("Ark's namespace is frozen")
+    ) {
+      continue;
+    }
+    if (text) return text;
+  }
+  for (const statement of file.getStatements()) {
+    if (!isComponentStatement(statement)) continue;
+    const text = commentText(statement);
+    if (text) return text;
+  }
   for (const statement of file.getStatements()) {
     if (!exportedStatement(statement)) continue;
     const text = commentText(statement);
@@ -359,14 +425,14 @@ export function documentFamily(dir: string): FamilyDoc | null {
     const parts = readdirSync(join(ARK_DIST, family))
       .map((f) => f.match(new RegExp(`^${family}-([\\w-]+)\\.vue\\.d\\.ts$`))?.[1])
       .filter((p): p is string => !!p && p !== "root-provider" && p !== "context");
+    const dressed = dressedProps(indexFile);
     components = Object.fromEntries(
       parts.map((part) => {
-        const props = arkProps(family, part);
+        const key = pascal(part);
+        const own = dressed[key] ?? [];
+        const props = mergeProps(own, arkProps(family, part));
         const emits = arkEmits(family, part);
-        return [
-          pascal(part),
-          { ...(props.length ? { props } : {}), ...(emits.length ? { emits } : {}) },
-        ];
+        return [key, { ...(props.length ? { props } : {}), ...(emits.length ? { emits } : {}) }];
       }),
     );
     anatomy = zagParts(family);

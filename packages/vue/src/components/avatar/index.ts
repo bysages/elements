@@ -11,7 +11,12 @@ export type AvatarSize = "sm" | "md" | "lg";
 
 const AvatarRoot = defineComponent({
   name: "SAvatarRoot",
-  props: { size: { type: String as PropType<AvatarSize>, default: undefined } },
+  props: {
+    /** Seal diameter: one rung of the control-height ladder. The
+     * default stands as tall as the biggest control, so an avatar
+     * rides a row without stretching it. */
+    size: { type: String as PropType<AvatarSize>, default: undefined },
+  },
   setup(props, { attrs, slots }) {
     return () => h(ArkAvatar.Root, { ...attrs, "data-size": props.size }, slots);
   },

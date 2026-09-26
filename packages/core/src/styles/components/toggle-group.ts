@@ -73,4 +73,14 @@ export const toggleGroupCss = /* css */ `
   box-shadow: none;
   cursor: not-allowed;
 }
+/* Size rungs: the items sit on the control-height ladder. */
+[data-scope="toggle-group"][data-part="root"][data-size="sm"] [data-part="item"] {
+  inline-size: var(--bs-control-height-sm);
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="toggle-group"][data-part="root"][data-size="lg"] [data-part="item"] {
+  inline-size: var(--bs-control-height-lg);
+  block-size: var(--bs-control-height-lg);
+}
 `;

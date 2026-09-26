@@ -232,4 +232,20 @@ export const selectCss =
   inline-size: var(--bs-font-size-sm);
   block-size: var(--bs-font-size-sm);
 }
+
+/* Size rungs: the root's data-size re-points the ladder for everything
+   inside — the control's height and ink register move together. */
+[data-scope="select"][data-part="root"][data-size="sm"] [data-part="control"] {
+  block-size: var(--bs-control-height-sm);
+  padding-inline-start: var(--bs-padding-sm);
+}
+
+[data-scope="select"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="select"][data-part="root"][data-size="lg"] [data-part="control"] {
+  block-size: var(--bs-control-height-lg);
+  padding-inline-start: var(--bs-padding-lg);
+}
 `;

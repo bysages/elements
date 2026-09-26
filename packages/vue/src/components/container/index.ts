@@ -15,6 +15,8 @@ export interface ContainerProps {
 export const Container = defineComponent({
   name: "Container",
   props: {
+    /** The typographic measure the ink runs to: narrow, readable,
+     * wide, or the full frame. */
     size: { type: String, default: "readable" },
     padding: { type: Boolean, default: true },
   },

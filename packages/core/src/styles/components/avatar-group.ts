@@ -18,4 +18,13 @@ export const avatarGroupCss = /* css */ `
   flex: none;
   box-shadow: 0 0 0 calc(var(--bs-hairline) * 2) var(--bs-color-surface-1);
 }
+/* One register for every seal: the rung re-points the avatar measure
+   the members consume, so the pile scales as one instrument. */
+[data-scope="avatar-group"][data-part="root"][data-size="sm"] [data-scope="avatar"][data-part="root"] {
+  --bs-avatar-size: var(--bs-control-height-sm);
+}
+
+[data-scope="avatar-group"][data-part="root"][data-size="lg"] [data-scope="avatar"][data-part="root"] {
+  --bs-avatar-size: var(--bs-control-height-lg);
+}
 `;

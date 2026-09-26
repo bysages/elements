@@ -24,6 +24,8 @@ export const AutoComplete = defineComponent({
       type: Function as PropType<(item: string, input: string) => boolean>,
       default: undefined,
     },
+    /** One rung of the control-height ladder for the field row. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
@@ -43,6 +45,7 @@ export const AutoComplete = defineComponent({
           collection: collection.value,
           inputValue: props.modelValue,
           allowCustomValue: true,
+          "data-size": props.size,
           onValueChange: (details: { value: string[] }) => {
             const [first] = details.value;
             if (first != null) ctx.emit("update:modelValue", first);

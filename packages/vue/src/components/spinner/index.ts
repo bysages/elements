@@ -7,6 +7,7 @@ import { defineComponent, h, type PropType } from "vue";
 export const Spinner = defineComponent({
   name: "Spinner",
   props: {
+    /** One rung of the control ladder for the wheel's diameter. */
     size: {
       type: String as PropType<"sm" | "md" | "lg">,
       default: "md",

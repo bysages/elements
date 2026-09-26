@@ -13,6 +13,7 @@ export const Input = defineComponent({
   name: "Input",
   props: {
     modelValue: { type: [String, Number] as PropType<string | number>, default: undefined },
+    /** One rung of the control-height ladder for the field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     invalid: { type: Boolean, default: false },
   },

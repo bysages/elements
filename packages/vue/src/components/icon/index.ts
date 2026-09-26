@@ -17,7 +17,11 @@ export interface IconProps {
 export const Icon = defineComponent({
   name: "Icon",
   props: {
+    /** Size steps follow the surrounding font size; `inherit` is the
+     * default — one em of the text the icon sits in. */
     size: { type: String, default: "inherit" },
+    /** The accessible name. Without it the icon is presentation-only
+     * and hidden from the accessibility tree. */
     label: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {

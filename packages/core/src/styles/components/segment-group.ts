@@ -50,6 +50,8 @@ export const segmentGroupCss =
   box-sizing: border-box;
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-md);
+  /* The tray keeps its compact register as the default; the rung only
+     moves it when the root asks. */
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-md);
@@ -100,5 +102,14 @@ export const segmentGroupCss =
   position: absolute;
   opacity: 0;
   pointer-events: none;
+}
+/* Size rungs: the segments keep the compact register by default; a
+   larger rung raises the row toward the control ladder. */
+[data-scope="segment-group"][data-part="root"][data-size="sm"] [data-part="item"] {
+  block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="segment-group"][data-part="root"][data-size="lg"] [data-part="item"] {
+  block-size: var(--bs-control-height-md);
 }
 `;

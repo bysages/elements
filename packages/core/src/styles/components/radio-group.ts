@@ -4,10 +4,21 @@ export const radioGroupCss =
   labelCss("radio-group") +
   /* css */ `
 [data-scope="radio-group"][data-part="root"] {
+  /* One dial measure for the whole group: the size rung re-points it,
+     and every consumer below inherits the answer. */
+  --bs-radio-dial: var(--bs-part-size-sm);
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
+}
+
+[data-scope="radio-group"][data-part="root"][data-size="sm"] {
+  --bs-radio-dial: calc(var(--bs-part-size-sm) * 0.875);
+}
+
+[data-scope="radio-group"][data-part="root"][data-size="lg"] {
+  --bs-radio-dial: var(--bs-part-size-md);
 }
 
 [data-scope="radio-group"][data-part="item"] {
@@ -24,8 +35,8 @@ export const radioGroupCss =
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  inline-size: var(--bs-part-size-sm);
-  block-size: var(--bs-part-size-sm);
+  inline-size: var(--bs-radio-dial);
+  block-size: var(--bs-radio-dial);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
@@ -55,8 +66,8 @@ export const radioGroupCss =
 
 [data-scope="radio-group"][data-part="item-control"][data-state="checked"]::before {
   content: "";
-  inline-size: calc(var(--bs-part-size-sm) * 0.5);
-  block-size: calc(var(--bs-part-size-sm) * 0.5);
+  inline-size: calc(var(--bs-radio-dial) * 0.5);
+  block-size: calc(var(--bs-radio-dial) * 0.5);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary-text);
 }
@@ -85,8 +96,8 @@ export const radioGroupCss =
    the spring — position comes from the machine. */
 [data-scope="radio-group"][data-part="indicator"] {
   position: absolute;
-  inline-size: var(--bs-part-size-sm);
-  block-size: var(--bs-part-size-sm);
+  inline-size: var(--bs-radio-dial);
+  block-size: var(--bs-radio-dial);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   transition:

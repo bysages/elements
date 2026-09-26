@@ -194,4 +194,29 @@ export const comboboxCss =
   inline-size: var(--bs-font-size-sm);
   block-size: var(--bs-font-size-sm);
 }
+
+/* Size rungs: the root's data-size re-points the ladder for everything
+   inside — the input and its icon-sized triggers move together. */
+[data-scope="combobox"][data-part="root"][data-size="sm"] [data-part="input"] {
+  block-size: var(--bs-control-height-sm);
+  padding: 0 var(--bs-padding-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="combobox"][data-part="root"][data-size="sm"] [data-part="trigger"],
+[data-scope="combobox"][data-part="root"][data-size="sm"] [data-part="clear-trigger"] {
+  inline-size: var(--bs-control-height-sm);
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="combobox"][data-part="root"][data-size="lg"] [data-part="input"] {
+  block-size: var(--bs-control-height-lg);
+  padding: 0 var(--bs-padding-lg);
+}
+
+[data-scope="combobox"][data-part="root"][data-size="lg"] [data-part="trigger"],
+[data-scope="combobox"][data-part="root"][data-size="lg"] [data-part="clear-trigger"] {
+  inline-size: var(--bs-control-height-lg);
+  block-size: var(--bs-control-height-lg);
+}
 `;

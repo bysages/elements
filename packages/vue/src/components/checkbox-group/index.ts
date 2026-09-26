@@ -40,6 +40,9 @@ export const CheckboxGroup = defineComponent({
     modelValue: { type: Array as PropType<string[]>, default: () => [] },
     options: { type: Array as PropType<CheckboxOption[]>, required: true },
     layout: { type: String as PropType<"vertical" | "horizontal">, default: "vertical" },
+    /** One register for every box: falls onto each root's data-size for
+     * the stylesheet to retune. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     invalid: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
@@ -69,6 +72,7 @@ export const CheckboxGroup = defineComponent({
         props.options.map((option) => {
           const boxProps: Record<string, unknown> = {
             checked: selected.value.has(option.value),
+            "data-size": props.size,
             invalid: invalid.value,
             disabled: disabled.value || option.disabled === true,
             onCheckedChange: () => toggle(option.value),
