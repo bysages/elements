@@ -4,9 +4,9 @@ export const floatingPanelCss =
   positionerCss("floating-panel") +
   popupContentCss("floating-panel", "20rem") +
   /* css */ `
+/* The machine owns the sheet's coordinates (it writes position and the
+   --x/--y pair inline); the positioner stays a hit-transparent frame. */
 [data-scope="floating-panel"][data-part="positioner"] {
-  position: fixed;
-  inset: 0;
   pointer-events: none;
 }
 
