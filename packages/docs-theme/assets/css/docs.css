@@ -1245,7 +1245,11 @@ body {
 .bs-docs-assistant-log {
   flex: 1;
   min-block-size: 0;
+  /* Inline stays clipped: a lone `overflow-block` computes the other
+     axis to auto, and the conversation must scroll inside its blocks —
+     pre, table — never sideways as a panel. */
   overflow-block: auto;
+  overflow-inline: hidden;
 }
 
 .bs-docs-assistant-empty {

@@ -37,11 +37,13 @@ export const aiCss = /* css */ `
 
 /* Markdown response: the ink is set with relaxed leading, code rides
    the mono stack on the recessed surface, quotes carry the heavy
-   hairline the alert wears. */
+   hairline the alert wears. Long tokens break inside the column — a
+   bare URL must never be the thing that widens the panel. */
 [data-scope="ai"][data-part="response"] {
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-md);
   line-height: var(--bs-line-height-relaxed);
+  overflow-wrap: anywhere;
 }
 
 [data-scope="ai"][data-part="response"] > :first-child {
@@ -164,8 +166,13 @@ export const aiCss = /* css */ `
   color: var(--bs-color-text-secondary);
 }
 
+/* Wide tables turn themselves into the scroll container — the same
+   block display the docs prose uses — instead of bursting the column. */
 [data-scope="ai"][data-part="response"] table {
+  display: block;
+  inline-size: 100%;
   margin: var(--bs-margin-md) 0;
+  overflow-x: auto;
   border-collapse: collapse;
   font-size: var(--bs-font-size-sm);
 }
