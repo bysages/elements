@@ -61,10 +61,11 @@ Set the deployed origin through `NUXT_SITE_URL` (or your platform's variable —
 
 ## Deploying to Cloudflare Pages
 
-The layer detects the platform (`CF_PAGES`) and prepares the build for it. Two things to provide on the Cloudflare side:
+The layer detects the platform (`CF_PAGES`) and prepares the build for it. Three things to provide on the Cloudflare side:
 
 1. **A D1 database** bound to the project under the name `DB` — the content database rides on it at runtime (Workers have no `node:sqlite`).
-2. Nothing else. Every prerendered page is served straight from the asset store; the worker only handles runtime routes (search, the assistant, the MCP endpoint, sitemaps, og images). For local preview, `npx wrangler pages dev dist` with a `wrangler.jsonc` that declares the same `DB` binding — Wrangler provisions a temporary local database for it.
+2. **`nodejs_compat`** in the project's compatibility flags, with a compatibility date of 2024-09-23 or later. Without it the build polyfills the Node builtins with stubs that drop async context across awaits — anything reading the request through `useEvent()` (the MCP endpoint's tools, session state) then fails with `Nitro request context is not available`. The repo's `wrangler.jsonc` declares the same flags for the build and local preview; when the project config carries `pages_build_output_dir`, `wrangler pages deploy` applies them to production too.
+3. Nothing else. Every prerendered page is served straight from the asset store; the worker only handles runtime routes (search, the assistant, the MCP endpoint, sitemaps, og images). For local preview, `npx wrangler pages dev dist` with a `wrangler.jsonc` that declares the same `DB` binding — Wrangler provisions a temporary local database for it.
 
 ## AI assistant
 

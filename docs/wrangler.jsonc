@@ -1,8 +1,18 @@
 {
-  // Local preview only (`npx wrangler pages dev dist`): Wrangler
-  // provisions a temporary local database for this binding. Only the
-  // binding name is a contract; the name/id are placeholders that need
-  // not match the production database.
+  // The build reads this file too: Nitro enables workerd's native node
+  // compatibility (`node:*` imports resolve to workerd, not unenv
+  // polyfills) only when `compatibility_flags` declares `nodejs_compat`.
+  // Polyfilled stubs keep synchronous code running but lose async
+  // context across awaits, which breaks anything reading the request
+  // through `useEvent()` — the docs assistant's MCP tools among them.
+  // The deployed Pages project needs the same two settings (Settings →
+  // Functions) or the worker fails to start on the native imports.
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Local preview (`npx wrangler pages dev dist`): Wrangler provisions
+  // a temporary local database for this binding. Only the binding name
+  // is a contract; the name/id are placeholders that need not match the
+  // production database.
   "d1_databases": [
     {
       "binding": "DB",
