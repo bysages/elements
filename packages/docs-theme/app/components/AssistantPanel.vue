@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChat } from "@ai-sdk/vue";
-import { Ai, Button, Drawer } from "@bysages/vue";
+import { Ai, Button, Dialog } from "@bysages/vue";
 import { DefaultChatTransport, type ToolUIPart } from "ai";
 
 const {
@@ -15,7 +15,7 @@ const {
   Loader,
   Action,
 } = Ai;
-const { Root, Backdrop, Positioner, Content, Title, CloseTrigger } = Drawer;
+const { Root, Backdrop, Positioner, Content, Title, CloseTrigger } = Dialog;
 
 const { isOpen, close, draft } = useAssistant();
 
@@ -89,9 +89,9 @@ const starters = computed(() => {
 
 <template>
   <ClientOnly>
-    <Root :open="isOpen" swipe-direction="end" @update:open="(value: boolean) => value || close()">
+    <Root :open="isOpen" @update:open="(value: boolean) => value || close()">
       <Backdrop />
-      <Positioner>
+      <Positioner class="bs-docs-assistant-positioner">
         <Content :aria-label="t('docs.assistantTitle')" class="bs-docs-assistant">
           <div class="bs-docs-assistant-head">
             <Title>{{ t("docs.assistantTitle") }}</Title>

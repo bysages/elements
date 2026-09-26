@@ -1172,7 +1172,7 @@ body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Assistant — a floating prompt, a Drawer panel                     */
+/* Assistant — a floating prompt, a Dialog panel                     */
 /* ---------------------------------------------------------------- */
 
 .bs-docs-assistant-float {
@@ -1185,10 +1185,30 @@ body {
   box-shadow: var(--bs-elevation-2);
 }
 
-.bs-docs-assistant {
+/* A conversation is not a sheet to swipe away, so the panel rides the
+   dialog machine — no pointer tracking, hence no machine-written
+   `user-select: none` — and these rules seat it against the end edge at
+   full height, like a side sheet. They name the dialog parts they
+   reshape: component styles inject after this sheet, so a bare class
+   would lose the tie. */
+[data-scope="dialog"][data-part="positioner"].bs-docs-assistant-positioner {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
+}
+
+[data-scope="dialog"][data-part="content"].bs-docs-assistant {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-gap-sm);
+  gap: var(--bs-space-4);
+  inline-size: min(24rem, 85%);
+  max-block-size: none;
+  overflow: hidden;
+  border-start-start-radius: var(--bs-radius-lg);
+  border-end-start-radius: var(--bs-radius-lg);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .bs-docs-assistant-head {
@@ -1204,10 +1224,10 @@ body {
   gap: var(--bs-gap-xs);
 }
 
-/* The drawer's close trigger ships absolutely positioned for the vessel's
-   corner; inside the tools row it must flow beside the clear control. The
-   extra class out-specifies the part rule — component styles inject after
-   this sheet, and a tie would let the corner placement win. */
+/* The close trigger ships absolutely positioned for the vessel's corner;
+   inside the tools row it must flow beside the clear control. The extra
+   class out-specifies the part rule — component styles inject after this
+   sheet, and a tie would let the corner placement win. */
 .bs-docs-assistant .bs-docs-assistant-tools [data-part="close-trigger"] {
   position: static;
   inset: auto;
