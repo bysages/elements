@@ -35,7 +35,8 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
               whiteSpace: 'nowrap',
             }"
           >
-            <span v-if="!state.collapsed">{{ stop }}</span>
+            <span v-if="state.collapsed">{{ stop[0] }}</span>
+            <span v-else>{{ stop }}</span>
           </Button>
         </nav>
       </Layout.Sider>
