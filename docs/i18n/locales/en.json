@@ -1,26 +1,5 @@
 {
-  "common": {
-    "error": {
-      "title": "This page is not on the shelf.",
-      "back": "Back to the index"
-    }
-  },
   "docs": {
-    "toc": "On this page",
-    "menu": "Menu",
-    "language": "Language",
-    "reference": "Reference",
-    "copy": {
-      "code": "Copy code",
-      "copied": "Copied"
-    },
-    "search": "Search the docs…",
-    "searchEmpty": "Nothing found.",
-    "assistant": "Ask about the docs…",
-    "assistantGreeting": "Ask the assistant — it reads these shelves.",
-    "prev": "Previous",
-    "next": "Next",
-    "edit": "Edit this page",
     "workbench": "Open in Storybook"
   }
 }
