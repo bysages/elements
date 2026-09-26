@@ -60,7 +60,7 @@
     "@storybook/react-vite": "10.6.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "ai": "7.0.107",
+    "ai": "7.0.116",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "storybook": "10.6.0",
