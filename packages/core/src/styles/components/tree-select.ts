@@ -87,12 +87,23 @@ export const treeSelectCss =
 }
 
 /* Size rungs: the trigger's data-size re-points the control-height
-   ladder for the whole field row. */
+   ladder for the whole field row, and the vessel's rows ride the same
+   rung through the tree's own row-block knob. */
 [data-scope="tree-select"][data-part="control"][data-size="sm"] {
   block-size: var(--bs-control-height-sm);
 }
 
 [data-scope="tree-select"][data-part="control"][data-size="lg"] {
   block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="tree-select"][data-part="content"][data-size="sm"]
+  [data-scope="tree-view"][data-part="root"] {
+  --bs-tree-row-block: var(--bs-space-1);
+}
+
+[data-scope="tree-select"][data-part="content"][data-size="lg"]
+  [data-scope="tree-view"][data-part="root"] {
+  --bs-tree-row-block: var(--bs-space-3);
 }
 `;

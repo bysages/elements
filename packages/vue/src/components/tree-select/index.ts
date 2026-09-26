@@ -50,7 +50,8 @@ export const TreeSelect = defineComponent({
     placeholder: { type: String, default: "Select…" },
     filterable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
-    /** One rung of the control-height ladder for the trigger. */
+    /** One rung of the ladder: the trigger height and the vessel's
+     * row register follow it together. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
@@ -187,52 +188,56 @@ export const TreeSelect = defineComponent({
           ),
           h(Teleport, { to: "body" }, [
             h(ArkPopover.Positioner, () => [
-              h(ArkPopover.Content, { "data-scope": "tree-select", "data-part": "content" }, () => [
-                ...(props.filterable
-                  ? [
-                      h("div", { "data-scope": "tree-select", "data-part": "search" }, [
-                        h(Input, {
-                          size: "sm",
-                          modelValue: query.value,
-                          "onUpdate:modelValue": (value: string) => (query.value = value),
-                          placeholder: "Filter…",
-                          "aria-label": "Filter options",
-                        }),
-                      ]),
-                    ]
-                  : []),
-                h("div", { "data-scope": "tree-select", "data-part": "body" }, [
-                  (visibleCollection.value.rootNode.children ?? []).length === 0
+              h(
+                ArkPopover.Content,
+                { "data-scope": "tree-select", "data-part": "content", "data-size": props.size },
+                () => [
+                  ...(props.filterable
                     ? [
-                        h(
-                          "p",
-                          { "data-scope": "tree-select", "data-part": "empty" },
-                          "Nothing matches",
-                        ),
+                        h("div", { "data-scope": "tree-select", "data-part": "search" }, [
+                          h(Input, {
+                            size: "sm",
+                            modelValue: query.value,
+                            "onUpdate:modelValue": (value: string) => (query.value = value),
+                            placeholder: "Filter…",
+                            "aria-label": "Filter options",
+                          }),
+                        ]),
                       ]
-                    : [
-                        h(
-                          ArkTreeView.Root,
-                          {
-                            collection: visibleCollection.value,
-                            selectionMode: "single",
-                            selectedValue: props.modelValue ? [props.modelValue] : [],
-                            ...(filtering.value
-                              ? { expandedValue: expandedWhileFiltering.value }
-                              : { defaultExpandedValue: firstLevel.value }),
-                            onSelectionChange: pick,
-                          } as never,
-                          () => [
-                            h(ArkTreeView.Tree, () =>
-                              visibleCollection.value.rootNode.children?.map((node, index) =>
-                                h(Row, { key: node.value, node, indexPath: [index] }),
+                    : []),
+                  h("div", { "data-scope": "tree-select", "data-part": "body" }, [
+                    (visibleCollection.value.rootNode.children ?? []).length === 0
+                      ? [
+                          h(
+                            "p",
+                            { "data-scope": "tree-select", "data-part": "empty" },
+                            "Nothing matches",
+                          ),
+                        ]
+                      : [
+                          h(
+                            ArkTreeView.Root,
+                            {
+                              collection: visibleCollection.value,
+                              selectionMode: "single",
+                              selectedValue: props.modelValue ? [props.modelValue] : [],
+                              ...(filtering.value
+                                ? { expandedValue: expandedWhileFiltering.value }
+                                : { defaultExpandedValue: firstLevel.value }),
+                              onSelectionChange: pick,
+                            } as never,
+                            () => [
+                              h(ArkTreeView.Tree, () =>
+                                visibleCollection.value.rootNode.children?.map((node, index) =>
+                                  h(Row, { key: node.value, node, indexPath: [index] }),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                ]),
-              ]),
+                            ],
+                          ),
+                        ],
+                  ]),
+                ],
+              ),
             ]),
           ]),
         ],

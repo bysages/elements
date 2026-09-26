@@ -8,7 +8,10 @@ import { defineComponent, h, type PropType } from "vue";
 const SegmentGroupRoot = defineComponent({
   name: "SSegmentGroupRoot",
   props: {
-    /** One rung of the control-height ladder for the segments. */
+    /** One rung of the control-height ladder for the segments. The
+     * family keeps its compact register, so the rungs sit one notch
+     * below the global ladder — the default md rests at the small
+     * height. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {

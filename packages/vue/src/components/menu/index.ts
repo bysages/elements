@@ -1,11 +1,20 @@
 import { Menu as ArkMenu } from "@ark-ui/vue/menu";
 import { injectComponentStyle } from "@bysages/core";
-import { defineComponent, h, inject, provide, type InjectionKey, type PropType } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  inject,
+  provide,
+  type ComputedRef,
+  type InjectionKey,
+  type PropType,
+} from "vue";
 
 /** The row rung rides the context because Ark's Root renders no DOM of
  * its own — the vessel (Content) is the element the rung can land on,
  * and the Teleport breaks CSS ancestry between the two. */
-const MenuSizeKey: InjectionKey<string> = Symbol("menu-size");
+const MenuSizeKey: InjectionKey<ComputedRef<string>> = Symbol("menu-size");
 
 const MenuRoot = defineComponent({
   name: "SMenuRoot",
@@ -14,7 +23,11 @@ const MenuRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { slots }) {
-    provide(MenuSizeKey, props.size);
+    // The ref rides the context so a bound size retunes an open vessel.
+    provide(
+      MenuSizeKey,
+      computed(() => props.size),
+    );
     return () => h(ArkMenu.Root, null, slots);
   },
 });
@@ -23,8 +36,11 @@ const MenuContent = defineComponent({
   name: "SMenuContent",
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
-    const size = inject(MenuSizeKey, "md");
-    return () => h(ArkMenu.Content, { ...attrs, "data-size": size }, slots);
+    const size = inject(
+      MenuSizeKey,
+      computed(() => "md"),
+    );
+    return () => h(ArkMenu.Content, { ...attrs, "data-size": size.value }, slots);
   },
 });
 
