@@ -59,6 +59,13 @@ bun add @bysages/docs-theme
 
 Set the deployed origin through `NUXT_SITE_URL` (or your platform's variable — `CF_PAGES_URL`, `VERCEL_URL`, …) so canonical links, the sitemap and `llms.txt` point at the real host.
 
+## Deploying to Cloudflare Pages
+
+The layer detects the platform (`CF_PAGES`) and prepares the build for it. Two things to provide on the Cloudflare side:
+
+1. **A D1 database** bound to the project under the name `DB` — the content database rides on it at runtime (Workers have no `node:sqlite`).
+2. Nothing else. Every prerendered page is served straight from the asset store; the worker only handles runtime routes (search, the assistant, the MCP endpoint, sitemaps, og images). For local preview, `npx wrangler pages dev dist` with a `wrangler.jsonc` that declares the same `DB` binding — Wrangler provisions a temporary local database for it.
+
 ## AI assistant
 
 The layer ships a floating assistant panel wired to `POST /api/assistant`. Point it at any OpenAI-compatible endpoint:

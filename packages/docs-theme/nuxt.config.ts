@@ -102,6 +102,45 @@ const config = {
         routes: [...(nitroConfig.prerender?.routes ?? []), ...roots],
         ignore: [...(nitroConfig.prerender?.ignore ?? []), "/sitemap.xml"],
       };
+      // Cloudflare Pages: serve prerendered pages straight from the asset
+      // store and invoke the worker only for runtime routes. The auto
+      // map spills past the platform's 100-rule cap and truncates to
+      // `include: /*`, dragging every page refresh through the worker.
+      // Exclude wins over include, so static pockets inside runtime
+      // prefixes (.well-known/skills) still resolve to files. Pages
+      // outside the locale prefixes keep falling back to the worker.
+      nitroConfig.cloudflare = {
+        ...nitroConfig.cloudflare,
+        pages: {
+          defaultRoutes: false,
+          routes: {
+            include: [
+              "/api/*",
+              "/mcp",
+              "/mcp/*",
+              "/__sitemap__/*",
+              "/_og/d/*",
+              "/_og/r/*",
+              "/robots.txt",
+              "/llms.txt",
+              "/llms-full.txt",
+              "/sitemap_index.xml",
+              "/sitemap/*",
+              "/.well-known/*",
+            ],
+            exclude: [
+              "/",
+              "/_nuxt/*",
+              "/raw/*",
+              "/storybook/*",
+              "/dump.*",
+              "/.well-known/skills/*",
+              ...roots,
+              ...codes.map((c) => `/${c}/*`),
+            ],
+          },
+        },
+      };
     },
   } as NuxtConfig["hooks"],
 
@@ -146,7 +185,14 @@ const config = {
   },
 
   content: {
-    experimental: { sqliteConnector: "native" as const },
+    experimental: {
+      // The build-time database rides node:sqlite (what docus ships too).
+      // Runtime is a different database entirely: on Cloudflare the
+      // module binds the queries to the project's D1, so this option
+      // never reaches the worker — and even where node:sqlite is
+      // missing the adapter probe falls back on its own.
+      sqliteConnector: "native" as const,
+    },
     build: {
       markdown: {
         // Code blocks are stored as plain text in the content AST and

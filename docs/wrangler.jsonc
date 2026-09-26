@@ -1,0 +1,13 @@
+{
+  // Local preview only (`npx wrangler pages dev dist`): Wrangler
+  // provisions a temporary local database for this binding. Only the
+  // binding name is a contract; the name/id are placeholders that need
+  // not match the production database.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "elements-docs",
+      "database_id": "local",
+    },
+  ],
+}
