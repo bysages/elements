@@ -145,21 +145,15 @@ export const Transfer = defineComponent({
     }
 
     return () => {
-      const items = computed(() => panelItems(props.data, false, sourceQuery.value));
-      const targetItems = computed(() => panelItems(props.data, true, targetQuery.value));
-      const sourcePanel = panel(
-        "source",
-        props.titles[0],
-        sourceQuery,
-        checkedSource.value,
-        items.value,
-      );
+      const items = panelItems(props.data, false, sourceQuery.value);
+      const targetItems = panelItems(props.data, true, targetQuery.value);
+      const sourcePanel = panel("source", props.titles[0], sourceQuery, checkedSource.value, items);
       const targetPanel = panel(
         "target",
         props.titles[1],
         targetQuery,
         checkedTarget.value,
-        targetItems.value,
+        targetItems,
       );
 
       return h("div", { ...ctx.attrs, "data-scope": "transfer", "data-part": "root" }, [

@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { computed, defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, type PropType } from "vue";
 
 const Root = defineComponent({
   name: "BannerRoot",
@@ -11,16 +11,15 @@ const Root = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
-    const status = computed(() => props.status);
     return () =>
       h(
         "div",
         {
           ...ctx.attrs,
-          role: status.value === "ink" ? undefined : "status",
+          role: props.status === "ink" ? undefined : "status",
           "data-scope": "banner",
           "data-part": "root",
-          "data-status": status.value,
+          "data-status": props.status,
         },
         ctx.slots.default?.(),
       );

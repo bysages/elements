@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { computed, defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, type PropType } from "vue";
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
@@ -13,7 +13,6 @@ export const Spinner = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
-    const size = computed(() => props.size);
     return () =>
       h(
         "span",
@@ -23,7 +22,7 @@ export const Spinner = defineComponent({
           "aria-label": ctx.attrs["aria-label"] ?? "Loading",
           "data-scope": "spinner",
           "data-part": "root",
-          "data-size": size.value,
+          "data-size": props.size,
         },
         [
           h("svg", { viewBox: "0 0 24 24", fill: "none", "aria-hidden": true }, [

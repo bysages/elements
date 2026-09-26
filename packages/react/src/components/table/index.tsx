@@ -392,26 +392,29 @@ export function DataTable(rawProps: DataTableProps) {
 
   /** The declared row height is the density-scale baseline; the live
    * scale comes off the document so the virtual window matches what CSS
-   * actually renders. */
-  const densityScale = () => {
+   * actually renders. It is read once and re-read only when the density
+   * or scene attribute moves — estimateSize runs on every scroll frame. */
+  let densityScale = 1;
+  const readDensityScale = () => {
     const value = Number(
       getComputedStyle(document.documentElement).getPropertyValue("--bs-density-scale"),
     );
-    return Number.isFinite(value) && value > 0 ? value : 1;
+    densityScale = Number.isFinite(value) && value > 0 ? value : 1;
   };
 
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => viewport.current,
-    estimateSize: () => rowHeight * densityScale(),
+    estimateSize: () => rowHeight * densityScale,
     getItemKey: (index) => rows[index]?.id ?? index,
     overscan: 8,
   });
-  // Density and scene presets rewrite the scale in place; re-render so
-  // the virtual window keeps matching the rendered rows.
+  // Density and scene presets rewrite the scale in place; re-read it and
+  // re-render so the virtual window keeps matching the rendered rows.
   const [, rerender] = useReducer((count: number) => count + 1, 0);
   useEffect(() => {
     if (!virtual) return;
+    readDensityScale();
     const observer = new MutationObserver(rerender);
     observer.observe(document.documentElement, {
       attributes: true,

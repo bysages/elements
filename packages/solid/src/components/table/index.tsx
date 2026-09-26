@@ -358,13 +358,15 @@ export function DataTable(props: DataTableProps) {
 
   /** The declared row height is the density-scale baseline; the live
    * scale comes off the document so the virtual window matches what CSS
-   * actually renders. */
+   * actually renders. It is read once and re-read only when the density
+   * or scene attribute moves — estimateSize runs on every scroll frame. */
   const baseRowHeight = () => props.rowHeight ?? 40;
-  const densityScale = () => {
+  let densityScale = 1;
+  const readDensityScale = () => {
     const value = Number(
       getComputedStyle(document.documentElement).getPropertyValue("--bs-density-scale"),
     );
-    return Number.isFinite(value) && value > 0 ? value : 1;
+    densityScale = Number.isFinite(value) && value > 0 ? value : 1;
   };
 
   const virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
@@ -372,15 +374,19 @@ export function DataTable(props: DataTableProps) {
       return rows().length;
     },
     getScrollElement: () => viewport(),
-    estimateSize: () => baseRowHeight() * densityScale(),
+    estimateSize: () => baseRowHeight() * densityScale,
     getItemKey: (index: number) => rows()[index]?.id ?? index,
     overscan: 8,
   });
-  // Density and scene presets rewrite the scale in place; re-measure so
-  // the virtual window keeps matching the rendered rows.
+  // Density and scene presets rewrite the scale in place; re-read it and
+  // re-measure so the virtual window keeps matching the rendered rows.
   onMount(() => {
     if (typeof MutationObserver === "undefined") return;
-    const densityObserver = new MutationObserver(() => virtualizer.measure());
+    readDensityScale();
+    const densityObserver = new MutationObserver(() => {
+      readDensityScale();
+      virtualizer.measure();
+    });
     densityObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-density", "data-scene"],

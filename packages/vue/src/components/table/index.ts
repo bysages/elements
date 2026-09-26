@@ -402,29 +402,36 @@ export const DataTable = defineComponent({
 
     /** The declared row height is the density-scale baseline; the live
      * scale comes off the document so the virtual window matches what CSS
-     * actually renders. */
+     * actually renders. It is read once and re-read only when the density
+     * or scene attribute moves — estimateSize runs on every scroll frame. */
     const baseRowHeight = () => props.rowHeight ?? 40;
-    const densityScale = () => {
+    let densityScale = 1;
+    const readDensityScale = () => {
       const value = Number(
         getComputedStyle(document.documentElement).getPropertyValue("--bs-density-scale"),
       );
-      return Number.isFinite(value) && value > 0 ? value : 1;
+      densityScale = Number.isFinite(value) && value > 0 ? value : 1;
     };
 
     const virtualizer = useVirtualizer(
       computed(() => ({
         count: rows.value.length,
         getScrollElement: () => viewport.value,
-        estimateSize: () => baseRowHeight() * densityScale(),
+        estimateSize: () => baseRowHeight() * densityScale,
         getItemKey: (index: number) => rows.value[index]?.id ?? index,
         overscan: 8,
       })),
     );
-    // Density and scene presets rewrite the scale in place; re-measure so
-    // the virtual window keeps matching the rendered rows. Server renders
-    // have no observer — the client picks the watch up on hydration.
+    // Density and scene presets rewrite the scale in place; re-read it and
+    // re-measure so the virtual window keeps matching the rendered rows.
+    // Server renders have no observer — the client picks the watch up on
+    // hydration.
     if (typeof MutationObserver !== "undefined") {
-      const densityObserver = new MutationObserver(() => virtualizer.value.measure());
+      readDensityScale();
+      const densityObserver = new MutationObserver(() => {
+        readDensityScale();
+        virtualizer.value.measure();
+      });
       densityObserver.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ["data-density", "data-scene"],

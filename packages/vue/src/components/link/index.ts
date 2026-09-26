@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { computed, defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, type PropType } from "vue";
 
 /** A link is ink in the accent's voice: quiet at rest, deepening under
  * the hand, the halo at focus. The underline follows the prose —
@@ -14,7 +14,6 @@ export const Link = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
-    const underline = computed(() => props.underline);
     return () =>
       h(
         "a",
@@ -22,7 +21,7 @@ export const Link = defineComponent({
           ...ctx.attrs,
           "data-scope": "link",
           "data-part": "root",
-          "data-underline": underline.value,
+          "data-underline": props.underline,
         },
         ctx.slots.default?.(),
       );

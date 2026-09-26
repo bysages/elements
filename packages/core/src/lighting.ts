@@ -82,6 +82,7 @@ export function attachDynamicLight(options: DynamicLightOptions = {}): () => voi
   const strength = options.strength ?? 3;
   let frame = 0;
   let lastEvent: PointerEvent | undefined;
+  let lit: HTMLElement | undefined;
 
   const apply = () => {
     frame = 0;
@@ -91,26 +92,32 @@ export function attachDynamicLight(options: DynamicLightOptions = {}): () => voi
 
     const target = event.target;
     if (!(target instanceof Element)) return;
-    const lit = target.closest(LIT_SELECTOR);
-    const previous = document.querySelector(`${LIT_SELECTOR}[style]`);
+    const next = target.closest<HTMLElement>(LIT_SELECTOR);
 
-    if (lit instanceof HTMLElement) {
+    if (next) {
+      // Moving to another lit element lets the old one keep its rest light.
+      if (next !== lit) {
+        lit?.style.removeProperty("--bs-light-x");
+        lit?.style.removeProperty("--bs-light-y");
+        lit = next;
+      }
       // Shift the light toward the pointer, clamp to ±strength: the
       // shadow cast on the far side leans the same amount away.
-      const rect = lit.getBoundingClientRect();
+      const rect = next.getBoundingClientRect();
       const dx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       const dy = ((event.clientY - rect.top) / rect.height) * 2 - 1;
-      lit.style.setProperty(
+      next.style.setProperty(
         "--bs-light-x",
         `${(Math.max(-1, Math.min(1, dx)) * strength).toFixed(2)}px`,
       );
-      lit.style.setProperty(
+      next.style.setProperty(
         "--bs-light-y",
         `${(Math.max(-1, Math.min(1, dy)) * strength).toFixed(2)}px`,
       );
-    } else if (previous instanceof HTMLElement) {
-      previous.style.removeProperty("--bs-light-x");
-      previous.style.removeProperty("--bs-light-y");
+    } else if (lit) {
+      lit.style.removeProperty("--bs-light-x");
+      lit.style.removeProperty("--bs-light-y");
+      lit = undefined;
     }
   };
 
@@ -124,7 +131,10 @@ export function attachDynamicLight(options: DynamicLightOptions = {}): () => voi
   if (reduced?.matches) return () => {};
 
   document.addEventListener("pointermove", onMove, { passive: true });
-  detachPointer = () => document.removeEventListener("pointermove", onMove);
+  detachPointer = () => {
+    document.removeEventListener("pointermove", onMove);
+    lit = undefined;
+  };
   return detachPointer;
 }
 
