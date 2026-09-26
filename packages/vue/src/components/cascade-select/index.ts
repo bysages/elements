@@ -83,6 +83,8 @@ export const CascadeSelect = defineComponent({
     filterable: { type: Boolean, default: false },
     multiple: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    /** One rung of the control-height ladder for the trigger. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
@@ -239,7 +241,7 @@ export const CascadeSelect = defineComponent({
     }
 
     return () =>
-      h("div", { ...ctx.attrs, ...api.value.getRootProps() }, [
+      h("div", { ...ctx.attrs, ...api.value.getRootProps(), "data-size": props.size }, [
         h("div", api.value.getControlProps(), [
           h("button", { ...api.value.getTriggerProps(), disabled: props.disabled || undefined }, [
             h("span", api.value.getValueTextProps(), display.value ?? props.placeholder),
@@ -250,7 +252,7 @@ export const CascadeSelect = defineComponent({
           h("div", api.value.getPositionerProps(), [
             h(
               "div",
-              api.value.getContentProps(),
+              { ...api.value.getContentProps(), "data-size": props.size },
               [
                 ...(props.filterable
                   ? [

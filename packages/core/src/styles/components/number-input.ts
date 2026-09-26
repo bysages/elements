@@ -138,4 +138,24 @@ export const numberInputCss =
   font-size: var(--bs-font-size-sm);
   font-variant-numeric: tabular-nums;
 }
+
+/* Size rungs: the root's data-size re-points the field baseline and
+   the stepper seals inside it move with the row. */
+[data-scope="number-input"][data-part="root"][data-size="sm"] [data-part="input"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="number-input"][data-part="root"][data-size="sm"] [data-part="increment-trigger"],
+[data-scope="number-input"][data-part="root"][data-size="sm"] [data-part="decrement-trigger"] {
+  inline-size: var(--bs-space-5);
+}
+
+[data-scope="number-input"][data-part="root"][data-size="lg"] [data-part="input"] {
+  block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="number-input"][data-part="root"][data-size="lg"] [data-part="increment-trigger"],
+[data-scope="number-input"][data-part="root"][data-size="lg"] [data-part="decrement-trigger"] {
+  inline-size: var(--bs-space-7);
+}
 `;

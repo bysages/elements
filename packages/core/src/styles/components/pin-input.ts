@@ -52,4 +52,16 @@ export const pinInputCss =
   box-shadow: none;
   cursor: not-allowed;
 }
+
+/* Size rungs: the root's data-size re-points the ladder every seal
+   stands on. */
+[data-scope="pin-input"][data-part="root"][data-size="sm"] [data-part="input"] {
+  inline-size: var(--bs-control-height-sm);
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="pin-input"][data-part="root"][data-size="lg"] [data-part="input"] {
+  inline-size: var(--bs-control-height-lg);
+  block-size: var(--bs-control-height-lg);
+}
 `;

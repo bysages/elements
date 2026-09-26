@@ -27,6 +27,8 @@ export const DynamicInput = defineComponent({
     addLabel: { type: String, default: "Add entry" },
     disabled: { type: Boolean, default: false },
     invalid: { type: Boolean, default: false },
+    /** One rung of the ladder, handed to every row's field and seals. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
@@ -59,6 +61,7 @@ export const DynamicInput = defineComponent({
               placeholder: props.placeholder,
               disabled: props.disabled,
               invalid: props.invalid,
+              size: props.size,
               "onUpdate:modelValue": (next: string) => update(index, next),
             }),
             h(
@@ -66,6 +69,7 @@ export const DynamicInput = defineComponent({
               {
                 variant: "ghost",
                 square: true,
+                size: props.size,
                 disabled: props.disabled || !canRemove,
                 "aria-label": `Remove entry ${index + 1}`,
                 onClick: () => remove(index),
@@ -79,6 +83,7 @@ export const DynamicInput = defineComponent({
             Button,
             {
               variant: "ghost",
+              size: props.size,
               disabled: props.disabled || !canAdd,
               onClick: () => add(),
             },

@@ -174,4 +174,16 @@ export const sliderCss =
 [data-scope="slider"][data-part="marker"][data-disabled] {
   color: var(--bs-color-text-disabled);
 }
+
+/* Size rungs: the root's data-size re-points the part-size ladder for
+   the thumb seal; the control keeps its grab margin either way. */
+[data-scope="slider"][data-part="root"][data-size="sm"] [data-part="thumb"] {
+  inline-size: var(--bs-part-size-sm);
+  block-size: var(--bs-part-size-sm);
+}
+
+[data-scope="slider"][data-part="root"][data-size="lg"] [data-part="thumb"] {
+  inline-size: var(--bs-part-size-lg);
+  block-size: var(--bs-part-size-lg);
+}
 `;

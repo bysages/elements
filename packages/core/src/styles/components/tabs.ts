@@ -76,4 +76,14 @@ export const tabsCss = /* css */ `
   box-shadow: var(--bs-focus-ring-inset);
   border-radius: var(--bs-radius-sm);
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the tab
+   rows — the rule and its ink bar ride whatever height they are given. */
+[data-scope="tabs"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="tabs"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

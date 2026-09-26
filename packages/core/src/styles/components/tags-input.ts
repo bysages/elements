@@ -158,4 +158,14 @@ export const tagsInputCss =
   inline-size: var(--bs-font-size-sm);
   block-size: var(--bs-font-size-sm);
 }
+
+/* Size rungs: the root's data-size re-points the vessel's resting
+   measure; the chips keep their own register. */
+[data-scope="tags-input"][data-part="root"][data-size="sm"] [data-part="control"] {
+  min-block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="tags-input"][data-part="root"][data-size="lg"] [data-part="control"] {
+  min-block-size: var(--bs-control-height-lg);
+}
 `;

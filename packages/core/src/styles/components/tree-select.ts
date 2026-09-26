@@ -85,4 +85,14 @@ export const treeSelectCss =
   font-size: var(--bs-font-size-sm);
   text-align: center;
 }
+
+/* Size rungs: the trigger's data-size re-points the control-height
+   ladder for the whole field row. */
+[data-scope="tree-select"][data-part="control"][data-size="sm"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="tree-select"][data-part="control"][data-size="lg"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

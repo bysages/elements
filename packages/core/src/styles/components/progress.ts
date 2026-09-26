@@ -122,4 +122,14 @@ export const progressCss =
     transform: translateY(200%);
   }
 }
+
+/* Size rungs: the root's data-size re-points the groove ladder —
+   the circle view keeps its own geometry. */
+[data-scope="progress"][data-part="root"][data-size="sm"] [data-part="track"] {
+  block-size: calc(var(--bs-space-1) * 0.75);
+}
+
+[data-scope="progress"][data-part="root"][data-size="lg"] [data-part="track"] {
+  block-size: var(--bs-space-2);
+}
 `;

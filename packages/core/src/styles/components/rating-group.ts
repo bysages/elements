@@ -71,4 +71,16 @@ export const ratingGroupCss =
   background: transparent;
   cursor: not-allowed;
 }
+
+/* Size rungs: the root's data-size re-points the ladder every seal
+   stands on. */
+[data-scope="rating-group"][data-part="root"][data-size="sm"] [data-part="item"] {
+  inline-size: calc(var(--bs-control-height-sm) * 0.875);
+  block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="rating-group"][data-part="root"][data-size="lg"] [data-part="item"] {
+  inline-size: var(--bs-control-height-md);
+  block-size: var(--bs-control-height-md);
+}
 `;

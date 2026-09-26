@@ -155,4 +155,16 @@ export const angleSliderCss =
 [data-scope="angle-slider"][data-part="marker"][data-disabled]::before {
   background: var(--bs-color-border);
 }
+
+/* Size rungs: the root's data-size scales the dial's diameter; the
+   needle and its ticks ride the same geometry at every rung. */
+[data-scope="angle-slider"][data-part="root"][data-size="sm"] [data-part="control"] {
+  inline-size: calc(var(--bs-space-24) * 1.5);
+  block-size: calc(var(--bs-space-24) * 1.5);
+}
+
+[data-scope="angle-slider"][data-part="root"][data-size="lg"] [data-part="control"] {
+  inline-size: calc(var(--bs-space-24) * 2.5);
+  block-size: calc(var(--bs-space-24) * 2.5);
+}
 `;

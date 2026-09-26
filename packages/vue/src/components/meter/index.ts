@@ -44,6 +44,8 @@ const Root = defineComponent({
       default: "normal",
     },
     label: { type: String, default: undefined },
+    /** One rung of the groove ladder — the track's thickness. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, ctx: SetupContext) {
     const ratio = computed(() => {
@@ -67,6 +69,7 @@ const Root = defineComponent({
           "aria-label": props.label ?? (ctx.attrs["aria-label"] as string | undefined),
           "data-scope": "meter",
           "data-part": "root",
+          "data-size": props.size,
           "data-level": props.level !== "normal" ? props.level : undefined,
           // The share of the scale, inherited by the range below.
           style: { ...(ctx.attrs.style as object), "--_percent": `${ratio.value * 100}%` },

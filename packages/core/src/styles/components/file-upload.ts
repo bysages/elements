@@ -249,4 +249,14 @@ export const fileUploadCss =
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the
+   trigger; the dropzone grows with its content, not the ladder. */
+[data-scope="file-upload"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="file-upload"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

@@ -397,4 +397,20 @@ export const colorPickerCss =
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the swatch
+   seal and its passengers — the area and sliders keep their own register. */
+[data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="trigger"],
+[data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="swatch"],
+[data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="eye-dropper-trigger"] {
+  inline-size: var(--bs-control-height-sm);
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="trigger"],
+[data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="swatch"],
+[data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="eye-dropper-trigger"] {
+  inline-size: var(--bs-control-height-lg);
+  block-size: var(--bs-control-height-lg);
+}
 `;

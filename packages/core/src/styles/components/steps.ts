@@ -162,4 +162,16 @@ export const stepsCss = /* css */ `
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
 }
+
+/* Size rungs: the root's data-size re-points the ladder every
+   indicator stands on; the connecting hairline follows the row. */
+[data-scope="steps"][data-part="root"][data-size="sm"] [data-part="indicator"] {
+  inline-size: calc(var(--bs-control-height-sm) * 0.875);
+  block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="steps"][data-part="root"][data-size="lg"] [data-part="indicator"] {
+  inline-size: var(--bs-control-height-md);
+  block-size: var(--bs-control-height-md);
+}
 `;

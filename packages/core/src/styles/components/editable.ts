@@ -168,4 +168,16 @@ export const editableCss =
   inline-size: 1rem;
   block-size: 1rem;
 }
+
+/* Size rungs: the root's data-size re-points the editing field; the
+   line-height must follow or the caret sits off the ink. */
+[data-scope="editable"][data-part="root"][data-size="sm"] [data-part="input"] {
+  block-size: var(--bs-control-height-sm);
+  line-height: calc(var(--bs-control-height-sm) - 2px);
+}
+
+[data-scope="editable"][data-part="root"][data-size="lg"] [data-part="input"] {
+  block-size: var(--bs-control-height-lg);
+  line-height: calc(var(--bs-control-height-lg) - 2px);
+}
 `;

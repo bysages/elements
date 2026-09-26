@@ -72,4 +72,26 @@ export const paginationCss = /* css */ `
   font-size: var(--bs-font-size-sm);
   letter-spacing: var(--bs-tracking-label);
 }
+
+/* Size rungs: the root's data-size re-points the ladder every page
+   seal shares — pages, arrows and ellipsis move as one instrument. */
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="item"],
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="first-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="prev-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="next-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="last-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="sm"] [data-part="ellipsis"] {
+  min-inline-size: calc(var(--bs-control-height-sm) * 0.875);
+  block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="item"],
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="first-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="prev-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="next-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="last-trigger"],
+[data-scope="pagination"][data-part="root"][data-size="lg"] [data-part="ellipsis"] {
+  min-inline-size: var(--bs-control-height-md);
+  block-size: var(--bs-control-height-md);
+}
 `;

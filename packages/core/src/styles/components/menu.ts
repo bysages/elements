@@ -201,4 +201,17 @@ export const menuCss =
   border: none;
   background: var(--bs-color-border);
 }
+
+/* Size rungs: the vessel's own data-size re-points the ladder for its
+   rows — Ark's Root renders no DOM, and the Teleport breaks ancestry
+   to the trigger side, so the rung rides the Content part. */
+[data-scope="menu"][data-part="content"][data-size="sm"] [data-part="item"],
+[data-scope="menu"][data-part="content"][data-size="sm"] [data-part="trigger-item"] {
+  min-block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="menu"][data-part="content"][data-size="lg"] [data-part="item"],
+[data-scope="menu"][data-part="content"][data-size="lg"] [data-part="trigger-item"] {
+  min-block-size: var(--bs-control-height-md);
+}
 `;

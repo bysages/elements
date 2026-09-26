@@ -85,4 +85,22 @@ export const mentionsCss = /* css */ `
 [data-scope="mentions"][data-part="option"][data-active] {
   background: var(--bs-color-surface-0);
 }
+
+/* Size rungs: the root's data-size re-points the resting measure of
+   the field and the rows inside its vessel. */
+[data-scope="mentions"][data-part="root"][data-size="sm"] [data-part="textarea"] {
+  min-block-size: calc(var(--bs-control-height-sm) + var(--bs-space-4));
+}
+
+[data-scope="mentions"][data-part="root"][data-size="lg"] [data-part="textarea"] {
+  min-block-size: calc(var(--bs-control-height-lg) + var(--bs-space-4));
+}
+
+[data-scope="mentions"][data-part="popup"][data-size="sm"] [data-part="option"] {
+  min-block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="mentions"][data-part="popup"][data-size="lg"] [data-part="option"] {
+  min-block-size: var(--bs-control-height-md);
+}
 `;

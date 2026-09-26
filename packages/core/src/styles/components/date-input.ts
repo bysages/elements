@@ -106,4 +106,14 @@ export const dateInputCss =
   opacity: 0;
   pointer-events: none;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the
+   segmented field. */
+[data-scope="date-input"][data-part="root"][data-size="sm"] [data-part="segment-group"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="date-input"][data-part="root"][data-size="lg"] [data-part="segment-group"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

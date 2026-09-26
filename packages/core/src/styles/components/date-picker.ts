@@ -354,4 +354,26 @@ export const datePickerCss =
   text-decoration: line-through;
   cursor: not-allowed;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the field
+   row — the popup's own table keeps its register. */
+[data-scope="date-picker"][data-part="root"][data-size="sm"] [data-part="input"],
+[data-scope="date-picker"][data-part="root"][data-size="sm"] [data-part="trigger"],
+[data-scope="date-picker"][data-part="root"][data-size="sm"] [data-part="clear-trigger"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="date-picker"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  inline-size: var(--bs-control-height-sm);
+}
+
+[data-scope="date-picker"][data-part="root"][data-size="lg"] [data-part="input"],
+[data-scope="date-picker"][data-part="root"][data-size="lg"] [data-part="trigger"],
+[data-scope="date-picker"][data-part="root"][data-size="lg"] [data-part="clear-trigger"] {
+  block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="date-picker"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  inline-size: var(--bs-control-height-lg);
+}
 `;

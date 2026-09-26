@@ -43,6 +43,8 @@ export const MentionsVessel = defineComponent({
     matches: { type: Array as PropType<MentionEntry[]>, default: () => [] },
     active: { type: Number, default: 0 },
     anchor: { type: Object as PropType<HTMLTextAreaElement | null>, default: null },
+    /** The host field's rung, so the rows keep the field's register. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: {
     insert: (_entry: MentionEntry) => true,
@@ -67,7 +69,7 @@ export const MentionsVessel = defineComponent({
               h(ArkPopover.Content, { asChild: true }, () =>
                 h(
                   "div",
-                  { "data-scope": "mentions", "data-part": "popup" },
+                  { "data-scope": "mentions", "data-part": "popup", "data-size": props.size },
                   props.matches.map((entry, index) =>
                     h(
                       "div",
@@ -119,6 +121,8 @@ export const Mentions = defineComponent({
     placeholder: { type: String, default: undefined },
     autoresize: { type: Boolean, default: false },
     invalid: { type: Boolean, default: false },
+    /** One rung of the control-height ladder for the resting field. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
@@ -148,35 +152,40 @@ export const Mentions = defineComponent({
     };
 
     return () =>
-      h("div", { ...ctx.attrs, "data-scope": "mentions", "data-part": "root" }, [
-        h(Field.Textarea as never, {
-          ref: fieldRef as Ref,
-          autoresize: props.autoresize,
-          invalid: props.invalid,
-          rows: 3,
-          placeholder: props.placeholder,
-          modelValue: value(),
-          "onUpdate:modelValue": (next: string) => {
-            internal.value = next;
-            ctx.emit("update:modelValue", next);
-          },
-          onInput,
-          onKeydown: mentions.onKeydown,
-          "data-scope": "mentions",
-          "data-part": "textarea",
-        }),
-        h(MentionsVessel, {
-          open: mentions.open.value,
-          matches: mentions.matches.value,
-          active: mentions.active.value,
-          anchor: el(),
-          onInsert: mentions.insert,
-          "onUpdate:active": (index: number) => (mentions.active.value = index),
-          "onUpdate:open": (open: boolean) => {
-            if (!open) mentions.close();
-          },
-        }),
-      ]);
+      h(
+        "div",
+        { ...ctx.attrs, "data-scope": "mentions", "data-part": "root", "data-size": props.size },
+        [
+          h(Field.Textarea as never, {
+            ref: fieldRef as Ref,
+            autoresize: props.autoresize,
+            invalid: props.invalid,
+            rows: 3,
+            placeholder: props.placeholder,
+            modelValue: value(),
+            "onUpdate:modelValue": (next: string) => {
+              internal.value = next;
+              ctx.emit("update:modelValue", next);
+            },
+            onInput,
+            onKeydown: mentions.onKeydown,
+            "data-scope": "mentions",
+            "data-part": "textarea",
+          }),
+          h(MentionsVessel, {
+            open: mentions.open.value,
+            matches: mentions.matches.value,
+            active: mentions.active.value,
+            anchor: el(),
+            size: props.size,
+            onInsert: mentions.insert,
+            "onUpdate:active": (index: number) => (mentions.active.value = index),
+            "onUpdate:open": (open: boolean) => {
+              if (!open) mentions.close();
+            },
+          }),
+        ],
+      );
   },
 });
 

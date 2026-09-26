@@ -196,4 +196,30 @@ export const cascadeSelectCss =
 [data-scope="cascade-select"][data-part="item"][data-highlighted] [data-part="branch-indicator"] {
   color: currentColor;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the
+   trigger and the match chips riding inside it. */
+[data-scope="cascade-select"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="cascade-select"][data-part="root"][data-size="sm"] [data-part="match"] {
+  min-block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="cascade-select"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="cascade-select"][data-part="root"][data-size="lg"] [data-part="match"] {
+  min-block-size: var(--bs-control-height-md);
+}
+
+[data-scope="cascade-select"][data-part="content"][data-size="sm"] [data-part="item"] {
+  min-block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="cascade-select"][data-part="content"][data-size="lg"] [data-part="item"] {
+  min-block-size: var(--bs-control-height-md);
+}
 `;

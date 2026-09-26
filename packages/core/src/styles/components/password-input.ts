@@ -80,4 +80,26 @@ export const passwordInputCss =
   align-items: center;
   justify-content: center;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the field
+   and its eye — the reveal seat moves with the row it serves. */
+[data-scope="password-input"][data-part="root"][data-size="sm"] [data-part="input"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="password-input"][data-part="root"][data-size="sm"]
+  [data-part="visibility-trigger"] {
+  inline-size: calc(var(--bs-control-height-sm) * 0.875);
+  block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="password-input"][data-part="root"][data-size="lg"] [data-part="input"] {
+  block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="password-input"][data-part="root"][data-size="lg"]
+  [data-part="visibility-trigger"] {
+  inline-size: var(--bs-control-height-md);
+  block-size: var(--bs-control-height-md);
+}
 `;

@@ -52,4 +52,13 @@ export const meterCss = /* css */ `
   background: var(--_pigment);
   transition: inline-size var(--bs-duration-slow) var(--bs-ease-out);
 }
+
+/* Size rungs: the root's data-size re-points the groove ladder. */
+[data-scope="meter"][data-part="root"][data-size="sm"] [data-part="track"] {
+  block-size: calc(var(--bs-space-1) * 0.75);
+}
+
+[data-scope="meter"][data-part="root"][data-size="lg"] [data-part="track"] {
+  block-size: var(--bs-space-2);
+}
 `;

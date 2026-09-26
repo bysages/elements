@@ -50,6 +50,8 @@ export const TreeSelect = defineComponent({
     placeholder: { type: String, default: "Select…" },
     filterable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    /** One rung of the control-height ladder for the trigger. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
@@ -175,6 +177,7 @@ export const TreeSelect = defineComponent({
                 type: "button",
                 "data-scope": "tree-select",
                 "data-part": "control",
+                "data-size": props.size,
                 "data-open": open.value ? "" : undefined,
                 "data-placeholder": label.value == null ? "" : undefined,
                 disabled: props.disabled,
