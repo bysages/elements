@@ -1,9 +1,13 @@
 /* The Tailwind v4 entry for the site's own app code (app/pages/examples,
- * app/components/{apps,examples}). The theme layer's docs.css and the
- * library's core.css stay authoritative — both are unlayered, so they beat
- * anything layered; utilities only ever dress elements the library does
- * not paint. Preflight stays out: the shell ships its own box-sizing and
- * every control is a library component. */
+ * app/components/{apps,examples}). Cascade order, top to bottom: the
+ * library's unlayered core.css, the theme's unlayered skeleton rules,
+ * the theme's `bs.prose` layer, then these utilities last. Utilities
+ * therefore dress what the library does not paint and may retune prose
+ * typesetting — which is what the demo canvases rely on: inside one, the
+ * demo markup (m-0, text-sm, spacing utilities) speaks for itself. The
+ * unlayered skeleton still outranks anything layered, so utilities can
+ * never dismantle the shell. Preflight stays out: the shell ships its
+ * own box-sizing and every control is a library component. */
 
 @layer theme, base, utilities;
 @import "tailwindcss/theme.css" layer(theme);
@@ -12,9 +16,11 @@
 /* The one preflight slice v4 utilities assume: border-style must default
  * to solid or every `border` width utility is invisible, and v4 defaults
  * border-color to currentColor while this design language hairlines in
- * --bs-color-border. Layered in base, so any unlayered rule — the core
- * component borders included — still paints over it. */
-@layer base {
+ * --bs-color-border. Layered in `bs.pre` — a slot the theme's docs.css
+ * declares beneath its prose layer, so prose tables still hairline while
+ * every unlayered rule (the core component borders included) paints over
+ * it all the same. */
+@layer bs.pre {
   *,
   ::before,
   ::after {
