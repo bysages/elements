@@ -35,11 +35,21 @@
   --bs-padding-md: calc(var(--bs-space-3) * var(--bs-density-scale));
   --bs-padding-lg: calc(var(--bs-space-4) * var(--bs-density-scale));
   --bs-padding-xl: calc(var(--bs-space-6) * var(--bs-density-scale));
+  --bs-padding-2xl: calc(var(--bs-space-8) * var(--bs-density-scale));
+  /* Both ladders share one ramp mapping — a same-named tier must not be
+     two different sizes depending on which property carries it. */
   --bs-gap-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
   --bs-gap-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
   --bs-gap-md: calc(var(--bs-space-3) * var(--bs-density-scale));
-  --bs-gap-lg: calc(var(--bs-space-5) * var(--bs-density-scale));
-  --bs-gap-xl: calc(var(--bs-space-8) * var(--bs-density-scale));
+  --bs-gap-lg: calc(var(--bs-space-4) * var(--bs-density-scale));
+  --bs-gap-xl: calc(var(--bs-space-6) * var(--bs-density-scale));
+  --bs-gap-2xl: calc(var(--bs-space-8) * var(--bs-density-scale));
+  --bs-margin-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
+  --bs-margin-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
+  --bs-margin-md: calc(var(--bs-space-3) * var(--bs-density-scale));
+  --bs-margin-lg: calc(var(--bs-space-4) * var(--bs-density-scale));
+  --bs-margin-xl: calc(var(--bs-space-6) * var(--bs-density-scale));
+  --bs-margin-2xl: calc(var(--bs-space-8) * var(--bs-density-scale));
 }
 
 /* Control heights per tier — the cross-system ladders (28/32/40 sits at

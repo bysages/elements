@@ -35,7 +35,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
@@ -83,8 +83,8 @@ export const floatingPanelCss =
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-2) var(--bs-padding-md);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-end: 1px solid var(--bs-color-border);
   background: var(--bs-color-surface-0);
   cursor: grab;
@@ -99,7 +99,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="title"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   margin: 0;
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-md);
@@ -110,7 +110,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 /* Stage, close and drag triggers are one family of small seals; the drag
@@ -161,7 +161,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="body"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   flex: 1 1 auto;
   overflow: auto;
   padding: var(--bs-padding-md);

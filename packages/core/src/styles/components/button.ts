@@ -21,7 +21,7 @@ export const buttonCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   flex: none;
   block-size: var(--bs-control-height-md);
   /* One step wider than the shell register: buttons read by their
@@ -211,7 +211,7 @@ export const buttonCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   flex: none;
   block-size: var(--bs-control-height-md);
   /* One step wider than the shell register, like the body above. */

@@ -9,7 +9,7 @@ export const listboxCss =
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The filter input rides the control recipe: a field, not a button —
@@ -58,9 +58,9 @@ export const listboxCss =
 [data-scope="listbox"][data-part="content"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   max-block-size: 18rem;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   overflow-y: auto;
 }
 
@@ -70,12 +70,12 @@ export const listboxCss =
 }
 
 [data-scope="listbox"][data-part="item-group"] + [data-part="item-group"] {
-  margin-block-start: var(--bs-space-2);
+  margin-block-start: var(--bs-margin-sm);
 }
 
 /* Group headings stay out of the list's way: small, tracked, uppercase. */
 [data-scope="listbox"][data-part="item-group-label"] {
-  padding: var(--bs-space-1) var(--bs-space-2);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
@@ -91,9 +91,9 @@ export const listboxCss =
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);

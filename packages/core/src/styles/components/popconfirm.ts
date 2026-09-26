@@ -9,7 +9,7 @@ export const popconfirmCss = /* css */ `
 }
 
 .bs-popconfirm [data-part="message"] {
-  margin: 0 0 var(--bs-space-3);
+  margin: 0 0 var(--bs-margin-md);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
@@ -18,6 +18,6 @@ export const popconfirmCss = /* css */ `
 .bs-popconfirm [data-part="actions"] {
   display: flex;
   justify-content: flex-end;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 `;

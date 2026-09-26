@@ -79,9 +79,9 @@ export const marqueeCss = /* css */ `
 [data-scope="marquee"][data-part="item"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
-  margin-inline: calc(var(--marquee-spacing, var(--bs-space-6)) / 2);
-  padding: var(--bs-space-3) var(--bs-padding-lg);
+  gap: var(--bs-gap-md);
+  margin-inline: calc(var(--marquee-spacing, var(--bs-margin-xl)) / 2);
+  padding: var(--bs-padding-md) var(--bs-padding-lg);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

@@ -6,7 +6,7 @@ export const switchCss =
 [data-scope="switch"][data-part="root"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
 }

@@ -2,7 +2,7 @@ export const fieldsetCss = /* css */ `
 [data-scope="fieldset"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   margin: 0;
   padding: 0;
   border: none;
@@ -21,7 +21,7 @@ export const fieldsetCss = /* css */ `
 }
 
 [data-scope="fieldset"][data-part="helper-text"] {
-  margin-block-start: calc(-1 * var(--bs-space-2));
+  margin-block-start: calc(-1 * var(--bs-margin-sm));
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

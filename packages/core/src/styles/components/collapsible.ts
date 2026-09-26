@@ -16,7 +16,7 @@ export const collapsibleCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   inline-size: 100%;
   min-block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
@@ -98,7 +98,7 @@ export const collapsibleCss = /* css */ `
 }
 
 [data-scope="collapsible"][data-part="content"] > * {
-  padding: var(--bs-space-3) var(--bs-padding-sm);
+  padding: var(--bs-padding-md) var(--bs-padding-sm);
   margin: 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);

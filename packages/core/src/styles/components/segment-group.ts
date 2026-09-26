@@ -9,8 +9,8 @@ export const segmentGroupCss =
   position: relative;
   isolation: isolate;
   display: inline-flex;
-  gap: var(--bs-space-1);
-  padding: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
+  padding: var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -46,7 +46,7 @@ export const segmentGroupCss =
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   box-sizing: border-box;
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-md);

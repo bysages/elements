@@ -30,7 +30,7 @@ export const imageViewerCss = /* css */ `
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   box-sizing: border-box;
   inline-size: 100%;
   block-size: 100%;
@@ -76,15 +76,15 @@ export const imageViewerCss = /* css */ `
   display: flex;
   flex: none;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   /* The tools ride a small lacquer tray: a translucent ink that keeps
      the room dark in either register, held clear of the picture above
      and of the page's edge below. The group inside carries the joinery;
      its corners stay at the control register. */
   inline-size: max-content;
   margin-inline: auto;
-  margin-block-end: var(--bs-space-6);
-  padding: var(--bs-space-1);
+  margin-block-end: var(--bs-margin-xl);
+  padding: var(--bs-padding-xs);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: color-mix(in oklab, var(--bs-color-gray-900) 72%, transparent);
 }

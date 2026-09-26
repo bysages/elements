@@ -6,7 +6,7 @@ export const passwordInputCss =
 [data-scope="password-input"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The field and the reveal affordance share one vessel: the input reserves

@@ -6,7 +6,7 @@ export const numberInputCss =
 [data-scope="number-input"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The field and its stepper column: the input reserves the inline end so the

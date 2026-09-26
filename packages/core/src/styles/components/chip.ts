@@ -16,7 +16,7 @@ export const chipCss = /* css */ `
   place-items: center;
   min-inline-size: var(--bs-space-5);
   block-size: var(--bs-space-5);
-  padding: 0 var(--bs-space-1);
+  padding: 0 var(--bs-padding-xs);
   border-radius: var(--bs-radius-full);
   background: var(--_fill);
   color: var(--_ink);

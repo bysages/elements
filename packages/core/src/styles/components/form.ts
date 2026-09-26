@@ -3,7 +3,7 @@ export const formCss = /* css */ `
    spacing belongs to the grid, not to each field's margins. */
 [data-scope="form"][data-part="root"] {
   display: grid;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   max-inline-size: 34rem;
 }
 

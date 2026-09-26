@@ -36,7 +36,7 @@ export const layoutCss = /* css */ `
 [data-scope="layout"][data-part="header"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   grid-area: header;
   padding: var(--bs-padding-md) var(--bs-padding-xl);
   border-block-end: 1px solid var(--bs-color-border);
@@ -45,7 +45,7 @@ export const layoutCss = /* css */ `
 [data-scope="layout"][data-part="footer"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   grid-area: footer;
   padding: var(--bs-padding-md) var(--bs-padding-xl);
   border-block-start: 1px solid var(--bs-color-border);

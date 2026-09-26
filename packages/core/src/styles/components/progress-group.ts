@@ -5,7 +5,7 @@ export const progressGroupCss = /* css */ `
 [data-scope="progress-group"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
   font-size: var(--bs-font-size-sm);
 }
@@ -50,14 +50,14 @@ export const progressGroupCss = /* css */ `
 [data-scope="progress-group"][data-part="legend"] {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--bs-space-2) var(--bs-gap-md);
+  gap: var(--bs-gap-sm) var(--bs-gap-md);
   color: var(--bs-color-text-secondary);
 }
 
 [data-scope="progress-group"][data-part="legend-item"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="progress-group"][data-part="swatch"] {

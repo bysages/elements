@@ -7,7 +7,7 @@ export const popoverCss =
 [data-scope="popover"][data-part="content"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   padding: var(--bs-padding-lg);
   transform-origin: var(--transform-origin);
 }
@@ -36,7 +36,7 @@ export const popoverCss =
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);

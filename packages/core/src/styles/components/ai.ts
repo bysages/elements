@@ -4,7 +4,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="conversation"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-5);
+  gap: var(--bs-gap-xl);
 }
 
 /* A message: the assistant speaks flat on the paper, the user's words
@@ -13,7 +13,7 @@ export const aiCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   max-inline-size: 46rem;
 }
 
@@ -23,7 +23,7 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="message"][data-role="user"] [data-part="content"] {
-  padding: var(--bs-space-2) var(--bs-space-3);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
@@ -56,23 +56,23 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="response"] h2,
 [data-scope="ai"][data-part="response"] h3,
 [data-scope="ai"][data-part="response"] h4 {
-  margin: var(--bs-space-4) 0 var(--bs-space-2);
+  margin: var(--bs-margin-lg) 0 var(--bs-margin-sm);
   font-weight: var(--bs-font-weight-semibold);
   line-height: var(--bs-line-height-snug);
 }
 
 [data-scope="ai"][data-part="response"] p {
-  margin: var(--bs-space-2) 0;
+  margin: var(--bs-margin-sm) 0;
 }
 
 [data-scope="ai"][data-part="response"] ul,
 [data-scope="ai"][data-part="response"] ol {
-  margin: var(--bs-space-2) 0;
-  padding-inline-start: var(--bs-space-5);
+  margin: var(--bs-margin-sm) 0;
+  padding-inline-start: var(--bs-padding-lg);
 }
 
 [data-scope="ai"][data-part="response"] li {
-  margin-block: var(--bs-space-1);
+  margin-block: var(--bs-margin-xs);
 }
 
 [data-scope="ai"][data-part="response"] a {
@@ -90,7 +90,7 @@ export const aiCss = /* css */ `
 /* The code chip: the recessed paper, no border — the docs prose
    treatment. The block: the same panel the pre rides in. */
 [data-scope="ai"][data-part="response"] :not(pre) > code {
-  padding: calc(var(--bs-space-1) / 2) var(--bs-space-1);
+  padding: calc(var(--bs-padding-xs) / 2) var(--bs-padding-xs);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-inset);
   font-family: var(--bs-font-mono);
@@ -98,8 +98,8 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="response"] pre {
-  margin: var(--bs-space-3) 0;
-  padding: var(--bs-space-3);
+  margin: var(--bs-margin-md) 0;
+  padding: var(--bs-padding-md);
   overflow-x: auto;
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
@@ -158,32 +158,32 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="response"] blockquote {
-  margin: var(--bs-space-3) 0;
-  padding-inline-start: var(--bs-space-3);
+  margin: var(--bs-margin-md) 0;
+  padding-inline-start: var(--bs-padding-md);
   border-inline-start: 3px solid var(--bs-color-border-strong);
   color: var(--bs-color-text-secondary);
 }
 
 [data-scope="ai"][data-part="response"] table {
-  margin: var(--bs-space-3) 0;
+  margin: var(--bs-margin-md) 0;
   border-collapse: collapse;
   font-size: var(--bs-font-size-sm);
 }
 
 [data-scope="ai"][data-part="response"] th {
-  padding: var(--bs-space-2) var(--bs-space-3);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-end: 1px solid var(--bs-color-border-strong);
   text-align: start;
   font-weight: var(--bs-font-weight-semibold);
 }
 
 [data-scope="ai"][data-part="response"] td {
-  padding: var(--bs-space-2) var(--bs-space-3);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
 [data-scope="ai"][data-part="response"] hr {
-  margin: var(--bs-space-4) 0;
+  margin: var(--bs-margin-lg) 0;
   border: none;
   border-block-start: 1px solid var(--bs-color-border);
 }
@@ -216,7 +216,7 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="reasoning-content"] {
-  padding: 0 0 0 var(--bs-space-3);
+  padding: 0 0 0 var(--bs-padding-md);
   border-inline-start: 1px solid var(--bs-color-border);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
@@ -236,7 +236,7 @@ export const aiCss = /* css */ `
 [data-scope="collapsible"][data-part="root"][data-ai="tool"] [data-part="trigger"]:hover {
   inline-size: 100%;
   min-block-size: auto;
-  padding: var(--bs-space-2) var(--bs-space-3);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border: none;
   background: none;
   box-shadow: none;
@@ -246,7 +246,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="tool-status"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   margin-inline-start: auto;
   color: var(--bs-color-text-tertiary);
   font-weight: var(--bs-font-weight-regular);
@@ -278,8 +278,8 @@ export const aiCss = /* css */ `
 
 [data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="tool-body"] {
   display: grid;
-  gap: var(--bs-space-2);
-  padding: 0 var(--bs-space-3) var(--bs-space-3);
+  gap: var(--bs-gap-sm);
+  padding: 0 var(--bs-padding-md) var(--bs-padding-md);
   font-size: var(--bs-font-size-sm);
 }
 
@@ -290,7 +290,7 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="tool-body"] pre {
   margin: 0;
-  padding: var(--bs-space-2);
+  padding: var(--bs-padding-sm);
   overflow-x: auto;
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
@@ -302,7 +302,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="sources"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -326,16 +326,16 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="attachments"] {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 [data-scope="ai"][data-part="attachment"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   max-inline-size: 100%;
-  padding-block: calc(var(--bs-space-1) / 2);
-  padding-inline: var(--bs-space-2);
+  padding-block: calc(var(--bs-padding-xs) / 2);
+  padding-inline: var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface);
@@ -396,7 +396,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="actions"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 /* The prompt: one vessel — the shared field bared to the paper and
@@ -410,8 +410,8 @@ export const aiCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
@@ -430,7 +430,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="prompt-main"] {
   display: flex;
   align-items: flex-end;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-inline-size: 0;
 }
 
@@ -438,14 +438,14 @@ export const aiCss = /* css */ `
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 [data-scope="ai"][data-part="prompt-leading"],
 [data-scope="ai"][data-part="prompt-trailing"] {
   display: flex;
   align-items: flex-end;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   flex: none;
 }
 
@@ -483,7 +483,7 @@ export const aiCss = /* css */ `
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   flex: none;
 }
 
@@ -492,7 +492,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="prompt-end"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   flex: none;
   margin-inline-start: auto;
 }
@@ -524,7 +524,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="loader"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="ai"][data-part="loader"]::before,

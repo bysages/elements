@@ -2,7 +2,7 @@ export const tabsCss = /* css */ `
 [data-scope="tabs"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
 }
 
 /* The tab strip is a ruled line; the ink bar under the selected tab is
@@ -11,14 +11,14 @@ export const tabsCss = /* css */ `
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
 [data-scope="tabs"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   margin-block-end: -1px;
   padding: 0 var(--bs-padding-md);

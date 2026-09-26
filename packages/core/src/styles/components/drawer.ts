@@ -47,7 +47,7 @@ export const drawerCss =
   flex-direction: column;
   /* Section rhythm — 16px, shared with the dialog; the sheet's own
      margins are generous enough at the padding below. */
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   inline-size: 100%;
   max-block-size: 92dvh;
   overflow: auto;
@@ -108,7 +108,7 @@ export const drawerCss =
   justify-content: center;
   flex-shrink: 0;
   inline-size: 100%;
-  padding-block: var(--bs-space-2);
+  padding-block: var(--bs-padding-sm);
   cursor: grab;
   touch-action: none;
   user-select: none;
@@ -137,7 +137,7 @@ export const drawerCss =
   position: absolute;
   inset-block: 0;
   inline-size: auto;
-  padding-inline: var(--bs-space-2);
+  padding-inline: var(--bs-padding-sm);
 }
 
 [data-scope="drawer"][data-part="content"][data-swipe-direction="left"] [data-scope="drawer"][data-part="grabber"] {
@@ -211,7 +211,7 @@ export const drawerCss =
 [data-scope="drawer"][data-part="description"] {
   /* The description belongs to the title, not to the body — pull it out
      of the section rhythm so the pair reads as one header (8px). */
-  margin: calc(var(--bs-space-2) - var(--bs-space-4)) 0 0;
+  margin: calc(var(--bs-margin-sm) - var(--bs-margin-lg)) 0 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

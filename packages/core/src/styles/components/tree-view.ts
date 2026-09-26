@@ -13,7 +13,7 @@ export const treeViewCss =
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="tree-view"][data-part="tree"] {
@@ -30,7 +30,7 @@ export const treeViewCss =
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   /* No page reset may be assumed: 100% must count the row's own padding. */
   box-sizing: border-box;
   inline-size: 100%;
@@ -91,7 +91,7 @@ export const treeViewCss =
   flex: 1;
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -185,7 +185,7 @@ export const treeViewCss =
 [data-scope="tree-view"][data-part="node-rename-input"] {
   box-sizing: border-box;
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-primary);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

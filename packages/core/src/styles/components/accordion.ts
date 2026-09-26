@@ -25,10 +25,10 @@ export const accordionCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   inline-size: 100%;
   min-block-size: var(--bs-control-height-lg);
-  padding: var(--bs-space-2) var(--bs-padding-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border: none;
   background: transparent;
   color: inherit;
@@ -97,7 +97,7 @@ export const accordionCss = /* css */ `
 /* The unfolded text sits inside the trigger's rhythm — indented to its
    label, breathing at the bottom. */
 [data-scope="accordion"][data-part="item-content"] > * {
-  padding: 0 var(--bs-padding-md) var(--bs-space-3);
+  padding: 0 var(--bs-padding-md) var(--bs-padding-md);
   margin: 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);

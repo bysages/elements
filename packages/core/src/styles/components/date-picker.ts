@@ -8,13 +8,13 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="date-picker"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="date-picker"][data-part="input"] {
@@ -136,7 +136,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="preset-trigger"] {
   display: inline-flex;
   align-items: center;
-  padding: var(--bs-space-1) var(--bs-space-3);
+  padding: var(--bs-padding-xs) var(--bs-padding-md);
   border: none;
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-primary-subtle);
@@ -162,7 +162,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="view"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
 }
 
 [data-scope="date-picker"][data-part="view"][hidden] {
@@ -173,7 +173,7 @@ export const datePickerCss =
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="date-picker"][data-part="prev-trigger"],
@@ -217,9 +217,9 @@ export const datePickerCss =
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: none;
   border-radius: var(--bs-radius-sm);
   background: transparent;
@@ -247,7 +247,7 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="month-select"],
 [data-scope="date-picker"][data-part="year-select"] {
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -277,7 +277,7 @@ export const datePickerCss =
 }
 
 [data-scope="date-picker"][data-part="table-header"] {
-  padding: var(--bs-space-1) 0;
+  padding: var(--bs-padding-xs) 0;
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
@@ -313,7 +313,7 @@ export const datePickerCss =
 
 [data-scope="date-picker"][data-part="table-cell-trigger"][data-view="month"],
 [data-scope="date-picker"][data-part="table-cell-trigger"][data-view="year"] {
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   block-size: var(--bs-control-height-sm);
 }
 

@@ -3,8 +3,8 @@ export const menubarCss = /* css */ `
 [data-scope="menubar"][data-part="root"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
-  padding: var(--bs-space-1) 0;
+  gap: var(--bs-gap-xs);
+  padding: var(--bs-padding-xs) 0;
   border-block-end: 1px solid var(--bs-color-border);
 }
 

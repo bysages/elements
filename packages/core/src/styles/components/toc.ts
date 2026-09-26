@@ -5,7 +5,7 @@ export const tocCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The heading of the rail whispers: small, tracked, never competing with
@@ -23,7 +23,7 @@ export const tocCss = /* css */ `
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -37,7 +37,7 @@ export const tocCss = /* css */ `
 
 [data-scope="toc"][data-part="link"] {
   display: block;
-  padding: var(--bs-space-1) var(--bs-padding-sm);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);

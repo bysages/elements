@@ -6,7 +6,7 @@ export const calendarCss = /* css */ `
 [data-scope="calendar"][data-part="root"] {
   display: inline-flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   /* The same panel width the date-picker's popup rents at 17rem — the
      standing calendar keeps the family measure, so the day grid fills it
      and the month/year grids divide it into roomy cells. */
@@ -22,7 +22,7 @@ export const calendarCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The header's only child is the date-picker's view-control, a

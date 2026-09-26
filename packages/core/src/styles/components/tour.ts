@@ -46,7 +46,7 @@ export const tourCss =
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   padding: var(--bs-padding-lg);
 }
 
@@ -77,7 +77,7 @@ export const tourCss =
 }
 
 [data-scope="tour"][data-part="description"] {
-  margin: 0 0 var(--bs-space-2);
+  margin: 0 0 var(--bs-margin-sm);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
@@ -93,8 +93,8 @@ export const tourCss =
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--bs-space-2);
-  margin-block-start: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
+  margin-block-start: var(--bs-margin-sm);
 }
 
 /* Advancing the tour is a primary action — ink, solemn. */

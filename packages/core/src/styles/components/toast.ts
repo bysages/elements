@@ -4,7 +4,7 @@ export const toastCss = /* css */ `
 [data-scope="toast"][data-part="group"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* Each toast rides the popup vessel — paper, one hairline, radius-lg —
@@ -15,7 +15,7 @@ export const toastCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   /* The root is absolutely positioned against the group, whose in-flow box
      is empty, so a percentage inline-size collapses to zero — size the card
      outright and let the viewport be the only cap. */
@@ -90,7 +90,7 @@ export const toastCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-block-start: var(--bs-space-2);
+  margin-block-start: var(--bs-margin-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);

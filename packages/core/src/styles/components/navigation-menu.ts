@@ -13,7 +13,7 @@ export const navigationMenuCss =
 [data-scope="navigation-menu"][data-part="list"] {
   position: relative;
   display: flex;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -37,7 +37,7 @@ export const navigationMenuCss =
 [data-scope="navigation-menu"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: none;
@@ -74,7 +74,7 @@ export const navigationMenuCss =
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border-radius: var(--bs-radius-sm);
@@ -169,7 +169,7 @@ export const navigationMenuCss =
 [data-scope="navigation-menu"][data-part="content"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   padding: var(--bs-padding-md);
 }
 
@@ -185,11 +185,11 @@ export const navigationMenuCss =
   block-size: auto;
   align-items: flex-start;
   inline-size: 100%;
-  padding: var(--bs-space-2) var(--bs-padding-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
 }
 
 [data-scope="navigation-menu"][data-part="content"] [data-part="link"] + [data-part="link"] {
-  margin-block-start: var(--bs-space-1);
+  margin-block-start: var(--bs-margin-xs);
 }
 
 [data-scope="navigation-menu"][data-part="item-indicator"] {

@@ -6,13 +6,13 @@ export const pinInputCss =
 [data-scope="pin-input"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The cells: a row of equal seals, one character each. */
 [data-scope="pin-input"][data-part="control"] {
   display: inline-flex;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="pin-input"][data-part="input"] {

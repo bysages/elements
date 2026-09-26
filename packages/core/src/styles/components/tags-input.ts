@@ -6,7 +6,7 @@ export const tagsInputCss =
 [data-scope="tags-input"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The control is the field: it carries the hairline, the surface and the
@@ -17,9 +17,9 @@ export const tagsInputCss =
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   min-block-size: var(--bs-control-height-md);
-  padding: var(--bs-space-1) var(--bs-padding-sm);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -60,7 +60,7 @@ export const tagsInputCss =
   flex: 1;
   min-inline-size: 4rem;
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-1);
+  padding: 0 var(--bs-padding-xs);
   border: none;
   background: transparent;
   color: inherit;
@@ -88,8 +88,8 @@ export const tagsInputCss =
 [data-scope="tags-input"][data-part="item-preview"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-1);
-  padding: var(--bs-space-1) var(--bs-space-2);
+  gap: var(--bs-gap-xs);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
@@ -109,7 +109,7 @@ export const tagsInputCss =
 [data-scope="tags-input"][data-part="item-input"] {
   box-sizing: border-box;
   inline-size: 4rem;
-  padding: var(--bs-space-1) var(--bs-space-2);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -130,7 +130,7 @@ export const tagsInputCss =
   flex: none;
   display: grid;
   place-items: center;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   border: none;
   border-radius: var(--bs-radius-sm);
   background: transparent;

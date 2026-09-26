@@ -1,8 +1,8 @@
 export const toggleGroupCss = /* css */ `
 [data-scope="toggle-group"][data-part="root"] {
   display: inline-flex;
-  gap: var(--bs-space-1);
-  padding: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
+  padding: var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -19,7 +19,7 @@ export const toggleGroupCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: var(--bs-control-height-md);
   block-size: var(--bs-control-height-md);
   padding: 0;

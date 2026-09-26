@@ -20,7 +20,7 @@ export const workflowCss = /* css */ `
   box-sizing: border-box;
   inline-size: 100%;
   block-size: 100%;
-  padding: var(--bs-workflow-handle, var(--bs-space-3));
+  padding: var(--bs-workflow-handle, var(--bs-padding-md));
 }
 
 /* The vessel: round, resting on paper, one hairline. State rules below
@@ -32,8 +32,8 @@ export const workflowCss = /* css */ `
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-2) var(--bs-space-3);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   background: var(--bs-color-surface-2);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);

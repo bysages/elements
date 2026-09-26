@@ -9,7 +9,7 @@ export const editableCss =
   grid-template-areas:
     "label label"
     "area control";
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   align-items: center;
   inline-size: 100%;
 }
@@ -104,7 +104,7 @@ export const editableCss =
 [data-scope="editable"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* Triggers are ghost stamps: quiet chrome until hovered, the submit seal

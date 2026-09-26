@@ -6,7 +6,7 @@ export const sliderCss =
 [data-scope="slider"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
 }
 
@@ -107,7 +107,7 @@ export const sliderCss =
   position: absolute;
   top: calc(-1 * var(--bs-space-7));
   z-index: 1;
-  padding: var(--bs-space-1) var(--bs-space-2);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -138,7 +138,7 @@ export const sliderCss =
   inset-block: 0;
   inset-inline: auto;
   flex-direction: column;
-  margin-inline-start: var(--bs-space-3);
+  margin-inline-start: var(--bs-margin-md);
 }
 
 /* Markers are hairline ticks on the ruler; ticks the ink has passed take

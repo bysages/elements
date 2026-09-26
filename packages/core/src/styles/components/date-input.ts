@@ -6,13 +6,13 @@ export const dateInputCss =
 [data-scope="date-input"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="date-input"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The segment group IS the field — the same border + surface + focus halo

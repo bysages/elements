@@ -43,7 +43,7 @@ export const fieldControlCss = /* css */ `
 
 [data-scope="field"][data-part="textarea"] {
   min-block-size: calc(var(--bs-control-height-md) * 2 + var(--bs-space-2));
-  padding-block: var(--bs-space-2);
+  padding-block: var(--bs-padding-sm);
   line-height: var(--bs-line-height-relaxed);
   resize: vertical;
 }
@@ -150,7 +150,7 @@ export const fieldCss =
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
 }
 ` +
@@ -188,7 +188,7 @@ export const fieldCss =
 [data-scope="field"][data-float][data-part="root"] {
   position: relative;
   /* Room above the control edge for the label once it is afloat. */
-  margin-block-start: var(--bs-space-4);
+  margin-block-start: var(--bs-margin-lg);
 }
 
 [data-scope="field"][data-float][data-part="root"] [data-part="label"] {
@@ -200,7 +200,7 @@ export const fieldCss =
   pointer-events: none;
   /* The control's own paper under the label cuts the hairline it rides,
      the way a legend cuts a fieldset border. */
-  padding: 0 var(--bs-space-1);
+  padding: 0 var(--bs-padding-xs);
   background: var(--bs-color-surface-2);
   transition:
     inset-block-start var(--bs-duration-fast) var(--bs-ease-out),

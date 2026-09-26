@@ -7,7 +7,7 @@ export const qrCodeCss = /* css */ `
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   inline-size: fit-content;
   color: var(--bs-color-text-primary);
 }
@@ -34,7 +34,7 @@ export const qrCodeCss = /* css */ `
   block-size: var(--bs-qr-overlay);
   top: calc(var(--bs-qr-size) / 2) !important;
   left: calc(var(--bs-qr-size) / 2) !important;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -52,7 +52,7 @@ export const qrCodeCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);

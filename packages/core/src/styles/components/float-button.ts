@@ -9,7 +9,7 @@ export const floatButtonCss = /* css */ `
   /* The fan grows away from the mooring: first in the DOM sits nearest
      the corner, the actions rise (or hang) beyond it. */
   flex-direction: column-reverse;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
 }
 
@@ -72,7 +72,7 @@ export const floatButtonCss = /* css */ `
 [data-scope="float-button"][data-part="item"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   flex-direction: row-reverse;
 }
 
@@ -81,7 +81,7 @@ export const floatButtonCss = /* css */ `
 }
 
 [data-scope="float-button"][data-part="item-label"] {
-  padding: var(--bs-space-1) var(--bs-space-2);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

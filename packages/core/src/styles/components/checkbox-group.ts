@@ -3,14 +3,14 @@ export const checkboxGroupCss = /* css */ `
    natural reading order and wraps when the container narrows. */
 [data-scope="checkbox-group"][data-part="root"] {
   display: grid;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   max-inline-size: 20rem;
 }
 
 [data-scope="checkbox-group"][data-part="root"][data-layout="horizontal"] {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--bs-space-2) var(--bs-space-4);
+  gap: var(--bs-gap-sm) var(--bs-gap-lg);
   max-inline-size: none;
 }
 `;

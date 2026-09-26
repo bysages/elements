@@ -4,7 +4,7 @@ export const transferCss = /* css */ `
 [data-scope="transfer"][data-part="root"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
 }
 
 [data-scope="transfer"][data-part="panel"] {
@@ -20,8 +20,8 @@ export const transferCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-2) var(--bs-space-3);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
@@ -34,7 +34,7 @@ export const transferCss = /* css */ `
 
 [data-scope="transfer"][data-part="count"] {
   min-inline-size: var(--bs-control-height-sm);
-  padding-inline: var(--bs-space-1);
+  padding-inline: var(--bs-padding-xs);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-inset);
   color: var(--bs-color-text-tertiary);
@@ -45,14 +45,14 @@ export const transferCss = /* css */ `
 }
 
 [data-scope="transfer"][data-part="search"] {
-  padding: var(--bs-space-2);
+  padding: var(--bs-padding-sm);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
 [data-scope="transfer"][data-part="list"] {
   display: flex;
   flex-direction: column;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   max-block-size: 16rem;
   overflow-block: auto;
 }
@@ -61,8 +61,8 @@ export const transferCss = /* css */ `
    them a clickable span and a hover wash. */
 [data-scope="transfer"] [data-scope="checkbox"][data-part="root"] {
   flex: 1;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-1) var(--bs-space-2);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
@@ -79,7 +79,7 @@ export const transferCss = /* css */ `
 }
 
 [data-scope="transfer"][data-part="empty"] {
-  padding: var(--bs-space-4);
+  padding: var(--bs-padding-lg);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   text-align: center;
@@ -88,6 +88,6 @@ export const transferCss = /* css */ `
 [data-scope="transfer"][data-part="operations"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 `;

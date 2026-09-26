@@ -2,7 +2,7 @@ export const carouselCss = /* css */ `
 [data-scope="carousel"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   inline-size: 100%;
 }
 
@@ -17,7 +17,7 @@ export const carouselCss = /* css */ `
 [data-scope="carousel"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="carousel"][data-part="control"][data-orientation="vertical"] {
@@ -121,7 +121,7 @@ export const carouselCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="carousel"][data-part="indicator-group"][data-orientation="vertical"] {

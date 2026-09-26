@@ -7,7 +7,7 @@ export const fileUploadCss =
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   inline-size: 100%;
 }
 
@@ -16,7 +16,7 @@ export const fileUploadCss =
 [data-scope="file-upload"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
@@ -64,7 +64,7 @@ export const fileUploadCss =
 [data-scope="file-upload"][data-part="clear-trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid transparent;
@@ -113,7 +113,7 @@ export const fileUploadCss =
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   padding: var(--bs-padding-lg);
   border: 1px dashed var(--bs-color-border-strong);
   border-radius: var(--bs-radius-lg);
@@ -160,7 +160,7 @@ export const fileUploadCss =
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -173,8 +173,8 @@ export const fileUploadCss =
     "preview name delete"
     "preview size delete";
   align-items: center;
-  column-gap: var(--bs-space-3);
-  padding: var(--bs-space-2) var(--bs-space-3);
+  column-gap: var(--bs-gap-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

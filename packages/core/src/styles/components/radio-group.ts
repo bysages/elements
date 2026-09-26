@@ -6,14 +6,14 @@ export const radioGroupCss =
 [data-scope="radio-group"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
 }
 
 [data-scope="radio-group"][data-part="item"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   cursor: pointer;
 }
 

@@ -7,7 +7,7 @@ export const progressCss =
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
-  gap: var(--bs-space-1) var(--bs-gap-sm);
+  gap: var(--bs-gap-xs) var(--bs-gap-sm);
   inline-size: min(16rem, 100%);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);

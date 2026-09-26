@@ -6,7 +6,7 @@ export const bannerCss = /* css */ `
 [data-scope="banner"][data-part="root"] {
   --_pigment: var(--bs-color-text-tertiary);
   display: flex;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   padding: var(--bs-padding-md) var(--bs-padding-lg);
   border: 1px solid color-mix(in oklab, var(--_pigment) 25%, var(--bs-color-border));
   border-inline-start: var(--bs-hairline-strong) solid var(--_pigment);
@@ -47,7 +47,7 @@ export const bannerCss = /* css */ `
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   min-inline-size: 0;
 }
 
@@ -69,8 +69,8 @@ export const bannerCss = /* css */ `
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--bs-space-2);
-  margin-block-start: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
+  margin-block-start: var(--bs-margin-sm);
 }
 
 [data-scope="banner"][data-part="close"] {

@@ -2,7 +2,7 @@ export const paginationCss = /* css */ `
 [data-scope="pagination"][data-part="root"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 /* Every page cell is the same small seal — pages, arrows, all one size,
@@ -16,7 +16,7 @@ export const paginationCss = /* css */ `
   place-items: center;
   min-inline-size: var(--bs-control-height-sm);
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: none;
   border-radius: var(--bs-radius-sm);
   background: transparent;

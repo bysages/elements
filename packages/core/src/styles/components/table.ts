@@ -25,7 +25,7 @@ export const tableCss = /* css */ `
 
 /* The filter toolbar rests above the scroll, one hairline down. */
 [data-scope="table"][data-part="toolbar"] {
-  padding: var(--bs-space-2) var(--bs-padding-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
@@ -85,7 +85,7 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="header-cell"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   padding: 0 var(--bs-padding-md);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
@@ -153,7 +153,7 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="footer-cell"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
   font-size: var(--bs-font-size-md);
   color: var(--bs-color-text-primary);
@@ -291,7 +291,7 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="cell-main"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-inline-size: 0;
   padding-inline-start: calc(var(--bs-table-depth, 0) * var(--bs-table-indent));
 }
@@ -311,8 +311,8 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="pagination"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
-  padding: var(--bs-space-2) var(--bs-padding-md);
+  gap: var(--bs-gap-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
   border-block-start: 1px solid var(--bs-color-border);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-secondary);
@@ -326,7 +326,7 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="page-nav"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   margin-inline-start: auto;
 }
 
@@ -345,7 +345,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="pagination"] [data-scope="select"][data-part="indicator"] {
   inline-size: auto;
-  padding-inline-end: var(--bs-space-2);
+  padding-inline-end: var(--bs-padding-sm);
 }
 
 [data-scope="table"][data-part="pagination"] [data-scope="pagination"][data-part="root"] {

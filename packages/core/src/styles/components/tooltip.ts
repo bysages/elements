@@ -9,7 +9,7 @@ export const tooltipCss =
 [data-scope="tooltip"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="tooltip"][data-part="trigger"]:focus-visible {
@@ -25,7 +25,7 @@ export const tooltipCss =
 
 [data-scope="tooltip"][data-part="content"] {
   max-inline-size: 18rem;
-  padding: var(--bs-space-1) var(--bs-padding-md);
+  padding: var(--bs-padding-xs) var(--bs-padding-md);
   font-size: var(--bs-font-size-sm);
   font-weight: var(--bs-font-weight-medium);
   line-height: var(--bs-line-height-snug);

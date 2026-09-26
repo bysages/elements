@@ -6,7 +6,7 @@ export const ratingGroupCss =
 [data-scope="rating-group"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="rating-group"][data-part="root"][data-disabled] {
@@ -18,7 +18,7 @@ export const ratingGroupCss =
 [data-scope="rating-group"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 [data-scope="rating-group"][data-part="control"][data-disabled] {

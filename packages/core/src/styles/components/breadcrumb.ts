@@ -6,7 +6,7 @@ export const breadcrumbCss = /* css */ `
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -16,7 +16,7 @@ export const breadcrumbCss = /* css */ `
 [data-scope="breadcrumb"][data-part="item"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="breadcrumb"][data-part="link"] {

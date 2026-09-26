@@ -17,14 +17,14 @@ export const commentCss = /* css */ `
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   min-inline-size: 0;
 }
 
 [data-scope="comment"][data-part="header"] {
   display: flex;
   align-items: baseline;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="comment"][data-part="author"] {
@@ -45,8 +45,8 @@ export const commentCss = /* css */ `
 [data-scope="comment"][data-part="actions"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-4);
-  margin-block-start: var(--bs-space-1);
+  gap: var(--bs-gap-lg);
+  margin-block-start: var(--bs-margin-xs);
   font-size: var(--bs-font-size-sm);
 }
 `;

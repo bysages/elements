@@ -66,10 +66,10 @@ export const commandCss = /* css */ `
 [data-scope="command"][data-part="list"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
-  margin-block-start: var(--bs-space-2);
+  gap: var(--bs-gap-xs);
+  margin-block-start: var(--bs-margin-sm);
   max-block-size: min(50dvh, 24rem);
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -81,16 +81,16 @@ export const commandCss = /* css */ `
 [data-scope="command"][data-part="group"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 [data-scope="command"][data-part="group"] + [data-scope="command"][data-part="group"] {
-  margin-block-start: var(--bs-space-2);
+  margin-block-start: var(--bs-margin-sm);
 }
 
 /* Group headings whisper: small, tracked, never competing with rows. */
 [data-scope="command"][data-part="group-label"] {
-  padding: var(--bs-space-1) var(--bs-space-2);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
@@ -104,9 +104,9 @@ export const commandCss = /* css */ `
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
@@ -154,7 +154,7 @@ export const commandCss = /* css */ `
 }
 
 [data-scope="command"][data-part="empty"] {
-  padding: var(--bs-space-4);
+  padding: var(--bs-padding-lg);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   text-align: center;

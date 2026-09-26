@@ -17,7 +17,7 @@ export const cascadeSelectCss =
   flex: 1;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md);
@@ -87,7 +87,7 @@ export const cascadeSelectCss =
 [data-scope="cascade-select"][data-part="search"] {
   flex: none;
   inline-size: 100%;
-  padding: var(--bs-space-2);
+  padding: var(--bs-padding-sm);
   border-block-end: 1px solid var(--bs-color-border);
 }
 
@@ -96,7 +96,7 @@ export const cascadeSelectCss =
   align-items: center;
   inline-size: 100%;
   min-block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: none;
   border-radius: var(--bs-radius-sm);
   background: transparent;
@@ -118,7 +118,7 @@ export const cascadeSelectCss =
 
 [data-scope="cascade-select"][data-part="empty"] {
   margin: 0;
-  padding: var(--bs-space-4) var(--bs-space-2);
+  padding: var(--bs-padding-lg) var(--bs-padding-sm);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   text-align: center;
@@ -130,7 +130,7 @@ export const cascadeSelectCss =
   min-inline-size: 11rem;
   max-block-size: 16rem;
   margin: 0;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   list-style: none;
   overflow-block: auto;
 }
@@ -142,9 +142,9 @@ export const cascadeSelectCss =
 [data-scope="cascade-select"][data-part="item"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);

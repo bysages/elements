@@ -7,7 +7,7 @@ export const menuCss =
 [data-scope="menu"][data-part="content"] {
   display: flex;
   flex-direction: column;
-  padding: var(--bs-space-1);
+  padding: var(--bs-padding-xs);
   transform-origin: var(--transform-origin);
   overscroll-behavior: contain;
 }
@@ -30,7 +30,7 @@ export const menuCss =
 [data-scope="menu"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
@@ -103,12 +103,12 @@ export const menuCss =
 
 [data-scope="menu"][data-part="item-group"] + [data-scope="menu"][data-part="item-group"],
 [data-scope="menu"][data-part="separator"] + [data-scope="menu"][data-part="item-group"] {
-  margin-block-start: var(--bs-space-1);
+  margin-block-start: var(--bs-margin-xs);
 }
 
 /* Group labels whisper: small, tracked, never competing with the items. */
 [data-scope="menu"][data-part="item-group-label"] {
-  padding: var(--bs-space-2) var(--bs-padding-sm) var(--bs-space-1);
+  padding: var(--bs-padding-sm) var(--bs-padding-sm) var(--bs-padding-xs);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
@@ -122,7 +122,7 @@ export const menuCss =
 [data-scope="menu"][data-part="trigger-item"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   min-block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: none;
@@ -197,7 +197,7 @@ export const menuCss =
 /* The divider is one hairline of rest between courses. */
 [data-scope="menu"][data-part="separator"] {
   block-size: 1px;
-  margin-block: var(--bs-space-1);
+  margin-block: var(--bs-margin-xs);
   border: none;
   background: var(--bs-color-border);
 }

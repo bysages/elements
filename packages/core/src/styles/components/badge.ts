@@ -14,7 +14,7 @@ export const badgeCss = /* css */ `
   --_ink: var(--bs-color-text-inverse);
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   padding: 0 var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   background: var(--_fill);

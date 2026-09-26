@@ -6,7 +6,7 @@ export const clipboardCss =
 [data-scope="clipboard"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
   max-inline-size: 20rem;
 }
@@ -14,7 +14,7 @@ export const clipboardCss =
 [data-scope="clipboard"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The value field leans on border + surface + focus halo — no shadow. */
@@ -68,7 +68,7 @@ export const clipboardCss =
   place-items: center;
   min-inline-size: var(--bs-control-height-md);
   block-size: var(--bs-control-height-md);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

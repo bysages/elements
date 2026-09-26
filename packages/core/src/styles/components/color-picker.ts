@@ -8,7 +8,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="color-picker"][data-part="root"][data-disabled] {
@@ -18,7 +18,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* The value text carries the picked color in words — quiet, tabular, never
@@ -98,7 +98,7 @@ export const colorPickerCss =
   --bs-color-picker-area: 10rem;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   padding: var(--bs-padding-lg);
 }
 
@@ -188,7 +188,7 @@ export const colorPickerCss =
   flex: 1;
   min-inline-size: 0;
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -234,7 +234,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="swatch-group"] {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* A saved-color view stacks the channel inputs of one format; the picker
@@ -242,7 +242,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="view"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* Saved swatches are quiet squares; picking one draws the primary ring, and
@@ -345,7 +345,7 @@ export const colorPickerCss =
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
@@ -380,7 +380,7 @@ export const colorPickerCss =
 [data-scope="color-picker"][data-part="format-select"] {
   box-sizing: border-box;
   block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-space-2);
+  padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);

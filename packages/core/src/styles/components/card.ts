@@ -23,7 +23,7 @@ export const cardCss = /* css */ `
 [data-scope="card"][data-part="header"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   padding: var(--bs-padding-lg);
 }
 
@@ -57,7 +57,7 @@ export const cardCss = /* css */ `
 [data-scope="card"][data-part="footer"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   padding: 0 var(--bs-padding-lg) var(--bs-padding-lg);
 }
 

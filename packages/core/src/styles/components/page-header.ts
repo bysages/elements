@@ -8,7 +8,7 @@ export const pageHeaderCss = /* css */ `
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="page-header"][data-part="heading"] {
@@ -16,7 +16,7 @@ export const pageHeaderCss = /* css */ `
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--bs-space-3) var(--bs-space-6);
+  gap: var(--bs-gap-md) var(--bs-gap-xl);
 }
 
 /* The eyebrow whispers above the title: small, tracked, secondary. */
@@ -51,7 +51,7 @@ export const pageHeaderCss = /* css */ `
   display: flex;
   flex: none;
   align-items: center;
-  gap: var(--bs-space-2);
-  margin-block-start: var(--bs-space-1);
+  gap: var(--bs-gap-sm);
+  margin-block-start: var(--bs-margin-xs);
 }
 `;

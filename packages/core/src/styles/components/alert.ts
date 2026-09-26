@@ -5,7 +5,7 @@ export const alertCss = /* css */ `
 [data-scope="alert"][data-part="root"] {
   --_pigment: var(--bs-color-text-tertiary);
   display: flex;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
   padding: var(--bs-padding-md) var(--bs-padding-lg);
   border: 1px solid color-mix(in oklab, var(--_pigment) 25%, var(--bs-color-border));
   border-inline-start: var(--bs-hairline-strong) solid var(--_pigment);
@@ -45,7 +45,7 @@ export const alertCss = /* css */ `
 [data-scope="alert"][data-part="body"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   min-inline-size: 0;
 }
 

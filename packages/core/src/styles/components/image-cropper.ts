@@ -10,7 +10,7 @@ export const imageCropperCss =
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-3);
+  gap: var(--bs-gap-md);
 }
 
 /* The viewport is a vessel: rounded, resting in ambient shade while the

@@ -78,7 +78,7 @@ export const dialogCss = /* css */ `
   display: grid;
   /* Section rhythm — 16px between header, body, and actions; the sheet's
      own margins are generous enough at the padding below. */
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   inline-size: min(32rem, 100%);
   max-block-size: 80dvh;
   overflow: auto;
@@ -112,7 +112,7 @@ export const dialogCss = /* css */ `
 [data-scope="dialog"][data-part="description"] {
   /* The description belongs to the title, not to the body — pull it out
      of the section rhythm so the pair reads as one header (8px). */
-  margin: calc(var(--bs-space-2) - var(--bs-space-4)) 0 0;
+  margin: calc(var(--bs-margin-sm) - var(--bs-margin-lg)) 0 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

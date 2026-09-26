@@ -54,7 +54,7 @@ export const listCss = /* css */ `
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   min-inline-size: 0;
 }
 
@@ -73,7 +73,7 @@ export const listCss = /* css */ `
   display: flex;
   flex: none;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   margin-inline-start: auto;
 }
 `;

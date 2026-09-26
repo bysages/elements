@@ -6,7 +6,7 @@ export const gridCss = /* css */ `
 [data-scope="grid"][data-part="root"] {
   display: grid;
   grid-template-columns: repeat(var(--bs-grid-columns, 12), minmax(0, 1fr));
-  gap: var(--bs-grid-gap, var(--bs-space-3));
+  gap: var(--bs-grid-gap, var(--bs-gap-md));
 }
 
 /* The auto-fill lattice: as many tracks as the container fits, each at

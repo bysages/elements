@@ -44,7 +44,7 @@ export const scrollAreaCss = /* css */ `
 [data-scope="scroll-area"][data-part="scrollbar"] {
   position: relative;
   display: flex;
-  margin: var(--bs-space-1);
+  margin: var(--bs-margin-xs);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-0);
   opacity: 0;

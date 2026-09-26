@@ -8,7 +8,7 @@ export const emptyCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
   padding: var(--bs-padding-xl);
   text-align: center;
 }
@@ -44,7 +44,7 @@ export const emptyCss = /* css */ `
 [data-scope="empty"][data-part="actions"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
-  margin-block-start: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
+  margin-block-start: var(--bs-margin-sm);
 }
 `;

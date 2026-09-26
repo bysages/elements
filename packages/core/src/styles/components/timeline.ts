@@ -17,8 +17,8 @@ export const timelineCss = /* css */ `
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: var(--bs-space-3);
-  padding-block-end: var(--bs-space-4);
+  column-gap: var(--bs-gap-md);
+  padding-block-end: var(--bs-padding-lg);
 }
 
 [data-scope="timeline"][data-part="item"]:last-child {
@@ -42,14 +42,14 @@ export const timelineCss = /* css */ `
   grid-row: 1;
   inline-size: calc(var(--bs-part-size-sm) / 2);
   block-size: calc(var(--bs-part-size-sm) / 2);
-  margin-block-start: var(--bs-space-2);
+  margin-block-start: var(--bs-margin-sm);
   border: 1px solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
 }
 
 [data-scope="timeline"][data-part="content"] {
-  padding-block-start: var(--bs-space-2);
+  padding-block-start: var(--bs-padding-sm);
   color: var(--bs-color-text-secondary);
   line-height: var(--bs-line-height-relaxed);
 }

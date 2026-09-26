@@ -7,7 +7,7 @@ export const angleSliderCss =
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
 }
 
 [data-scope="angle-slider"][data-part="root"][data-disabled] {

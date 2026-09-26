@@ -9,7 +9,7 @@ export const signaturePadCss =
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="signature-pad"][data-part="root"][data-disabled] {

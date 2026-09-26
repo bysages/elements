@@ -5,7 +5,7 @@ export const statCss = /* css */ `
 [data-scope="stat"][data-part="root"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
 }
 
 [data-scope="stat"][data-part="label"] {
@@ -29,7 +29,7 @@ export const statCss = /* css */ `
 [data-scope="stat"][data-part="delta"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   font-weight: var(--bs-font-weight-medium);

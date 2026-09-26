@@ -11,7 +11,7 @@ export const treeSelectCss =
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   inline-size: 100%;
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md);
@@ -68,9 +68,9 @@ export const treeSelectCss =
 [data-scope="tree-select"][data-part="content"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   max-block-size: 16rem;
-  padding: var(--bs-space-2);
+  padding: var(--bs-padding-sm);
 }
 
 [data-scope="tree-select"][data-part="body"] {
@@ -80,7 +80,7 @@ export const treeSelectCss =
 
 [data-scope="tree-select"][data-part="empty"] {
   margin: 0;
-  padding: var(--bs-space-4) var(--bs-space-2);
+  padding: var(--bs-padding-lg) var(--bs-padding-sm);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   text-align: center;

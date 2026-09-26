@@ -84,7 +84,8 @@ the most natural tool per task.
 
 A 4px base unit, expressed in rem. Optical adjustments of 2px/6px are allowed
 and must carry a comment saying why. Components consume the density-aware
-derived layer (`--bs-padding-*`, `--bs-gap-*`), not the raw ramp.
+derived layer (`--bs-padding-*`, `--bs-gap-*`, `--bs-margin-*`), not the raw
+ramp.
 
 | Token              | Value   | Band             |
 | ------------------ | ------- | ---------------- |
@@ -100,6 +101,13 @@ derived layer (`--bs-padding-*`, `--bs-gap-*`), not the raw ramp.
 | `--bs-space-12`    | 3rem    | page composition |
 | `--bs-space-16`    | 4rem    | page composition |
 | `--bs-space-20/24` | 5–6rem  | page composition |
+
+The derived tiers share one ramp mapping so a same-named tier is never two
+sizes: `xs/sm/md/lg/xl/2xl` ride `space-1/2/3/4/6/8`. Whitespace properties
+(`gap`, `padding`, `margin`) always take the tier of their own family;
+geometry is exempt — position offsets, an interior part's clearance, a
+nesting step, and page-composition spacing (`space-12` and up, which must
+not breathe with density) ride the raw ramp.
 
 Rules keep consistency; the eye keeps balance. Mathematical uniformity is not
 visual uniformity.

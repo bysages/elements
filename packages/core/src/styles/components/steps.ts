@@ -4,7 +4,7 @@ export const stepsCss = /* css */ `
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
 }
 
 [data-scope="steps"][data-part="list"] {
@@ -28,9 +28,9 @@ export const stepsCss = /* css */ `
 [data-scope="steps"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
-  padding: var(--bs-space-1) var(--bs-space-2);
-  margin-inline-start: calc(var(--bs-space-2) * -1);
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  margin-inline-start: calc(var(--bs-margin-sm) * -1);
   border: none;
   background: transparent;
   color: var(--bs-color-text-secondary);
@@ -99,7 +99,7 @@ export const stepsCss = /* css */ `
   align-self: stretch;
   block-size: auto;
   min-block-size: 1px;
-  margin: 0 var(--bs-space-3);
+  margin: 0 var(--bs-margin-md);
   background:
     linear-gradient(var(--bs-color-border), var(--bs-color-border)) center / 100% 1px no-repeat;
 }

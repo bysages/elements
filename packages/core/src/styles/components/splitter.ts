@@ -36,13 +36,13 @@ export const splitterCss = /* css */ `
 
 [data-scope="splitter"][data-part="resize-trigger"][data-orientation="horizontal"] {
   min-inline-size: var(--bs-space-2);
-  margin-inline: calc(var(--bs-space-2) / -2);
+  margin-inline: calc(var(--bs-margin-sm) / -2);
   cursor: col-resize;
 }
 
 [data-scope="splitter"][data-part="resize-trigger"][data-orientation="vertical"] {
   min-block-size: var(--bs-space-2);
-  margin-block: calc(var(--bs-space-2) / -2);
+  margin-block: calc(var(--bs-margin-sm) / -2);
   cursor: row-resize;
 }
 

@@ -3,19 +3,19 @@ export const timerCss = /* css */ `
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--bs-space-4);
+  gap: var(--bs-gap-lg);
 }
 
 [data-scope="timer"][data-part="area"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="timer"][data-part="control"] {
   display: flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 /* Digits are a data readout: monospaced so they never jitter as the count
@@ -41,7 +41,7 @@ export const timerCss = /* css */ `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);

@@ -9,7 +9,7 @@ export const hoverCardCss =
 [data-scope="hover-card"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-1);
+  gap: var(--bs-gap-xs);
   color: var(--bs-color-text-primary);
   font-weight: var(--bs-font-weight-medium);
   text-decoration: underline;

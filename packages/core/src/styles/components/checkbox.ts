@@ -6,7 +6,7 @@ export const checkboxCss =
 [data-scope="checkbox"][data-part="root"] {
   display: inline-flex;
   align-items: center;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
 }
@@ -16,7 +16,7 @@ export const checkboxCss =
 [data-scope="checkbox"][data-part="group"] {
   display: flex;
   flex-direction: column;
-  gap: var(--bs-space-2);
+  gap: var(--bs-gap-sm);
 }
 
 [data-scope="checkbox"][data-part="group"][data-invalid],
