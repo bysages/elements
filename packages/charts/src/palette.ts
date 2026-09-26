@@ -11,15 +11,10 @@ export const chartColors = {
   info: "var(--bs-color-info)",
 } as const;
 
-/** Series order for categorical paint — hand this to an ordinal scale's
- * range (`scaleOrdinal().range(chartSeriesRange)`). */
-export const chartSeriesRange: string[] = [
-  chartColors.ink,
-  chartColors.danger,
-  chartColors.success,
-  chartColors.warning,
-  chartColors.info,
-];
+/** Series order for categorical paint — the pigments in reading order,
+ * straight from the palette so the two can never drift apart. Hand this
+ * to an ordinal scale's range (`scaleOrdinal().range(chartSeriesRange)`). */
+export const chartSeriesRange: string[] = Object.values(chartColors);
 
 /** The quiet ink for grids, guides, and secondary marks. */
 export const chartHairline = "var(--bs-color-border)";

@@ -1,4 +1,14 @@
-import { injectTokens } from "@bysages/core";
+import { injectTokens, stylesShipped } from "@bysages/core";
+
+import { chartColors } from "./palette";
+
+/** The categorical slots the engine fills when a mark names no paint —
+ * generated from the same palette the series range reads, so the CSS
+ * bridge and the ordinal scale can never drift apart. One mixed ink
+ * tone follows the five pigments. */
+const categoricalSlots = Object.values(chartColors)
+  .map((paint, i) => `  --ts-chart-${i + 1}: ${paint};`)
+  .join("\n");
 
 /** Bridge the chart engine's surface variables onto the paper-and-ink
  * tokens: its tooltip dresses like every other popup vessel, and its
@@ -7,14 +17,7 @@ import { injectTokens } from "@bysages/core";
  * live theme, so mode, accent, and scene retune the ink with no redraw. */
 export const chartThemeCss = /* css */ `
 .ts-chart {
-  /* The categorical slots the engine fills when a mark names no paint —
-     without these the engine falls back to its own default palette.
-     They ride the pigments in reading order, then one mixed ink tone. */
-  --ts-chart-1: var(--bs-color-primary);
-  --ts-chart-2: var(--bs-color-danger);
-  --ts-chart-3: var(--bs-color-success);
-  --ts-chart-4: var(--bs-color-warning);
-  --ts-chart-5: var(--bs-color-info);
+${categoricalSlots}
   --ts-chart-6: color-mix(in oklab, var(--bs-color-primary) 60%, var(--bs-color-surface-0));
   --ts-chart-tooltip-background: var(--bs-color-surface-2);
   --ts-chart-tooltip-border: 1px solid var(--bs-color-border);
@@ -51,9 +54,10 @@ export const chartThemeCss = /* css */ `
 let injected = false;
 
 /** Inject the chart theme bridge (plus the token layer on first use).
- * Idempotent; SSR is a no-op. */
+ * Idempotent; SSR is a no-op, as is a document the SSR integration
+ * already dressed. */
 export function injectChartTheme(): void {
-  if (injected || typeof document === "undefined") return;
+  if (injected || stylesShipped() || typeof document === "undefined") return;
 
   injectTokens();
 
