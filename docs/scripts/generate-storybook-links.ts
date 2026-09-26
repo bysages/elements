@@ -1,6 +1,8 @@
 import { readdirSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { componentFamilies, examplesRoot, exampleNames } from "./component-families.ts";
+
 /** Map every docs demo to its Storybook story id, by matching the built
  * workbench's own index (storybook-static/index.json) against the demo
  * files on disk. Story titles are hand-written and drift from the
@@ -11,8 +13,6 @@ import path from "node:path";
  * of whether the workbench happens to be built on a given machine. */
 
 const docsRoot = path.resolve(import.meta.dirname, "..");
-const vueRoot = path.resolve(docsRoot, "../packages/vue/src/components");
-const examplesRoot = path.resolve(docsRoot, "app/components/examples");
 const workbenchIndex = path.resolve(docsRoot, "public/storybook/index.json");
 const outFile = path.resolve(docsRoot, "app/storybook-links.json");
 
@@ -25,15 +25,14 @@ const kebab = (s: string) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCas
 // families (chart, workflow) that live in their own packages — their
 // demo directories are the superset, and a family without demos
 // matches nothing anyway.
-const families = [
-  ...readdirSync(vueRoot, { withFileTypes: true })
-    .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
-    .map((e) => e.name),
-  ...readdirSync(examplesRoot, { withFileTypes: true })
-    .filter((e) => e.isDirectory())
-    .map((e) => e.name),
+const uniqueFamilies = [
+  ...new Set([
+    ...componentFamilies(),
+    ...readdirSync(examplesRoot, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name),
+  ]),
 ];
-const uniqueFamilies = [...new Set(families)];
 
 if (!existsSync(workbenchIndex)) {
   console.error(
@@ -71,13 +70,9 @@ for (const stories of storiesOfFamily.values()) {
 }
 
 const links: Record<string, string> = {};
-let unlinked = 0;
+const unlinked: string[] = [];
 for (const family of uniqueFamilies) {
-  const examples = existsSync(path.join(examplesRoot, family))
-    ? readdirSync(path.join(examplesRoot, family))
-        .filter((f) => f.endsWith(".vue"))
-        .map((f) => f.replace(/\.vue$/, ""))
-    : [];
+  const examples = exampleNames(family);
   // A demo deep-links to its same-named story when there is one, and
   // otherwise to the family's first story: the workbench stays one
   // click away even where the demo predates the stories. Story titles
@@ -87,12 +82,24 @@ for (const family of uniqueFamilies) {
   for (const demo of examples) {
     const hit = stories?.find((s) => s.demo === demo) ?? stories?.[0];
     if (hit) links[`${family}/${demo}`] = hit.id;
-    else unlinked++;
+    else unlinked.push(`${family}/${demo}`);
   }
+}
+
+// A family the workbench never built stories for (the headless logic
+// parts) legitimately has no link; a family that does have stories but
+// leaves a demo unlinked means the titles or demo names drifted — a
+// bug, and the run fails on it.
+const orphaned = unlinked.filter((key) => storiesOfFamily.has(flat(key.split("/")[0])));
+if (orphaned.length) {
+  console.error(
+    `demos whose family has stories but no link — title or demo-name drift: ${orphaned.join(", ")}`,
+  );
+  process.exit(1);
 }
 
 const linked = Object.keys(links).length;
 writeFileSync(outFile, JSON.stringify(links, null, 2) + "\n");
 console.log(`storybook links: ${linked} demos → ${outFile}`);
-if (unlinked) console.log(`  ${unlinked} demos without a matching story family — no link`);
+if (unlinked.length) console.log(`  ${unlinked.length} demos without a story family — no link`);
 if (linked === 0) process.exit(1);

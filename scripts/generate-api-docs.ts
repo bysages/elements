@@ -183,7 +183,11 @@ function arkProps(family: string, part: string): PropDoc[] {
  * chain of `(evt: "name", details) => void` overloads on the render
  * function — both appear across the dist, so both are parsed. */
 function arkEmits(family: string, part: string): EmitDoc[] {
-  const text = readFileSync(join(ARK_DIST, family, `${family}-${part}.vue.d.ts`), "utf8");
+  const file = project.addSourceFileAtPathIfExists(
+    join(ARK_DIST, family, `${family}-${part}.vue.d.ts`),
+  );
+  if (!file) return [];
+  const text = file.getFullText();
   const body = text.match(/ComponentOptionsMixin,\s*\{([\s\S]*?)\},\s*string,\s*PublicProps/)?.[1];
   const scope = body ?? text;
   const emits = new Map<string, EmitDoc>();
@@ -333,7 +337,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
   const indexPath = join(WRAPPERS, dir, "index.ts");
   if (!existsSync(indexPath)) return null;
   const indexFile = project.addSourceFileAtPath(indexPath);
-  const indexText = readFileSync(indexPath, "utf8");
+  const indexText = indexFile.getFullText();
 
   const arkImport = indexText.match(/import \{[^}]*as Ark\w+[^}]*\} from "@ark-ui\/vue\/([\w-]+)"/);
   const description = wrapperHeaderComment(indexFile);
@@ -345,6 +349,9 @@ export function documentFamily(dir: string): FamilyDoc | null {
   let components: Record<string, ComponentDoc> = {};
   let source: "ark" | "native";
   let anatomy: string[];
+  // Both shelves report the styled parts, and the native branch's anatomy
+  // is the same list — read the stylesheet once.
+  const styled = styledParts(dir);
 
   if (isWrapped && arkImport) {
     source = "ark";
@@ -406,10 +413,9 @@ export function documentFamily(dir: string): FamilyDoc | null {
         ...(slots.length ? { slots } : {}),
       };
     }
-    anatomy = styledParts(dir);
+    anatomy = styled;
   }
 
-  const styled = styledParts(dir);
   return {
     family: dir,
     source,

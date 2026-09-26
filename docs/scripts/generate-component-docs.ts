@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 
 import {
@@ -7,6 +7,7 @@ import {
   type FamilyDoc,
   type PropDoc,
 } from "../../scripts/generate-api-docs.ts";
+import { componentFamilies, exampleNames } from "./component-families.ts";
 import { componentNames } from "./component-names.ts";
 import { componentSections } from "./component-sections.ts";
 import { displayTitle } from "./display-title.ts";
@@ -26,18 +27,13 @@ import { displayTitle } from "./display-title.ts";
  * regenerates in memory and fails if anything on disk differs. */
 
 const docsRoot = path.resolve(import.meta.dirname, "..");
-const vueRoot = path.resolve(docsRoot, "../packages/vue/src/components");
-const examplesRoot = path.resolve(docsRoot, "app/components/examples");
 const contentRoot = path.resolve(docsRoot, "content");
 
-// Byte order of the numbered filenames — the order component-order.ts
-// exports — where "avatar-group." precedes "avatar." because '-' < '.'.
+// Byte order of the numbered filenames — "avatar-group." precedes
+// "avatar." because '-' < '.'.
 const byFileName = (a: string, b: string) => (a + "." < b + "." ? -1 : a + "." > b + "." ? 1 : 0);
 
-const discovered = readdirSync(vueRoot, { withFileTypes: true })
-  .filter((e) => e.isDirectory() && existsSync(path.join(vueRoot, e.name, "index.ts")))
-  .map((e) => e.name)
-  .sort(byFileName);
+const discovered = componentFamilies().sort(byFileName);
 
 // Families the directory scan cannot discover, with their pages
 // synthesized here: the chart family lives in @bysages/charts, whose
@@ -98,14 +94,6 @@ const shelves = {
   "02.components": { zh: "组件", en: "Components", icon: "i-lucide-component" },
   "03.reference": { zh: "参考", en: "Reference", icon: "i-lucide-book-marked" },
 } as const;
-
-const examplesOf = (family: string): string[] => {
-  const dir = path.join(examplesRoot, family);
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((f) => f.endsWith(".vue"))
-    .map((f) => f.replace(/\.vue$/, ""));
-};
 
 // Both shelves as { relative path → content }, relative to docs/.
 const titleOf = (family: string, locale: string): string => {
@@ -207,7 +195,7 @@ function render(): Map<string, string> {
         return head.join("\n");
       });
 
-      const demos = examplesOf(family).map(
+      const demos = exampleNames(family).map(
         (name) => `<ComponentDemo name="${family}/${name}"></ComponentDemo>`,
       );
 
@@ -222,10 +210,7 @@ function render(): Map<string, string> {
         if (c.emits?.length) part.push("", ...markdownEmits(c.emits));
         if (c.slots?.length) part.push("", ...markdownSlots(c.slots));
         if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
-          part.push(
-            "",
-            "A styled part — no props of its own; it takes the anatomy's shared styling.",
-          );
+          part.push("", propslessLine);
         }
         referenceSections.push(part.join("\n"));
       }
