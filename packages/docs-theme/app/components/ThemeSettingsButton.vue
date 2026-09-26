@@ -2,6 +2,7 @@
 import {
   applyTheme,
   getTheme,
+  SCENE_DEFAULT_ACCENT,
   Button,
   Popover,
   RadioGroup,
@@ -15,20 +16,25 @@ import {
 // render on the server.
 const theme = reactive(getTheme());
 
-// dot: the pigment a scene pairs with, shown as a small swatch — "ink"
-// renders as the text ink (the accent's absence), undefined hides the dot.
-const scenes: Array<{ value: ThemeScene; en: string; zh: string; dot?: string }> = [
+// dot: the pigment a scene pairs with (the engine's own pairing table),
+// shown as a small swatch — "ink" renders as the text ink (the accent's
+// absence), undefined hides the dot.
+const sceneNames: Array<{ value: ThemeScene; en: string; zh: string }> = [
   { value: "auto", en: "Auto", zh: "纸墨" },
-  { value: "civic", en: "Civic", zh: "典章", dot: "zhusha" },
-  { value: "enterprise", en: "Enterprise", zh: "信笺", dot: "qinghua" },
-  { value: "studio", en: "Studio", zh: "雅集", dot: "celadon" },
-  { value: "tech", en: "Tech", zh: "司南", dot: "ink" },
-  { value: "cupertino", en: "Cupertino", zh: "圆融", dot: "ink" },
-  { value: "expressive", en: "Expressive", zh: "飞白", dot: "zhusha" },
-  { value: "fluent", en: "Fluent", zh: "流水", dot: "qinghua" },
-  { value: "material", en: "Material", zh: "格物", dot: "celadon" },
-  { value: "sketch", en: "Sketch", zh: "写意", dot: "zhusha" },
+  { value: "civic", en: "Civic", zh: "典章" },
+  { value: "enterprise", en: "Enterprise", zh: "信笺" },
+  { value: "studio", en: "Studio", zh: "雅集" },
+  { value: "tech", en: "Tech", zh: "司南" },
+  { value: "cupertino", en: "Cupertino", zh: "圆融" },
+  { value: "expressive", en: "Expressive", zh: "飞白" },
+  { value: "fluent", en: "Fluent", zh: "流水" },
+  { value: "material", en: "Material", zh: "格物" },
+  { value: "sketch", en: "Sketch", zh: "写意" },
 ];
+const scenes = sceneNames.map((s) => ({
+  ...s,
+  dot: s.value === "auto" ? undefined : SCENE_DEFAULT_ACCENT[s.value],
+}));
 
 const accents: Array<{ value: ThemeAccent; label: string }> = [
   { value: "auto", label: "Auto — follows the scene" },

@@ -72,7 +72,17 @@ const preview: Preview = {
       // because annotations would break the eval.
       // @ts-expect-error untyped params keep the extracted text eval-safe
       storySort: (a, b) => {
-        const ladder = ["Elements", "Actions", "Forms", "Overlay", "Navigation", "Data", "Layout"];
+        const ladder = [
+          "Elements",
+          "Actions",
+          "Forms",
+          "Navigation",
+          "Overlay",
+          "Data",
+          "Media",
+          "Feedback",
+          "Layout",
+        ];
         const nameA = (a.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
         const nameB = (b.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
         const idxA = ladder.indexOf(nameA);
