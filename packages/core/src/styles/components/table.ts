@@ -17,10 +17,13 @@ export const tableCss = /* css */ `
 }
 
 /* The scroll viewport: headers, body, and a fixed footer all stick to
-   its edges. */
+   its edges. Contain only the horizontal edge — chained horizontal
+   scrolling never helps a table. A contain on the vertical axis eats
+   the wheel whenever the rows fit: the viewport latches as the nearest
+   scroll container, has no vertical room, and the page stands still. */
 [data-scope="table"][data-part="viewport"] {
   overflow: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
 }
 
 /* The filter toolbar rests above the scroll, one hairline down. */

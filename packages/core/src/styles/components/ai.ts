@@ -14,6 +14,9 @@ export const aiCss = /* css */ `
   flex-direction: column;
   align-items: flex-start;
   gap: var(--bs-gap-sm);
+  /* A message is itself a flex item; the default min-content floor lets
+     one long code line widen the whole message past the column. */
+  min-inline-size: 0;
   max-inline-size: 46rem;
 }
 
@@ -44,6 +47,12 @@ export const aiCss = /* css */ `
   font-size: var(--bs-font-size-md);
   line-height: var(--bs-line-height-relaxed);
   overflow-wrap: anywhere;
+  /* The message aligns its children to the start, so the block would
+     size to fit-content — and the min-content of a code block is its
+     longest line, reading out past the panel. Stretch pins the block to
+     the column; the code block scrolls inside itself. */
+  align-self: stretch;
+  min-inline-size: 0;
 }
 
 [data-scope="ai"][data-part="response"] > :first-child {
