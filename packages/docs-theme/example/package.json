@@ -1,6 +1,6 @@
 {
   "name": "@bysages/docs-theme-example",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "The verification site for @bysages/docs-theme — extends the layer and renders its own markdown",
   "type": "module",
