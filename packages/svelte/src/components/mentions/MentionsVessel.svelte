@@ -9,6 +9,7 @@ let {
   matches = [],
   active = 0,
   anchor = null,
+  size = "md",
   onInsert,
   onActiveChange,
   onOpenChange,
@@ -31,7 +32,7 @@ the vessel still points at the right place. -->
     <ArkPopover.Positioner>
       <ArkPopover.Content>
         {#snippet asChild(contentProps)}
-          <div {...contentProps()} data-scope="mentions" data-part="popup">
+          <div {...contentProps()} data-scope="mentions" data-part="popup" data-size={size}>
             {#each matches as entry, index (entry.value)}
               <div
                 data-scope="mentions"

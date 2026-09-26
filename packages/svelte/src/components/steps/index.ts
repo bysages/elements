@@ -1,6 +1,3 @@
-import { Steps as ArkSteps } from "@ark-ui/svelte/steps";
-import { injectComponentStyle } from "@bysages/core";
-
 /**
  * Steps — linear progress through a sequence.
  *
@@ -8,6 +5,16 @@ import { injectComponentStyle } from "@bysages/core";
  * PrevTrigger, NextTrigger, Progress. Indicator and Separator carry
  * data-complete / data-current / data-incomplete.
  */
-export const Steps = ArkSteps;
+import { Steps as ArkSteps } from "@ark-ui/svelte/steps";
+import { injectComponentStyle } from "@bysages/core";
+
+import StepsRoot from "./StepsRoot.svelte";
+
+/* Ark's namespace is frozen — spread copies the members so Root can be
+ * the sized wrapper while the rest stay Ark's own parts. */
+export const Steps: Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot } = {
+  ...ArkSteps,
+  Root: StepsRoot,
+};
 
 injectComponentStyle("steps");

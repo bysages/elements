@@ -28,6 +28,8 @@ export interface MeterRootProps extends HTMLAttributes<HTMLElement> {
   max?: number;
   /** The pigment the ink rides: primary unless a threshold is crossed. */
   level?: "normal" | "success" | "warning" | "danger";
+  /** One rung of the groove ladder — the track's thickness. */
+  size?: "sm" | "md" | "lg";
   label?: string;
 }
 
@@ -36,6 +38,7 @@ const Root = ({
   min = 0,
   max = 100,
   level = "normal",
+  size = "md",
   label,
   children,
   ...rest
@@ -52,6 +55,7 @@ const Root = ({
       aria-label={label ?? rest["aria-label"]}
       data-scope="meter"
       data-part="root"
+      data-size={size}
       data-level={level !== "normal" ? level : undefined}
       style={{ ...(rest.style as CSSProperties), "--_percent": `${ratio * 100}%` } as CSSProperties}
     >

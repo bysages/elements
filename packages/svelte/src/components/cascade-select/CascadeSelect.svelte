@@ -14,6 +14,7 @@ let {
   placeholder = "Select…",
   highlightTrigger,
   filterable = false,
+  size = "md",
   multiple = false,
   disabled = false,
   ...rest
@@ -175,7 +176,7 @@ dissolves open beside it, until a leaf click settles the whole path.
 labels ride the trigger. `filterable` swaps the corridor for a flat
 list of matching paths while a query runs — each hit still reads as
 its full route. -->
-<div {...rest} {...api.getRootProps()}>
+<div {...rest} {...api.getRootProps()} data-size={size}>
   <div {...api.getControlProps()}>
     <button
       {...api.getTriggerProps()}
@@ -203,7 +204,7 @@ its full route. -->
   </div>
   <Portal>
     <div {...api.getPositionerProps()}>
-      <div {...api.getContentProps()}>
+      <div {...api.getContentProps()} data-size={size}>
         {#if filterable}
           <div data-part="search">
             <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />

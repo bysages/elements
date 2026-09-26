@@ -75,6 +75,8 @@ export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
   filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
+  /** One rung of the control-height ladder for the trigger. */
+  size?: "sm" | "md" | "lg";
   onValueChange?: (value: string[][]) => void;
 }
 
@@ -86,6 +88,7 @@ export function CascadeSelect({
   filterable = false,
   multiple = false,
   disabled = false,
+  size = "md",
   onValueChange,
   ...rest
 }: CascadeSelectProps) {
@@ -229,7 +232,7 @@ export function CascadeSelect({
   }
 
   return (
-    <div {...rest} {...api.getRootProps()}>
+    <div {...rest} {...api.getRootProps()} data-size={size}>
       <div {...api.getControlProps()}>
         <button
           {...api.getTriggerProps()}
@@ -245,7 +248,7 @@ export function CascadeSelect({
       </div>
       <Portal>
         <div {...api.getPositionerProps()}>
-          <div {...api.getContentProps()}>
+          <div {...api.getContentProps()} data-size={size}>
             {filterable ? (
               <div data-part="search">
                 <Input

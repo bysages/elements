@@ -9,6 +9,7 @@ let {
   max,
   placeholder,
   addLabel = "Add entry",
+  size = "md",
   disabled = false,
   invalid = false,
   ...rest
@@ -47,11 +48,13 @@ truth. -->
         {placeholder}
         {disabled}
         {invalid}
+        {size}
         oninput={(event) => update(index, event.currentTarget.value)}
       />
       <Button
         variant="ghost"
         square
+        {size}
         disabled={disabled || !canRemove}
         aria-label={`Remove entry ${index + 1}`}
         onclick={() => remove(index)}
@@ -73,7 +76,7 @@ truth. -->
     </div>
   {/each}
   <div data-scope="dynamic-input" data-part="add">
-    <Button variant="ghost" disabled={disabled || !canAdd} onclick={add}>
+    <Button variant="ghost" {size} disabled={disabled || !canAdd} onclick={add}>
       {"+"}{addLabel}
     </Button>
   </div>

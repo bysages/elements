@@ -2,6 +2,7 @@
 import { renderHtml } from "@tanstack/markdown/html";
 
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
+import { wrapResponseTables } from "./tables";
 
 import type { ResponseProps } from "./props";
 
@@ -24,6 +25,7 @@ let root: HTMLDivElement | undefined;
 $effect(() => {
   void html;
   if (root) decorateCodeCopy(root, copyLabel);
+  if (root) wrapResponseTables(root);
 });
 
 const handleClick = (event: MouseEvent) => {

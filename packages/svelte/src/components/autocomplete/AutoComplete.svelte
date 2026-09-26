@@ -5,7 +5,14 @@ import Portal from "@ark-ui/svelte/portal";
 
 import type { AutoCompleteProps } from "./props";
 
-let { value = $bindable(""), items = [], placeholder, filter, ...rest }: AutoCompleteProps =
+let {
+  value = $bindable(""),
+  items = [],
+  placeholder,
+  size = "md",
+  filter,
+  ...rest
+}: AutoCompleteProps =
   $props();
 
 const { collection, filter: filterItems } = useListCollection<string>({
@@ -21,6 +28,7 @@ narrows to help, and both a pick and a custom value end up in the same
 one job. -->
 <ArkCombobox.Root
   collection={collection}
+  data-size={size}
   inputValue={value}
   allowCustomValue
   onValueChange={(details) => {

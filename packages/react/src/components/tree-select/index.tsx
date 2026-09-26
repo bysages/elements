@@ -75,6 +75,9 @@ export interface TreeSelectProps extends HTMLAttributes<HTMLDivElement> {
   placeholder?: string;
   filterable?: boolean;
   disabled?: boolean;
+  /** One rung of the ladder: the trigger height and the vessel's row
+   * register follow it together. */
+  size?: "sm" | "md" | "lg";
   onValueChange?: (value: string) => void;
 }
 
@@ -84,6 +87,7 @@ export function TreeSelect({
   placeholder = "Select…",
   filterable = false,
   disabled = false,
+  size = "md",
   onValueChange,
   ...rest
 }: TreeSelectProps) {
@@ -166,6 +170,7 @@ export function TreeSelect({
           type="button"
           data-scope="tree-select"
           data-part="control"
+          data-size={size}
           data-open={open ? "" : undefined}
           data-placeholder={label == null ? "" : undefined}
           disabled={disabled}
@@ -176,7 +181,7 @@ export function TreeSelect({
       </ArkPopover.Trigger>
       <Portal>
         <ArkPopover.Positioner>
-          <ArkPopover.Content data-scope="tree-select" data-part="content">
+          <ArkPopover.Content data-scope="tree-select" data-part="content" data-size={size}>
             {filterable ? (
               <div data-scope="tree-select" data-part="search">
                 <Input

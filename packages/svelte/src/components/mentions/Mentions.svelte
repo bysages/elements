@@ -12,6 +12,7 @@ let {
   placeholder,
   autoresize = false,
   invalid = false,
+  size = "md",
   onValueChange,
   ...rest
 }: MentionsProps = $props();
@@ -50,7 +51,7 @@ coordinates; caret-precise positioning would need a second positioning
 system for no practical gain at typical field sizes. Composers that
 keep their own field anatomy (the AI prompt input) skip this shell and
 wire `useMentions` plus `MentionsVessel` themselves. -->
-<div {...rest} data-scope="mentions" data-part="root">
+<div {...rest} data-scope="mentions" data-part="root" data-size={size}>
   <Field.Textarea
     bind:ref={textareaEl}
     bind:value
@@ -68,6 +69,7 @@ wire `useMentions` plus `MentionsVessel` themselves. -->
     matches={mentions.matches}
     active={mentions.active}
     anchor={textareaEl}
+    size={size}
     onInsert={mentions.insert}
     onActiveChange={(index) => (mentions.active = index)}
     onOpenChange={(open) => {

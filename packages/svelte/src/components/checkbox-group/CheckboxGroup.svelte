@@ -7,6 +7,7 @@ let {
   value = $bindable([]),
   options,
   layout = "vertical",
+  size = "md",
   invalid = false,
   disabled = false,
   ...rest
@@ -44,6 +45,7 @@ every box at once. -->
     <ArkCheckbox.Root
       checked={selected.has(option.value)}
       invalid={isInvalid}
+      data-size={size}
       disabled={isDisabled || option.disabled === true}
       onCheckedChange={() => toggle(option.value)}
     >

@@ -4,6 +4,7 @@ import { createEffect, createMemo, onMount, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
+import { wrapResponseTables } from "./tables";
 
 export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The markdown text to set on the paper — streamed in freely; raw
@@ -35,6 +36,7 @@ export function Response(props: ResponseProps) {
     createEffect(() => {
       void html();
       if (root) decorateCodeCopy(root, own.copyLabel ?? "Copy code");
+      if (root) wrapResponseTables(root);
     }),
   );
 

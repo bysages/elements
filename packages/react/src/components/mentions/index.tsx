@@ -16,6 +16,8 @@ export interface MentionEntry {
 }
 
 export interface MentionsVesselProps {
+  /** The host field's rung, so the rows keep the field's register. */
+  size?: "sm" | "md" | "lg";
   /** Whether the candidates are up. */
   open?: boolean;
   /** The candidates on offer. */
@@ -38,6 +40,7 @@ export interface MentionsVesselProps {
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
 export function MentionsVessel({
+  size = "md",
   open = false,
   matches = [],
   active = 0,
@@ -58,7 +61,7 @@ export function MentionsVessel({
       <Portal>
         <ArkPopover.Positioner>
           <ArkPopover.Content asChild>
-            <div data-scope="mentions" data-part="popup">
+            <div data-scope="mentions" data-part="popup" data-size={size}>
               {matches.map((entry, index) => (
                 <div
                   key={entry.value}
@@ -112,6 +115,8 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   /** Standing alone, the field styles itself from this flag; inside a
    * `Field.Root` the field's own invalid state takes over. */
   invalid?: boolean;
+  /** One rung of the control-height ladder for the resting field. */
+  size?: "sm" | "md" | "lg";
   /** Reports the field's next text. */
   onValueChange?: (value: string) => void;
 }
@@ -123,6 +128,7 @@ export function Mentions({
   placeholder,
   autoresize = false,
   invalid = false,
+  size = "md",
   onValueChange,
   children,
   ...rest
@@ -153,7 +159,7 @@ export function Mentions({
   };
 
   return (
-    <div {...rest} data-scope="mentions" data-part="root">
+    <div {...rest} data-scope="mentions" data-part="root" data-size={size}>
       <Field.Textarea
         ref={fieldRef}
         autoresize={autoresize}
@@ -167,6 +173,7 @@ export function Mentions({
         data-part="textarea"
       />
       <MentionsVessel
+        size={size}
         open={mentions.open}
         matches={mentions.matches}
         active={mentions.active}

@@ -34,6 +34,8 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   /** Standing alone, the field announces itself invalid; inside a
    * `Field.Root` the field's own invalid state takes over. */
   invalid?: boolean;
+  /** One rung of the control-height ladder for the resting field. */
+  size?: "sm" | "md" | "lg";
   /** The field's text turned. */
   onValueChange?: (value: string) => void;
 }
@@ -44,6 +46,8 @@ export interface MentionsVesselProps {
   active?: number;
   /** The live rectangle the vessel points at — the host's field. */
   anchor?: HTMLTextAreaElement | null;
+  /** The host field's rung, so the rows keep the field's register. */
+  size?: "sm" | "md" | "lg";
   /** A candidate was confirmed (click or Enter). */
   onInsert?: (entry: MentionEntry) => void;
   /** The keyboard's active row moved. */

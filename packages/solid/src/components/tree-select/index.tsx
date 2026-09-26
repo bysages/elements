@@ -37,6 +37,9 @@ export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
   data: TreeSelectNode[];
   placeholder?: string;
   filterable?: boolean;
+  /** One rung of the ladder: the trigger height and the vessel's
+   * row register follow it together. */
+  size?: "sm" | "md" | "lg";
   disabled?: boolean;
   onValueChange?: (value: string) => void;
 }
@@ -55,6 +58,7 @@ export function TreeSelect(props: TreeSelectProps) {
     "placeholder",
     "filterable",
     "disabled",
+    "size",
     "onValueChange",
   ]);
   const [open, setOpen] = createSignal(false);
@@ -170,6 +174,7 @@ export function TreeSelect(props: TreeSelectProps) {
             type="button"
             data-scope="tree-select"
             data-part="control"
+            data-size={own.size ?? "md"}
             data-open={open() ? "" : undefined}
             data-placeholder={label() == null ? "" : undefined}
             disabled={own.disabled}
@@ -183,7 +188,11 @@ export function TreeSelect(props: TreeSelectProps) {
       />
       <Portal>
         <ArkPopover.Positioner>
-          <ArkPopover.Content data-scope="tree-select" data-part="content">
+          <ArkPopover.Content
+            data-scope="tree-select"
+            data-part="content"
+            data-size={own.size ?? "md"}
+          >
             <Show when={own.filterable}>
               <div data-scope="tree-select" data-part="search">
                 <Input

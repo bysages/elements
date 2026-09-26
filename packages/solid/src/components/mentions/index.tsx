@@ -22,6 +22,8 @@ export interface MentionsVesselProps {
   /** The live element the vessel points at — the anchor is virtual, a
    * rectangle read off the host's field. */
   anchor?: HTMLTextAreaElement | null;
+  /** The host field's rung, so the rows keep the field's register. */
+  size?: "sm" | "md" | "lg";
   onInsert?: (entry: MentionEntry) => void;
   onActiveChange?: (index: number) => void;
   onOpenChange?: (open: boolean) => void;
@@ -46,7 +48,12 @@ export function MentionsVessel(props: MentionsVesselProps) {
         <ArkPopover.Positioner>
           <ArkPopover.Content
             asChild={(contentProps) => (
-              <div {...contentProps()} data-scope="mentions" data-part="popup">
+              <div
+                {...contentProps()}
+                data-scope="mentions"
+                data-part="popup"
+                data-size={props.size ?? "md"}
+              >
                 <For each={props.matches ?? []}>
                   {(entry, index) => (
                     <div
@@ -86,6 +93,8 @@ export interface MentionsProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
   /** Standing alone, the field styles itself from this flag; inside a
    * `Field.Root` the field's own invalid state takes over. */
   invalid?: boolean;
+  /** One rung of the control-height ladder for the resting field. */
+  size?: "sm" | "md" | "lg";
   /** The field's text changed. */
   onValueChange?: (value: string) => void;
 }
@@ -113,6 +122,7 @@ export function Mentions(props: MentionsProps) {
     "placeholder",
     "autoresize",
     "invalid",
+    "size",
     "onValueChange",
   ]);
   // Mirrors the controlled value when the caller does not pass one.
@@ -148,7 +158,7 @@ export function Mentions(props: MentionsProps) {
   };
 
   return (
-    <div {...rest} data-scope="mentions" data-part="root">
+    <div {...rest} data-scope="mentions" data-part="root" data-size={own.size ?? "md"}>
       <Textarea
         ref={(node) => setFieldEl(node)}
         invalid={own.invalid}
@@ -170,6 +180,7 @@ export function Mentions(props: MentionsProps) {
         open={mentions.open()}
         matches={mentions.matches()}
         active={mentions.active()}
+        size={own.size ?? "md"}
         anchor={fieldEl()}
         onInsert={mentions.insert}
         onActiveChange={mentions.setActive}

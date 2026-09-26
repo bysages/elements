@@ -80,6 +80,8 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
   filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
+  /** One rung of the control-height ladder for the trigger. */
+  size?: "sm" | "md" | "lg";
   onValueChange?: (value: string[][]) => void;
 }
 
@@ -101,6 +103,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
     "filterable",
     "multiple",
     "disabled",
+    "size",
     "onValueChange",
   ]);
   const id = createUniqueId();
@@ -257,7 +260,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
   }
 
   return (
-    <div {...rest} {...mergeProps(() => api().getRootProps())}>
+    <div {...rest} {...mergeProps(() => api().getRootProps())} data-size={own.size ?? "md"}>
       <div {...mergeProps(() => api().getControlProps())}>
         <button
           {...mergeProps(() => api().getTriggerProps(), {
@@ -278,7 +281,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
       </div>
       <Portal>
         <div {...mergeProps(() => api().getPositionerProps())}>
-          <div {...mergeProps(() => api().getContentProps())}>
+          <div {...mergeProps(() => api().getContentProps())} data-size={own.size ?? "md"}>
             <Show when={own.filterable}>
               <div data-part="search">
                 <Input

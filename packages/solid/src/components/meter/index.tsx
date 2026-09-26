@@ -32,10 +32,12 @@ export interface MeterRootProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The pigment the ink rides: primary unless a threshold is crossed. */
   level?: "normal" | "success" | "warning" | "danger";
   label?: string;
+  /** One rung of the groove ladder — the track's thickness. */
+  size?: "sm" | "md" | "lg";
 }
 
 function Root(props: MeterRootProps) {
-  const [own, rest] = splitProps(props, ["value", "min", "max", "level", "label"]);
+  const [own, rest] = splitProps(props, ["value", "min", "max", "level", "label", "size"]);
   const min = () => own.min ?? 0;
   const max = () => own.max ?? 100;
   const ratio = () => {
@@ -53,6 +55,7 @@ function Root(props: MeterRootProps) {
       aria-label={own.label ?? rest["aria-label"]}
       data-scope="meter"
       data-part="root"
+      data-size={own.size ?? "md"}
       data-level={level() !== "normal" ? level() : undefined}
       style={{ ...(rest.style as JSX.CSSProperties), "--_percent": `${ratio() * 100}%` }}
     >

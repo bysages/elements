@@ -20,6 +20,8 @@ export interface AutoCompleteProps extends Omit<
   placeholder?: string;
   /** Field text to match against; defaults to the item itself. */
   filter?: (item: string, input: string) => boolean;
+  /** One rung of the control-height ladder for the field row. */
+  size?: "sm" | "md" | "lg";
   onValueChange?: (value: string) => void;
 }
 
@@ -28,6 +30,7 @@ export function AutoComplete({
   items = [],
   placeholder,
   filter,
+  size = "md",
   onValueChange,
   ...rest
 }: AutoCompleteProps) {
@@ -43,6 +46,7 @@ export function AutoComplete({
       collection={collection}
       inputValue={value}
       allowCustomValue
+      data-size={size}
       onValueChange={(details) => {
         const [first] = details.value;
         if (first != null) onValueChange?.(first);

@@ -10,6 +10,7 @@ let {
   max = 100,
   level = "normal",
   label,
+  size = "md",
   children,
   ...rest
 }: MeterRootProps = $props();
@@ -30,6 +31,7 @@ const ratio = $derived.by(() => {
   data-scope="meter"
   data-part="root"
   data-level={level !== "normal" ? level : undefined}
+  data-size={size}
   style:--_percent={`${ratio * 100}%`}
 >
   {#if children}

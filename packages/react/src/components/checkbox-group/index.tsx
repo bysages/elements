@@ -27,6 +27,9 @@ export interface CheckboxGroupProps extends HTMLAttributes<HTMLDivElement> {
   value?: string[];
   options: CheckboxOption[];
   layout?: "vertical" | "horizontal";
+  /** One register for every box: falls onto each root's data-size for
+   * the stylesheet to retune. */
+  size?: "sm" | "md" | "lg";
   invalid?: boolean;
   disabled?: boolean;
   onValueChange?: (value: string[]) => void;
@@ -44,6 +47,7 @@ export function CheckboxGroup({
   value = [],
   options,
   layout = "vertical",
+  size = "md",
   invalid = false,
   disabled = false,
   onValueChange,
@@ -71,6 +75,7 @@ export function CheckboxGroup({
       {options.map((option) => (
         <ArkCheckbox.Root
           key={option.value}
+          data-size={size}
           checked={selected.has(option.value)}
           invalid={isInvalid}
           disabled={isDisabled || option.disabled === true}

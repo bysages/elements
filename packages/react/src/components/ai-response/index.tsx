@@ -4,6 +4,7 @@ import type { HTMLAttributes, MouseEvent } from "react";
 import { useEffect, useRef } from "react";
 
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
+import { wrapResponseTables } from "./tables";
 
 /** Markdown set on the paper. Rendering goes through
  * `@tanstack/markdown`, whose defaults leave raw HTML and executable
@@ -38,6 +39,7 @@ export function Response({
   useEffect(() => {
     const host = root.current;
     if (host) decorateCodeCopy(host, copyLabel);
+    if (host) wrapResponseTables(host);
   }, [content, highlighter, copyLabel]);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {

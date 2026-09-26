@@ -12,6 +12,7 @@ let {
   data,
   placeholder = "Select…",
   filterable = false,
+  size = "md",
   disabled = false,
   ...rest
 }: TreeSelectProps = $props();
@@ -139,6 +140,7 @@ matches keep their ancestors and the branches fan open. -->
         type="button"
         data-scope="tree-select"
         data-part="control"
+        data-size={size}
         data-open={open ? "" : undefined}
         data-placeholder={label == null ? "" : undefined}
         disabled={disabled}
@@ -162,7 +164,7 @@ matches keep their ancestors and the branches fan open. -->
   </ArkPopover.Trigger>
   <Portal>
     <ArkPopover.Positioner>
-      <ArkPopover.Content data-scope="tree-select" data-part="content">
+      <ArkPopover.Content data-scope="tree-select" data-part="content" data-size={size}>
         {#if filterable}
           <div data-scope="tree-select" data-part="search">
             <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />

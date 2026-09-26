@@ -15,6 +15,8 @@ export interface DynamicInputProps extends JSX.HTMLAttributes<HTMLDivElement> {
   placeholder?: string;
   /** The add control's visible words. */
   addLabel?: string;
+  /** One rung of the ladder, handed to every row's field and seals. */
+  size?: "sm" | "md" | "lg";
   disabled?: boolean;
   invalid?: boolean;
   /** Every edit emits a fresh array; the caller's array stays the only
@@ -36,6 +38,7 @@ export function DynamicInput(props: DynamicInputProps) {
     "min",
     "max",
     "placeholder",
+    "size",
     "addLabel",
     "disabled",
     "invalid",
@@ -78,10 +81,12 @@ export function DynamicInput(props: DynamicInputProps) {
               placeholder={own.placeholder}
               disabled={own.disabled}
               invalid={own.invalid}
+              size={own.size ?? "md"}
               onValueChange={(next) => update(index, next)}
             />
             <Button
               variant="ghost"
+              size={own.size ?? "md"}
               square
               disabled={own.disabled || !canRemove()}
               aria-label={`Remove entry ${index + 1}`}
@@ -93,7 +98,12 @@ export function DynamicInput(props: DynamicInputProps) {
         )}
       </Index>
       <div data-scope="dynamic-input" data-part="add">
-        <Button variant="ghost" disabled={own.disabled || !canAdd()} onClick={() => add()}>
+        <Button
+          variant="ghost"
+          size={own.size ?? "md"}
+          disabled={own.disabled || !canAdd()}
+          onClick={() => add()}
+        >
           +{own.addLabel ?? "Add entry"}
         </Button>
       </div>

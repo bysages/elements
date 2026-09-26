@@ -16,6 +16,8 @@ export interface DynamicInputProps extends HTMLAttributes<HTMLDivElement> {
   addLabel?: string;
   disabled?: boolean;
   invalid?: boolean;
+  /** One rung of the ladder, handed to every row's field and seals. */
+  size?: "sm" | "md" | "lg";
   onValueChange?: (value: string[]) => void;
 }
 
@@ -35,6 +37,7 @@ export function DynamicInput({
   addLabel = "Add entry",
   disabled = false,
   invalid = false,
+  size = "md",
   onValueChange,
   children: _children,
   ...rest
@@ -70,11 +73,13 @@ export function DynamicInput({
             placeholder={placeholder}
             disabled={disabled}
             invalid={invalid}
+            size={size}
             onValueChange={(next) => update(index, next)}
           />
           <Button
             variant="ghost"
             square
+            size={size}
             disabled={disabled || !canRemove}
             aria-label={`Remove entry ${index + 1}`}
             onClick={() => remove(index)}
@@ -84,7 +89,7 @@ export function DynamicInput({
         </div>
       ))}
       <div data-scope="dynamic-input" data-part="add">
-        <Button variant="ghost" disabled={disabled || !canAdd} onClick={() => add()}>
+        <Button variant="ghost" size={size} disabled={disabled || !canAdd} onClick={() => add()}>
           +{addLabel}
         </Button>
       </div>
