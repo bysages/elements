@@ -5,6 +5,25 @@ import { computed, defineComponent, h, ref, watchPostEffect } from "vue";
 
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 
+/** Wide tables ride a scrolling lane instead of bursting the column.
+ * The lane is a plain div: the table-as-scroll-container form is what
+ * ate the mouse wheel over plain tables. It only claims
+ * `overflow-x: auto` once its table actually overflows. The data
+ * attribute doubles as the style hook and the idempotence guard, so
+ * it can run after every stream patch. */
+function wrapResponseTables(root: HTMLElement): void {
+  for (const table of root.querySelectorAll("table")) {
+    if (table.parentElement?.hasAttribute("data-table-scroll")) continue;
+    const lane = document.createElement("div");
+    lane.setAttribute("data-table-scroll", "");
+    table.replaceWith(lane);
+    lane.append(table);
+  }
+  for (const lane of root.querySelectorAll("[data-table-scroll]")) {
+    lane.toggleAttribute("data-scrollable", lane.scrollWidth > lane.clientWidth);
+  }
+}
+
 /** Markdown set on the paper. Rendering goes through
  * `@tanstack/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. An optional
@@ -40,6 +59,7 @@ export const Response = defineComponent({
       void html.value;
       void props.copyLabel;
       if (root.value) decorateCodeCopy(root.value, props.copyLabel);
+      if (root.value) wrapResponseTables(root.value);
     });
 
     const onClick = (event: MouseEvent) => {

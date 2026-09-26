@@ -525,13 +525,21 @@ body {
   }
 
   /* Wide tables (API references with long type expressions) ride a
-   horizontal scroll instead of bursting the page: the block display
-   turns the table itself into the scroll container. */
-  .bs-docs-prose table {
-    display: block;
-    inline-size: 100%;
+   horizontal scroll inside their lane — the ProseTable wrapper, a
+   plain div. The lane only claims the scroll once its table actually
+   overflows; the table-as-scroll-container form is what ate the mouse
+   wheel over plain tables, so a lane that never scrolls stays a
+   transparent block in the page's own flow. */
+  .bs-docs-prose [data-table-scroll] {
     margin: var(--bs-margin-xl) 0;
+  }
+
+  .bs-docs-prose [data-table-scroll][data-scrollable] {
     overflow-x: auto;
+  }
+
+  .bs-docs-prose table {
+    inline-size: 100%;
     border-collapse: collapse;
     font-size: var(--bs-font-size-sm);
   }

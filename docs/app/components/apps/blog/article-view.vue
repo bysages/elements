@@ -41,7 +41,8 @@ const html = computed(() => renderHtml(markdown.value));
 const body = ref<HTMLElement | null>(null);
 
 // The renderer emits bare h2s; the TOC links anchor to the blocks' own
-// slugs, so the ids go back on after each patch.
+// slugs, so the ids go back on after each patch. Tables get their
+// scrolling lane on the same pass.
 watchPostEffect(() => {
   void html.value;
   if (!body.value) return;
@@ -51,6 +52,7 @@ watchPostEffect(() => {
     );
     if (block?.id) h2.id = block.id;
   }
+  wrapProseTables(body.value);
 });
 </script>
 

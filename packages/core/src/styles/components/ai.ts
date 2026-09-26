@@ -166,13 +166,21 @@ export const aiCss = /* css */ `
   color: var(--bs-color-text-secondary);
 }
 
-/* Wide tables turn themselves into the scroll container — the same
-   block display the docs prose uses — instead of bursting the column. */
-[data-scope="ai"][data-part="response"] table {
-  display: block;
-  inline-size: 100%;
+/* Wide tables ride a scrolling lane (the renderer wraps them in a
+   [data-table-scroll] div) instead of bursting the column. The lane
+   stays a plain, transparent block until its table actually overflows;
+   the table-as-scroll-container form is what ate the mouse wheel over
+   plain tables. The margin lives on the lane — it cannot collapse
+   through a scroll container. */
+[data-scope="ai"][data-part="response"] [data-table-scroll] {
   margin: var(--bs-margin-md) 0;
+}
+
+[data-scope="ai"][data-part="response"] [data-table-scroll][data-scrollable] {
   overflow-x: auto;
+}
+
+[data-scope="ai"][data-part="response"] table {
   border-collapse: collapse;
   font-size: var(--bs-font-size-sm);
 }
