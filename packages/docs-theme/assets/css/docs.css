@@ -2,6 +2,13 @@
    Every control is a library component — this sheet only dresses the
    page they stand on, and every visual value rides the tokens. */
 
+/* Layer order is fixed here — the earliest sheet the site loads — so
+   the preflight slot (bs.pre, filled by the site's tailwind entry)
+   stays beneath the prose layer it must never outrank: first statement
+   wins the naming order, and a layer declared only by a later sheet
+   would rank above every layer named before it. */
+@layer bs.tokens, bs.pre, bs.prose;
+
 @import "@bysages/tokens/css";
 
 /* ---------------------------------------------------------------- */
@@ -442,7 +449,10 @@ body {
 
   .bs-docs-prose h2,
   .bs-docs-api h2 {
-    margin: var(--bs-space-12) 0 var(--bs-margin-lg);
+    /* Section spacing is typographic rhythm, not page composition — it
+       rides the semantic tier (like the h3 below it), where the raw
+       space-12 this once borrowed read three-odd body lines tall. */
+    margin: var(--bs-margin-2xl) 0 var(--bs-margin-lg);
     padding-block-end: var(--bs-padding-sm);
     border-block-end: 1px solid var(--bs-color-border);
     font-size: var(--bs-font-size-xl);

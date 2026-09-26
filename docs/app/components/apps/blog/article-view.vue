@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Avatar, Button, Toc, Typography } from "@bysages/vue";
-import { computed } from "vue";
+import { renderHtml } from "@tanstack/markdown/html";
+import { computed, ref, watchPostEffect } from "vue";
 
 import CommentThread from "./comment-thread.vue";
-import type { Post } from "./data";
+import type { Post, PostBlock } from "./data";
 
 const props = defineProps<{ post: Post }>();
 
@@ -14,9 +15,43 @@ const emit = defineEmits<{ back: [] }>();
 // scroll-el is needed.
 const tocItems = computed(() =>
   props.post.blocks
-    .filter((block) => block.type === "h2" && block.id)
+    .filter((block: PostBlock) => block.type === "h2" && block.id)
     .map((block) => ({ value: block.id!, depth: 2, label: block.text })),
 );
+
+// The body is one markdown document set through the same prose styles
+// the docs pages wear, so every element — lists and tables included —
+// arrives already in the house register.
+const markdown = computed(() =>
+  props.post.blocks
+    .map((block) =>
+      block.type === "h2"
+        ? `## ${block.text}`
+        : block.type === "quote"
+          ? `> ${block.text}`
+          : block.type === "code"
+            ? "```\n" + block.text + "\n```"
+            : block.text,
+    )
+    .join("\n\n"),
+);
+
+const html = computed(() => renderHtml(markdown.value));
+
+const body = ref<HTMLElement | null>(null);
+
+// The renderer emits bare h2s; the TOC links anchor to the blocks' own
+// slugs, so the ids go back on after each patch.
+watchPostEffect(() => {
+  void html.value;
+  if (!body.value) return;
+  for (const h2 of body.value.querySelectorAll("h2")) {
+    const block = props.post.blocks.find(
+      (candidate) => candidate.type === "h2" && candidate.text === h2.textContent,
+    );
+    if (block?.id) h2.id = block.id;
+  }
+});
 </script>
 
 <template>
@@ -36,11 +71,14 @@ const tocItems = computed(() =>
       All posts
     </Button>
 
-    <div class="grid grid-cols-[1fr_minmax(0,44rem)_1fr] items-start gap-8">
+    <div class="grid grid-cols-[1fr_minmax(0,46rem)_1fr] items-start gap-8">
       <div class="col-start-2 min-w-0">
         <Typography.Display class="mb-3">{{ post.title }}</Typography.Display>
 
-        <p class="m-0 mb-7 flex items-center gap-2 text-sm text-tertiary">
+        <!-- The title's voice owns `margin: 0`, so the gap to its byline
+             is written here — utilities under the component's own
+             specificity would silently lose. -->
+        <p class="m-0 mb-7 mt-3 flex items-center gap-2 text-sm text-tertiary">
           <Avatar.Root>
             <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
           </Avatar.Root>
@@ -51,28 +89,7 @@ const tocItems = computed(() =>
           <span>{{ post.readingTime }} read</span>
         </p>
 
-        <template v-for="(block, index) in post.blocks" :key="index">
-          <Typography.Heading
-            v-if="block.type === 'h2'"
-            :id="block.id"
-            class="mb-3 mt-7 scroll-mt-20"
-          >
-            {{ block.text }}
-          </Typography.Heading>
-          <Typography.Body v-else-if="block.type === 'p'" class="m-0 mb-4">
-            {{ block.text }}
-          </Typography.Body>
-          <blockquote
-            v-else-if="block.type === 'quote'"
-            class="mx-0 my-5 border-s-2 border-s-border-strong ps-4 font-serif text-lg text-secondary"
-          >
-            {{ block.text }}
-          </blockquote>
-          <pre
-            v-else
-            class="my-5 overflow-x-auto rounded-lg border border-border bg-surface-2 p-4 text-sm leading-relaxed"
-          ><code>{{ block.text }}</code></pre>
-        </template>
+        <div ref="body" class="bs-docs-prose" v-html="html" />
 
         <CommentThread :comments="post.comments" />
       </div>

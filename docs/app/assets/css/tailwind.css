@@ -9,7 +9,7 @@
  * never dismantle the shell. Preflight stays out: the shell ships its
  * own box-sizing and every control is a library component. */
 
-@layer theme, base, utilities;
+@layer bs.pre, theme, base, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
