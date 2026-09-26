@@ -14,15 +14,16 @@ const props = defineProps<{ name: string }>();
 const modules = import.meta.glob<{ default: any }>("~/components/examples/**/*.vue", {
   eager: true,
 });
-const sources = import.meta.glob<string>("~/components/examples/**/*.vue", {
+const sourceLoaders = import.meta.glob<string>("~/components/examples/**/*.vue", {
   query: "?raw",
   import: "default",
-  eager: true,
 });
 
 const path = computed(() => `/components/examples/${props.name}.vue`);
 const demo = computed(() => modules[path.value]?.default);
-const code = computed(() => sources[path.value] ?? "");
+// The source rides in lazy raw chunks — the setup await resolves before
+// the highlight fetch and the copy button read it.
+const code = ref((await sourceLoaders[path.value]?.().catch(() => "")) ?? "");
 
 // The interactive workbench rides the same domain at /storybook/ — the
 // links file is generated from the workbench's own build index, so a

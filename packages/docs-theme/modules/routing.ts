@@ -41,13 +41,17 @@ export default defineNuxtModule({
         // folding via `i18n: false`; `/` itself redirects to the default
         // locale through the i18n middleware and needs no route.
         if (locales.length) {
-          for (const page of pages) {
-            // The catch-all scores above a static path in vue-router once
-            // `(.*)*` is involved, so left alone it would also take `/en`
-            // from the landing route below. Requiring at least one slug
-            // segment keeps the two match sets disjoint.
-            if (page.path === "/:lang?/:slug(.*)*") page.path = "/:lang?/:slug(.*)+";
+          // The catch-all scores above a static path in vue-router once
+          // `(.*)*` is involved, so left alone it would also take `/en`
+          // from the landing route below. Requiring at least one slug
+          // segment keeps the two match sets disjoint.
+          const catchAll = pages.find((page) => page.path === "/:lang?/:slug(.*)*");
+          if (!catchAll) {
+            throw new Error(
+              "docs-theme routing: no content catch-all (/:lang?/:slug(.*)*) to fix up — the content layer's route shape changed",
+            );
           }
+          catchAll.path = "/:lang?/:slug(.*)+";
           // The root stays addressable for the i18n path matcher; its own
           // middleware redirects `/` to the default locale in strategy
           // `prefix`.

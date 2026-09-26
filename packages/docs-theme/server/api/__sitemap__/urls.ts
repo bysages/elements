@@ -19,21 +19,25 @@ export default defineSitemapEventHandler(async (event) => {
     collections.push("landing");
   }
 
+  // One query per collection, all in flight together.
+  const perCollection = await Promise.all(
+    collections.map((collection) =>
+      // A consumer without a landing page has no such collection — skip.
+      (
+        queryCollection as unknown as (
+          event: unknown,
+          collection: string,
+        ) => {
+          all: () => Promise<Page[]>;
+        }
+      )(event, collection)
+        .all()
+        .catch(() => [] as Page[]),
+    ),
+  );
+
   const urls: Array<{ loc: string; lastmod?: string }> = [];
-
-  for (const collection of collections) {
-    // A consumer without a landing page has no such collection — skip.
-    const pages = await (
-      queryCollection as unknown as (
-        event: unknown,
-        collection: string,
-      ) => {
-        all: () => Promise<Page[]>;
-      }
-    )(event, collection)
-      .all()
-      .catch(() => [] as Page[]);
-
+  for (const pages of perCollection) {
     for (const page of pages) {
       const meta = page.meta || {};
       const path = page.path || "/";
