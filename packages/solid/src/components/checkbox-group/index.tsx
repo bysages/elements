@@ -1,7 +1,7 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/solid/checkbox";
 import { useFieldContext } from "@ark-ui/solid/field";
 import { injectComponentStyle } from "@bysages/core";
-import { For, splitProps } from "solid-js";
+import { For, splitProps, createUniqueId } from "solid-js";
 import type { JSX } from "solid-js";
 
 export interface CheckboxOption {
@@ -48,6 +48,10 @@ export interface CheckboxGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
  */
 export function CheckboxGroup(props: CheckboxGroupProps) {
   const field = useFieldContext();
+  // A field context bends every box's hidden input onto the field's own
+  // id, so labels of a multi-box group would all activate the first box —
+  // each box claims its own ids instead.
+  const uid = createUniqueId();
   const [own, rest] = splitProps(props, [
     "value",
     "options",
@@ -78,6 +82,10 @@ export function CheckboxGroup(props: CheckboxGroupProps) {
       <For each={own.options}>
         {(option) => (
           <ArkCheckbox.Root
+            ids={{
+              label: `${uid}:${option.value}:label`,
+              hiddenInput: `${uid}:${option.value}:input`,
+            }}
             checked={selected().has(option.value)}
             data-size={own.size ?? "md"}
             invalid={isInvalid()}

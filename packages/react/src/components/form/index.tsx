@@ -45,6 +45,12 @@ function issueName(issue: NonNullable<ValidateResult["issues"]>[number]): string
     .join(".");
 }
 
+/** A field owns the issues that live at its name or deeper inside it
+ * ("topics.0" belongs to the "topics" field). */
+function inScope(name: string, scope: string): boolean {
+  return name === scope || name.startsWith(scope + ".");
+}
+
 /** The imperative handle a caller holds through `ref`: the scheduled
  * validation, the error surgery, and the live error map itself. */
 export interface FormHandle {
@@ -89,7 +95,7 @@ export function Form({
   const [errors, setErrors] = useState(() => new Map<string, string>());
   const run = useRef(0);
 
-  async function runValidate(): Promise<Map<string, string>> {
+  async function runValidate(scope?: string): Promise<Map<string, string>> {
     const seq = ++run.current;
     const next = new Map<string, string>();
     if (validate) {
@@ -102,7 +108,22 @@ export function Form({
         if (!next.has(name)) next.set(name, issue.message);
       }
     }
-    if (seq === run.current) setErrors(next);
+    if (scope != null) {
+      // A live event owns its field alone: issues of that name (or its
+      // nested paths) replace the old ones, every other field keeps the
+      // errors it already showed.
+      setErrors((prev) => {
+        const merged = new Map<string, string>();
+        for (const [name, message] of prev) {
+          if (!inScope(name, scope)) merged.set(name, message);
+        }
+        for (const [name, message] of next) {
+          if (inScope(name, scope)) merged.set(name, message);
+        }
+        return merged;
+      });
+    }
+    if (seq === run.current && scope == null) setErrors(next);
     return next;
   }
 
@@ -161,8 +182,10 @@ export function Form({
     if (!validateOn.includes(kind)) return;
     const target = event.target as HTMLElement | null;
     if (!target || !("value" in target)) return;
+    const scope =
+      target.closest?.("[data-form-field]")?.getAttribute("data-form-field") ?? undefined;
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => void runValidate(), kind === "blur" ? 0 : 300);
+    timer.current = setTimeout(() => void runValidate(scope), kind === "blur" ? 0 : 300);
   }
 
   return (

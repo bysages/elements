@@ -2,7 +2,7 @@ import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
 import { useFieldContext } from "@ark-ui/vue/field";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { computed, defineComponent, h, type PropType } from "vue";
+import { computed, defineComponent, h, useId, type PropType } from "vue";
 
 export interface CheckboxOption {
   label: string;
@@ -49,6 +49,10 @@ export const CheckboxGroup = defineComponent({
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     const field = useFieldContext();
+    // A field context bends every box's hidden input onto the field's own
+    // id, so labels of a multi-box group would all activate the first box —
+    // each box claims its own ids instead.
+    const uid = useId();
     const selected = computed(() => new Set(props.modelValue));
     const invalid = computed(() => props.invalid || field?.value?.invalid === true);
     const disabled = computed(() => props.disabled || field?.value?.disabled === true);
@@ -72,6 +76,10 @@ export const CheckboxGroup = defineComponent({
         props.options.map((option) => {
           const boxProps: Record<string, unknown> = {
             checked: selected.value.has(option.value),
+            ids: {
+              label: `${uid}:${option.value}:label`,
+              hiddenInput: `${uid}:${option.value}:input`,
+            },
             "data-size": props.size,
             invalid: invalid.value,
             disabled: disabled.value || option.disabled === true,

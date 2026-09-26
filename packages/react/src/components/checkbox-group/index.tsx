@@ -1,7 +1,7 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import { useId, type HTMLAttributes } from "react";
 
 export interface CheckboxOption {
   label: string;
@@ -54,6 +54,10 @@ export function CheckboxGroup({
   ...rest
 }: CheckboxGroupProps) {
   const field = useFieldContext();
+  // A field context bends every box's hidden input onto the field's own
+  // id, so labels of a multi-box group would all activate the first box —
+  // each box claims its own ids instead.
+  const uid = useId();
   const selected = new Set(value);
   const isInvalid = invalid || field?.invalid === true;
   const isDisabled = disabled || field?.disabled === true;
@@ -75,6 +79,10 @@ export function CheckboxGroup({
       {options.map((option) => (
         <ArkCheckbox.Root
           key={option.value}
+          ids={{
+            label: `${uid}:${option.value}:label`,
+            hiddenInput: `${uid}:${option.value}:input`,
+          }}
           data-size={size}
           checked={selected.has(option.value)}
           invalid={isInvalid}

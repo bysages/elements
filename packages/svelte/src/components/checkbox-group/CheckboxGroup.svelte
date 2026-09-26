@@ -15,6 +15,11 @@ let {
 
 const field = useFieldContext();
 
+// A field context bends every box's hidden input onto the field's own
+// id, so labels of a multi-box group would all activate the first box —
+// each box claims its own ids instead.
+const uid = $props.id();
+
 const selected = $derived(new Set(value));
 const isInvalid = $derived(invalid || field?.()?.invalid === true);
 const isDisabled = $derived(disabled || field?.()?.disabled === true);
@@ -43,6 +48,10 @@ every box at once. -->
 >
   {#each options as option (option.value)}
     <ArkCheckbox.Root
+      ids={{
+        label: `${uid}:${option.value}:label`,
+        hiddenInput: `${uid}:${option.value}:input`,
+      }}
       checked={selected.has(option.value)}
       invalid={isInvalid}
       data-size={size}

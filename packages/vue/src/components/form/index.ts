@@ -45,6 +45,12 @@ function issueName(issue: NonNullable<ValidateResult["issues"]>[number]): string
     .join(".");
 }
 
+/** A field owns the issues that live at its name or deeper inside it
+ * ("topics.0" belongs to the "topics" field). */
+function inScope(name: string, scope: string): boolean {
+  return name === scope || name.startsWith(scope + ".");
+}
+
 /**
  * The validation scheduler: one reactive error map, a submit that
  * validates before it emits, live re-validation on the events the
@@ -80,7 +86,7 @@ export const Form = defineComponent({
     provide(FORM_KEY, { errors, disabled: props.disabled } satisfies FormContext);
 
     let run = 0;
-    async function runValidate(): Promise<Map<string, string>> {
+    async function runValidate(scope?: string): Promise<Map<string, string>> {
       const seq = ++run;
       const next = new Map<string, string>();
       if (props.validate) {
@@ -92,6 +98,20 @@ export const Form = defineComponent({
           const name = issueName(issue);
           if (!next.has(name)) next.set(name, issue.message);
         }
+      }
+      if (scope != null) {
+        // A live event owns its field alone: issues of that name (or its
+        // nested paths) replace the old ones, every other field keeps the
+        // errors it already showed.
+        const merged = new Map<string, string>();
+        for (const [name, message] of errors.value) {
+          if (!inScope(name, scope)) merged.set(name, message);
+        }
+        for (const [name, message] of next) {
+          if (inScope(name, scope)) merged.set(name, message);
+        }
+        if (seq === run) errors.value = merged;
+        return merged;
       }
       if (seq === run) errors.value = next;
       return next;
@@ -152,8 +172,10 @@ export const Form = defineComponent({
       if (!props.validateOn.includes(event.type as FormInputEvent)) return;
       const target = event.target as HTMLElement | null;
       if (!target || !("value" in target)) return;
+      const scope =
+        target.closest?.("[data-form-field]")?.getAttribute("data-form-field") ?? undefined;
       clearTimeout(timer);
-      timer = setTimeout(() => void runValidate(), event.type === "input" ? 300 : 0);
+      timer = setTimeout(() => void runValidate(scope), event.type === "input" ? 300 : 0);
     }
 
     return () =>
