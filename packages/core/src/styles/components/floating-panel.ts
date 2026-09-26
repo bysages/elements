@@ -133,6 +133,12 @@ export const floatingPanelCss =
     color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
+[data-scope="floating-panel"][data-part="stage-trigger"] svg,
+[data-scope="floating-panel"][data-part="close-trigger"] svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
 [data-scope="floating-panel"][data-part="stage-trigger"]:hover:not([data-disabled]),
 [data-scope="floating-panel"][data-part="close-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);

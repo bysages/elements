@@ -3,6 +3,10 @@ export const mentionsCss = /* css */ `
    + focus halo, never a shadow lift. */
 [data-scope="mentions"][data-part="root"] {
   display: flex;
+  /* A block text field claims the row the way the textarea it wraps
+     does — a field root (align-items: start) must not shrink it. */
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
 [data-scope="mentions"][data-part="textarea"] {
