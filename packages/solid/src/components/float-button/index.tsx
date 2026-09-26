@@ -6,9 +6,14 @@ import { Button } from "../button";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
 
+export type FloatButtonSize = "sm" | "md" | "lg";
+
 /** The group's openness, shared from the mooring to its parts. */
 export interface FloatButtonContext {
   open: () => boolean;
+  /** The group's button rung; the trigger takes it whole, the items
+   * step down one. */
+  size: () => FloatButtonSize;
   toggle: () => void;
   /** Folds the fan — an Item calls this once its action fires, the way
    * a speed dial closes after a choice. */
@@ -26,6 +31,8 @@ export interface FloatButtonRootProps extends JSX.HTMLAttributes<HTMLDivElement>
   open?: boolean;
   /** Which corner the group moors at. */
   placement?: FloatButtonPlacement;
+  /** One rung of the button ladder for the whole group. */
+  size?: FloatButtonSize;
   /** The openness changed — from the Trigger, or an Item folding the
    * fan. */
   onOpenChange?: (open: boolean) => void;
@@ -41,7 +48,7 @@ export interface FloatButtonRootProps extends JSX.HTMLAttributes<HTMLDivElement>
  * and the fold.
  */
 function FloatButtonRoot(props: FloatButtonRootProps) {
-  const [own, rest] = splitProps(props, ["open", "placement", "onOpenChange"]);
+  const [own, rest] = splitProps(props, ["open", "placement", "size", "onOpenChange"]);
   const [inner, setInner] = createSignal(false);
   const open = () => own.open ?? inner();
   const setOpen = (value: boolean) => {
@@ -50,6 +57,7 @@ function FloatButtonRoot(props: FloatButtonRootProps) {
   };
   const context: FloatButtonContext = {
     open,
+    size: () => own.size ?? "lg",
     toggle: () => setOpen(!open()),
     close: () => setOpen(false),
   };
@@ -71,6 +79,8 @@ export interface FloatButtonTriggerProps extends JSX.HTMLAttributes<HTMLButtonEl
   label?: string;
 }
 
+const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
+
 function FloatButtonTrigger(props: FloatButtonTriggerProps) {
   const [own, rest] = splitProps(props, ["label", "children"]);
   const context = useContext(FloatButtonContextKey);
@@ -79,7 +89,7 @@ function FloatButtonTrigger(props: FloatButtonTriggerProps) {
       {...rest}
       variant="solid"
       square
-      size="lg"
+      size={context?.size() ?? "lg"}
       onClick={() => context?.toggle()}
       aria-label={own.label || "Actions"}
       aria-expanded={context?.open() ?? false}
@@ -106,7 +116,7 @@ function FloatButtonItem(props: FloatButtonItemProps) {
       <Button
         variant="outline"
         square
-        size="md"
+        size={context ? STEP_DOWN[context.size()] : "md"}
         disabled={own.disabled}
         aria-label={own.label}
         onClick={(event) => {

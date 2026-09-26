@@ -1,14 +1,29 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { InjectionKey, PropType, SetupContext } from "vue";
-import { computed, defineComponent, h, inject, provide, ref, type Ref } from "vue";
+import type { InjectionKey, SetupContext } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  inject,
+  provide,
+  ref,
+  type ComputedRef,
+  type PropType,
+  type Ref,
+} from "vue";
 
 import { Button } from "../button";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
 
+export type FloatButtonSize = "sm" | "md" | "lg";
+
 /** The group's openness, shared from the mooring to its parts. */
 export interface FloatButtonContext {
   open: Ref<boolean>;
+  /** The group's button rung; the trigger takes it whole, the items
+   * step down one. */
+  size: ComputedRef<FloatButtonSize>;
   toggle: () => void;
   /** Folds the fan — an Item calls this once its action fires, the way
    * a speed dial closes after a choice. */
@@ -38,6 +53,8 @@ const Root = defineComponent({
     open: { type: Boolean, default: undefined },
     /** Which corner the group moors at. */
     placement: { type: String as PropType<FloatButtonPlacement>, default: "bottom-end" },
+    /** One rung of the button ladder for the whole group. */
+    size: { type: String as PropType<FloatButtonSize>, default: "lg" },
   },
   emits: {
     "update:open": (value: boolean) => typeof value === "boolean",
@@ -53,6 +70,7 @@ const Root = defineComponent({
     });
     provide(FLOAT_BUTTON_CONTEXT, {
       open,
+      size: computed(() => props.size),
       toggle: () => (open.value = !open.value),
       close: () => (open.value = false),
     });
@@ -85,7 +103,7 @@ const Trigger = defineComponent({
         {
           variant: "solid",
           square: true,
-          size: "lg",
+          size: context?.size.value ?? "lg",
           onClick: () => context?.toggle(),
           "aria-label": props.label || "Actions",
           "aria-expanded": context ? context.open.value : false,
@@ -94,6 +112,8 @@ const Trigger = defineComponent({
       );
   },
 });
+
+const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
 
 const Item = defineComponent({
   name: "FloatButtonItem",
@@ -115,7 +135,7 @@ const Item = defineComponent({
           {
             variant: "outline",
             square: true,
-            size: "md",
+            size: context ? STEP_DOWN[context.size.value] : "md",
             disabled: props.disabled,
             "aria-label": props.label,
             onClick: () => {

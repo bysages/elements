@@ -6,9 +6,14 @@ import { Button } from "../button";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
 
+export type FloatButtonSize = "sm" | "md" | "lg";
+
 /** The group's openness, shared from the mooring to its parts. */
 export interface FloatButtonContextValue {
   open: boolean;
+  /** The group's button rung; the trigger takes it whole, the items
+   * step down one. */
+  size: FloatButtonSize;
   toggle: () => void;
   /** Folds the fan — an Item calls this once its action fires, the way
    * a speed dial closes after a choice. */
@@ -26,6 +31,8 @@ export interface FloatButtonRootProps extends HTMLAttributes<HTMLDivElement> {
   open?: boolean;
   /** Which corner the group moors at. */
   placement?: FloatButtonPlacement;
+  /** One rung of the button ladder for the whole group. */
+  size?: FloatButtonSize;
   onOpenChange?: (open: boolean) => void;
   children?: ReactNode;
 }
@@ -42,6 +49,7 @@ export interface FloatButtonRootProps extends HTMLAttributes<HTMLDivElement> {
 function Root({
   open: openProp,
   placement = "bottom-end",
+  size,
   onOpenChange,
   children,
   ...rest
@@ -54,7 +62,12 @@ function Root({
   };
   return (
     <FLOAT_BUTTON_CONTEXT.Provider
-      value={{ open, toggle: () => setOpen(!open), close: () => setOpen(false) }}
+      value={{
+        open,
+        size: size ?? "lg",
+        toggle: () => setOpen(!open),
+        close: () => setOpen(false),
+      }}
     >
       <div
         {...rest}
@@ -69,13 +82,15 @@ function Root({
   );
 }
 
+const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
+
 function Trigger({ label, children }: { label?: string; children?: ReactNode }) {
   const context = useContext(FLOAT_BUTTON_CONTEXT);
   return (
     <Button
       variant="solid"
       square
-      size="lg"
+      size={context?.size ?? "lg"}
       onClick={() => context?.toggle()}
       aria-label={label || "Actions"}
       aria-expanded={context ? context.open : false}
@@ -101,7 +116,7 @@ function Item({ label, disabled = false, onClick, children }: FloatButtonItemPro
       <Button
         variant="outline"
         square
-        size="md"
+        size={context ? STEP_DOWN[context.size] : "md"}
         disabled={disabled}
         aria-label={label}
         onClick={() => {

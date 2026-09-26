@@ -1,10 +1,15 @@
 import { getContext } from "svelte";
 
+import type { FloatButtonSize } from "./props";
+
 /** The group's openness, shared from the mooring to its parts. */
 export interface FloatButtonContext {
   /** Live openness — read through the getter, so parts re-render as it
    * flips. */
   readonly open: boolean;
+  /** The group's button rung; the trigger takes it whole, the items
+   * step down one. */
+  readonly size: FloatButtonSize;
   toggle: () => void;
   /** Folds the fan — an Item calls this once its action fires, the way
    * a speed dial closes after a choice. */

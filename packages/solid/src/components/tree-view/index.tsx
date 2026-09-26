@@ -1,7 +1,8 @@
-import type { CollectionItem } from "@ark-ui/react/collection";
-import { TreeView as ArkTreeView } from "@ark-ui/react/tree-view";
-import type { TreeViewRootComponentProps } from "@ark-ui/react/tree-view";
+import type { TreeNode } from "@ark-ui/solid/tree-view";
+import { TreeView as ArkTreeView } from "@ark-ui/solid/tree-view";
+import type { TreeViewRootProps as ArkTreeViewRootProps } from "@ark-ui/solid/tree-view";
 import { injectComponentStyle } from "@bysages/core";
+import { splitProps } from "solid-js";
 
 /** Ark's TreeView, dressed in the paper-and-ink system: quiet rows where
  * selection is pure light on the paper, one hairline plumb line per depth,
@@ -16,11 +17,14 @@ type TreeViewOwnProps = {
   size?: "sm" | "md" | "lg";
 };
 
-function TreeViewRoot<T extends CollectionItem>(
-  props: TreeViewRootComponentProps<T, TreeViewOwnProps>,
-) {
-  const { size = "md", ...rest } = props;
-  return <ArkTreeView.Root {...rest} data-size={size} />;
+// The sized root keeps the tree's collection generic; its return rides
+// as any the way Ark's own RootComponent types do, past the checker's
+// host mismatch.
+const ArkRoot = ArkTreeView.Root as <T extends TreeNode>(props: ArkTreeViewRootProps<T>) => any;
+
+function TreeViewRoot<T extends TreeNode>(props: ArkTreeViewRootProps<T> & TreeViewOwnProps) {
+  const [own, rest] = splitProps(props, ["size"]);
+  return <ArkRoot {...rest} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be

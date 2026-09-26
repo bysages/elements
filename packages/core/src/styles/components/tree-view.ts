@@ -198,4 +198,14 @@ export const treeViewCss =
 ` +
   discloseKeyframes() +
   /* css */ `
+
+/* Size rungs: the root's data-size re-points the row-block knob the
+   rows pad themselves with. */
+[data-scope="tree-view"][data-part="root"][data-size="sm"] {
+  --bs-tree-row-block: var(--bs-space-1);
+}
+
+[data-scope="tree-view"][data-part="root"][data-size="lg"] {
+  --bs-tree-row-block: var(--bs-space-3);
+}
 `;

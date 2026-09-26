@@ -7,6 +7,7 @@ import type { FloatButtonProps } from "./props";
 let {
   open = $bindable(false),
   placement = "bottom-end",
+  size = "lg",
   children,
   ...rest
 }: FloatButtonProps = $props();
@@ -15,6 +16,7 @@ setContext(FLOAT_BUTTON_KEY, {
   get open() {
     return open;
   },
+  size,
   toggle: () => (open = !open),
   close: () => (open = false),
 });

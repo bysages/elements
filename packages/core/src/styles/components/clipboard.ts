@@ -100,4 +100,21 @@ export const clipboardCss =
   inline-size: 1rem;
   block-size: 1rem;
 }
+
+/* Size rungs: the root's data-size re-points the ladder for the field
+   and its copy seal together. */
+[data-scope="clipboard"][data-part="root"][data-size="sm"] [data-part="input"],
+[data-scope="clipboard"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="clipboard"][data-part="root"][data-size="sm"] [data-part="input"] {
+  padding: 0 var(--bs-padding-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="clipboard"][data-part="root"][data-size="lg"] [data-part="input"],
+[data-scope="clipboard"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

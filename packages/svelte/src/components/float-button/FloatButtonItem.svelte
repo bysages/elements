@@ -6,13 +6,16 @@ import type { FloatButtonItemProps } from "./props";
 let { label, disabled = false, onclick, children }: FloatButtonItemProps = $props();
 
 const context = useFloatButton();
+
+// The fan's buttons sit one rung below the trigger that summons them.
+const STEP_DOWN: Record<string, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
 </script>
 
 <div data-scope="float-button" data-part="item">
   <Button
     variant="outline"
     square
-    size="md"
+    size={context ? STEP_DOWN[context.size] : "md"}
     {disabled}
     aria-label={label}
     onclick={() => {

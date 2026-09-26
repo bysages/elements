@@ -11,7 +11,7 @@ const context = useFloatButton();
 <Button
   variant="solid"
   square
-  size="lg"
+  size={context?.size ?? "lg"}
   onclick={() => context?.toggle()}
   aria-label={label || "Actions"}
   aria-expanded={context?.open ?? false}

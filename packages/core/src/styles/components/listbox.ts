@@ -123,4 +123,22 @@ export const listboxCss =
 [data-scope="listbox"][data-part="value-text"] {
   font-weight: var(--bs-font-weight-medium);
 }
+
+/* Size rungs: the root's data-size re-points the row register and the
+   filter field together. */
+[data-scope="listbox"][data-part="root"][data-size="sm"] [data-part="item"] {
+  min-block-size: calc(var(--bs-control-height-sm) * 0.875);
+}
+
+[data-scope="listbox"][data-part="root"][data-size="sm"] [data-part="input"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="listbox"][data-part="root"][data-size="lg"] [data-part="item"] {
+  min-block-size: var(--bs-control-height-md);
+}
+
+[data-scope="listbox"][data-part="root"][data-size="lg"] [data-part="input"] {
+  block-size: var(--bs-control-height-lg);
+}
 `;

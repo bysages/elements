@@ -1,20 +1,24 @@
-import { Clipboard as ArkClipboard } from "@ark-ui/react/clipboard";
+import { Clipboard as ArkClipboard } from "@ark-ui/solid/clipboard";
+import type { ClipboardRootProps as ArkClipboardRootProps } from "@ark-ui/solid/clipboard";
 import { injectComponentStyle } from "@bysages/core";
-import type { ComponentProps } from "react";
+import { splitProps } from "solid-js";
 
 /** Ark's Clipboard, dressed in the paper-and-ink system: a hairline value
  * field beside an icon-sized copy trigger whose ink turns bamboo while the
  * copy is confirmed. The API is Ark's own — Root, Label, Control, Input,
  * Trigger, Indicator, Context, HiddenInput. */
 
-type ClipboardRootProps = ComponentProps<typeof ArkClipboard.Root> & {
+type ClipboardOwnProps = {
   /** One rung of the control-height ladder for the value field and
    * its copy seal. */
   size?: "sm" | "md" | "lg";
 };
 
-function ClipboardRoot({ size = "md", ...rest }: ClipboardRootProps) {
-  return <ArkClipboard.Root {...rest} data-size={size} />;
+const ArkRoot = ArkClipboard.Root as (props: ArkClipboardRootProps) => any;
+
+function ClipboardRoot(props: ArkClipboardRootProps & ClipboardOwnProps) {
+  const [own, rest] = splitProps(props, ["size"]);
+  return <ArkRoot {...rest} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be

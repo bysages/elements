@@ -40,6 +40,7 @@ export const componentNames: Record<string, string> = {
   collapsible: "折叠面板",
   collection: "集合",
   "color-picker": "颜色选择器",
+  command: "命令面板",
   combobox: "组合框",
   comment: "评论",
   "config-provider": "全局配置",
