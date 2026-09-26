@@ -1,48 +1,8 @@
-export const dialogCss = /* css */ `
-[data-scope="dialog"][data-part="trigger"] {
-  /* A colored surface casts in its own color. Composite elevation tokens
-     resolve their vars at :root, so the tint enters here where the shadow
-     is declared, mixed from the lighting parts. */
-  --bs-shadow-color: color-mix(in oklab, var(--bs-color-primary) 20%, transparent);
-  display: inline-grid;
-  place-items: center;
-  block-size: var(--bs-control-height-md);
-  padding: 0 var(--bs-padding-md);
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-primary);
-  color: var(--bs-color-primary-text);
-  font: inherit;
-  font-size: var(--bs-font-size-md);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  cursor: pointer;
-  box-shadow: var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
-    var(--bs-shadow-color);
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
-}
+import { closeTriggerCss, primaryTriggerCss } from "./shared";
 
-/* Hover lets the ink bleed — the shadow spreads while the fill deepens;
-   the shadow trails the color by design (light needs time). */
-[data-scope="dialog"][data-part="trigger"]:hover {
-  background: var(--bs-color-primary-hover);
-  box-shadow: var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(6px * var(--bs-light-reach))
-    calc(-1px * var(--bs-light-reach)) var(--bs-shadow-color);
-}
-
-/* Pressing settles the button into the page: the shadow lets go. */
-[data-scope="dialog"][data-part="trigger"]:active {
-  background: var(--bs-color-primary-active);
-  box-shadow: none;
-}
-
-[data-scope="dialog"][data-part="trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-
+export const dialogCss =
+  primaryTriggerCss("dialog", "trigger") +
+  /* css */ `
 [data-scope="dialog"][data-part="backdrop"] {
   position: fixed;
   inset: 0;
@@ -117,33 +77,5 @@ export const dialogCss = /* css */ `
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-
-[data-scope="dialog"][data-part="close-trigger"] {
-  position: absolute;
-  inset-block-start: var(--bs-space-3);
-  inset-inline-end: var(--bs-space-3);
-  display: grid;
-  place-items: center;
-  inline-size: var(--bs-part-size-lg);
-  block-size: var(--bs-part-size-lg);
-  padding: 0;
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="dialog"][data-part="close-trigger"]:hover {
-  background: var(--bs-color-surface-0);
-  color: var(--bs-color-text-primary);
-}
-
-[data-scope="dialog"][data-part="close-trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-`;
+` +
+  closeTriggerCss("dialog");

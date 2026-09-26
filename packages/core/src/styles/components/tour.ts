@@ -1,3 +1,4 @@
+import { primaryTriggerCss } from "./shared";
 import { popupContentCss } from "./shared";
 
 export const tourCss =
@@ -97,46 +98,14 @@ export const tourCss =
   margin-block-start: var(--bs-margin-sm);
 }
 
-/* Advancing the tour is a primary action — ink, solemn. */
-[data-scope="tour"][data-part="action-trigger"] {
-  --bs-shadow-color: color-mix(in oklab, var(--bs-color-primary) 20%, transparent);
-  display: inline-grid;
-  place-items: center;
-  block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-padding-md);
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-primary);
-  color: var(--bs-color-primary-text);
-  font: inherit;
-  font-size: var(--bs-font-size-sm);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  cursor: pointer;
-  box-shadow: var(--bs-light-x) calc(1px * var(--bs-light-reach)) calc(2px * var(--bs-light-reach)) 0
-    var(--bs-shadow-color);
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
-}
-
-[data-scope="tour"][data-part="action-trigger"]:hover {
-  background: var(--bs-color-primary-hover);
-  box-shadow: var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(6px * var(--bs-light-reach))
-    calc(-1px * var(--bs-light-reach)) var(--bs-shadow-color);
-}
-
-[data-scope="tour"][data-part="action-trigger"]:active {
-  background: var(--bs-color-primary-active);
-  box-shadow: none;
-}
-
-[data-scope="tour"][data-part="action-trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-
-[data-scope="tour"][data-part="close-trigger"] {
+/* Advancing the tour is a primary action — ink, solemn. */` +
+  primaryTriggerCss(
+    "tour",
+    "action-trigger",
+    "var(--bs-control-height-sm)",
+    "var(--bs-font-size-sm)",
+  ) +
+  /* css */ `[data-scope="tour"][data-part="close-trigger"] {
   position: absolute;
   inset-block-start: var(--bs-space-2);
   inset-inline-end: var(--bs-space-2);

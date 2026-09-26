@@ -1,4 +1,7 @@
-export const toastCss = /* css */ `
+import { closeTriggerCss } from "./shared";
+
+export const toastCss =
+  /* css */ `
 /* The group is one placement region (top-right, bottom-end, …) the machine
    pins itself; it only stacks its toasts. */
 [data-scope="toast"][data-part="group"] {
@@ -122,33 +125,4 @@ export const toastCss = /* css */ `
 [data-scope="toast"][data-part="action-trigger"]:active {
   background: var(--bs-color-surface-inset);
 }
-
-[data-scope="toast"][data-part="close-trigger"] {
-  position: absolute;
-  inset-block-start: var(--bs-space-2);
-  inset-inline-end: var(--bs-space-2);
-  display: grid;
-  place-items: center;
-  inline-size: var(--bs-part-size-lg);
-  block-size: var(--bs-part-size-lg);
-  padding: 0;
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="toast"][data-part="close-trigger"]:hover {
-  background: var(--bs-color-surface-0);
-  color: var(--bs-color-text-primary);
-}
-
-[data-scope="toast"][data-part="close-trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-`;
+` + closeTriggerCss("toast", "var(--bs-space-2)", "var(--bs-space-2)");

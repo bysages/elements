@@ -1,4 +1,7 @@
-export const accordionCss = /* css */ `
+import { discloseKeyframes } from "./shared";
+
+export const accordionCss =
+  /* css */ `
 [data-scope="accordion"][data-part="root"] {
   display: flex;
   flex-direction: column;
@@ -84,14 +87,14 @@ export const accordionCss = /* css */ `
 
 [data-scope="accordion"][data-part="item-content"][data-state="open"] {
   animation:
-    bs-accordion-expand var(--bs-duration-base) var(--bs-ease-out),
-    bs-accordion-fade-in var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-expand var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-in var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="accordion"][data-part="item-content"][data-state="closed"] {
   animation:
-    bs-accordion-collapse var(--bs-duration-base) var(--bs-ease-out),
-    bs-accordion-fade-out var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-collapse var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-out var(--bs-duration-base) var(--bs-ease-out);
 }
 
 /* The unfolded text sits inside the trigger's rhythm — indented to its
@@ -112,34 +115,7 @@ export const accordionCss = /* css */ `
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-
-@keyframes bs-accordion-expand {
-  from {
-    height: var(--collapsed-height, 0);
-  }
-  to {
-    height: var(--height);
-  }
-}
-
-@keyframes bs-accordion-collapse {
-  from {
-    height: var(--height);
-  }
-  to {
-    height: var(--collapsed-height, 0);
-  }
-}
-
-@keyframes bs-accordion-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes bs-accordion-fade-out {
-  to {
-    opacity: 0;
-  }
-}
+` +
+  discloseKeyframes() +
+  /* css */ `
 `;

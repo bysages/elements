@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss } from "./shared";
 
 export const pinInputCss =
@@ -14,7 +15,8 @@ export const pinInputCss =
   display: inline-flex;
   gap: var(--bs-gap-sm);
 }
-
+` +
+  /* css */ `
 [data-scope="pin-input"][data-part="input"] {
   box-sizing: border-box;
   inline-size: var(--bs-control-height-md);
@@ -31,23 +33,9 @@ export const pinInputCss =
   text-align: center;
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-
-[data-scope="pin-input"][data-part="input"]::placeholder {
-  color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="pin-input"][data-part="input"]:hover {
-  border-color: var(--bs-color-border-strong);
-}
-
-[data-scope="pin-input"][data-part="input"]:focus,
-[data-scope="pin-input"][data-part="input"]:focus-visible {
-  outline: none;
-  border-color: var(--bs-focus-edge);
-  box-shadow: var(--bs-focus-ring);
-}
-
-/* A finished cell rests its ink: full weight, no further decoration. */
+` +
+  inputStateCss("pin-input") +
+  /* css */ `/* A finished cell rests its ink: full weight, no further decoration. */
 [data-scope="pin-input"][data-part="input"][data-filled] {
   color: var(--bs-color-text-primary);
   font-weight: var(--bs-font-weight-medium);

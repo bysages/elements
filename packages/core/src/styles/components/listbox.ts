@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss, popupContentCss } from "./shared";
 
 export const listboxCss =
@@ -13,7 +14,8 @@ export const listboxCss =
 }
 
 /* The filter input rides the control recipe: a field, not a button —
-   border + surface + focus halo, never a shadow lift. */
+   border + surface + focus halo, never a shadow lift. */` +
+  /* css */ `
 [data-scope="listbox"][data-part="input"] {
   box-sizing: border-box;
   block-size: var(--bs-control-height-md);
@@ -27,35 +29,9 @@ export const listboxCss =
   box-shadow: var(--bs-shadow-xs);
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-
-[data-scope="listbox"][data-part="input"]::placeholder {
-  color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="listbox"][data-part="input"]:hover {
-  border-color: var(--bs-color-border-strong);
-}
-
-[data-scope="listbox"][data-part="input"]:focus,
-[data-scope="listbox"][data-part="input"]:focus-visible {
-  outline: none;
-  border-color: var(--bs-focus-edge);
-  box-shadow: var(--bs-focus-ring);
-}
-
-[data-scope="listbox"][data-part="input"][data-invalid] {
-  border-color: var(--bs-color-danger);
-}
-
-[data-scope="listbox"][data-part="input"][data-disabled] {
-  border-color: var(--bs-color-border);
-  background: var(--bs-color-surface-inset);
-  color: var(--bs-color-text-disabled);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-[data-scope="listbox"][data-part="content"] {
+` +
+  inputStateCss("listbox") +
+  /* css */ `[data-scope="listbox"][data-part="content"] {
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-xs);

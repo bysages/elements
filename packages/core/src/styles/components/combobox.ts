@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss, popupContentCss, positionerCss } from "./shared";
 
 export const comboboxCss =
@@ -18,7 +19,8 @@ export const comboboxCss =
 }
 
 /* The field itself carries the control recipe: border + surface + focus
-   halo, never a shadow lift. */
+   halo, never a shadow lift. */` +
+  /* css */ `
 [data-scope="combobox"][data-part="input"] {
   box-sizing: border-box;
   flex: 1;
@@ -34,35 +36,9 @@ export const comboboxCss =
   box-shadow: var(--bs-shadow-xs);
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-
-[data-scope="combobox"][data-part="input"]::placeholder {
-  color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="combobox"][data-part="input"]:hover:not([data-disabled]) {
-  border-color: var(--bs-color-border-strong);
-}
-
-[data-scope="combobox"][data-part="input"]:focus,
-[data-scope="combobox"][data-part="input"]:focus-visible {
-  outline: none;
-  border-color: var(--bs-focus-edge);
-  box-shadow: var(--bs-focus-ring);
-}
-
-[data-scope="combobox"][data-part="input"][data-invalid] {
-  border-color: var(--bs-color-danger);
-}
-
-[data-scope="combobox"][data-part="input"][data-disabled] {
-  border-color: var(--bs-color-border);
-  background: var(--bs-color-surface-inset);
-  color: var(--bs-color-text-disabled);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* The open and clear triggers are icon-sized siblings of the input — the
+` +
+  inputStateCss("combobox") +
+  /* css */ `/* The open and clear triggers are icon-sized siblings of the input — the
    same control recipe as the date-picker trigger, so the row reads as one
    instrument. */
 [data-scope="combobox"][data-part="trigger"],

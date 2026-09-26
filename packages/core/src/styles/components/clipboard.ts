@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss } from "./shared";
 
 export const clipboardCss =
@@ -17,7 +18,8 @@ export const clipboardCss =
   gap: var(--bs-gap-sm);
 }
 
-/* The value field leans on border + surface + focus halo — no shadow. */
+/* The value field leans on border + surface + focus halo — no shadow. */` +
+  /* css */ `
 [data-scope="clipboard"][data-part="input"] {
   box-sizing: border-box;
   flex: 1;
@@ -32,35 +34,9 @@ export const clipboardCss =
   font-size: var(--bs-font-size-md);
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-
-[data-scope="clipboard"][data-part="input"]::placeholder {
-  color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="clipboard"][data-part="input"]:hover {
-  border-color: var(--bs-color-border-strong);
-}
-
-[data-scope="clipboard"][data-part="input"]:focus,
-[data-scope="clipboard"][data-part="input"]:focus-visible {
-  outline: none;
-  border-color: var(--bs-focus-edge);
-  box-shadow: var(--bs-focus-ring);
-}
-
-[data-scope="clipboard"][data-part="input"][data-readonly] {
-  color: var(--bs-color-text-secondary);
-}
-
-[data-scope="clipboard"][data-part="input"][data-disabled] {
-  border-color: var(--bs-color-border);
-  background: var(--bs-color-surface-inset);
-  color: var(--bs-color-text-disabled);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* The copy trigger rides the control recipe: an icon-sized sibling of the
+` +
+  inputStateCss("clipboard") +
+  /* css */ `/* The copy trigger rides the control recipe: an icon-sized sibling of the
    input it serves, hairline at rest, shadow released on press. */
 [data-scope="clipboard"][data-part="trigger"] {
   flex: none;

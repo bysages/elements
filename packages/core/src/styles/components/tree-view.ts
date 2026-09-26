@@ -1,4 +1,4 @@
-import { labelCss } from "./shared";
+import { discloseKeyframes, labelCss } from "./shared";
 
 export const treeViewCss =
   labelCss("tree-view") +
@@ -125,14 +125,14 @@ export const treeViewCss =
 
 [data-scope="tree-view"][data-part="branch-content"][data-state="open"] {
   animation:
-    bs-tree-expand var(--bs-duration-base) var(--bs-ease-out),
-    bs-tree-fade-in var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-expand var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-in var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="tree-view"][data-part="branch-content"][data-state="closed"] {
   animation:
-    bs-tree-collapse var(--bs-duration-base) var(--bs-ease-out),
-    bs-tree-fade-out var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-collapse var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-out var(--bs-duration-base) var(--bs-ease-out);
 }
 
 /* The plumb line of the hierarchy — one hairline per depth. */
@@ -195,34 +195,7 @@ export const treeViewCss =
   outline: none;
   box-shadow: var(--bs-focus-ring);
 }
-
-@keyframes bs-tree-expand {
-  from {
-    height: var(--collapsed-height, 0);
-  }
-  to {
-    height: var(--height);
-  }
-}
-
-@keyframes bs-tree-collapse {
-  from {
-    height: var(--height);
-  }
-  to {
-    height: var(--collapsed-height, 0);
-  }
-}
-
-@keyframes bs-tree-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes bs-tree-fade-out {
-  to {
-    opacity: 0;
-  }
-}
+` +
+  discloseKeyframes() +
+  /* css */ `
 `;

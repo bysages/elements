@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss } from "./shared";
 
 export const numberInputCss =
@@ -15,25 +16,9 @@ export const numberInputCss =
   position: relative;
   display: flex;
 }
-
-[data-scope="number-input"][data-part="input"] {
-  box-sizing: border-box;
-  flex: 1;
-  min-width: 0;
-  block-size: var(--bs-control-height-md);
-  padding-inline: var(--bs-padding-md)
-    calc(var(--bs-space-6) + var(--bs-space-1));
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-surface-2);
-  color: var(--bs-color-text-primary);
-  font: inherit;
-  font-size: var(--bs-font-size-md);
-  font-variant-numeric: tabular-nums;
-  transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-/* With the scrubber riding the inline start, the value yields its width:
+` +
+  inputStateCss("number-input") +
+  /* css */ `/* With the scrubber riding the inline start, the value yields its width:
    :has keeps the pairing structural so no wrapper class is needed. */
 [data-scope="number-input"][data-part="control"]:has([data-part="scrubber"])
   [data-part="input"] {

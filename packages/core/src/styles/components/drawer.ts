@@ -1,3 +1,4 @@
+import { closeTriggerCss } from "./shared";
 import { positionerCss } from "./shared";
 
 export const drawerCss =
@@ -216,37 +217,9 @@ export const drawerCss =
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-
-[data-scope="drawer"][data-part="close-trigger"] {
-  position: absolute;
-  inset-block-start: var(--bs-space-3);
-  inset-inline-end: var(--bs-space-2);
-  display: grid;
-  place-items: center;
-  inline-size: var(--bs-part-size-lg);
-  block-size: var(--bs-part-size-lg);
-  padding: 0;
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="drawer"][data-part="close-trigger"]:hover {
-  background: var(--bs-color-surface-0);
-  color: var(--bs-color-text-primary);
-}
-
-[data-scope="drawer"][data-part="close-trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-
-/* The swipe area is the touch margin outside the sheet that still drags
+` +
+  closeTriggerCss("drawer", "var(--bs-space-3)", "var(--bs-space-2)") +
+  /* css */ `/* The swipe area is the touch margin outside the sheet that still drags
    it open; it never draws. */
 [data-scope="drawer"][data-part="swipe-area"] {
   position: fixed;

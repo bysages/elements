@@ -1,3 +1,4 @@
+import { closeTriggerCss } from "./shared";
 import { popupContentCss, positionerCss } from "./shared";
 
 export const popoverCss =
@@ -108,33 +109,5 @@ export const popoverCss =
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-
-[data-scope="popover"][data-part="close-trigger"] {
-  position: absolute;
-  inset-block-start: var(--bs-space-2);
-  inset-inline-end: var(--bs-space-2);
-  display: grid;
-  place-items: center;
-  inline-size: var(--bs-part-size-lg);
-  block-size: var(--bs-part-size-lg);
-  padding: 0;
-  border: none;
-  border-radius: var(--bs-radius-sm);
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="popover"][data-part="close-trigger"]:hover {
-  background: var(--bs-color-surface-0);
-  color: var(--bs-color-text-primary);
-}
-
-[data-scope="popover"][data-part="close-trigger"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
-}
-`;
+` +
+  closeTriggerCss("popover", "var(--bs-space-2)", "var(--bs-space-2)");

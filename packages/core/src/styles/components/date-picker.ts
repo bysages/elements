@@ -1,3 +1,4 @@
+import { inputStateCss } from "./shared";
 import { labelCss, popupContentCss, positionerCss } from "./shared";
 
 export const datePickerCss =
@@ -16,7 +17,8 @@ export const datePickerCss =
   align-items: center;
   gap: var(--bs-gap-sm);
 }
-
+` +
+  /* css */ `
 [data-scope="date-picker"][data-part="input"] {
   box-sizing: border-box;
   flex: 1;
@@ -31,35 +33,9 @@ export const datePickerCss =
   font-size: var(--bs-font-size-md);
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-
-[data-scope="date-picker"][data-part="input"]::placeholder {
-  color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="date-picker"][data-part="input"]:hover {
-  border-color: var(--bs-color-border-strong);
-}
-
-[data-scope="date-picker"][data-part="input"]:focus,
-[data-scope="date-picker"][data-part="input"]:focus-visible {
-  outline: none;
-  border-color: var(--bs-focus-edge);
-  box-shadow: var(--bs-focus-ring);
-}
-
-[data-scope="date-picker"][data-part="input"][data-invalid] {
-  border-color: var(--bs-color-danger);
-}
-
-[data-scope="date-picker"][data-part="input"][data-disabled] {
-  border-color: var(--bs-color-border);
-  background: var(--bs-color-surface-inset);
-  color: var(--bs-color-text-disabled);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* The calendar trigger rides the control recipe: paper fill, one hairline,
+` +
+  inputStateCss("date-picker") +
+  /* css */ `/* The calendar trigger rides the control recipe: paper fill, one hairline,
    the small rest shadow — an icon-sized sibling of the input it opens. */
 [data-scope="date-picker"][data-part="trigger"] {
   flex: none;

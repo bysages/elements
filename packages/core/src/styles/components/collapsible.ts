@@ -1,4 +1,7 @@
-export const collapsibleCss = /* css */ `
+import { discloseKeyframes } from "./shared";
+
+export const collapsibleCss =
+  /* css */ `
 [data-scope="collapsible"][data-part="root"] {
   box-sizing: border-box;
   display: flex;
@@ -87,14 +90,14 @@ export const collapsibleCss = /* css */ `
 
 [data-scope="collapsible"][data-part="content"][data-state="open"] {
   animation:
-    bs-collapsible-expand var(--bs-duration-base) var(--bs-ease-out),
-    bs-collapsible-fade-in var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-expand var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-in var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="collapsible"][data-part="content"][data-state="closed"] {
   animation:
-    bs-collapsible-collapse var(--bs-duration-base) var(--bs-ease-out),
-    bs-collapsible-fade-out var(--bs-duration-base) var(--bs-ease-out);
+    bs-disclose-collapse var(--bs-duration-base) var(--bs-ease-out),
+    bs-disclose-fade-out var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="collapsible"][data-part="content"] > * {
@@ -113,34 +116,7 @@ export const collapsibleCss = /* css */ `
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-
-@keyframes bs-collapsible-expand {
-  from {
-    height: var(--collapsed-height, 0);
-  }
-  to {
-    height: var(--height);
-  }
-}
-
-@keyframes bs-collapsible-collapse {
-  from {
-    height: var(--height);
-  }
-  to {
-    height: var(--collapsed-height, 0);
-  }
-}
-
-@keyframes bs-collapsible-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes bs-collapsible-fade-out {
-  to {
-    opacity: 0;
-  }
-}
+` +
+  discloseKeyframes() +
+  /* css */ `
 `;
