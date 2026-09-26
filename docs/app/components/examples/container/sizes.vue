@@ -6,7 +6,12 @@ const sizes = ["narrow", "readable", "wide", "full"] as const;
 
 <template>
   <div class="grid gap-4 w-full">
-    <Container v-for="size in sizes" :key="size" :size="size" class="bg-surface-3">
+    <Container
+      v-for="size in sizes"
+      :key="size"
+      :size="size"
+      class="border border-border bg-surface-2 rounded-md"
+    >
       <code class="text-sm">{{ size }}</code>
     </Container>
   </div>
