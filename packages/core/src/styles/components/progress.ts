@@ -8,7 +8,9 @@ export const progressCss =
   grid-template-columns: 1fr auto;
   align-items: baseline;
   gap: var(--bs-gap-xs) var(--bs-gap-sm);
-  inline-size: min(16rem, 100%);
+  /* The bar spans whatever measure the consumer gives it — a width cap
+     here breaks card layouts, and a bare pixel value is not ours to set. */
+  inline-size: 100%;
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
 }

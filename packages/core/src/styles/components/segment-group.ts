@@ -10,7 +10,9 @@ export const segmentGroupCss =
   isolation: isolate;
   display: inline-flex;
   gap: var(--bs-gap-xs);
-  padding: var(--bs-padding-xs);
+  /* The tray hugs its seals on the cross axis — block padding here would
+     lift the group a notch above the trigger it sits beside. */
+  padding: 0 var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -18,6 +20,7 @@ export const segmentGroupCss =
 
 [data-scope="segment-group"][data-part="root"][data-orientation="vertical"] {
   flex-direction: column;
+  padding: var(--bs-padding-xs) 0;
 }
 
 [data-scope="segment-group"][data-part="root"][data-disabled] {

@@ -13,9 +13,21 @@ const SegmentGroupRoot = defineComponent({
      * below the global ladder — the default md rests at the small
      * height. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** The tray reads as one row of seals; the underlying machine
+     * defaults to a vertical stack, so the horizontal row is ours to
+     * assert. */
+    orientation: {
+      type: String as PropType<"horizontal" | "vertical">,
+      default: "horizontal",
+    },
   },
   setup(props, { attrs, slots }) {
-    return () => h(ArkSegmentGroup.Root, { ...attrs, "data-size": props.size }, slots);
+    return () =>
+      h(
+        ArkSegmentGroup.Root,
+        { ...attrs, "data-size": props.size, orientation: props.orientation },
+        slots,
+      );
   },
 });
 

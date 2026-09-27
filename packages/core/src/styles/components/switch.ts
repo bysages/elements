@@ -12,12 +12,12 @@ export const switchCss =
 }
 
 /* The track geometry: thumb travel is derived here so the knob lands
-   flush against the far edge instead of drifting off-token. The thumb
-   rides the small part size — a switch sits beside controls, not
-   among them, and 24px of track reads quiet at every density. */
+   flush against the far edge instead of drifting off-token. The default
+   rides the medium part size so the track stands one notch below the
+   trigger it sits beside — level with the segment register. */
 [data-scope="switch"][data-part="control"] {
   --bs-switch-track: calc(var(--bs-switch-thumb) * 2 + var(--bs-switch-inset) * 2);
-  --bs-switch-thumb: var(--bs-part-size-sm);
+  --bs-switch-thumb: var(--bs-part-size-md);
   --bs-switch-inset: var(--bs-space-1);
   display: inline-flex;
   align-items: center;
@@ -83,10 +83,10 @@ export const switchCss =
 /* Size rungs: the thumb is the one measure — the track, the travel
    and the inset all derive from it. */
 [data-scope="switch"][data-part="root"][data-size="sm"] [data-part="control"] {
-  --bs-switch-thumb: calc(var(--bs-part-size-sm) * 0.875);
+  --bs-switch-thumb: var(--bs-part-size-sm);
 }
 
 [data-scope="switch"][data-part="root"][data-size="lg"] [data-part="control"] {
-  --bs-switch-thumb: var(--bs-part-size-md);
+  --bs-switch-thumb: var(--bs-part-size-lg);
 }
 `;
