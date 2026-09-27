@@ -3,6 +3,7 @@ export const inputGroupCss = /* css */ `
    The input inside surrenders its own frame so attachments read as parts
    of the same seal, not buttons bolted onto a field. */
 [data-scope="input-group"][data-part="root"] {
+  position: relative;
   display: inline-flex;
   align-items: stretch;
   border: 1px solid var(--bs-color-border);
@@ -22,10 +23,28 @@ export const inputGroupCss = /* css */ `
 }
 
 /* Focus is light arriving at the group: one halo, however many controls
-   sit inside. */
+   sit inside. Scenes that speak focus as an inset line draw it through
+   the ::after overlay instead — a ring on the root itself sits beneath
+   the opaque cells, surfacing only across the clear entry and reading
+   as a second, partial frame. */
 [data-scope="input-group"][data-part="root"]:focus-within {
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scene="cupertino"] [data-scope="input-group"][data-part="root"]:focus-within,
+[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within {
+  box-shadow: none;
+}
+
+[data-scene="cupertino"] [data-scope="input-group"][data-part="root"]:focus-within::after,
+[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--bs-focus-ring);
+  pointer-events: none;
 }
 
 /* The entry wears no frame of its own — it stretches to fill what is
@@ -86,5 +105,15 @@ export const inputGroupCss = /* css */ `
 
 [data-scope="input-group"][data-part="addon"]:not(:last-child) {
   border-inline-end: 1px solid var(--bs-color-border);
+}
+
+/* Hover deepens the group's hairline as a whole — a divider that kept
+   the resting pigment would read as a second, shallower frame. */
+[data-scope="input-group"][data-part="root"]:hover [data-scope="input-group"][data-part="addon"]:not(:first-child) {
+  border-inline-start-color: var(--bs-color-border-strong);
+}
+
+[data-scope="input-group"][data-part="root"]:hover [data-scope="input-group"][data-part="addon"]:not(:last-child) {
+  border-inline-end-color: var(--bs-color-border-strong);
 }
 `;
