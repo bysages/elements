@@ -1,33 +1,56 @@
 <script setup lang="ts">
-import { Button, Form, FormField, Input, Textarea } from "@bysages/vue";
-import { reactive, ref } from "vue";
+import { Button, Form, FormField, Input, Textarea, useForm } from "@bysages/vue";
+import { ref } from "vue";
 
-const state = reactive({ title: "", abstract: "" });
 const status = ref("");
 
-function validate(v: Record<string, unknown>) {
-  const errors: { name: string; message: string }[] = [];
-  if (!v.title) errors.push({ name: "title", message: "Title is required" });
-  if (!v.abstract) errors.push({ name: "abstract", message: "The abstract is required" });
-  else if (v.abstract.length < 8)
-    errors.push({ name: "abstract", message: "At least 8 characters" });
-  return errors;
-}
+const form = useForm({
+  defaultValues: { title: "", abstract: "" },
+  onSubmit: () => {
+    status.value = "Submitted.";
+  },
+});
+
+const titleValidators = {
+  onChange: ({ value }: { value: string }) => (value ? undefined : "Title is required"),
+};
+
+const abstractValidators = {
+  onChange: ({ value }: { value: string }) => {
+    if (!value) return "The abstract is required";
+    if (value.length < 8) return "At least 8 characters";
+    return undefined;
+  },
+};
 </script>
 
 <template>
-  <Form
-    :state="state"
-    :validate="validate"
-    class="w-full"
-    @submit="status = 'Submitted.'"
-    @error="status = 'Fix the errors below.'"
-  >
-    <FormField name="title" label="Title" hint="One line, no period" required>
-      <Input v-model="state.title" placeholder="Title of the piece" />
+  <Form :form="form" class="w-full">
+    <FormField
+      name="title"
+      label="Title"
+      hint="One line, no period"
+      required
+      :validators="titleValidators"
+    >
+      <template #default="{ field }">
+        <Input
+          :model-value="field.state.value"
+          placeholder="Title of the piece"
+          @update:model-value="field.handleChange"
+          @blur="field.handleBlur"
+        />
+      </template>
     </FormField>
-    <FormField name="abstract" label="Abstract">
-      <Textarea v-model="state.abstract" placeholder="What the piece says" />
+    <FormField name="abstract" label="Abstract" :validators="abstractValidators">
+      <template #default="{ field }">
+        <Textarea
+          :model-value="field.state.value"
+          placeholder="What the piece says"
+          @update:model-value="field.handleChange"
+          @blur="field.handleBlur"
+        />
+      </template>
     </FormField>
     <Button type="submit">Submit</Button>
   </Form>

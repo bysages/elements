@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
-import { Button, Dialog, Form, FormField, Input, Select } from "@bysages/vue";
-import { reactive, watch } from "vue";
+import { Button, Dialog, Form, FormField, Input, Select, useForm } from "@bysages/vue";
+import { watch } from "vue";
 import { z } from "zod";
 
 import { type OrderRow, type OrderStatus } from "./data";
@@ -13,16 +13,29 @@ const emit = defineEmits<{
   save: [patch: Pick<OrderRow, "customer" | "status" | "mrr">];
 }>();
 
-const schema = z.object({
-  customer: z.string().min(1, "The customer name is required."),
-  mrr: z.number().min(0, "Cannot be negative."),
-  status: z.string(),
-});
-
-const form = reactive({
-  customer: "",
-  mrr: 0,
-  status: "active" as OrderStatus,
+const form = useForm({
+  defaultValues: {
+    customer: "",
+    mrr: 0,
+    status: "active" as OrderStatus,
+  },
+  validators: {
+    onChange: z.object({
+      customer: z.string().min(1, "The customer name is required."),
+      mrr: z.number().min(0, "Cannot be negative."),
+      status: z.string(),
+    }),
+  },
+  // The engine only calls this once the schema passes, so this handler
+  // is the save itself — no silent early returns anymore.
+  onSubmit: ({ value }) => {
+    emit("save", {
+      customer: value.customer.trim(),
+      status: value.status as OrderStatus,
+      mrr: value.mrr,
+    });
+    emit("close");
+  },
 });
 
 // The dialog edits a working copy — reopening on another row re-seeds it.
@@ -30,19 +43,12 @@ watch(
   () => [props.open, props.row] as const,
   ([open]) => {
     if (open && props.row) {
-      form.customer = props.row.customer;
-      form.mrr = props.row.mrr;
-      form.status = props.row.status;
+      form.setFieldValue("customer", props.row.customer);
+      form.setFieldValue("mrr", props.row.mrr);
+      form.setFieldValue("status", props.row.status);
     }
   },
 );
-
-// The Form only emits submit once the schema passes, so this handler is
-// the save itself — no silent early returns anymore.
-function submit() {
-  emit("save", { customer: form.customer.trim(), status: form.status, mrr: form.mrr });
-  emit("close");
-}
 
 const statusCollection = createListCollection({
   items: [
@@ -63,48 +69,62 @@ const statusCollection = createListCollection({
           <Dialog.Title>Edit account</Dialog.Title>
           <Dialog.Description>Changes apply to the ledger immediately.</Dialog.Description>
 
-          <Form :state="form" :schema="schema" @submit="submit">
+          <Form :form="form">
             <FormField name="customer" label="Customer" required>
-              <Input v-model="form.customer" placeholder="Customer name" />
+              <template #default="{ field }">
+                <Input
+                  :model-value="field.state.value"
+                  placeholder="Customer name"
+                  @update:model-value="field.handleChange"
+                  @blur="field.handleBlur"
+                />
+              </template>
             </FormField>
 
             <FormField name="mrr" label="Monthly recurring (USD)">
-              <Input
-                :model-value="form.mrr ? String(form.mrr) : ''"
-                type="number"
-                min="0"
-                placeholder="0"
-                @update:model-value="(value: string) => (form.mrr = Number(value) || 0)"
-              />
+              <template #default="{ field }">
+                <Input
+                  :model-value="field.state.value ? String(field.state.value) : ''"
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  @update:model-value="(value: string) => field.handleChange(Number(value) || 0)"
+                  @blur="field.handleBlur"
+                />
+              </template>
             </FormField>
 
             <FormField name="status" label="Status">
-              <Select.Root
-                :collection="statusCollection"
-                :model-value="[form.status]"
-                @update:model-value="(values: string[]) => (form.status = values[0] as OrderStatus)"
-              >
-                <Select.Control>
-                  <Select.Trigger>
-                    <Select.ValueText placeholder="Status" />
-                  </Select.Trigger>
-                </Select.Control>
-                <Teleport to="body">
-                  <Select.Positioner>
-                    <Select.Content>
-                      <Select.Item
-                        v-for="item in statusCollection.items"
-                        :key="item.value"
-                        :item="item"
-                      >
-                        <Select.ItemText>{{ item.label }}</Select.ItemText>
-                        <Select.ItemIndicator>✓</Select.ItemIndicator>
-                      </Select.Item>
-                    </Select.Content>
-                  </Select.Positioner>
-                </Teleport>
-                <Select.HiddenSelect />
-              </Select.Root>
+              <template #default="{ field }">
+                <Select.Root
+                  :collection="statusCollection"
+                  :model-value="[field.state.value]"
+                  @update:model-value="
+                    (values: string[]) => field.handleChange(values[0] as OrderStatus)
+                  "
+                >
+                  <Select.Control>
+                    <Select.Trigger>
+                      <Select.ValueText placeholder="Status" />
+                    </Select.Trigger>
+                  </Select.Control>
+                  <Teleport to="body">
+                    <Select.Positioner>
+                      <Select.Content>
+                        <Select.Item
+                          v-for="item in statusCollection.items"
+                          :key="item.value"
+                          :item="item"
+                        >
+                          <Select.ItemText>{{ item.label }}</Select.ItemText>
+                          <Select.ItemIndicator>✓</Select.ItemIndicator>
+                        </Select.Item>
+                      </Select.Content>
+                    </Select.Positioner>
+                  </Teleport>
+                  <Select.HiddenSelect />
+                </Select.Root>
+              </template>
             </FormField>
 
             <div class="flex justify-end gap-3">

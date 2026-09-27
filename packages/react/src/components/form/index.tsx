@@ -1,204 +1,51 @@
 import { Field as ArkField } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
-import { createContext, useContext, useImperativeHandle, useRef, useState } from "react";
-import type { FormEvent, HTMLAttributes, ReactNode, Ref, SyntheticEvent } from "react";
+import { createContext, useContext, type ComponentType } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-/** The one error a field can carry: where it lives in the form state
- * (dot notation for nested objects, indexes for arrays) and what went
- * wrong. */
-export interface FormError {
-  name: string;
-  message: string;
+export { useForm, useField } from "@tanstack/react-form";
+export type { FormApi, FieldApi } from "@tanstack/form-core";
+
+/** The seam this family passes the engine through — the members the
+ * components drive, with the engine's field-name generics opened to
+ * `any`. The engine ships no "any form" alias: its loosest, `FormLikeAPI`,
+ * still pins names to `string`, which a concrete form's literal names
+ * cannot satisfy. */
+interface AnyFormApi {
+  handleSubmit(): Promise<unknown>;
+  setFieldMeta(field: any, updater: (prev: any) => any): void;
+  Field: ComponentType<any>;
+}
+const FormContext = createContext<AnyFormApi | null>(null);
+
+/** A validator's complaint is a string or a Standard Schema issue; both
+ * reduce to the sentence the field shows. */
+function errorText(error: unknown): string {
+  if (error == null) return "";
+  if (typeof error === "string") return error;
+  if (typeof error === "object" && "message" in error)
+    return String((error as { message: unknown }).message);
+  return "";
 }
 
-/** The Standard Schema surface this package understands — the slice
- * valibot, zod, arktype and friends all expose. Declared structurally
- * so no spec package becomes a dependency. */
-export interface StandardSchema<Input = unknown> {
-  readonly "~standard": {
-    readonly validate: (value: Input) => Promise<ValidateResult> | ValidateResult;
-  };
+/** The form element itself: native submit interception handing the event
+ * to the engine, one grid, one spacing voice. */
+export interface FormProps extends HTMLAttributes<HTMLFormElement> {
+  form: AnyFormApi;
 }
 
-interface ValidateResult {
-  readonly value?: unknown;
-  readonly issues?: ReadonlyArray<{
-    readonly message: string;
-    readonly path?: ReadonlyArray<PropertyKey | { readonly key: PropertyKey }>;
-  }>;
-}
-
-export type FormInputEvent = "input" | "change" | "blur";
-
-interface FormContextValue {
-  errors: Map<string, string>;
-  disabled: boolean;
-}
-
-const FormContext = createContext<FormContextValue | null>(null);
-
-/** Walk a Standard Schema issue's path back to the dotted name the
- * matching FormField declared. */
-function issueName(issue: NonNullable<ValidateResult["issues"]>[number]): string {
-  return (issue.path ?? [])
-    .map((segment) => (typeof segment === "object" ? segment.key : segment))
-    .join(".");
-}
-
-/** A field owns the issues that live at its name or deeper inside it
- * ("topics.0" belongs to the "topics" field). */
-function inScope(name: string, scope: string): boolean {
-  return name === scope || name.startsWith(scope + ".");
-}
-
-/** The imperative handle a caller holds through `ref`: the scheduled
- * validation, the error surgery, and the live error map itself. */
-export interface FormHandle {
-  validate: () => Promise<Map<string, string>>;
-  clear: (name?: string | RegExp) => void;
-  setErrors: (errors: FormError[]) => void;
-  getErrors: (name?: string | RegExp) => FormError[];
-  errors: Map<string, string>;
-}
-
-export interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit" | "onError"> {
-  state: Record<string, unknown>;
-  schema?: StandardSchema;
-  validate?: (state: Record<string, unknown>) => FormError[] | Promise<FormError[]>;
-  validateOn?: FormInputEvent[];
-  disabled?: boolean;
-  onSubmit?: (state: Record<string, unknown>) => void;
-  onError?: (errors: FormError[]) => void;
-  ref?: Ref<FormHandle>;
-}
-
-/**
- * The validation scheduler: one error map, a submit that validates
- * before it fires, live re-validation on the events the `validateOn`
- * prop names, and the imperative handle. The schema is any Standard
- * Schema (valibot, zod, arktype, …) — none are bundled; a `validate`
- * function composes with it for the cases schemas can't express. Errors
- * reach their field by name, through FormField.
- */
-export function Form({
-  state,
-  schema,
-  validate,
-  validateOn = ["input", "change", "blur"],
-  disabled = false,
-  onSubmit,
-  onError,
-  ref,
-  children,
-  ...rest
-}: FormProps) {
-  const [errors, setErrors] = useState(() => new Map<string, string>());
-  const run = useRef(0);
-
-  async function runValidate(scope?: string): Promise<Map<string, string>> {
-    const seq = ++run.current;
-    const next = new Map<string, string>();
-    if (validate) {
-      for (const error of await validate(state)) next.set(error.name, error.message);
-    }
-    if (schema) {
-      const result = await schema["~standard"].validate(state);
-      for (const issue of result.issues ?? []) {
-        const name = issueName(issue);
-        if (!next.has(name)) next.set(name, issue.message);
-      }
-    }
-    if (scope != null) {
-      // A live event owns its field alone: issues of that name (or its
-      // nested paths) replace the old ones, every other field keeps the
-      // errors it already showed.
-      setErrors((prev) => {
-        const merged = new Map<string, string>();
-        for (const [name, message] of prev) {
-          if (!inScope(name, scope)) merged.set(name, message);
-        }
-        for (const [name, message] of next) {
-          if (inScope(name, scope)) merged.set(name, message);
-        }
-        return merged;
-      });
-    }
-    if (seq === run.current && scope == null) setErrors(next);
-    return next;
-  }
-
-  function clear(name?: string | RegExp) {
-    if (!name) {
-      setErrors(new Map());
-      return;
-    }
-    setErrors((prev) => {
-      const next = new Map(prev);
-      for (const key of next.keys()) {
-        const hit = typeof name === "string" ? key === name : name.test(key);
-        if (hit) next.delete(key);
-      }
-      return next;
-    });
-  }
-
-  function setErrorsFrom(list: FormError[]) {
-    setErrors(new Map(list.map((error) => [error.name, error.message])));
-  }
-
-  function getErrors(name?: string | RegExp): FormError[] {
-    const all = [...errors].map(([entry, message]) => ({ name: entry, message }));
-    if (!name) return all;
-    return all.filter((error) =>
-      typeof name === "string" ? error.name === name : name.test(error.name),
-    );
-  }
-
-  useImperativeHandle(ref, () => ({
-    validate: runValidate,
-    clear,
-    setErrors: setErrorsFrom,
-    getErrors,
-    errors,
-  }));
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    void runValidate().then((map) => {
-      if (map.size === 0) {
-        onSubmit?.(state);
-        return;
-      }
-      onError?.([...map].map(([name, message]) => ({ name, message })));
-    });
-  }
-
-  // Live validation rides event delegation off the form element — blur
-  // does not bubble, so it arrives through the capture phase. Input
-  // events debounce: validating each keystroke is waste. React's change
-  // event is the input event, so it keeps the same debounce window.
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  function onDelegated(kind: FormInputEvent, event: SyntheticEvent) {
-    if (!validateOn.includes(kind)) return;
-    const target = event.target as HTMLElement | null;
-    if (!target || !("value" in target)) return;
-    const scope =
-      target.closest?.("[data-form-field]")?.getAttribute("data-form-field") ?? undefined;
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => void runValidate(scope), kind === "blur" ? 0 : 300);
-  }
-
+export function Form({ form, children, ...rest }: FormProps) {
   return (
-    <FormContext.Provider value={{ errors, disabled }}>
+    <FormContext.Provider value={form}>
       <form
         {...rest}
         data-scope="form"
         data-part="root"
         noValidate
-        onSubmit={handleSubmit}
-        onInput={(event) => onDelegated("input", event)}
-        onChange={(event) => onDelegated("change", event)}
-        onBlurCapture={(event) => onDelegated("blur", event)}
+        onSubmit={(event) => {
+          event.preventDefault();
+          void form.handleSubmit();
+        }}
       >
         {children}
       </form>
@@ -207,24 +54,28 @@ export function Form({
 }
 
 /**
- * The named slot in the grid: label, control, hint — and the error the
- * Form routed to this name, shown through the same parts the standalone
- * Field family styles. The Ark field context runs underneath, so our
- * Input and Textarea pick up the label wiring and the invalid state
- * without knowing the Form exists. Without a Form above it degrades to
- * a plain labelled field.
+ * The named slot in the grid: label, control, hint — and the engine's
+ * errors for this name, shown through the same parts the standalone
+ * Field family styles. The children may be a render receiving the live
+ * TanStack field (value, handleChange, handleBlur, full state), so every
+ * capability the engine has is right there where the control is wired.
+ * Without a Form above it degrades to a plain labelled field.
  */
-export interface FormFieldProps extends HTMLAttributes<HTMLDivElement> {
-  name?: string;
+export interface FormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  form?: AnyFormApi;
+  name: string;
+  /** The engine's validator slots for this name (onChange, onBlur, ...). */
+  validators?: any;
   label?: string;
   hint?: string;
   required?: boolean;
   invalid?: boolean;
   disabled?: boolean;
-  children?: ReactNode;
+  children?: ReactNode | ((field: any) => ReactNode);
 }
 
 export function FormField({
+  form: formProp,
   name,
   label,
   hint,
@@ -234,20 +85,40 @@ export function FormField({
   children,
   ...rest
 }: FormFieldProps) {
-  const form = useContext(FormContext);
-  const formError = name ? form?.errors.get(name) : undefined;
-  const isInvalid = invalid || formError != null;
-  const isDisabled = disabled || (form?.disabled ?? false);
+  const injected = useContext(FormContext);
+  const form = formProp ?? injected;
+  // Layout lands on the wrapper, engine options (validators, mode) ride
+  // to the field itself.
+  const { className: klass, style, ...fieldOptions } = rest;
 
+  const assemble = (field: any) => {
+    // Untouched fields only speak on a submit attempt — the schema's
+    // complaints about fields the reader never visited stay quiet.
+    const meta = field?.state.meta;
+    const surfaced = !meta
+      ? []
+      : meta.isTouched
+        ? (meta.errors ?? [])
+        : [meta.errorMap?.onSubmit].flat().filter(Boolean);
+    const errors = surfaced.map(errorText).filter(Boolean);
+    const isInvalid = invalid || errors.length > 0;
+    return (
+      <div {...{ class: klass, style }} data-form-field={name}>
+        <ArkField.Root invalid={isInvalid} required={required} disabled={disabled}>
+          {label ? <ArkField.Label>{label}</ArkField.Label> : null}
+          {typeof children === "function" ? children(field) : children}
+          {hint && errors.length === 0 ? <ArkField.HelperText>{hint}</ArkField.HelperText> : null}
+          {errors.length > 0 ? <ArkField.ErrorText>{errors[0]}</ArkField.ErrorText> : null}
+        </ArkField.Root>
+      </div>
+    );
+  };
+
+  if (!form) return assemble(undefined);
   return (
-    <div {...rest} data-form-field={name}>
-      <ArkField.Root invalid={isInvalid} required={required} disabled={isDisabled}>
-        {label ? <ArkField.Label>{label}</ArkField.Label> : null}
-        {children}
-        {hint && formError == null ? <ArkField.HelperText>{hint}</ArkField.HelperText> : null}
-        {formError != null ? <ArkField.ErrorText>{formError}</ArkField.ErrorText> : null}
-      </ArkField.Root>
-    </div>
+    <form.Field {...fieldOptions} name={name}>
+      {assemble}
+    </form.Field>
   );
 }
 

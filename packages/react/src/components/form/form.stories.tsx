@@ -1,8 +1,9 @@
 import type { Meta } from "@storybook/react-vite";
-import { useRef, useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { useState } from "react";
 import { z } from "zod";
 
-import { Form, FormField, type FormHandle } from ".";
+import { Form, FormField } from ".";
 import { Button } from "../button";
 import { CheckboxGroup } from "../checkbox-group";
 import { Input } from "../input";
@@ -17,37 +18,48 @@ const statusStyle = {
   color: "var(--bs-color-text-tertiary)",
 } as const;
 
+function textField(field: any, placeholder?: string) {
+  return (
+    <Input
+      value={field.state.value}
+      placeholder={placeholder}
+      onValueChange={field.handleChange}
+      onBlur={field.handleBlur}
+    />
+  );
+}
+
 /** The schema path: any Standard Schema (zod here) describes the shape;
- * submit validates against it and errors land on the FormField whose
- * name matches the issue path. */
+ * the engine validates as the reader types and the errors land on the
+ * field whose name matches the issue path. */
 export const Basic = {
   render: () => {
-    const schema = z.object({
-      title: z.string().min(1, "The title is required."),
-      abstract: z.string().min(8, "Write at least 8 characters."),
-    });
-    const [state, setState] = useState<z.infer<typeof schema>>({ title: "", abstract: "" });
     const [status, setStatus] = useState("");
+    const form = useForm({
+      defaultValues: { title: "", abstract: "" },
+      validators: {
+        onChange: z.object({
+          title: z.string().min(1, "The title is required."),
+          abstract: z.string().min(8, "Write at least 8 characters."),
+        }),
+      },
+      onSubmit: () => setStatus("Submitted."),
+    });
     return (
       <>
-        <Form
-          state={state}
-          schema={schema}
-          onSubmit={() => setStatus("Submitted.")}
-          onError={(errors) => setStatus(`${errors.length} error(s).`)}
-        >
+        <Form form={form}>
           <FormField name="title" label="Title" hint="One line, no period" required>
-            <Input
-              value={state.title}
-              onValueChange={(title) => setState((s) => ({ ...s, title }))}
-            />
+            {(field: any) => textField(field, "Title of the piece")}
           </FormField>
           <FormField name="abstract" label="Abstract">
-            <Textarea
-              rows={3}
-              value={state.abstract}
-              onValueChange={(abstract) => setState((s) => ({ ...s, abstract }))}
-            />
+            {(field: any) => (
+              <Textarea
+                value={field.state.value}
+                rows={3}
+                onValueChange={field.handleChange}
+                onBlur={field.handleBlur}
+              />
+            )}
           </FormField>
           <Button type="submit">Submit</Button>
         </Form>
@@ -59,40 +71,45 @@ export const Basic = {
   },
 };
 
-/** The validate function: submit runs it first; errors land on the
- * FormField whose name matches. Composes with a schema when one is
- * present for the checks a schema can't express. */
+/** Per-field validators as plain functions — the checks a schema can't
+ * express, living right on the field they belong to. */
 export const CustomValidation = {
   render: () => {
-    const [state, setState] = useState({ email: "", abstract: "" });
     const [status, setStatus] = useState("");
+    const form = useForm({
+      defaultValues: { email: "", abstract: "" },
+      onSubmit: () => setStatus("Submitted."),
+    });
     return (
       <>
-        <Form
-          state={state}
-          validate={(value) => {
-            const errors = [] as { name: string; message: string }[];
-            if (!String(value.email).includes("@"))
-              errors.push({ name: "email", message: "Enter a valid email address." });
-            if (String(value.abstract).length < 20)
-              errors.push({ name: "abstract", message: "Write at least 20 characters." });
-            return errors;
-          }}
-          onSubmit={() => setStatus("Submitted.")}
-          onError={() => setStatus("Fix the errors below.")}
-        >
-          <FormField name="email" label="Email address" hint="We only write about your orders.">
-            <Input
-              value={state.email}
-              onValueChange={(email) => setState((s) => ({ ...s, email }))}
-            />
+        <Form form={form}>
+          <FormField
+            name="email"
+            label="Email address"
+            hint="We only write about your orders."
+            validators={{
+              onChange: ({ value }: { value: string }) =>
+                value.includes("@") ? undefined : "Enter a valid email address.",
+            }}
+          >
+            {(field: any) => textField(field)}
           </FormField>
-          <FormField name="abstract" label="Abstract">
-            <Textarea
-              rows={3}
-              value={state.abstract}
-              onValueChange={(abstract) => setState((s) => ({ ...s, abstract }))}
-            />
+          <FormField
+            name="abstract"
+            label="Abstract"
+            validators={{
+              onChange: ({ value }: { value: string }) =>
+                value.length >= 20 ? undefined : "Write at least 20 characters.",
+            }}
+          >
+            {(field: any) => (
+              <Textarea
+                value={field.state.value}
+                rows={3}
+                onValueChange={field.handleChange}
+                onBlur={field.handleBlur}
+              />
+            )}
           </FormField>
           <Button type="submit">Submit</Button>
         </Form>
@@ -106,65 +123,71 @@ export const CustomValidation = {
 
 /** One schema over every input register: text, prose, a checkbox group
  * bound to an array, and a switch bound to a boolean. Each field keeps
- * its own binding; the form keeps one error map. */
+ * its own binding; the engine keeps one error map. */
 export const WithInputs = {
   render: () => {
-    const schema = z.object({
-      title: z.string().min(1, "The title is required."),
-      summary: z.string().min(8, "Write at least 8 characters."),
-      topics: z.array(z.string()).min(1, "Pick at least one topic."),
-      consent: z.boolean().refine((v) => v, "Please accept the terms."),
-    });
-    const [state, setState] = useState<z.infer<typeof schema>>({
-      title: "",
-      summary: "",
-      topics: [],
-      consent: false,
-    });
     const [status, setStatus] = useState("");
+    const form = useForm({
+      defaultValues: {
+        title: "",
+        summary: "",
+        topics: [] as string[],
+        consent: false,
+      },
+      validators: {
+        onChange: z.object({
+          title: z.string().min(1, "The title is required."),
+          summary: z.string().min(8, "Write at least 8 characters."),
+          topics: z.array(z.string()).min(1, "Pick at least one topic."),
+          consent: z.boolean().refine((v) => v, "Please accept the terms."),
+        }),
+      },
+      onSubmit: () => setStatus("Submitted."),
+    });
     return (
       <>
-        <Form
-          state={state}
-          schema={schema}
-          onSubmit={() => setStatus("Submitted.")}
-          onError={(errors) => setStatus(`${errors.length} error(s).`)}
-        >
+        <Form form={form}>
           <FormField name="title" label="Title" required>
-            <Input
-              value={state.title}
-              onValueChange={(title) => setState((s) => ({ ...s, title }))}
-            />
+            {(field: any) => textField(field, "Title of the piece")}
           </FormField>
-          <FormField name="summary" label="Summary">
-            <Textarea
-              rows={2}
-              value={state.summary}
-              onValueChange={(summary) => setState((s) => ({ ...s, summary }))}
-            />
+          <FormField name="summary" label="Summary" hint="A few sentences">
+            {(field: any) => (
+              <Textarea
+                value={field.state.value}
+                rows={3}
+                onValueChange={field.handleChange}
+                onBlur={field.handleBlur}
+              />
+            )}
           </FormField>
           <FormField name="topics" label="Topics" required>
-            <CheckboxGroup
-              value={state.topics}
-              onValueChange={(topics) => setState((s) => ({ ...s, topics }))}
-              options={[
-                { label: "Typography", value: "typography" },
-                { label: "Lighting", value: "lighting" },
-                { label: "Motion", value: "motion" },
-              ]}
-            />
+            {(field: any) => (
+              <CheckboxGroup
+                value={field.state.value}
+                options={[
+                  { label: "Typography", value: "typography" },
+                  { label: "Lighting", value: "lighting" },
+                  { label: "Motion", value: "motion" },
+                ]}
+                onValueChange={field.handleChange}
+                onBlur={field.handleBlur}
+              />
+            )}
           </FormField>
           <FormField name="consent">
-            <Switch.Root
-              checked={state.consent}
-              onCheckedChange={(e) => setState((s) => ({ ...s, consent: e.checked }))}
-            >
-              <Switch.Control>
-                <Switch.Thumb />
-              </Switch.Control>
-              <Switch.Label>I accept the terms</Switch.Label>
-              <Switch.HiddenInput />
-            </Switch.Root>
+            {(field: any) => (
+              <Switch.Root
+                checked={field.state.value}
+                onCheckedChange={(details) => field.handleChange(details.checked)}
+                onBlur={field.handleBlur}
+              >
+                <Switch.Control>
+                  <Switch.Thumb />
+                </Switch.Control>
+                <Switch.Label>I accept the terms</Switch.Label>
+                <Switch.HiddenInput />
+              </Switch.Root>
+            )}
           </FormField>
           <Button type="submit">Submit</Button>
         </Form>
@@ -176,43 +199,43 @@ export const WithInputs = {
   },
 };
 
-/** Live re-validation: the form listens to input, change and blur off
- * its own element and re-runs the checks as the reader moves. */
+/** Live validation: the engine re-checks as the reader types. */
 export const LiveValidation = {
   render: () => {
-    const [state, setState] = useState({ handle: "" });
+    const form = useForm({
+      defaultValues: { handle: "" },
+    });
     return (
-      <Form
-        state={state}
-        validate={(value) =>
-          /^[a-z-]+$/.test(String(value.handle))
-            ? []
-            : [{ name: "handle", message: "Lowercase letters and dashes only." }]
-        }
-      >
-        <FormField name="handle" label="Handle" hint="Lowercase letters and dashes.">
-          <Input
-            value={state.handle}
-            onValueChange={(handle) => setState((s) => ({ ...s, handle }))}
-          />
+      <Form form={form}>
+        <FormField
+          name="handle"
+          label="Handle"
+          hint="Lowercase letters and dashes."
+          validators={{
+            onChange: ({ value }: { value: string }) =>
+              /^[a-z-]+$/.test(value) ? undefined : "Lowercase letters and dashes only.",
+          }}
+        >
+          {(field: any) => textField(field)}
         </FormField>
       </Form>
     );
   },
 };
 
-/** The imperative handle: errors can be set from outside — say, from a
- * server response — and cleared again. */
+/** The engine is a live object: errors can be set from outside — say,
+ * from a server response — and cleared again. */
 export const Imperative = {
   render: () => {
-    const [state, setState] = useState({ code: "" });
     const [status, setStatus] = useState("");
-    const formRef = useRef<FormHandle>(null);
+    const form = useForm({
+      defaultValues: { code: "" },
+    });
     return (
       <>
-        <Form ref={formRef} state={state}>
+        <Form form={form}>
           <FormField name="code" label="Redemption code">
-            <Input value={state.code} onValueChange={(code) => setState((s) => ({ ...s, code }))} />
+            {(field: any) => textField(field)}
           </FormField>
         </Form>
         <div
@@ -226,7 +249,13 @@ export const Imperative = {
             variant="outline"
             size="sm"
             onClick={() =>
-              formRef.current?.setErrors([{ name: "code", message: "This code was already used." }])
+              form.setFieldMeta("code", (prev) => ({
+                ...prev,
+                errorMap: {
+                  ...prev.errorMap,
+                  onChange: { message: "This code was already used." },
+                },
+              }))
             }
           >
             Simulate server error
@@ -235,7 +264,7 @@ export const Imperative = {
             variant="ghost"
             size="sm"
             onClick={() => {
-              formRef.current?.clear();
+              form.setFieldMeta("code", (prev) => ({ ...prev, errorMap: {} }));
               setStatus("");
             }}
           >

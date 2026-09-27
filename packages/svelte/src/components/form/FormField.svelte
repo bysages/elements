@@ -1,42 +1,68 @@
 <script lang="ts">
-import { Field as ArkField } from "@ark-ui/svelte/field";
+  import { Field as ArkField } from "@ark-ui/svelte/field";
 
-import type { FormFieldProps } from "./props";
-import { useForm } from "./context";
+  import type { FormFieldProps } from "./props";
+  import { useForm } from "./context";
 
-let {
-  name,
-  label,
-  hint,
-  required = false,
-  invalid = false,
-  disabled = false,
-  children,
-  ...rest
-}: FormFieldProps = $props();
+  let {
+    form: formProp,
+    name,
+    label,
+    hint,
+    required = false,
+    invalid = false,
+    disabled = false,
+    children,
+    ...rest
+  }: FormFieldProps = $props();
 
-const form = useForm();
+  const engine = formProp ?? useForm();
 
-const formError = $derived(name ? form?.errors().get(name) : undefined);
-const fieldInvalid = $derived(invalid || formError != null);
-const fieldDisabled = $derived(disabled || (form?.disabled ?? false));
+  /** A validator's complaint is a string or a Standard Schema issue;
+   * both reduce to the sentence the field shows. */
+  function errorText(error: unknown): string {
+    if (error == null) return "";
+    if (typeof error === "string") return error;
+    if (typeof error === "object" && "message" in error)
+      return String((error as { message: unknown }).message);
+    return String(error);
+  }
 </script>
 
-<!-- The named slot in the grid: label, control, hint — and the error
-the Form routed to this name, shown through the same parts the
-standalone Field family styles. Without a Form above it degrades to a
-plain labelled field. -->
-<div {...rest} data-form-field={name}>
-  <ArkField.Root invalid={fieldInvalid} {required} disabled={fieldDisabled}>
-    {#if label}
-      <ArkField.Label>{label}</ArkField.Label>
-    {/if}
-    {@render children?.()}
-    {#if hint && formError == null}
-      <ArkField.HelperText>{hint}</ArkField.HelperText>
-    {/if}
-    {#if formError != null}
-      <ArkField.ErrorText>{formError}</ArkField.ErrorText>
-    {/if}
-  </ArkField.Root>
-</div>
+{#snippet assemble(field: any)}
+  <!-- Untouched fields only speak on a submit attempt — the schema's
+  complaints about fields the reader never visited stay quiet. -->
+  {@const meta = field?.state.meta}
+  {@const surfaced = !meta
+    ? []
+    : meta.isTouched
+      ? (meta.errors ?? [])
+      : [meta.errorMap?.onSubmit].flat().filter(Boolean)}
+  {@const errors = surfaced.map(errorText).filter(Boolean)}
+  <div {...rest} data-form-field={name}>
+    <ArkField.Root invalid={invalid || errors.length > 0} {required} {disabled}>
+      {#if label}
+        <ArkField.Label>{label}</ArkField.Label>
+      {/if}
+      {@render children?.(field)}
+      {#if hint && errors.length === 0}
+        <ArkField.HelperText>{hint}</ArkField.HelperText>
+      {/if}
+      {#if errors.length > 0}
+        <ArkField.ErrorText>{errors[0]}</ArkField.ErrorText>
+      {/if}
+    </ArkField.Root>
+  </div>
+{/snippet}
+
+{#if engine}
+  <!-- The engine hands the snippet the live FieldApi — its `state`
+  getter tracks the store, so the errors swap as it validates. -->
+  <engine.Field {...rest} {name}>
+    {#snippet children(field)}
+      {@render assemble(field)}
+    {/snippet}
+  </engine.Field>
+{:else}
+  {@render assemble(undefined)}
+{/if}

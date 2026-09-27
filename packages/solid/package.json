@@ -51,6 +51,7 @@
     "@bysages/core": "workspace:*",
     "@bysages/icons": "workspace:*",
     "@tanstack/markdown": "0.0.15",
+    "@tanstack/solid-form": "1.33.5",
     "@tanstack/solid-table": "9.2.4",
     "@tanstack/solid-virtual": "3.13.40",
     "@zag-js/cascade-select": "1.44.0",

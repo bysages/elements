@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
+import { useForm } from "@tanstack/vue-form";
 import { h, ref, type Ref } from "vue";
 import { z } from "zod";
 
-import { Form } from ".";
+import { Form, FormField } from ".";
 import { Button } from "../button";
 import { CheckboxGroup } from "../checkbox-group";
-import { FormField } from "../form";
 import { Input } from "../input";
 import { Switch } from "../switch";
 import { Textarea } from "../textarea";
@@ -34,97 +34,99 @@ function switchControl() {
   return h(Switch.Control, () => h(Switch.Thumb));
 }
 
-/** The schema path: any Standard Schema (zod here) describes the shape;
- * submit validates against it and errors land on the FormField whose
- * name matches the issue path. */
+/** A text field wired to the engine: the slot hands over the field
+ * (value, handleChange, handleBlur), the errors surface on the field
+ * whose name they belong to. */
 export const Basic: Story = {
   render: () =>
     withState(() => {
-      const schema = z.object({
-        title: z.string().min(1, "The title is required."),
-        abstract: z.string().min(8, "Write at least 8 characters."),
-      });
-      const state = ref<z.infer<typeof schema>>({ title: "", abstract: "" });
       const status = ref("");
+      const form = useForm({
+        defaultValues: { title: "", abstract: "" },
+        validators: {
+          onChange: z.object({
+            title: z.string().min(1, "The title is required."),
+            abstract: z.string().min(8, "Write at least 8 characters."),
+          }),
+        },
+        onSubmit: () => {
+          status.value = "Submitted.";
+        },
+      });
+      const bind = (name: "title" | "abstract") => (field: any) =>
+        h(name === "title" ? Input : (Textarea as never), {
+          ...(name === "title" ? { placeholder: "Title of the piece" } : { rows: 3 }),
+          modelValue: field.state.value,
+          "onUpdate:modelValue": field.handleChange,
+          onBlur: field.handleBlur,
+        });
       return () => [
-        h(
-          Form as never,
-          {
-            state: state.value,
-            schema,
-            onSubmit: () => (status.value = "Submitted."),
-            onError: (errors: unknown) =>
-              (status.value = `${(errors as unknown[]).length} error(s).`),
-          },
-          () => [
-            h(
-              FormField,
-              { name: "title", label: "Title", hint: "One line, no period", required: true },
-              () =>
-                h(Input, {
-                  modelValue: state.value.title,
-                  "onUpdate:modelValue": (v: string) => (state.value.title = v),
-                }),
-            ),
-            h(FormField, { name: "abstract", label: "Abstract" }, () =>
-              h(Textarea, {
-                rows: 3,
-                modelValue: state.value.abstract,
-                "onUpdate:modelValue": (v: string) => (state.value.abstract = v),
-              }),
-            ),
-            submitButton(),
-          ],
-        ),
+        h(Form as never, { form }, () => [
+          h(
+            FormField as never,
+            { name: "title", label: "Title", hint: "One line, no period", required: true },
+            bind("title"),
+          ),
+          h(FormField as never, { name: "abstract", label: "Abstract" }, bind("abstract")),
+          submitButton(),
+        ]),
         statusLine(status),
       ];
     }),
 };
 
-/** The validate function: submit runs it first; errors land on the
- * FormField whose name matches. Composes with a schema when one is
- * present for the checks a schema can't express. */
+/** Per-field validators as plain functions — the checks a schema can't
+ * express, living right on the field they belong to. */
 export const CustomValidation: Story = {
   render: () =>
     withState(() => {
-      const state = ref({ email: "", abstract: "" });
       const status = ref("");
+      const form = useForm({
+        defaultValues: { email: "", abstract: "" },
+        onSubmit: () => {
+          status.value = "Submitted.";
+        },
+      });
       return () => [
-        h(
-          Form as never,
-          {
-            state: state.value,
-            validate: (value: Record<string, unknown>) => {
-              const errors = [] as { name: string; message: string }[];
-              if (!String(value.email).includes("@"))
-                errors.push({ name: "email", message: "Enter a valid email address." });
-              if (String(value.abstract).length < 20)
-                errors.push({ name: "abstract", message: "Write at least 20 characters." });
-              return errors;
+        h(Form as never, { form }, () => [
+          h(
+            FormField as never,
+            {
+              name: "email",
+              label: "Email address",
+              hint: "We only write about your orders.",
+              validators: {
+                onChange: ({ value }: { value: string }) =>
+                  value.includes("@") ? undefined : "Enter a valid email address.",
+              },
             },
-            onSubmit: () => (status.value = "Submitted."),
-            onError: () => (status.value = "Fix the errors below."),
-          },
-          () => [
-            h(
-              FormField,
-              { name: "email", label: "Email address", hint: "We only write about your orders." },
-              () =>
-                h(Input, {
-                  modelValue: state.value.email,
-                  "onUpdate:modelValue": (v: string) => (state.value.email = v),
-                }),
-            ),
-            h(FormField, { name: "abstract", label: "Abstract" }, () =>
+            (field: any) =>
+              h(Input, {
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
+              }),
+          ),
+          h(
+            FormField as never,
+            {
+              name: "abstract",
+              label: "Abstract",
+              validators: {
+                onChange: ({ value }: { value: string }) =>
+                  value.length >= 20 ? undefined : "Write at least 20 characters.",
+              },
+            },
+            (field: any) =>
               h(Textarea, {
                 rows: 3,
-                modelValue: state.value.abstract,
-                "onUpdate:modelValue": (v: string) => (state.value.abstract = v),
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
               }),
-            ),
-            submitButton(),
-          ],
-        ),
+          ),
+          submitButton(),
+        ]),
         statusLine(status),
       ];
     }),
@@ -132,131 +134,132 @@ export const CustomValidation: Story = {
 
 /** One schema over every input register: text, prose, a checkbox group
  * bound to an array, and a switch bound to a boolean. Each field keeps
- * its own binding; the form keeps one error map. */
+ * its own binding; the engine keeps one error map. */
 export const WithInputs: Story = {
   render: () =>
     withState(() => {
-      const schema = z.object({
-        title: z.string().min(1, "The title is required."),
-        summary: z.string().min(8, "Write at least 8 characters."),
-        topics: z.array(z.string()).min(1, "Pick at least one topic."),
-        consent: z.boolean().refine((v) => v, "Please accept the terms."),
-      });
-      const state = ref<z.infer<typeof schema>>({
-        title: "",
-        summary: "",
-        topics: [],
-        consent: false,
-      });
       const status = ref("");
+      const form = useForm({
+        defaultValues: {
+          title: "",
+          summary: "",
+          topics: [] as string[],
+          consent: false,
+        },
+        validators: {
+          onChange: z.object({
+            title: z.string().min(1, "The title is required."),
+            summary: z.string().min(8, "Write at least 8 characters."),
+            topics: z.array(z.string()).min(1, "Pick at least one topic."),
+            consent: z.boolean().refine((v) => v, "Please accept the terms."),
+          }),
+        },
+        onSubmit: () => {
+          status.value = "Submitted.";
+        },
+      });
       return () => [
-        h(
-          Form as never,
-          {
-            state: state.value,
-            schema,
-            onSubmit: () => (status.value = "Submitted."),
-            onError: (errors: unknown) =>
-              (status.value = `${(errors as unknown[]).length} error(s).`),
-          },
-          () => [
-            h(FormField, { name: "title", label: "Title", required: true }, () =>
-              h(Input, {
-                modelValue: state.value.title,
-                "onUpdate:modelValue": (v: string) => (state.value.title = v),
-              }),
-            ),
-            h(FormField, { name: "summary", label: "Summary" }, () =>
+        h(Form as never, { form }, () => [
+          h(FormField as never, { name: "title", label: "Title", required: true }, (field: any) =>
+            h(Input, {
+              modelValue: field.state.value,
+              "onUpdate:modelValue": field.handleChange,
+              onBlur: field.handleBlur,
+            }),
+          ),
+          h(
+            FormField as never,
+            { name: "summary", label: "Summary", hint: "A few sentences" },
+            (field: any) =>
               h(Textarea, {
-                rows: 2,
-                modelValue: state.value.summary,
-                "onUpdate:modelValue": (v: string) => (state.value.summary = v),
+                rows: 3,
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
               }),
+          ),
+          h(FormField as never, { name: "topics", label: "Topics", required: true }, (field: any) =>
+            h(CheckboxGroup as never, {
+              modelValue: field.state.value,
+              "onUpdate:modelValue": field.handleChange,
+              onBlur: field.handleBlur,
+              options: [
+                { label: "Typography", value: "typography" },
+                { label: "Lighting", value: "lighting" },
+                { label: "Motion", value: "motion" },
+              ],
+            }),
+          ),
+          h(FormField as never, { name: "consent" }, (field: any) =>
+            h(
+              Switch.Root as never,
+              {
+                checked: field.state.value,
+                "onUpdate:checked": field.handleChange,
+                onBlur: field.handleBlur,
+              },
+              () => [
+                switchControl(),
+                h(Switch.Label, () => "I accept the terms"),
+                h(Switch.HiddenInput),
+              ],
             ),
-            h(FormField, { name: "topics", label: "Topics", required: true }, () =>
-              h(CheckboxGroup as never, {
-                modelValue: state.value.topics,
-                "onUpdate:modelValue": (v: string[]) => (state.value.topics = v),
-                options: [
-                  { label: "Typography", value: "typography" },
-                  { label: "Lighting", value: "lighting" },
-                  { label: "Motion", value: "motion" },
-                ],
-              }),
-            ),
-            h(FormField, { name: "consent" }, () =>
-              h(
-                Switch.Root as never,
-                {
-                  checked: state.value.consent,
-                  onCheckedChange: (e: { checked: boolean }) => (state.value.consent = e.checked),
-                },
-                () => [
-                  switchControl(),
-                  h(Switch.Label, () => "I accept the terms"),
-                  h(Switch.HiddenInput),
-                ],
-              ),
-            ),
-            submitButton(),
-          ],
-        ),
+          ),
+          submitButton(),
+        ]),
         statusLine(status),
       ];
     }),
 };
 
-/** Live re-validation: the form listens to input, change and blur off
- * its own element and re-runs the checks as the reader moves. */
+/** Live validation: the engine re-checks as the reader types — the same
+ * three events the field recipe has always answered. */
 export const LiveValidation: Story = {
   render: () =>
     withState(() => {
-      const state = ref({ handle: "" });
+      const form = useForm({
+        defaultValues: { handle: "" },
+      });
       return () =>
-        h(
-          Form as never,
-          {
-            state: state.value,
-            validate: (value: Record<string, unknown>) =>
-              /^[a-z-]+$/.test(String(value.handle))
-                ? []
-                : [{ name: "handle", message: "Lowercase letters and dashes only." }],
-          },
-          () => [
-            h(
-              FormField,
-              { name: "handle", label: "Handle", hint: "Lowercase letters and dashes." },
-              () =>
-                h(Input, {
-                  modelValue: state.value.handle,
-                  "onUpdate:modelValue": (v: string) => (state.value.handle = v),
-                }),
-            ),
-          ],
-        );
+        h(Form as never, { form }, () => [
+          h(
+            FormField as never,
+            {
+              name: "handle",
+              label: "Handle",
+              hint: "Lowercase letters and dashes.",
+              validators: {
+                onChange: ({ value }: { value: string }) =>
+                  /^[a-z-]+$/.test(value) ? undefined : "Lowercase letters and dashes only.",
+              },
+            },
+            (field: any) =>
+              h(Input, {
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
+              }),
+          ),
+        ]);
     }),
 };
 
-/** The imperative handle: errors can be set from outside — say, from a
- * server response — and cleared again. */
+/** The engine is a live object: errors can be set from outside — say,
+ * from a server response — and cleared again. */
 export const Imperative: Story = {
   render: () =>
     withState(() => {
-      const state = ref({ code: "" });
       const status = ref("");
-      let formRef: {
-        setErrors: (e: { name: string; message: string }[]) => void;
-        clear: () => void;
-      } | null = null;
-      const bind = (instance: unknown) => {
-        if (instance) formRef = instance as typeof formRef;
-      };
+      const form = useForm({
+        defaultValues: { code: "" },
+      });
       return () => [
-        h(Form as never, { ref: bind, state: state.value }, () => [
-          h(FormField, { name: "code", label: "Redemption code" }, () =>
+        h(Form as never, { form }, () => [
+          h(FormField as never, { name: "code", label: "Redemption code" }, (field: any) =>
             h(Input, {
-              modelValue: state.value.code,
-              "onUpdate:modelValue": (v: string) => (state.value.code = v),
+              modelValue: field.state.value,
+              "onUpdate:modelValue": field.handleChange,
+              onBlur: field.handleBlur,
             }),
           ),
         ]),
@@ -272,7 +275,13 @@ export const Imperative: Story = {
                 variant: "outline",
                 size: "sm",
                 onClick: () =>
-                  formRef?.setErrors([{ name: "code", message: "This code was already used." }]),
+                  form.setFieldMeta("code", (prev: any) => ({
+                    ...prev,
+                    errorMap: {
+                      ...prev.errorMap,
+                      onChange: { message: "This code was already used." },
+                    },
+                  })),
               },
               () => "Simulate server error",
             ),
@@ -281,7 +290,13 @@ export const Imperative: Story = {
               {
                 variant: "ghost",
                 size: "sm",
-                onClick: () => (formRef?.clear(), (status.value = "")),
+                onClick: () => {
+                  form.setFieldMeta("code", (prev: any) => ({
+                    ...prev,
+                    errorMap: {},
+                  }));
+                  status.value = "";
+                },
               },
               () => "Clear",
             ),
