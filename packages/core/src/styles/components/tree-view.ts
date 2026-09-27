@@ -58,9 +58,12 @@ export const treeViewCss =
   flex-shrink: 0;
 }
 
+/* The rows sit straight on the host's surface — a ladder step as the
+   wash would vanish wherever the host already wears that same step, so
+   the hover carries its own measured ink. */
 [data-scope="tree-view"][data-part="branch-control"]:hover:not([data-disabled]),
 [data-scope="tree-view"][data-part="item"]:hover:not([data-disabled]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="tree-view"][data-part="branch-control"]:focus-visible,

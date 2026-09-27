@@ -93,6 +93,14 @@ export const navigationMenuCss =
 [data-scope="navigation-menu"][data-part="link"]:hover:not([data-disabled], [data-current]) {
   background: var(--bs-color-surface-0);
 }
+/* A vertical bar stands straight on the page, which already wears the
+   wash's own ladder step — the hover carries its own measured ink, as
+   the tree view's rows do. Horizontal bars and panel cards keep the
+   step: a header shell or a popup vessel sits beneath them. */
+[data-scope="navigation-menu"][data-orientation="vertical"]
+  [data-part="link"]:hover:not([data-disabled], [data-current]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
+}
 
 /* A vertical menu is a column of titles: the row spans the lane, so the
    hover wash reads as a full row — a column's width is the row's own

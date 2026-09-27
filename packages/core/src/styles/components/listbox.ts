@@ -79,9 +79,11 @@ export const listboxCss =
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
+/* The list stands straight on the host's surface — the wash carries
+   its own measured ink rather than a ladder step the host may share. */
 [data-scope="listbox"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
 [data-scope="listbox"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="listbox"][data-part="item"]:focus-visible {
