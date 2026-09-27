@@ -30,6 +30,10 @@
   --bs-font-size-3xl: 1.875rem;
   --bs-font-size-4xl: 2.25rem;
 
+  /* The stroke icons are drawn with: one width, tuned to sit beside the
+     hairline instead of fighting it. */
+  --bs-icon-stroke-width: 1.75;
+
   --bs-line-height-tight: 1.25;
   --bs-line-height-snug: 1.375;
   --bs-line-height-normal: 1.5;

@@ -56,6 +56,25 @@ export const Sizes: Story = {
     ),
 };
 
+/** A registry glyph: `name` draws the canonical stroke — one ink, one
+ * measure — with no svg written by hand. */
+export const FromRegistry: Story = {
+  render: () =>
+    withState(
+      () => () =>
+        h(
+          "p",
+          {
+            style: { margin: "0", display: "flex", alignItems: "center", gap: "var(--bs-space-4)" },
+          },
+          [
+            h(Icon, { name: "check", label: "Done" }),
+            h(Icon, { name: "x", label: "Close" }),
+            h(Icon, { name: "chevron-right", label: "Next" }),
+          ],
+        ),
+    ),
+};
 /** `inherit` takes its measure from the type it sits in — here the
  * serif voice at heading size. */
 export const InText: Story = {

@@ -1,18 +1,12 @@
 {
-  "name": "@bysages/solid",
+  "name": "@bysages/icons",
   "version": "0.2.1",
-  "description": "By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
+  "description": "Icon registry for By Sages Elements — iconify-format glyphs drawn from a curated collection, one canonical set for every framework wrapper",
   "keywords": [
-    "accessible",
-    "components",
-    "css",
     "design-system",
-    "design-tokens",
-    "solid",
-    "solidjs",
-    "theming",
-    "ui",
-    "ui-components"
+    "iconify",
+    "icons",
+    "ui"
   ],
   "homepage": "https://github.com/bysages/elements#readme",
   "bugs": {
@@ -41,27 +35,15 @@
     }
   },
   "scripts": {
+    "generate": "node scripts/generate.mjs",
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build",
     "release": "basis publish"
   },
-  "dependencies": {
-    "@ark-ui/solid": "5.39.2",
-    "@bysages/core": "workspace:*",
-    "@bysages/icons": "workspace:*",
-    "@tanstack/markdown": "0.0.15",
-    "@tanstack/solid-table": "9.2.4",
-    "@tanstack/solid-virtual": "3.13.40",
-    "@zag-js/cascade-select": "1.44.0",
-    "@zag-js/solid": "1.44.0"
-  },
   "devDependencies": {
-    "ai": "7.0.107",
-    "solid-js": "1.9.15",
-    "unplugin-solid": "2.0.0"
-  },
-  "peerDependencies": {
-    "solid-js": "^1.9"
+    "@iconify-json/lucide": "1.2.132",
+    "@iconify/types": "2.0.0",
+    "@iconify/utils": "3.1.7"
   }
 }

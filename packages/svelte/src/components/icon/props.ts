@@ -8,5 +8,8 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** The accessible name. Without it the icon is presentation-only and
    * hidden from the accessibility tree. */
   label?: string;
+  /** A glyph from the registry. Ignored when children are given — an
+   * explicit glyph always wins over the registry. */
+  name?: string;
   children?: Snippet;
 }

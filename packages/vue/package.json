@@ -50,6 +50,7 @@
   "dependencies": {
     "@ark-ui/vue": "5.39.2",
     "@bysages/core": "workspace:*",
+    "@bysages/icons": "workspace:*",
     "@tanstack/markdown": "0.0.15",
     "@tanstack/vue-table": "9.2.4",
     "@tanstack/vue-virtual": "3.13.39",

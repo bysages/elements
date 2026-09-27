@@ -24,6 +24,17 @@ export const Basic = {
   ),
 };
 
+/** A registry glyph: `name` draws the canonical stroke — one ink, one
+ * measure — with no svg written by hand. */
+export const FromRegistry = {
+  render: () => (
+    <p style={{ margin: 0, display: "flex", alignItems: "center", gap: "var(--bs-space-4)" }}>
+      <Icon name="check" label="Done" />
+      <Icon name="x" label="Close" />
+      <Icon name="chevron-right" label="Next" />
+    </p>
+  ),
+};
 /** The size steps follow the surrounding font size — same text, same
  * glyphs, three measures. */
 export const Sizes = {

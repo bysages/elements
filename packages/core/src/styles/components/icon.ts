@@ -32,5 +32,8 @@ export const iconCss = /* css */ `
   display: block;
   inline-size: 100%;
   block-size: 100%;
+  /* One stroke width is the law, whatever the glyph's own attributes
+     say — attribute presentation loses to any rule. */
+  stroke-width: var(--bs-icon-stroke-width, 1.75);
 }
 `;
