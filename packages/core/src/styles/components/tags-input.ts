@@ -19,7 +19,10 @@ export const tagsInputCss =
   align-items: center;
   gap: var(--bs-gap-xs);
   min-block-size: var(--bs-control-height-md);
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  /* The block padding holds only the chip's clearance: the hairline pair
+     already spends a step of the budget, and the field's own height must
+     survive it. */
+  padding: calc(var(--bs-space-1) / 2) var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -59,7 +62,7 @@ export const tagsInputCss =
   box-sizing: border-box;
   flex: 1;
   min-inline-size: 4rem;
-  block-size: var(--bs-control-height-sm);
+  line-height: var(--bs-line-height-normal);
   padding: 0 var(--bs-padding-xs);
   border: none;
   background: transparent;
@@ -85,11 +88,17 @@ export const tagsInputCss =
   outline: none;
 }
 
+/* A chip stands one rung below the field, so a filled row and the empty
+   row share the field's own height; the host's prose line-height must
+   not swell it. */
 [data-scope="tags-input"][data-part="item-preview"] {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--bs-gap-xs);
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  min-block-size: calc(var(--bs-control-height-sm) - var(--bs-space-1));
+  padding: 0 var(--bs-padding-sm);
+  line-height: var(--bs-line-height-normal);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
@@ -109,7 +118,9 @@ export const tagsInputCss =
 [data-scope="tags-input"][data-part="item-input"] {
   box-sizing: border-box;
   inline-size: 4rem;
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  min-block-size: calc(var(--bs-control-height-sm) - var(--bs-space-1));
+  padding: 0 var(--bs-padding-sm);
+  line-height: var(--bs-line-height-normal);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
@@ -125,11 +136,14 @@ export const tagsInputCss =
   box-shadow: var(--bs-focus-ring-inset);
 }
 
+/* The trigger holds its own icon-sized box whether the icon rides in as
+   a glyph or an svg — a stray line strut must not swell the row. */
 [data-scope="tags-input"][data-part="item-delete-trigger"],
 [data-scope="tags-input"][data-part="clear-trigger"] {
   flex: none;
   display: grid;
   place-items: center;
+  block-size: calc(var(--bs-font-size-sm) + var(--bs-space-2));
   padding: var(--bs-padding-xs);
   border: none;
   border-radius: var(--bs-radius-sm);
@@ -155,6 +169,7 @@ export const tagsInputCss =
 
 [data-scope="tags-input"][data-part="item-delete-trigger"] svg,
 [data-scope="tags-input"][data-part="clear-trigger"] svg {
+  display: block;
   inline-size: var(--bs-font-size-sm);
   block-size: var(--bs-font-size-sm);
 }
@@ -163,6 +178,7 @@ export const tagsInputCss =
    measure; the chips keep their own register. */
 [data-scope="tags-input"][data-part="root"][data-size="sm"] [data-part="control"] {
   min-block-size: var(--bs-control-height-sm);
+  padding-block: 0;
 }
 
 [data-scope="tags-input"][data-part="root"][data-size="lg"] [data-part="control"] {
