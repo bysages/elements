@@ -78,19 +78,28 @@ export const cascadeSelectCss =
   transform: rotate(180deg);
 }
 
-/* The vessel is a corridor: one column per walked level, a hairline
-   between neighbours, each column scrolling past its own grove. While a
-   query runs the corridor folds into one flat column of matching paths. */
+/* The vessel stacks a search line over their corridor: one column per
+   walked level, a hairline between neighbours, each column scrolling
+   past its own grove. While a query runs the corridor folds into one
+   flat column of matching paths. The search owns its own row — the
+   corridor never sweeps it sideways. */
 [data-scope="cascade-select"][data-part="content"] {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 [data-scope="cascade-select"][data-part="search"] {
   flex: none;
-  inline-size: 100%;
   padding: var(--bs-padding-sm);
   border-block-end: 1px solid var(--bs-color-border);
+}
+
+[data-scope="cascade-select"][data-part="corridor"] {
+  display: flex;
+}
+
+[data-scope="cascade-select"][data-part="corridor"][data-flow="flat"] {
+  flex-direction: column;
 }
 
 [data-scope="cascade-select"][data-part="match"] {

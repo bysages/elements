@@ -210,24 +210,26 @@ its full route. -->
             <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
           </div>
         {/if}
-        {#if filtering}
-          {#if matchPaths.length === 0}
-            <p data-part="empty">Nothing matches</p>
+        <div data-part="corridor" data-flow={filtering ? "flat" : "columns"}>
+          {#if filtering}
+            {#if matchPaths.length === 0}
+              <p data-part="empty">Nothing matches</p>
+            {:else}
+              {#each matchPaths as hit (hit.path.join("/"))}
+                <button
+                  type="button"
+                  data-part="match"
+                  data-selected={isSelected(hit.path) || undefined}
+                  onclick={() => pickMatch(hit.path)}
+                >
+                  {hit.labels.join(" / ")}
+                </button>
+              {/each}
+            {/if}
           {:else}
-            {#each matchPaths as hit (hit.path.join("/"))}
-              <button
-                type="button"
-                data-part="match"
-                data-selected={isSelected(hit.path) || undefined}
-                onclick={() => pickMatch(hit.path)}
-              >
-                {hit.labels.join(" / ")}
-              </button>
-            {/each}
+            {@render column(collection.rootNode, [], [])}
           {/if}
-        {:else}
-          {@render column(collection.rootNode, [], [])}
-        {/if}
+        </div>
       </div>
     </div>
   </Portal>

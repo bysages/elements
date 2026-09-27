@@ -260,25 +260,27 @@ export function CascadeSelect({
                 />
               </div>
             ) : null}
-            {filtering ? (
-              matchPaths.length === 0 ? (
-                <p data-part="empty">Nothing matches</p>
+            <div data-part="corridor" data-flow={filtering ? "flat" : "columns"}>
+              {filtering ? (
+                matchPaths.length === 0 ? (
+                  <p data-part="empty">Nothing matches</p>
+                ) : (
+                  matchPaths.map((hit) => (
+                    <button
+                      key={hit.path.join("/")}
+                      type="button"
+                      data-part="match"
+                      data-selected={isSelected(hit.path) || undefined}
+                      onClick={() => pickMatch(hit.path)}
+                    >
+                      {hit.labels.join(" / ")}
+                    </button>
+                  ))
+                )
               ) : (
-                matchPaths.map((hit) => (
-                  <button
-                    key={hit.path.join("/")}
-                    type="button"
-                    data-part="match"
-                    data-selected={isSelected(hit.path) || undefined}
-                    onClick={() => pickMatch(hit.path)}
-                  >
-                    {hit.labels.join(" / ")}
-                  </button>
-                ))
-              )
-            ) : (
-              renderColumn(collection.rootNode, [], [])
-            )}
+                renderColumn(collection.rootNode, [], [])
+              )}
+            </div>
           </div>
         </div>
       </Portal>

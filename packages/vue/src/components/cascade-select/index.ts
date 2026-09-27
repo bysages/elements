@@ -267,23 +267,29 @@ export const CascadeSelect = defineComponent({
                       ]),
                     ]
                   : []),
-                filtering.value
-                  ? matchPaths.value.length === 0
-                    ? [h("p", { "data-part": "empty" }, "Nothing matches")]
-                    : matchPaths.value.map((hit) =>
-                        h(
-                          "button",
-                          {
-                            key: hit.path.join("/"),
-                            type: "button",
-                            "data-part": "match",
-                            "data-selected": isSelected(hit.path) || undefined,
-                            onClick: () => pickMatch(hit.path),
-                          },
-                          hit.labels.join(" / "),
-                        ),
-                      )
-                  : renderColumn(collection.value.rootNode, [], []),
+                h(
+                  "div",
+                  { "data-part": "corridor", "data-flow": filtering.value ? "flat" : "columns" },
+                  [
+                    filtering.value
+                      ? matchPaths.value.length === 0
+                        ? [h("p", { "data-part": "empty" }, "Nothing matches")]
+                        : matchPaths.value.map((hit) =>
+                            h(
+                              "button",
+                              {
+                                key: hit.path.join("/"),
+                                type: "button",
+                                "data-part": "match",
+                                "data-selected": isSelected(hit.path) || undefined,
+                                onClick: () => pickMatch(hit.path),
+                              },
+                              hit.labels.join(" / "),
+                            ),
+                          )
+                      : renderColumn(collection.value.rootNode, [], []),
+                  ].flat(),
+                ),
               ].flat(),
             ),
           ]),

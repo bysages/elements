@@ -293,30 +293,32 @@ export function CascadeSelect(props: CascadeSelectProps) {
                 />
               </div>
             </Show>
-            <Show
-              when={!filtering()}
-              fallback={
-                <Show
-                  when={matchPaths().length > 0}
-                  fallback={<p data-part="empty">Nothing matches</p>}
-                >
-                  <For each={matchPaths()}>
-                    {(hit) => (
-                      <button
-                        type="button"
-                        data-part="match"
-                        data-selected={isSelected(hit.path) || undefined}
-                        onclick={() => pickMatch(hit.path)}
-                      >
-                        {hit.labels.join(" / ")}
-                      </button>
-                    )}
-                  </For>
-                </Show>
-              }
-            >
-              {renderColumn(collection().rootNode, [], [])}
-            </Show>
+            <div data-part="corridor" data-flow={filtering() ? "flat" : "columns"}>
+              <Show
+                when={!filtering()}
+                fallback={
+                  <Show
+                    when={matchPaths().length > 0}
+                    fallback={<p data-part="empty">Nothing matches</p>}
+                  >
+                    <For each={matchPaths()}>
+                      {(hit) => (
+                        <button
+                          type="button"
+                          data-part="match"
+                          data-selected={isSelected(hit.path) || undefined}
+                          onclick={() => pickMatch(hit.path)}
+                        >
+                          {hit.labels.join(" / ")}
+                        </button>
+                      )}
+                    </For>
+                  </Show>
+                }
+              >
+                {renderColumn(collection().rootNode, [], [])}
+              </Show>
+            </div>
           </div>
         </div>
       </Portal>
