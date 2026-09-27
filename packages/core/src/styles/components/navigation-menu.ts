@@ -102,6 +102,18 @@ export const navigationMenuCss =
   background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
+/* The press deepens the wash one step: the row settles into the page
+   while the finger is down and springs back through the same fast
+   transition. The current row has nowhere to go, so it never presses. */
+[data-scope="navigation-menu"][data-part="link"]:active:not([data-disabled], [data-current]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 10%, transparent);
+}
+
+[data-scope="navigation-menu"][data-orientation="vertical"]
+  [data-part="link"]:active:not([data-disabled], [data-current]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 10%, transparent);
+}
+
 /* A vertical menu is a column of titles: the row spans the lane, so the
    hover wash reads as a full row — a column's width is the row's own
    property, never the container's stretch. */
