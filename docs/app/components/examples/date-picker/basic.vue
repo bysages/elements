@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatePicker } from "@bysages/vue";
+import { DatePicker, Icon } from "@bysages/vue";
 </script>
 
 <template>
@@ -8,18 +8,7 @@ import { DatePicker } from "@bysages/vue";
     <DatePicker.Control>
       <DatePicker.Input />
       <DatePicker.Trigger>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <rect x="3" y="5" width="18" height="16" rx="1.5" />
-          <path d="M3 9.5h18M8 3v4M16 3v4" />
-        </svg>
+        <Icon name="calendar" />
       </DatePicker.Trigger>
     </DatePicker.Control>
     <Teleport to="body">
@@ -29,32 +18,11 @@ import { DatePicker } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                    class="rotate-180"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>
@@ -83,32 +51,11 @@ import { DatePicker } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                    class="rotate-180"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>
@@ -133,32 +80,11 @@ import { DatePicker } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                    class="rotate-180"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    aria-hidden="true"
-                  >
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
+                  <Icon name="chevron-right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>

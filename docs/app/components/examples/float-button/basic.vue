@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FloatButton } from "@bysages/vue";
+import { FloatButton, Icon } from "@bysages/vue";
 import { ref } from "vue";
 
 const status = ref("Nothing chosen yet.");
@@ -9,49 +9,13 @@ const status = ref("Nothing chosen yet.");
   <div>
     <FloatButton>
       <FloatButton.Trigger label="Actions">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 5v14m-7-7h14" />
-        </svg>
+        <Icon name="plus" />
       </FloatButton.Trigger>
       <FloatButton.Item label="Compose" @click="status = 'Compose'">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 20h9m-1.5-12.5a2.1 2.1 0 0 0-3-3L4 17v3h3Z" />
-        </svg>
+        <Icon name="pen-line" />
       </FloatButton.Item>
       <FloatButton.Item label="Delete" @click="status = 'Delete'">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M4 7h16m-9-4h2m-6 4 1 13h8l1-13m-7 4v6m4-6v6" />
-        </svg>
+        <Icon name="trash-2" />
       </FloatButton.Item>
     </FloatButton>
     <p role="status" class="mt-4 text-sm text-tertiary">

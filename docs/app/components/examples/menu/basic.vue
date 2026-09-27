@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu } from "@bysages/vue";
+import { Icon, Menu } from "@bysages/vue";
 </script>
 
 <template>
@@ -7,17 +7,7 @@ import { Menu } from "@bysages/vue";
     <Menu.Trigger>
       <span>File</span>
       <Menu.Indicator>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <Icon name="chevron-down" />
       </Menu.Indicator>
     </Menu.Trigger>
     <Teleport to="body">

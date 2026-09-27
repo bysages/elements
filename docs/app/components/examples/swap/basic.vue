@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Swap } from "@bysages/vue";
+import { Icon, Swap } from "@bysages/vue";
 import { ref } from "vue";
 
 const swapped = ref(false);
@@ -15,34 +15,10 @@ const swapped = ref(false);
   >
     <Swap.Root :swap="swapped">
       <Swap.Indicator type="on">
-        <svg
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M4 12.5l5 5L20 6.5" />
-        </svg>
+        <Icon name="check" />
       </Swap.Indicator>
       <Swap.Indicator type="off">
-        <svg
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
+        <Icon name="x" />
       </Swap.Indicator>
     </Swap.Root>
   </button>

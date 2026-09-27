@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Popover } from "@bysages/vue";
+import { Icon, Popover } from "@bysages/vue";
 </script>
 
 <template>
@@ -8,17 +8,7 @@ import { Popover } from "@bysages/vue";
     <Popover.Positioner>
       <Popover.Content>
         <Popover.CloseTrigger>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            aria-hidden="true"
-          >
-            <path d="m6 6 12 12M18 6 6 18" />
-          </svg>
+          <Icon name="x" />
         </Popover.CloseTrigger>
         <Popover.Title>Reading notes</Popover.Title>
         <Popover.Description>

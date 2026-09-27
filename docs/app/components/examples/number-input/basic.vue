@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NumberInput } from "@bysages/vue";
+import { Icon, NumberInput } from "@bysages/vue";
 </script>
 
 <template>
@@ -8,43 +8,13 @@ import { NumberInput } from "@bysages/vue";
     <NumberInput.Control>
       <NumberInput.Input />
       <NumberInput.Scrubber>
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="M8 5v14M16 5v14" />
-        </svg>
+        <Icon name="pause" />
       </NumberInput.Scrubber>
       <NumberInput.IncrementTrigger aria-label="Increment">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m6 15 6-6 6 6" />
-        </svg>
+        <Icon name="chevron-up" />
       </NumberInput.IncrementTrigger>
       <NumberInput.DecrementTrigger aria-label="Decrement">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <Icon name="chevron-down" />
       </NumberInput.DecrementTrigger>
     </NumberInput.Control>
   </NumberInput.Root>

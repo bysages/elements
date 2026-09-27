@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Editable } from "@bysages/vue";
+import { Editable, Icon } from "@bysages/vue";
 </script>
 
 <template>
@@ -26,26 +26,10 @@ import { Editable } from "@bysages/vue";
         </svg>
       </Editable.EditTrigger>
       <Editable.SubmitTrigger aria-label="Submit">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <Icon name="check" />
       </Editable.SubmitTrigger>
       <Editable.CancelTrigger aria-label="Cancel">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <Icon name="x" />
       </Editable.CancelTrigger>
     </Editable.Control>
   </Editable.Root>

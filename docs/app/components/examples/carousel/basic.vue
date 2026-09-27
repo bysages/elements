@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Carousel } from "@bysages/vue";
+import { Carousel, Icon } from "@bysages/vue";
 
 const slides = ["Chapter One", "Chapter Two", "Chapter Three"];
 </script>
@@ -8,15 +8,11 @@ const slides = ["Chapter One", "Chapter Two", "Chapter Three"];
   <Carousel.Root :slide-count="slides.length">
     <Carousel.Control>
       <Carousel.PrevTrigger>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
+        <Icon name="chevron-left" />
       </Carousel.PrevTrigger>
       <Carousel.ProgressText />
       <Carousel.NextTrigger>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M9 6l6 6-6 6" />
-        </svg>
+        <Icon name="chevron-right" />
       </Carousel.NextTrigger>
     </Carousel.Control>
     <Carousel.ItemGroup>

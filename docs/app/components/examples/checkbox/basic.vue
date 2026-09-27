@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Checkbox } from "@bysages/vue";
+import { Checkbox, Icon } from "@bysages/vue";
 </script>
 
 <template>
@@ -7,17 +7,7 @@ import { Checkbox } from "@bysages/vue";
     <Checkbox.Root default-checked>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m5 12.5 5 5L19 7" />
-          </svg>
+          <Icon name="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Ship the register</Checkbox.Label>
@@ -26,17 +16,7 @@ import { Checkbox } from "@bysages/vue";
     <Checkbox.Root>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m5 12.5 5 5L19 7" />
-          </svg>
+          <Icon name="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Outline the story</Checkbox.Label>
@@ -45,17 +25,7 @@ import { Checkbox } from "@bysages/vue";
     <Checkbox.Root disabled>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m5 12.5 5 5L19 7" />
-          </svg>
+          <Icon name="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Archived</Checkbox.Label>

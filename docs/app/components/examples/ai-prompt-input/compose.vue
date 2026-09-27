@@ -5,6 +5,7 @@ import {
   AiAttachments,
   AiPromptInput,
   Button,
+  Icon,
   Menu,
   Select,
   Toggle,
@@ -80,18 +81,7 @@ const send = (value: string) => {
         <Menu.Root>
           <Menu.Trigger as-child>
             <Button variant="ghost" square aria-label="Attach">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="square"
-                aria-hidden="true"
-              >
-                <path d="M8 3.5v9M3.5 8h9" />
-              </svg>
+              <Icon name="plus" />
             </Button>
           </Menu.Trigger>
           <Teleport to="body">
@@ -104,19 +94,7 @@ const send = (value: string) => {
           </Teleport>
         </Menu.Root>
         <Toggle.Root v-model:pressed="webSearch" type="button">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="square"
-            aria-hidden="true"
-          >
-            <circle cx="8" cy="8" r="5.5" />
-            <path d="M2.5 8h11M8 2.5c-3.2 3.4-3.2 7.6 0 11M8 2.5c3.2 3.4 3.2 7.6 0 11" />
-          </svg>
+          <Icon name="globe" />
           <span>Web search</span>
         </Toggle.Root>
       </template>

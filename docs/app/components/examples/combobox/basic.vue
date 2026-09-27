@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useListCollection } from "@ark-ui/vue/combobox";
 import { useFilter } from "@ark-ui/vue/locale";
-import { Combobox } from "@bysages/vue";
+import { Combobox, Icon } from "@bysages/vue";
 
 const filters = useFilter({ sensitivity: "base" });
 const { collection, filter } = useListCollection({
@@ -23,30 +23,10 @@ const { collection, filter } = useListCollection({
     <Combobox.Control>
       <Combobox.Input placeholder="e.g. Apple" />
       <Combobox.ClearTrigger>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="M6 6l12 12M18 6 6 18" />
-        </svg>
+        <Icon name="x" />
       </Combobox.ClearTrigger>
       <Combobox.Trigger>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <Icon name="chevron-down" />
       </Combobox.Trigger>
     </Combobox.Control>
     <Teleport to="body">
@@ -56,17 +36,7 @@ const { collection, filter } = useListCollection({
           <Combobox.Item v-for="item in collection.items" :key="item.value" :item="item">
             <Combobox.ItemText>{{ item.label }}</Combobox.ItemText>
             <Combobox.ItemIndicator>
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
-              >
-                <path d="m4 12.5 5 5L20 6.5" />
-              </svg>
+              <Icon name="check" />
             </Combobox.ItemIndicator>
           </Combobox.Item>
         </Combobox.Content>
