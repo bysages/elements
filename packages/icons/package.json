@@ -1,6 +1,6 @@
 {
   "name": "@bysages/icons",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Icon registry for By Sages Elements — iconify-format glyphs drawn from a curated collection, one canonical set for every framework wrapper",
   "keywords": [
     "design-system",

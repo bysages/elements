@@ -44,6 +44,13 @@ const apps = [
     components: ["Card", "Badge", "Pagination", "Typography", "Toc", "Comment", "Avatar"],
   },
   {
+    name: "landing",
+    title: "Marketing Landing",
+    description:
+      "A letterpress studio's public face: sticky nav, serif hero, wordmark lattice, and a masonry press gallery.",
+    components: ["Masonry", "Accordion", "Card", "Avatar", "Badge", "Button"],
+  },
+  {
     name: "chat",
     title: "AI Chat Workbench",
     description:
