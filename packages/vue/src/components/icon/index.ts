@@ -28,6 +28,8 @@ export const Icon = defineComponent({
     /** The accessible name. Without it the icon is presentation-only and
      * hidden from the accessibility tree. */
     label: { type: String, default: undefined },
+    /** A glyph from the registry. Ignored when a default slot is given —
+     * an explicit glyph always wins over the registry. */
     name: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {

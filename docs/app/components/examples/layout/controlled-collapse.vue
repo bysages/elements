@@ -3,7 +3,12 @@ import { Button, Layout } from "@bysages/vue";
 import { reactive } from "vue";
 
 const state = reactive({ collapsed: false, width: "16rem" });
-const stops = ["Overview", "Ledger", "Archive", "Settings"];
+const stops = [
+  { icon: "i-lucide-layout-dashboard", label: "Overview" },
+  { icon: "i-lucide-book-open", label: "Ledger" },
+  { icon: "i-lucide-archive", label: "Archive" },
+  { icon: "i-lucide-settings", label: "Settings" },
+];
 </script>
 
 <template>
@@ -27,11 +32,11 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
         >
           <Button
             v-for="stop in stops"
-            :key="stop"
+            :key="stop.label"
             variant="ghost"
             :class="state.collapsed ? 'justify-center!' : 'justify-start!'"
-            :aria-label="state.collapsed ? stop : undefined"
-            :title="state.collapsed ? stop : undefined"
+            :aria-label="state.collapsed ? stop.label : undefined"
+            :title="state.collapsed ? stop.label : undefined"
             :style="{
               inlineSize: state.collapsed ? '2rem' : '100%',
               blockSize: state.collapsed ? '2rem' : undefined,
@@ -40,8 +45,8 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
               whiteSpace: 'nowrap',
             }"
           >
-            <span v-if="state.collapsed">{{ stop[0] }}</span>
-            <span v-else>{{ stop }}</span>
+            <Icon :name="stop.icon" />
+            <span v-if="!state.collapsed">{{ stop.label }}</span>
           </Button>
         </nav>
       </Layout.Sider>
