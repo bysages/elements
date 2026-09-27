@@ -1,10 +1,11 @@
 import { inputStateCss } from "./shared";
-import { labelCss, popupContentCss, positionerCss } from "./shared";
+import { labelCss, popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
 
 export const comboboxCss =
   labelCss("combobox") +
   positionerCss("combobox") +
   popupContentCss("combobox", "17rem") +
+  shrinkingTextCss("combobox", "item-text") +
   /* css */ `
 [data-scope="combobox"][data-part="root"] {
   display: flex;
@@ -173,13 +174,6 @@ export const comboboxCss =
 [data-scope="combobox"][data-part="item"][data-disabled] {
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
-}
-
-[data-scope="combobox"][data-part="item-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 [data-scope="combobox"][data-part="item-indicator"] {

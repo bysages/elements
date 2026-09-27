@@ -1,4 +1,8 @@
-export const commandCss = /* css */ `
+import { shrinkingTextCss } from "./shared";
+
+export const commandCss =
+  shrinkingTextCss("command", "item-label") +
+  /* css */ `
 /* The palette's footing: full-viewport, the sheet docked a fifth of the
    way down (structural placement, not a spacing value). */
 [data-scope="command"][data-part="positioner"] {
@@ -122,13 +126,6 @@ export const commandCss = /* css */ `
 [data-scope="command"][data-part="item"][data-disabled] {
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
-}
-
-[data-scope="command"][data-part="item-label"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* The hint is a keycap in miniature — the kbd recipe, riding the row. */

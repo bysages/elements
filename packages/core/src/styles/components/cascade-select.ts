@@ -1,8 +1,10 @@
-import { popupContentCss, positionerCss } from "./shared";
+import { popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
 
 export const cascadeSelectCss =
   positionerCss("cascade-select") +
   popupContentCss("cascade-select", "0rem") +
+  shrinkingTextCss("cascade-select", "value-text") +
+  shrinkingTextCss("cascade-select", "item-text") +
   /* css */ `
 /* The trigger reads as a field — the input recipe — with the joined
    labels as its ink and a quiet chevron at the inline end. */
@@ -170,13 +172,6 @@ export const cascadeSelectCss =
 [data-scope="cascade-select"][data-part="item"][data-disabled] {
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
-}
-
-[data-scope="cascade-select"][data-part="item-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 [data-scope="cascade-select"][data-part="branch-indicator"],

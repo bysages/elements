@@ -1,8 +1,9 @@
-import { popupContentCss, positionerCss } from "./shared";
+import { popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
 
 export const menuCss =
   positionerCss("menu") +
   popupContentCss("menu", "12rem") +
+  shrinkingTextCss("menu", "item-text") +
   /* css */ `
 [data-scope="menu"][data-part="content"] {
   display: flex;
@@ -171,13 +172,6 @@ export const menuCss =
   content: "›";
   margin-inline-start: auto;
   color: var(--bs-color-text-tertiary);
-}
-
-[data-scope="menu"][data-part="item-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 [data-scope="menu"][data-part="item-indicator"] {

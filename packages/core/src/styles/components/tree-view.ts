@@ -1,7 +1,9 @@
-import { discloseKeyframes, labelCss } from "./shared";
+import { discloseKeyframes, labelCss, shrinkingTextCss } from "./shared";
 
 export const treeViewCss =
   labelCss("tree-view") +
+  shrinkingTextCss("tree-view", "branch-text") +
+  shrinkingTextCss("tree-view", "item-text") +
   /* css */ `
 [data-scope="tree-view"][data-part="root"] {
   /* The indent system: depth comes from the machine as --depth per node;
@@ -91,13 +93,9 @@ export const treeViewCss =
 
 [data-scope="tree-view"][data-part="branch-text"],
 [data-scope="tree-view"][data-part="item-text"] {
-  flex: 1;
   display: inline-flex;
   align-items: center;
   gap: var(--bs-gap-sm);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* The chevron swings open on the spring — puppets have strings. */

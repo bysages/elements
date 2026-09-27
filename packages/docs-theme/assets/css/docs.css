@@ -776,12 +776,13 @@ body {
 }
 
 /* The canvas is the paper the component stands on: one step brighter
-   than the vessel, hairlined, never elevated. */
+   than the vessel, hairlined, never elevated. The component rises from
+   the start of the flow, where it would stand on a real page — centering
+   is a demo's own explicit choice, not the canvas's default. */
 .bs-docs-demo-canvas {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: var(--bs-gap-md);
   margin: 0 var(--bs-padding-md);
   padding: var(--bs-padding-xl) var(--bs-padding-lg);

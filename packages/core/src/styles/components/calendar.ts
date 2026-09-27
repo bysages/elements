@@ -32,6 +32,7 @@ export const calendarCss = /* css */ `
 [data-scope="calendar"][data-part="header"]
   > [data-scope="date-picker"][data-part="view-control"] {
   flex: 1;
+  min-inline-size: 0;
 }
 
 /* Month and year names sit in three roomy columns cut from the panel:

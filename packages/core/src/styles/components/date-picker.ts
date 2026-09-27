@@ -1,10 +1,11 @@
 import { inputStateCss } from "./shared";
-import { labelCss, popupContentCss, positionerCss } from "./shared";
+import { labelCss, popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
 
 export const datePickerCss =
   labelCss("date-picker") +
   positionerCss("date-picker") +
   popupContentCss("date-picker", "17rem") +
+  shrinkingTextCss("date-picker", "view-trigger") +
   /* css */ `
 [data-scope="date-picker"][data-part="root"] {
   display: flex;
@@ -150,6 +151,7 @@ export const datePickerCss =
   align-items: center;
   justify-content: space-between;
   gap: var(--bs-gap-sm);
+  min-inline-size: 0;
 }
 
 [data-scope="date-picker"][data-part="prev-trigger"],
@@ -187,9 +189,10 @@ export const datePickerCss =
 }
 
 /* The month/year title doubles as the "zoom out" affordance — quiet until
-   hovered, then it reads as a button. */
+   hovered, then it reads as a button. The shrinking lane keeps a long
+   month name from pushing the arrows past the panel, whatever a host's
+   font metrics do. */
 [data-scope="date-picker"][data-part="view-trigger"] {
-  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;

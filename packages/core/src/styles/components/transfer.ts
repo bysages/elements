@@ -1,4 +1,8 @@
-export const transferCss = /* css */ `
+import { shrinkingTextCss } from "./shared";
+
+export const transferCss =
+  shrinkingTextCss("transfer", "label") +
+  /* css */ `
 /* Two ledgers and a crossing: the panels carry the popup chrome's
    paper-and-hairline at rest weight, the buttons column rides between. */
 [data-scope="transfer"][data-part="root"] {
@@ -72,7 +76,6 @@ export const transferCss = /* css */ `
 }
 
 [data-scope="transfer"] [data-part="label"] {
-  flex: 1;
   font-size: var(--bs-font-size-sm);
   color: var(--bs-color-text-primary);
   cursor: inherit;

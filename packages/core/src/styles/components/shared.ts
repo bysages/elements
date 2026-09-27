@@ -160,6 +160,22 @@ export function primaryTriggerCss(
 `;
 }
 
+/** A text lane inside a row of fixed bones - arrows, icons, keycaps.
+ * Font metrics vary across hosts and renderers, so the lane never lets
+ * its content set the row's minimum: it shrinks first and clips to an
+ * ellipsis, keeping the row inside its vessel on every machine. */
+export function shrinkingTextCss(scope: string, part: string): string {
+  return /* css */ `
+[data-scope="${scope}"][data-part="${part}"] {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+`;
+}
+
 /** The five states of a field-family text control — placeholder, hover,
  * focus, invalid, disabled. Hover skips disabled controls so a dead field
  * never deepens under the pointer; every other state is an attribute on

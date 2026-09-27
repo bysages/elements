@@ -1,9 +1,10 @@
 import { inputStateCss } from "./shared";
-import { labelCss, popupContentCss } from "./shared";
+import { labelCss, popupContentCss, shrinkingTextCss } from "./shared";
 
 export const listboxCss =
   labelCss("listbox") +
   popupContentCss("listbox", "16rem") +
+  shrinkingTextCss("listbox", "item-text") +
   /* css */ `
 [data-scope="listbox"][data-part="root"] {
   /* Full width is the component's own property, not the stage's stretch. */
@@ -100,13 +101,6 @@ export const listboxCss =
 [data-scope="listbox"][data-part="item"][data-disabled] {
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
-}
-
-[data-scope="listbox"][data-part="item-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 [data-scope="listbox"][data-part="item-indicator"] {

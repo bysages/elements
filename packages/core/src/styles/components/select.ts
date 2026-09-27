@@ -1,9 +1,11 @@
-import { labelCss, popupContentCss, positionerCss } from "./shared";
+import { labelCss, popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
 
 export const selectCss =
   labelCss("select") +
   positionerCss("select") +
   popupContentCss("select", "17rem") +
+  shrinkingTextCss("select", "value-text") +
+  shrinkingTextCss("select", "item-text") +
   /* css */ `
 [data-scope="select"][data-part="root"] {
   display: flex;
@@ -89,10 +91,6 @@ export const selectCss =
 }
 
 [data-scope="select"][data-part="value-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-weight: var(--bs-font-weight-medium);
 }
 
@@ -211,13 +209,6 @@ export const selectCss =
 [data-scope="select"][data-part="item"][data-disabled] {
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
-}
-
-[data-scope="select"][data-part="item-text"] {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 [data-scope="select"][data-part="item-indicator"] {
