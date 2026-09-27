@@ -41,7 +41,7 @@ export const colorPickerCss =
   block-size: var(--bs-control-height-md);
   padding: 0;
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   cursor: pointer;
   overflow: hidden;
@@ -252,7 +252,7 @@ export const colorPickerCss =
   place-items: center;
   padding: 0;
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   cursor: pointer;
   outline: none;
@@ -276,7 +276,7 @@ export const colorPickerCss =
   place-items: center;
   inline-size: var(--bs-control-height-md);
   block-size: var(--bs-control-height-md);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   overflow: hidden;
   box-shadow: inset 0 0 0 1px var(--bs-color-border);
 }
@@ -304,7 +304,7 @@ export const colorPickerCss =
   block-size: var(--bs-control-height-md);
   padding: 0;
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);
   cursor: pointer;
@@ -349,7 +349,7 @@ export const colorPickerCss =
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
   font: inherit;
@@ -382,7 +382,7 @@ export const colorPickerCss =
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
   font: inherit;

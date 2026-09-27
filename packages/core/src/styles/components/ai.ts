@@ -146,7 +146,7 @@ export const aiCss = /* css */ `
   block-size: 1.75rem;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-tertiary);
   cursor: pointer;

@@ -96,7 +96,7 @@ export const toastCss =
   margin-block-start: var(--bs-margin-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);
   font: inherit;

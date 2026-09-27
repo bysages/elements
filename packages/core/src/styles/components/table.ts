@@ -269,7 +269,7 @@ export const tableCss = /* css */ `
   block-size: 1.25rem;
   flex: none;
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-tertiary);
   cursor: pointer;

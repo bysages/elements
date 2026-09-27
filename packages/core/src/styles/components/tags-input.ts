@@ -99,7 +99,8 @@ export const tagsInputCss =
   min-block-size: calc(var(--bs-control-height-sm) - var(--bs-space-1));
   padding: 0 var(--bs-padding-sm);
   line-height: var(--bs-line-height-normal);
-  border-radius: var(--bs-radius-sm);
+  /* A chip is a pill in every scene, matching the chip family. */
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
@@ -146,7 +147,7 @@ export const tagsInputCss =
   block-size: calc(var(--bs-font-size-sm) + var(--bs-space-2));
   padding: var(--bs-padding-xs);
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-tertiary);
   cursor: pointer;

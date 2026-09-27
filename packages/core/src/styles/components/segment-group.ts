@@ -11,11 +11,28 @@ export const segmentGroupCss =
   display: inline-flex;
   gap: var(--bs-gap-xs);
   /* The tray hugs its seals on the cross axis — block padding here would
-     lift the group a notch above the trigger it sits beside. */
+     lift the group a notch above the trigger it sits beside. The height
+     is the field register outright, so the tray lands exactly level with
+     the selects and pickers beside it however the hairline rounds. */
+  box-sizing: border-box;
+  block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
+}
+
+[data-scope="segment-group"][data-part="root"][data-orientation="vertical"],
+[data-scope="segment-group"][data-part="root"][data-orientation="vertical"][data-size] {
+  block-size: auto;
+}
+
+[data-scope="segment-group"][data-part="root"][data-size="sm"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="segment-group"][data-part="root"][data-size="lg"] {
+  block-size: var(--bs-control-height-lg);
 }
 
 [data-scope="segment-group"][data-part="root"][data-orientation="vertical"] {
@@ -35,7 +52,7 @@ export const segmentGroupCss =
   inset-inline-start: var(--left);
   inline-size: var(--width);
   block-size: var(--height);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-primary);
   z-index: 0;
   transition:
@@ -51,11 +68,10 @@ export const segmentGroupCss =
   align-items: center;
   gap: var(--bs-gap-sm);
   box-sizing: border-box;
-  block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-md);
-  /* The tray keeps its compact register as the default; the rung only
-     moves it when the root asks. */
-  border-radius: var(--bs-radius-sm);
+  /* The default rung is the field register, so the tray sits level with
+     the selects and pickers beside it. */
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-md);
   font-weight: var(--bs-font-weight-medium);
@@ -106,13 +122,5 @@ export const segmentGroupCss =
   opacity: 0;
   pointer-events: none;
 }
-/* Size rungs: the segments keep the compact register by default; a
-   larger rung raises the row toward the control ladder. */
-[data-scope="segment-group"][data-part="root"][data-size="sm"] [data-part="item"] {
-  block-size: calc(var(--bs-control-height-sm) * 0.875);
-}
 
-[data-scope="segment-group"][data-part="root"][data-size="lg"] [data-part="item"] {
-  block-size: var(--bs-control-height-md);
-}
 `;

@@ -16,7 +16,7 @@ export const menubarCss = /* css */ `
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);
   font: inherit;

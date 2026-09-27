@@ -41,7 +41,7 @@ export const navigationMenuCss =
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-primary);
   font: inherit;
@@ -77,7 +77,7 @@ export const navigationMenuCss =
   gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   color: var(--bs-color-text-primary);
   font: inherit;
   font-size: var(--bs-font-size-md);

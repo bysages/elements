@@ -4,7 +4,7 @@ export const toggleGroupCss = /* css */ `
   gap: var(--bs-gap-xs);
   padding: var(--bs-padding-xs);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   box-shadow: var(--bs-shadow-xs);
 }
@@ -24,7 +24,7 @@ export const toggleGroupCss = /* css */ `
   block-size: var(--bs-control-height-md);
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);
   font: inherit;

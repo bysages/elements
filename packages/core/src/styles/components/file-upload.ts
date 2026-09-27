@@ -20,7 +20,7 @@ export const fileUploadCss =
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
   font: inherit;
@@ -68,7 +68,7 @@ export const fileUploadCss =
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
   border: 1px solid transparent;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);
   font: inherit;
@@ -226,7 +226,7 @@ export const fileUploadCss =
   block-size: 1.5rem;
   padding: 0;
   border: none;
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-tertiary);
   cursor: pointer;
