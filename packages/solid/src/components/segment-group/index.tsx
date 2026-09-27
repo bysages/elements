@@ -1,8 +1,9 @@
-import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/react/segment-group";
+import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/solid/segment-group";
+import type { SegmentGroupRootProps as ArkSegmentGroupRootProps } from "@ark-ui/solid/segment-group";
 import { injectComponentStyle } from "@bysages/core";
-import type { ComponentProps } from "react";
+import { createComponent, splitProps } from "solid-js";
 
-type SegmentGroupRootProps = ComponentProps<typeof ArkSegmentGroup.Root> & {
+type SegmentGroupOwnProps = {
   /** One rung of the control-height ladder for the segments. The
    * family keeps its compact register, so the rungs sit one notch
    * below the global ladder - the default md rests at the small
@@ -10,8 +11,14 @@ type SegmentGroupRootProps = ComponentProps<typeof ArkSegmentGroup.Root> & {
   size?: "sm" | "md" | "lg";
 };
 
-function SegmentGroupRoot({ size = "md", ...rest }: SegmentGroupRootProps) {
-  return <ArkSegmentGroup.Root {...rest} data-size={size} />;
+function SegmentGroupRoot(props: ArkSegmentGroupRootProps & SegmentGroupOwnProps) {
+  const [own, rest] = splitProps(props, ["size"]);
+  return createComponent(ArkSegmentGroup.Root, {
+    get "data-size"() {
+      return own.size ?? "md";
+    },
+    ...rest,
+  });
 }
 
 /** SegmentGroup, dressed in the paper-and-ink system: a hairline tray
