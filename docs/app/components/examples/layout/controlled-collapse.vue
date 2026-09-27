@@ -21,16 +21,21 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
         resizable
         class="min-h-full"
       >
-        <nav class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)">
+        <nav
+          class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)"
+          :style="state.collapsed ? { paddingInline: 'var(--bs-space-3)' } : undefined"
+        >
           <Button
             v-for="stop in stops"
             :key="stop"
             variant="ghost"
-            class="justify-start!"
+            :class="state.collapsed ? 'justify-center!' : 'justify-start!'"
             :aria-label="state.collapsed ? stop : undefined"
+            :title="state.collapsed ? stop : undefined"
             :style="{
               inlineSize: state.collapsed ? '2rem' : '100%',
-              paddingInline: state.collapsed ? '0.5rem' : 'var(--bs-padding-sm)',
+              blockSize: state.collapsed ? '2rem' : undefined,
+              paddingInline: state.collapsed ? '0' : 'var(--bs-padding-sm)',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
             }"
