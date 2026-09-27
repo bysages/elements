@@ -5,6 +5,16 @@ export const datePickerCss =
   labelCss("date-picker") +
   positionerCss("date-picker") +
   popupContentCss("date-picker", "17rem") +
+  /* css */ `
+/* The popup rents the standing calendar's vessel, so it pads and rows
+   its contents exactly as the calendar pads its own panel. */
+[data-scope="date-picker"][data-part="content"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-sm);
+  padding: var(--bs-padding-lg);
+}
+` +
   shrinkingTextCss("date-picker", "view-trigger") +
   /* css */ `
 [data-scope="date-picker"][data-part="root"] {

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Card, Toast, Toaster } from "@bysages/vue";
+import { Toast, Toaster } from "@bysages/vue";
 import { ref } from "vue";
 
+import AccountsPanel from "../../components/apps/dashboard/accounts-panel.vue";
+import BillingPanel from "../../components/apps/dashboard/billing-panel.vue";
 import { orders, type OrderRow } from "../../components/apps/dashboard/data";
 import OrderDetailDrawer from "../../components/apps/dashboard/order-detail-drawer.vue";
 import OrderEditDialog from "../../components/apps/dashboard/order-edit-dialog.vue";
-import OrdersTable from "../../components/apps/dashboard/orders-table.vue";
+import ReportsPanel from "../../components/apps/dashboard/reports-panel.vue";
 import RevenueChart from "../../components/apps/dashboard/revenue-chart.vue";
+import SettingsPanel from "../../components/apps/dashboard/settings-panel.vue";
 import Shell from "../../components/apps/dashboard/shell.vue";
 import StatRow from "../../components/apps/dashboard/stat-row.vue";
 import { toaster } from "../../components/apps/dashboard/toast";
@@ -39,6 +42,14 @@ const sourceUrl = [
 // The ledger is the page's state: edits and archives land here and the
 // table re-renders from the narrowed prop.
 const rows = ref<OrderRow[]>([...orders]);
+
+// Every stop in the sider leads to a real pane.
+const stop = ref("Overview");
+
+const recentAccounts = [...orders]
+  .filter((row) => row.status !== "churned")
+  .sort((a, b) => b.since.localeCompare(a.since))
+  .slice(0, 5);
 
 const detailRow = ref<OrderRow | null>(null);
 const detailOpen = ref(false);
@@ -89,8 +100,8 @@ function archiveSelected(selected: OrderRow[]) {
     />
 
     <ExampleCanvas>
-      <Shell>
-        <div class="grid gap-5">
+      <Shell v-model="stop">
+        <div v-if="stop === 'Overview'" class="grid gap-5">
           <StatRow />
           <div class="grid grid-cols-[repeat(auto-fit,minmax(22rem,1fr))] gap-5">
             <RevenueChart />
@@ -98,21 +109,41 @@ function archiveSelected(selected: OrderRow[]) {
           </div>
           <Card.Root>
             <Card.Header>
-              <Card.Title>Accounts</Card.Title>
-              <Card.Description>
-                Sort any column, search across customers, and edit or archive from the row.
-              </Card.Description>
+              <Card.Title>Newest accounts</Card.Title>
+              <Card.Description
+                >The five latest signups; the full ledger lives under Accounts.</Card.Description
+              >
             </Card.Header>
             <Card.Content>
-              <OrdersTable
-                :rows="rows"
-                @detail="openDetail"
-                @edit="openEdit"
-                @archive="archiveSelected"
-              />
+              <ul class="m-0 grid list-none gap-3 p-0">
+                <li
+                  v-for="row in recentAccounts"
+                  :key="row.id"
+                  class="flex items-baseline justify-between gap-3 border-b border-border pb-3 last:border-b-0 last:pb-0"
+                >
+                  <span class="text-sm font-medium">{{ row.customer }}</span>
+                  <span class="text-sm text-tertiary">
+                    {{ row.region }} · since {{ row.since }}
+                  </span>
+                </li>
+              </ul>
             </Card.Content>
           </Card.Root>
         </div>
+
+        <AccountsPanel
+          v-else-if="stop === 'Accounts'"
+          :rows="rows"
+          @detail="openDetail"
+          @edit="openEdit"
+          @archive="archiveSelected"
+        />
+
+        <BillingPanel v-else-if="stop === 'Billing'" />
+
+        <ReportsPanel v-else-if="stop === 'Reports'" />
+
+        <SettingsPanel v-else />
       </Shell>
     </ExampleCanvas>
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Avatar, Badge, Button, Layout, Typography } from "@bysages/vue";
-import { ref } from "vue";
 
 const stops = [
   { label: "Overview", icon: "M3 3v18h18M7 14l4-4 3 3 5-6" },
@@ -15,7 +14,17 @@ const stops = [
   },
 ];
 
-const activeStop = ref("Overview");
+// The owning page swaps the content pane as the stop changes, so every
+// nav entry leads somewhere real.
+const activeStop = defineModel<string>({ default: "Overview" });
+
+const headings: Record<string, string> = {
+  Overview: "Revenue console",
+  Accounts: "Accounts",
+  Billing: "Billing",
+  Reports: "Reports",
+  Settings: "Console settings",
+};
 
 const collapsed = ref(false);
 </script>
@@ -126,7 +135,7 @@ const collapsed = ref(false);
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </Button>
-      <Typography.Heading>Revenue console</Typography.Heading>
+      <Typography.Heading>{{ headings[activeStop] ?? "Revenue console" }}</Typography.Heading>
       <Badge tone="info" variant="subtle">Q3</Badge>
       <span class="flex-1" />
       <span class="text-sm text-tertiary">Finance team</span>

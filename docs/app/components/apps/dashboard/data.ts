@@ -205,3 +205,82 @@ export const statFigures: StatFigure[] = [
     description: "Holding steady",
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Billing
+
+export const currentPlan = {
+  name: "Scale",
+  seats: "24 of 30 seats",
+  renewal: "Renews Nov 1, 2026",
+  price: "$499 / mo",
+  seatUse: 80,
+};
+
+export interface Invoice {
+  id: string;
+  date: string;
+  amount: string;
+  status: "paid" | "refunded" | "overdue";
+}
+
+/** The newest first - the ledger reads top down. */
+export const invoices: Invoice[] = [
+  { id: "INV-2041", date: "Oct 1, 2026", amount: "$499.00", status: "paid" },
+  { id: "INV-1996", date: "Sep 1, 2026", amount: "$499.00", status: "paid" },
+  { id: "INV-1932", date: "Aug 1, 2026", amount: "$521.00", status: "refunded" },
+  { id: "INV-1877", date: "Jul 1, 2026", amount: "$499.00", status: "paid" },
+  { id: "INV-1821", date: "Jun 1, 2026", amount: "$466.00", status: "overdue" },
+];
+
+export const paymentMethod = {
+  brand: "Visa",
+  last4: "4242",
+  expires: "08 / 2028",
+};
+
+// ---------------------------------------------------------------------------
+// Reports
+
+/** Twelve months of expansion - the same span the revenue chart covers,
+ * plotted as collected cash against the plan. */
+export const cashCollected = [
+  { month: "Oct", cash: 118 },
+  { month: "Nov", cash: 129 },
+  { month: "Dec", cash: 125 },
+  { month: "Jan", cash: 147 },
+  { month: "Feb", cash: 163 },
+  { month: "Mar", cash: 159 },
+  { month: "Apr", cash: 171 },
+  { month: "May", cash: 186 },
+  { month: "Jun", cash: 181 },
+  { month: "Jul", cash: 196 },
+  { month: "Aug", cash: 208 },
+  { month: "Sep", cash: 217 },
+];
+
+export interface ChannelRow {
+  channel: string;
+  share: number;
+  accounts: string;
+}
+
+export const channels: ChannelRow[] = [
+  { channel: "Direct & referral", share: 46, accounts: "19 accounts" },
+  { channel: "Marketplace", share: 27, accounts: "11 accounts" },
+  { channel: "Outbound", share: 17, accounts: "7 accounts" },
+  { channel: "Events", share: 10, accounts: "5 accounts" },
+];
+
+// ---------------------------------------------------------------------------
+// Settings
+
+export const consoleSettings = {
+  workspace: "By Sages Console",
+  email: "sage@example.com",
+  timezone: "GMT+8",
+  density: "comfortable",
+  digest: true,
+  anomalyAlerts: true,
+  weeklyReport: false,
+};
