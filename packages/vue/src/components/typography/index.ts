@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "Typography" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("typography");
+
       return () =>
         h(
           tag,
@@ -35,5 +37,3 @@ export const Typography = Object.assign(Display, {
   Muted,
   Label,
 });
-
-injectComponentStyle("typography");

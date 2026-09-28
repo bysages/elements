@@ -32,6 +32,8 @@ export const DynamicInput = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("dynamic-input");
+
     const update = (index: number, value: string) => {
       const next = props.modelValue.slice();
       next[index] = value;
@@ -113,5 +115,3 @@ function crossIcon() {
     [h("path", { d: "M18 6 6 18M6 6l12 12" })],
   );
 }
-
-injectComponentStyle("dynamic-input");

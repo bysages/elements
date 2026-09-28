@@ -21,6 +21,8 @@ export const Container = defineComponent({
     padding: { type: Boolean, default: true },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("container");
+
     return () =>
       h(
         "div",
@@ -35,5 +37,3 @@ export const Container = defineComponent({
       );
   },
 });
-
-injectComponentStyle("container");

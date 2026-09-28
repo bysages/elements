@@ -16,6 +16,8 @@ export const Reasoning = defineComponent({
     defaultOpen: { type: Boolean, default: false },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
     return () =>
       h(
         Collapsible.Root,
@@ -37,7 +39,4 @@ export const Reasoning = defineComponent({
       );
   },
 });
-
-injectComponentStyle("ai");
-
 export { Reasoning as AiReasoning };

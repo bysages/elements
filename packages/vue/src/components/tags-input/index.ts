@@ -13,6 +13,8 @@ const TagsInputRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("tags-input");
+
     return () => h(ArkTagsInput.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const TagsInput: Omit<typeof ArkTagsInput, "Root"> & { Root: typeof TagsI
   ...ArkTagsInput,
   Root: TagsInputRoot,
 };
-
-injectComponentStyle("tags-input");

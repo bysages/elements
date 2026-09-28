@@ -13,6 +13,8 @@ const SwitchRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("switch");
+
     return () => h(ArkSwitch.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const Switch: Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot 
   ...ArkSwitch,
   Root: SwitchRoot,
 };
-
-injectComponentStyle("switch");

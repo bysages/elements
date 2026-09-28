@@ -49,6 +49,9 @@ export const Calendar = defineComponent({
     "update:modelValue": (_value: NonNullable<DatePickerRootProps["modelValue"]>) => true,
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("calendar");
+    injectComponentStyle("date-picker");
+
     /* zag's RangeText follows the visible day-page (startValue), which
        the month and year steps never move — it would freeze the title.
        Formatting the focused value keeps it in step with the arrows. */
@@ -178,6 +181,3 @@ export const Calendar = defineComponent({
       );
   },
 });
-
-injectComponentStyle("calendar");
-injectComponentStyle("date-picker");

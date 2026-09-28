@@ -23,6 +23,8 @@ const MenuRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { slots }) {
+    injectComponentStyle("menu");
+
     // The ref rides the context so a bound size retunes an open vessel.
     provide(
       MenuSizeKey,
@@ -60,5 +62,3 @@ export const Menu: Omit<typeof ArkMenu, "Root" | "Content"> & {
   Root: MenuRoot,
   Content: MenuContent,
 };
-
-injectComponentStyle("menu");

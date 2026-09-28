@@ -11,6 +11,8 @@ const Preview = defineComponent({
   name: "EditablePreview",
   inheritAttrs: false,
   setup(_, ctx: SetupContext) {
+    injectComponentStyle("editable");
+
     const editable = useEditableContext();
     return () => {
       const machine = unref(editable);
@@ -50,5 +52,3 @@ export const Editable: Omit<typeof ArkEditable, "Root" | "Preview"> & {
   Root: EditableRoot,
   Preview,
 };
-
-injectComponentStyle("editable");

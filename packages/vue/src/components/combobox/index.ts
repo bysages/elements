@@ -14,6 +14,8 @@ const ComboboxRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("combobox");
+
     return () => h(ArkCombobox.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -25,5 +27,3 @@ export const Combobox: Omit<typeof ArkCombobox, "Root"> & { Root: typeof Combobo
   ...ArkCombobox,
   Root: ComboboxRoot,
 };
-
-injectComponentStyle("combobox");

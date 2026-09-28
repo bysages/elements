@@ -19,6 +19,8 @@ export const Input = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("input");
+
     const field = useFieldContext();
     return () => {
       const fieldProps = field?.value?.getInputProps() ?? {};
@@ -37,5 +39,3 @@ export const Input = defineComponent({
     };
   },
 });
-
-injectComponentStyle("input");

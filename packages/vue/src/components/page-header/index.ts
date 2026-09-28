@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "PageHeader" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("page-header");
+
       return () =>
         h(
           tag,
@@ -35,5 +37,3 @@ export const PageHeader = Object.assign(Root, {
   Description,
   Actions,
 });
-
-injectComponentStyle("page-header");

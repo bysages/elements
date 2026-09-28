@@ -70,6 +70,8 @@ export const Response = defineComponent({
     copiedLabel: { type: String, default: "Copied" },
   },
   setup(props) {
+    injectComponentStyle("ai");
+
     const html = computed(() =>
       renderHtml(props.content, props.highlighter ? { highlighter: props.highlighter } : undefined),
     );
@@ -99,7 +101,4 @@ export const Response = defineComponent({
       });
   },
 });
-
-injectComponentStyle("ai");
-
 export { Response as AiResponse };

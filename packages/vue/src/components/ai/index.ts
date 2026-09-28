@@ -34,6 +34,8 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
   return defineComponent({
     name: "Ai" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("ai");
+
       return () =>
         h(
           tag,
@@ -83,5 +85,3 @@ export const Ai = Object.assign(AiConversation, {
   Suggestion,
   PromptInput,
 });
-
-injectComponentStyle("ai");

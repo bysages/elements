@@ -15,6 +15,8 @@ export const Ellipsis = defineComponent({
     lines: { type: Number, default: 1 },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ellipsis");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       const multiline = props.lines > 1;
@@ -35,5 +37,3 @@ export const Ellipsis = defineComponent({
     };
   },
 });
-
-injectComponentStyle("ellipsis");

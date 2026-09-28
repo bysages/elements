@@ -18,6 +18,8 @@ const AvatarRoot = defineComponent({
     size: { type: String as PropType<AvatarSize>, default: undefined },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("avatar");
+
     return () => h(ArkAvatar.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -33,5 +35,3 @@ export type AvatarProps = {
    * rides a row without stretching it. */
   size?: AvatarSize;
 };
-
-injectComponentStyle("avatar");

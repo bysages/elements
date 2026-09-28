@@ -9,6 +9,8 @@ import { defineComponent, h } from "vue";
 const NavigationMenuLink = defineComponent({
   name: "SNavigationMenuLink",
   setup(_props, { attrs, slots }) {
+    injectComponentStyle("navigation-menu");
+
     return () => h(ArkNavigationMenu.Link, { ...attrs, "data-motion": "ink-ripple" }, slots);
   },
 });
@@ -20,5 +22,3 @@ const NavigationMenuLink = defineComponent({
 export const NavigationMenu: Omit<typeof ArkNavigationMenu, "Link"> & {
   Link: typeof NavigationMenuLink;
 } = { ...ArkNavigationMenu, Link: NavigationMenuLink };
-
-injectComponentStyle("navigation-menu");

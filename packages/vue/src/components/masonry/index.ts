@@ -32,6 +32,8 @@ export const Masonry = defineComponent({
     gap: { type: String, default: "md" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("masonry");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       return h(
@@ -54,5 +56,3 @@ export const Masonry = defineComponent({
     };
   },
 });
-
-injectComponentStyle("masonry");

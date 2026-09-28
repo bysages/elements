@@ -15,6 +15,8 @@ export const Message = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
     return () =>
       h(
         "article",
@@ -28,7 +30,4 @@ export const Message = defineComponent({
       );
   },
 });
-
-injectComponentStyle("ai");
-
 export { Message as AiMessage };

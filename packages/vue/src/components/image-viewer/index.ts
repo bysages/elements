@@ -57,6 +57,8 @@ export const ImageViewer = defineComponent({
     "update:open": (_value: boolean) => true,
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("image-viewer");
+
     // Controlled when the caller owns `open`; uncontrolled otherwise —
     // an undefined `open` must not reach the machine, or it would
     // override the machine's own decisions.
@@ -171,5 +173,3 @@ export const ImageViewer = defineComponent({
       );
   },
 });
-
-injectComponentStyle("image-viewer");

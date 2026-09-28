@@ -60,6 +60,9 @@ export const Command = defineComponent({
   },
   emits: ["update:open", "update:inputValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("command");
+    injectComponentStyle("dialog");
+
     const internalOpen = ref(false);
     // The list has no popup of its own, but the machine still opens and
     // closes its content (outside click on the sheet dims the list);
@@ -222,6 +225,4 @@ export const Command = defineComponent({
   },
 });
 
-injectComponentStyle("command");
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
-injectComponentStyle("dialog");

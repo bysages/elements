@@ -33,6 +33,8 @@ export const ProgressGroup = defineComponent({
     showLegend: { type: Boolean, default: true },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("progress-group");
+
     return () => {
       // A zero whole must not divide — the bar simply stays empty.
       const total = props.max ?? props.segments.reduce((sum, segment) => sum + segment.value, 0);
@@ -89,5 +91,3 @@ export const ProgressGroup = defineComponent({
     };
   },
 });
-
-injectComponentStyle("progress-group");

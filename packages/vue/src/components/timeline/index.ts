@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "Timeline" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("timeline");
+
       return () =>
         h(
           tag,
@@ -25,5 +27,3 @@ const Content = part("Content", "div");
  * Marker the point where the thread passes, Content what the moment
  * holds. The hairline between markers is drawn by the stylesheet. */
 export const Timeline = Object.assign(Root, { Root, Item, Marker, Content });
-
-injectComponentStyle("timeline");

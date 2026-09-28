@@ -6,6 +6,8 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
   return defineComponent({
     name: "Breadcrumb" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("breadcrumb");
+
       return () =>
         h(
           tag,
@@ -40,5 +42,3 @@ export const Breadcrumb = Object.assign(Root, {
   Current,
   Separator,
 });
-
-injectComponentStyle("breadcrumb");

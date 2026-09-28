@@ -42,6 +42,9 @@ export const Menubar = defineComponent({
     onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("menubar");
+    injectComponentStyle("menu");
+
     return () =>
       h(
         "div",
@@ -91,6 +94,4 @@ export const Menubar = defineComponent({
   },
 });
 
-injectComponentStyle("menubar");
 // The popups keep the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

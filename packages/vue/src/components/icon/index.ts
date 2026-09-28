@@ -33,6 +33,8 @@ export const Icon = defineComponent({
     name: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("icon");
+
     return () => {
       const brought = ctx.slots.default != null;
       const glyph = props.name && !brought ? getIcon(props.name) : undefined;
@@ -64,5 +66,3 @@ export const Icon = defineComponent({
     };
   },
 });
-
-injectComponentStyle("icon");

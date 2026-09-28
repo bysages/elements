@@ -38,6 +38,8 @@ export const BackTop = defineComponent({
     scrollEl: { type: Function, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("back-top");
+
     const visible = ref(false);
 
     const scroller = () => props.scrollEl?.() ?? null;
@@ -122,5 +124,3 @@ function chevronUp() {
     [h("path", { d: "m6 14 6-6 6 6" })],
   );
 }
-
-injectComponentStyle("back-top");

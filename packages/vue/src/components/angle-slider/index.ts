@@ -12,6 +12,8 @@ const AngleSliderRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("angle-slider");
+
     return () => h(ArkAngleSlider.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -25,5 +27,3 @@ export const AngleSlider: Omit<typeof ArkAngleSlider, "Root"> & {
   ...ArkAngleSlider,
   Root: AngleSliderRoot,
 };
-
-injectComponentStyle("angle-slider");

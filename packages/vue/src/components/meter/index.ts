@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "Meter" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("meter");
+
       return () =>
         h(
           tag,
@@ -86,5 +88,3 @@ const Root = defineComponent({
  * thresholds. */
 
 export const Meter = Object.assign(Root, { Root, Label, ValueText, Track });
-
-injectComponentStyle("meter");

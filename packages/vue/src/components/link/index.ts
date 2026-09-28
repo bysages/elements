@@ -14,6 +14,8 @@ export const Link = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("link");
+
     return () =>
       h(
         "a",
@@ -27,5 +29,3 @@ export const Link = defineComponent({
       );
   },
 });
-
-injectComponentStyle("link");

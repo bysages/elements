@@ -21,6 +21,8 @@ export const Tool = defineComponent({
     defaultOpen: { type: Boolean, default: false },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
     return () => {
       const status = props.status;
       return h(
@@ -67,7 +69,4 @@ export const Tool = defineComponent({
     };
   },
 });
-
-injectComponentStyle("ai");
-
 export { Tool as AiTool };

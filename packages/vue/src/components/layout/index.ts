@@ -28,6 +28,8 @@ const Root = defineComponent({
     sider: { type: String as PropType<"start" | "end">, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("layout");
+
     provide(LAYOUT_CONTEXT, { siderPlacement: () => props.sider } satisfies LayoutContext);
     return () =>
       h(
@@ -224,5 +226,3 @@ const Sider = defineComponent({
 });
 
 export const Layout = Object.assign(Root, { Root, Header, Sider, Content, Footer });
-
-injectComponentStyle("layout");

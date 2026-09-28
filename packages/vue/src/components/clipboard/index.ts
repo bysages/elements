@@ -14,6 +14,8 @@ const ClipboardRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("clipboard");
+
     return () => h(ArkClipboard.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const Clipboard: Omit<typeof ArkClipboard, "Root"> & { Root: typeof Clipb
   ...ArkClipboard,
   Root: ClipboardRoot,
 };
-
-injectComponentStyle("clipboard");

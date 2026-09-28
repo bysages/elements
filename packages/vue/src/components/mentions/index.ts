@@ -52,6 +52,8 @@ export const MentionsVessel = defineComponent({
     "update:open": (_open: boolean) => true,
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("mentions");
+
     return () =>
       h(
         ArkPopover.Root,
@@ -188,5 +190,3 @@ export const Mentions = defineComponent({
       );
   },
 });
-
-injectComponentStyle("mentions");

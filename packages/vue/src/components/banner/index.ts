@@ -11,6 +11,8 @@ const Root = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("banner");
+
     return () =>
       h(
         "div",
@@ -94,5 +96,3 @@ export const Banner = Object.assign(Root, {
   Actions,
   Close,
 });
-
-injectComponentStyle("banner");

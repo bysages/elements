@@ -15,6 +15,8 @@ const TabsRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("tabs");
+
     return () => h(ArkTabs.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -26,5 +28,3 @@ export const Tabs: Omit<typeof ArkTabs, "Root"> & { Root: typeof TabsRoot } = {
   ...ArkTabs,
   Root: TabsRoot,
 };
-
-injectComponentStyle("tabs");

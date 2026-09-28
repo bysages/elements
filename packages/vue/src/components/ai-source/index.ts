@@ -11,6 +11,8 @@ export const Source = defineComponent({
     href: { type: String, required: true },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
     return () =>
       h("li", { "data-scope": "ai", "data-part": "source" }, [
         h(
@@ -30,7 +32,4 @@ export const Sources = defineComponent({
       h("ol", { ...ctx.attrs, "data-scope": "ai", "data-part": "sources" }, ctx.slots.default?.());
   },
 });
-
-injectComponentStyle("ai");
-
 export { Source as AiSource, Sources as AiSources };

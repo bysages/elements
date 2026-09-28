@@ -26,6 +26,8 @@ export const Affix = defineComponent({
     offsetBottom: { type: String, default: "0px" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("affix");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       return h(
@@ -41,5 +43,3 @@ export const Affix = defineComponent({
     };
   },
 });
-
-injectComponentStyle("affix");

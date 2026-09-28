@@ -46,6 +46,9 @@ export const SplitButton = defineComponent({
     select: (value: string) => typeof value === "string",
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("split-button");
+    injectComponentStyle("menu");
+
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "split-button", "data-part": "root" }, () => [
         h(
@@ -119,6 +122,4 @@ function chevronDown() {
   );
 }
 
-injectComponentStyle("split-button");
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "Empty" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("empty");
+
       return () =>
         h(
           tag,
@@ -27,5 +29,3 @@ const Actions = part("Actions", "div");
  * the way out. Any subset composes. */
 
 export const Empty = Object.assign(Root, { Root, Visual, Title, Description, Actions });
-
-injectComponentStyle("empty");

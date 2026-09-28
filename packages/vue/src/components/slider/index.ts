@@ -13,6 +13,8 @@ const SliderRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("slider");
+
     return () => h(ArkSlider.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const Slider: Omit<typeof ArkSlider, "Root"> & { Root: typeof SliderRoot 
   ...ArkSlider,
   Root: SliderRoot,
 };
-
-injectComponentStyle("slider");

@@ -14,6 +14,8 @@ const ListboxRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("listbox");
+
     // `as never` sidesteps the h() overload the collection prop's generic
     // cannot unroll — see the select preset for the same turn.
     return () => h(ArkListbox.Root as never, { ...attrs, "data-size": props.size }, slots);
@@ -26,5 +28,3 @@ export const Listbox: Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRo
   ...ArkListbox,
   Root: ListboxRoot,
 };
-
-injectComponentStyle("listbox");

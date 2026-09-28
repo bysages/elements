@@ -13,6 +13,8 @@ export const Chip = defineComponent({
     variant: { type: String, default: "solid" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("chip");
+
     return () => {
       const text =
         props.max != null && props.value > props.max ? `${props.max}+` : String(props.value);
@@ -30,5 +32,3 @@ export const Chip = defineComponent({
     };
   },
 });
-
-injectComponentStyle("chip");

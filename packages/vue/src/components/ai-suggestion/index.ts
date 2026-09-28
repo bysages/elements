@@ -16,6 +16,8 @@ export const Suggestion = defineComponent({
     select: (_prompt: string) => true,
   },
   setup(props, { emit }) {
+    injectComponentStyle("ai");
+
     return () =>
       h(
         Button,
@@ -24,7 +26,4 @@ export const Suggestion = defineComponent({
       );
   },
 });
-
-injectComponentStyle("ai");
-
 export { Suggestion as AiSuggestion };

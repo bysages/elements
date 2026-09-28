@@ -12,6 +12,8 @@ const PinInputRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("pin-input");
+
     return () => h(ArkPinInput.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -23,5 +25,3 @@ export const PinInput: Omit<typeof ArkPinInput, "Root"> & { Root: typeof PinInpu
   ...ArkPinInput,
   Root: PinInputRoot,
 };
-
-injectComponentStyle("pin-input");

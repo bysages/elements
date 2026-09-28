@@ -18,6 +18,8 @@ const Root = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("button-group");
+
     return () =>
       h(
         "div",
@@ -43,5 +45,3 @@ const Root = defineComponent({
  */
 
 export const ButtonGroup = Object.assign(Root, { Root });
-
-injectComponentStyle("button-group");

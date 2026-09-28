@@ -31,6 +31,8 @@ export const Stack = defineComponent({
     justify: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("stack");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       return h(
@@ -55,5 +57,3 @@ export const Stack = defineComponent({
     };
   },
 });
-
-injectComponentStyle("stack");

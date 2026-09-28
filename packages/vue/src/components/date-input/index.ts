@@ -17,6 +17,8 @@ const DateInputRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("date-input");
+
     return () => h(ArkDateInput.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -28,5 +30,3 @@ export const DateInput: Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateI
   ...ArkDateInput,
   Root: DateInputRoot,
 };
-
-injectComponentStyle("date-input");

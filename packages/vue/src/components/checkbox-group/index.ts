@@ -48,6 +48,9 @@ export const CheckboxGroup = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("checkbox-group");
+    injectComponentStyle("checkbox");
+
     const field = useFieldContext();
     // A field context bends every box's hidden input onto the field's own
     // id, so labels of a multi-box group would all activate the first box —
@@ -100,5 +103,3 @@ export const CheckboxGroup = defineComponent({
 
 // The options are the checkbox family's own seals — the group stylesheet
 // only lays the row and column out around them.
-injectComponentStyle("checkbox-group");
-injectComponentStyle("checkbox");

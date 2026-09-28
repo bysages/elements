@@ -16,6 +16,8 @@ export const Textarea = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("textarea");
+
     const field = useFieldContext();
     return () => {
       const fieldProps = field?.value?.getTextareaProps() ?? {};
@@ -33,5 +35,3 @@ export const Textarea = defineComponent({
     };
   },
 });
-
-injectComponentStyle("textarea");

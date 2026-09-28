@@ -8,6 +8,8 @@ export const Skeleton = defineComponent({
   name: "Skeleton",
   props: {},
   setup(_, ctx: SetupContext) {
+    injectComponentStyle("skeleton");
+
     return () =>
       h("div", {
         ...ctx.attrs,
@@ -16,5 +18,3 @@ export const Skeleton = defineComponent({
       });
   },
 });
-
-injectComponentStyle("skeleton");

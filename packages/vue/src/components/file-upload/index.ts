@@ -15,6 +15,8 @@ const FileUploadRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("file-upload");
+
     return () => h(ArkFileUpload.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -26,5 +28,3 @@ export const FileUpload: Omit<typeof ArkFileUpload, "Root"> & { Root: typeof Fil
   ...ArkFileUpload,
   Root: FileUploadRoot,
 };
-
-injectComponentStyle("file-upload");

@@ -14,6 +14,8 @@ const SelectRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("select");
+
     // `as never` sidesteps the h() overload the collection prop's generic
     // cannot unroll — see the autocomplete preset for the same turn.
     return () => h(ArkSelect.Root as never, { ...attrs, "data-size": props.size }, slots);
@@ -27,5 +29,3 @@ export const Select: Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot 
   ...ArkSelect,
   Root: SelectRoot,
 };
-
-injectComponentStyle("select");

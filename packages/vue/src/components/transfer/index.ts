@@ -62,6 +62,9 @@ export const Transfer = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("transfer");
+    injectComponentStyle("checkbox");
+
     const target = computed(() => new Set(props.modelValue));
     const checkedSource = ref(new Set<string>());
     const checkedTarget = ref(new Set<string>());
@@ -192,5 +195,3 @@ export const Transfer = defineComponent({
 
 // The rows are the checkbox family's own seals — the transfer stylesheet
 // only dresses the ledgers around them.
-injectComponentStyle("transfer");
-injectComponentStyle("checkbox");

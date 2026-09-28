@@ -15,6 +15,8 @@ export const Action = defineComponent({
     label: { type: String, required: true },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
     return () =>
       h(
         Button,
@@ -29,7 +31,4 @@ export const Action = defineComponent({
       );
   },
 });
-
-injectComponentStyle("ai");
-
 export { Action as AiAction };

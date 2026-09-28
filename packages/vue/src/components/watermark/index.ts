@@ -35,6 +35,8 @@ export const Watermark = defineComponent({
     fontSize: { type: String, default: "0.875rem" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("watermark");
+
     const root = ref<HTMLElement | null>(null);
     const tile = ref("");
 
@@ -103,5 +105,3 @@ export const Watermark = defineComponent({
       ]);
   },
 });
-
-injectComponentStyle("watermark");

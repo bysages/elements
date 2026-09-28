@@ -59,6 +59,9 @@ export const TreeSelect = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("tree-select");
+    injectComponentStyle("tree-view");
+
     const open = ref(false);
     const query = ref("");
     const filterFns = useFilter({ sensitivity: "base" });
@@ -251,5 +254,3 @@ export const TreeSelect = defineComponent({
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.
-injectComponentStyle("tree-select");
-injectComponentStyle("tree-view");

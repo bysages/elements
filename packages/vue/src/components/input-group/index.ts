@@ -5,6 +5,8 @@ import { defineComponent, h } from "vue";
 const Root = defineComponent({
   name: "InputGroupRoot",
   setup(_, ctx: SetupContext) {
+    injectComponentStyle("input-group");
+
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "input-group", "data-part": "root" }, () =>
         ctx.slots.default?.(),
@@ -33,5 +35,3 @@ const Addon = defineComponent({
  */
 
 export const InputGroup = Object.assign(Root, { Root, Addon });
-
-injectComponentStyle("input-group");

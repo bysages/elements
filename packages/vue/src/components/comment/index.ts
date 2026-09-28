@@ -19,6 +19,8 @@ export const Comment = defineComponent({
     datetime: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("comment");
+
     return () =>
       h("article", { ...ctx.attrs, "data-scope": "comment", "data-part": "root" }, [
         ctx.slots.avatar
@@ -55,5 +57,3 @@ export const Comment = defineComponent({
       ]);
   },
 });
-
-injectComponentStyle("comment");

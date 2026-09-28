@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "List" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("list");
+
       return () =>
         h(
           tag,
@@ -69,5 +71,3 @@ const Content = defineComponent({
  * clickable (role="button") answers the pointer on its own. */
 
 export const List = Object.assign(Root, { Root, Item, Leading, Content, Actions });
-
-injectComponentStyle("list");

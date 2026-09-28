@@ -88,6 +88,8 @@ export const CascadeSelect = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("cascade-select");
+
     const id = useId();
     const locale = useLocaleContext(DEFAULT_LOCALE);
     const env = useEnvironmentContext(DEFAULT_ENVIRONMENT);
@@ -297,5 +299,3 @@ export const CascadeSelect = defineComponent({
       ]);
   },
 });
-
-injectComponentStyle("cascade-select");

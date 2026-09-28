@@ -12,6 +12,8 @@ export const AvatarGroup = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("avatar-group");
+
     return () =>
       h(
         "div",
@@ -25,5 +27,3 @@ export const AvatarGroup = defineComponent({
       );
   },
 });
-
-injectComponentStyle("avatar-group");

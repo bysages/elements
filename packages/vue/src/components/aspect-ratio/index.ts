@@ -15,6 +15,8 @@ export const AspectRatio = defineComponent({
     ratio: { type: String, default: "1 / 1" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("aspect-ratio");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       return h(
@@ -30,5 +32,3 @@ export const AspectRatio = defineComponent({
     };
   },
 });
-
-injectComponentStyle("aspect-ratio");

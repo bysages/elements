@@ -8,6 +8,8 @@ const Root = defineComponent({
     layout: { type: String as PropType<"horizontal" | "vertical">, default: "horizontal" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("descriptions");
+
     return () =>
       h(
         "dl",
@@ -47,5 +49,3 @@ const Detail = part("Detail", "dd");
  */
 
 export const Descriptions = { Root, Item, Term, Detail };
-
-injectComponentStyle("descriptions");

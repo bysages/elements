@@ -14,6 +14,8 @@ export const Spinner = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("spinner");
+
     return () =>
       h(
         "span",
@@ -47,5 +49,3 @@ export const Spinner = defineComponent({
       );
   },
 });
-
-injectComponentStyle("spinner");

@@ -11,6 +11,8 @@ const ToggleGroupRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("toggle-group");
+
     return () => h(ArkToggleGroup.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -22,5 +24,3 @@ export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof T
   ...ArkToggleGroup,
   Root: ToggleGroupRoot,
 };
-
-injectComponentStyle("toggle-group");

@@ -15,6 +15,8 @@ const PaginationRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("pagination");
+
     return () => h(ArkPagination.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -26,5 +28,3 @@ export const Pagination: Omit<typeof ArkPagination, "Root"> & { Root: typeof Pag
   ...ArkPagination,
   Root: PaginationRoot,
 };
-
-injectComponentStyle("pagination");

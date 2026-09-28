@@ -11,6 +11,8 @@ function part(name: string, tag: string) {
       asChild: { type: Boolean, default: false },
     },
     setup(props, ctx: SetupContext) {
+      injectComponentStyle("card");
+
       const partProps = () => ({
         ...ctx.attrs,
         "data-scope": "card",
@@ -39,5 +41,3 @@ const Footer = part("Footer", "footer");
  * carry their own whitespace, so any subset composes. */
 
 export const Card = Object.assign(Root, { Root, Header, Title, Description, Content, Footer });
-
-injectComponentStyle("card");

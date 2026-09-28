@@ -16,6 +16,8 @@ const StepsRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("steps");
+
     return () => h(ArkSteps.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -27,5 +29,3 @@ export const Steps: Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot } =
   ...ArkSteps,
   Root: StepsRoot,
 };
-
-injectComponentStyle("steps");

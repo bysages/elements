@@ -13,6 +13,8 @@ const RadioGroupRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("radio-group");
+
     return () => h(ArkRadioGroup.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof Rad
   ...ArkRadioGroup,
   Root: RadioGroupRoot,
 };
-
-injectComponentStyle("radio-group");

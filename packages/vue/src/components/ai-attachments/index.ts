@@ -84,6 +84,8 @@ export const Attachment = defineComponent({
   },
   emits: { remove: () => true },
   setup(props, { emit, attrs }: SetupContext) {
+    injectComponentStyle("ai");
+
     return () =>
       h(
         "span",
@@ -120,7 +122,4 @@ export const Attachments = defineComponent({
       h("span", { ...attrs, "data-scope": "ai", "data-part": "attachments" }, slots.default?.());
   },
 });
-
-injectComponentStyle("ai");
-
 export { Attachment as AiAttachment, Attachments as AiAttachments };

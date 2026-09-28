@@ -26,6 +26,8 @@ export const Popconfirm = defineComponent({
     cancel: () => true,
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("popconfirm");
+
     const open = ref(false);
     function settle(confirmed: boolean) {
       open.value = false;
@@ -60,5 +62,3 @@ export const Popconfirm = defineComponent({
       );
   },
 });
-
-injectComponentStyle("popconfirm");

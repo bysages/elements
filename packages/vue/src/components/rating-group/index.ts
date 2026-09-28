@@ -12,6 +12,8 @@ const RatingGroupRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("rating-group");
+
     return () => h(ArkRatingGroup.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -25,5 +27,3 @@ export const RatingGroup: Omit<typeof ArkRatingGroup, "Root"> & {
   ...ArkRatingGroup,
   Root: RatingGroupRoot,
 };
-
-injectComponentStyle("rating-group");

@@ -60,6 +60,8 @@ const Root = defineComponent({
     "update:open": (value: boolean) => typeof value === "boolean",
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("float-button");
+
     const inner = ref(false);
     const open = computed({
       get: () => (props.open !== undefined ? props.open : inner.value),
@@ -162,5 +164,3 @@ const Item = defineComponent({
 });
 
 export const FloatButton = Object.assign(Root, { Root, Trigger, Item });
-
-injectComponentStyle("float-button");

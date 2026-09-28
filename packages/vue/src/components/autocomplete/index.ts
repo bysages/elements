@@ -29,6 +29,8 @@ export const AutoComplete = defineComponent({
   },
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("combobox");
+
     const { collection, filter } = useListCollection({
       initialItems: props.items,
       filter: (item: string, input: string) =>
@@ -76,5 +78,3 @@ export const AutoComplete = defineComponent({
       );
   },
 });
-
-injectComponentStyle("combobox");

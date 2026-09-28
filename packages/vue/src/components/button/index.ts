@@ -25,6 +25,8 @@ export const Button = defineComponent({
     disabled: { type: Boolean, default: false },
   },
   setup(props, ctx: SetupContext<{ default: () => unknown }>) {
+    injectComponentStyle("button");
+
     const partProps = () => ({
       ...ctx.attrs,
       "data-scope": "button",
@@ -53,5 +55,3 @@ export const Button = defineComponent({
       );
   },
 });
-
-injectComponentStyle("button");

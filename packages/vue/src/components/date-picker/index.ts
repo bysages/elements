@@ -23,6 +23,8 @@ const DatePickerRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("date-picker");
+
     return () => h(ArkDatePicker.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -34,5 +36,3 @@ export const DatePicker: Omit<typeof ArkDatePicker, "Root"> & { Root: typeof Dat
   ...ArkDatePicker,
   Root: DatePickerRoot,
 };
-
-injectComponentStyle("date-picker");

@@ -7,6 +7,8 @@ export const Kbd = defineComponent({
   name: "Kbd",
   props: {},
   setup(_, ctx: SetupContext) {
+    injectComponentStyle("kbd");
+
     return () =>
       h(
         "kbd",
@@ -19,5 +21,3 @@ export const Kbd = defineComponent({
       );
   },
 });
-
-injectComponentStyle("kbd");

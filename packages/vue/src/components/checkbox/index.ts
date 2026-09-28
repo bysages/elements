@@ -13,6 +13,8 @@ const CheckboxRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("checkbox");
+
     return () => h(ArkCheckbox.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -24,5 +26,3 @@ export const Checkbox: Omit<typeof ArkCheckbox, "Root"> & { Root: typeof Checkbo
   ...ArkCheckbox,
   Root: CheckboxRoot,
 };
-
-injectComponentStyle("checkbox");

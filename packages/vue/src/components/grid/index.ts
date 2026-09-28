@@ -31,6 +31,8 @@ export const Grid = defineComponent({
     minChildWidth: { type: String, default: undefined },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("grid");
+
     return () => {
       const { style, ...attrs } = ctx.attrs;
       return h(
@@ -56,5 +58,3 @@ export const Grid = defineComponent({
     };
   },
 });
-
-injectComponentStyle("grid");

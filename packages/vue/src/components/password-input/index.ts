@@ -13,6 +13,8 @@ const PasswordInputRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("password-input");
+
     return () => h(ArkPasswordInput.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -26,5 +28,3 @@ export const PasswordInput: Omit<typeof ArkPasswordInput, "Root"> & {
   ...ArkPasswordInput,
   Root: PasswordInputRoot,
 };
-
-injectComponentStyle("password-input");

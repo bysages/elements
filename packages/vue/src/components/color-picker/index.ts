@@ -17,6 +17,8 @@ const ColorPickerRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("color-picker");
+
     return () => h(ArkColorPicker.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -30,5 +32,3 @@ export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 };
-
-injectComponentStyle("color-picker");

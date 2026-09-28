@@ -291,6 +291,8 @@ export const DataTable = defineComponent({
     reorderable: Boolean,
   },
   setup(rawProps, { expose, emit }) {
+    injectComponentStyle("table");
+
     // Declared defaults keep these present at runtime.
     const props = rawProps as DataTableProps & Required<Pick<DataTableProps, "pageSizeOptions">>;
 
@@ -1069,5 +1071,3 @@ export const DataTable = defineComponent({
     };
   },
 });
-
-injectComponentStyle("table");

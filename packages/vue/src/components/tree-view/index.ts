@@ -17,6 +17,8 @@ const TreeViewRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("tree-view");
+
     // `as never` sidesteps the h() overload the collection prop's generic
     // cannot unroll — see the select preset for the same turn.
     return () => h(ArkTreeView.Root as never, { ...attrs, "data-size": props.size }, slots);
@@ -29,5 +31,3 @@ export const TreeView: Omit<typeof ArkTreeView, "Root"> & { Root: typeof TreeVie
   ...ArkTreeView,
   Root: TreeViewRoot,
 };
-
-injectComponentStyle("tree-view");

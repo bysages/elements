@@ -36,6 +36,8 @@ const Root = defineComponent({
     status: { type: String, default: "ink" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("alert");
+
     provide(
       STATUS,
       computed(() => props.status),
@@ -98,5 +100,3 @@ const Description = defineComponent({
  * hairline on the leading edge, the serif for its title. */
 
 export const Alert = Object.assign(Root, { Root, Icon, Body, Title, Description });
-
-injectComponentStyle("alert");

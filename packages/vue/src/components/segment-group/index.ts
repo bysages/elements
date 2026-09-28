@@ -22,6 +22,8 @@ const SegmentGroupRoot = defineComponent({
     },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("segment-group");
+
     return () =>
       h(
         ArkSegmentGroup.Root,
@@ -40,5 +42,3 @@ export const SegmentGroup: Omit<typeof ArkSegmentGroup, "Root"> & {
   ...ArkSegmentGroup,
   Root: SegmentGroupRoot,
 };
-
-injectComponentStyle("segment-group");

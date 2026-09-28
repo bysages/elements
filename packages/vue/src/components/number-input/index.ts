@@ -13,6 +13,8 @@ const NumberInputRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("number-input");
+
     return () => h(ArkNumberInput.Root, { ...attrs, "data-size": props.size }, slots);
   },
 });
@@ -26,5 +28,3 @@ export const NumberInput: Omit<typeof ArkNumberInput, "Root"> & {
   ...ArkNumberInput,
   Root: NumberInputRoot,
 };
-
-injectComponentStyle("number-input");

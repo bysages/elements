@@ -68,6 +68,8 @@ export const PromptInput = defineComponent({
     stop: () => true,
   },
   setup(props, { emit, attrs, slots }: SetupContext) {
+    injectComponentStyle("ai");
+
     // The field part is a component; its root element rides `$el`.
     const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
     const el = (): HTMLTextAreaElement | null =>
@@ -200,7 +202,4 @@ export const PromptInput = defineComponent({
     };
   },
 });
-
-injectComponentStyle("ai");
-
 export { PromptInput as AiPromptInput };

@@ -39,6 +39,8 @@ export const Image = defineComponent({
     },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("image");
+
     const state = ref<"loading" | "loaded" | "error">("loading");
 
     // A new source starts the wait over — the last picture's state must
@@ -80,5 +82,3 @@ export const Image = defineComponent({
       );
   },
 });
-
-injectComponentStyle("image");

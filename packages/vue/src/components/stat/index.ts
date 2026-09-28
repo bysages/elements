@@ -6,6 +6,8 @@ function part(name: string, tag: string) {
   return defineComponent({
     name: "Stat" + name,
     setup(_, ctx: SetupContext) {
+      injectComponentStyle("stat");
+
       return () =>
         h(
           tag,
@@ -57,5 +59,3 @@ export const Stat = Object.assign(Root, {
   Delta,
   Description,
 });
-
-injectComponentStyle("stat");

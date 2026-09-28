@@ -17,6 +17,8 @@ export const Separator = defineComponent({
     decorative: { type: Boolean, default: false },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("separator");
+
     return () =>
       h("div", {
         ...ctx.attrs,
@@ -28,5 +30,3 @@ export const Separator = defineComponent({
       });
   },
 });
-
-injectComponentStyle("separator");

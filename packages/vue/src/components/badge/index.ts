@@ -11,6 +11,8 @@ export const Badge = defineComponent({
     variant: { type: String, default: "solid" },
   },
   setup(props, ctx: SetupContext) {
+    injectComponentStyle("badge");
+
     return () =>
       h(
         "span",
@@ -25,5 +27,3 @@ export const Badge = defineComponent({
       );
   },
 });
-
-injectComponentStyle("badge");

@@ -39,6 +39,9 @@ export const Form = defineComponent({
     form: { type: Object as PropType<AnyFormApi>, required: true },
   },
   setup(props, { attrs, slots }) {
+    injectComponentStyle("form");
+    injectComponentStyle("field");
+
     provide(FORM_KEY, props.form);
     return () =>
       h(
@@ -136,5 +139,3 @@ export const FormField = defineComponent({
 
 // The fields inside are the field family's own recipe — the form
 // stylesheet only lays the grid and routes the errors.
-injectComponentStyle("form");
-injectComponentStyle("field");
