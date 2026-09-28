@@ -75,6 +75,16 @@ export const transferCss =
   background: var(--bs-color-surface-inset);
 }
 
+/* A checked row wears the light wash of the pigment — the reader can
+   see the load the crossing will carry before it moves. */
+[data-scope="transfer"] [data-scope="checkbox"][data-part="root"][data-state="checked"] {
+  background: color-mix(in oklab, var(--bs-color-primary) 8%, var(--bs-color-surface-1));
+}
+
+[data-scope="transfer"] [data-scope="checkbox"][data-part="root"][data-state="checked"]:hover {
+  background: color-mix(in oklab, var(--bs-color-primary) 12%, var(--bs-color-surface-1));
+}
+
 [data-scope="transfer"] [data-part="label"] {
   font-size: var(--bs-font-size-sm);
   color: var(--bs-color-text-primary);
@@ -92,5 +102,28 @@ export const transferCss =
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-sm);
+}
+
+/* The metric ledger narrows each panel to the borrowed spec's fixed
+   column and height, floats it on the lightest shadow, and hangs the
+   crossing on the register's small square buttons. */
+[data-scene="metric"] [data-scope="transfer"][data-part="panel"] {
+  inline-size: 12.5rem;
+  block-size: 12.5rem;
+  border-radius: var(--bs-radius-lg);
+  box-shadow: var(--bs-shadow-xs);
+}
+
+[data-scene="metric"] [data-scope="transfer"][data-part="head"] {
+  min-block-size: var(--bs-control-height-lg);
+}
+
+[data-scene="metric"] [data-scope="transfer"][data-part="operations"] {
+  gap: var(--bs-gap-md);
+}
+
+[data-scene="metric"] [data-scope="transfer"][data-part="operations"] [data-scope="button"][data-part="root"] {
+  block-size: var(--bs-control-height-sm);
+  inline-size: var(--bs-control-height-sm);
 }
 `;

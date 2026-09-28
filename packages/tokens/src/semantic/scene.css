@@ -494,8 +494,13 @@
   --bs-color-text-secondary: oklch(0.53 0 0);
   --bs-color-text-tertiary: oklch(0.648 0 0);
   --bs-color-text-disabled: oklch(0.82 0 0);
-  --bs-color-border: oklch(0.894 0 0);
-  --bs-color-border-strong: oklch(0.823 0 0);
+  --bs-color-border: oklch(0.933 0 0);
+  --bs-color-border-strong: oklch(0.895 0 0);
+  /* The register pairs its blue one step deeper than the house lapis —
+     the borrowed brand's own working tone. */
+  --bs-color-primary: var(--bs-color-brand-700);
+  --bs-color-primary-hover: var(--bs-color-brand-800);
+  --bs-color-primary-active: var(--bs-color-brand-900);
   --bs-control-height-sm: 1.5rem;
   --bs-control-height-md: 2rem;
   --bs-control-height-lg: 2.5rem;
@@ -566,8 +571,10 @@
 }
 
 [data-scene="metric"] {
-  --bs-color-surface-0: oklch(0.949 0 0);
-  --bs-color-surface-1: oklch(0.964 0 0);
+  /* The plain white stock: the borrowed register draws its pages on
+     white and lets the hairlines carry every separation. */
+  --bs-color-surface-0: oklch(1 0 0);
+  --bs-color-surface-1: oklch(1 0 0);
   --bs-color-surface-2: oklch(1 0 0);
   --bs-color-surface-3: oklch(1 0 0);
   --bs-color-surface-4: oklch(1 0 0);

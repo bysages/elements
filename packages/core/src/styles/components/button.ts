@@ -61,6 +61,15 @@ export const buttonCss = /* css */ `
   padding: 0 var(--bs-padding-xl);
 }
 
+/* The metric register answers the cursor with the pigment: the outlined
+   shell inks its edge and its label in the working blue, the way the
+   borrowed desk spec reads "available". */
+[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:hover:not([data-disabled]),
+[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:focus-visible:not([data-disabled]) {
+  border-color: var(--_pigment);
+  color: var(--_pigment);
+}
+
 /* Icon-only: the silhouette is the seal — width equals height. */
 [data-scope="button"][data-part="root"][data-square="true"],
 [data-scope="button"][data-part="root"][data-size="sm"][data-square="true"] {
