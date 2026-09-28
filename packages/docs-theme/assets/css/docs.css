@@ -817,6 +817,10 @@ body {
    the start of the flow, where it would stand on a real page — centering
    is a demo's own explicit choice, not the canvas's default. */
 .bs-docs-demo-canvas {
+  /* A docs page stacks several demos; one below the fold costs its
+     full layout for nothing until the reader scrolls to it. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 20rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
