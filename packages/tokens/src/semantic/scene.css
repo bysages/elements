@@ -7,7 +7,9 @@
    the open specs and the places their platforms are built, never the
    companies: cupertino for the soft airy handheld register, expressive
    for motion-forward spring, fluent for measured productivity depth,
-   material for the elevation-led android-era look.
+   material for the elevation-led android-era look, missive and its
+   office sibling dispatch for the familiar handheld registers, metric
+   for the metric productivity register.
 
    A scene moves only what the paper allows: shape (radius), density, motion
    pace and its curves, where the key light stands and how far it reaches,
@@ -140,14 +142,14 @@
   --bs-tracking-label: 0em;
 }
 
-/* The borrowed papers. Four of the style scenes retint the surface
+/* The borrowed papers. Seven of the style scenes retint the surface
    ladder toward the register they borrow from — cupertino's clean
    handheld white, material's neutral violet-gray, sketch's warm
-   sketchbook stock — while the paper-and-ink scenes keep the house
-   stock. Custom properties on the root resolve per theme attribute, so
-   each paper carries a light and a dark face. */
-[data-scene="cupertino"][data-theme="light"],
-[data-scene="cupertino"]:not([data-theme]) {
+   sketchbook stock, and the neutral grounds the missive family and
+   the metric register speak against — while the paper-and-ink scenes keep
+   the house stock. Custom properties on the root resolve per theme
+   attribute, so each paper carries a light and a dark face. */
+[data-scene="cupertino"] {
   --bs-color-surface-0: oklch(0.973 0.001 265);
   --bs-color-surface-1: oklch(0.981 0.001 265);
   --bs-color-surface-2: oklch(0.992 0.001 265);
@@ -156,7 +158,8 @@
   --bs-color-surface-5: oklch(0.992 0.001 265);
 }
 
-[data-scene="cupertino"][data-theme="dark"] {
+[data-scene="cupertino"][data-theme="dark"],
+[data-scene="cupertino"]:not([data-theme]):where([data-theme="dark"] *) {
   --bs-color-surface-0: oklch(0.165 0.004 262);
   --bs-color-surface-1: oklch(0.205 0.004 262);
   --bs-color-surface-2: oklch(0.245 0.004 262);
@@ -226,8 +229,7 @@
 /* The layers: light sits on the calm gray ground with layered whites
    rising above it; dark climbs through three gray steps. Chroma zero —
    this register keeps no pigment in its paper. */
-[data-scene="fluent"][data-theme="light"],
-[data-scene="fluent"]:not([data-theme]) {
+[data-scene="fluent"] {
   --bs-color-surface-0: oklch(0.956 0 0);
   --bs-color-surface-1: oklch(0.973 0 0);
   --bs-color-surface-2: oklch(0.992 0 0);
@@ -236,7 +238,8 @@
   --bs-color-surface-5: oklch(0.992 0 0);
 }
 
-[data-scene="fluent"][data-theme="dark"] {
+[data-scene="fluent"][data-theme="dark"],
+[data-scene="fluent"]:not([data-theme]):where([data-theme="dark"] *) {
   --bs-color-surface-0: oklch(0.224 0 0);
   --bs-color-surface-1: oklch(0.251 0 0);
   --bs-color-surface-2: oklch(0.29 0 0);
@@ -286,8 +289,7 @@
 
 /* The surface: neutral, tinted faintly violet instead of the house's
    warm paper — the elevation-led register reads against cooler ground. */
-[data-scene="material"][data-theme="light"],
-[data-scene="material"]:not([data-theme]) {
+[data-scene="material"] {
   --bs-color-surface-0: oklch(0.966 0.006 300);
   --bs-color-surface-1: oklch(0.976 0.005 300);
   --bs-color-surface-2: oklch(0.986 0.004 300);
@@ -296,7 +298,8 @@
   --bs-color-surface-5: oklch(0.986 0.004 300);
 }
 
-[data-scene="material"][data-theme="dark"] {
+[data-scene="material"][data-theme="dark"],
+[data-scene="material"]:not([data-theme]):where([data-theme="dark"] *) {
   --bs-color-surface-0: oklch(0.165 0.009 300);
   --bs-color-surface-1: oklch(0.205 0.01 300);
   --bs-color-surface-2: oklch(0.245 0.011 300);
@@ -335,8 +338,7 @@
 /* The sketchbook stock: warmer and yellower than the house paper — the
    slightly grubby cream of a well-used drawing pad, night bleeding
    warmer still. */
-[data-scene="sketch"][data-theme="light"],
-[data-scene="sketch"]:not([data-theme]) {
+[data-scene="sketch"] {
   --bs-color-surface-0: oklch(0.958 0.014 92);
   --bs-color-surface-1: oklch(0.972 0.013 93);
   --bs-color-surface-2: oklch(0.982 0.012 95);
@@ -345,7 +347,8 @@
   --bs-color-surface-5: oklch(0.982 0.012 95);
 }
 
-[data-scene="sketch"][data-theme="dark"] {
+[data-scene="sketch"][data-theme="dark"],
+[data-scene="sketch"]:not([data-theme]):where([data-theme="dark"] *) {
   --bs-color-surface-0: oklch(0.165 0.012 85);
   --bs-color-surface-1: oklch(0.205 0.013 85);
   --bs-color-surface-2: oklch(0.245 0.014 85);
@@ -386,4 +389,145 @@
   --bs-radius-xl: 1.8rem 2.4rem 1.6rem 2.6rem / 2.3rem 1.7rem 2.7rem 1.9rem;
   --bs-radius-2xl: 2.4rem 3.2rem 2.15rem 3.5rem / 3.1rem 2.3rem 3.6rem 2.4rem;
   --bs-radius-full: 1.35rem 1.8rem 1.25rem 1.7rem / 1.75rem 1.4rem 1.9rem 1.45rem;
+}
+
+/* The everyday registers — three papers borrowed whole from the open
+   handheld and productivity specs: missive, the familiar phone
+   register, dispatch its office sibling, and metric, the metric
+   register. */
+
+[data-scene="missive"] {
+  /* 家书 — the familiar handheld register: corners round soft but never
+     full, targets grow to the touch ladder, the pace eases back so
+     states are never missed, presses answer through the fill change
+     rather than a wash, and focus speaks as a crisp 2px accent line
+     pulled inside the edge. Headlines stand down from the serif — the
+     register speaks in the system voice. */
+  --bs-radius-sm: 0.25rem;
+  --bs-radius-md: 0.5rem;
+  --bs-radius-lg: 0.75rem;
+  --bs-radius-xl: 1rem;
+  --bs-radius-2xl: 1.25rem;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.5rem;
+  --bs-control-height-lg: 3rem;
+  --bs-density-scale: 1.15;
+  --bs-motion-scale: 0.9;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.6;
+  --bs-ripple-opacity: 0;
+  --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-font-serif: var(--bs-font-sans);
+  --bs-tracking-label: 0em;
+}
+
+[data-scene="dispatch"] {
+  /* 公牍 — the office sibling: the same soft corners and touch targets,
+     retuned for the working desk — the pigment pairs cobalt instead of
+     green, and the ground cools and deepens. */
+  --bs-radius-sm: 0.25rem;
+  --bs-radius-md: 0.5rem;
+  --bs-radius-lg: 0.75rem;
+  --bs-radius-xl: 1rem;
+  --bs-radius-2xl: 1.25rem;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.5rem;
+  --bs-control-height-lg: 3rem;
+  --bs-density-scale: 1.15;
+  --bs-motion-scale: 0.9;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.6;
+  --bs-ripple-opacity: 0;
+  --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-font-serif: var(--bs-font-sans);
+  --bs-tracking-label: 0em;
+}
+
+[data-scene="metric"] {
+  /* 格律 — the metric productivity register: the corner ladder steps in
+     strict meter, controls sit on the compact 24/32/40 ladder, hairlines
+     carry the hierarchy under a flat light, presses answer through fill,
+     and focus rings the edge with a plain 2px outline — no glow. */
+  --bs-radius-sm: 0.125rem;
+  --bs-radius-md: 0.1875rem;
+  --bs-radius-lg: 0.375rem;
+  --bs-radius-xl: 0.5625rem;
+  --bs-radius-2xl: 0.75rem;
+  --bs-control-height-sm: 1.5rem;
+  --bs-control-height-md: 2rem;
+  --bs-control-height-lg: 2.5rem;
+  --bs-density-scale: 0.95;
+  --bs-motion-scale: 0.9;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.55;
+  --bs-ripple-opacity: 0;
+  --bs-focus-ring: 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
+}
+
+/* The everyday stocks: missive's pages sit on the deep gray ground
+   with white groups above; dispatch's office paper cools the same
+   ladder and goes true black at night — the register's own stock; the
+   metric register keeps a light cool gray ground and a stepped dark
+   ladder. */
+[data-scene="missive"] {
+  --bs-color-surface-0: oklch(0.946 0 0);
+  --bs-color-surface-1: oklch(0.976 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+}
+
+[data-scene="missive"][data-theme="dark"],
+[data-scene="missive"]:not([data-theme]):where([data-theme="dark"] *) {
+  --bs-color-surface-0: oklch(0.178 0 0);
+  --bs-color-surface-1: oklch(0.213 0 0);
+  --bs-color-surface-2: oklch(0.235 0 0);
+  --bs-color-surface-3: oklch(0.244 0 0);
+  --bs-color-surface-4: oklch(0.26 0 0);
+  --bs-color-surface-5: oklch(0.277 0 0);
+}
+
+[data-scene="dispatch"] {
+  --bs-color-surface-0: oklch(0.973 0.002 265);
+  --bs-color-surface-1: oklch(0.976 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+}
+
+[data-scene="dispatch"][data-theme="dark"],
+[data-scene="dispatch"]:not([data-theme]):where([data-theme="dark"] *) {
+  --bs-color-surface-0: oklch(0 0 0);
+  --bs-color-surface-1: oklch(0.192 0.002 265);
+  --bs-color-surface-2: oklch(0.214 0.002 265);
+  --bs-color-surface-3: oklch(0.235 0 0);
+  --bs-color-surface-4: oklch(0.257 0.002 265);
+  --bs-color-surface-5: oklch(0.277 0.002 265);
+}
+
+[data-scene="metric"] {
+  --bs-color-surface-0: oklch(0.949 0 0);
+  --bs-color-surface-1: oklch(0.964 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+}
+
+[data-scene="metric"][data-theme="dark"],
+[data-scene="metric"]:not([data-theme]):where([data-theme="dark"] *) {
+  --bs-color-surface-0: oklch(0.209 0 0);
+  --bs-color-surface-1: oklch(0.239 0 0);
+  --bs-color-surface-2: oklch(0.26 0 0);
+  --bs-color-surface-3: oklch(0.293 0 0);
+  --bs-color-surface-4: oklch(0.321 0 0);
+  --bs-color-surface-5: oklch(0.348 0 0);
 }

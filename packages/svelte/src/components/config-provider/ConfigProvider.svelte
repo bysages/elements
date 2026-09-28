@@ -2,11 +2,14 @@
 import { provideConfig } from "./context";
 import type { ConfigProviderProps } from "./props";
 
-let { density, accent, dir, locale, lang, children, ...rest }: ConfigProviderProps = $props();
+let { density, scene, accent, dir, locale, lang, children, ...rest }: ConfigProviderProps = $props();
 
 provideConfig({
   get density() {
     return density;
+  },
+  get scene() {
+    return scene;
   },
   get accent() {
     return accent;
@@ -30,6 +33,7 @@ messages) and visual theming stay one decision. -->
   data-scope="config-provider"
   data-part="root"
   data-density={density}
+  data-scene={scene}
   data-accent={accent}
   {dir}
   lang={locale ?? lang}

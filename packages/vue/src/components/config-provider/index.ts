@@ -1,3 +1,4 @@
+import type { ThemeScene } from "@bysages/core";
 import type { SetupContext } from "vue";
 import {
   computed,
@@ -15,11 +16,17 @@ import {
  * does. */
 export type ConfigDensity = "compact" | "default" | "comfortable" | "spacious";
 
+/** The named scene registers the token layer's `[data-scene]` selectors
+ * retune — "auto" is the engine's own resolution and stays off the
+ * subtree vocabulary. */
+export type ConfigScene = Exclude<ThemeScene, "auto">;
+
 /** The configuration a provider lays over its subtree. Every field is
  * optional: an absent field changes nothing, and the page's own
  * attributes keep ruling. */
 export interface ConfigContext {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   /** A mineral pigment theme (qinghua, celadon, zhusha, …) landing as
    * `[data-accent]` on the host element. */
   accent?: string;
@@ -44,6 +51,7 @@ export function useConfig(): ComputedRef<ConfigContext> {
 
 export interface ConfigProviderProps {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
@@ -60,6 +68,7 @@ export const ConfigProvider = defineComponent({
   name: "ConfigProvider",
   props: {
     density: { type: String as PropType<ConfigDensity>, default: undefined },
+    scene: { type: String as PropType<ConfigScene>, default: undefined },
     accent: { type: String, default: undefined },
     dir: { type: String as PropType<"ltr" | "rtl">, default: undefined },
     locale: { type: String, default: undefined },
@@ -69,6 +78,7 @@ export const ConfigProvider = defineComponent({
       configInjectionKey,
       computed<ConfigContext>(() => ({
         density: props.density,
+        scene: props.scene,
         accent: props.accent,
         dir: props.dir,
         locale: props.locale,
@@ -76,7 +86,7 @@ export const ConfigProvider = defineComponent({
     );
 
     return () => {
-      const { density, accent, dir, locale } = props;
+      const { density, scene, accent, dir, locale } = props;
       return h(
         "div",
         {
@@ -87,6 +97,7 @@ export const ConfigProvider = defineComponent({
           // token selectors fire on presence, and an empty attribute
           // would read as a value.
           ...(density != null ? { "data-density": density } : {}),
+          ...(scene != null ? { "data-scene": scene } : {}),
           ...(accent != null ? { "data-accent": accent } : {}),
           ...(dir != null ? { dir } : {}),
           ...(locale != null ? { lang: locale } : {}),

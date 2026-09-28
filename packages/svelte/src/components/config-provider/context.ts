@@ -1,3 +1,4 @@
+import type { ThemeScene } from "@bysages/core";
 import { getContext, setContext } from "svelte";
 
 /** The four density tiers the token layer's `[data-density]` selectors
@@ -5,11 +6,17 @@ import { getContext, setContext } from "svelte";
  * does. */
 export type ConfigDensity = "compact" | "default" | "comfortable" | "spacious";
 
+/** The named scene registers the token layer's `[data-scene]` selectors
+ * retune — "auto" is the engine's own resolution and stays off the
+ * subtree vocabulary. */
+export type ConfigScene = Exclude<ThemeScene, "auto">;
+
 /** The configuration a provider lays over its subtree. Every field is
  * optional: an absent field changes nothing, and the page's own
  * attributes keep ruling. */
 export interface ConfigContext {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   /** A mineral pigment theme (qinghua, celadon, zhusha, …) landing as
    * `[data-accent]` on the host element. */
   accent?: string;

@@ -1,3 +1,4 @@
+import type { ThemeScene } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext } from "react";
 
@@ -6,11 +7,17 @@ import { createContext, useContext } from "react";
  * does. */
 export type ConfigDensity = "compact" | "default" | "comfortable" | "spacious";
 
+/** The named scene registers the token layer's `[data-scene]` selectors
+ * retune — "auto" is the engine's own resolution and stays off the
+ * subtree vocabulary. */
+export type ConfigScene = Exclude<ThemeScene, "auto">;
+
 /** The configuration a provider lays over its subtree. Every field is
  * optional: an absent field changes nothing, and the page's own
  * attributes keep ruling. */
 export interface ConfigContext {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   /** A mineral pigment theme (qinghua, celadon, zhusha, …) landing as
    * `[data-accent]` on the host element. */
   accent?: string;
@@ -31,6 +38,7 @@ export function useConfig(): ConfigContext {
 
 export interface ConfigProviderProps extends HTMLAttributes<HTMLDivElement> {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
@@ -46,6 +54,7 @@ export interface ConfigProviderProps extends HTMLAttributes<HTMLDivElement> {
  */
 export function ConfigProvider({
   density,
+  scene,
   accent,
   dir,
   locale,
@@ -53,7 +62,7 @@ export function ConfigProvider({
   ...rest
 }: ConfigProviderProps) {
   return (
-    <ConfigContextImpl.Provider value={{ density, accent, dir, locale }}>
+    <ConfigContextImpl.Provider value={{ density, scene, accent, dir, locale }}>
       <div
         {...rest}
         data-scope="config-provider"
@@ -62,6 +71,7 @@ export function ConfigProvider({
         // token selectors fire on presence, and an empty attribute
         // would read as a value.
         {...(density != null ? { "data-density": density } : {})}
+        {...(scene != null ? { "data-scene": scene } : {})}
         {...(accent != null ? { "data-accent": accent } : {})}
         {...(dir != null ? { dir } : {})}
         {...(locale != null ? { lang: locale } : {})}

@@ -20,7 +20,10 @@ export type ThemeScene =
   | "expressive"
   | "fluent"
   | "material"
-  | "sketch";
+  | "sketch"
+  | "missive"
+  | "dispatch"
+  | "metric";
 export type ThemeAccent = "auto" | "ink" | "qinghua" | "celadon" | "zhusha";
 
 export interface Theme {
@@ -44,6 +47,9 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   fluent: "qinghua",
   material: "celadon",
   sketch: "zhusha",
+  missive: "celadon",
+  dispatch: "qinghua",
+  metric: "qinghua",
 };
 
 /** Each scene also pairs with a contrast tier — civic serves elders, so it
@@ -59,6 +65,9 @@ export const SCENE_DEFAULT_CONTRAST: Record<Exclude<ThemeScene, "auto">, "normal
   fluent: "normal",
   material: "normal",
   sketch: "normal",
+  missive: "normal",
+  dispatch: "normal",
+  metric: "normal",
 };
 
 export interface ApplyThemeOptions extends Partial<Theme> {

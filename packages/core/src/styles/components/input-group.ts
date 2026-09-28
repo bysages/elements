@@ -33,12 +33,16 @@ export const inputGroupCss = /* css */ `
 }
 
 [data-scene="cupertino"] [data-scope="input-group"][data-part="root"]:focus-within,
-[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within {
+[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within,
+[data-scene="missive"] [data-scope="input-group"][data-part="root"]:focus-within,
+[data-scene="dispatch"] [data-scope="input-group"][data-part="root"]:focus-within {
   box-shadow: none;
 }
 
 [data-scene="cupertino"] [data-scope="input-group"][data-part="root"]:focus-within::after,
-[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within::after {
+[data-scene="fluent"] [data-scope="input-group"][data-part="root"]:focus-within::after,
+[data-scene="missive"] [data-scope="input-group"][data-part="root"]:focus-within::after,
+[data-scene="dispatch"] [data-scope="input-group"][data-part="root"]:focus-within::after {
   content: "";
   position: absolute;
   inset: 0;

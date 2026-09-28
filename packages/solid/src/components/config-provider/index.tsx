@@ -1,3 +1,4 @@
+import type { ThemeScene } from "@bysages/core";
 import { createContext, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
@@ -6,11 +7,17 @@ import type { JSX } from "solid-js";
  * does. */
 export type ConfigDensity = "compact" | "default" | "comfortable" | "spacious";
 
+/** The named scene registers the token layer's `[data-scene]` selectors
+ * retune — "auto" is the engine's own resolution and stays off the
+ * subtree vocabulary. */
+export type ConfigScene = Exclude<ThemeScene, "auto">;
+
 /** The configuration a provider lays over its subtree. Every field is
  * optional: an absent field changes nothing, and the page's own
  * attributes keep ruling. */
 export interface ConfigContext {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   /** A mineral pigment theme (qinghua, celadon, zhusha, …) landing as
    * `[data-accent]` on the host element. */
   accent?: string;
@@ -33,6 +40,7 @@ export function useConfig(): () => ConfigContext {
 
 export interface ConfigProviderProps extends JSX.HTMLAttributes<HTMLDivElement> {
   density?: ConfigDensity;
+  scene?: ConfigScene;
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
@@ -46,11 +54,19 @@ export interface ConfigProviderProps extends JSX.HTMLAttributes<HTMLDivElement> 
  * messages) and visual theming stay one decision.
  */
 export function ConfigProvider(props: ConfigProviderProps) {
-  const [own, rest] = splitProps(props, ["density", "accent", "dir", "locale", "children"]);
+  const [own, rest] = splitProps(props, [
+    "density",
+    "scene",
+    "accent",
+    "dir",
+    "locale",
+    "children",
+  ]);
   return (
     <ConfigContextKey.Provider
       value={() => ({
         density: own.density,
+        scene: own.scene,
         accent: own.accent,
         dir: own.dir,
         locale: own.locale,
@@ -64,6 +80,7 @@ export function ConfigProvider(props: ConfigProviderProps) {
         // selectors fire on presence, and an empty attribute would read
         // as a value. Solid drops an attribute set to undefined.
         data-density={own.density}
+        data-scene={own.scene}
         data-accent={own.accent}
         dir={own.dir}
         lang={own.locale}

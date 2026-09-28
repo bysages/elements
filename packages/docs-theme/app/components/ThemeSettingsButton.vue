@@ -30,6 +30,9 @@ const sceneNames: Array<{ value: ThemeScene; en: string; zh: string }> = [
   { value: "fluent", en: "Fluent", zh: "流水" },
   { value: "material", en: "Material", zh: "格物" },
   { value: "sketch", en: "Sketch", zh: "写意" },
+  { value: "missive", en: "Missive", zh: "家书" },
+  { value: "dispatch", en: "Dispatch", zh: "公牍" },
+  { value: "metric", en: "Metric", zh: "格律" },
 ];
 const scenes = sceneNames.map((s) => ({
   ...s,
