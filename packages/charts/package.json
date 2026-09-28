@@ -1,6 +1,6 @@
 {
   "name": "@bysages/charts",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Token-themed charts for By Sages Elements — TanStack Charts dressed in the paper-and-ink system: one token bridge plus thin framework adapters",
   "keywords": [
     "charts",
@@ -64,7 +64,7 @@
     "@tanstack/charts": "0.18.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "7.3.0",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
     "rollup-plugin-svelte": "7.2.3",
     "svelte": "5.57.1"
   },

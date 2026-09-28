@@ -54,10 +54,10 @@
   "devDependencies": {
     "@funish/basis": "0.3.0",
     "@nuxt/devtools-kit": "3.4.2",
-    "@types/node": "26.6.2",
+    "@types/node": "26.6.3",
     "@types/react": "19.3.0",
     "ts-morph": "28.0.0",
-    "tsx": "4.23.13",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vite-plus": "0.3.3",
     "vue-tsc": "3.3.11"

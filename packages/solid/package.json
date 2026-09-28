@@ -1,6 +1,6 @@
 {
   "name": "@bysages/solid",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "By Sages Elements components for Solid — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -130,7 +130,7 @@
     "@zag-js/solid": "1.44.0"
   },
   "devDependencies": {
-    "ai": "7.0.107",
+    "ai": "7.0.118",
     "solid-js": "1.9.15",
     "unplugin-solid": "2.0.0"
   },
