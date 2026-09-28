@@ -44,6 +44,9 @@ function chevronDown() {
  */
 export const TreeSelect = defineComponent({
   name: "TreeSelect",
+  /* The root is a popover fragment (trigger + portal), so the caller's
+     class rides on the control itself. */
+  inheritAttrs: false,
   props: {
     modelValue: { type: String, default: undefined },
     data: { type: Array as PropType<TreeSelectNode[]>, required: true },
@@ -175,6 +178,7 @@ export const TreeSelect = defineComponent({
             h(
               "button",
               {
+                ...ctx.attrs,
                 type: "button",
                 "data-scope": "tree-select",
                 "data-part": "control",
