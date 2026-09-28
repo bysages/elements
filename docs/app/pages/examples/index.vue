@@ -6,6 +6,10 @@ import { Badge, Card } from "@bysages/vue";
 // Examples tab lands on.
 definePageMeta({ layout: "default", examples: true });
 
+// strategy "prefix" serves every locale under its own segment, so the
+// bare path would fall out of the router — each link rides localePath.
+const lp = useLocalePath();
+
 useSeoMeta({
   title: "Examples",
   description:
@@ -89,7 +93,7 @@ const apps = [
         <Card.Header>
           <Card.Title>
             <NuxtLink
-              :to="`/examples/${app.name}`"
+              :to="lp(`/examples/${app.name}`)"
               class="text-inherit no-underline hover:underline hover:underline-offset-[0.2em]"
             >
               {{ app.title }}
@@ -108,7 +112,7 @@ const apps = [
              pair wants a wider berth than the default. -->
         <Card.Footer class="gap-4!">
           <NuxtLink
-            :to="`/examples/${app.name}`"
+            :to="lp(`/examples/${app.name}`)"
             class="font-medium text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
           >
             Open the example

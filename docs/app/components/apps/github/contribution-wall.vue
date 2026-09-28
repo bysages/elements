@@ -3,10 +3,28 @@ import { cell, defineChart } from "@bysages/charts";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
 import { scaleBand } from "@tanstack/charts/scales/band";
 import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
+import { tooltip } from "@tanstack/charts/tooltip";
+import { onMounted, onUnmounted, ref } from "vue";
 
 import { type ContributionDay } from "./contributions";
 
 const props = defineProps<{ days: ContributionDay[] }>();
+
+// The wall lays out on its own 624x84 stage — every cell squares on the
+// fixed step — then the stage scales as one piece to fill the card, the
+// way the reference profile scales its chart with the viewport.
+const WALL_W = 624;
+const WALL_H = 84;
+const wall = ref<HTMLElement>();
+const scale = ref(1);
+let wallObserver: ResizeObserver | undefined;
+onMounted(() => {
+  wallObserver = new ResizeObserver(() => {
+    scale.value = (wall.value?.clientWidth ?? WALL_W) / WALL_W;
+  });
+  if (wall.value) wallObserver.observe(wall.value);
+});
+onUnmounted(() => wallObserver?.disconnect());
 
 // The ink ladder replaces GitHub's green: the darker the wash of the
 // accent, the heavier that day's hand — one pigment, five densities.
@@ -37,6 +55,7 @@ const definition = defineChart({
     },
   },
   color: { scale: tierScale },
+  tooltip: { use: tooltip },
 }) as ChartDefinition;
 
 const fmt = new Intl.DateTimeFormat("en-US", {
@@ -51,16 +70,23 @@ const tip = (d: ContributionDay) =>
 
 <template>
   <figure class="m-0">
-    <!-- GitHub sizes every cell against one fixed step, so the wall
-         keeps its squares square and scrolls when the card runs narrow. -->
-    <div class="overflow-x-auto">
-      <Chart
-        :style="{ width: '624px', height: '84px' }"
-        :definition="definition"
-        aria-label="Contributions over the past year"
+    <div ref="wall" class="overflow-hidden" :style="{ height: WALL_H * scale + 'px' }">
+      <div
+        class="origin-top-left"
+        :style="{
+          width: WALL_W + 'px',
+          height: WALL_H + 'px',
+          transform: `scale(${scale})`,
+        }"
       >
-        <template #tooltipBody="{ points }">{{ tip(points[0]!.datum) }}</template>
-      </Chart>
+        <Chart
+          :style="{ width: WALL_W + 'px', height: WALL_H + 'px' }"
+          :definition="definition"
+          aria-label="Contributions over the past year"
+        >
+          <template #tooltipBody="{ points }">{{ tip(points[0]!.datum) }}</template>
+        </Chart>
+      </div>
     </div>
     <figcaption class="mt-3 flex items-center justify-end gap-2 text-xs text-tertiary">
       <span>Less</span>

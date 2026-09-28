@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ inheritAttrs: false });
 import {
   applyTheme,
   getTheme,
@@ -72,8 +73,11 @@ function setScene(scene: ThemeScene) {
 
 <template>
   <Popover.Root>
+    <!-- The root is a fragment (trigger + portal), so the caller's
+         class lands here on the trigger itself. -->
     <Popover.Trigger as-child>
       <Button
+        v-bind="$attrs"
         variant="ghost"
         size="sm"
         square
