@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ContainerComponent from "./Container.svelte";
 
 /** The reading frame: content held to a measure and centered on the
@@ -8,5 +6,3 @@ import ContainerComponent from "./Container.svelte";
 export const Container = ContainerComponent;
 
 export type { ContainerProps } from "./props";
-
-injectComponentStyle("container");

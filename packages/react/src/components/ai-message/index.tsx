@@ -9,13 +9,11 @@ export interface MessageProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function Message({ role = "assistant", children, ...rest }: MessageProps) {
+  injectComponentStyle("ai");
   return (
     <article {...rest} data-scope="ai" data-part="message" data-role={role}>
       {children}
     </article>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Message as AiMessage };

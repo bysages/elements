@@ -14,13 +14,11 @@ export interface ActionProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Action({ label, children, ...rest }: ActionProps) {
+  injectComponentStyle("ai");
   return (
     <Button variant="ghost" size="sm" square aria-label={label} title={label} {...rest}>
       {children}
     </Button>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Action as AiAction };

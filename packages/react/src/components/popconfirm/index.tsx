@@ -31,6 +31,7 @@ export function Popconfirm({
   onConfirm,
   onCancel,
 }: PopconfirmProps) {
+  injectComponentStyle("popconfirm");
   const [open, setOpen] = useState(false);
   function settle(confirmed: boolean) {
     setOpen(false);
@@ -61,5 +62,3 @@ export function Popconfirm({
     </ArkPopover.Root>
   );
 }
-
-injectComponentStyle("popconfirm");

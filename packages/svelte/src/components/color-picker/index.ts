@@ -7,7 +7,6 @@
  * SwatchTrigger, SwatchIndicator, Swatch, EyeDropperTrigger, FormatTrigger,
  * FormatSelect, HiddenInput, Context. */
 import { ColorPicker as ArkColorPicker } from "@ark-ui/svelte/color-picker";
-import { injectComponentStyle } from "@bysages/core";
 
 import ColorPickerRoot from "./ColorPickerRoot.svelte";
 
@@ -17,5 +16,3 @@ export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & { Root: typeof C
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 };
-
-injectComponentStyle("color-picker");

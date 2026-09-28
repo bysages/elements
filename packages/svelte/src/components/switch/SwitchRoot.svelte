@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("switch");
+
 import { Switch as ArkSwitch } from "@ark-ui/svelte/switch";
 import type { SwitchRootProps } from "./props";
 

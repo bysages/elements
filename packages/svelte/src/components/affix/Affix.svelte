@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("affix");
+
 import type { Snippet } from "svelte";
 
 import type { AffixProps } from "./props";

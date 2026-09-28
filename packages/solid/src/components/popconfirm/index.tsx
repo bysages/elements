@@ -21,6 +21,7 @@ export interface PopconfirmProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * either way. The children are the trigger's content, riding the
  * machine-driven trigger button. */
 export function Popconfirm(props: PopconfirmProps) {
+  injectComponentStyle("popconfirm");
   const [own, rest] = splitProps(props, [
     "message",
     "confirmText",
@@ -65,5 +66,3 @@ export function Popconfirm(props: PopconfirmProps) {
     </ArkPopover.Root>
   );
 }
-
-injectComponentStyle("popconfirm");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("transfer");
+
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 
 import { Button } from "../button";

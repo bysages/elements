@@ -22,6 +22,7 @@ export interface ProgressGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function ProgressGroup({ segments, max, showLegend = true, ...rest }: ProgressGroupProps) {
+  injectComponentStyle("progress-group");
   // A zero whole must not divide — the bar simply stays empty.
   const total = max ?? segments.reduce((sum, segment) => sum + segment.value, 0);
   const share = (value: number) => (total > 0 ? `${(value / total) * 100}%` : "0%");
@@ -69,5 +70,3 @@ export function ProgressGroup({ segments, max, showLegend = true, ...rest }: Pro
     </div>
   );
 }
-
-injectComponentStyle("progress-group");

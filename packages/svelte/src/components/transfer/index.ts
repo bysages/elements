@@ -11,5 +11,4 @@ export type { TransferItem, TransferProps } from "./props";
 
 // The rows are the checkbox family's own seals — the transfer
 // stylesheet only dresses the ledgers around them.
-injectComponentStyle("transfer");
 injectComponentStyle("checkbox");

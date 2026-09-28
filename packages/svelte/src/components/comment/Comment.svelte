@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("comment");
+
 import type { CommentProps } from "./props";
 
 let { author, datetime, avatar, actions, children, ...rest }: CommentProps = $props();

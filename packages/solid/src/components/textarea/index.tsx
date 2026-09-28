@@ -15,6 +15,7 @@ export interface TextareaProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaEl
  * field context, picking up the label id, the described-by wiring and
  * the invalid state for free. Disabled rides the native attribute. */
 export function Textarea(props: TextareaProps) {
+  injectComponentStyle("textarea");
   const field = useFieldContext();
   const [own, rest] = splitProps(props, ["value", "invalid", "onValueChange"]);
   return (
@@ -36,5 +37,3 @@ export function Textarea(props: TextareaProps) {
     />
   );
 }
-
-injectComponentStyle("textarea");

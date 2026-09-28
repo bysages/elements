@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("dynamic-input");
+
 import { Button } from "../button";
 import { Input } from "../input";
 import type { DynamicInputProps } from "./props";

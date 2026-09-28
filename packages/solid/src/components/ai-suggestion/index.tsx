@@ -14,6 +14,7 @@ export interface SuggestionProps extends Omit<JSX.HTMLAttributes<HTMLButtonEleme
 /** A seal-cut button proposing the next stroke; selection hands back
  * the prompt. The shared Button in its outline register. */
 export function Suggestion(props: SuggestionProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["prompt", "onSelect"]);
   return (
     <Button variant="outline" size="sm" {...rest} onClick={() => own.onSelect?.(own.prompt)}>
@@ -21,7 +22,4 @@ export function Suggestion(props: SuggestionProps) {
     </Button>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Suggestion as AiSuggestion };

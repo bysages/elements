@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AspectRatioComponent from "./AspectRatio.svelte";
 
 /** A frame that keeps its shape: the box holds the given ratio whatever
@@ -7,5 +5,3 @@ import AspectRatioComponent from "./AspectRatio.svelte";
 export const AspectRatio = AspectRatioComponent;
 
 export type { AspectRatioProps } from "./props";
-
-injectComponentStyle("aspect-ratio");

@@ -2,7 +2,6 @@
  * square-cut seal, centered ink in tabular figures. The API is Ark's own —
  * Root, Label, Control, Input, HiddenInput. */
 import { PinInput as ArkPinInput } from "@ark-ui/svelte/pin-input";
-import { injectComponentStyle } from "@bysages/core";
 
 import PinInputRoot from "./PinInputRoot.svelte";
 
@@ -12,5 +11,3 @@ export const PinInput: Omit<typeof ArkPinInput, "Root"> & { Root: typeof PinInpu
   ...ArkPinInput,
   Root: PinInputRoot,
 };
-
-injectComponentStyle("pin-input");

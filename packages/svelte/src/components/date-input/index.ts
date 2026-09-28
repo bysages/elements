@@ -3,7 +3,6 @@
  * Ark's own — Root, Label, Control, SegmentGroup, Segment, SegmentContext,
  * HiddenInput. */
 import { DateInput as ArkDateInput } from "@ark-ui/svelte/date-input";
-import { injectComponentStyle } from "@bysages/core";
 
 import DateInputRoot from "./DateInputRoot.svelte";
 
@@ -13,5 +12,3 @@ export const DateInput: Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateI
   ...ArkDateInput,
   Root: DateInputRoot,
 };
-
-injectComponentStyle("date-input");

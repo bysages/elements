@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import TextareaComponent from "./Textarea.svelte";
 
 /** The bare multi-line input, dressed in the field recipe: border,
@@ -8,5 +6,3 @@ import TextareaComponent from "./Textarea.svelte";
 export const Textarea = TextareaComponent;
 
 export type { TextareaProps } from "./props";
-
-injectComponentStyle("textarea");

@@ -13,6 +13,7 @@ export function DescriptionsRoot({
   children,
   ...rest
 }: DescriptionsRootProps) {
+  injectComponentStyle("descriptions");
   return (
     <dl {...rest} data-scope="descriptions" data-part="root" data-layout={layout}>
       {children}
@@ -36,5 +37,3 @@ const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
 
 export const Descriptions = { Root: DescriptionsRoot, Item, Term, Detail };
-
-injectComponentStyle("descriptions");

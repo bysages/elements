@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("table");
+
 import {
   FlexRender,
   cellSpanningFeature,

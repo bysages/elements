@@ -17,6 +17,7 @@ export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
  * which is also the seam the Form validation layer will drive. Disabled
  * rides the native attribute. */
 export function Input(props: InputProps) {
+  injectComponentStyle("input");
   const field = useFieldContext();
   const [own, rest] = splitProps(props, ["value", "size", "invalid", "onValueChange"]);
   return (
@@ -39,5 +40,3 @@ export function Input(props: InputProps) {
     />
   );
 }
-
-injectComponentStyle("input");

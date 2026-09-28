@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ProgressGroupComponent from "./ProgressGroup.svelte";
 
 /** One bar, several verdicts: the segments stand shoulder to shoulder,
@@ -10,5 +8,3 @@ import ProgressGroupComponent from "./ProgressGroup.svelte";
 export const ProgressGroup = ProgressGroupComponent;
 
 export type { ProgressGroupProps, ProgressSegment } from "./props";
-
-injectComponentStyle("progress-group");

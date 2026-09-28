@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import BreadcrumbRoot from "./Breadcrumb.svelte";
 import BreadcrumbCurrent from "./BreadcrumbCurrent.svelte";
 import BreadcrumbItem from "./BreadcrumbItem.svelte";
@@ -27,5 +25,3 @@ export type {
   BreadcrumbProps,
   BreadcrumbSeparatorProps,
 } from "./props";
-
-injectComponentStyle("breadcrumb");

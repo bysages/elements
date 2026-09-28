@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ListRoot from "./List.svelte";
 import ListActions from "./ListActions.svelte";
 import ListContent from "./ListContent.svelte";
@@ -26,5 +24,3 @@ export type {
   ListContentProps,
   ListActionsProps,
 } from "./props";
-
-injectComponentStyle("list");

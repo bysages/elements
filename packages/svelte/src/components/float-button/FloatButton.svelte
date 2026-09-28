@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("float-button");
+
 import { setContext } from "svelte";
 
 import { FLOAT_BUTTON_KEY } from "./context";

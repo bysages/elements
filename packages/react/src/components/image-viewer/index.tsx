@@ -65,6 +65,7 @@ export function ImageViewer({
   zoomable = true,
   onOpenChange,
 }: ImageViewerProps) {
+  injectComponentStyle("image-viewer");
   // Controlled when the caller owns `open`; uncontrolled otherwise —
   // an undefined `open` must not reach the machine, or it would
   // override the machine's own decisions.
@@ -163,5 +164,3 @@ export function ImageViewer({
     </ArkDialog.Root>
   );
 }
-
-injectComponentStyle("image-viewer");

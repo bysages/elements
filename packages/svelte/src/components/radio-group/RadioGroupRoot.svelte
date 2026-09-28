@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("radio-group");
+
 import { RadioGroup as ArkRadioGroup } from "@ark-ui/svelte/radio-group";
 import type { RadioGroupRootProps } from "./props";
 

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("pagination");
+
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";
 import type { PaginationRootProps } from "./props";
 

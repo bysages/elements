@@ -24,6 +24,7 @@ export interface AutoCompleteProps {
  * otherwise.
  */
 export function AutoComplete(props: AutoCompleteProps) {
+  injectComponentStyle("combobox");
   const [own, rest] = splitProps(props, [
     "value",
     "items",
@@ -75,5 +76,3 @@ export function AutoComplete(props: AutoCompleteProps) {
     </ArkCombobox.Root>
   );
 }
-
-injectComponentStyle("combobox");

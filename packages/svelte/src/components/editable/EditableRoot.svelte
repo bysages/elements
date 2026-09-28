@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("editable");
+
 import { Editable as ArkEditable } from "@ark-ui/svelte/editable";
 import type { EditableRootProps } from "./props";
 

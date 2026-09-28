@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("checkbox");
+
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 import type { CheckboxRootProps } from "./props";
 

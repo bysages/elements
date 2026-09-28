@@ -75,6 +75,7 @@ export interface PromptInputProps extends Omit<
  * line. While `busy` the seal becomes a stop seal and Enter holds its
  * breath. */
 export function PromptInput(props: PromptInputProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, [
     "value",
     "onValueChange",
@@ -179,7 +180,4 @@ export function PromptInput(props: PromptInputProps) {
     </form>
   );
 }
-
-injectComponentStyle("ai");
-
 export { PromptInput as AiPromptInput };

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("button");
+
 import type { ButtonProps } from "./props";
 
 let {

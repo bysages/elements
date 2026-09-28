@@ -5,7 +5,6 @@
  * Content, View, ViewControl, ViewTrigger, RangeText, PrevTrigger,
  * NextTrigger, Table*, MonthSelect, YearSelect, PresetTrigger. */
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
-import { injectComponentStyle } from "@bysages/core";
 
 import DatePickerRoot from "./DatePickerRoot.svelte";
 
@@ -15,5 +14,3 @@ export const DatePicker: Omit<typeof ArkDatePicker, "Root"> & { Root: typeof Dat
   ...ArkDatePicker,
   Root: DatePickerRoot,
 };
-
-injectComponentStyle("date-picker");

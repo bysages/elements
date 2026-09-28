@@ -74,6 +74,8 @@ function Row(props: { entry: CommandEntry }) {
  * grafts onto the sheet's list.
  */
 export function Command(props: CommandProps) {
+  injectComponentStyle("command");
+  injectComponentStyle("dialog");
   const [own, rest] = splitProps(props, [
     "items",
     "placeholder",
@@ -239,7 +241,4 @@ export function Command(props: CommandProps) {
     </ArkDialog.Root>
   );
 }
-
-injectComponentStyle("command");
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
-injectComponentStyle("dialog");

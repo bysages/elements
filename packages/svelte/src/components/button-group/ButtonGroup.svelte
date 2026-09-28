@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("button-group");
+
 import type { ButtonGroupProps } from "./props";
 
 let { orientation = "horizontal", size, radius, children, ...rest }: ButtonGroupProps = $props();

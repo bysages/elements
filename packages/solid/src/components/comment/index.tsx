@@ -17,6 +17,7 @@ export interface CommentProps extends JSX.HTMLAttributes<HTMLElement> {
  * the children, and `actions` is the row of answers.
  */
 export function Comment(props: CommentProps) {
+  injectComponentStyle("comment");
   const [own, rest] = splitProps(props, ["author", "datetime", "avatar", "actions", "children"]);
   return (
     <article {...rest} data-scope="comment" data-part="root">
@@ -52,5 +53,3 @@ export function Comment(props: CommentProps) {
     </article>
   );
 }
-
-injectComponentStyle("comment");

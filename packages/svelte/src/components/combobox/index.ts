@@ -4,7 +4,6 @@
  * Control, Input, Trigger, ClearTrigger, Positioner, Content, List, Empty,
  * Item, ItemText, ItemIndicator, ItemGroup, ItemGroupLabel. */
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
-import { injectComponentStyle } from "@bysages/core";
 
 import ComboboxRoot from "./ComboboxRoot.svelte";
 
@@ -14,5 +13,3 @@ export const Combobox: Omit<typeof ArkCombobox, "Root"> & { Root: typeof Combobo
   ...ArkCombobox,
   Root: ComboboxRoot,
 };
-
-injectComponentStyle("combobox");

@@ -4,7 +4,6 @@
  * Trigger, ValueText, Indicator, ClearTrigger, HiddenSelect, Positioner,
  * Content, List, Item, ItemText, ItemIndicator, ItemGroup, ItemGroupLabel. */
 import { Select as ArkSelect } from "@ark-ui/svelte/select";
-import { injectComponentStyle } from "@bysages/core";
 
 import SelectRoot from "./SelectRoot.svelte";
 
@@ -14,5 +13,3 @@ export const Select: Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot 
   ...ArkSelect,
   Root: SelectRoot,
 };
-
-injectComponentStyle("select");

@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import EllipsisComponent from "./Ellipsis.svelte";
 
 /** The overflow knife: text cut at one line, or held to N lines. The
@@ -8,5 +6,3 @@ import EllipsisComponent from "./Ellipsis.svelte";
 export const Ellipsis = EllipsisComponent;
 
 export type { EllipsisProps } from "./props";
-
-injectComponentStyle("ellipsis");

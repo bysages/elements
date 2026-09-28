@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import MentionsComponent from "./Mentions.svelte";
 import MentionsVesselComponent from "./MentionsVessel.svelte";
 
@@ -24,5 +22,3 @@ export type {
   UseMentionsHandlers,
   UseMentionsOptions,
 } from "./props";
-
-injectComponentStyle("mentions");

@@ -58,6 +58,8 @@ export function Command({
   onOpenChange,
   onInputValueChange,
 }: CommandProps) {
+  injectComponentStyle("command");
+  injectComponentStyle("dialog");
   const [internalOpen, setInternalOpen] = useState(false);
   // The list has no popup of its own, but the machine still opens and
   // closes its content (outside click on the sheet dims the list);
@@ -199,7 +201,4 @@ export function Command({
     </ArkDialog.Root>
   );
 }
-
-injectComponentStyle("command");
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
-injectComponentStyle("dialog");

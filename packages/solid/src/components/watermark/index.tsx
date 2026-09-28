@@ -27,6 +27,7 @@ export interface WatermarkProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Watermark(props: WatermarkProps) {
+  injectComponentStyle("watermark");
   const [own, rest] = splitProps(props, ["content", "opacity", "rotate", "fontSize"]);
   const [host, setHost] = createSignal<HTMLDivElement>();
   const [tile, setTile] = createSignal("");
@@ -95,5 +96,3 @@ export function Watermark(props: WatermarkProps) {
     </div>
   );
 }
-
-injectComponentStyle("watermark");

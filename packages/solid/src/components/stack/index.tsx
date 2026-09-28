@@ -22,6 +22,7 @@ export interface StackProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Stack(props: StackProps) {
+  injectComponentStyle("stack");
   const [own, rest] = splitProps(props, ["direction", "gap", "wrap", "align", "justify"]);
   return (
     <div
@@ -39,5 +40,3 @@ export function Stack(props: StackProps) {
     />
   );
 }
-
-injectComponentStyle("stack");

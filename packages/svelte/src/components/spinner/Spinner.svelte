@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("spinner");
+
 import type { SpinnerProps } from "./props";
 
 let { size = "md", children, ...rest }: SpinnerProps = $props();

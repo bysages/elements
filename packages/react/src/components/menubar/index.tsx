@@ -35,6 +35,8 @@ export interface MenubarProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSe
 }
 
 export function Menubar({ items, onSelect, children, ...rest }: MenubarProps) {
+  injectComponentStyle("menubar");
+  injectComponentStyle("menu");
   return (
     <div {...rest} data-scope="menubar" data-part="root" role="menubar">
       {items.map((group) => (
@@ -69,7 +71,4 @@ export function Menubar({ items, onSelect, children, ...rest }: MenubarProps) {
     </div>
   );
 }
-
-injectComponentStyle("menubar");
 // The popups keep the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

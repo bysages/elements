@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AlertRoot from "./Alert.svelte";
 import AlertBody from "./AlertBody.svelte";
 import AlertDescription from "./AlertDescription.svelte";
@@ -18,5 +16,3 @@ export const Alert = Object.assign(AlertRoot, {
 });
 
 export type { AlertProps, AlertPartProps, AlertStatus } from "./props";
-
-injectComponentStyle("alert");

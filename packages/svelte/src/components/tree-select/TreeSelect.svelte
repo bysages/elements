@@ -1,6 +1,9 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("tree-select");
+
 import { useFilter } from "@ark-ui/svelte/locale";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/svelte/tree-view";
 

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("tabs");
+
 import { Tabs as ArkTabs } from "@ark-ui/svelte/tabs";
 import type { TabsRootProps } from "./props";
 

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("date-picker");
+
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
 import type { DatePickerRootProps } from "./props";
 

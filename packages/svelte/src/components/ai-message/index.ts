@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AiMessageComponent from "./AiMessage.svelte";
 
 /** Whose stroke this is — the user's words sit in a recessed bubble,
@@ -7,5 +5,3 @@ import AiMessageComponent from "./AiMessage.svelte";
 export const AiMessage = AiMessageComponent;
 
 export type { MessageProps, MessageRole } from "./props";
-
-injectComponentStyle("ai");

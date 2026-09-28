@@ -34,6 +34,7 @@ export function AutoComplete({
   onValueChange,
   ...rest
 }: AutoCompleteProps) {
+  injectComponentStyle("combobox");
   const { collection, filter: filterItems } = useListCollection({
     initialItems: items,
     filter: (item: string, input: string) =>
@@ -75,5 +76,3 @@ export function AutoComplete({
     </ArkCombobox.Root>
   );
 }
-
-injectComponentStyle("combobox");

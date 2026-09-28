@@ -3,7 +3,6 @@
  * place. The API is Ark's own — Root, Label, Control, Indicator,
  * HiddenInput. */
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
-import { injectComponentStyle } from "@bysages/core";
 
 import CheckboxRoot from "./CheckboxRoot.svelte";
 
@@ -13,5 +12,3 @@ export const Checkbox: Omit<typeof ArkCheckbox, "Root"> & { Root: typeof Checkbo
   ...ArkCheckbox,
   Root: CheckboxRoot,
 };
-
-injectComponentStyle("checkbox");

@@ -6,7 +6,6 @@
  * BranchIndentGuide, Item, ItemText, ItemIndicator, NodeCheckbox,
  * NodeRenameInput, plus createTreeCollection. */
 import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
-import { injectComponentStyle } from "@bysages/core";
 
 import TreeViewRoot from "./TreeViewRoot.svelte";
 
@@ -18,5 +17,3 @@ export const TreeView: Omit<typeof ArkTreeView, "Root"> & { Root: typeof TreeVie
 };
 
 export type { TreeViewRootProps } from "./props";
-
-injectComponentStyle("tree-view");

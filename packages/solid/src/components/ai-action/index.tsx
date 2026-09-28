@@ -14,6 +14,7 @@ export interface ActionProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * assistive tech and as the hover title. The control itself is the
  * shared Button in its ghost register. */
 export function Action(props: ActionProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["label", "children"]);
   return (
     <Button variant="ghost" size="sm" square aria-label={own.label} title={own.label} {...rest}>
@@ -21,7 +22,4 @@ export function Action(props: ActionProps) {
     </Button>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Action as AiAction };

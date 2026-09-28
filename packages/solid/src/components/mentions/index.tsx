@@ -35,6 +35,7 @@ export interface MentionsVesselProps {
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
 export function MentionsVessel(props: MentionsVesselProps) {
+  injectComponentStyle("mentions");
   return (
     <ArkPopover.Root
       open={props.open ?? false}
@@ -191,5 +192,3 @@ export function Mentions(props: MentionsProps) {
     </div>
   );
 }
-
-injectComponentStyle("mentions");

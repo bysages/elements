@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("image");
+
 import type { ImageProps } from "./props";
 
 let { src, alt = "", fit = "cover", loading = "lazy", fallback, ...rest }: ImageProps = $props();

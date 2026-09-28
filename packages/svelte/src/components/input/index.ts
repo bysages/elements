@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import InputComponent from "./Input.svelte";
 
 /** The bare text input, dressed in the field recipe: border, surface,
@@ -8,5 +6,3 @@ import InputComponent from "./Input.svelte";
 export const Input = InputComponent;
 
 export type { InputProps } from "./props";
-
-injectComponentStyle("input");

@@ -15,6 +15,7 @@ export interface ReasoningProps extends JSX.HTMLAttributes<HTMLDivElement> {
 /** The model's thought, folded by the shared collapsible in its quiet
  * register: bare ink for a trigger, the thought on one hairline. */
 export function Reasoning(props: ReasoningProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["label", "children"]);
   return (
     <Collapsible.Root {...rest} data-ai="reasoning">
@@ -30,7 +31,4 @@ export function Reasoning(props: ReasoningProps) {
     </Collapsible.Root>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Reasoning as AiReasoning };

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("input");
+
 import { useFieldContext } from "@ark-ui/svelte/field";
 import type { InputProps } from "./props";
 

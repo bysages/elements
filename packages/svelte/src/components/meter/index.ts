@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import MeterRoot from "./Meter.svelte";
 import MeterLabel from "./MeterLabel.svelte";
 import MeterTrack from "./MeterTrack.svelte";
@@ -15,5 +13,3 @@ export const Meter = Object.assign(MeterRoot, {
 });
 
 export type { MeterRootProps, MeterPartProps } from "./props";
-
-injectComponentStyle("meter");

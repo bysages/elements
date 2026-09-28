@@ -3,7 +3,6 @@
  * The API is Ark's own — Root, Label, ValueText, Control, Track, Range,
  * Thumb, MarkerGroup, Marker, DraggingIndicator, HiddenInput. */
 import { Slider as ArkSlider } from "@ark-ui/svelte/slider";
-import { injectComponentStyle } from "@bysages/core";
 
 import SliderRoot from "./SliderRoot.svelte";
 
@@ -13,5 +12,3 @@ export const Slider: Omit<typeof ArkSlider, "Root"> & { Root: typeof SliderRoot 
   ...ArkSlider,
   Root: SliderRoot,
 };
-
-injectComponentStyle("slider");

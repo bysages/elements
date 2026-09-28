@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import { AiAction as Action } from "../ai-action";
 import { AiMessage as Message } from "../ai-message";
 import { AiPromptInput as PromptInput } from "../ai-prompt-input";
@@ -49,9 +47,6 @@ export const Ai = Object.assign(AiConversation, {
   PromptInput,
   Loader: AiLoader,
 });
-
-injectComponentStyle("ai");
-
 export type {
   DataUIPart,
   FileUIPart,

@@ -20,6 +20,7 @@ export interface AffixProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * content then holds its place inside that band.
  */
 export function Affix(props: AffixProps) {
+  injectComponentStyle("affix");
   const [own, rest] = splitProps(props, ["offsetTop", "offsetBottom"]);
   return (
     <div
@@ -34,5 +35,3 @@ export function Affix(props: AffixProps) {
     />
   );
 }
-
-injectComponentStyle("affix");

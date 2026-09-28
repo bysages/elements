@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("mentions");
+
 import { Field } from "../field";
 
 import MentionsVessel from "./MentionsVessel.svelte";

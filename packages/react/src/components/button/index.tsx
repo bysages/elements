@@ -29,6 +29,7 @@ export function Button({
   children,
   ...rest
 }: ButtonProps) {
+  injectComponentStyle("button");
   const partProps = {
     ...rest,
     "data-scope": "button",
@@ -55,5 +56,3 @@ export function Button({
     </button>
   );
 }
-
-injectComponentStyle("button");

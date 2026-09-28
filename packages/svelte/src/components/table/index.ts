@@ -1,4 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
 import type { CellData, RowData, TableFeatures } from "@tanstack/svelte-table";
 
 import DataTableComponent from "./DataTable.svelte";
@@ -26,5 +25,3 @@ declare module "@tanstack/svelte-table" {
     numeric?: boolean;
   }
 }
-
-injectComponentStyle("table");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("container");
+
 import type { ContainerProps } from "./props";
 
 let { size = "readable", padding = true, children, ...rest }: ContainerProps = $props();

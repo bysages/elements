@@ -31,6 +31,7 @@ export interface BackTopProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * and the entrance.
  */
 export function BackTop(props: BackTopProps) {
+  injectComponentStyle("back-top");
   const [own, rest] = splitProps(props, ["threshold", "label", "scrollEl"]);
   const [visible, setVisible] = createSignal(false);
 
@@ -106,5 +107,3 @@ function chevronUp() {
     </svg>
   );
 }
-
-injectComponentStyle("back-top");

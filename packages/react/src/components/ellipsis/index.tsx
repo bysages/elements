@@ -9,6 +9,7 @@ export interface EllipsisProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function Ellipsis({ lines = 1, ...rest }: EllipsisProps) {
+  injectComponentStyle("ellipsis");
   const multiline = lines > 1;
   return (
     <span
@@ -24,5 +25,3 @@ export function Ellipsis({ lines = 1, ...rest }: EllipsisProps) {
     />
   );
 }
-
-injectComponentStyle("ellipsis");

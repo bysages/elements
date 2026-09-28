@@ -1,5 +1,4 @@
 import { Avatar as ArkAvatar } from "@ark-ui/svelte/avatar";
-import { injectComponentStyle } from "@bysages/core";
 
 import AvatarRoot from "./Avatar.svelte";
 
@@ -9,5 +8,3 @@ import AvatarRoot from "./Avatar.svelte";
  * re-point `--bs-avatar-size` per rung, and scenes can still retune the
  * variable directly. */
 export const Avatar = Object.assign({}, ArkAvatar, { Root: AvatarRoot });
-
-injectComponentStyle("avatar");

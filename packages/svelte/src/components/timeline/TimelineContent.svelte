@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("timeline");
+
 import type { TimelineContentProps } from "./props";
 
 let { children, ...rest }: TimelineContentProps = $props();

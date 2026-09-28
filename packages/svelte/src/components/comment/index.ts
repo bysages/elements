@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import CommentComponent from "./Comment.svelte";
 
 /** A voice on the record: the portrait hangs left (the avatar snippet),
@@ -8,5 +6,3 @@ import CommentComponent from "./Comment.svelte";
 export const Comment = CommentComponent;
 
 export type { CommentProps } from "./props";
-
-injectComponentStyle("comment");

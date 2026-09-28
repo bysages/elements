@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import { Button } from "../button";
 import type { ActionProps } from "./props";
 

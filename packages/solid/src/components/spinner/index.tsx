@@ -8,6 +8,7 @@ export interface SpinnerProps extends JSX.HTMLAttributes<HTMLElement> {
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
 export function Spinner(props: SpinnerProps) {
+  injectComponentStyle("spinner");
   const [own, rest] = splitProps(props, ["size"]);
   return (
     <span
@@ -37,5 +38,3 @@ export function Spinner(props: SpinnerProps) {
     </span>
   );
 }
-
-injectComponentStyle("spinner");

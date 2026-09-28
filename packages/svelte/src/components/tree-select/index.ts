@@ -10,5 +10,4 @@ export type { TreeSelectNode, TreeSelectProps } from "./props";
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.
-injectComponentStyle("tree-select");
 injectComponentStyle("tree-view");

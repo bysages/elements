@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("form");
+
   import { Field as ArkField } from "@ark-ui/svelte/field";
 
   import type { FormFieldProps } from "./props";

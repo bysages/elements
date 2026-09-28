@@ -3,7 +3,6 @@
  * punched through as paper. The API is Ark's own — Root, Label, Item,
  * ItemText, ItemControl, Indicator, ItemHiddenInput. */
 import { RadioGroup as ArkRadioGroup } from "@ark-ui/svelte/radio-group";
-import { injectComponentStyle } from "@bysages/core";
 
 import RadioGroupRoot from "./RadioGroupRoot.svelte";
 
@@ -13,5 +12,3 @@ export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof Rad
   ...ArkRadioGroup,
   Root: RadioGroupRoot,
 };
-
-injectComponentStyle("radio-group");

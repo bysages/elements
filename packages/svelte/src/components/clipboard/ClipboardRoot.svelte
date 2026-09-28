@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("clipboard");
+
 import { Clipboard as ArkClipboard } from "@ark-ui/svelte/clipboard";
 import type { ClipboardRootProps } from "./props";
 

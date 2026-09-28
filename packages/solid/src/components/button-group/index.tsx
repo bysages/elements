@@ -20,6 +20,7 @@ export interface ButtonGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * the toggle group; this is layout alone.
  */
 export function ButtonGroupRoot(props: ButtonGroupProps) {
+  injectComponentStyle("button-group");
   const [own, rest] = splitProps(props, ["orientation", "size", "radius"]);
   return (
     <div
@@ -35,5 +36,3 @@ export function ButtonGroupRoot(props: ButtonGroupProps) {
 }
 
 export const ButtonGroup = Object.assign(ButtonGroupRoot, { Root: ButtonGroupRoot });
-
-injectComponentStyle("button-group");

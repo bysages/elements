@@ -66,6 +66,8 @@ export function Transfer({
   onValueChange,
   ...rest
 }: TransferProps) {
+  injectComponentStyle("transfer");
+  injectComponentStyle("checkbox");
   const [checkedSource, setCheckedSource] = useState<Set<string>>(() => new Set());
   const [checkedTarget, setCheckedTarget] = useState<Set<string>>(() => new Set());
   const [sourceQuery, setSourceQuery] = useState("");
@@ -195,5 +197,3 @@ export function Transfer({
 
 // The rows are the checkbox family's own seals — the transfer stylesheet
 // only dresses the ledgers around them.
-injectComponentStyle("transfer");
-injectComponentStyle("checkbox");

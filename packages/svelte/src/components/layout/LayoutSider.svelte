@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("layout");
+
 import { useLayout } from "./context";
 import type { LayoutSiderProps } from "./props";
 

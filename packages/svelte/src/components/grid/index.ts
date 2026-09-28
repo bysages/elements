@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import GridComponent from "./Grid.svelte";
 
 /** An alignment lattice: tracks of equal measure, sized by column count
@@ -7,5 +5,3 @@ import GridComponent from "./Grid.svelte";
 export const Grid = GridComponent;
 
 export type { GridProps } from "./props";
-
-injectComponentStyle("grid");

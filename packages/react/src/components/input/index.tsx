@@ -16,6 +16,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 export function Input({ value, size = "md", invalid = false, onValueChange, ...rest }: InputProps) {
+  injectComponentStyle("input");
   const field = useFieldContext();
   const fieldProps = field?.getInputProps() ?? {};
   return (
@@ -31,5 +32,3 @@ export function Input({ value, size = "md", invalid = false, onValueChange, ...r
     />
   );
 }
-
-injectComponentStyle("input");

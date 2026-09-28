@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("aspect-ratio");
+
 import type { AspectRatioProps } from "./props";
 
 let { ratio = "1 / 1", children, ...rest }: AspectRatioProps = $props();

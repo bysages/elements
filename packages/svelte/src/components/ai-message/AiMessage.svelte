@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import type { MessageProps } from "./props";
 
 let { role = "assistant", children, ...rest }: MessageProps = $props();

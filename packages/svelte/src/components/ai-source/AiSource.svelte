@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import type { SourceProps } from "./props";
 
 let { href, children, ...rest }: SourceProps = $props();

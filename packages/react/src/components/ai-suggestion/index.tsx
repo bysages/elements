@@ -13,13 +13,11 @@ export interface SuggestionProps extends Omit<HTMLAttributes<HTMLButtonElement>,
 }
 
 export function Suggestion({ prompt, onSelect, ...rest }: SuggestionProps) {
+  injectComponentStyle("ai");
   return (
     <Button variant="outline" size="sm" {...rest} onClick={() => onSelect?.(prompt)}>
       {prompt}
     </Button>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Suggestion as AiSuggestion };

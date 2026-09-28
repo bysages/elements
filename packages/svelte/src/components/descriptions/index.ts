@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import DescriptionsRoot from "./Descriptions.svelte";
 import DescriptionsDetail from "./DescriptionsDetail.svelte";
 import DescriptionsItem from "./DescriptionsItem.svelte";
@@ -16,5 +14,3 @@ export const Descriptions = Object.assign(DescriptionsRoot, {
 });
 
 export type { DescriptionsPartProps, DescriptionsRootProps } from "./props";
-
-injectComponentStyle("descriptions");

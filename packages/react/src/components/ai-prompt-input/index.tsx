@@ -94,6 +94,7 @@ export function PromptInput({
   footerEnd,
   ...rest
 }: PromptInputProps) {
+  injectComponentStyle("ai");
   // The field part is a component; its ref carries the textarea itself.
   const fieldRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -216,7 +217,4 @@ export function PromptInput({
     </form>
   );
 }
-
-injectComponentStyle("ai");
-
 export { PromptInput as AiPromptInput };

@@ -2,7 +2,6 @@
  * where one flat ink plate travels beneath the checked seal. The parts - Root, Label, Indicator, Item, ItemText, ItemControl,
  * ItemHiddenInput. */
 import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/svelte/segment-group";
-import { injectComponentStyle } from "@bysages/core";
 
 import SegmentGroupRoot from "./SegmentGroupRoot.svelte";
 
@@ -14,5 +13,3 @@ export const SegmentGroup: Omit<typeof ArkSegmentGroup, "Root"> & {
   ...ArkSegmentGroup,
   Root: SegmentGroupRoot,
 };
-
-injectComponentStyle("segment-group");

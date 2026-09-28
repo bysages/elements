@@ -3,7 +3,6 @@
  * tabular figures. The API is Ark's own — Root, Label, Control, Input,
  * ValueText, IncrementTrigger, DecrementTrigger, Scrubber. */
 import { NumberInput as ArkNumberInput } from "@ark-ui/svelte/number-input";
-import { injectComponentStyle } from "@bysages/core";
 
 import NumberInputRoot from "./NumberInputRoot.svelte";
 
@@ -13,5 +12,3 @@ export const NumberInput: Omit<typeof ArkNumberInput, "Root"> & { Root: typeof N
   ...ArkNumberInput,
   Root: NumberInputRoot,
 };
-
-injectComponentStyle("number-input");

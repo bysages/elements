@@ -23,6 +23,7 @@ export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * `@tanstack/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. */
 export function Response(props: ResponseProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["content", "highlighter", "copyLabel", "copiedLabel"]);
   const html = createMemo(() =>
     renderHtml(own.content, own.highlighter ? { highlighter: own.highlighter } : undefined),
@@ -55,7 +56,4 @@ export function Response(props: ResponseProps) {
     />
   );
 }
-
-injectComponentStyle("ai");
-
 export { Response as AiResponse };

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("slider");
+
 import { Slider as ArkSlider } from "@ark-ui/svelte/slider";
 import type { SliderRootProps } from "./props";
 

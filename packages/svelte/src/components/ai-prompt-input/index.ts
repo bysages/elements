@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AiPromptInputComponent from "./AiPromptInput.svelte";
 
 /** The prompt vessel: the shared field textarea — self-growing on the
@@ -7,5 +5,3 @@ import AiPromptInputComponent from "./AiPromptInput.svelte";
 export const AiPromptInput = AiPromptInputComponent;
 
 export type { PromptInputProps } from "./props";
-
-injectComponentStyle("ai");

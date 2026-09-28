@@ -55,6 +55,7 @@ export function BackTop({
   scrollEl,
   ...rest
 }: BackTopProps) {
+  injectComponentStyle("back-top");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -105,5 +106,3 @@ export function BackTop({
     </div>
   );
 }
-
-injectComponentStyle("back-top");

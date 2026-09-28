@@ -50,6 +50,8 @@ export function SplitButton({
   onSelect,
   ...rest
 }: SplitButtonProps) {
+  injectComponentStyle("split-button");
+  injectComponentStyle("menu");
   return (
     <div {...rest} data-scope="split-button" data-part="root">
       <Button variant={variant} tone={tone} size={size} disabled={disabled} onClick={onClick}>
@@ -115,7 +117,4 @@ function chevronDown() {
     </svg>
   );
 }
-
-injectComponentStyle("split-button");
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import CascadeSelectComponent from "./CascadeSelect.svelte";
 
 /** A corridor of linked columns: pick a branch and the next column
@@ -8,5 +6,3 @@ import CascadeSelectComponent from "./CascadeSelect.svelte";
 export const CascadeSelect = CascadeSelectComponent;
 
 export type { CascadeSelectNode, CascadeSelectProps } from "./props";
-
-injectComponentStyle("cascade-select");

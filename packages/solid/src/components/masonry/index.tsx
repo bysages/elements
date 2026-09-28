@@ -22,6 +22,7 @@ export interface MasonryProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Masonry(props: MasonryProps) {
+  injectComponentStyle("masonry");
   const [own, rest] = splitProps(props, ["columns", "gap"]);
   return (
     <div
@@ -36,5 +37,3 @@ export function Masonry(props: MasonryProps) {
     />
   );
 }
-
-injectComponentStyle("masonry");

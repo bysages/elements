@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("meter");
+
 import type { MeterRootProps } from "./props";
 import MeterLabel from "./MeterLabel.svelte";
 import MeterValueText from "./MeterValueText.svelte";

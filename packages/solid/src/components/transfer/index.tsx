@@ -61,6 +61,8 @@ export interface TransferProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * panel.
  */
 export function Transfer(props: TransferProps) {
+  injectComponentStyle("transfer");
+  injectComponentStyle("checkbox");
   const [own, rest] = splitProps(props, [
     "value",
     "data",
@@ -211,5 +213,3 @@ export function Transfer(props: TransferProps) {
 
 // The rows are the checkbox family's own seals — the transfer stylesheet
 // only dresses the ledgers around them.
-injectComponentStyle("transfer");
-injectComponentStyle("checkbox");

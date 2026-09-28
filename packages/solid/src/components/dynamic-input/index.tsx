@@ -33,6 +33,7 @@ export interface DynamicInputProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * emptied itself would leave the reader no place to type.
  */
 export function DynamicInput(props: DynamicInputProps) {
+  injectComponentStyle("dynamic-input");
   const [own, rest] = splitProps(props, [
     "value",
     "min",
@@ -129,5 +130,3 @@ function crossIcon() {
     </svg>
   );
 }
-
-injectComponentStyle("dynamic-input");

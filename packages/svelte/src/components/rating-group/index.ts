@@ -3,7 +3,6 @@
  * Ark's own — Root, Label, Control, Item, HiddenInput (plus the Context and
  * ItemContext render helpers). */
 import { RatingGroup as ArkRatingGroup } from "@ark-ui/svelte/rating-group";
-import { injectComponentStyle } from "@bysages/core";
 
 import RatingGroupRoot from "./RatingGroupRoot.svelte";
 
@@ -13,5 +12,3 @@ export const RatingGroup: Omit<typeof ArkRatingGroup, "Root"> & { Root: typeof R
   ...ArkRatingGroup,
   Root: RatingGroupRoot,
 };
-
-injectComponentStyle("rating-group");

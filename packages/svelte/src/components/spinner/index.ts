@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import SpinnerComponent from "./Spinner.svelte";
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
@@ -7,5 +5,3 @@ import SpinnerComponent from "./Spinner.svelte";
 export const Spinner = SpinnerComponent;
 
 export type { SpinnerProps } from "./props";
-
-injectComponentStyle("spinner");

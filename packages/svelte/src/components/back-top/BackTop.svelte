@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("back-top");
+
 import { Button } from "../button";
 
 import type { BackTopProps } from "./props";

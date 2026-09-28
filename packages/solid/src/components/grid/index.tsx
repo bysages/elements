@@ -24,6 +24,7 @@ export interface GridProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Grid(props: GridProps) {
+  injectComponentStyle("grid");
   const [own, rest] = splitProps(props, ["columns", "gap", "minChildWidth"]);
   return (
     <div
@@ -40,5 +41,3 @@ export function Grid(props: GridProps) {
     />
   );
 }
-
-injectComponentStyle("grid");

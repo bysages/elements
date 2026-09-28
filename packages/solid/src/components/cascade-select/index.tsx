@@ -95,6 +95,7 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * runs — each hit still reads as its full route.
  */
 export function CascadeSelect(props: CascadeSelectProps) {
+  injectComponentStyle("cascade-select");
   const [own, rest] = splitProps(props, [
     "value",
     "data",
@@ -325,5 +326,3 @@ export function CascadeSelect(props: CascadeSelectProps) {
     </div>
   );
 }
-
-injectComponentStyle("cascade-select");

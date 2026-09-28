@@ -1,8 +1,11 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("command");
+
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 import { untrack } from "svelte";
 
 import type { CommandEntry, CommandProps } from "./props";

@@ -6,7 +6,6 @@ import type { JSX } from "solid-js";
 export type SkeletonProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 export function Skeleton(props: SkeletonProps) {
+  injectComponentStyle("skeleton");
   return <div {...props} data-scope="skeleton" data-part="root" />;
 }
-
-injectComponentStyle("skeleton");

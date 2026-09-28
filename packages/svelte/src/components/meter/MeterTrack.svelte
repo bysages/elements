@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("meter");
+
 import type { MeterPartProps } from "./props";
 
 let { children, ...rest }: MeterPartProps = $props();

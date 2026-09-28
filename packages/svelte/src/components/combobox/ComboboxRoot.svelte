@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("combobox");
+
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import type { ComboboxRootProps } from "./props";
 

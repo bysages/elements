@@ -23,6 +23,7 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Grid({ columns = 12, gap = "md", minChildWidth, ...rest }: GridProps) {
+  injectComponentStyle("grid");
   const style = {
     ...rest.style,
     "--bs-grid-columns": String(columns),
@@ -40,5 +41,3 @@ export function Grid({ columns = 12, gap = "md", minChildWidth, ...rest }: GridP
     />
   );
 }
-
-injectComponentStyle("grid");

@@ -20,6 +20,7 @@ export interface IconProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Icon(props: IconProps) {
+  injectComponentStyle("icon");
   const [own, rest] = splitProps(props, ["size", "label", "name", "children"]);
   const glyph = own.name && own.children == null ? getIcon(own.name) : undefined;
   if (own.name && own.children == null && !glyph) {
@@ -49,5 +50,3 @@ export function Icon(props: IconProps) {
     </span>
   );
 }
-
-injectComponentStyle("icon");

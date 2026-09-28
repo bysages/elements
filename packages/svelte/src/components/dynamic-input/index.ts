@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import DynamicInputComponent from "./DynamicInput.svelte";
 
 /** A column of entry rows: one Input per line, each with a quiet remove
@@ -8,5 +6,3 @@ import DynamicInputComponent from "./DynamicInput.svelte";
 export const DynamicInput = DynamicInputComponent;
 
 export type { DynamicInputProps } from "./props";
-
-injectComponentStyle("dynamic-input");

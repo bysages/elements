@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import TimelineRoot from "./Timeline.svelte";
 import TimelineContent from "./TimelineContent.svelte";
 import TimelineItem from "./TimelineItem.svelte";
@@ -21,5 +19,3 @@ export type {
   TimelineMarkerProps,
   TimelineContentProps,
 } from "./props";
-
-injectComponentStyle("timeline");

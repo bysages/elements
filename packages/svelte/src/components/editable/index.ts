@@ -3,7 +3,6 @@
  * Root, Area, Label, Preview, Input, EditTrigger, SubmitTrigger,
  * CancelTrigger, Control. */
 import { Editable as ArkEditable } from "@ark-ui/svelte/editable";
-import { injectComponentStyle } from "@bysages/core";
 
 import EditableRoot from "./EditableRoot.svelte";
 
@@ -13,5 +12,3 @@ export const Editable: Omit<typeof ArkEditable, "Root"> & { Root: typeof Editabl
   ...ArkEditable,
   Root: EditableRoot,
 };
-
-injectComponentStyle("editable");

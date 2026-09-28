@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import FloatButtonRoot from "./FloatButton.svelte";
 import FloatButtonItem from "./FloatButtonItem.svelte";
 import FloatButtonTrigger from "./FloatButtonTrigger.svelte";
@@ -20,5 +18,3 @@ export type {
   FloatButtonProps,
   FloatButtonTriggerProps,
 } from "./props";
-
-injectComponentStyle("float-button");

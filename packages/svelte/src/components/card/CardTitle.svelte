@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("card");
+
 import type { CardTitleProps } from "./props";
 
 let { children, ...rest }: CardTitleProps = $props();

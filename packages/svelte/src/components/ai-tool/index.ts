@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AiToolComponent from "./AiTool.svelte";
 
 /** A tool call: the shared collapsible as the vessel — the name it
@@ -8,5 +6,3 @@ import AiToolComponent from "./AiTool.svelte";
 export const AiTool = AiToolComponent;
 
 export type { ToolProps, ToolStatus } from "./props";
-
-injectComponentStyle("ai");

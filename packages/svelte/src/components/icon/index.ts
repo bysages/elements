@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import IconComponent from "./Icon.svelte";
 
 /** The inkwell: a standard box that keeps any inline svg at its optical
@@ -8,5 +6,3 @@ import IconComponent from "./Icon.svelte";
 export const Icon = IconComponent;
 
 export type { IconProps } from "./props";
-
-injectComponentStyle("icon");

@@ -44,6 +44,8 @@ export interface SplitButtonProps extends Omit<
  * menu parts untouched.
  */
 export function SplitButton(props: SplitButtonProps) {
+  injectComponentStyle("split-button");
+  injectComponentStyle("menu");
   const [own, rest] = splitProps(props, [
     "label",
     "items",
@@ -133,7 +135,4 @@ function chevronDown() {
     </svg>
   );
 }
-
-injectComponentStyle("split-button");
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

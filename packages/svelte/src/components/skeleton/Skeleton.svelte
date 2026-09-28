@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("skeleton");
+
 import type { SkeletonProps } from "./props";
 
 let { ...rest }: SkeletonProps = $props();

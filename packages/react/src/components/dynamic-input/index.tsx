@@ -42,6 +42,7 @@ export function DynamicInput({
   children: _children,
   ...rest
 }: DynamicInputProps) {
+  injectComponentStyle("dynamic-input");
   const values = value ?? [""];
 
   const update = (index: number, next: string) => {
@@ -115,5 +116,3 @@ function crossIcon() {
     </svg>
   );
 }
-
-injectComponentStyle("dynamic-input");

@@ -52,6 +52,8 @@ export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * matches keep their ancestors and the branches fan open.
  */
 export function TreeSelect(props: TreeSelectProps) {
+  injectComponentStyle("tree-select");
+  injectComponentStyle("tree-view");
   const [own, rest] = splitProps(props, [
     "value",
     "data",
@@ -239,5 +241,3 @@ export function TreeSelect(props: TreeSelectProps) {
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.
-injectComponentStyle("tree-select");
-injectComponentStyle("tree-view");

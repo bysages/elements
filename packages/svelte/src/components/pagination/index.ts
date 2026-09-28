@@ -5,7 +5,6 @@
  * FirstTrigger, LastTrigger. Items carry data-selected.
  */
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";
-import { injectComponentStyle } from "@bysages/core";
 
 import PaginationRoot from "./PaginationRoot.svelte";
 
@@ -15,5 +14,3 @@ export const Pagination: Omit<typeof ArkPagination, "Root"> & { Root: typeof Pag
   ...ArkPagination,
   Root: PaginationRoot,
 };
-
-injectComponentStyle("pagination");

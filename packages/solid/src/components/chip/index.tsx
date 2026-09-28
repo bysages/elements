@@ -12,6 +12,7 @@ export interface ChipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Chip(props: ChipProps) {
+  injectComponentStyle("chip");
   const [own, rest] = splitProps(props, ["value", "max", "tone", "variant"]);
   return (
     <span
@@ -25,5 +26,3 @@ export function Chip(props: ChipProps) {
     </span>
   );
 }
-
-injectComponentStyle("chip");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("input-group");
+
 import type { InputGroupAddonProps } from "./props";
 
 let { children, ...rest }: InputGroupAddonProps = $props();

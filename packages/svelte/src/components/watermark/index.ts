@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import WatermarkComponent from "./Watermark.svelte";
 
 /** The paper bears its seal beneath the content: a canvas draws the
@@ -9,5 +7,3 @@ import WatermarkComponent from "./Watermark.svelte";
 export const Watermark = WatermarkComponent;
 
 export type { WatermarkProps } from "./props";
-
-injectComponentStyle("watermark");

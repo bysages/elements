@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import { Collapsible } from "../collapsible";
 import ChevronIcon from "../ai/ChevronIcon.svelte";
 import type { ToolProps } from "./props";

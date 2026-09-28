@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("listbox");
+
 import { Listbox as ArkListbox } from "@ark-ui/svelte/listbox";
 import type { ListboxRootProps } from "./props";
 

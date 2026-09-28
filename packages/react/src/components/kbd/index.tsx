@@ -5,11 +5,10 @@ import type { HTMLAttributes } from "react";
 export type KbdProps = HTMLAttributes<HTMLElement>;
 
 export function Kbd({ children, ...rest }: KbdProps) {
+  injectComponentStyle("kbd");
   return (
     <kbd {...rest} data-scope="kbd" data-part="root">
       {children}
     </kbd>
   );
 }
-
-injectComponentStyle("kbd");

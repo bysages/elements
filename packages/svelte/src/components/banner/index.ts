@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import BannerRoot from "./Banner.svelte";
 import BannerActions from "./BannerActions.svelte";
 import BannerBody from "./BannerBody.svelte";
@@ -23,5 +21,3 @@ export const Banner = Object.assign(BannerRoot, {
 });
 
 export type { BannerCloseProps, BannerPartProps, BannerProps, BannerStatus } from "./props";
-
-injectComponentStyle("banner");

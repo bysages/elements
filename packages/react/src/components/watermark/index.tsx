@@ -33,6 +33,7 @@ export function Watermark({
   children,
   ...rest
 }: WatermarkProps) {
+  injectComponentStyle("watermark");
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const [tile, setTile] = useState("");
 
@@ -97,5 +98,3 @@ export function Watermark({
     </div>
   );
 }
-
-injectComponentStyle("watermark");

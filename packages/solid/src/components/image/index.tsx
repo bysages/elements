@@ -30,6 +30,7 @@ export interface ImageProps extends JSX.HTMLAttributes<HTMLElement> {
 }
 
 export function Image(props: ImageProps) {
+  injectComponentStyle("image");
   const [own, rest] = splitProps(props, ["src", "alt", "fit", "loading", "fallback"]);
   const [state, setState] = createSignal<"loading" | "loaded" | "error">("loading");
 
@@ -68,5 +69,3 @@ export function Image(props: ImageProps) {
     </figure>
   );
 }
-
-injectComponentStyle("image");

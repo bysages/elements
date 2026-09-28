@@ -1,5 +1,8 @@
 <script lang="ts">
-import Portal from "@ark-ui/svelte/portal";
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("popconfirm");
+
+import { Portal } from "@ark-ui/svelte/portal";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 
 import { Button } from "../button";

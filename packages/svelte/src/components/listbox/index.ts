@@ -4,7 +4,6 @@
  * ItemIndicator, ItemGroup, ItemGroupLabel, ValueText, plus
  * createListCollection. */
 import { Listbox as ArkListbox } from "@ark-ui/svelte/listbox";
-import { injectComponentStyle } from "@bysages/core";
 
 import ListboxRoot from "./ListboxRoot.svelte";
 
@@ -16,5 +15,3 @@ export const Listbox: Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRo
 };
 
 export type { ListboxRootProps } from "./props";
-
-injectComponentStyle("listbox");

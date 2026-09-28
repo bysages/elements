@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("typography");
+
 import type {TypographyPartProps} from "./props";
 
 let { children, ...rest }: TypographyPartProps = $props();

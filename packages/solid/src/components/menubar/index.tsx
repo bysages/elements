@@ -36,6 +36,8 @@ export interface MenubarProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
  * version. Inside an open menu the machine handles arrows and Escape.
  */
 export function Menubar(props: MenubarProps) {
+  injectComponentStyle("menubar");
+  injectComponentStyle("menu");
   const [own, rest] = splitProps(props, ["items", "onSelect"]);
   return (
     <div {...rest} data-scope="menubar" data-part="root" role="menubar">
@@ -75,7 +77,4 @@ export function Menubar(props: MenubarProps) {
     </div>
   );
 }
-
-injectComponentStyle("menubar");
 // The popups keep the menu parts, so the menu stylesheet dresses them.
-injectComponentStyle("menu");

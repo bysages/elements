@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import LayoutRoot from "./Layout.svelte";
 import LayoutContent from "./LayoutContent.svelte";
 import LayoutFooter from "./LayoutFooter.svelte";
@@ -18,5 +16,3 @@ export const Layout = Object.assign(LayoutRoot, {
 
 export type { LayoutContext } from "./context";
 export type { LayoutProps, LayoutRegionProps, LayoutSiderProps } from "./props";
-
-injectComponentStyle("layout");

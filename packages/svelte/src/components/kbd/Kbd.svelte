@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("kbd");
+
 import type { KbdProps } from "./props";
 
 let { children, ...rest }: KbdProps = $props();

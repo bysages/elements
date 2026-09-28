@@ -5,7 +5,6 @@
  * ItemPreview, ItemPreviewImage, ItemDeleteTrigger, ClearTrigger,
  * Context. */
 import { FileUpload as ArkFileUpload } from "@ark-ui/svelte/file-upload";
-import { injectComponentStyle } from "@bysages/core";
 
 import FileUploadRoot from "./FileUploadRoot.svelte";
 
@@ -15,5 +14,3 @@ export const FileUpload: Omit<typeof ArkFileUpload, "Root"> & { Root: typeof Fil
   ...ArkFileUpload,
   Root: FileUploadRoot,
 };
-
-injectComponentStyle("file-upload");

@@ -10,6 +10,7 @@ export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Badge(props: BadgeProps) {
+  injectComponentStyle("badge");
   const [own, rest] = splitProps(props, ["tone", "variant"]);
   return (
     <span
@@ -21,5 +22,3 @@ export function Badge(props: BadgeProps) {
     />
   );
 }
-
-injectComponentStyle("badge");

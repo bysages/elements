@@ -37,6 +37,8 @@ export interface FormProps extends JSX.FormHTMLAttributes<HTMLFormElement> {
 }
 
 export function Form(props: FormProps) {
+  injectComponentStyle("form");
+  injectComponentStyle("field");
   const [own, rest] = splitProps(props, ["form"]);
   return (
     <FormContext.Provider value={own.form}>
@@ -131,5 +133,3 @@ export function FormField(props: FormFieldProps) {
 
 // The fields inside are the field family's own recipe — the form
 // stylesheet only lays the grid and routes the errors.
-injectComponentStyle("form");
-injectComponentStyle("field");

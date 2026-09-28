@@ -14,6 +14,7 @@ export interface ReasoningProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningProps) {
+  injectComponentStyle("ai");
   return (
     <Collapsible.Root {...rest} data-ai="reasoning">
       <Collapsible.Trigger>
@@ -28,7 +29,4 @@ export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningPr
     </Collapsible.Root>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Reasoning as AiReasoning };

@@ -3,7 +3,6 @@
  * copy is confirmed. The API is Ark's own — Root, Label, Control, Input,
  * Trigger, Indicator, Context, HiddenInput. */
 import { Clipboard as ArkClipboard } from "@ark-ui/svelte/clipboard";
-import { injectComponentStyle } from "@bysages/core";
 
 import ClipboardRoot from "./ClipboardRoot.svelte";
 
@@ -15,5 +14,3 @@ export const Clipboard: Omit<typeof ArkClipboard, "Root"> & { Root: typeof Clipb
 };
 
 export type { ClipboardRootProps } from "./props";
-
-injectComponentStyle("clipboard");

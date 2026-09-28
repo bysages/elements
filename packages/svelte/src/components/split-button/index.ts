@@ -8,7 +8,5 @@ import SplitButtonComponent from "./SplitButton.svelte";
 export const SplitButton = SplitButtonComponent;
 
 export type { SplitButtonEntry, SplitButtonProps } from "./props";
-
-injectComponentStyle("split-button");
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
 injectComponentStyle("menu");

@@ -263,6 +263,7 @@ function SelectBox(props: {
 }
 
 export function DataTable(rawProps: DataTableProps) {
+  injectComponentStyle("table");
   const props = rawProps;
   const {
     selectable = false,
@@ -1005,5 +1006,3 @@ export function DataTable(rawProps: DataTableProps) {
     </div>
   );
 }
-
-injectComponentStyle("table");

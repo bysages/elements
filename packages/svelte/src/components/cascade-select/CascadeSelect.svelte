@@ -1,7 +1,10 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("cascade-select");
+
 import { useEnvironmentContext } from "@ark-ui/svelte/environment";
 import { useFilter, useLocaleContext } from "@ark-ui/svelte/locale";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/svelte";
 

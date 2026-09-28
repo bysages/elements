@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("breadcrumb");
+
 import type { BreadcrumbListProps } from "./props";
 
 let { children, ...rest }: BreadcrumbListProps = $props();

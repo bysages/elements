@@ -11,6 +11,7 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Chip({ value, max, tone = "ink", variant = "solid", ...rest }: ChipProps) {
+  injectComponentStyle("chip");
   const text = max != null && value > max ? `${max}+` : String(value);
   return (
     <span {...rest} data-scope="chip" data-part="root" data-tone={tone} data-variant={variant}>
@@ -18,5 +19,3 @@ export function Chip({ value, max, tone = "ink", variant = "solid", ...rest }: C
     </span>
   );
 }
-
-injectComponentStyle("chip");

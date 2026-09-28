@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("form");
+
   import type { FormProps } from "./props";
   import { provideForm } from "./context";
 

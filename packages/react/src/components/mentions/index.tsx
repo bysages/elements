@@ -49,6 +49,7 @@ export function MentionsVessel({
   onActiveChange,
   onOpenChange,
 }: MentionsVesselProps) {
+  injectComponentStyle("mentions");
   return (
     <ArkPopover.Root
       open={open}
@@ -188,5 +189,3 @@ export function Mentions({
     </div>
   );
 }
-
-injectComponentStyle("mentions");

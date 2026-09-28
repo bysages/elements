@@ -11,6 +11,7 @@ export interface SeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Separator(props: SeparatorProps) {
+  injectComponentStyle("separator");
   const [own, rest] = splitProps(props, ["orientation", "decorative"]);
   const orientation = () => own.orientation ?? "horizontal";
   return (
@@ -24,5 +25,3 @@ export function Separator(props: SeparatorProps) {
     />
   );
 }
-
-injectComponentStyle("separator");

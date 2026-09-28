@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("steps");
+
 import { Steps as ArkSteps } from "@ark-ui/svelte/steps";
 import type { StepsRootProps } from "./props";
 

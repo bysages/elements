@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("stack");
+
 import type { StackProps } from "./props";
 
 /** Whitespace chosen by name: the named steps point at the space ramp

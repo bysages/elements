@@ -250,6 +250,7 @@ const chevronGlyph = (
 );
 
 export function DataTable(props: DataTableProps) {
+  injectComponentStyle("table");
   if (props.virtual && props.merge) {
     console.warn("[DataTable] `virtual` and `merge` are mutually exclusive; merge wins.");
   }
@@ -964,5 +965,3 @@ export function DataTable(props: DataTableProps) {
     </div>
   );
 }
-
-injectComponentStyle("table");

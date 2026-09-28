@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import PopconfirmComponent from "./Popconfirm.svelte";
 
 /** A question at the point of no return: the trigger opens a small
@@ -7,5 +5,3 @@ import PopconfirmComponent from "./Popconfirm.svelte";
 export const Popconfirm = PopconfirmComponent;
 
 export type { PopconfirmProps } from "./props";
-
-injectComponentStyle("popconfirm");

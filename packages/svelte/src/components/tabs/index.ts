@@ -5,7 +5,6 @@
  * bar on the list rule).
  */
 import { Tabs as ArkTabs } from "@ark-ui/svelte/tabs";
-import { injectComponentStyle } from "@bysages/core";
 
 import TabsRoot from "./TabsRoot.svelte";
 
@@ -15,5 +14,3 @@ export const Tabs: Omit<typeof ArkTabs, "Root"> & { Root: typeof TabsRoot } = {
   ...ArkTabs,
   Root: TabsRoot,
 };
-
-injectComponentStyle("tabs");

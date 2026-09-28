@@ -1,6 +1,9 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("image-viewer");
+
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";

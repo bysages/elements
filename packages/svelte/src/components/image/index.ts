@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ImageComponent from "./Image.svelte";
 
 /** A framed picture: while the source loads, the frame keeps the
@@ -10,5 +8,3 @@ import ImageComponent from "./Image.svelte";
 export const Image = ImageComponent;
 
 export type { ImageProps } from "./props";
-
-injectComponentStyle("image");

@@ -16,6 +16,7 @@ export interface CommentProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function Comment({ author, datetime, avatar, actions, children, ...rest }: CommentProps) {
+  injectComponentStyle("comment");
   return (
     <article {...rest} data-scope="comment" data-part="root">
       {avatar ? (
@@ -50,5 +51,3 @@ export function Comment({ author, datetime, avatar, actions, children, ...rest }
     </article>
   );
 }
-
-injectComponentStyle("comment");

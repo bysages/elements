@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ImageViewerComponent from "./ImageViewer.svelte";
 
 /** A lightbox: the picture over a dimmed page, with a small toolbar
@@ -11,5 +9,3 @@ import ImageViewerComponent from "./ImageViewer.svelte";
 export const ImageViewer = ImageViewerComponent;
 
 export type { ImageViewerProps } from "./props";
-
-injectComponentStyle("image-viewer");

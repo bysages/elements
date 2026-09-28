@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import TypographyBody from "./TypographyBody.svelte";
 import TypographyDisplay from "./TypographyDisplay.svelte";
 import TypographyHeading from "./TypographyHeading.svelte";
@@ -20,5 +18,3 @@ export const Typography = Object.assign(TypographyDisplay, {
 });
 
 export type { TypographyPartProps } from "./props";
-
-injectComponentStyle("typography");

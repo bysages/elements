@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ChipComponent from "./Chip.svelte";
 
 /** A counting coin: the numeric value, capped at `max` with an ellipsis
@@ -7,5 +5,3 @@ import ChipComponent from "./Chip.svelte";
 export const Chip = ChipComponent;
 
 export type { ChipProps } from "./props";
-
-injectComponentStyle("chip");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("link");
+
 import type { LinkProps } from "./props";
 
 let { underline = "hover", children, ...rest }: LinkProps = $props();

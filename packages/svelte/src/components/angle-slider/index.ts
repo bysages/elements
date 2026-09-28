@@ -3,7 +3,6 @@
  * is Ark's own — Root, Label, ValueText, Control, Thumb, MarkerGroup,
  * Marker, HiddenInput. */
 import { AngleSlider as ArkAngleSlider } from "@ark-ui/svelte/angle-slider";
-import { injectComponentStyle } from "@bysages/core";
 
 import AngleSliderRoot from "./AngleSliderRoot.svelte";
 
@@ -13,5 +12,3 @@ export const AngleSlider: Omit<typeof ArkAngleSlider, "Root"> & { Root: typeof A
   ...ArkAngleSlider,
   Root: AngleSliderRoot,
 };
-
-injectComponentStyle("angle-slider");

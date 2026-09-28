@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("tags-input");
+
 import { TagsInput as ArkTagsInput } from "@ark-ui/svelte/tags-input";
 import type { TagsInputRootProps } from "./props";
 

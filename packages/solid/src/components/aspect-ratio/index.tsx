@@ -10,6 +10,7 @@ export interface AspectRatioProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function AspectRatio(props: AspectRatioProps) {
+  injectComponentStyle("aspect-ratio");
   const [own, rest] = splitProps(props, ["ratio"]);
   return (
     <div
@@ -23,5 +24,3 @@ export function AspectRatio(props: AspectRatioProps) {
     />
   );
 }
-
-injectComponentStyle("aspect-ratio");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("password-input");
+
 import { PasswordInput as ArkPasswordInput } from "@ark-ui/svelte/password-input";
 import type { PasswordInputRootProps } from "./props";
 

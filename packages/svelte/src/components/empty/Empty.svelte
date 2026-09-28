@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("empty");
+
 import type { EmptyProps } from "./props";
 
 let { children, ...rest }: EmptyProps = $props();

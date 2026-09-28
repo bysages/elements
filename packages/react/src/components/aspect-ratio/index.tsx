@@ -9,6 +9,7 @@ export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function AspectRatio({ ratio = "1 / 1", ...rest }: AspectRatioProps) {
+  injectComponentStyle("aspect-ratio");
   return (
     <div
       {...rest}
@@ -18,5 +19,3 @@ export function AspectRatio({ ratio = "1 / 1", ...rest }: AspectRatioProps) {
     />
   );
 }
-
-injectComponentStyle("aspect-ratio");

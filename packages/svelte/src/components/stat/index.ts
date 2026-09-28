@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import StatRoot from "./Stat.svelte";
 import StatDelta from "./StatDelta.svelte";
 import StatDescription from "./StatDescription.svelte";
@@ -18,5 +16,3 @@ export const Stat = Object.assign(StatRoot, {
 });
 
 export type { StatDeltaProps, StatPartProps } from "./props";
-
-injectComponentStyle("stat");

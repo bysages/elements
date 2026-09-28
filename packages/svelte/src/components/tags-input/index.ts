@@ -4,7 +4,6 @@
  * ItemPreview, ItemText, ItemInput, ItemDeleteTrigger, HiddenInput,
  * Context. */
 import { TagsInput as ArkTagsInput } from "@ark-ui/svelte/tags-input";
-import { injectComponentStyle } from "@bysages/core";
 
 import TagsInputRoot from "./TagsInputRoot.svelte";
 
@@ -14,5 +13,3 @@ export const TagsInput: Omit<typeof ArkTagsInput, "Root"> & { Root: typeof TagsI
   ...ArkTagsInput,
   Root: TagsInputRoot,
 };
-
-injectComponentStyle("tags-input");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("progress-group");
+
 import type { ProgressGroupProps, ProgressSegment } from "./props";
 
 let { segments, max, showLegend = true, ...rest }: ProgressGroupProps = $props();

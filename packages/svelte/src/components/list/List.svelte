@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("list");
+
 import type { ListProps } from "./props";
 
 let { bordered = false, hoverable = false, children, ...rest }: ListProps = $props();

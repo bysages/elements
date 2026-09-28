@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("masonry");
+
 import type { MasonryProps } from "./props";
 
 /** The same named steps of the space ramp the stack uses — one

@@ -7,6 +7,4 @@ import CalendarComponent from "./Calendar.svelte";
 export const Calendar = CalendarComponent;
 
 export type { CalendarProps } from "./props";
-
-injectComponentStyle("calendar");
 injectComponentStyle("date-picker");

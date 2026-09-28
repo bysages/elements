@@ -21,6 +21,7 @@ export interface MasonryProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Masonry({ columns = 3, gap = "md", ...rest }: MasonryProps) {
+  injectComponentStyle("masonry");
   const style = {
     ...rest.style,
     "--bs-masonry-columns": String(columns),
@@ -29,5 +30,3 @@ export function Masonry({ columns = 3, gap = "md", ...rest }: MasonryProps) {
 
   return <div {...rest} style={style} data-scope="masonry" data-part="root" />;
 }
-
-injectComponentStyle("masonry");

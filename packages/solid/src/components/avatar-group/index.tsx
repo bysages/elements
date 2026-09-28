@@ -10,8 +10,7 @@ export interface AvatarGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function AvatarGroup(props: AvatarGroupProps) {
+  injectComponentStyle("avatar-group");
   const [own, rest] = splitProps(props, ["size"]);
   return <div {...rest} data-scope="avatar-group" data-part="root" data-size={own.size} />;
 }
-
-injectComponentStyle("avatar-group");

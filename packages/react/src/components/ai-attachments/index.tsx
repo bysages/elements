@@ -75,6 +75,7 @@ export interface AttachmentProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Attachment({ name, size, status = "ready", onRemove, ...rest }: AttachmentProps) {
+  injectComponentStyle("ai");
   return (
     <span {...rest} data-scope="ai" data-part="attachment" data-status={status}>
       {isImage(name) ? imageGlyph : fileGlyph}
@@ -100,7 +101,4 @@ export function Attachments({ children, ...rest }: HTMLAttributes<HTMLSpanElemen
     </span>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Attachment as AiAttachment, Attachments as AiAttachments };

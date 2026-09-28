@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("tree-view");
+
 import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
 import type { TreeViewRootProps } from "./props";
 

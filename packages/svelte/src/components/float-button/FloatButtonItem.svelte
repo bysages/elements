@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("float-button");
+
 import { Button } from "../button";
 import { useFloatButton } from "./context";
 import type { FloatButtonItemProps } from "./props";

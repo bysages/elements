@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ellipsis");
+
 import type { EllipsisProps } from "./props";
 
 let { lines = 1, children, ...rest }: EllipsisProps = $props();

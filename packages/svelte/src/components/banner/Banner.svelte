@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("banner");
+
 import type { BannerProps } from "./props";
 
 let { status = "ink", children, ...rest }: BannerProps = $props();

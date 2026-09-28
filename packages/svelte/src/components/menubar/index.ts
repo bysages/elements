@@ -12,7 +12,5 @@ import MenubarComponent from "./Menubar.svelte";
 export const Menubar = MenubarComponent;
 
 export type { MenubarEntry, MenubarGroup, MenubarProps } from "./props";
-
-injectComponentStyle("menubar");
 // The popups keep the menu parts, so the menu stylesheet dresses them.
 injectComponentStyle("menu");

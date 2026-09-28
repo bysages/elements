@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("progress");
+
 import { Progress as ArkProgress } from "@ark-ui/svelte/progress";
 import type { ProgressRootProps } from "./props";
 

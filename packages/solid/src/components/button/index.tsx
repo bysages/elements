@@ -15,6 +15,7 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 export function Button(props: ButtonProps) {
+  injectComponentStyle("button");
   const [own, rest] = splitProps(props, ["variant", "tone", "size", "square", "type", "disabled"]);
   return (
     <button
@@ -33,5 +34,3 @@ export function Button(props: ButtonProps) {
     />
   );
 }
-
-injectComponentStyle("button");

@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("checkbox-group");
+
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 import { useFieldContext } from "@ark-ui/svelte/field";
 import type { CheckboxGroupProps } from "./props";

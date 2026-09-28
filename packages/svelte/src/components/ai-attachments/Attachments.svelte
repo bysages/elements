@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import type { AttachmentsProps } from "./props";
 
 let { children, ...rest }: AttachmentsProps = $props();

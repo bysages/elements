@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import ButtonComponent from "./Button.svelte";
 
 /** The control recipe as a standalone button: the variant chooses how it
@@ -8,5 +6,3 @@ import ButtonComponent from "./Button.svelte";
 export const Button = ButtonComponent;
 
 export type { ButtonProps } from "./props";
-
-injectComponentStyle("button");

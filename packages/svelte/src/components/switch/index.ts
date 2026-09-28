@@ -3,7 +3,6 @@
  * the thumb sliding on the spring. The API is Ark's own — Root, Label,
  * Control, Thumb, HiddenInput. */
 import { Switch as ArkSwitch } from "@ark-ui/svelte/switch";
-import { injectComponentStyle } from "@bysages/core";
 
 import SwitchRoot from "./SwitchRoot.svelte";
 
@@ -13,5 +12,3 @@ export const Switch: Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot 
   ...ArkSwitch,
   Root: SwitchRoot,
 };
-
-injectComponentStyle("switch");

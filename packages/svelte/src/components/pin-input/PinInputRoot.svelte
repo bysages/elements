@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("pin-input");
+
 import { PinInput as ArkPinInput } from "@ark-ui/svelte/pin-input";
 import type { PinInputRootProps } from "./props";
 

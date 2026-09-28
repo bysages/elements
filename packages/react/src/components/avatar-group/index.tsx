@@ -10,11 +10,10 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function AvatarGroup({ size, children, ...rest }: AvatarGroupProps) {
+  injectComponentStyle("avatar-group");
   return (
     <div {...rest} data-scope="avatar-group" data-part="root" data-size={size}>
       {children}
     </div>
   );
 }
-
-injectComponentStyle("avatar-group");

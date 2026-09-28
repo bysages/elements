@@ -1,6 +1,9 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("split-button");
+
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 
 import { Button } from "../button";
 import type { SplitButtonProps } from "./props";

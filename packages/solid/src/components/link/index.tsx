@@ -9,10 +9,9 @@ export interface LinkProps extends JSX.AnchorHTMLAttributes<HTMLAnchorElement> {
  * the hand, the halo at focus. The underline follows the prose —
  * always, on hover, or never. */
 export function Link(props: LinkProps) {
+  injectComponentStyle("link");
   const [own, rest] = splitProps(props, ["underline"]);
   return (
     <a {...rest} data-scope="link" data-part="root" data-underline={own.underline ?? "hover"} />
   );
 }
-
-injectComponentStyle("link");

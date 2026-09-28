@@ -2,7 +2,6 @@
  * of quiet seals where the pressed item takes the flat ink fill. The API is
  * Ark's own — Root, Item. */
 import { ToggleGroup as ArkToggleGroup } from "@ark-ui/svelte/toggle-group";
-import { injectComponentStyle } from "@bysages/core";
 
 import ToggleGroupRoot from "./ToggleGroupRoot.svelte";
 
@@ -12,5 +11,3 @@ export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof T
   ...ArkToggleGroup,
   Root: ToggleGroupRoot,
 };
-
-injectComponentStyle("toggle-group");

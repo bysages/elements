@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("avatar-group");
+
 import type { AvatarGroupProps } from "./props";
 
 let { size, children, ...rest }: AvatarGroupProps = $props();

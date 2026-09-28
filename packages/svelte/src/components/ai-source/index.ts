@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AiSourceComponent from "./AiSource.svelte";
 import AiSourcesComponent from "./AiSources.svelte";
 
@@ -9,5 +7,3 @@ export const AiSource = AiSourceComponent;
 export const AiSources = AiSourcesComponent;
 
 export type { SourceProps, SourcesProps } from "./props";
-
-injectComponentStyle("ai");

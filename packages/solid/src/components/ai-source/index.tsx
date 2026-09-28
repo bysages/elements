@@ -10,6 +10,7 @@ export interface SourceProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
 
 /** One place the ink came from; href and the rest ride the anchor. */
 export function Source(props: SourceProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["href", "children"]);
   return (
     <li data-scope="ai" data-part="source">
@@ -24,7 +25,4 @@ export function Source(props: SourceProps) {
 export function Sources(props: JSX.HTMLAttributes<HTMLOListElement>) {
   return <ol {...props} data-scope="ai" data-part="sources" />;
 }
-
-injectComponentStyle("ai");
-
 export { Source as AiSource, Sources as AiSources };

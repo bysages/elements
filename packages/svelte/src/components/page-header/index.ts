@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import PageHeaderRoot from "./PageHeader.svelte";
 import PageHeaderActions from "./PageHeaderActions.svelte";
 import PageHeaderDescription from "./PageHeaderDescription.svelte";
@@ -20,5 +18,3 @@ export const PageHeader = Object.assign(PageHeaderRoot, {
 });
 
 export type { PageHeaderPartProps } from "./props";
-
-injectComponentStyle("page-header");

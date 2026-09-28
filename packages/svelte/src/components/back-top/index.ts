@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import BackTopComponent from "./BackTop.svelte";
 
 /** A way home: after the page has scrolled past `threshold`, a small
@@ -12,5 +10,3 @@ import BackTopComponent from "./BackTop.svelte";
 export const BackTop = BackTopComponent;
 
 export type { BackTopProps } from "./props";
-
-injectComponentStyle("back-top");

@@ -3,7 +3,6 @@
  * noise. The API is Ark's own — Root, Label, Control, Input, Indicator,
  * VisibilityTrigger. */
 import { PasswordInput as ArkPasswordInput } from "@ark-ui/svelte/password-input";
-import { injectComponentStyle } from "@bysages/core";
 
 import PasswordInputRoot from "./PasswordInputRoot.svelte";
 
@@ -15,5 +14,3 @@ export const PasswordInput: Omit<typeof ArkPasswordInput, "Root"> & {
   ...ArkPasswordInput,
   Root: PasswordInputRoot,
 };
-
-injectComponentStyle("password-input");

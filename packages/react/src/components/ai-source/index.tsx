@@ -10,6 +10,7 @@ export interface SourceProps extends HTMLAttributes<HTMLAnchorElement> {
 }
 
 export function Source({ href, children, ...rest }: SourceProps) {
+  injectComponentStyle("ai");
   return (
     <li data-scope="ai" data-part="source">
       <a {...rest} href={href} target="_blank" rel="noreferrer">
@@ -31,7 +32,4 @@ export function Sources({ children, ...rest }: SourcesProps) {
     </ol>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Source as AiSource, Sources as AiSources };

@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import EmptyRoot from "./Empty.svelte";
 import EmptyActions from "./EmptyActions.svelte";
 import EmptyDescription from "./EmptyDescription.svelte";
@@ -18,5 +16,3 @@ export const Empty = Object.assign(EmptyRoot, {
 });
 
 export type { EmptyProps, EmptyPartProps, EmptyTitleProps, EmptyDescriptionProps } from "./props";
-
-injectComponentStyle("empty");

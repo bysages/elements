@@ -23,6 +23,7 @@ export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Tool({ name, label, status, input, output, ...rest }: ToolProps) {
+  injectComponentStyle("ai");
   return (
     <Collapsible.Root {...rest} data-ai="tool" data-status={status}>
       <Collapsible.Trigger>
@@ -57,7 +58,4 @@ export function Tool({ name, label, status, input, output, ...rest }: ToolProps)
     </Collapsible.Root>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Tool as AiTool };

@@ -23,6 +23,7 @@ export interface ProgressGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function ProgressGroup(props: ProgressGroupProps) {
+  injectComponentStyle("progress-group");
   const [own, rest] = splitProps(props, ["segments", "max", "showLegend"]);
 
   // A zero whole must not divide — the bar simply stays empty.
@@ -77,5 +78,3 @@ export function ProgressGroup(props: ProgressGroupProps) {
     </div>
   );
 }
-
-injectComponentStyle("progress-group");

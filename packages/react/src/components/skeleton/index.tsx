@@ -6,7 +6,6 @@ import type { HTMLAttributes } from "react";
 export type SkeletonProps = HTMLAttributes<HTMLDivElement>;
 
 export function Skeleton({ ...rest }: SkeletonProps) {
+  injectComponentStyle("skeleton");
   return <div {...rest} data-scope="skeleton" data-part="root" />;
 }
-
-injectComponentStyle("skeleton");

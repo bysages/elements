@@ -14,6 +14,7 @@ export function Separator({
   decorative = false,
   ...rest
 }: SeparatorProps) {
+  injectComponentStyle("separator");
   return (
     <div
       {...rest}
@@ -25,5 +26,3 @@ export function Separator({
     />
   );
 }
-
-injectComponentStyle("separator");

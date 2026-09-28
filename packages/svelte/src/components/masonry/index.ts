@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import MasonryComponent from "./Masonry.svelte";
 
 /** A wall of uneven heights: items flow down each column before
@@ -8,5 +6,3 @@ import MasonryComponent from "./Masonry.svelte";
 export const Masonry = MasonryComponent;
 
 export type { MasonryProps } from "./props";
-
-injectComponentStyle("masonry");

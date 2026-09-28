@@ -5,7 +5,6 @@ import type { JSX } from "solid-js";
 export type KbdProps = JSX.HTMLAttributes<HTMLElement>;
 
 export function Kbd(props: KbdProps) {
+  injectComponentStyle("kbd");
   return <kbd {...props} data-scope="kbd" data-part="root" />;
 }
-
-injectComponentStyle("kbd");

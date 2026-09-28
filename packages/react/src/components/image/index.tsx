@@ -36,6 +36,7 @@ export function Image({
   fallback,
   ...rest
 }: ImageProps) {
+  injectComponentStyle("image");
   const [state, setState] = useState<"loading" | "loaded" | "error">("loading");
 
   // A new source starts the wait over — the last picture's state must
@@ -62,5 +63,3 @@ export function Image({
     </figure>
   );
 }
-
-injectComponentStyle("image");

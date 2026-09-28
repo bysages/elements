@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("separator");
+
 import type { SeparatorProps } from "./props";
 
 let { orientation = "horizontal", decorative = false, ...rest }: SeparatorProps = $props();

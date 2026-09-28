@@ -59,6 +59,7 @@ export interface ImageViewerProps {
 }
 
 export function ImageViewer(props: ImageViewerProps) {
+  injectComponentStyle("image-viewer");
   const [own] = splitProps(props, ["src", "alt", "open", "zoomable", "onOpenChange"]);
   // Controlled when the caller owns `open`; uncontrolled otherwise —
   // an undefined `open` must not reach the machine, or it would
@@ -156,5 +157,3 @@ export function ImageViewer(props: ImageViewerProps) {
     </ArkDialog.Root>
   );
 }
-
-injectComponentStyle("image-viewer");

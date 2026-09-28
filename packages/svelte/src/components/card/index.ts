@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import CardRoot from "./Card.svelte";
 import CardContent from "./CardContent.svelte";
 import CardDescription from "./CardDescription.svelte";
@@ -20,5 +18,3 @@ export const Card = Object.assign(CardRoot, {
 });
 
 export type { CardDescriptionProps, CardPartProps, CardProps, CardTitleProps } from "./props";
-
-injectComponentStyle("card");

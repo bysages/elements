@@ -12,6 +12,7 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Container({ size = "readable", padding = true, ...rest }: ContainerProps) {
+  injectComponentStyle("container");
   return (
     <div
       {...rest}
@@ -22,5 +23,3 @@ export function Container({ size = "readable", padding = true, ...rest }: Contai
     />
   );
 }
-
-injectComponentStyle("container");

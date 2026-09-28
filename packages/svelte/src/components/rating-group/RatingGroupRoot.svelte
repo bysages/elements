@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("rating-group");
+
 import { RatingGroup as ArkRatingGroup } from "@ark-ui/svelte/rating-group";
 import type { RatingGroupRootProps } from "./props";
 

@@ -1,7 +1,10 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("combobox");
+
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 
 import type { AutoCompleteProps } from "./props";
 

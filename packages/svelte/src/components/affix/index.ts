@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AffixComponent from "./Affix.svelte";
 
 /** A nail: the wrapped content travels with the page until it reaches
@@ -12,5 +10,3 @@ import AffixComponent from "./Affix.svelte";
 export const Affix = AffixComponent;
 
 export type { AffixProps } from "./props";
-
-injectComponentStyle("affix");

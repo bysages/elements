@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("alert");
+
 import { getContext } from "svelte";
 import type { AlertPartProps } from "./props";
 import type { AlertStatus } from "./props";

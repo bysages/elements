@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("stat");
+
 import type { StatDeltaProps } from "./props";
 
 let { direction = "flat", children, ...rest }: StatDeltaProps = $props();

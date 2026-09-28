@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("menu");
+
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
 import { getContext } from "svelte";
 

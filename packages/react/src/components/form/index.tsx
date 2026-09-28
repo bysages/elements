@@ -35,6 +35,8 @@ export interface FormProps extends HTMLAttributes<HTMLFormElement> {
 }
 
 export function Form({ form, children, ...rest }: FormProps) {
+  injectComponentStyle("form");
+  injectComponentStyle("field");
   return (
     <FormContext.Provider value={form}>
       <form
@@ -124,5 +126,3 @@ export function FormField({
 
 // The fields inside are the field family's own recipe — the form
 // stylesheet only lays the grid and routes the errors.
-injectComponentStyle("form");
-injectComponentStyle("field");

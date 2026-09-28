@@ -34,6 +34,8 @@ export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
  * are the shared machinery — value, range selection, and focus ride
  * Ark's own contract. */
 export function Calendar({ value, min, max, onValueChange, children, ...rest }: CalendarProps) {
+  injectComponentStyle("calendar");
+  injectComponentStyle("date-picker");
   /* zag's RangeText follows the visible day-page (startValue), which
      the month and year steps never move — it would freeze the title.
      Formatting the focused value keeps it in step with the arrows. */
@@ -158,6 +160,3 @@ export function Calendar({ value, min, max, onValueChange, children, ...rest }: 
     </div>
   );
 }
-
-injectComponentStyle("calendar");
-injectComponentStyle("date-picker");

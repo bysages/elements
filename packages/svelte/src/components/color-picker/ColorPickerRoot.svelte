@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("color-picker");
+
 import { ColorPicker as ArkColorPicker } from "@ark-ui/svelte/color-picker";
 import type { ColorPickerRootProps } from "./props";
 

@@ -1,5 +1,3 @@
-import { injectComponentStyle } from "@bysages/core";
-
 import AutoCompleteComponent from "./AutoComplete.svelte";
 
 /** Free text with suggestions: the reader types anything, the list
@@ -10,4 +8,3 @@ export const AutoComplete = AutoCompleteComponent;
 export type { AutoCompleteProps } from "./props";
 
 // The field and its vessel are the combobox family's own recipe.
-injectComponentStyle("combobox");

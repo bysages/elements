@@ -1,5 +1,4 @@
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
-import { injectComponentStyle } from "@bysages/core";
 
 import MenuContent from "./MenuContent.svelte";
 import MenuRoot from "./MenuRoot.svelte";
@@ -19,5 +18,3 @@ export const Menu: Omit<typeof ArkMenu, "Root" | "Content"> & {
   Root: MenuRoot,
   Content: MenuContent,
 };
-
-injectComponentStyle("menu");

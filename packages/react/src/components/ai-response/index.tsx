@@ -31,6 +31,7 @@ export function Response({
   copiedLabel = "Copied",
   ...rest
 }: ResponseProps) {
+  injectComponentStyle("ai");
   const root = useRef<HTMLDivElement>(null);
 
   // The markdown is one innerHTML string, rebuilt on every stream
@@ -59,7 +60,4 @@ export function Response({
     />
   );
 }
-
-injectComponentStyle("ai");
-
 export { Response as AiResponse };

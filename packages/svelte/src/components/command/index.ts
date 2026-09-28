@@ -12,7 +12,5 @@ import CommandComponent from "./Command.svelte";
 export const Command = CommandComponent;
 
 export type { CommandEntry, CommandProps } from "./props";
-
-injectComponentStyle("command");
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
 injectComponentStyle("dialog");

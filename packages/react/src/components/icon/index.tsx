@@ -19,6 +19,7 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Icon({ size = "inherit", label, name, children, ...rest }: IconProps) {
+  injectComponentStyle("icon");
   const glyph = name && children == null ? getIcon(name) : undefined;
   if (name && children == null && !glyph) {
     console.error(
@@ -47,5 +48,3 @@ export function Icon({ size = "inherit", label, name, children, ...rest }: IconP
     </span>
   );
 }
-
-injectComponentStyle("icon");

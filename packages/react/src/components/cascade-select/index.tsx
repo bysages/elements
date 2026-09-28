@@ -92,6 +92,7 @@ export function CascadeSelect({
   onValueChange,
   ...rest
 }: CascadeSelectProps) {
+  injectComponentStyle("cascade-select");
   const id = useId();
   const locale = useLocaleContext();
   const env = useEnvironmentContext();
@@ -287,5 +288,3 @@ export function CascadeSelect({
     </div>
   );
 }
-
-injectComponentStyle("cascade-select");

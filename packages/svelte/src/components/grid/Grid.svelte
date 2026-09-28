@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("grid");
+
 import type { GridProps } from "./props";
 
 /** The same named steps of the space ramp the stack uses — one

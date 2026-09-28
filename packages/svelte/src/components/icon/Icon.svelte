@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("icon");
+
   import { getIcon } from "@bysages/icons";
   import type { IconProps } from "./props";
 

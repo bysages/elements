@@ -13,6 +13,7 @@ export interface ContainerProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Container(props: ContainerProps) {
+  injectComponentStyle("container");
   const [own, rest] = splitProps(props, ["size", "padding"]);
   return (
     <div
@@ -24,5 +25,3 @@ export function Container(props: ContainerProps) {
     />
   );
 }
-
-injectComponentStyle("container");

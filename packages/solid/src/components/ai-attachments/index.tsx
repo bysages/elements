@@ -84,6 +84,7 @@ export interface AttachmentProps extends JSX.HTMLAttributes<HTMLSpanElement> {
  * human size, and a quiet way to take it back off. Uploading reads as
  * a dashed ghost, error as danger ink. */
 export function Attachment(props: AttachmentProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["name", "size", "status", "onRemove"]);
   return (
     <span {...rest} data-scope="ai" data-part="attachment" data-status={own.status ?? "ready"}>
@@ -106,7 +107,4 @@ export function Attachment(props: AttachmentProps) {
 export function Attachments(props: JSX.HTMLAttributes<HTMLSpanElement>) {
   return <span {...props} data-scope="ai" data-part="attachments" />;
 }
-
-injectComponentStyle("ai");
-
 export { Attachment as AiAttachment, Attachments as AiAttachments };

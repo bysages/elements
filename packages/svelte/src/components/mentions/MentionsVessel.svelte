@@ -1,6 +1,9 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("mentions");
+
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
-import Portal from "@ark-ui/svelte/portal";
+import { Portal } from "@ark-ui/svelte/portal";
 
 import type { MentionsVesselProps } from "./props";
 

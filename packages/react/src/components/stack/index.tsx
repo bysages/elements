@@ -28,6 +28,7 @@ export function Stack({
   justify,
   ...rest
 }: StackProps) {
+  injectComponentStyle("stack");
   const style = {
     ...rest.style,
     "--bs-stack-gap": gapVars[gap] ?? gapVars.md,
@@ -40,5 +41,3 @@ export function Stack({
     <div {...rest} style={style} data-scope="stack" data-part="root" data-direction={direction} />
   );
 }
-
-injectComponentStyle("stack");

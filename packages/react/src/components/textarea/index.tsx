@@ -14,6 +14,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 export function Textarea({ value, invalid = false, onValueChange, ...rest }: TextareaProps) {
+  injectComponentStyle("textarea");
   const field = useFieldContext();
   const fieldProps = field?.getTextareaProps() ?? {};
   return (
@@ -28,5 +29,3 @@ export function Textarea({ value, invalid = false, onValueChange, ...rest }: Tex
     />
   );
 }
-
-injectComponentStyle("textarea");

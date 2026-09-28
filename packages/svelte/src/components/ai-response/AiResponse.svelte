@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("ai");
+
 import { renderHtml } from "@tanstack/markdown/html";
 
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";

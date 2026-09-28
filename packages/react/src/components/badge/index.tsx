@@ -9,9 +9,8 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Badge({ tone = "ink", variant = "solid", ...rest }: BadgeProps) {
+  injectComponentStyle("badge");
   return (
     <span {...rest} data-scope="badge" data-part="root" data-tone={tone} data-variant={variant} />
   );
 }
-
-injectComponentStyle("badge");

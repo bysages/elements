@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("watermark");
+
 import type { WatermarkProps } from "./props";
 
 let { content, opacity = 0.06, rotate = -20, fontSize = "0.875rem", children, ...rest }: WatermarkProps = $props();

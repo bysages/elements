@@ -26,6 +26,7 @@ export interface ToolProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * reached by and the state it reached in on the trigger, its input and
  * output folded inside. */
 export function Tool(props: ToolProps) {
+  injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["name", "label", "status", "input", "output"]);
   return (
     <Collapsible.Root
@@ -61,7 +62,4 @@ export function Tool(props: ToolProps) {
     </Collapsible.Root>
   );
 }
-
-injectComponentStyle("ai");
-
 export { Tool as AiTool };

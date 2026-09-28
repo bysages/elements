@@ -1,4 +1,7 @@
 <script lang="ts">
+import { injectComponentStyle } from "@bysages/core";
+injectComponentStyle("chip");
+
 import type { ChipProps } from "./props";
 
 let { value, max, tone = "ink", variant = "solid", ...rest }: ChipProps = $props();

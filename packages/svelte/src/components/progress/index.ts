@@ -3,7 +3,6 @@
  * Ark's own — Root, Label, ValueText, Track, Range, View, Circle,
  * CircleTrack, CircleRange. */
 import { Progress as ArkProgress } from "@ark-ui/svelte/progress";
-import { injectComponentStyle } from "@bysages/core";
 
 import ProgressRoot from "./ProgressRoot.svelte";
 
@@ -13,5 +12,3 @@ export const Progress: Omit<typeof ArkProgress, "Root"> & { Root: typeof Progres
   ...ArkProgress,
   Root: ProgressRoot,
 };
-
-injectComponentStyle("progress");
