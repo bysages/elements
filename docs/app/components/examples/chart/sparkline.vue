@@ -36,9 +36,12 @@ const definition = defineChart({
     <Stat.Label>Orders this season</Stat.Label>
     <div class="flex items-end justify-between gap-4">
       <Stat.Value>8,214</Stat.Value>
-      <div class="h-12 w-36 [&_.ts-chart]:block!">
-        <Chart :definition="definition" aria-label="Orders trend, sparkline" />
-      </div>
+      <Chart
+        class="w-36!"
+        :height="48"
+        :definition="definition"
+        aria-label="Orders trend, sparkline"
+      />
     </div>
     <Stat.Description direction="up">+12% vs last season</Stat.Description>
   </Stat.Root>

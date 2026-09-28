@@ -9,7 +9,7 @@ definePageMeta({ layout: "default", examples: true });
 useSeoMeta({
   title: "Examples",
   description:
-    "Complete applications built from the Elements library — an admin dashboard, a blog, and an AI chat workbench.",
+    "Complete applications built from the Elements library — an admin dashboard, a blog, a GitHub profile, and an AI chat workbench.",
 });
 
 const config = useAppConfig() as {
@@ -56,6 +56,13 @@ const apps = [
     description:
       "A simulated assistant conversation: streamed responses, tool calls, reasoning, and suggestion chips — no network, all local.",
     components: ["AiPromptInput", "AiMessage", "AiResponse", "AiTool", "AiSuggestion"],
+  },
+  {
+    name: "github",
+    title: "GitHub Profile",
+    description:
+      "DemoMacro's GitHub profile, fed live by the ungh API: real avatar, star and fork counts, and the tabbed repository index.",
+    components: ["Chart", "Tabs", "Card", "Badge", "Avatar", "Button"],
   },
   {
     name: "mobile",
