@@ -4,9 +4,6 @@ export default defineConfig({
   test: {
     // Scope tests to the workspace packages.
     include: ["packages/**/*.{spec,test}.ts"],
-    benchmark: {
-      reporters: ["default"],
-    },
     sequence: {
       concurrent: true,
     },
