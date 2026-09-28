@@ -175,8 +175,8 @@
 
 [data-accent="qingjin"] {
   --bs-color-primary: var(--bs-color-qingjin-600);
-  --bs-color-primary-hover: var(--bs-color-qingjin-700);
-  --bs-color-primary-active: var(--bs-color-qingjin-800);
+  --bs-color-primary-hover: var(--bs-color-qingjin-400);
+  --bs-color-primary-active: var(--bs-color-qingjin-700);
   /* See qinghua: the fill must derive at the accent host, not the root. */
   --bs-color-primary-fill: var(--bs-color-primary);
   --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
@@ -191,7 +191,7 @@
 [data-theme="dark"][data-accent="qingjin"],
 :host([data-theme="dark"][data-accent="qingjin"]) {
   --bs-color-primary: var(--bs-color-qingjin-500);
-  --bs-color-primary-hover: var(--bs-color-qingjin-600);
+  --bs-color-primary-hover: var(--bs-color-qingjin-400);
   --bs-color-primary-active: var(--bs-color-qingjin-700);
   /* Dark retires the mid-tone fill: the solid body drops one step to the
      full-chroma 700 (hover 800) — deep enough for bright paper ink past

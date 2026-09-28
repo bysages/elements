@@ -421,12 +421,20 @@
   --bs-control-height-sm: 2rem;
   --bs-control-height-md: 2.5rem;
   --bs-control-height-lg: 3rem;
+  /* The register's own type ramp: 17px carries the body and the button
+     label on a 40px control — small type on this height is what reads
+     plump. 14px serves the quiet steps. */
+  --bs-font-size-sm: 0.875rem;
+  --bs-font-size-md: 1.0625rem;
+  --bs-font-size-base: 1.0625rem;
+  --bs-font-size-lg: 1.25rem;
   --bs-density-scale: 1.15;
   --bs-motion-scale: 0.9;
   --bs-light-x: 0px;
   --bs-light-y: 0px;
   --bs-light-reach: 0.6;
   --bs-ripple-opacity: 0;
+  --bs-color-focus: oklch(0.218 0 0);
   --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
   --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
   --bs-font-serif: var(--bs-font-sans);
@@ -434,18 +442,15 @@
 }
 
 [data-scene="dispatch"] {
-  /* 公牍 — the office sibling: the same soft corners and touch targets,
-     retuned for the working desk — the pigment pairs cobalt instead of
-     green, and the ground cools and deepens. */
-  --bs-radius-sm: 0.25rem;
-  --bs-radius-md: 0.5rem;
-  --bs-radius-lg: 0.75rem;
-  --bs-radius-xl: 1rem;
-  --bs-radius-2xl: 1.25rem;
-  /* The register's own dialect runs deeper than geometry: the ink and
-     the hairlines go neutral graphite, and the control corner settles
-     at 8px — the button edge the spec draws. */
-  --bs-radius-control: 0.5rem;
+  /* 公牍 — the office sibling: the working desk cuts a harder corner
+     than the handheld (2-4px edges throughout the chrome it borrows),
+     the pigment pairs cobalt instead of green, and the ground cools. */
+  --bs-radius-sm: 0.125rem;
+  --bs-radius-md: 0.25rem;
+  --bs-radius-lg: 0.5rem;
+  --bs-radius-xl: 0.75rem;
+  --bs-radius-2xl: 1rem;
+  --bs-radius-control: 0.25rem;
   --bs-color-text-primary: oklch(0.218 0 0);
   --bs-color-text-secondary: oklch(0.556 0 0);
   --bs-color-text-tertiary: oklch(0.767 0 0);
@@ -455,12 +460,17 @@
   --bs-control-height-sm: 2rem;
   --bs-control-height-md: 2.5rem;
   --bs-control-height-lg: 3rem;
+  --bs-font-size-sm: 0.875rem;
+  --bs-font-size-md: 1.0625rem;
+  --bs-font-size-base: 1.0625rem;
+  --bs-font-size-lg: 1.25rem;
   --bs-density-scale: 1.15;
   --bs-motion-scale: 0.9;
   --bs-light-x: 0px;
   --bs-light-y: 0px;
   --bs-light-reach: 0.6;
   --bs-ripple-opacity: 0;
+  --bs-color-focus: oklch(0.218 0 0);
   --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
   --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
   --bs-font-serif: var(--bs-font-sans);
@@ -480,10 +490,10 @@
   /* The metric dialect: a near-square control edge and a neutral ink
      stepped like the register's own type ramp. */
   --bs-radius-control: 0.1875rem;
-  --bs-color-text-primary: oklch(0.218 0 0);
-  --bs-color-text-secondary: oklch(0.51 0 0);
-  --bs-color-text-tertiary: oklch(0.683 0 0);
-  --bs-color-text-disabled: oklch(0.748 0 0);
+  --bs-color-text-primary: oklch(0.205 0 0);
+  --bs-color-text-secondary: oklch(0.53 0 0);
+  --bs-color-text-tertiary: oklch(0.648 0 0);
+  --bs-color-text-disabled: oklch(0.82 0 0);
   --bs-color-border: oklch(0.894 0 0);
   --bs-color-border-strong: oklch(0.823 0 0);
   --bs-control-height-sm: 1.5rem;
@@ -495,8 +505,9 @@
   --bs-light-y: 0px;
   --bs-light-reach: 0.55;
   --bs-ripple-opacity: 0;
-  --bs-focus-ring: 0 0 0 2px var(--bs-color-focus);
-  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
+  --bs-color-focus: var(--bs-color-primary);
+  --bs-focus-ring: 0 0 0 2px color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
+  --bs-focus-ring-inset: inset 0 0 0 2px color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
 }
 
 /* The everyday stocks: missive's pages sit on the deep gray ground
@@ -571,10 +582,10 @@
   --bs-color-surface-3: oklch(0.293 0 0);
   --bs-color-surface-4: oklch(0.321 0 0);
   --bs-color-surface-5: oklch(0.348 0 0);
-  --bs-color-text-primary: oklch(0.909 0 0);
+  --bs-color-text-primary: oklch(0.925 0 0);
   --bs-color-text-secondary: oklch(0.65 0 0);
   --bs-color-text-tertiary: oklch(0.538 0 0);
-  --bs-color-text-disabled: oklch(0.47 0 0);
+  --bs-color-text-disabled: oklch(0.34 0 0);
   --bs-color-border: oklch(0.375 0 0);
   --bs-color-border-strong: oklch(0.453 0 0);
 }

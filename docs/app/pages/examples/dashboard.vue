@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Toast, Toaster } from "@bysages/vue";
+import { Card, Toast, Toaster } from "@bysages/vue";
 import { ref } from "vue";
 
 import AccountsPanel from "../../components/apps/dashboard/accounts-panel.vue";

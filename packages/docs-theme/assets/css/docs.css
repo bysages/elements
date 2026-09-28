@@ -1049,13 +1049,15 @@ body {
   background: var(--bs-color-text-primary);
 }
 
-/* Pigment swatches: one row of round chips, the chosen one ringed in the
-   pigment it stands for. Auto is a hollow chip — it holds no color of
-   its own. The part attributes bind onto the root for the same reason
-   as the scene grid: the stock root's flex column must lose. */
+/* Pigment swatches: a two-by-four grid of round chips, the chosen one
+   ringed in the pigment it stands for. Auto is a hollow chip — it holds
+   no color of its own. The grid keeps the row inside the panel whatever
+   the density does to the gaps; the part attributes bind onto the root
+   for the same reason as the scene grid: the stock root's flex column
+   must lose. */
 .bs-docs-theme-swatch-row[data-scope="radio-group"][data-part="root"] {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--bs-gap-sm);
   padding: 0.125rem 0;
 }

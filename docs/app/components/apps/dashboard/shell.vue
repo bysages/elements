@@ -54,7 +54,7 @@ const collapsed = ref(false);
           <Button
             v-for="stop in stops"
             :key="stop.label"
-            :variant="activeStop === stop.label ? 'subtle' : 'ghost'"
+            :variant="activeStop === stop.label ? 'solid' : 'ghost'"
             class="justify-start!"
             :aria-current="activeStop === stop.label ? 'page' : undefined"
             @click="activeStop = stop.label"
