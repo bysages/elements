@@ -22,17 +22,17 @@ const tierScale = scaleOrdinal<string, string>()
   .range(inkTiers);
 
 const definition = defineChart({
-  marks: [cell(props.days, { x: "week", y: "weekday", color: (d) => String(d.tier), inset: 2 })],
+  marks: [cell(props.days, { x: "week", y: "weekday", color: (d) => String(d.tier), inset: 1 })],
   scales: {
     x: {
       scale: () =>
         scaleBand<number>()
           .domain(props.days.map((d) => d.week))
-          .padding(0.08),
+          .padding(0),
       axis: false,
     },
     y: {
-      scale: () => scaleBand<number>().domain([0, 1, 2, 3, 4, 5, 6]).padding(0.2),
+      scale: () => scaleBand<number>().domain([0, 1, 2, 3, 4, 5, 6]).padding(0),
       axis: false,
     },
   },
@@ -51,9 +51,17 @@ const tip = (d: ContributionDay) =>
 
 <template>
   <figure class="m-0">
-    <Chart :height="150" :definition="definition" aria-label="Contributions over the past year">
-      <template #tooltipBody="{ points }">{{ tip(points[0]!.datum) }}</template>
-    </Chart>
+    <!-- GitHub sizes every cell against one fixed step, so the wall
+         keeps its squares square and scrolls when the card runs narrow. -->
+    <div class="overflow-x-auto">
+      <Chart
+        :style="{ width: '624px', height: '84px' }"
+        :definition="definition"
+        aria-label="Contributions over the past year"
+      >
+        <template #tooltipBody="{ points }">{{ tip(points[0]!.datum) }}</template>
+      </Chart>
+    </div>
     <figcaption class="mt-3 flex items-center justify-end gap-2 text-xs text-tertiary">
       <span>Less</span>
       <span class="flex gap-1">
