@@ -1,5 +1,6 @@
 import {
   SCENE_DEFAULT_ACCENT,
+  type ThemeAccent,
   SCENE_DEFAULT_CONTRAST,
   attachDynamicLight,
   attachInkRipple,
@@ -9,7 +10,7 @@ import "@bysages/tokens/css";
 
 type Globals = {
   scene?: keyof typeof SCENE_DEFAULT_ACCENT | "auto";
-  accent?: "auto" | "ink" | "qinghua" | "celadon" | "zhusha";
+  accent?: ThemeAccent;
   theme?: "light" | "dark";
   density?: "auto" | "compact" | "default" | "comfortable" | "spacious";
 };
@@ -140,6 +141,9 @@ const preview: Preview = {
           { value: "qinghua", title: "Qinghua — cobalt" },
           { value: "celadon", title: "Celadon — aquatic green" },
           { value: "zhusha", title: "Zhusha — seal-paste red" },
+          { value: "feicui", title: "Feicui — jade green" },
+          { value: "jilan", title: "Jilan — clear-sky blue" },
+          { value: "qingjin", title: "Qingjin — lapis blue" },
         ],
       },
     },

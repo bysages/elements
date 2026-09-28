@@ -5,11 +5,12 @@
  * therefore dress what the library does not paint and may retune prose
  * typesetting — which is what the demo canvases rely on: inside one, the
  * demo markup (m-0, text-sm, spacing utilities) speaks for itself. The
- * unlayered skeleton still outranks anything layered, so utilities can
- * never dismantle the shell. Preflight stays out: the shell ships its
+ * icon sheet rides its own icons layer, slotted beneath these utilities,
+ * so sizing classes still retune an icon. The unlayered skeleton still
+ * outranks anything layered, so utilities can never dismantle the shell. Preflight stays out: the shell ships its
  * own box-sizing and every control is a library component. */
 
-@layer bs.pre, theme, base, utilities;
+@layer bs.pre, theme, base, icons, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 

@@ -54,6 +54,14 @@ const config = {
 
   css: [resolve("./assets/css/docs.css")],
 
+  // Icon CSS defaults to width: 1em and lands unlayered — unlayered beats
+  // every cascade layer, so utility sizes (size-4, size-7) could never
+  // retune an icon. Name its layer and slot it beneath the site's
+  // utilities in the sheet's fixed layer order.
+  icon: {
+    cssLayer: "icons",
+  },
+
   ogImage: {
     // Templates render on demand; the runtime bundle is dead weight.
     zeroRuntime: true,

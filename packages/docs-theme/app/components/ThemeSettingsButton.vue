@@ -45,6 +45,9 @@ const accents: Array<{ value: ThemeAccent; label: string }> = [
   { value: "qinghua", label: "Qinghua cobalt" },
   { value: "celadon", label: "Celadon" },
   { value: "zhusha", label: "Zhusha cinnabar" },
+  { value: "feicui", label: "Feicui — jade green" },
+  { value: "jilan", label: "Jilan — clear-sky blue" },
+  { value: "qingjin", label: "Qingjin — lapis blue" },
 ];
 
 const densities: Array<{ value: ThemeDensity; label: string }> = [

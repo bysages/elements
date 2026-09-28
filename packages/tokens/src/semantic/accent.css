@@ -3,8 +3,12 @@
    interface: qinghua (cobalt, the blue of blue-and-white porcelain), celadon
    (aquatic green-blue), zhusha (cinnabar, the seal-paste red used sparingly
    by civic sites for identity — never for errors; danger stays cinnabar-red
-   by way of --bs-color-danger, a separate token). Each accent redefines the
-   primary block and the focus hue; the fixed semantic pigments never follow. */
+   by way of --bs-color-danger, a separate token). Three borrowed
+   pigments ride along for the registers that speak them: feicui (the
+   jade green of the everyday handheld spec), jilan (the azure of its
+   office sibling) and qingjin (the lapis blue of the metric register).
+   Each accent redefines the primary block and the focus hue; the fixed
+   semantic pigments never follow. */
 
 [data-accent="qinghua"] {
   --bs-color-primary: var(--bs-color-brand-600);
@@ -103,4 +107,100 @@
   --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
   --bs-color-primary-subtle-text: var(--bs-color-zhusha-300);
   --bs-color-primary-border: var(--bs-color-zhusha-700);
+}
+
+[data-accent="feicui"] {
+  --bs-color-primary: var(--bs-color-feicui-600);
+  --bs-color-primary-hover: var(--bs-color-feicui-700);
+  --bs-color-primary-active: var(--bs-color-feicui-800);
+  /* See qinghua: the fill must derive at the accent host, not the root. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-feicui-100);
+  --bs-color-primary-subtle-text: var(--bs-color-feicui-800);
+  --bs-color-primary-border: var(--bs-color-feicui-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="feicui"],
+[data-theme="dark"][data-accent="feicui"],
+:host([data-theme="dark"][data-accent="feicui"]) {
+  --bs-color-primary: var(--bs-color-feicui-500);
+  --bs-color-primary-hover: var(--bs-color-feicui-600);
+  --bs-color-primary-active: var(--bs-color-feicui-700);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-feicui-700);
+  --bs-color-primary-fill-hover: var(--bs-color-feicui-800);
+  --bs-color-primary-text: var(--bs-color-gray-25);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-feicui-300);
+  --bs-color-primary-border: var(--bs-color-feicui-700);
+}
+
+[data-accent="jilan"] {
+  --bs-color-primary: var(--bs-color-jilan-600);
+  --bs-color-primary-hover: var(--bs-color-jilan-700);
+  --bs-color-primary-active: var(--bs-color-jilan-800);
+  /* See qinghua: the fill must derive at the accent host, not the root. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-jilan-100);
+  --bs-color-primary-subtle-text: var(--bs-color-jilan-800);
+  --bs-color-primary-border: var(--bs-color-jilan-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="jilan"],
+[data-theme="dark"][data-accent="jilan"],
+:host([data-theme="dark"][data-accent="jilan"]) {
+  --bs-color-primary: var(--bs-color-jilan-500);
+  --bs-color-primary-hover: var(--bs-color-jilan-600);
+  --bs-color-primary-active: var(--bs-color-jilan-700);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-jilan-700);
+  --bs-color-primary-fill-hover: var(--bs-color-jilan-800);
+  --bs-color-primary-text: var(--bs-color-gray-25);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-jilan-300);
+  --bs-color-primary-border: var(--bs-color-jilan-700);
+}
+
+[data-accent="qingjin"] {
+  --bs-color-primary: var(--bs-color-qingjin-600);
+  --bs-color-primary-hover: var(--bs-color-qingjin-700);
+  --bs-color-primary-active: var(--bs-color-qingjin-800);
+  /* See qinghua: the fill must derive at the accent host, not the root. */
+  --bs-color-primary-fill: var(--bs-color-primary);
+  --bs-color-primary-fill-hover: var(--bs-color-primary-hover);
+  --bs-color-primary-text: oklch(0.988 0.004 95);
+  --bs-color-primary-subtle: var(--bs-color-qingjin-100);
+  --bs-color-primary-subtle-text: var(--bs-color-qingjin-800);
+  --bs-color-primary-border: var(--bs-color-qingjin-300);
+  --bs-color-focus: var(--bs-color-primary);
+}
+
+[data-theme="dark"] [data-accent="qingjin"],
+[data-theme="dark"][data-accent="qingjin"],
+:host([data-theme="dark"][data-accent="qingjin"]) {
+  --bs-color-primary: var(--bs-color-qingjin-500);
+  --bs-color-primary-hover: var(--bs-color-qingjin-600);
+  --bs-color-primary-active: var(--bs-color-qingjin-700);
+  /* Dark retires the mid-tone fill: the solid body drops one step to the
+     full-chroma 700 (hover 800) — deep enough for bright paper ink past
+     4.5:1 without kneading the pigment toward black. Light fills straight
+     from 600; dark fills straight from 700. */
+  --bs-color-primary-fill: var(--bs-color-qingjin-700);
+  --bs-color-primary-fill-hover: var(--bs-color-qingjin-800);
+  --bs-color-primary-text: var(--bs-color-gray-25);
+  --bs-color-primary-subtle: color-mix(in oklab, var(--bs-color-primary) 16%, transparent);
+  --bs-color-primary-subtle-text: var(--bs-color-qingjin-300);
+  --bs-color-primary-border: var(--bs-color-qingjin-700);
 }

@@ -57,6 +57,13 @@ const apps = [
       "A simulated assistant conversation: streamed responses, tool calls, reasoning, and suggestion chips — no network, all local.",
     components: ["AiPromptInput", "AiMessage", "AiResponse", "AiTool", "AiSuggestion"],
   },
+  {
+    name: "mobile",
+    title: "Mobile Registers",
+    description:
+      "Two phone screens in the handheld registers: a chat home in missive and an office workbench in dispatch, each pinned to its scene by ConfigProvider.",
+    components: ["ConfigProvider", "Avatar", "Badge", "Input", "Icon"],
+  },
 ];
 </script>
 

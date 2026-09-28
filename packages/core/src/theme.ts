@@ -24,7 +24,15 @@ export type ThemeScene =
   | "missive"
   | "dispatch"
   | "metric";
-export type ThemeAccent = "auto" | "ink" | "qinghua" | "celadon" | "zhusha";
+export type ThemeAccent =
+  | "auto"
+  | "ink"
+  | "qinghua"
+  | "celadon"
+  | "zhusha"
+  | "feicui"
+  | "jilan"
+  | "qingjin";
 
 export interface Theme {
   mode: ThemeMode;
@@ -47,10 +55,22 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   fluent: "qinghua",
   material: "celadon",
   sketch: "zhusha",
-  missive: "celadon",
-  dispatch: "qinghua",
-  metric: "qinghua",
+  missive: "feicui",
+  dispatch: "jilan",
+  metric: "qingjin",
 };
+
+const SCENES: ThemeScene[] = ["auto", ...(Object.keys(SCENE_DEFAULT_ACCENT) as ThemeScene[])];
+const ACCENTS: ThemeAccent[] = [
+  "auto",
+  "ink",
+  "qinghua",
+  "celadon",
+  "zhusha",
+  "feicui",
+  "jilan",
+  "qingjin",
+];
 
 /** Each scene also pairs with a contrast tier — civic serves elders, so it
  * speaks at the loud tier by default. "auto" contrast resolves here;
@@ -143,7 +163,15 @@ function readTheme(): Theme {
   if (typeof localStorage !== "undefined") {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) return { ...defaults, ...JSON.parse(stored) };
+      if (stored) {
+        // A renamed scene or accent must not resurrect under its old name —
+        // a stale value the enums no longer know falls back to the default.
+        const parsed = JSON.parse(stored) as Partial<Theme>;
+        const scene = parsed.scene && SCENES.includes(parsed.scene) ? parsed.scene : defaults.scene;
+        const accent =
+          parsed.accent && ACCENTS.includes(parsed.accent) ? parsed.accent : defaults.accent;
+        return { ...defaults, ...parsed, scene, accent };
+      }
     } catch {
       // Corrupted storage falls through to defaults.
     }

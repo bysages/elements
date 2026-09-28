@@ -408,6 +408,16 @@
   --bs-radius-lg: 0.75rem;
   --bs-radius-xl: 1rem;
   --bs-radius-2xl: 1.25rem;
+  /* The register's own dialect runs deeper than geometry: the ink and
+     the hairlines go neutral graphite, and the control corner settles
+     at 8px — the button edge the spec draws. */
+  --bs-radius-control: 0.5rem;
+  --bs-color-text-primary: oklch(0.218 0 0);
+  --bs-color-text-secondary: oklch(0.556 0 0);
+  --bs-color-text-tertiary: oklch(0.767 0 0);
+  --bs-color-text-disabled: oklch(0.7 0 0);
+  --bs-color-border: oklch(0.922 0 0);
+  --bs-color-border-strong: oklch(0.876 0 0);
   --bs-control-height-sm: 2rem;
   --bs-control-height-md: 2.5rem;
   --bs-control-height-lg: 3rem;
@@ -432,6 +442,16 @@
   --bs-radius-lg: 0.75rem;
   --bs-radius-xl: 1rem;
   --bs-radius-2xl: 1.25rem;
+  /* The register's own dialect runs deeper than geometry: the ink and
+     the hairlines go neutral graphite, and the control corner settles
+     at 8px — the button edge the spec draws. */
+  --bs-radius-control: 0.5rem;
+  --bs-color-text-primary: oklch(0.218 0 0);
+  --bs-color-text-secondary: oklch(0.556 0 0);
+  --bs-color-text-tertiary: oklch(0.767 0 0);
+  --bs-color-text-disabled: oklch(0.7 0 0);
+  --bs-color-border: oklch(0.922 0 0);
+  --bs-color-border-strong: oklch(0.876 0 0);
   --bs-control-height-sm: 2rem;
   --bs-control-height-md: 2.5rem;
   --bs-control-height-lg: 3rem;
@@ -457,6 +477,15 @@
   --bs-radius-lg: 0.375rem;
   --bs-radius-xl: 0.5625rem;
   --bs-radius-2xl: 0.75rem;
+  /* The metric dialect: a near-square control edge and a neutral ink
+     stepped like the register's own type ramp. */
+  --bs-radius-control: 0.1875rem;
+  --bs-color-text-primary: oklch(0.218 0 0);
+  --bs-color-text-secondary: oklch(0.51 0 0);
+  --bs-color-text-tertiary: oklch(0.683 0 0);
+  --bs-color-text-disabled: oklch(0.748 0 0);
+  --bs-color-border: oklch(0.894 0 0);
+  --bs-color-border-strong: oklch(0.823 0 0);
   --bs-control-height-sm: 1.5rem;
   --bs-control-height-md: 2rem;
   --bs-control-height-lg: 2.5rem;
@@ -492,6 +521,12 @@
   --bs-color-surface-3: oklch(0.244 0 0);
   --bs-color-surface-4: oklch(0.26 0 0);
   --bs-color-surface-5: oklch(0.277 0 0);
+  --bs-color-text-primary: oklch(0.876 0 0);
+  --bs-color-text-secondary: oklch(0.64 0 0);
+  --bs-color-text-tertiary: oklch(0.475 0 0);
+  --bs-color-text-disabled: oklch(0.42 0 0);
+  --bs-color-border: oklch(0.348 0 0);
+  --bs-color-border-strong: oklch(0.409 0 0);
 }
 
 [data-scene="dispatch"] {
@@ -511,6 +546,12 @@
   --bs-color-surface-3: oklch(0.235 0 0);
   --bs-color-surface-4: oklch(0.257 0.002 265);
   --bs-color-surface-5: oklch(0.277 0.002 265);
+  --bs-color-text-primary: oklch(0.845 0 0);
+  --bs-color-text-secondary: oklch(0.63 0 0);
+  --bs-color-text-tertiary: oklch(0.46 0 0);
+  --bs-color-text-disabled: oklch(0.4 0 0);
+  --bs-color-border: oklch(0.32 0 0);
+  --bs-color-border-strong: oklch(0.38 0 0);
 }
 
 [data-scene="metric"] {
@@ -530,4 +571,10 @@
   --bs-color-surface-3: oklch(0.293 0 0);
   --bs-color-surface-4: oklch(0.321 0 0);
   --bs-color-surface-5: oklch(0.348 0 0);
+  --bs-color-text-primary: oklch(0.909 0 0);
+  --bs-color-text-secondary: oklch(0.65 0 0);
+  --bs-color-text-tertiary: oklch(0.538 0 0);
+  --bs-color-text-disabled: oklch(0.47 0 0);
+  --bs-color-border: oklch(0.375 0 0);
+  --bs-color-border-strong: oklch(0.453 0 0);
 }
