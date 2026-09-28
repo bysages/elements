@@ -18,6 +18,9 @@ const gapVars: Record<string, string> = {
  * would need grid masonry, which browsers do not ship yet. */
 export interface MasonryProps {
   columns?: number;
+  /** A stone's narrowest measure — the browser then drops columns on a
+   * narrow wall instead of squeezing past this floor. */
+  minColumn?: string;
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 }
 
@@ -25,6 +28,7 @@ export const Masonry = defineComponent({
   name: "Masonry",
   props: {
     columns: { type: Number, default: 3 },
+    minColumn: { type: String, default: undefined },
     gap: { type: String, default: "md" },
   },
   setup(props, ctx: SetupContext) {
@@ -38,6 +42,7 @@ export const Masonry = defineComponent({
             style as CSSProperties,
             {
               "--bs-masonry-columns": String(props.columns),
+              "--bs-masonry-column-min": props.minColumn,
               "--bs-masonry-gap": gapVars[props.gap] ?? gapVars.md,
             },
           ],

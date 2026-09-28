@@ -5,6 +5,9 @@ export const masonryCss = /* css */ `
    browsers do not ship yet. */
 [data-scope="masonry"][data-part="root"] {
   column-count: var(--bs-masonry-columns, 3);
+  /* When the wall declares a stone's narrowest measure, the browser
+     drops columns rather than squeeze a stone past it. */
+  column-width: var(--bs-masonry-column-min, auto);
   column-gap: var(--bs-masonry-gap, var(--bs-gap-md));
 }
 

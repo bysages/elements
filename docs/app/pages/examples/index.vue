@@ -77,7 +77,7 @@ const apps = [
       </p>
     </header>
 
-    <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-5">
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,100%),1fr))] gap-5">
       <Card.Root v-for="app in apps" :key="app.name">
         <Card.Header>
           <Card.Title>

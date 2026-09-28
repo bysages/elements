@@ -103,7 +103,7 @@ function archiveSelected(selected: OrderRow[]) {
       <Shell v-model="stop">
         <div v-if="stop === 'Overview'" class="grid gap-5">
           <StatRow />
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(22rem,1fr))] gap-5">
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(22rem,100%),1fr))] gap-5">
             <RevenueChart />
             <TrendChart />
           </div>

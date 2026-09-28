@@ -14,16 +14,19 @@ import { wallItems } from "./data";
       </p>
     </header>
 
-    <Masonry :columns="3" gap="lg">
+    <Masonry :columns="3" min-column="12rem" gap="lg">
       <template v-for="(item, i) in wallItems" :key="i">
         <!-- The tint cards let the pigment carry them: one accent
              attribute recolors surface and ink together. -->
         <div
           v-if="item.kind === 'tint'"
           :data-accent="item.accent"
-          class="flex flex-col gap-3 rounded-lg border border-border bg-primary-subtle p-7"
+          class="flex flex-col gap-3 rounded-lg border border-border bg-primary-subtle p-5 sm:p-7"
         >
-          <span class="font-serif text-5xl leading-none text-primary" aria-hidden="true">
+          <span
+            class="font-serif text-4xl sm:text-5xl leading-none text-primary"
+            aria-hidden="true"
+          >
             {{ item.glyph }}
           </span>
           <span class="text-sm text-secondary">{{ item.series }}</span>
@@ -31,7 +34,7 @@ import { wallItems } from "./data";
 
         <figure
           v-else-if="item.kind === 'quote'"
-          class="m-0 flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-7"
+          class="m-0 flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 sm:p-7"
         >
           <blockquote class="m-0 font-serif text-xl italic leading-snug">
             &ldquo;{{ item.quote }}&rdquo;
@@ -41,20 +44,23 @@ import { wallItems } from "./data";
 
         <div
           v-else-if="item.kind === 'count'"
-          class="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface-2 p-7 text-center"
+          class="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface-2 p-5 sm:p-7 text-center"
         >
-          <span class="font-serif text-6xl leading-none">{{ item.count }}</span>
+          <span class="font-serif text-5xl sm:text-6xl leading-none">{{ item.count }}</span>
           <span class="text-sm text-tertiary">{{ item.caption }}</span>
         </div>
 
         <p
           v-else-if="item.kind === 'note'"
-          class="m-0 rounded-lg border border-border bg-surface-1 p-7 text-sm leading-relaxed text-secondary"
+          class="m-0 rounded-lg border border-border bg-surface-1 p-5 sm:p-7 text-sm leading-relaxed text-secondary"
         >
           {{ item.body }}
         </p>
 
-        <div v-else class="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-7">
+        <div
+          v-else
+          class="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 sm:p-7"
+        >
           <div class="flex h-28 items-end justify-center gap-2" aria-hidden="true">
             <span
               v-for="(bar, bi) in item.bars"

@@ -61,7 +61,10 @@ function toggleTag(tag: string) {
       </Button>
     </div>
 
-    <div v-if="visible.length" class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(22rem,1fr))]">
+    <div
+      v-if="visible.length"
+      class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(min(22rem,100%),1fr))]"
+    >
       <PostCard v-for="post in visible" :key="post.id" :post="post" @open="emit('open', post)" />
     </div>
 
