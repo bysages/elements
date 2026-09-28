@@ -169,8 +169,10 @@
   "chart/area": "components-data-chart--area",
   "chart/bars": "components-data-chart--bars",
   "chart/boxes": "components-data-chart--boxes",
+  "chart/heatmap": "components-data-chart--area",
   "chart/line": "components-data-chart--line",
   "chart/series": "components-data-chart--series",
+  "chart/sparkline": "components-data-chart--area",
   "chart/waffle": "components-data-chart--waffle",
   "workflow/basic": "components-data-workflow--basic"
 }
