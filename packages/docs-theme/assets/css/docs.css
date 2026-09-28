@@ -148,6 +148,42 @@ body {
   gap: var(--bs-gap-md);
 }
 
+/* The shelf switch inside the drawer: the sections the header's bottom
+   rail carries on wide screens, wrapped for a thumb, the active shelf
+   inked like a chosen cell. */
+.bs-docs-header-drawer-sections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bs-gap-xs) var(--bs-gap-md);
+  padding: var(--bs-padding-sm) var(--bs-padding-md);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-md);
+  background: var(--bs-color-surface-2);
+}
+
+.bs-docs-header-drawer-sections a {
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  border-radius: var(--bs-radius-sm);
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  text-decoration: none;
+}
+
+.bs-docs-header-drawer-sections a:hover {
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-header-drawer-sections a[aria-current="page"] {
+  background: var(--bs-color-primary-subtle);
+  color: var(--bs-color-primary-subtle-text);
+  font-weight: var(--bs-font-weight-semibold);
+}
+
+.bs-docs-header-drawer-theme {
+  margin-inline-start: auto;
+}
+
 @container (max-width: 1023.98px) {
   .bs-docs-header-menu[data-scope="button"][data-part="root"] {
     display: inline-flex;
@@ -187,8 +223,9 @@ body {
    language, mode and menu; the rest lives in the footer or the drawer.
    The !important out-ranks the component styles' attribute specificity. */
 @container (width < 640px) {
-  .bs-docs-header-github,
-  .bs-docs-header-theme-settings {
+  /* Scoped to the bar: the drawer reuses the theme control and must stay. */
+  .bs-docs-header .bs-docs-header-github,
+  .bs-docs-header .bs-docs-header-theme-settings {
     display: none !important;
   }
 
@@ -1094,9 +1131,17 @@ body {
 /* The four density names are the panel's longest words; the segment
    steps down to the compact register so the row fits its tray — a half
    space of side padding keeps the labels off the ink plate without
-   overflowing the 20rem sheet. */
+   overflowing the 20rem sheet. The tray also gives up its field height:
+   two wrapped rows must grow the plate, not spill past its border. */
 .bs-docs-theme-panel [data-scope="segment-group"][data-part="root"] {
   gap: var(--bs-gap-xs);
+  inline-size: 100%;
+  /* Unlock the field height the tray locks itself to, then hold the
+     scene's own rung as the floor — one row sits level with the selects
+     beside it, and two wrapped rows grow the plate. */
+  block-size: auto;
+  min-block-size: var(--bs-control-height-md);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
 }
 
 .bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {

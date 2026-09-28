@@ -40,10 +40,10 @@ const sourceUrl = [
 
     <ExampleCanvas class="mx-auto w-full max-w-[56rem] p-6">
       <div class="flex flex-wrap items-start justify-center gap-8">
-        <ConfigProvider scene="missive" accent="feicui">
+        <ConfigProvider scene="missive" accent="feicui" class="min-w-0 max-w-full">
           <Shell />
         </ConfigProvider>
-        <ConfigProvider scene="dispatch" accent="jilan">
+        <ConfigProvider scene="dispatch" accent="jilan" class="min-w-0 max-w-full">
           <Shell />
         </ConfigProvider>
       </div>

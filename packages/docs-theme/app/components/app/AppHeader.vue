@@ -5,7 +5,7 @@ const appConfig = useAppConfig();
 
 const github = computed(() => (appConfig as { github?: { url?: string } }).github);
 
-const { subNavigationMode } = useSubNavigation();
+const { subNavigationMode, sections } = useSubNavigation();
 
 const menuOpen = ref(false);
 
@@ -91,8 +91,21 @@ const searchOpen = useDocsSearch();
       <Positioner>
         <Content aria-label="Navigation" class="bs-docs-header-drawer">
           <Title>{{ t("docs.menu") }}</Title>
-          <!-- The whole tree: narrowed-to-section content would strand a
-               phone reader inside one shelf. -->
+          <!-- The shelf row hides with the header's bottom rail, and the
+               theme trigger hides with the rail itself — without these a
+               phone reader is stranded in one shelf, unable to reach the
+               reference, the examples, or the theme. -->
+          <nav class="bs-docs-header-drawer-sections" aria-label="Sections">
+            <NuxtLink
+              v-for="row in sections"
+              :key="row.to"
+              :to="row.to"
+              :aria-current="row.active ? 'page' : undefined"
+            >
+              {{ row.label }}
+            </NuxtLink>
+            <ThemeSettingsButton class="bs-docs-header-drawer-theme" />
+          </nav>
           <DocsAsideLeftBody full />
         </Content>
       </Positioner>
