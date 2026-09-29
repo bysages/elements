@@ -1,4 +1,4 @@
-import { useAppConfig, useRoute } from "nuxt/app";
+import { useAppConfig, useRoute, useRouter } from "nuxt/app";
 import { computed, inject, type Ref } from "vue";
 
 import { useDocsI18n } from "./useDocsI18n";
@@ -53,6 +53,15 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
   const { isEnabled, localeOf, t, localePath } = useDocsI18n();
   const navigation = provided ?? inject<Ref<NavItem[]>>("navigation");
 
+  // The site owns its pages; the theme only mirrors what the router
+  // registered, so the examples entry appears without any configuration
+  // and never lies about a page the site doesn't have.
+  const hasExamplesRoute = computed(() =>
+    useRouter()
+      .getRoutes()
+      .some((item) => item.path.split("/").includes("examples")),
+  );
+
   // Example pages opt into the chrome with `examples: true` in their page
   // meta — full-width, no sidebar, but the sections row (with its Examples
   // entry) stays so the reader can walk back into the docs.
@@ -94,16 +103,14 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
         active: !!item.path && onShelf(route.path, item.path),
       }));
     // The examples gallery is a real page tree, not a content shelf, so
-    // it can't ride the content tree — it joins the row here. The label
-    // comes from the messages (`docs.examples`), overridable per site
-    // through `navigation.examples.label` in the app config.
-    const examplesLabel =
-      (appConfig.navigation as { examples?: { label?: string } } | undefined)?.examples?.label ??
-      (t("docs.examples") as string);
+    // it can't ride the content tree. The row shows what the site
+    // actually registers: the entry joins only when an /examples route
+    // exists, and the label comes from the messages (`docs.examples`).
+    if (!hasExamplesRoute.value) return shelf;
     const examplesTo = localePath("/examples");
     return [
       ...shelf,
-      { label: examplesLabel, to: examplesTo, active: onShelf(route.path, examplesTo) },
+      { label: t("docs.examples"), to: examplesTo, active: onShelf(route.path, examplesTo) },
     ];
   });
 
