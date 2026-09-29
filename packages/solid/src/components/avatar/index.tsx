@@ -15,11 +15,14 @@ export interface AvatarProps extends ComponentProps<typeof ArkAvatar.Root> {
    * default (large) stands as tall as the biggest control so an avatar
    * rides a row without stretching it. */
   size?: AvatarSize;
+  /** The corner: round by default; square cuts it sharp, a stamp
+   * beside a round portrait. */
+  shape?: "circle" | "square";
 }
 
 function AvatarRoot(props: AvatarProps) {
-  const [own, rest] = splitProps(props, ["size"]);
-  return <ArkAvatar.Root {...rest} data-size={own.size} />;
+  const [own, rest] = splitProps(props, ["size", "shape"]);
+  return <ArkAvatar.Root {...rest} data-size={own.size} data-shape={own.shape ?? "circle"} />;
 }
 
 /* Ark's namespace is frozen — Object.assign copies the members so Root

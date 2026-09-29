@@ -1,4 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
+import { splitProps } from "solid-js";
 import type { Component, JSX } from "solid-js";
 
 /** A line of moments: Root is the ordered thread, Item one moment on it,
@@ -17,7 +18,22 @@ function part<P extends Record<string, unknown>>(name: string, tag: string): Com
   }) as Component<P>;
 }
 
-const Root = part("Root", "ol");
+function Root(
+  props: JSX.HTMLAttributes<HTMLOListElement> & { orientation?: "vertical" | "horizontal" },
+) {
+  injectComponentStyle("timeline");
+  const [own, rest] = splitProps(props, ["orientation"]);
+  return (
+    <ol
+      {...rest}
+      data-scope="timeline"
+      data-part="root"
+      data-orientation={own.orientation ?? "vertical"}
+    />
+  );
+}
+Root.displayName = "TimelineRoot";
+
 const Item = part("Item", "li");
 const Marker = part("Marker", "span");
 const Content = part("Content", "div");

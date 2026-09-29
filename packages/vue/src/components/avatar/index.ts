@@ -16,11 +16,15 @@ const AvatarRoot = defineComponent({
      * default stands as tall as the biggest control, so an avatar
      * rides a row without stretching it. */
     size: { type: String as PropType<AvatarSize>, default: undefined },
+    /** The corner: round by default; square cuts it sharp, a stamp
+     * beside a round portrait. */
+    shape: { type: String as PropType<"circle" | "square">, default: "circle" },
   },
   setup(props, { attrs, slots }) {
     injectComponentStyle("avatar");
 
-    return () => h(ArkAvatar.Root, { ...attrs, "data-size": props.size }, slots);
+    return () =>
+      h(ArkAvatar.Root, { ...attrs, "data-size": props.size, "data-shape": props.shape }, slots);
   },
 });
 

@@ -86,4 +86,43 @@ export const tabsCss = /* css */ `
 [data-scope="tabs"][data-part="root"][data-size="lg"] [data-part="trigger"] {
   block-size: var(--bs-control-height-lg);
 }
+
+
+/* The browser register: the ruled strip stays, the selected tab breaks
+   the rule and merges into the pane below — one vessel, tab and panel. */
+[data-scope="tabs"][data-variant="card"] {
+  gap: 0;
+}
+
+[data-scope="tabs"][data-variant="card"] [data-part="trigger"] {
+  position: relative;
+  margin-block-end: -1px;
+  border: 1px solid transparent;
+  border-block-end: none;
+  border-radius: var(--bs-radius-sm) var(--bs-radius-sm) 0 0;
+  background: transparent;
+  transition:
+    color var(--bs-duration-fast) var(--bs-ease-out),
+    background-color var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="tabs"][data-variant="card"] [data-part="trigger"]:hover:not([data-selected], [data-disabled]) {
+  background: var(--bs-color-surface-2);
+}
+
+/* The selected tab opens the rule: its bottom edge is painted the
+   pane's paper, so the hairline seems to part for it. */
+[data-scope="tabs"][data-variant="card"] [data-part="trigger"][data-selected] {
+  border-color: var(--bs-color-border);
+  border-block-end: 1px solid var(--bs-color-surface-1);
+  background: var(--bs-color-surface-1);
+}
+
+[data-scope="tabs"][data-variant="card"] [data-part="content"] {
+  padding: var(--bs-padding-lg);
+  border: 1px solid var(--bs-color-border);
+  border-block-start: none;
+  border-radius: 0 var(--bs-radius-md) var(--bs-radius-md);
+  background: var(--bs-color-surface-1);
+}
 `;

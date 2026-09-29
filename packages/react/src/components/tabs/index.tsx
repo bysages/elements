@@ -5,10 +5,12 @@ import type { ComponentProps } from "react";
 type TabsRootProps = ComponentProps<typeof ArkTabs.Root> & {
   /** One rung of the control-height ladder for the tab rows. */
   size?: "sm" | "md" | "lg";
+  /** The register: a ruled line (default), or each tab its own card. */
+  variant?: "line" | "card";
 };
 
-function TabsRoot({ size = "md", ...rest }: TabsRootProps) {
-  return <ArkTabs.Root {...rest} data-size={size} />;
+function TabsRoot({ size = "md", variant = "line", ...rest }: TabsRootProps) {
+  return <ArkTabs.Root {...rest} data-size={size} data-variant={variant} />;
 }
 
 /**

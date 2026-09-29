@@ -9,16 +9,23 @@ import type { JSX } from "solid-js";
  */
 export interface DescriptionsRootProps extends JSX.HTMLAttributes<HTMLDListElement> {
   layout?: "horizontal" | "vertical";
+  /** The framed register: one hairline round the whole, terms on
+   * inset paper. */
+  bordered?: boolean;
+  /** Pairs across the grid: one ledger per column. */
+  column?: number;
 }
 
 function Root(props: DescriptionsRootProps) {
-  const [own, rest] = splitProps(props, ["layout"]);
+  const [own, rest] = splitProps(props, ["layout", "bordered", "column", "style"]);
   return (
     <dl
       {...rest}
+      style={{ ...(own.style as object), "--bs-desc-columns": String(own.column ?? 1) }}
       data-scope="descriptions"
       data-part="root"
       data-layout={own.layout ?? "horizontal"}
+      data-bordered={own.bordered || undefined}
     />
   );
 }
@@ -31,7 +38,18 @@ function part(name: string, tag: string) {
   return Component;
 }
 
-const Item = part("Item", "div");
+function Item(props: JSX.HTMLAttributes<HTMLDivElement> & { span?: number }) {
+  const [own, rest] = splitProps(props, ["span", "style"]);
+  return (
+    <div
+      {...rest}
+      style={{ ...(own.style as object), "--bs-desc-span": String((own.span ?? 1) * 2) }}
+      data-scope="descriptions"
+      data-part="item"
+    />
+  );
+}
+
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
 

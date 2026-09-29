@@ -53,4 +53,41 @@ export const timelineCss = /* css */ `
   color: var(--bs-color-text-secondary);
   line-height: var(--bs-line-height-relaxed);
 }
+
+
+/* The horizontal thread: moments in a row, the line running through
+   the markers from left to right. */
+[data-scope="timeline"][data-orientation="horizontal"] {
+  flex-direction: row;
+}
+
+[data-scope="timeline"][data-orientation="horizontal"] [data-part="item"] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--bs-gap-sm);
+  padding-block-end: 0;
+  padding-inline-end: var(--bs-padding-lg);
+}
+
+[data-scope="timeline"][data-orientation="horizontal"] [data-part="item"]:last-child {
+  padding-inline-end: 0;
+}
+
+[data-scope="timeline"][data-orientation="horizontal"] [data-part="item"]:not(:last-child)::before {
+  inset-block-start: calc(var(--bs-part-size-sm) / 4);
+  inset-block-end: auto;
+  inset-inline-start: calc(var(--bs-part-size-sm) / 2 + var(--bs-gap-xs));
+  inset-inline-end: 0;
+  inline-size: auto;
+  block-size: 1px;
+}
+
+[data-scope="timeline"][data-orientation="horizontal"] [data-part="marker"] {
+  margin-block-start: 0;
+}
+
+[data-scope="timeline"][data-orientation="horizontal"] [data-part="content"] {
+  padding-block-start: 0;
+}
 `;

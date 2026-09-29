@@ -1,6 +1,30 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, type PropType } from "vue";
+
+/** The thread's direction: a vertical line of moments, or one running
+ * left to right. */
+const Root = defineComponent({
+  name: "TimelineRoot",
+  props: {
+    orientation: { type: String as PropType<"vertical" | "horizontal">, default: "vertical" },
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("timeline");
+
+    return () =>
+      h(
+        "ol",
+        {
+          ...ctx.attrs,
+          "data-scope": "timeline",
+          "data-part": "root",
+          "data-orientation": props.orientation,
+        },
+        ctx.slots.default?.(),
+      );
+  },
+});
 
 function part(name: string, tag: string) {
   return defineComponent({
@@ -18,7 +42,6 @@ function part(name: string, tag: string) {
   });
 }
 
-const Root = part("Root", "ol");
 const Item = part("Item", "li");
 const Marker = part("Marker", "span");
 const Content = part("Content", "div");

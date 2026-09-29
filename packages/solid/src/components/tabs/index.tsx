@@ -13,11 +13,15 @@ import { splitProps } from "solid-js";
 type TabsOwnProps = {
   /** One rung of the control-height ladder for the tab rows. */
   size?: "sm" | "md" | "lg";
+  /** The register: a ruled line (default), or each tab its own card. */
+  variant?: "line" | "card";
 };
 
 function TabsRoot(props: ArkTabsRootProps & TabsOwnProps) {
-  const [own, rest] = splitProps(props, ["size"]);
-  return <ArkTabs.Root {...rest} data-size={own.size ?? "md"} />;
+  const [own, rest] = splitProps(props, ["size", "variant"]);
+  return (
+    <ArkTabs.Root {...rest} data-size={own.size ?? "md"} data-variant={own.variant ?? "line"} />
+  );
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be

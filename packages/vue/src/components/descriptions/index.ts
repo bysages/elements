@@ -6,6 +6,11 @@ const Root = defineComponent({
   name: "Descriptions",
   props: {
     layout: { type: String as PropType<"horizontal" | "vertical">, default: "horizontal" },
+    /** The framed register: one hairline round the whole, terms on
+     * inset paper. */
+    bordered: { type: Boolean, default: false },
+    /** Pairs across the grid: one ledger per column. */
+    column: { type: Number, default: 1 },
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("descriptions");
@@ -18,6 +23,8 @@ const Root = defineComponent({
           "data-scope": "descriptions",
           "data-part": "root",
           "data-layout": props.layout,
+          "data-bordered": props.bordered || undefined,
+          style: { "--bs-desc-columns": String(props.column) },
         },
         ctx.slots.default?.(),
       );
@@ -38,7 +45,27 @@ function part(name: string, tag: string) {
   });
 }
 
-const Item = part("Item", "div");
+const Item = defineComponent({
+  name: "DescriptionsItem",
+  props: {
+    /** Column pairs this entry stretches across. */
+    span: { type: Number, default: 1 },
+  },
+  setup(props, ctx: SetupContext) {
+    return () =>
+      h(
+        "div",
+        {
+          ...ctx.attrs,
+          style: { ...(ctx.attrs.style as object), "--bs-desc-span": String(props.span * 2) },
+          "data-scope": "descriptions",
+          "data-part": "item",
+        },
+        ctx.slots.default?.(),
+      );
+  },
+});
+
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
 

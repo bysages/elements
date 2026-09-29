@@ -5,5 +5,8 @@ export interface AvatarProps {
    * default (large) stands as tall as the biggest control so an avatar
    * rides a row without stretching it. */
   size?: AvatarSize;
+  /** The corner: round by default; square cuts it sharp, a stamp
+   * beside a round portrait. */
+  shape?: "circle" | "square";
   children?: import("svelte").Snippet;
 }

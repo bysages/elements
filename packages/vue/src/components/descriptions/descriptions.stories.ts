@@ -45,3 +45,22 @@ export const Vertical: Story = {
       ]),
     ]),
 };
+
+/** The framed register: one hairline round the whole, terms on inset
+ * paper, pairs across the grid. */
+export const Bordered: Story = {
+  render: () => () =>
+    h(Descriptions.Root as never, { bordered: true, column: 2 }, () =>
+      [
+        ["Calligrapher", "Lin Wanzhi"],
+        ["Ink", "Qinghua cobalt, first grinding"],
+        ["Paper", "Jingxian xuan, raw edge"],
+        ["Seal", "方寸为章 — square-cut, 6 mm"],
+      ].map(([term, detail]) =>
+        h(Descriptions.Item, { key: term }, () => [
+          h(Descriptions.Term, () => term),
+          h(Descriptions.Detail, () => detail),
+        ]),
+      ),
+    ),
+};

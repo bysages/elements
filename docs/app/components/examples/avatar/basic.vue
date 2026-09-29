@@ -18,4 +18,8 @@ const PORTRAIT =
       <Avatar.Fallback>BS</Avatar.Fallback>
     </Avatar.Root>
   </div>
+  <div class="mt-4 flex items-center gap-3">
+    <Avatar.Root>墨</Avatar.Root>
+    <Avatar.Root shape="square">印</Avatar.Root>
+  </div>
 </template>

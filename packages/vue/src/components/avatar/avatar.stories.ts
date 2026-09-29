@@ -123,3 +123,12 @@ export const RootProvider = {
     return () => h(Driver);
   },
 };
+
+/** The square-cut seal: the same square frame, the corner left sharp. */
+export const Shape = {
+  render: () => () =>
+    h("div", { style: { display: "flex", gap: "0.75rem" } }, () => [
+      h(Avatar.Root as never, { shape: "circle" }, () => "墨"),
+      h(Avatar.Root as never, { shape: "square" }, () => "印"),
+    ]),
+};

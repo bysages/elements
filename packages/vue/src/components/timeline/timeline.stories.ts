@@ -71,3 +71,35 @@ export const Compact: Story = {
         ),
     ),
 };
+
+/** The horizontal thread: moments in a row, the line running through
+ * the markers from left to right. */
+export const Horizontal: Story = {
+  render: () => () =>
+    h(Timeline.Root as never, { orientation: "horizontal" }, () =>
+      [
+        ["Ground", "The stone is squared"],
+        ["Ink", "The pigment meets the water"],
+        ["Stroke", "The hand commits"],
+        ["Seal", "The name closes the work"],
+      ].map(([title, note]) =>
+        h(Timeline.Item, { key: title }, () => [
+          h(Timeline.Marker),
+          h(Timeline.Content, () => [
+            h("div", { style: { fontSize: "0.875rem", fontWeight: 500 } }, () => title),
+            h(
+              "div",
+              {
+                style: {
+                  marginTop: "0.25rem",
+                  fontSize: "0.75rem",
+                  color: "var(--bs-color-text-tertiary)",
+                },
+              },
+              () => note,
+            ),
+          ]),
+        ]),
+      ),
+    ),
+};

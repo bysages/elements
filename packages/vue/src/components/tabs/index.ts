@@ -13,11 +13,14 @@ const TabsRoot = defineComponent({
   props: {
     /** One rung of the control-height ladder for the tab rows. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** The register: a ruled strip, or each selection lifted into a card. */
+    variant: { type: String as PropType<"line" | "card">, default: "line" },
   },
   setup(props, { attrs, slots }) {
     injectComponentStyle("tabs");
 
-    return () => h(ArkTabs.Root, { ...attrs, "data-size": props.size }, slots);
+    return () =>
+      h(ArkTabs.Root, { ...attrs, "data-size": props.size, "data-variant": props.variant }, slots);
   },
 });
 

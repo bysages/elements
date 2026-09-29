@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
+import type * as React from "react";
 
 /** A line of moments: Root is the ordered thread, Item one moment on it,
  * Marker the point where the thread passes, Content what the moment
@@ -15,7 +16,23 @@ function part(name: string, tag: string) {
   return Component;
 }
 
-const Root = part("Root", "ol");
+function Root({
+  orientation = "vertical",
+  children,
+  ...rest
+}: HTMLAttributes<HTMLElement> & {
+  children?: React.ReactNode;
+  orientation?: "vertical" | "horizontal";
+}) {
+  injectComponentStyle("timeline");
+  return (
+    <ol {...rest} data-scope="timeline" data-part="root" data-orientation={orientation}>
+      {children}
+    </ol>
+  );
+}
+Root.displayName = "TimelineRoot";
+
 const Item = part("Item", "li");
 const Marker = part("Marker", "span");
 const Content = part("Content", "div");

@@ -131,3 +131,19 @@ export const Vertical = {
       ...PANELS.map((panel) => h(Tabs.Content, { value: panel.value }, () => panel.body)),
     ]),
 };
+
+/** The card register: each tab its own chip, the selected one lifted —
+ * the ruled line retires and the cards carry the state. */
+export const Card = {
+  render: () =>
+    h(Tabs.Root, { variant: "card" }, () => [
+      h(Tabs.List, () => [
+        h(Tabs.Trigger, { value: "brush" }, () => "Brush"),
+        h(Tabs.Trigger, { value: "ink" }, () => "Ink"),
+        h(Tabs.Trigger, { value: "paper" }, () => "Paper"),
+      ]),
+      h(Tabs.Content, { value: "brush" }, () => "The brush answers the hand."),
+      h(Tabs.Content, { value: "ink" }, () => "The ink remembers the grinding."),
+      h(Tabs.Content, { value: "paper" }, () => "The paper holds its breath."),
+    ]),
+};

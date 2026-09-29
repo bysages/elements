@@ -2,6 +2,9 @@ import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 export interface TimelineProps extends HTMLAttributes<HTMLOListElement> {
+  /** The thread's direction: a vertical line of moments, or one
+   * running left to right. */
+  orientation?: "vertical" | "horizontal";
   children?: Snippet;
 }
 

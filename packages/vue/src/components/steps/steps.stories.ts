@@ -57,3 +57,25 @@ export const Progress = {
       }),
     ]),
 };
+
+/** The vertical climb: the list turns, each step standing on its own
+ * row for narrow measures. */
+export const Vertical = {
+  render: () =>
+    withState(
+      () => () =>
+        h(Steps.Root, { count: items.length, orientation: "vertical" }, () => [
+          h(Steps.List, () =>
+            items.map((item, index) =>
+              h(Steps.Item, { key: item.title, index }, () => [
+                h(Steps.Trigger, () => [
+                  h(Steps.Indicator, () => String(index + 1)),
+                  h("span", item.title),
+                ]),
+                h(Steps.Separator),
+              ]),
+            ),
+          ),
+        ]),
+    ),
+};

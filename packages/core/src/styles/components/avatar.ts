@@ -49,4 +49,11 @@ export const avatarCss = /* css */ `
 [data-scope="avatar"][data-part="root"][data-size="md"] {
   --bs-avatar-size: var(--bs-control-height-md);
 }
+
+
+/* The square-cut seal: the same square frame, the corner left sharp —
+   a stamp beside a round portrait. */
+[data-scope="avatar"][data-part="root"][data-shape="square"] {
+  border-radius: var(--bs-radius-sm);
+}
 `;

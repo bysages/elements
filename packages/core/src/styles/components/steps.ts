@@ -5,6 +5,9 @@ export const stepsCss = /* css */ `
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-lg);
+  /* The number's seal: one register the size ladder re-points and the
+     vertical separator aligns against. */
+  --bs-steps-marker: var(--bs-control-height-sm);
 }
 
 [data-scope="steps"][data-part="list"] {
@@ -66,8 +69,8 @@ export const stepsCss = /* css */ `
 [data-scope="steps"][data-part="indicator"] {
   display: grid;
   place-items: center;
-  inline-size: var(--bs-control-height-sm);
-  block-size: var(--bs-control-height-sm);
+  inline-size: var(--bs-steps-marker);
+  block-size: var(--bs-steps-marker);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
   box-shadow: inset 0 0 0 1px var(--bs-color-border);
@@ -165,13 +168,44 @@ export const stepsCss = /* css */ `
 
 /* Size rungs: the root's data-size re-points the ladder every
    indicator stands on; the connecting hairline follows the row. */
-[data-scope="steps"][data-part="root"][data-size="sm"] [data-part="indicator"] {
-  inline-size: calc(var(--bs-control-height-sm) * 0.875);
-  block-size: calc(var(--bs-control-height-sm) * 0.875);
+[data-scope="steps"][data-part="root"][data-size="sm"] {
+  --bs-steps-marker: calc(var(--bs-control-height-sm) * 0.875);
 }
 
-[data-scope="steps"][data-part="root"][data-size="lg"] [data-part="indicator"] {
-  inline-size: var(--bs-control-height-md);
-  block-size: var(--bs-control-height-md);
+[data-scope="steps"][data-part="root"][data-size="lg"] {
+  --bs-steps-marker: var(--bs-control-height-md);
+}
+
+
+/* The vertical climb: the list turns, each step standing on its own
+   row for narrow measures. */
+[data-scope="steps"][data-orientation="vertical"] [data-part="list"] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--bs-gap-sm);
+}
+
+[data-scope="steps"][data-orientation="vertical"] [data-part="item"] {
+  flex: initial;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* The thread turns with the list: a plumb line dropped from under the
+   seal, finding the next step's. */
+[data-scope="steps"][data-orientation="vertical"] [data-part="separator"] {
+  flex: initial;
+  align-self: auto;
+  inline-size: 1px;
+  min-block-size: var(--bs-space-6);
+  margin: var(--bs-margin-xs) 0 var(--bs-margin-xs)
+    calc(var(--bs-steps-marker) / 2 - 0.5px);
+  background: linear-gradient(var(--bs-color-border), var(--bs-color-border))
+    center / 1px 100% no-repeat;
+}
+
+[data-scope="steps"][data-orientation="vertical"] [data-part="separator"][data-complete] {
+  background: linear-gradient(var(--bs-color-primary), var(--bs-color-primary))
+    center / 1px 100% no-repeat;
 }
 `;
