@@ -47,6 +47,18 @@
  * utilities below reference --bs-* variables and follow every flip at
  * runtime. This variant is only the escape hatch for genuinely
  * mode-specific styling. */
+/* A filled glyph: the inkwell's svg carries fill="none" deep in its
+   body, so the span's own fill utilities never reach the shape — this
+   utility is the explicit "paint the inside" ask. */
+@utility fill-icon {
+  &:is(svg),
+  & svg,
+  & svg *,
+  &:is(svg) * {
+    fill: currentcolor;
+  }
+}
+
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {

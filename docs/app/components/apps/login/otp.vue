@@ -20,7 +20,7 @@ const copy = {
     resend: "重新发送",
     resendIn: (n: number) => `${n} 秒后可重新发送`,
     verify: "验证",
-    verified: "验证通过,欢迎回来。",
+    verified: "验证通过，欢迎回来。",
     back: "换个账户登录",
   },
 } as const;

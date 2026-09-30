@@ -45,7 +45,7 @@ const albums: Album[] = [
     artist: { en: "Songyan Ensemble", zh: "松烟社" },
     year: 2024,
     tracks: [
-      { title: { en: "Qinghua, first wash", zh: "青花,初染" }, length: 214 },
+      { title: { en: "Qinghua, first wash", zh: "青花，初染" }, length: 214 },
       { title: { en: "Celadon breaks", zh: "青瓷裂片" }, length: 187 },
       { title: { en: "Zhusha at dusk", zh: "朱砂向晚" }, length: 243 },
     ],
@@ -69,7 +69,7 @@ const albums: Album[] = [
     year: 2022,
     tracks: [
       { title: { en: "Hairline", zh: "发丝线" }, length: 203 },
-      { title: { en: "Halo, arriving at once", zh: "光晕,一次到来" }, length: 236 },
+      { title: { en: "Halo, arriving at once", zh: "光晕，一次到来" }, length: 236 },
       { title: { en: "Slow bleed", zh: "墨慢慢洇" }, length: 281 },
     ],
   },

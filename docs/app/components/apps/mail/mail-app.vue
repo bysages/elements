@@ -74,8 +74,8 @@ const mails = reactive<Mail[]>([
         "Come by the letter room when you can; the plates are still on the press.",
       ],
       zh: [
-        "第十二辑的第二遍校样今早下机。青花墨在非涂布纸上的吃墨比样张重——是有意的,我也认为是对的。",
-        "有空来字房看看,版还在机上。",
+        "第十二辑的第二遍校样今早下机。青花墨在非涂布纸上的吃墨比样张重——是有意的，我也认为是对的。",
+        "有空来字房看看，版还在机上。",
       ],
     },
     time: { en: "09:41", zh: "09:41" },
@@ -87,15 +87,15 @@ const mails = reactive<Mail[]>([
     id: "m-02",
     folder: "inbox",
     from: { name: "Zhou Ping", email: "zhou@huizhou-paper.cn" },
-    subject: { en: "Restock: 300 gsm xuan", zh: "补货:三百克宣纸" },
+    subject: { en: "Restock: 300 gsm xuan", zh: "补货：三百克宣纸" },
     body: {
       en: [
         "The 300 gsm xuan you asked about is back in stock, 480 sheets left. I held forty for you through Friday.",
         "The mill also sent a new 320 gsm sample; it takes the zhusha ink beautifully.",
       ],
       zh: [
-        "你问的三百克宣纸到货了,还剩四百八十张,给你留了四十张到周五。",
-        "纸坊还寄了新出的三百二十克样张,朱砂上去很好看。",
+        "你问的三百克宣纸到货了，还剩四百八十张，给你留了四十张到周五。",
+        "纸坊还寄了新出的三百二十克样张，朱砂上去很好看。",
       ],
     },
     time: { en: "08:15", zh: "08:15" },
@@ -113,7 +113,7 @@ const mails = reactive<Mail[]>([
         "Tuesday is yours on the composing stick; Wednesday and Thursday go to the apprentices.",
         "The galley for the poetry supplement needs a second pair of eyes before Friday.",
       ],
-      zh: ["周二的手托排版归你,周三周四给学徒们练手。", "诗补的活字长条周五前需要再过一遍眼。"],
+      zh: ["周二的手托排版归你，周三周四给学徒们练手。", "诗补的活字长条周五前需要再过一遍眼。"],
     },
     time: { en: "Yesterday", zh: "昨天" },
     unread: false,
@@ -131,8 +131,8 @@ const mails = reactive<Mail[]>([
         "If it still feels quick on the landing wall, we can stagger the columns.",
       ],
       zh: [
-        "我把走马灯放慢到每圈四十二秒——颜料现在读得出次序,不再是一条彩带。",
-        "如果落地页那面墙还嫌快,可以让几列错开起步。",
+        "我把走马灯放慢到每圈四十二秒——颜料现在读得出次序，不再是一条彩带。",
+        "如果落地页那面墙还嫌快，可以让几列错开起步。",
       ],
     },
     time: { en: "Yesterday", zh: "昨天" },
@@ -151,7 +151,7 @@ const mails = reactive<Mail[]>([
         "Two tables, one lockable drawer. Loading starts Thursday 07:00.",
       ],
       zh: [
-        "摊位定为 B-14,南门边——上午的光正好打在展出的样纸上。",
+        "摊位定为 B-14，南门边——上午的光正好打在展出的样纸上。",
         "两张桌、一个带锁抽屉。周四早上七点开始进场。",
       ],
     },
@@ -170,7 +170,7 @@ const mails = reactive<Mail[]>([
         "The celadon drawdowns look settled — approve the darker of the two and keep the lighter for the endpapers.",
         "Please send both to the bindery with Friday's batch.",
       ],
-      zh: ["青瓷的打样定下来了——批深的那版,浅的留给环衬。", "两版都随周五那批料送装订坊。"],
+      zh: ["青瓷的打样定下来了——批深的那版，浅的留给环衬。", "两版都随周五那批料送装订坊。"],
     },
     time: { en: "Mon", zh: "周一" },
     unread: false,
@@ -187,7 +187,10 @@ const mails = reactive<Mail[]>([
         "Would you take the letterpress inner signatures of our autumn catalogue? Sixteen pages, two inks.",
         "We cover paper and press time; the colophon names both houses.",
       ],
-      zh: ["我们秋季目录的活版内页,你们接不接?十六页,双色。", "纸张与机时我们出,版权页署两家名。"],
+      zh: [
+        "我们秋季目录的活版内页，你们接不接？十六页，双色。",
+        "纸张与机时我们出，版权页署两家名。",
+      ],
     },
     time: { en: "Sep 22", zh: "9 月 22 日" },
     unread: false,
@@ -263,7 +266,7 @@ function send() {
     id,
     folder: "sent",
     from: { name: locale.value === "zh" ? "我" : "Me", email: "sage@songyan.press" },
-    subject: { en: draft.subject || "(no subject)", zh: draft.subject || "(无主题)" },
+    subject: { en: draft.subject || "(no subject)", zh: draft.subject || "（无主题）" },
     body: { en: [draft.body], zh: [draft.body] },
     time: locale.value === "zh" ? "刚刚" : "now",
     unread: false,
@@ -286,7 +289,7 @@ function send() {
       <div class="grid h-[38rem] md:grid-cols-[11rem_17rem_1fr]">
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
         <nav class="hidden flex-col gap-1 border-r border-border p-3 md:flex" aria-label="Folders">
-          <Dialog.Root lazy-mount>
+          <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
             <Dialog.Trigger as-child class="mb-3">
               <Button class="w-full!">
                 <Icon name="i-lucide-pen-line" />
@@ -298,6 +301,9 @@ function send() {
               <Dialog.Positioner>
                 <Dialog.Content class="max-w-md!">
                   <Dialog.Title>{{ text.compose }}</Dialog.Title>
+                  <Dialog.CloseTrigger :aria-label="locale === 'zh' ? '关闭' : 'Close'">
+                    <Icon name="i-lucide-x" />
+                  </Dialog.CloseTrigger>
                   <div class="grid gap-3 py-2">
                     <Field.Root>
                       <Field.Label>{{ text.to }}</Field.Label>
@@ -313,15 +319,13 @@ function send() {
                     </Field.Root>
                   </div>
                   <div class="flex justify-end gap-2">
-                    <Dialog.CloseTrigger>
-                      <Button variant="ghost">{{ locale === "zh" ? "取消" : "Cancel" }}</Button>
-                    </Dialog.CloseTrigger>
-                    <Dialog.CloseTrigger>
-                      <Button @click="send">
-                        <Icon name="i-lucide-send" />
-                        {{ text.send }}
-                      </Button>
-                    </Dialog.CloseTrigger>
+                    <Button variant="ghost" @click="composing = false">{{
+                      locale === "zh" ? "取消" : "Cancel"
+                    }}</Button>
+                    <Button @click="send">
+                      <Icon name="i-lucide-send" />
+                      {{ text.send }}
+                    </Button>
                   </div>
                 </Dialog.Content>
               </Dialog.Positioner>
@@ -384,7 +388,11 @@ function send() {
                   :aria-label="text.folders.starred"
                   @click.stop="toggleStar(mail)"
                 >
-                  <Icon name="i-lucide-star" :class="mail.starred ? 'fill-current' : ''" />
+                  <Icon
+                    name="i-lucide-star"
+                    mode="svg"
+                    :class="mail.starred ? 'fill-icon text-primary' : ''"
+                  />
                 </button>
                 <span class="truncate text-xs text-tertiary">{{ mail.body[locale][0] }}</span>
               </span>
@@ -412,7 +420,8 @@ function send() {
                 <Button variant="ghost" size="sm" square @click="toggleStar(selected)">
                   <Icon
                     name="i-lucide-star"
-                    :class="selected.starred ? 'fill-current text-primary' : ''"
+                    mode="svg"
+                    :class="selected.starred ? 'fill-icon text-primary' : ''"
                   />
                 </Button>
                 <Button variant="ghost" size="sm" square @click="moveTo(selected, 'archive')">

@@ -65,7 +65,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 const tasks = reactive<Task[]>([
   {
     id: "t-01",
-    title: { en: "Proof edition No. 12, second pass", zh: "第十二辑校样,第二遍" },
+    title: { en: "Proof edition No. 12, second pass", zh: "第十二辑校样，第二遍" },
     status: "doing",
     priority: "high",
     due: { en: "Thu", zh: "周四" },
@@ -126,6 +126,18 @@ const priorityFilter = ref<string[]>(["any"]);
 
 const priorityTone: Record<Priority, string> = { high: "danger", med: "warning", low: "info" };
 
+const statusTone: Record<
+  Status,
+  { tone: "ink" | "primary" | "success"; variant: "outline" | "subtle" }
+> = {
+  todo: { tone: "ink", variant: "outline" },
+  doing: { tone: "primary", variant: "subtle" },
+  done: { tone: "success", variant: "subtle" },
+};
+
+const checkedState = (status: Status) =>
+  status === "done" ? true : status === "doing" ? "indeterminate" : false;
+
 const visible = computed(() =>
   tasks.filter(
     (t) =>
@@ -149,6 +161,12 @@ const priorityCollection = computed(() =>
 // the rest.
 const composing = ref(false);
 const draft = reactive({ title: "", priority: ["med"] as string[], due: "" });
+
+// The box is the workflow: an open box is waiting, the dash means
+// hands are on it, the check settles it.
+function cycle(task: Task, v: boolean) {
+  task.status = v ? (task.status === "todo" ? "doing" : "done") : "todo";
+}
 
 function add() {
   if (!draft.title.trim()) return;
@@ -174,7 +192,7 @@ function add() {
         <Card.Title>{{ locale === "zh" ? "印坊清单" : "Press ledger" }}</Card.Title>
         <Card.Description>{{ text.left(openCount) }}</Card.Description>
       </div>
-      <Dialog.Root lazy-mount>
+      <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
         <Dialog.Trigger as-child>
           <Button size="sm">
             <Icon name="i-lucide-plus" />
@@ -186,6 +204,9 @@ function add() {
           <Dialog.Positioner>
             <Dialog.Content class="max-w-md!">
               <Dialog.Title>{{ text.new }}</Dialog.Title>
+              <Dialog.CloseTrigger :aria-label="locale === 'zh' ? '关闭' : 'Close'">
+                <Icon name="i-lucide-x" />
+              </Dialog.CloseTrigger>
               <div class="grid gap-3 py-2">
                 <Field.Root required>
                   <Field.Label>{{ text.title }}</Field.Label>
@@ -226,12 +247,8 @@ function add() {
                 </Field.Root>
               </div>
               <div class="flex justify-end gap-2">
-                <Dialog.CloseTrigger>
-                  <Button variant="ghost">{{ text.cancel }}</Button>
-                </Dialog.CloseTrigger>
-                <Dialog.CloseTrigger>
-                  <Button :disabled="!draft.title.trim()" @click="add">{{ text.add }}</Button>
-                </Dialog.CloseTrigger>
+                <Button variant="ghost" @click="composing = false">{{ text.cancel }}</Button>
+                <Button :disabled="!draft.title.trim()" @click="add">{{ text.add }}</Button>
               </div>
             </Dialog.Content>
           </Dialog.Positioner>
@@ -301,12 +318,15 @@ function add() {
           class="flex items-center gap-3 border-b border-border py-3 last:border-b-0"
         >
           <Checkbox.Root
-            :checked="task.status === 'done'"
-            @update:checked="(v: boolean) => (task.status = v ? 'done' : 'todo')"
+            :checked="checkedState(task.status)"
+            @update:checked="(v: boolean) => cycle(task, v)"
           >
             <Checkbox.Control>
-              <Checkbox.Indicator>
+              <Checkbox.Indicator :indeterminate="false">
                 <Icon name="i-lucide-check" />
+              </Checkbox.Indicator>
+              <Checkbox.Indicator :indeterminate="true">
+                <Icon name="i-lucide-minus" />
               </Checkbox.Indicator>
             </Checkbox.Control>
             <Checkbox.HiddenInput />
@@ -316,6 +336,9 @@ function add() {
             :class="task.status === 'done' ? 'text-tertiary line-through' : ''"
             >{{ task.title[locale] }}</span
           >
+          <Badge :tone="statusTone[task.status].tone" :variant="statusTone[task.status].variant">
+            {{ text.filters[task.status] }}
+          </Badge>
           <Badge :tone="priorityTone[task.priority]" variant="subtle">
             {{ text.priorityLabel[task.priority] }}
           </Badge>

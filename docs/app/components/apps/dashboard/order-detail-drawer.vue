@@ -95,9 +95,7 @@ const statusTone: Record<OrderStatus, string> = {
             </dd>
           </dl>
 
-          <Drawer.CloseTrigger asChild>
-            <Button variant="outline" size="sm">{{ text.close }}</Button>
-          </Drawer.CloseTrigger>
+          <Button variant="outline" size="sm" @click="emit('close')">{{ text.close }}</Button>
         </Drawer.Content>
       </Drawer.Positioner>
     </Teleport>
