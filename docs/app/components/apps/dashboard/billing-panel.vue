@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge, Button, Card, DatePicker, Icon, Progress, SegmentGroup } from "@bysages/vue";
+import { Badge, Button, Card, DatePicker, Progress, SegmentGroup } from "@bysages/vue";
 import { CalendarDate, type DateValue } from "@internationalized/date";
 import { computed, ref } from "vue";
 
@@ -252,7 +252,7 @@ const filteredInvoices = computed(() =>
               <DatePicker.Input :index="0" class="w-28!" />
               <DatePicker.Input :index="1" class="w-28!" />
               <DatePicker.Trigger>
-                <Icon name="calendar" />
+                <Icon name="i-lucide-calendar" />
               </DatePicker.Trigger>
               <DatePicker.ClearTrigger>{{ text.invoices.clear }}</DatePicker.ClearTrigger>
             </DatePicker.Control>
@@ -273,11 +273,11 @@ const filteredInvoices = computed(() =>
                     <DatePicker.Context v-slot="dp">
                       <DatePicker.ViewControl>
                         <DatePicker.PrevTrigger>
-                          <Icon name="chevron-left" />
+                          <Icon name="i-lucide-chevron-left" />
                         </DatePicker.PrevTrigger>
                         <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                         <DatePicker.NextTrigger>
-                          <Icon name="chevron-right" />
+                          <Icon name="i-lucide-chevron-right" />
                         </DatePicker.NextTrigger>
                       </DatePicker.ViewControl>
                       <DatePicker.Table>
@@ -308,11 +308,11 @@ const filteredInvoices = computed(() =>
                     <DatePicker.Context v-slot="dp">
                       <DatePicker.ViewControl>
                         <DatePicker.PrevTrigger>
-                          <Icon name="chevron-left" />
+                          <Icon name="i-lucide-chevron-left" />
                         </DatePicker.PrevTrigger>
                         <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                         <DatePicker.NextTrigger>
-                          <Icon name="chevron-right" />
+                          <Icon name="i-lucide-chevron-right" />
                         </DatePicker.NextTrigger>
                       </DatePicker.ViewControl>
                       <DatePicker.Table>
@@ -341,11 +341,11 @@ const filteredInvoices = computed(() =>
                     <DatePicker.Context v-slot="dp">
                       <DatePicker.ViewControl>
                         <DatePicker.PrevTrigger>
-                          <Icon name="chevron-left" />
+                          <Icon name="i-lucide-chevron-left" />
                         </DatePicker.PrevTrigger>
                         <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                         <DatePicker.NextTrigger>
-                          <Icon name="chevron-right" />
+                          <Icon name="i-lucide-chevron-right" />
                         </DatePicker.NextTrigger>
                       </DatePicker.ViewControl>
                       <DatePicker.Table>

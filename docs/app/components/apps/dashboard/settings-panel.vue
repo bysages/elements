@@ -146,17 +146,17 @@ function save() {
         <Card.Description>{{ text.notifications.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="grid content-start gap-3">
-        <Switch.Root v-model="form.digest">
+        <Switch.Root v-model:checked="form.digest">
           <Switch.Control><Switch.Thumb /></Switch.Control>
           <Switch.Label>{{ text.notifications.dailyDigest }}</Switch.Label>
           <Switch.HiddenInput />
         </Switch.Root>
-        <Switch.Root v-model="form.anomalyAlerts">
+        <Switch.Root v-model:checked="form.anomalyAlerts">
           <Switch.Control><Switch.Thumb /></Switch.Control>
           <Switch.Label>{{ text.notifications.anomalyAlerts }}</Switch.Label>
           <Switch.HiddenInput />
         </Switch.Root>
-        <Switch.Root v-model="form.weeklyReport">
+        <Switch.Root v-model:checked="form.weeklyReport">
           <Switch.Control><Switch.Thumb /></Switch.Control>
           <Switch.Label>{{ text.notifications.weeklyReport }}</Switch.Label>
           <Switch.HiddenInput />

@@ -29,6 +29,11 @@ const copy = {
         description:
           "A revenue console: stat cards, charts, and a sortable, filterable, selectable data table with drawer detail and dialog editing.",
       },
+      login: {
+        title: "Login",
+        description:
+          "Three doors into the same workbench: a centered card, a split panel wearing the house ink, and a two-step one-time code with a resend clock.",
+      },
       blog: {
         title: "Blog",
         description:
@@ -54,6 +59,26 @@ const copy = {
         description:
           "Two phone screens in the handheld registers: a chat home in missive and an office workbench in dispatch, each pinned to its scene by ConfigProvider.",
       },
+      mail: {
+        title: "Mail",
+        description:
+          "A three-tray letter room: folders, a list with unread dots and stars, and a reading pane that drafts replies in a dialog.",
+      },
+      tasks: {
+        title: "Tasks",
+        description:
+          "A small press-room board: status filters, a priority select, completion checkboxes, and new tasks added in a dialog.",
+      },
+      music: {
+        title: "Music",
+        description:
+          "A listening room: an album shelf, a track queue, and a now-playing panel whose band moves and hands off to the next song.",
+      },
+      forms: {
+        title: "Forms",
+        description:
+          "The form workbench: a profile card validated while you type, beside a preferences card of switches and a digest cadence.",
+      },
     },
   },
   zh: {
@@ -71,6 +96,11 @@ const copy = {
         title: "管理控制台",
         description:
           "一间营收控制台：统计卡、图表，以及一张可排序、可筛选、可多选的数据表，配抽屉详情与对话框编辑。",
+      },
+      login: {
+        title: "登录",
+        description:
+          "通向同一间工作台的三扇门:居中卡片、身着纸墨的分屏,以及带重发倒计时的两步验证码。",
       },
       blog: {
         title: "博客",
@@ -94,6 +124,22 @@ const copy = {
         title: "移动端场景",
         description:
           "手持终端里的两块屏：missive 风格的聊天首页与 dispatch 风格的办公工作台，各自由 ConfigProvider 钉在对应场景。",
+      },
+      mail: {
+        title: "邮件",
+        description: "三栏的信房:文件夹、带未读点与星标的信件列表,以及在对话框里落笔回信的阅读栏。",
+      },
+      tasks: {
+        title: "任务清单",
+        description: "印坊里的小看板:状态筛选、优先级选择、完成勾选,新建任务在对话框里落笔。",
+      },
+      music: {
+        title: "音乐",
+        description: "一间听音室:专辑架、曲目队列,以及走带行进、唱完自动交棒的正在播放面板。",
+      },
+      forms: {
+        title: "表单",
+        description: "表单工作台:左边一张边输边校验的资料卡,右边一张开关与摘要节奏的偏好卡。",
       },
     },
   },
@@ -122,12 +168,40 @@ const sourceUrl = (name: string) =>
     .filter(Boolean)
     .join("/");
 
-type ExampleName = "dashboard" | "blog" | "landing" | "chat" | "github" | "mobile";
+type ExampleName =
+  | "dashboard"
+  | "login"
+  | "mail"
+  | "tasks"
+  | "music"
+  | "forms"
+  | "blog"
+  | "landing"
+  | "chat"
+  | "github"
+  | "mobile";
 
 const apps: Array<{ name: ExampleName; components: string[] }> = [
   {
     name: "dashboard",
     components: ["Layout", "Stat", "Chart", "DataTable", "Drawer", "Dialog", "Toast"],
+  },
+  {
+    name: "login",
+    components: ["Card", "Field", "Input", "Checkbox", "PinInput", "Button", "SegmentGroup"],
+  },
+  {
+    name: "mail",
+    components: ["Card", "Input", "Badge", "Dialog", "Avatar"],
+  },
+  {
+    name: "tasks",
+    components: ["Checkbox", "Badge", "SegmentGroup", "Select", "Dialog"],
+  },
+  { name: "music", components: ["Slider", "Button", "Icon"] },
+  {
+    name: "forms",
+    components: ["Form", "FormField", "Input", "Textarea", "Switch", "Select"],
   },
   {
     name: "blog",

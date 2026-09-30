@@ -27,6 +27,15 @@
   ::after {
     border: 0 solid var(--bs-color-border);
   }
+
+  /* The app code plays real buttons — list rows, album cards, folder
+     rails — whose UA paint (ButtonFace, the default cursor) reads as a
+     stain in the paper. The library's own Button dresses itself; this
+     only strips what a native control drags in. */
+  button {
+    background-color: transparent;
+    cursor: pointer;
+  }
 }
 
 /* Generated markdown and agent notes carry no utilities; scanning them
