@@ -150,22 +150,37 @@
    the house stock. Custom properties on the root resolve per theme
    attribute, so each paper carries a light and a dark face. */
 [data-scene="cupertino"] {
-  --bs-color-surface-0: oklch(0.973 0.001 265);
+  --bs-color-surface-0: oklch(0.962 0.004 265);
   --bs-color-surface-1: oklch(0.981 0.001 265);
-  --bs-color-surface-2: oklch(0.992 0.001 265);
-  --bs-color-surface-3: oklch(0.992 0.001 265);
-  --bs-color-surface-4: oklch(0.992 0.001 265);
-  --bs-color-surface-5: oklch(0.992 0.001 265);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+  --bs-color-text-primary: oklch(0.208 0 0);
+  --bs-color-text-secondary: oklch(0.628 0.008 265);
+  --bs-color-text-tertiary: oklch(0.76 0.006 265);
+  --bs-color-text-disabled: oklch(0.83 0.005 265);
+  --bs-color-border: oklch(0.85 0.005 265);
+  --bs-color-border-strong: oklch(0.79 0.006 265);
+  --bs-color-scrim: oklch(0 0 0 / 0.4);
+  --bs-shadow-ink: oklch(0.25 0.01 265);
 }
 
 [data-scene="cupertino"][data-theme="dark"],
 [data-scene="cupertino"]:not([data-theme]):where([data-theme="dark"] *) {
-  --bs-color-surface-0: oklch(0.165 0.004 262);
-  --bs-color-surface-1: oklch(0.205 0.004 262);
-  --bs-color-surface-2: oklch(0.245 0.004 262);
-  --bs-color-surface-3: oklch(0.272 0.004 262);
-  --bs-color-surface-4: oklch(0.29 0.004 262);
-  --bs-color-surface-5: oklch(0.31 0.004 262);
+  --bs-color-surface-0: oklch(0.18 0.004 265);
+  --bs-color-surface-1: oklch(0.216 0.004 265);
+  --bs-color-surface-2: oklch(0.245 0.004 265);
+  --bs-color-surface-3: oklch(0.272 0.004 265);
+  --bs-color-surface-4: oklch(0.29 0.004 265);
+  --bs-color-surface-5: oklch(0.31 0.004 265);
+  --bs-color-text-primary: oklch(1 0 0);
+  --bs-color-text-secondary: oklch(0.68 0.006 265);
+  --bs-color-text-tertiary: oklch(0.55 0.005 265);
+  --bs-color-text-disabled: oklch(0.4 0.004 265);
+  --bs-color-border: oklch(0.31 0.005 265);
+  --bs-color-border-strong: oklch(0.38 0.006 265);
+  --bs-color-scrim: oklch(0 0 0 / 0.5);
 }
 
 [data-scene="expressive"] {
@@ -230,22 +245,37 @@
    rising above it; dark climbs through three gray steps. Chroma zero —
    this register keeps no pigment in its paper. */
 [data-scene="fluent"] {
-  --bs-color-surface-0: oklch(0.956 0 0);
-  --bs-color-surface-1: oklch(0.973 0 0);
-  --bs-color-surface-2: oklch(0.992 0 0);
-  --bs-color-surface-3: oklch(0.992 0 0);
-  --bs-color-surface-4: oklch(0.992 0 0);
-  --bs-color-surface-5: oklch(0.992 0 0);
+  --bs-color-surface-0: oklch(0.972 0 0);
+  --bs-color-surface-1: oklch(0.982 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+  --bs-color-text-primary: oklch(0.226 0 0);
+  --bs-color-text-secondary: oklch(0.452 0 0);
+  --bs-color-text-tertiary: oklch(0.634 0 0);
+  --bs-color-text-disabled: oklch(0.75 0 0);
+  --bs-color-border: oklch(0.925 0 0);
+  --bs-color-border-strong: oklch(0.865 0 0);
+  --bs-color-scrim: oklch(0 0 0 / 0.4);
+  --bs-shadow-ink: oklch(0.25 0 0);
 }
 
 [data-scene="fluent"][data-theme="dark"],
 [data-scene="fluent"]:not([data-theme]):where([data-theme="dark"] *) {
-  --bs-color-surface-0: oklch(0.224 0 0);
-  --bs-color-surface-1: oklch(0.251 0 0);
-  --bs-color-surface-2: oklch(0.29 0 0);
-  --bs-color-surface-3: oklch(0.315 0 0);
-  --bs-color-surface-4: oklch(0.34 0 0);
-  --bs-color-surface-5: oklch(0.365 0 0);
+  --bs-color-surface-0: oklch(0.27 0 0);
+  --bs-color-surface-1: oklch(0.3 0 0);
+  --bs-color-surface-2: oklch(0.33 0 0);
+  --bs-color-surface-3: oklch(0.36 0 0);
+  --bs-color-surface-4: oklch(0.39 0 0);
+  --bs-color-surface-5: oklch(0.42 0 0);
+  --bs-color-text-primary: oklch(1 0 0);
+  --bs-color-text-secondary: oklch(0.822 0 0);
+  --bs-color-text-tertiary: oklch(0.68 0 0);
+  --bs-color-text-disabled: oklch(0.5 0 0);
+  --bs-color-border: oklch(0.33 0 0);
+  --bs-color-border-strong: oklch(0.4 0 0);
+  --bs-color-scrim: oklch(0 0 0 / 0.5);
 }
 
 [data-scene="material"] {
@@ -290,22 +320,37 @@
 /* The surface: neutral, tinted faintly violet instead of the house's
    warm paper — the elevation-led register reads against cooler ground. */
 [data-scene="material"] {
-  --bs-color-surface-0: oklch(0.966 0.006 300);
-  --bs-color-surface-1: oklch(0.976 0.005 300);
-  --bs-color-surface-2: oklch(0.986 0.004 300);
-  --bs-color-surface-3: oklch(0.986 0.004 300);
-  --bs-color-surface-4: oklch(0.986 0.004 300);
-  --bs-color-surface-5: oklch(0.986 0.004 300);
+  --bs-color-surface-0: oklch(0.968 0.011 315);
+  --bs-color-surface-1: oklch(0.976 0.009 318);
+  --bs-color-surface-2: oklch(0.983 0.007 320);
+  --bs-color-surface-3: oklch(0.983 0.007 320);
+  --bs-color-surface-4: oklch(0.983 0.007 320);
+  --bs-color-surface-5: oklch(0.983 0.007 320);
+  --bs-color-text-primary: oklch(0.245 0.008 312);
+  --bs-color-text-secondary: oklch(0.373 0.012 310);
+  --bs-color-text-tertiary: oklch(0.58 0.02 305);
+  --bs-color-text-disabled: oklch(0.8 0.015 310);
+  --bs-color-border: oklch(0.87 0.017 315);
+  --bs-color-border-strong: oklch(0.7 0.02 310);
+  --bs-color-scrim: oklch(0 0 0 / 0.4);
+  --bs-shadow-ink: oklch(0.25 0.015 310);
 }
 
 [data-scene="material"][data-theme="dark"],
 [data-scene="material"]:not([data-theme]):where([data-theme="dark"] *) {
-  --bs-color-surface-0: oklch(0.165 0.009 300);
-  --bs-color-surface-1: oklch(0.205 0.01 300);
-  --bs-color-surface-2: oklch(0.245 0.011 300);
-  --bs-color-surface-3: oklch(0.272 0.011 300);
-  --bs-color-surface-4: oklch(0.29 0.011 300);
-  --bs-color-surface-5: oklch(0.31 0.011 300);
+  --bs-color-surface-0: oklch(0.16 0.008 320);
+  --bs-color-surface-1: oklch(0.185 0.008 320);
+  --bs-color-surface-2: oklch(0.22 0.009 315);
+  --bs-color-surface-3: oklch(0.26 0.009 315);
+  --bs-color-surface-4: oklch(0.29 0.009 315);
+  --bs-color-surface-5: oklch(0.32 0.009 315);
+  --bs-color-text-primary: oklch(0.91 0.01 315);
+  --bs-color-text-secondary: oklch(0.87 0.017 315);
+  --bs-color-text-tertiary: oklch(0.66 0.015 310);
+  --bs-color-text-disabled: oklch(0.45 0.01 310);
+  --bs-color-border: oklch(0.37 0.012 310);
+  --bs-color-border-strong: oklch(0.5 0.015 308);
+  --bs-color-scrim: oklch(0 0 0 / 0.5);
 }
 
 [data-scene="sketch"] {
@@ -595,4 +640,81 @@
   --bs-color-text-disabled: oklch(0.34 0 0);
   --bs-color-border: oklch(0.375 0 0);
   --bs-color-border-strong: oklch(0.453 0 0);
+}
+
+[data-scene="new-york"] {
+  /* 玄素 — the monochrome developer register: black ink as the only
+     pigment, zinc-gray stock, hairline separation, the near-square
+     corner ladder under a generous 32/36/40 control row, a brisk quiet
+     pace, and focus as the offset ring — a crisp 2px line held clear of
+     the edge by a paper gap. */
+  --bs-radius-sm: 0.375rem;
+  --bs-radius-md: 0.5rem;
+  --bs-radius-lg: 0.625rem;
+  --bs-radius-xl: 0.75rem;
+  --bs-radius-2xl: 1rem;
+  --bs-radius-control: 0.375rem;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.25rem;
+  --bs-control-height-lg: 2.5rem;
+  --bs-density-scale: 1;
+  --bs-motion-scale: 0.85;
+  --bs-light-x: 0px;
+  --bs-light-y: 0.0625rem;
+  --bs-light-reach: 0.6;
+  --bs-ripple-opacity: 0;
+  /* The register speaks in the system voice: headlines stand down from
+     the serif, labels lose their brush tracking. */
+  --bs-font-serif: var(--bs-font-sans);
+  --bs-tracking-label: 0em;
+  /* Focus speaks the register's dialect: the offset ring. */
+  --bs-focus-ring: 0 0 0 2px var(--bs-color-surface-0), 0 0 0 4px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px color-mix(in oklab, var(--bs-color-focus) 50%, transparent);
+}
+
+/* The register's stock: pages drawn on pure white with the zinc grays
+   carrying text and hairline — chroma leans a breath of blue. */
+[data-scene="new-york"] {
+  --bs-color-surface-0: oklch(1 0 0);
+  --bs-color-surface-1: oklch(1 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+  --bs-color-text-primary: oklch(0.185 0.004 286);
+  --bs-color-text-secondary: oklch(0.552 0.016 286);
+  --bs-color-text-tertiary: oklch(0.705 0.015 286);
+  --bs-color-text-disabled: oklch(0.79 0.008 286);
+  --bs-color-border: oklch(0.92 0.004 286);
+  --bs-color-border-strong: oklch(0.871 0.006 286);
+  --bs-color-scrim: oklch(0 0 0 / 0.4);
+  --bs-shadow-ink: oklch(0.25 0.005 286);
+  /* The solid action is the register's black block — zinc-900, not the
+     house warm gray. */
+  --bs-color-primary: oklch(0.21 0.006 286);
+  --bs-color-primary-hover: oklch(0.255 0.006 286);
+  --bs-color-primary-active: oklch(0.3 0.007 286);
+}
+
+[data-scene="new-york"][data-theme="dark"],
+[data-scene="new-york"]:not([data-theme]):where([data-theme="dark"] *) {
+  --bs-color-surface-0: oklch(0.145 0.005 286);
+  --bs-color-surface-1: oklch(0.18 0.005 286);
+  --bs-color-surface-2: oklch(0.21 0.006 286);
+  --bs-color-surface-3: oklch(0.24 0.006 286);
+  --bs-color-surface-4: oklch(0.27 0.006 286);
+  --bs-color-surface-5: oklch(0.3 0.007 286);
+  --bs-color-text-primary: oklch(0.97 0.002 286);
+  --bs-color-text-secondary: oklch(0.65 0.012 286);
+  --bs-color-text-tertiary: oklch(0.55 0.012 286);
+  --bs-color-text-disabled: oklch(0.4 0.008 286);
+  --bs-color-border: oklch(0.274 0.006 286);
+  --bs-color-border-strong: oklch(0.37 0.013 286);
+  --bs-color-scrim: oklch(0 0 0 / 0.5);
+  /* Primary inverts to the zinc paper-white; its ink stays dark. */
+  --bs-color-primary: oklch(0.985 0 0);
+  --bs-color-primary-hover: oklch(0.92 0.004 286);
+  --bs-color-primary-active: oklch(0.871 0.006 286);
+  --bs-color-ink-on-fill: oklch(0.21 0.006 286);
+  --bs-ink-knead: 0%;
 }

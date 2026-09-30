@@ -127,6 +127,7 @@ const preview: Preview = {
           { value: "missive", title: "Missive 家书 — the familiar handheld" },
           { value: "dispatch", title: "Dispatch 公牍 — the office handheld" },
           { value: "metric", title: "Metric 格律 — metric productivity" },
+          { value: "new-york", title: "New York 玄素 — the monochrome developer" },
         ],
       },
     },

@@ -397,7 +397,7 @@ Theme is token data, never a component fork:
 - `[data-accent]` — ink _(default)_ / qinghua / celadon / zhusha
 - `[data-contrast]` — normal / high
 - `[data-density]` — compact / default / comfortable / spacious
-- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech / cupertino / expressive / fluent / material / sketch / missive / dispatch / metric
+- `[data-scene]` — paper _(default)_ / civic / enterprise / studio / tech / cupertino / expressive / fluent / material / sketch / missive / dispatch / metric / new-york
 
 Future brand themes change color, surface, lighting, typography, and density —
 never interaction. Dark mode is lacquer night: warm blacks (never `#000`),
@@ -407,12 +407,13 @@ separation carried by the surface ladder plus a faint warm hairline of light.
 **Scene presets.** A `[data-scene]` attribute retunes the temperament of the
 whole interface — shape, density, pace and its curves, where the key light
 stands and how far it reaches, and how the press wash spreads — with a
-paired pigment and contrast tier as the scene's voice. Seven of the style
+paired pigment and contrast tier as the scene's voice. Eight of the style
 scenes also retint the paper itself toward their borrowed stock: cupertino
 the cool neutral handheld white, material the M3 violet-tinged neutral,
 fluent the calm neutral gray, sketch the warm cream of a used sketchbook,
-the missive and dispatch gray grounds with white groups, and the metric register's
-light cool gray — each carrying a light and a dark face. Two families ride
+the missive and dispatch gray grounds with white groups, the metric register's
+light cool gray, and new-york's zinc monochrome stock — each carrying a
+light and a dark face. Two families ride
 the same levers: audience scenes serve a desk, and style scenes borrow the
 temperament of the major design languages — named for the open specs and
 places, never the companies. They are lever homages, not clones (no
@@ -433,6 +434,7 @@ platform's own stack):
 | `missive`    | 家书 | the familiar handheld phone register | celadon       | normal   | soft corners (4/8/12px, never full), the 32/40/48 touch ladder, eased pace ×0.9, loosened whitespace ×1.15, flat diffuse light ×0.6, no press wash, a crisp 2px accent line inside the edge at focus, gray ground with white groups, system voice                                                                       |
 | `dispatch`   | 公牍 | the office handheld register         | qinghua       | normal   | the same soft corners and touch ladder as 家书, cobalt pigment, cooler ground that goes true black at night                                                                                                                                                                                                             |
 | `metric`     | 格律 | metric productivity suites           | qinghua       | normal   | the corner ladder in strict meter (3/6/9/12), compact 24/32/40 controls, density ×0.95, flat light ×0.55, no press wash, a plain 2px outline at focus, light cool gray paper                                                                                                                                            |
+| `new-york`   | 玄素 | the monochrome developer register    | ink _(none)_  | normal   | the near-square 6/8/10/12/16 ladder, the 32/36/40 control row, brisk pace ×0.85, flat light ×0.6, the offset focus ring held clear of the edge, zinc monochrome paper, system voice                                                                                                                                     |
 
 The pairings are applied by the theme engine (`SCENE_DEFAULT_ACCENT`,
 `SCENE_DEFAULT_CONTRAST`) as plain data attributes, so accent and contrast
