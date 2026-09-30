@@ -4,6 +4,8 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { TreeView } from ".";
+import { Button } from "../button";
+import { Input } from "../input";
 
 const meta: Meta = { title: "Components/Data/Tree View" };
 export default meta;
@@ -320,8 +322,16 @@ export const Links = {
             id: "docs",
             name: "Docs",
             children: [
-              { id: "docs/start", name: "Getting Started", href: "#getting-started" },
-              { id: "docs/install", name: "Installation", href: "#installation" },
+              {
+                id: "docs/start",
+                name: "Getting Started",
+                href: "#getting-started",
+              },
+              {
+                id: "docs/install",
+                name: "Installation",
+                href: "#installation",
+              },
             ],
           },
           {
@@ -389,36 +399,12 @@ export const ExpandCollapseAll = {
         {(tree: any) => (
           <>
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <button
-                type="button"
-                onClick={() => tree.expandAll()}
-                style={{
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                }}
-              >
+              <Button onClick={() => tree.expandAll()} size="sm">
                 Expand all
-              </button>
-              <button
-                type="button"
-                onClick={() => tree.collapseAll()}
-                style={{
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                }}
-              >
+              </Button>
+              <Button onClick={() => tree.collapseAll()} size="sm">
                 Collapse all
-              </button>
+              </Button>
             </div>
             <TreeView.Label>Library</TreeView.Label>
             {treeOf(collection)}
@@ -439,19 +425,10 @@ export const Filtering = {
       : collection;
     return (
       <TreeView.Root collection={filtered} defaultExpandedValue={["ink", "paper"]}>
-        <input
+        <Input
           placeholder="Search"
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
-          style={{
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.5rem",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-            background: "var(--bs-color-surface-2)",
-            color: "var(--bs-color-text-primary)",
-          }}
         />
         {treeOf(filtered)}
       </TreeView.Root>
@@ -470,7 +447,11 @@ export const AsyncLoading = {
         name: "",
         children: [
           { id: "server", name: "server", childrenCount: 2 },
-          { id: "local", name: "local", children: [{ id: "local/draft", name: "draft.md" }] },
+          {
+            id: "local",
+            name: "local",
+            children: [{ id: "local/draft", name: "draft.md" }],
+          },
         ],
       },
     });

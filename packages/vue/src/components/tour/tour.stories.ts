@@ -3,20 +3,13 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive, Teleport } from "vue";
 
 import { Tour, useTour, type TourStepDetails } from ".";
+import { Button } from "../button";
+import { Checkbox } from "../checkbox";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Tour" };
 export default meta;
-
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
 
 const targetStyle = {
   display: "grid",
@@ -74,11 +67,7 @@ function stage(
             "div",
             { style: { display: "flex", gap: "0.75rem", marginBottom: "1.5rem" } },
             extras?.(tour) ?? [
-              h(
-                "button",
-                { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-                () => "Start tour",
-              ),
+              h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
             ],
           ),
           h(Teleport, { to: "body" }, () => card()),
@@ -145,11 +134,7 @@ export const Basic = {
           },
         ],
         (tour) => [
-          h(
-            "button",
-            { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-            () => args.startLabel,
-          ),
+          h(Button, { size: "sm", onClick: () => tour.value.start() }, () => args.startLabel),
           targets(["tour-basic-1", "tour-basic-2"], "Anchor"),
         ],
       ),
@@ -202,11 +187,7 @@ export const MixedTypes = {
         },
       ],
       (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
-        ),
+        h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
         h("div", { id: "tour-mixed-target", style: targetStyle }, () => "Target element"),
       ],
     ),
@@ -249,18 +230,14 @@ export const WaitForClick = {
         },
       ],
       (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
-        ),
+        h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
         h(
           "div",
           { style: { display: "flex", gap: "0.75rem", marginBottom: "1.5rem" } },
           ["add", "edit", "delete"].map((kind) =>
             h(
-              "button",
-              { id: `tour-click-${kind}`, type: "button", style: buttonStyle },
+              Button,
+              { id: `tour-click-${kind}`, size: "sm" },
               () => kind[0].toUpperCase() + kind.slice(1),
             ),
           ),
@@ -340,10 +317,10 @@ export const WaitForInput = {
       ],
       (tour) => [
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: { ...buttonStyle, marginBottom: "1.5rem" },
+            size: "sm",
+            style: { marginBottom: "1.5rem" },
             onClick: () => tour.value.start(),
           },
           () => "Start tour",
@@ -359,23 +336,21 @@ export const WaitForInput = {
             },
           },
           [
-            h("input", {
+            h(Input, {
               id: "tour-input-name",
               placeholder: "Name",
-              style: buttonStyle,
               "aria-label": "Name",
             }),
-            h("input", {
+            h(Input, {
               id: "tour-input-email",
               placeholder: "Email",
-              style: buttonStyle,
               "aria-label": "Email",
             }),
-            h(
-              "label",
-              { style: { display: "flex", gap: "0.375rem", fontSize: "var(--bs-font-size-sm)" } },
-              [h("input", { id: "tour-input-terms", type: "checkbox" }), "I accept the terms"],
-            ),
+            h(Checkbox.Root, { size: "sm", id: "tour-input-terms" }, () => [
+              h(Checkbox.Control, () => h(Checkbox.Indicator)),
+              h(Checkbox.Label, () => "I accept the terms"),
+              h(Checkbox.HiddenInput),
+            ]),
           ],
         ),
       ],
@@ -424,11 +399,7 @@ export const AsyncStep = {
         },
       ],
       (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
-        ),
+        h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
         h("div", { id: "tour-async-card", style: targetStyle }, () => "Account card"),
       ],
     ),
@@ -474,11 +445,7 @@ export const Events = {
         return () =>
           h(Tour.Root, { tour: tour.value }, () => [
             h("div", { style: { display: "flex", gap: "0.75rem", marginBottom: "1.5rem" } }, [
-              h(
-                "button",
-                { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-                () => "Start tour",
-              ),
+              h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
               targets(["tour-event-1", "tour-event-2"], "Step"),
             ]),
             h(
@@ -529,11 +496,7 @@ export const KeyboardNavigation = {
         },
       ],
       (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
-        ),
+        h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
         targets(["tour-key-1", "tour-key-2"], "Step"),
         h(
           "p",
@@ -582,11 +545,7 @@ export const ProgressBar = {
         return () =>
           h(Tour.Root, { tour: tour.value }, () => [
             h("div", { style: { display: "flex", gap: "0.75rem", marginBottom: "1.5rem" } }, [
-              h(
-                "button",
-                { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-                () => "Start tour",
-              ),
+              h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
               targets(["tour-progress-1", "tour-progress-2"], "Step"),
             ]),
             h(Teleport, { to: "body" }, () =>
@@ -663,11 +622,7 @@ export const SkipTour = {
         },
       ],
       (tour) => [
-        h(
-          "button",
-          { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-          () => "Start tour",
-        ),
+        h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
         targets(["tour-skip-1", "tour-skip-2", "tour-skip-3"], "Item"),
       ],
     ),
@@ -731,17 +686,12 @@ export const WaitForElement = {
         return () =>
           h(Tour.Root, { tour: tour.value }, () => [
             h("div", { style: { display: "flex", gap: "0.75rem", marginBottom: "1.5rem" } }, [
+              h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
               h(
-                "button",
-                { type: "button", style: buttonStyle, onClick: () => tour.value.start() },
-                () => "Start tour",
-              ),
-              h(
-                "button",
+                Button,
                 {
                   id: "tour-add-item",
-                  type: "button",
-                  style: buttonStyle,
+                  size: "sm",
                   onClick: () => state.items.push(`Item ${state.items.length + 1}`),
                 },
                 () => "Add item",

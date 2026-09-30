@@ -42,7 +42,10 @@ function part(name: string, tag: string, extra: Record<string, string> = {}) {
 
 /** The log itself: the column every stroke lands in, a landmark to
  * screen readers. */
-const Conversation = part("Conversation", "div", { role: "log", "aria-label": "Conversation" });
+const Conversation = part("Conversation", "div", {
+  role: "log",
+  "aria-label": "Conversation",
+});
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
@@ -52,7 +55,10 @@ const MessageContent = part("Content", "div");
 const Actions = part("Actions", "div");
 
 /** The while-it-works whisper for the in-flight turns. */
-const Loader = part("Loader", "span", { role: "status", "aria-label": "Loading" });
+const Loader = part("Loader", "span", {
+  role: "status",
+  "aria-label": "Loading",
+});
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.Message`, and the rest, exactly as before the split. */

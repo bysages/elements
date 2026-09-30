@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
-import { useEffect, useState } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 /** The mark for a source that never arrived: a quiet mountain-and-sun,
  * drawn in the stylesheet's stroke and hidden from the reader. */

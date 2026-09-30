@@ -17,7 +17,9 @@ function NumberInputRoot({ size = "md", ...rest }: NumberInputRootProps) {
  * ValueText, IncrementTrigger, DecrementTrigger, Scrubber. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const NumberInput: Omit<typeof ArkNumberInput, "Root"> & { Root: typeof NumberInputRoot } = {
+export const NumberInput: Omit<typeof ArkNumberInput, "Root"> & {
+  Root: typeof NumberInputRoot;
+} = {
   ...ArkNumberInput,
   Root: NumberInputRoot,
 };

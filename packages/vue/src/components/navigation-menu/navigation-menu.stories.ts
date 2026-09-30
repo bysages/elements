@@ -243,3 +243,65 @@ export const Viewport = {
       viewport(),
     ]),
 };
+
+/** The mega panel: one trigger opens a wide vessel whose content is the
+ * caller's own grid — columns, features, whatever the page needs. The
+ * viewport keeps every panel the same width while the ink travels. */
+export const Mega = {
+  render: () => {
+    const features = [
+      { title: "Tokens", copy: "Palettes and tiers on one ramp" },
+      { title: "Lighting", copy: "Elevation computed from the source" },
+      { title: "Motion", copy: "Ink bleeds, puppets keep strings" },
+      { title: "Density", copy: "Whitespace scales, type holds" },
+    ];
+    return h(NavigationMenu.Root, () => [
+      h(NavigationMenu.List, () => [
+        h(NavigationMenu.Item, { value: "platform" }, () => [
+          h(NavigationMenu.Trigger, () => "Platform"),
+          h(NavigationMenu.Content, () =>
+            h(
+              "div",
+              {
+                style: {
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "var(--bs-gap-sm)",
+                  padding: "var(--bs-padding-md)",
+                },
+              },
+              features.map((feature) =>
+                h(
+                  "div",
+                  {
+                    key: feature.title,
+                    style: { padding: "var(--bs-padding-sm)", borderRadius: "var(--bs-radius-sm)" },
+                  },
+                  [
+                    h(
+                      "strong",
+                      { style: { display: "block", marginBottom: "var(--bs-space-1)" } },
+                      feature.title,
+                    ),
+                    h(
+                      "span",
+                      {
+                        style: {
+                          color: "var(--bs-color-text-secondary)",
+                          fontSize: "var(--bs-font-size-sm)",
+                        },
+                      },
+                      feature.copy,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ]),
+        flatLink("Docs"),
+      ]),
+      viewport(),
+    ]);
+  },
+};

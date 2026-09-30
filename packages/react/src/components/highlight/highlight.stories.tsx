@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Highlight } from ".";
+import { Input } from "../input";
 
 const meta: Meta = { title: "Components/Elements/Highlight" };
 export default meta;
@@ -24,7 +25,12 @@ function text(props: Record<string, any>) {
 
 function caption(children: string) {
   return (
-    <span style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" }}>
+    <span
+      style={{
+        fontSize: "var(--bs-font-size-sm)",
+        color: "var(--bs-color-text-secondary)",
+      }}
+    >
       {children}
     </span>
   );
@@ -45,20 +51,11 @@ export const DynamicQuery = {
     const [query, setQuery] = useState("component");
     return (
       <div style={{ display: "grid", gap: "1rem", justifyItems: "start" }}>
-        <input
+        <Input
           value={query}
-          type="text"
           placeholder="Search text..."
           aria-label="Search text"
           onChange={(e) => setQuery(e.target.value)}
-          style={{
-            font: "inherit",
-            padding: "0.375rem 0.625rem",
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            background: "var(--bs-color-surface-2)",
-            color: "var(--bs-color-text-primary)",
-          }}
         />
         {text({
           query,

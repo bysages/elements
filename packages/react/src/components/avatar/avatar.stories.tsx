@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Avatar } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Elements/Avatar" };
 export default meta;
@@ -11,7 +12,7 @@ export default meta;
 const PORTRAIT =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144"><rect width="144" height="144" fill="#b9b2a4"/><circle cx="72" cy="56" r="26" fill="#3a3733"/><path d="M24 132c6-30 26-44 48-44s42 14 48 44" fill="#3a3733"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144"><rect width="144" height="144" fill="#b9b2a4" /><circle cx="72" cy="56" r="26" fill="#3a3733" /><path d="M24 132c6-30 26-44 48-44s42 14 48 44" fill="#3a3733" /></svg>`,
   );
 
 /** Initials stand in until the image arrives; the image loads over the
@@ -53,7 +54,10 @@ export const Events = {
     return (
       <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
         <output
-          style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" }}
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-secondary)",
+          }}
         >
           status: {status}
         </output>
@@ -83,19 +87,9 @@ function RootProviderDriver() {
   const [count, setCount] = useState(0);
   return (
     <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
-      <button
-        onClick={() => setCount((value) => value + 1)}
-        style={{
-          padding: "0.375rem 0.75rem",
-          border: "1px solid var(--bs-color-border)",
-          borderRadius: "var(--bs-radius-sm)",
-          background: "var(--bs-color-surface-2)",
-          font: "inherit",
-          fontSize: "var(--bs-font-size-sm)",
-        }}
-      >
+      <Button onClick={() => setCount((value) => value + 1)} size="sm">
         Change Avatar
-      </button>
+      </Button>
       <Avatar.RootProvider value={avatar}>
         <Avatar.Fallback>PA</Avatar.Fallback>
         <Avatar.Image src={`https://i.pravatar.cc/144?u=${count}`} alt="Portrait" />

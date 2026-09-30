@@ -42,7 +42,12 @@ export const Controlled = {
     return (
       <>
         <Input value={text} onValueChange={setText} placeholder="Type and watch the echo" />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           value: {JSON.stringify(text)}
         </p>
       </>

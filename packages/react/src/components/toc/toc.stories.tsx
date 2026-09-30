@@ -1,8 +1,8 @@
 import { useToc } from "@ark-ui/react/toc";
 import { createTreeCollection } from "@ark-ui/react/tree-view";
 import type { Meta } from "@storybook/react-vite";
-import { useRef, useState } from "react";
 import type { RefObject } from "react";
+import { useRef, useState } from "react";
 
 import { Toc } from ".";
 import { Collapsible } from "../collapsible";
@@ -343,9 +343,19 @@ const RAIL_SECTIONS: Section[] = [
   { value: "overview", depth: 2, label: "Overview", lines: 10 },
   { value: "installation", depth: 2, label: "Installation", lines: 8 },
   { value: "package-manager", depth: 3, label: "Package Manager", lines: 12 },
-  { value: "peer-dependencies", depth: 3, label: "Peer Dependencies", lines: 6 },
+  {
+    value: "peer-dependencies",
+    depth: 3,
+    label: "Peer Dependencies",
+    lines: 6,
+  },
   { value: "usage", depth: 2, label: "Usage", lines: 14 },
-  { value: "server-components", depth: 3, label: "Server Components", lines: 9 },
+  {
+    value: "server-components",
+    depth: 3,
+    label: "Server Components",
+    lines: 9,
+  },
   { value: "styling", depth: 3, label: "Styling", lines: 11 },
   { value: "theming", depth: 4, label: "Theming", lines: 7 },
   { value: "api-reference", depth: 2, label: "API Reference", lines: 12 },
@@ -521,10 +531,21 @@ function WithTreeViewStory() {
   const collection = createTreeCollection<TocNode>({
     nodeToValue: (node: TocNode) => node.id,
     nodeToString: (node: TocNode) => node.name,
-    rootNode: { id: "ROOT", name: "", depth: 0, lines: 0, children: TREE_SECTIONS },
+    rootNode: {
+      id: "ROOT",
+      name: "",
+      depth: 0,
+      lines: 0,
+      children: TREE_SECTIONS,
+    },
   });
   const flat: Section[] = TREE_SECTIONS.flatMap((section) => [
-    { value: section.id, depth: section.depth, label: section.name, lines: section.lines },
+    {
+      value: section.id,
+      depth: section.depth,
+      label: section.name,
+      lines: section.lines,
+    },
     ...(section.children ?? []).map((child) => ({
       value: child.id,
       depth: child.depth,

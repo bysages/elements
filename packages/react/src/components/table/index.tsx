@@ -1,8 +1,16 @@
 import { createListCollection } from "@ark-ui/react/select";
 import { injectComponentStyle } from "@bysages/core";
-import type { SortingState } from "@tanstack/react-table";
+import type {
+  CellData,
+  Column,
+  ColumnDef,
+  Header,
+  Row,
+  RowData,
+  SortingState,
+  TableFeatures,
+} from "@tanstack/react-table";
 import {
-  FlexRender,
   cellSpanningFeature,
   columnFilteringFeature,
   columnOrderingFeature,
@@ -14,6 +22,7 @@ import {
   createFilteredRowModel,
   createPaginatedRowModel,
   createSortedRowModel,
+  FlexRender,
   filterFn_arrIncludes,
   filterFn_equals,
   filterFn_includesString,
@@ -34,17 +43,8 @@ import {
   tableFeatures,
   useTable,
 } from "@tanstack/react-table";
-import type {
-  CellData,
-  Column,
-  ColumnDef,
-  Header,
-  Row,
-  RowData,
-  TableFeatures,
-} from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useEffect, useLayoutEffect, useMemo, useReducer, useRef, type CSSProperties } from "react";
+import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from "react";
 
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
@@ -68,8 +68,8 @@ function pageGlyph(direction: "start" | "end") {
   );
 }
 
-export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
+export { createColumnHelper, FlexRender };
 
 /** The page-size select's pointing chevron. */
 function chevronDownGlyph() {
@@ -332,7 +332,10 @@ export function DataTable(rawProps: DataTableProps) {
             }
           : {}),
         ...(paginated
-          ? { rowPaginationFeature, paginatedRowModel: createPaginatedRowModel() }
+          ? {
+              rowPaginationFeature,
+              paginatedRowModel: createPaginatedRowModel(),
+            }
           : {}),
       }),
     [filterable, paginated],
@@ -383,7 +386,12 @@ export function DataTable(rawProps: DataTableProps) {
       ...(props.initialSorting ? { sorting: props.initialSorting } : {}),
       ...(paginated ? { pagination: { pageIndex: 0, pageSize } } : {}),
       ...(props.pinStart || props.pinEnd
-        ? { columnPinning: { start: props.pinStart ?? [], end: props.pinEnd ?? [] } }
+        ? {
+            columnPinning: {
+              start: props.pinStart ?? [],
+              end: props.pinEnd ?? [],
+            },
+          }
         : {}),
     },
   });
@@ -897,7 +905,10 @@ export function DataTable(rawProps: DataTableProps) {
         const pagination = table.atoms.pagination.get();
         const rowCount = table.getRowCount();
         const sizeItems = createListCollection({
-          items: pageSizeOptions.map((size) => ({ label: `${size} / page`, value: String(size) })),
+          items: pageSizeOptions.map((size) => ({
+            label: `${size} / page`,
+            value: String(size),
+          })),
         });
         const pageSize = (
           <ArkSelect.Root

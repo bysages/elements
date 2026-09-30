@@ -8,6 +8,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { Listbox } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Listbox" };
@@ -232,9 +233,9 @@ export const SelectAll = {
         const listbox = useListboxContext();
         return () =>
           h(
-            "button",
+            Button,
             {
-              type: "button",
+              size: "sm",
               onClick: () => {
                 const current = listbox.value.value;
                 listbox.value.setValue(

@@ -10,6 +10,7 @@ import { backTopCss } from "./back-top";
 import { badgeCss } from "./badge";
 import { bannerCss } from "./banner";
 import { bentoCss } from "./bento";
+import { blockUiCss } from "./block-ui";
 import { breadcrumbCss } from "./breadcrumb";
 import { browserCss } from "./browser";
 import { buttonCss } from "./button";
@@ -28,8 +29,10 @@ import { comboboxCss } from "./combobox";
 import { commandCss } from "./command";
 import { commentCss } from "./comment";
 import { containerCss } from "./container";
+import { dataViewCss } from "./data-view";
 import { dateInputCss } from "./date-input";
 import { datePickerCss } from "./date-picker";
+import { deferredContentCss } from "./deferred-content";
 import { descriptionsCss } from "./descriptions";
 import { dialogCss } from "./dialog";
 import { dockCss } from "./dock";
@@ -66,6 +69,7 @@ import { menubarCss } from "./menubar";
 import { meterCss } from "./meter";
 import { navigationMenuCss } from "./navigation-menu";
 import { numberInputCss } from "./number-input";
+import { orderListCss } from "./order-list";
 import { pageHeaderCss } from "./page-header";
 import { paginationCss } from "./pagination";
 import { passwordInputCss } from "./password-input";
@@ -97,18 +101,22 @@ import { switchCss } from "./switch";
 import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
 import { tagsInputCss } from "./tags-input";
+import { terminalCss } from "./terminal";
 import { timelineCss } from "./timeline";
 import { timerCss } from "./timer";
 import { toastCss } from "./toast";
 import { tocCss } from "./toc";
 import { toggleCss } from "./toggle";
 import { toggleGroupCss } from "./toggle-group";
+import { toolbarCss } from "./toolbar";
 import { tooltipCss } from "./tooltip";
 import { tourCss } from "./tour";
 import { transferCss } from "./transfer";
 import { treeSelectCss } from "./tree-select";
 import { treeViewCss } from "./tree-view";
 import { typographyCss } from "./typography";
+import { userCss } from "./user";
+import { virtualListCss } from "./virtual-list";
 import { watermarkCss } from "./watermark";
 import { workflowCss } from "./workflow";
 
@@ -168,6 +176,7 @@ export const componentStyles: Record<string, string> = {
   menu: menuCss,
   meter: meterCss,
   "navigation-menu": navigationMenuCss,
+  "order-list": orderListCss,
   "number-input": numberInputCss,
   "page-header": pageHeaderCss,
   pagination: paginationCss,
@@ -194,6 +203,7 @@ export const componentStyles: Record<string, string> = {
   swap: swapCss,
   switch: switchCss,
   tabs: tabsCss,
+  terminal: terminalCss,
   "tags-input": tagsInputCss,
   textarea: fieldControlCss
     .replaceAll('data-scope="field"', 'data-scope="textarea"')
@@ -202,6 +212,7 @@ export const componentStyles: Record<string, string> = {
   timer: timerCss,
   table: tableCss,
   toast: toastCss,
+  toolbar: toolbarCss,
   toc: tocCss,
   toggle: toggleCss,
   "toggle-group": toggleGroupCss,
@@ -211,7 +222,10 @@ export const componentStyles: Record<string, string> = {
   "tree-select": treeSelectCss,
   "tree-view": treeViewCss,
   typography: typographyCss,
+  user: userCss,
   container: containerCss,
+  "data-view": dataViewCss,
+  "deferred-content": deferredContentCss,
   stack: stackCss,
   grid: gridCss,
   "aspect-ratio": aspectRatioCss,
@@ -222,6 +236,7 @@ export const componentStyles: Record<string, string> = {
   "image-viewer": imageViewerCss,
   list: listCss,
   comment: commentCss,
+  "virtual-list": virtualListCss,
   watermark: watermarkCss,
   "progress-group": progressGroupCss,
   "back-top": backTopCss,
@@ -243,10 +258,13 @@ export const componentStyles: Record<string, string> = {
   dock: dockCss,
   browser: browserCss,
   bento: bentoCss,
+  // The block-ui registry rides with the showcase vessels below
+  "block-ui": blockUiCss,
 };
 
 export {
   accordionCss,
+  blockUiCss,
   aiCss,
   alertCss,
   angleSliderCss,
@@ -266,6 +284,9 @@ export {
   collapsibleCss,
   colorPickerCss,
   comboboxCss,
+  commandCss,
+  dataViewCss,
+  deferredContentCss,
   dateInputCss,
   datePickerCss,
   descriptionsCss,
@@ -288,9 +309,9 @@ export {
   marqueeCss,
   menuCss,
   meterCss,
-  typographyCss,
   navigationMenuCss,
   numberInputCss,
+  orderListCss,
   paginationCss,
   passwordInputCss,
   pinInputCss,
@@ -313,6 +334,8 @@ export {
   switchCss,
   tabsCss,
   tagsInputCss,
+  terminalCss,
+  toolbarCss,
   timelineCss,
   timerCss,
   toastCss,
@@ -324,6 +347,8 @@ export {
   tourCss,
   treeSelectCss,
   treeViewCss,
+  userCss,
+  virtualListCss,
   workflowCss,
   spotlightCss,
   dockCss,

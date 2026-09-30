@@ -82,7 +82,11 @@ function Root({
   );
 }
 
-const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
+const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = {
+  lg: "md",
+  md: "sm",
+  sm: "sm",
+};
 
 function Trigger({ label, children }: { label?: string; children?: ReactNode }) {
   const context = useContext(FLOAT_BUTTON_CONTEXT);

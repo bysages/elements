@@ -1,9 +1,10 @@
 import type { Meta } from "@storybook/react-vite";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
-import { createToaster, Toast, Toaster } from ".";
 import type { CreateToasterReturn } from ".";
+import { createToaster, Toast, Toaster } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Overlay/Toast" };
 export default meta;
@@ -53,16 +54,6 @@ function StatusGlyph({ type }: { type?: string | null }) {
     </svg>
   );
 }
-
-const BUTTON_STYLE = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
 
 type ToastCard = (toast: any) => ReactNode;
 
@@ -119,9 +110,9 @@ export const Basic = {
   render: (args: any) => (
     <Notifier
       buttons={(toaster) => (
-        <button type="button" style={BUTTON_STYLE} onClick={() => announce(toaster)}>
+        <Button size="sm" onClick={() => announce(toaster)}>
           {args.triggerLabel}
-        </button>
+        </Button>
       )}
     />
   ),
@@ -133,9 +124,7 @@ export const Action = {
   render: () => (
     <Notifier
       buttons={(toaster) => (
-        <button
-          type="button"
-          style={BUTTON_STYLE}
+        <Button
           onClick={() =>
             toaster.create({
               title: "Event has been created",
@@ -144,9 +133,10 @@ export const Action = {
               action: { label: "Undo", onClick: () => {} },
             })
           }
+          size="sm"
         >
           Create event
-        </button>
+        </Button>
       )}
       cardFor={card(true)}
     />
@@ -165,10 +155,8 @@ export const Duration = {
           { label: "5s", value: 5000 },
           { label: "∞", value: Infinity },
         ].map((duration) => (
-          <button
+          <Button
             key={duration.label}
-            type="button"
-            style={BUTTON_STYLE}
             onClick={() =>
               toaster.create({
                 title: "Reminder set",
@@ -181,9 +169,10 @@ export const Duration = {
                 duration: duration.value,
               })
             }
+            size="sm"
           >
             {duration.label}
-          </button>
+          </Button>
         ))
       }
     />
@@ -196,9 +185,9 @@ export const Placement = {
     <Notifier
       options={{ placement: "top-end" }}
       buttons={(toaster) => (
-        <button type="button" style={BUTTON_STYLE} onClick={() => announce(toaster)}>
+        <Button size="sm" onClick={() => announce(toaster)}>
           Show toast (top-end)
-        </button>
+        </Button>
       )}
     />
   ),
@@ -235,16 +224,15 @@ export const Types = {
             description: "A new version of the app is ready to install.",
           },
         ].map((item) => (
-          <button
+          <Button
             key={item.kind}
-            type="button"
-            style={BUTTON_STYLE}
             onClick={() =>
               (toaster as any)[item.kind]({ title: item.title, description: item.description })
             }
+            size="sm"
           >
             {item.label}
-          </button>
+          </Button>
         ))
       }
     />
@@ -260,9 +248,7 @@ export const Update = {
       <Notifier
         buttons={(toaster) => (
           <>
-            <button
-              type="button"
-              style={BUTTON_STYLE}
+            <Button
               onClick={() => {
                 setId(
                   toaster.create({
@@ -272,12 +258,11 @@ export const Update = {
                   }),
                 );
               }}
+              size="sm"
             >
               Send message
-            </button>
-            <button
-              type="button"
-              style={BUTTON_STYLE}
+            </Button>
+            <Button
               onClick={() => {
                 if (!id) return;
                 toaster.update(id, {
@@ -286,9 +271,10 @@ export const Update = {
                   type: "success",
                 });
               }}
+              size="sm"
             >
               Mark as sent
-            </button>
+            </Button>
           </>
         )}
         cardFor={(toast: any) => (
@@ -311,9 +297,7 @@ export const MaxToasts = {
       options={{ max: 3 }}
       buttons={(toaster) => (
         <>
-          <button
-            type="button"
-            style={BUTTON_STYLE}
+          <Button
             onClick={() =>
               toaster.create({
                 title: "New notification",
@@ -321,12 +305,11 @@ export const MaxToasts = {
                 type: "info",
               })
             }
+            size="sm"
           >
             Add notification
-          </button>
-          <button
-            type="button"
-            style={BUTTON_STYLE}
+          </Button>
+          <Button
             onClick={() => {
               const messages = [
                 "John liked your post",
@@ -339,9 +322,10 @@ export const MaxToasts = {
                 toaster.create({ title: "Notification", description, type: "info" }),
               );
             }}
+            size="sm"
           >
             Add 5 notifications
-          </button>
+          </Button>
         </>
       )}
       cardFor={(toast: any) => (
@@ -363,9 +347,7 @@ export const PromiseToast = {
   render: () => (
     <Notifier
       buttons={(toaster) => (
-        <button
-          type="button"
-          style={BUTTON_STYLE}
+        <Button
           onClick={() => {
             const upload = new Promise<void>((resolve, reject) => {
               setTimeout(
@@ -388,9 +370,10 @@ export const PromiseToast = {
               },
             });
           }}
+          size="sm"
         >
           Upload file
-        </button>
+        </Button>
       )}
       cardFor={(toast: any) => (
         <Toast.Root key={toast.id}>
@@ -417,17 +400,16 @@ export const VaryingHeight = {
     return (
       <Notifier
         buttons={(toaster) => (
-          <button
-            type="button"
-            style={BUTTON_STYLE}
+          <Button
             onClick={() => {
               const description = DESCRIPTIONS[count % DESCRIPTIONS.length];
               count += 1;
               toaster.create({ title: `Notification ${count}`, description, type: "info" });
             }}
+            size="sm"
           >
             Create toast
-          </button>
+          </Button>
         )}
       />
     );

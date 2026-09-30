@@ -71,6 +71,12 @@ function Content({ title, description, children, ...rest }: ListContentProps) {
 }
 Content.displayName = "ListContent";
 
-export const List = Object.assign(Root, { Root, Item, Leading, Content, Actions });
+export const List = Object.assign(Root, {
+  Root,
+  Item,
+  Leading,
+  Content,
+  Actions,
+});
 
 injectComponentStyle("list");

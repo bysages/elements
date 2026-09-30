@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Tooltip } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Overlay/Tooltip" };
 export default meta;
@@ -79,9 +80,18 @@ export const Arrow = {
 export const Positioning = {
   render: () => (
     <Tooltip.Root
-      positioning={{ placement: "left-start", offset: { mainAxis: 12, crossAxis: 12 } }}
+      positioning={{
+        placement: "left-start",
+        offset: { mainAxis: 12, crossAxis: 12 },
+      }}
     >
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "6rem 1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "6rem 1rem",
+        }}
+      >
         <Tooltip.Trigger>Hover me</Tooltip.Trigger>
       </div>
       <Tooltip.Positioner>
@@ -110,7 +120,12 @@ const TOOLS = [
     shortcut: "⌘B",
     path: "M7 5h6a3.5 3.5 0 0 1 0 7H7zm0 7h7a3.5 3.5 0 0 1 0 7H7z",
   },
-  { id: "italic", label: "Italic", shortcut: "⌘I", path: "M10 5h8m-6 0-2 14h8m-2-14" },
+  {
+    id: "italic",
+    label: "Italic",
+    shortcut: "⌘I",
+    path: "M10 5h8m-6 0-2 14h8m-2-14",
+  },
   {
     id: "underline",
     label: "Underline",
@@ -165,21 +180,9 @@ export const Controlled = {
   render: () => {
     const [open, setOpen] = useState(false);
     const button = (label: string, onClick: () => void) => (
-      <button
-        type="button"
-        onClick={onClick}
-        style={{
-          border: "1px solid var(--bs-color-border)",
-          background: "var(--bs-color-surface-2)",
-          borderRadius: "var(--bs-radius-sm)",
-          padding: "0.25rem 0.625rem",
-          font: "inherit",
-          fontSize: "var(--bs-font-size-sm)",
-          cursor: "pointer",
-        }}
-      >
+      <Button onClick={onClick} size="sm">
         {label}
-      </button>
+      </Button>
     );
     return (
       <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>

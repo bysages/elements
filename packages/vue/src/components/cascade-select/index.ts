@@ -83,6 +83,7 @@ export const CascadeSelect = defineComponent({
     filterable: { type: Boolean, default: false },
     multiple: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    invalid: { type: Boolean, default: false },
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
@@ -224,7 +225,15 @@ export const CascadeSelect = defineComponent({
           return h("li", { key: itemValue, ...api.value.getItemProps(itemProps) }, [
             h("span", api.value.getItemTextProps(itemProps), item.label),
             itemState.hasChildren
-              ? h("span", { "data-part": "branch-indicator", "aria-hidden": true }, chevronRight())
+              ? h(
+                  "span",
+                  {
+                    "data-scope": "cascade-select",
+                    "data-part": "branch-indicator",
+                    "aria-hidden": true,
+                  },
+                  chevronRight(),
+                )
               : null,
             h("span", api.value.getItemIndicatorProps(itemProps), checkGlyph()),
           ]);
@@ -245,10 +254,18 @@ export const CascadeSelect = defineComponent({
     return () =>
       h("div", { ...ctx.attrs, ...api.value.getRootProps(), "data-size": props.size }, [
         h("div", api.value.getControlProps(), [
-          h("button", { ...api.value.getTriggerProps(), disabled: props.disabled || undefined }, [
-            h("span", api.value.getValueTextProps(), display.value ?? props.placeholder),
-            h("span", api.value.getIndicatorProps(), chevronDown()),
-          ]),
+          h(
+            "button",
+            {
+              ...api.value.getTriggerProps(),
+              "data-invalid": props.invalid ? "" : undefined,
+              disabled: props.disabled || undefined,
+            },
+            [
+              h("span", api.value.getValueTextProps(), display.value ?? props.placeholder),
+              h("span", api.value.getIndicatorProps(), chevronDown()),
+            ],
+          ),
         ]),
         h(Teleport, { to: "body" }, () => [
           h("div", api.value.getPositionerProps(), [
@@ -258,7 +275,7 @@ export const CascadeSelect = defineComponent({
               [
                 ...(props.filterable
                   ? [
-                      h("div", { "data-part": "search" }, [
+                      h("div", { "data-scope": "cascade-select", "data-part": "search" }, [
                         h(Input, {
                           size: "sm",
                           modelValue: query.value,
@@ -271,17 +288,28 @@ export const CascadeSelect = defineComponent({
                   : []),
                 h(
                   "div",
-                  { "data-part": "corridor", "data-flow": filtering.value ? "flat" : "columns" },
+                  {
+                    "data-scope": "cascade-select",
+                    "data-part": "corridor",
+                    "data-flow": filtering.value ? "flat" : "columns",
+                  },
                   [
                     filtering.value
                       ? matchPaths.value.length === 0
-                        ? [h("p", { "data-part": "empty" }, "Nothing matches")]
+                        ? [
+                            h(
+                              "p",
+                              { "data-scope": "cascade-select", "data-part": "empty" },
+                              "Nothing matches",
+                            ),
+                          ]
                         : matchPaths.value.map((hit) =>
                             h(
                               "button",
                               {
                                 key: hit.path.join("/"),
                                 type: "button",
+                                "data-scope": "cascade-select",
                                 "data-part": "match",
                                 "data-selected": isSelected(hit.path) || undefined,
                                 onClick: () => pickMatch(hit.path),

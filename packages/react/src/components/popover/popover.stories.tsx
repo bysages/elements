@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useRef, useState } from "react";
 
 import { Popover } from ".";
+import { Input } from "../input";
 
 const meta: Meta = { title: "Components/Overlay/Popover" };
 export default meta;
@@ -73,9 +74,18 @@ export const Arrow = {
 export const Positioning = {
   render: () => (
     <Popover.Root
-      positioning={{ placement: "left-start", offset: { mainAxis: 12, crossAxis: 12 } }}
+      positioning={{
+        placement: "left-start",
+        offset: { mainAxis: 12, crossAxis: 12 },
+      }}
     >
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "6rem 1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "6rem 1rem",
+        }}
+      >
         <Popover.Trigger>Click me</Popover.Trigger>
       </div>
       {vessel(
@@ -179,9 +189,21 @@ export const Nested = {
 };
 
 const TRIGGER_ITEMS = [
-  { id: "share", label: "Share", detail: "Share this item with others via link or email." },
-  { id: "export", label: "Export", detail: "Export this item as PDF, CSV, or JSON." },
-  { id: "archive", label: "Archive", detail: "Move this item to the archive for later reference." },
+  {
+    id: "share",
+    label: "Share",
+    detail: "Share this item with others via link or email.",
+  },
+  {
+    id: "export",
+    label: "Export",
+    detail: "Export this item as PDF, CSV, or JSON.",
+  },
+  {
+    id: "archive",
+    label: "Archive",
+    detail: "Move this item to the archive for later reference.",
+  },
 ];
 
 /** Each trigger names its own vessel: the panel re-inks to match the
@@ -259,28 +281,8 @@ export const InitialFocusEl = {
             <Popover.Title>Enter your name</Popover.Title>
             <Popover.Description>Make changes to your profile here.</Popover.Description>
             <div style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
-              <input
-                placeholder="First name"
-                defaultValue="John"
-                ref={nameInput}
-                style={{
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.375rem 0.625rem",
-                  font: "inherit",
-                }}
-              />
-              <input
-                placeholder="Last name"
-                style={{
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.375rem 0.625rem",
-                  font: "inherit",
-                }}
-              />
+              <Input placeholder="First name" defaultValue="John" ref={nameInput} />
+              <Input placeholder="Last name" />
             </div>
           </Popover.Content>
         </Popover.Positioner>

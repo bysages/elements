@@ -57,7 +57,12 @@ const Root = ({
       data-part="root"
       data-size={size}
       data-level={level !== "normal" ? level : undefined}
-      style={{ ...(rest.style as CSSProperties), "--_percent": `${ratio * 100}%` } as CSSProperties}
+      style={
+        {
+          ...(rest.style as CSSProperties),
+          "--_percent": `${ratio * 100}%`,
+        } as CSSProperties
+      }
     >
       {children ?? (
         <>

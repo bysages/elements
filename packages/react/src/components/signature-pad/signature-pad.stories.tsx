@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { SignaturePad } from ".";
+import { Button } from "../button";
 import { Field } from "../field";
 
 const meta: Meta = { title: "Components/Forms/Signature Pad" };
@@ -67,19 +68,9 @@ export const Controlled = {
         <SignaturePad.Root paths={paths} onDraw={(e) => setPaths(e.paths)}>
           {pad()}
         </SignaturePad.Root>
-        <button
-          onClick={() => setPaths([])}
-          style={{
-            padding: "0.375rem 0.75rem",
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            background: "var(--bs-color-surface-2)",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-          }}
-        >
+        <Button onClick={() => setPaths([])} size="sm">
           Clear
-        </button>
+        </Button>
       </div>
     );
   },

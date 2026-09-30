@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { HoverCard } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Hover Card" };
@@ -154,19 +155,11 @@ export const Controlled = {
       return () =>
         h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [
           h(
-            "button",
+            Button,
             {
-              type: "button",
+              size: "sm",
               onClick: () => (state.open = !state.open),
-              style: {
-                border: "1px solid var(--bs-color-border)",
-                background: "var(--bs-color-surface-2)",
-                borderRadius: "var(--bs-radius-sm)",
-                padding: "0.25rem 0.625rem",
-                font: "inherit",
-                fontSize: "var(--bs-font-size-sm)",
-                cursor: "pointer",
-              },
+              style: { justifySelf: "start" },
             },
             "Toggle",
           ),

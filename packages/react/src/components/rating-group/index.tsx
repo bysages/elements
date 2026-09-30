@@ -17,7 +17,9 @@ function RatingGroupRoot({ size = "md", ...rest }: RatingGroupRootProps) {
  * ItemContext render helpers). */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const RatingGroup: Omit<typeof ArkRatingGroup, "Root"> & { Root: typeof RatingGroupRoot } = {
+export const RatingGroup: Omit<typeof ArkRatingGroup, "Root"> & {
+  Root: typeof RatingGroupRoot;
+} = {
   ...ArkRatingGroup,
   Root: RatingGroupRoot,
 };

@@ -12,7 +12,11 @@ function part(name: string, tag: string) {
     children,
     ...rest
   }: HTMLAttributes<HTMLElement> & { asChild?: boolean }) => {
-    const partProps = { ...rest, "data-scope": "card", "data-part": name.toLowerCase() };
+    const partProps = {
+      ...rest,
+      "data-scope": "card",
+      "data-part": name.toLowerCase(),
+    };
     if (asChild) {
       const child = Children.only(children);
       return isValidElement(child)

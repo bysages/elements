@@ -4,8 +4,8 @@ import { useRef } from "react";
 
 import { Button } from "../button";
 import { Field } from "../field";
-import { MentionsVessel, useMentions } from "../mentions";
 import type { MentionEntry } from "../mentions";
+import { MentionsVessel, useMentions } from "../mentions";
 
 const arrowUpGlyph = (
   <svg

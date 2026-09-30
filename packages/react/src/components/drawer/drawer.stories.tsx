@@ -219,7 +219,12 @@ export const SwipeDirection = {
  * `swipeDirection` names. */
 export const Directions = {
   render: () => {
-    const edges = { down: "bottom", up: "top", start: "left", end: "right" } as const;
+    const edges = {
+      down: "bottom",
+      up: "top",
+      start: "left",
+      end: "right",
+    } as const;
     return (
       <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--bs-space-3)" }}>
         {(Object.keys(edges) as Array<keyof typeof edges>).map((direction) => (
@@ -262,7 +267,13 @@ export const Scrollable = {
       <Drawer.Trigger>Open long sheet</Drawer.Trigger>
       {sheet(
         "Long sheet",
-        <div style={{ maxHeight: "50vh", overflowY: "auto", paddingRight: "0.5rem" }}>
+        <div
+          style={{
+            maxHeight: "50vh",
+            overflowY: "auto",
+            paddingRight: "0.5rem",
+          }}
+        >
           {Array.from({ length: 12 }, (_, i) => (
             <p key={i}>Paragraph {i + 1} of the scroll.</p>
           ))}

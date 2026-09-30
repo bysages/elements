@@ -1,8 +1,8 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
-import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";

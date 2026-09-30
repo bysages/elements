@@ -134,7 +134,7 @@ const display = $derived.by(() => {
       <li {...api.getItemProps(itemProps)}>
         <span {...api.getItemTextProps(itemProps)}>{item.label}</span>
         {#if itemState.hasChildren}
-          <span data-part="branch-indicator" aria-hidden="true">
+          <span data-scope="cascade-select" data-part="branch-indicator" aria-hidden="true">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -209,19 +209,20 @@ its full route. -->
     <div {...api.getPositionerProps()}>
       <div {...api.getContentProps()} data-size={size}>
         {#if filterable}
-          <div data-part="search">
+          <div data-scope="cascade-select" data-part="search">
             <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
           </div>
         {/if}
-        <div data-part="corridor" data-flow={filtering ? "flat" : "columns"}>
+        <div data-scope="cascade-select" data-part="corridor" data-flow={filtering ? "flat" : "columns"}>
           {#if filtering}
             {#if matchPaths.length === 0}
-              <p data-part="empty">Nothing matches</p>
+              <p data-scope="cascade-select" data-part="empty">Nothing matches</p>
             {:else}
               {#each matchPaths as hit (hit.path.join("/"))}
                 <button
                   type="button"
-                  data-part="match"
+                  data-scope="cascade-select"
+					data-part="match"
                   data-selected={isSelected(hit.path) || undefined}
                   onclick={() => pickMatch(hit.path)}
                 >

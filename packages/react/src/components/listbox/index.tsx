@@ -1,6 +1,6 @@
 import type { CollectionItem } from "@ark-ui/react/collection";
-import { Listbox as ArkListbox } from "@ark-ui/react/listbox";
 import type { ListboxRootComponentProps } from "@ark-ui/react/listbox";
+import { Listbox as ArkListbox } from "@ark-ui/react/listbox";
 import { injectComponentStyle } from "@bysages/core";
 
 /** Ark's Listbox, dressed in the paper-and-ink system: quiet rows of ink
@@ -23,7 +23,9 @@ function ListboxRoot<T extends CollectionItem>(
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Listbox: Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRoot } = {
+export const Listbox: Omit<typeof ArkListbox, "Root"> & {
+  Root: typeof ListboxRoot;
+} = {
   ...ArkListbox,
   Root: ListboxRoot,
 };

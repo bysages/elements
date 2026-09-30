@@ -11,7 +11,14 @@ export const Basic = {
 
 export const Combination = {
   render: () => (
-    <p style={{ margin: 0, display: "flex", gap: "0.25rem", alignItems: "center" }}>
+    <p
+      style={{
+        margin: 0,
+        display: "flex",
+        gap: "0.25rem",
+        alignItems: "center",
+      }}
+    >
       Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to search the paper.
     </p>
   ),

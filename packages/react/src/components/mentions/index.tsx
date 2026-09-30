@@ -1,13 +1,13 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
-import { useRef, useState } from "react";
 import type { ChangeEvent, HTMLAttributes } from "react";
+import { useRef, useState } from "react";
 
 import { Field } from "../field";
 import { useMentions } from "./use-mentions";
 
-export type { UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
+export type { UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {

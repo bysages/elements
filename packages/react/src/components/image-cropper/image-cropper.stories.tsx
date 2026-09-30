@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { ImageCropper } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Media/Image Cropper" };
 export default meta;
@@ -37,22 +38,9 @@ function frame(...extra: React.ReactNode[]) {
 
 function button(label: string, onClick: () => void, active = false) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        border: "1px solid var(--bs-color-border)",
-        borderRadius: "var(--bs-radius-sm)",
-        background: active ? "var(--bs-color-primary)" : "var(--bs-color-surface-2)",
-        color: active ? "var(--bs-color-primary-text)" : "var(--bs-color-text-primary)",
-        padding: "0.25rem 0.625rem",
-        font: "inherit",
-        fontSize: "var(--bs-font-size-sm)",
-        cursor: "pointer",
-      }}
-    >
+    <Button onClick={onClick} size="sm" variant={active ? "solid" : "outline"}>
       {label}
-    </button>
+    </Button>
   );
 }
 
@@ -62,7 +50,12 @@ function toolbar(...buttons: React.ReactNode[]) {
 
 function readout(label: string, value: string) {
   return (
-    <span style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+    <span
+      style={{
+        fontSize: "var(--bs-font-size-sm)",
+        color: "var(--bs-color-text-tertiary)",
+      }}
+    >
       {label} <b style={{ color: "var(--bs-color-text-primary)", fontWeight: 500 }}>{value}</b>
     </span>
   );
@@ -246,7 +239,10 @@ export const CropPreview = {
         </ImageCropper.RootProvider>
         <div style={{ display: "grid", gap: "0.5rem", justifyItems: "start" }}>
           <span
-            style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}
+            style={{
+              fontSize: "var(--bs-font-size-sm)",
+              color: "var(--bs-color-text-tertiary)",
+            }}
           >
             Preview
           </span>

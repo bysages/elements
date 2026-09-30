@@ -19,7 +19,12 @@ export const Basic = {
     return (
       <>
         <CheckboxGroup value={picked} onValueChange={setPicked} options={OPTIONS} />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           value: {JSON.stringify(picked)}
         </p>
       </>

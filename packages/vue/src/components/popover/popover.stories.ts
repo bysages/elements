@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, ref, Teleport } from "vue";
 
 import { Popover } from ".";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Popover" };
@@ -116,17 +117,7 @@ export const Anchor = {
       h("div", { style: { display: "flex", gap: "0.75rem", alignItems: "center" } }, () => [
         h(Popover.Trigger, () => "Click me"),
         h(Popover.Anchor, () =>
-          h("input", {
-            placeholder: "Type here...",
-            style: {
-              border: "1px solid var(--bs-color-border)",
-              background: "var(--bs-color-surface-2)",
-              borderRadius: "var(--bs-radius-sm)",
-              padding: "0.375rem 0.625rem",
-              font: "inherit",
-              width: "12rem",
-            },
-          }),
+          h(Input, { placeholder: "Type here...", style: { width: "12rem" } }),
         ),
       ]),
       h(Popover.Positioner, () =>
@@ -267,28 +258,8 @@ export const InitialFocusEl = {
             h(Popover.Title, () => "Enter your name"),
             h(Popover.Description, () => "Make changes to your profile here."),
             h("div", { style: { display: "grid", gap: "0.5rem", marginTop: "0.5rem" } }, () => [
-              h("input", {
-                placeholder: "First name",
-                defaultValue: "John",
-                ref: nameInput,
-                style: {
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.375rem 0.625rem",
-                  font: "inherit",
-                },
-              }),
-              h("input", {
-                placeholder: "Last name",
-                style: {
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.375rem 0.625rem",
-                  font: "inherit",
-                },
-              }),
+              h(Input, { placeholder: "First name", defaultValue: "John", ref: nameInput }),
+              h(Input, { placeholder: "Last name" }),
             ]),
           ]),
         ),

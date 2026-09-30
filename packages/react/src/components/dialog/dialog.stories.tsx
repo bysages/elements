@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { Dialog } from ".";
+import { Input } from "../input";
 
 function vessel(title: string, description: string, ...extra: ReactNode[]) {
   return (
@@ -147,18 +148,7 @@ export const InitialFocus = {
       {vessel(
         "Sign in",
         "Focus lands in the first field, not the close button.",
-        <input
-          data-autofocus
-          placeholder="Name"
-          style={{
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.375rem 0.5rem",
-            font: "inherit",
-            background: "var(--bs-color-surface-2)",
-            color: "var(--bs-color-text-primary)",
-          }}
-        />,
+        <Input data-autofocus placeholder="Name" />,
       )}
     </Dialog.Root>
   ),

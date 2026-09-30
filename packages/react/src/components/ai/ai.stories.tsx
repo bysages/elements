@@ -57,7 +57,10 @@ export const Basic = {
       setTimeout(() => {
         setMessages((all) => [
           ...all,
-          { role: "assistant", text: "Noted — the colophon is filed with the release." },
+          {
+            role: "assistant",
+            text: "Noted — the colophon is filed with the release.",
+          },
         ]);
         setPending(false);
       }, 900);

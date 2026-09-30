@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Presence } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Elements/Presence" };
@@ -15,10 +16,11 @@ export const Toggle = {
       const state = reactive({ present: true });
       return () => [
         h(
-          "button",
+          Button,
           {
+            size: "sm",
             onClick: () => (state.present = !state.present),
-            style: { marginBlockEnd: "1rem", padding: "0.375rem 0.75rem" },
+            style: { marginBlockEnd: "1rem" },
           },
           () => (state.present ? "Unmount" : "Mount"),
         ),

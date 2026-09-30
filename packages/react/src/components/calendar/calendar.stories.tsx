@@ -19,7 +19,13 @@ export const Controlled = {
   render: () => {
     const [value, setValue] = useState([parseDate("2026-09-15")]);
     return (
-      <div style={{ display: "grid", gap: "var(--bs-space-3)", justifyItems: "start" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "var(--bs-space-3)",
+          justifyItems: "start",
+        }}
+      >
         <Calendar value={value} onValueChange={(v) => setValue(v)} style={{ maxWidth: "20rem" }} />
         <p style={{ color: "var(--bs-color-text-secondary)", margin: 0 }}>
           Selected: {value[0]?.toString() ?? "nothing yet"}

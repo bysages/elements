@@ -28,7 +28,12 @@ export const Basic = {
           data={LIBRARY}
           titles={["In the study", "On exhibition"]}
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           target: {JSON.stringify(picked)}
         </p>
       </>

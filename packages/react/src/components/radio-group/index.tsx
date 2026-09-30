@@ -17,7 +17,9 @@ function RadioGroupRoot({ size = "md", ...rest }: RadioGroupRootProps) {
  * ItemText, ItemControl, Indicator, ItemHiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof RadioGroupRoot } = {
+export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & {
+  Root: typeof RadioGroupRoot;
+} = {
   ...ArkRadioGroup,
   Root: RadioGroupRoot,
 };

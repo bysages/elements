@@ -17,7 +17,9 @@ function SwitchRoot({ size = "md", ...rest }: SwitchRootProps) {
  * Control, Thumb, HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Switch: Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot } = {
+export const Switch: Omit<typeof ArkSwitch, "Root"> & {
+  Root: typeof SwitchRoot;
+} = {
   ...ArkSwitch,
   Root: SwitchRoot,
 };

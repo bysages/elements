@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Pagination } from ".";
+import { NativeSelect } from "../select/native";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Navigation/Pagination" };
@@ -135,23 +136,13 @@ export const PageSizeControl = {
             },
             () => [
               h("label", { style: { fontSize: "var(--bs-font-size-sm)" } }, () => "Items per page"),
-              h(
-                "select",
-                {
-                  onChange: (e: Event) =>
-                    pagination.setPageSize(Number((e.target as HTMLSelectElement).value)),
-                  value: pagination.pageSize,
-                  style: {
-                    border: "1px solid var(--bs-color-border)",
-                    background: "var(--bs-color-surface-2)",
-                    borderRadius: "var(--bs-radius-sm)",
-                    padding: "0.25rem 0.375rem",
-                    font: "inherit",
-                    fontSize: "var(--bs-font-size-sm)",
-                  },
-                },
-                [5, 10, 20].map((n) => h("option", { key: n, value: n }, n)),
-              ),
+              h(NativeSelect, {
+                options: [5, 10, 20].map((n) => ({ label: String(n), value: String(n) })),
+                modelValue: String(pagination.pageSize),
+                "onUpdate:modelValue": (v: string) => pagination.setPageSize(Number(v)),
+                size: "sm",
+                style: { width: "auto" },
+              }),
             ],
           ),
           h("div", { style: { display: "flex", gap: "0.25rem" } }, () =>

@@ -19,7 +19,9 @@ function ClipboardRoot({ size = "md", ...rest }: ClipboardRootProps) {
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Clipboard: Omit<typeof ArkClipboard, "Root"> & { Root: typeof ClipboardRoot } = {
+export const Clipboard: Omit<typeof ArkClipboard, "Root"> & {
+  Root: typeof ClipboardRoot;
+} = {
   ...ArkClipboard,
   Root: ClipboardRoot,
 };

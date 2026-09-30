@@ -26,7 +26,13 @@ const prose =
  * the block at N lines and the tail gives way. */
 export const Lines = {
   render: () => (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--bs-space-4)" }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "var(--bs-space-4)",
+      }}
+    >
       <Ellipsis lines={2}>{prose}</Ellipsis>
       <Ellipsis lines={4}>{prose}</Ellipsis>
     </div>

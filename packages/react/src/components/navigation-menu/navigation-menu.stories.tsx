@@ -11,15 +11,31 @@ const columns = [
   {
     label: "Get started",
     links: [
-      { href: "#quick-start", title: "Quick start", description: "Install and assemble" },
-      { href: "#styling", title: "Styling", description: "Tokens, hairlines, light" },
+      {
+        href: "#quick-start",
+        title: "Quick start",
+        description: "Install and assemble",
+      },
+      {
+        href: "#styling",
+        title: "Styling",
+        description: "Tokens, hairlines, light",
+      },
     ],
   },
   {
     label: "Learn",
     links: [
-      { href: "#accessibility", title: "Accessibility", description: "Contrast and density tiers" },
-      { href: "#releases", title: "Releases", description: "What settled into the paper" },
+      {
+        href: "#accessibility",
+        title: "Accessibility",
+        description: "Contrast and density tiers",
+      },
+      {
+        href: "#releases",
+        title: "Releases",
+        description: "What settled into the paper",
+      },
     ],
   },
 ];
@@ -45,10 +61,19 @@ function sectionHeading(label: string) {
 function linkCard(link: (typeof columns)[number]["links"][number]) {
   return (
     <NavigationMenu.Link key={link.href} href={link.href}>
-      <span style={{ display: "flex", flexDirection: "column", gap: "var(--bs-space-1)" }}>
+      <span
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--bs-space-1)",
+        }}
+      >
         <strong>{link.title}</strong>
         <span
-          style={{ color: "var(--bs-color-text-secondary)", fontSize: "var(--bs-font-size-sm)" }}
+          style={{
+            color: "var(--bs-color-text-secondary)",
+            fontSize: "var(--bs-font-size-sm)",
+          }}
         >
           {link.description}
         </span>
@@ -101,7 +126,11 @@ function flatLink(label: string, current = false) {
 function readout(api: { value: string | null }) {
   return (
     <output
-      style={{ display: "block", fontSize: "var(--bs-font-size-sm)", marginBottom: "0.5rem" }}
+      style={{
+        display: "block",
+        fontSize: "var(--bs-font-size-sm)",
+        marginBottom: "0.5rem",
+      }}
     >
       {`value: ${api.value || "none"}`}
     </output>

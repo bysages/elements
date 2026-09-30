@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Checkbox } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/Checkbox" };
 export default meta;
@@ -102,7 +103,9 @@ export const WithForm = {
         <Checkbox.Label>Accept the terms</Checkbox.Label>
         <Checkbox.HiddenInput />
       </Checkbox.Root>
-      <button type="submit">Submit</button>
+      <Button type="submit" size="sm">
+        Submit
+      </Button>
     </form>
   ),
 };

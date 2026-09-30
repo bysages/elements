@@ -2,6 +2,7 @@ import { useSplitterContext } from "@ark-ui/react/splitter";
 import type { Meta } from "@storybook/react-vite";
 
 import { Splitter } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Layout/Splitter" };
 export default meta;
@@ -133,24 +134,14 @@ export const Vertical = {
   ),
 };
 
-const BUTTON_STYLE = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.25rem 0.625rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
-
 /** The divide answers to the machine: buttons set exact percentages
  * through the context. */
 function ResizeDriver() {
   const splitter = useSplitterContext();
   return (
-    <button type="button" onClick={() => splitter.resizePanel("a", 10)} style={BUTTON_STYLE}>
+    <Button onClick={() => splitter.resizePanel("a", 10)} size="sm">
       Set A to 10%
-    </button>
+    </Button>
   );
 }
 

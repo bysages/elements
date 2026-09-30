@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Swap } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Actions/Swap" };
 export default meta;
@@ -40,25 +41,14 @@ function swapToggle(label: string, rootVars: Record<string, string>, indicators:
       const state = reactive({ swapped: false });
       return () =>
         h(
-          "button",
+          Button,
           {
+            square: true,
+            size: "lg",
             "aria-label": label,
             "aria-pressed": state.swapped,
             onClick: () => (state.swapped = !state.swapped),
-            style: {
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              inlineSize: "2.5rem",
-              blockSize: "2.5rem",
-              border: "1px solid var(--bs-color-border)",
-              borderRadius: "var(--bs-radius-sm)",
-              background: "var(--bs-color-surface-2)",
-              color: "var(--bs-color-text-primary)",
-              font: "inherit",
-              cursor: "pointer",
-              ...rootVars,
-            },
+            style: rootVars,
           },
           [h(Swap.Root, { swap: state.swapped }, indicators)],
         );

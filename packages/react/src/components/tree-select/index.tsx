@@ -3,8 +3,8 @@ import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/react/tree-view";
 import { injectComponentStyle } from "@bysages/core";
-import { useMemo, useState } from "react";
 import type { HTMLAttributes } from "react";
+import { useMemo, useState } from "react";
 
 import { Input } from "../input";
 

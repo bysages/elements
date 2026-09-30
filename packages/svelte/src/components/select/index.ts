@@ -13,3 +13,10 @@ export const Select: Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot 
   ...ArkSelect,
   Root: SelectRoot,
 };
+
+import NativeSelectComponent from "./NativeSelect.svelte";
+
+/** The platform's own list wearing the control recipe. */
+export const NativeSelect = NativeSelectComponent;
+
+export type { NativeSelectProps, NativeSelectOption } from "./native-props";

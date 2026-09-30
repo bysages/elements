@@ -17,7 +17,9 @@ function SliderRoot({ size = "md", ...rest }: SliderRootProps) {
  * Thumb, MarkerGroup, Marker, DraggingIndicator, HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Slider: Omit<typeof ArkSlider, "Root"> & { Root: typeof SliderRoot } = {
+export const Slider: Omit<typeof ArkSlider, "Root"> & {
+  Root: typeof SliderRoot;
+} = {
   ...ArkSlider,
   Root: SliderRoot,
 };

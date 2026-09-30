@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { QrCode } from ".";
+import { Button } from "../button";
 import { RadioGroup } from "../radio-group";
 
 const meta: Meta = { title: "Components/Media/Qr Code" };
@@ -71,19 +72,9 @@ export const Controlled = {
             <QrCode.Pattern />
           </QrCode.Frame>
         </QrCode.Root>
-        <button
-          onClick={() => setValue("https://bysages.com")}
-          style={{
-            padding: "0.375rem 0.75rem",
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            background: "var(--bs-color-surface-2)",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-          }}
-        >
+        <Button onClick={() => setValue("https://bysages.com")} size="sm">
           Point to bysages.com
-        </button>
+        </Button>
       </div>
     );
   },

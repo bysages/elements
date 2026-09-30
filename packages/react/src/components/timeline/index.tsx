@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
 import type * as React from "react";
+import type { HTMLAttributes } from "react";
 
 /** A line of moments: Root is the ordered thread, Item one moment on it,
  * Marker the point where the thread passes, Content what the moment

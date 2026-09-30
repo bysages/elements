@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, ref, Teleport } from "vue";
 
 import { createToaster, Toast, Toaster, type CreateToasterReturn } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Toast" };
@@ -63,16 +64,6 @@ function statusGlyph(type?: string | null) {
     );
 }
 
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
-
 /** The default notice card: title over description, a close glyph at the
  * edge, and the action trigger when the step carries one. */
 function card(action = false) {
@@ -133,11 +124,7 @@ export const Basic = {
       // vnode, so the inner call happens right here.
       () => () =>
         notifier("ToastBasic", {}, (toaster) => [
-          h(
-            "button",
-            { type: "button", style: buttonStyle, onClick: () => announce(toaster) },
-            () => args.triggerLabel,
-          ),
+          h(Button, { size: "sm", onClick: () => announce(toaster) }, () => args.triggerLabel),
         ])(),
     ),
 };
@@ -151,10 +138,9 @@ export const Action = {
       {},
       (toaster) => [
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () =>
               toaster.create({
                 title: "Event has been created",
@@ -182,11 +168,10 @@ export const Duration = {
         { label: "∞", value: Infinity },
       ].map((duration) =>
         h(
-          "button",
+          Button,
           {
             key: duration.label,
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () =>
               toaster.create({
                 title: "Reminder set",
@@ -210,8 +195,11 @@ export const Placement = {
   render: () =>
     notifier("ToastPlacement", { placement: "top-end" }, (toaster) => [
       h(
-        "button",
-        { type: "button", style: buttonStyle, onClick: () => announce(toaster) },
+        Button,
+        {
+          size: "sm",
+          onClick: () => announce(toaster),
+        },
         () => "Show toast (top-end)",
       ),
     ]),
@@ -248,11 +236,10 @@ export const Types = {
         },
       ].map((item) =>
         h(
-          "button",
+          Button,
           {
             key: item.kind,
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () =>
               (toaster as any)[item.kind]({ title: item.title, description: item.description }),
           },
@@ -272,10 +259,9 @@ export const Update = {
       {},
       (toaster) => [
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () => {
               id.value = toaster.create({
                 title: "Sending message...",
@@ -287,10 +273,9 @@ export const Update = {
           () => "Send message",
         ),
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () => {
               if (!id.value) return;
               toaster.update(id.value, {
@@ -321,10 +306,9 @@ export const MaxToasts = {
       { max: 3 },
       (toaster) => [
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () =>
               toaster.create({
                 title: "New notification",
@@ -335,10 +319,9 @@ export const MaxToasts = {
           () => "Add notification",
         ),
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () => {
               const messages = [
                 "John liked your post",
@@ -374,10 +357,9 @@ export const PromiseToast = {
       {},
       (toaster) => [
         h(
-          "button",
+          Button,
           {
-            type: "button",
-            style: buttonStyle,
+            size: "sm",
             onClick: () => {
               const upload = new Promise<void>((resolve, reject) => {
                 setTimeout(
@@ -425,10 +407,9 @@ export const VaryingHeight = {
     let count = 0;
     return notifier("ToastVaryingHeight", {}, (toaster) => [
       h(
-        "button",
+        Button,
         {
-          type: "button",
-          style: buttonStyle,
+          size: "sm",
           onClick: () => {
             const description = DESCRIPTIONS[count % DESCRIPTIONS.length];
             count += 1;

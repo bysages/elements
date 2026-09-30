@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { FileUpload } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/File Upload" };
@@ -275,7 +276,7 @@ export const FormUsage = {
           slips(),
           h(FileUpload.HiddenInput),
         ]),
-        h("button", { type: "submit" }, "Submit"),
+        h(Button, { type: "submit", size: "sm" }, () => "Submit"),
       ],
     ),
 };

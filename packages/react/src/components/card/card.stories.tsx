@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react-vite";
 
 import { Card } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Elements/Card" };
 export default meta;
@@ -44,24 +45,12 @@ export const WithActions = {
         <Card.Description>The seal cannot be undone once pressed.</Card.Description>
       </Card.Header>
       <Card.Footer style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-        <button
-          data-scope="button"
-          data-part="root"
-          data-variant="solid"
-          data-tone="ink"
-          data-size="sm"
-        >
+        <Button variant="solid" size="sm">
           Archive
-        </button>
-        <button
-          data-scope="button"
-          data-part="root"
-          data-variant="ghost"
-          data-tone="ink"
-          data-size="sm"
-        >
+        </Button>
+        <Button variant="ghost" size="sm">
           Keep
-        </button>
+        </Button>
       </Card.Footer>
     </Card>
   ),

@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Checkbox } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Checkbox" };
@@ -106,7 +107,7 @@ export const WithForm = {
           h(Checkbox.Label, () => "Accept the terms"),
           h(Checkbox.HiddenInput),
         ]),
-        h("button", { type: "submit" }, "Submit"),
+        h(Button, { type: "submit", size: "sm" }, () => "Submit"),
       ],
     ),
 };

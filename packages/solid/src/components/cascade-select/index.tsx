@@ -230,7 +230,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
               <li {...mergeProps(() => api().getItemProps(itemProps))}>
                 <span {...mergeProps(() => api().getItemTextProps(itemProps))}>{item.label}</span>
                 <Show when={itemState().hasChildren}>
-                  <span data-part="branch-indicator" aria-hidden="true">
+                  <span data-scope="cascade-select" data-part="branch-indicator" aria-hidden="true">
                     {chevronRight()}
                   </span>
                 </Show>
@@ -284,7 +284,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
         <div {...mergeProps(() => api().getPositionerProps())}>
           <div {...mergeProps(() => api().getContentProps())} data-size={own.size ?? "md"}>
             <Show when={own.filterable}>
-              <div data-part="search">
+              <div data-scope="cascade-select" data-part="search">
                 <Input
                   size="sm"
                   value={query()}
@@ -294,18 +294,27 @@ export function CascadeSelect(props: CascadeSelectProps) {
                 />
               </div>
             </Show>
-            <div data-part="corridor" data-flow={filtering() ? "flat" : "columns"}>
+            <div
+              data-scope="cascade-select"
+              data-part="corridor"
+              data-flow={filtering() ? "flat" : "columns"}
+            >
               <Show
                 when={!filtering()}
                 fallback={
                   <Show
                     when={matchPaths().length > 0}
-                    fallback={<p data-part="empty">Nothing matches</p>}
+                    fallback={
+                      <p data-scope="cascade-select" data-part="empty">
+                        Nothing matches
+                      </p>
+                    }
                   >
                     <For each={matchPaths()}>
                       {(hit) => (
                         <button
                           type="button"
+                          data-scope="cascade-select"
                           data-part="match"
                           data-selected={isSelected(hit.path) || undefined}
                           onclick={() => pickMatch(hit.path)}

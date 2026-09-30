@@ -35,6 +35,12 @@ const Delta = ({ direction = "flat", children, ...rest }: StatDeltaProps) => (
   </span>
 );
 
-export const Stat = Object.assign(Root, { Root, Label, Value, Delta, Description });
+export const Stat = Object.assign(Root, {
+  Root,
+  Label,
+  Value,
+  Delta,
+  Description,
+});
 
 injectComponentStyle("stat");

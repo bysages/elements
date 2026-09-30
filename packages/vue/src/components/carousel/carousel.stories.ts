@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { Carousel } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Media/Carousel" };
@@ -118,20 +119,11 @@ export const ScrollTo = {
         return () =>
           h("div", { style: { display: "grid", gap: "0.75rem" } }, [
             h(
-              "button",
+              Button,
               {
-                type: "button",
+                size: "sm",
                 onClick: () => carousel.value.scrollToIndex(3),
-                style: {
-                  justifySelf: "start",
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.625rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                },
+                style: { justifySelf: "start" },
               },
               "Go to slide 4",
             ),
@@ -157,22 +149,13 @@ export const DynamicSlides = {
       return () =>
         h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "36rem" } }, [
           h(
-            "button",
+            Button,
             {
-              type: "button",
+              size: "sm",
               onClick: () => state.slides.push(Math.max(...state.slides) + 1),
-              style: {
-                justifySelf: "start",
-                border: "1px solid var(--bs-color-border)",
-                background: "var(--bs-color-surface-2)",
-                borderRadius: "var(--bs-radius-sm)",
-                padding: "0.25rem 0.625rem",
-                font: "inherit",
-                fontSize: "var(--bs-font-size-sm)",
-                cursor: "pointer",
-              },
+              style: { justifySelf: "start" },
             },
-            "Add slide",
+            () => "Add slide",
           ),
           h(
             Carousel.Root,

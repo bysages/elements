@@ -53,6 +53,7 @@ export const TreeSelect = defineComponent({
     placeholder: { type: String, default: "Select…" },
     filterable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    invalid: { type: Boolean, default: false },
     /** One rung of the ladder: the trigger height and the vessel's
      * row register follow it together. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
@@ -188,6 +189,7 @@ export const TreeSelect = defineComponent({
                 "data-size": props.size,
                 "data-open": open.value ? "" : undefined,
                 "data-placeholder": label.value == null ? "" : undefined,
+                "data-invalid": props.invalid ? "" : undefined,
                 disabled: props.disabled,
               },
               [label.value ?? props.placeholder, chevronDown()],

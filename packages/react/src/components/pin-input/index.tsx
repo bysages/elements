@@ -16,7 +16,9 @@ function PinInputRoot({ size = "md", ...rest }: PinInputRootProps) {
  * Root, Label, Control, Input, HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const PinInput: Omit<typeof ArkPinInput, "Root"> & { Root: typeof PinInputRoot } = {
+export const PinInput: Omit<typeof ArkPinInput, "Root"> & {
+  Root: typeof PinInputRoot;
+} = {
   ...ArkPinInput,
   Root: PinInputRoot,
 };

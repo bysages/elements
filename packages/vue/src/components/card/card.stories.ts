@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { Card } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Elements/Card" };
@@ -62,28 +63,8 @@ export const WithActions = {
             Card.Footer,
             { style: { display: "flex", gap: "0.5rem", justifyContent: "flex-end" } },
             () => [
-              h(
-                "button",
-                {
-                  "data-scope": "button",
-                  "data-part": "root",
-                  "data-variant": "solid",
-                  "data-tone": "ink",
-                  "data-size": "sm",
-                },
-                () => "Archive",
-              ),
-              h(
-                "button",
-                {
-                  "data-scope": "button",
-                  "data-part": "root",
-                  "data-variant": "ghost",
-                  "data-tone": "ink",
-                  "data-size": "sm",
-                },
-                () => "Keep",
-              ),
+              h(Button, { variant: "solid", size: "sm" }, () => "Archive"),
+              h(Button, { variant: "ghost", size: "sm" }, () => "Keep"),
             ],
           ),
         ]),

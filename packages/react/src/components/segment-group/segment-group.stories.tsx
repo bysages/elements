@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { SegmentGroup } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/Segment Group" };
 export default meta;
@@ -78,19 +79,9 @@ export const Conditional = {
     const [show, setShow] = useState(false);
     return (
       <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
-        <button
-          onClick={() => setShow(!show)}
-          style={{
-            padding: "0.375rem 0.75rem",
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            background: "var(--bs-color-surface-2)",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-          }}
-        >
+        <Button onClick={() => setShow(!show)} size="sm">
           {show ? "Hide" : "Show"}
-        </button>
+        </Button>
         {show ? group({ defaultValue: "React" }) : null}
       </div>
     );

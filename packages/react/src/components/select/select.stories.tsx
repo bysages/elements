@@ -1,9 +1,10 @@
 import { createListCollection } from "@ark-ui/react/select";
 import type { Meta } from "@storybook/react-vite";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 import { Select } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/Select" };
 export default meta;
@@ -241,22 +242,9 @@ export const DynamicItems = {
       : frameworks;
     return (
       <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
-        <button
-          type="button"
-          onClick={() => setSmall(!small)}
-          style={{
-            justifySelf: "start",
-            border: "1px solid var(--bs-color-border)",
-            background: "var(--bs-color-surface-2)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.5rem",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-            cursor: "pointer",
-          }}
-        >
+        <Button onClick={() => setSmall(!small)} style={{ justifySelf: "start" }} size="sm">
           Toggle items
-        </button>
+        </Button>
         {shell({}, collection, rows(collection))}
       </div>
     );

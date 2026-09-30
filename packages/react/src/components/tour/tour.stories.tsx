@@ -2,7 +2,9 @@ import { waitForElement, waitForEvent } from "@ark-ui/react/tour";
 import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
-import { Tour, useTour, type TourStepDetails } from ".";
+import { Tour, type TourStepDetails, useTour } from ".";
+import { Button } from "../button";
+import { Input } from "../input";
 
 const meta: Meta = { title: "Components/Overlay/Tour" };
 export default meta;
@@ -38,12 +40,12 @@ export function Basic() {
   return (
     <Tour.Root tour={tour}>
       <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
-        <button id="tour-anchor-first" type="button" onClick={() => tour.start()}>
+        <Button id="tour-anchor-first" size="sm" onClick={() => tour.start()}>
           First
-        </button>
-        <button id="tour-anchor-second" type="button" onClick={() => tour.start("second")}>
+        </Button>
+        <Button id="tour-anchor-second" size="sm" onClick={() => tour.start("second")}>
           Second
-        </button>
+        </Button>
       </div>
       <Tour.Backdrop />
       <Tour.Spotlight />
@@ -68,16 +70,6 @@ export function Basic() {
     </Tour.Root>
   );
 }
-
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-};
 
 const targetStyle = {
   display: "grid",
@@ -149,9 +141,9 @@ function stage(
       <Tour.Root tour={tour}>
         <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
           {extras?.(tour) ?? (
-            <button type="button" style={buttonStyle} onClick={() => tour.start()}>
+            <Button size="sm" onClick={() => tour.start()}>
               Start tour
-            </button>
+            </Button>
           )}
         </div>
         {card()}
@@ -203,9 +195,9 @@ export const MixedTypes = stage(
     },
   ] as TourStepDetails[],
   (tour) => [
-    <button key="start" type="button" style={buttonStyle} onClick={() => tour.start()}>
+    <Button key="start" size="sm" onClick={() => tour.start()}>
       Start tour
-    </button>,
+    </Button>,
     <div key="target" id="tour-mixed-target" style={targetStyle}>
       Target element
     </div>,
@@ -246,14 +238,14 @@ export const WaitForClick = stage(
     },
   ] as TourStepDetails[],
   (tour) => [
-    <button key="start" type="button" style={buttonStyle} onClick={() => tour.start()}>
+    <Button key="start" size="sm" onClick={() => tour.start()}>
       Start tour
-    </button>,
+    </Button>,
     <div key="buttons" style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
       {["add", "edit", "delete"].map((kind) => (
-        <button key={kind} id={`tour-click-${kind}`} type="button" style={buttonStyle}>
+        <Button key={kind} id={`tour-click-${kind}`} size="sm">
           {kind[0].toUpperCase() + kind.slice(1)}
-        </button>
+        </Button>
       ))}
     </div>,
   ],
@@ -326,14 +318,9 @@ export const WaitForInput = stage(
     },
   ] as TourStepDetails[],
   (tour) => [
-    <button
-      key="start"
-      type="button"
-      style={{ ...buttonStyle, marginBottom: "1.5rem" }}
-      onClick={() => tour.start()}
-    >
+    <Button key="start" style={{ marginBottom: "1.5rem" }} onClick={() => tour.start()} size="sm">
       Start tour
-    </button>,
+    </Button>,
     <div
       key="inputs"
       style={{
@@ -343,10 +330,10 @@ export const WaitForInput = stage(
         marginBottom: "1.5rem",
       }}
     >
-      <input id="tour-input-name" placeholder="Name" style={buttonStyle} aria-label="Name" />
-      <input id="tour-input-email" placeholder="Email" style={buttonStyle} aria-label="Email" />
+      <Input id="tour-input-name" placeholder="Name" aria-label="Name" />
+      <Input id="tour-input-email" placeholder="Email" aria-label="Email" />
       <label style={{ display: "flex", gap: "0.375rem", fontSize: "var(--bs-font-size-sm)" }}>
-        <input id="tour-input-terms" type="checkbox" />
+        <Input id="tour-input-terms" type="checkbox" />
         I accept the terms
       </label>
     </div>,
@@ -392,9 +379,9 @@ export const AsyncStep = stage(
     },
   ] as TourStepDetails[],
   (tour) => [
-    <button key="start" type="button" style={buttonStyle} onClick={() => tour.start()}>
+    <Button key="start" size="sm" onClick={() => tour.start()}>
       Start tour
-    </button>,
+    </Button>,
     <div key="card" id="tour-async-card" style={targetStyle}>
       Account card
     </div>,
@@ -437,9 +424,9 @@ export function Events() {
   return (
     <Tour.Root tour={tour}>
       <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
-        <button type="button" style={buttonStyle} onClick={() => tour.start()}>
+        <Button size="sm" onClick={() => tour.start()}>
           Start tour
-        </button>
+        </Button>
         {targets(["tour-event-1", "tour-event-2"], "Step")}
       </div>
       <pre
@@ -482,9 +469,9 @@ export const KeyboardNavigation = stage(
     },
   ] as TourStepDetails[],
   (tour) => [
-    <button key="start" type="button" style={buttonStyle} onClick={() => tour.start()}>
+    <Button key="start" size="sm" onClick={() => tour.start()}>
       Start tour
-    </button>,
+    </Button>,
     targets(["tour-key-1", "tour-key-2"], "Step"),
     <p
       key="hint"
@@ -527,9 +514,9 @@ export function ProgressBar() {
   return (
     <Tour.Root tour={tour}>
       <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
-        <button type="button" style={buttonStyle} onClick={() => tour.start()}>
+        <Button size="sm" onClick={() => tour.start()}>
           Start tour
-        </button>
+        </Button>
         {targets(["tour-progress-1", "tour-progress-2"], "Step")}
       </div>
       {card(
@@ -647,17 +634,16 @@ export function WaitForElement() {
   return (
     <Tour.Root tour={tour}>
       <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1.5rem" }}>
-        <button type="button" style={buttonStyle} onClick={() => tour.start()}>
+        <Button size="sm" onClick={() => tour.start()}>
           Start tour
-        </button>
-        <button
+        </Button>
+        <Button
           id="tour-add-item"
-          type="button"
-          style={buttonStyle}
           onClick={() => setItems((list) => [...list, `Item ${list.length + 1}`])}
+          size="sm"
         >
           Add item
-        </button>
+        </Button>
       </div>
       <ul
         style={{

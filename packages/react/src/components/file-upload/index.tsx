@@ -19,7 +19,9 @@ function FileUploadRoot({ size = "md", ...rest }: FileUploadRootProps) {
  * Context. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const FileUpload: Omit<typeof ArkFileUpload, "Root"> & { Root: typeof FileUploadRoot } = {
+export const FileUpload: Omit<typeof ArkFileUpload, "Root"> & {
+  Root: typeof FileUploadRoot;
+} = {
   ...ArkFileUpload,
   Root: FileUploadRoot,
 };

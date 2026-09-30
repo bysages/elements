@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { DatePicker } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Date Picker" };
@@ -351,23 +352,7 @@ export const SelectToday = {
               default: (dp: any) => [
                 viewControl(),
                 h("div", { style: { display: "flex", justifyContent: "flex-end" } }, [
-                  h(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => dp.selectToday(),
-                      style: {
-                        border: "1px solid var(--bs-color-border)",
-                        background: "var(--bs-color-surface-2)",
-                        borderRadius: "var(--bs-radius-sm)",
-                        padding: "0.25rem 0.5rem",
-                        font: "inherit",
-                        fontSize: "var(--bs-font-size-sm)",
-                        cursor: "pointer",
-                      },
-                    },
-                    "Today",
-                  ),
+                  h(Button, { size: "sm", onClick: () => dp.selectToday() }, () => "Today"),
                 ]),
                 h(DatePicker.Table, () => [
                   h(DatePicker.TableHead, () =>
@@ -575,22 +560,7 @@ export const FormUsage = {
             popup(dayView(), monthView(), yearView()),
           ],
         ),
-        h(
-          "button",
-          {
-            type: "submit",
-            style: {
-              border: "1px solid var(--bs-color-border)",
-              background: "var(--bs-color-surface-2)",
-              borderRadius: "var(--bs-radius-sm)",
-              padding: "0.25rem 0.75rem",
-              font: "inherit",
-              fontSize: "var(--bs-font-size-sm)",
-              cursor: "pointer",
-            },
-          },
-          "Submit",
-        ),
+        h(Button, { type: "submit", size: "sm" }, () => "Submit"),
       ],
     ),
 };

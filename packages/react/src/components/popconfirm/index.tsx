@@ -1,8 +1,8 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 import { Button } from "../button";
 

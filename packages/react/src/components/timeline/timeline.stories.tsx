@@ -5,8 +5,14 @@ import { Timeline } from ".";
 const meta: Meta = { title: "Components/Data/Timeline" };
 export default meta;
 
-const ink = { color: "var(--bs-color-text-primary)", fontWeight: "var(--bs-font-weight-medium)" };
-const time = { color: "var(--bs-color-text-tertiary)", fontSize: "var(--bs-font-size-sm)" };
+const ink = {
+  color: "var(--bs-color-text-primary)",
+  fontWeight: "var(--bs-font-weight-medium)",
+};
+const time = {
+  color: "var(--bs-color-text-tertiary)",
+  fontSize: "var(--bs-font-size-sm)",
+};
 
 const moments = [
   {

@@ -239,4 +239,112 @@ export const selectCss =
   block-size: var(--bs-control-height-lg);
   padding-inline-start: var(--bs-padding-lg);
 }
+
+/* The bare native select wears the field recipe — the same hairline
+   shell, the same halo — with the platform's own list behind it. The
+   shell is a wrapper so the indicator rides beside the value as a real
+   stroke, the same chevron the framed select shows. */
+[data-scope="select"][data-part="native-root"] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  inline-size: 100%;
+  min-inline-size: 0;
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  background: var(--bs-color-surface-2);
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    box-shadow var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="select"][data-part="native-root"] {
+  block-size: var(--bs-control-height-md);
+}
+
+[data-scope="select"][data-part="native-root"][data-size="sm"] {
+  block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="select"][data-part="native-root"][data-size="lg"] {
+  block-size: var(--bs-control-height-lg);
+}
+
+[data-scope="select"][data-part="native-root"]:hover:not([data-disabled]):not(:focus-within) {
+  border-color: var(--bs-color-border-strong);
+}
+
+[data-scope="select"][data-part="native-root"]:focus-within {
+  outline: none;
+  border-color: var(--bs-focus-edge);
+  box-shadow: var(--bs-focus-ring);
+  transition: none;
+}
+
+[data-scope="select"][data-part="native-root"][data-invalid] {
+  border-color: var(--bs-color-danger);
+}
+
+[data-scope="select"][data-part="native-root"][data-invalid]:focus-within {
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
+}
+
+[data-scope="select"][data-part="native-root"][data-disabled] {
+  border-color: var(--bs-color-border);
+  background: var(--bs-color-surface-inset);
+}
+
+[data-scope="select"][data-part="native"] {
+  appearance: none;
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+  border: none;
+  background: transparent;
+  padding-inline: var(--bs-padding-md);
+  color: var(--bs-color-text-primary);
+  font: inherit;
+  font-size: var(--bs-font-size-md);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+[data-scope="select"][data-part="native-root"][data-size="sm"] [data-part="native"] {
+  padding-inline: var(--bs-padding-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="select"][data-part="native-root"][data-size="lg"] [data-part="native"] {
+  padding-inline: var(--bs-padding-lg);
+}
+
+/* An unchosen select reads as potential, not content: the placeholder
+   ink stays quiet, exactly as the framed trigger's does. */
+[data-scope="select"][data-part="native-root"][data-placeholder-shown] [data-part="native"] {
+  color: var(--bs-color-text-tertiary);
+}
+
+[data-scope="select"][data-part="native-root"][data-disabled] [data-part="native"] {
+  color: var(--bs-color-text-disabled);
+  cursor: not-allowed;
+}
+
+[data-scope="select"][data-part="native-icon"] {
+  flex: none;
+  inline-size: var(--bs-font-size-md);
+  block-size: var(--bs-font-size-md);
+  margin-inline-end: var(--bs-padding-md);
+  color: var(--bs-color-text-tertiary);
+  pointer-events: none;
+}
+
+[data-scope="select"][data-part="native-root"][data-size="sm"] [data-part="native-icon"] {
+  inline-size: var(--bs-font-size-sm);
+  block-size: var(--bs-font-size-sm);
+  margin-inline-end: var(--bs-padding-sm);
+}
+
+[data-scope="select"][data-part="native-root"][data-size="lg"] [data-part="native-icon"] {
+  margin-inline-end: var(--bs-padding-lg);
+}
 `;

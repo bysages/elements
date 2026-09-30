@@ -50,7 +50,12 @@ export const Basic = {
   render: () => (
     <div>
       <Affix>{toolbar()}</Affix>
-      <div style={{ maxInlineSize: "46rem", paddingBlockStart: "var(--bs-space-6)" }}>
+      <div
+        style={{
+          maxInlineSize: "46rem",
+          paddingBlockStart: "var(--bs-space-6)",
+        }}
+      >
         {Array.from({ length: 16 }, (_, index) => passage(index + 1))}
       </div>
     </div>
@@ -65,7 +70,12 @@ export const OffsetBottom = {
       <Affix offsetTop="var(--bs-space-12)" offsetBottom="var(--bs-space-4)">
         {toolbar()}
       </Affix>
-      <div style={{ maxInlineSize: "46rem", paddingBlockStart: "var(--bs-space-6)" }}>
+      <div
+        style={{
+          maxInlineSize: "46rem",
+          paddingBlockStart: "var(--bs-space-6)",
+        }}
+      >
         {Array.from({ length: 16 }, (_, index) => passage(index + 1))}
       </div>
     </div>

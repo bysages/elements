@@ -25,7 +25,12 @@ export function BentoRoot({ columns = 3, children, ...rest }: BentoProps) {
       {...rest}
       data-scope="bento"
       data-part="root"
-      style={{ ...rest.style, "--bs-bento-columns": String(columns) } as CSSProperties}
+      style={
+        {
+          ...rest.style,
+          "--bs-bento-columns": String(columns),
+        } as CSSProperties
+      }
     >
       {children}
     </div>

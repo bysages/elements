@@ -22,7 +22,9 @@ function DateInputRoot({ size = "md", ...rest }: DateInputRootProps) {
  * HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const DateInput: Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateInputRoot } = {
+export const DateInput: Omit<typeof ArkDateInput, "Root"> & {
+  Root: typeof DateInputRoot;
+} = {
   ...ArkDateInput,
   Root: DateInputRoot,
 };

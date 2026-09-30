@@ -21,6 +21,12 @@ const Title = part("Title", "h3");
 const Description = part("Description", "p");
 const Actions = part("Actions", "div");
 
-export const Empty = Object.assign(Root, { Root, Visual, Title, Description, Actions });
+export const Empty = Object.assign(Root, {
+  Root,
+  Visual,
+  Title,
+  Description,
+  Actions,
+});
 
 injectComponentStyle("empty");

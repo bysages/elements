@@ -28,7 +28,14 @@ export const Basic = {
  * measure — with no svg written by hand. */
 export const FromRegistry = {
   render: () => (
-    <p style={{ margin: 0, display: "flex", alignItems: "center", gap: "var(--bs-space-4)" }}>
+    <p
+      style={{
+        margin: 0,
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--bs-space-4)",
+      }}
+    >
       <Icon name="check" label="Done" />
       <Icon name="x" label="Close" />
       <Icon name="chevron-right" label="Next" />
@@ -39,7 +46,14 @@ export const FromRegistry = {
  * glyphs, three measures. */
 export const Sizes = {
   render: () => (
-    <p style={{ margin: 0, display: "flex", alignItems: "center", gap: "var(--bs-space-4)" }}>
+    <p
+      style={{
+        margin: 0,
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--bs-space-4)",
+      }}
+    >
       <Icon size="sm" label="Small drop">
         {drop}
       </Icon>

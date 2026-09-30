@@ -35,7 +35,12 @@ export const Basic = {
           placeholder="Province, or anything else"
           style={{ maxWidth: "18rem" }}
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           value: {JSON.stringify(text)}
         </p>
       </>

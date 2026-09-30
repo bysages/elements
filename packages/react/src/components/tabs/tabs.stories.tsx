@@ -7,9 +7,21 @@ const meta: Meta = { title: "Components/Navigation/Tabs" };
 export default meta;
 
 const PANELS = [
-  { value: "account", label: "Account", body: "Manage your profile and contact details." },
-  { value: "security", label: "Security", body: "Change your password and two-step settings." },
-  { value: "billing", label: "Billing", body: "Review invoices and payment methods." },
+  {
+    value: "account",
+    label: "Account",
+    body: "Manage your profile and contact details.",
+  },
+  {
+    value: "security",
+    label: "Security",
+    body: "Change your password and two-step settings.",
+  },
+  {
+    value: "billing",
+    label: "Billing",
+    body: "Review invoices and payment methods.",
+  },
 ];
 
 /** The shared ledger: triggers on a rail, panels beneath, one ink

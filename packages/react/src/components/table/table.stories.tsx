@@ -1,7 +1,8 @@
 import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
-import { DataTable, createColumnHelper } from ".";
+import { createColumnHelper, DataTable } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Data/Table" };
 export default meta;
@@ -143,11 +144,26 @@ export const TreeTable = {
                 units: 2310,
                 revenue: 46200,
                 subRows: [
-                  { id: "north-hebei-sjz", region: "Shijiazhuang", units: 1200, revenue: 24000 },
-                  { id: "north-hebei-ts", region: "Tangshan", units: 1110, revenue: 22200 },
+                  {
+                    id: "north-hebei-sjz",
+                    region: "Shijiazhuang",
+                    units: 1200,
+                    revenue: 24000,
+                  },
+                  {
+                    id: "north-hebei-ts",
+                    region: "Tangshan",
+                    units: 1110,
+                    revenue: 22200,
+                  },
                 ],
               },
-              { id: "north-shanxi", region: "Shanxi", units: 2510, revenue: 50200 },
+              {
+                id: "north-shanxi",
+                region: "Shanxi",
+                units: 2510,
+                revenue: 50200,
+              },
             ],
           },
           {
@@ -156,8 +172,18 @@ export const TreeTable = {
             units: 5310,
             revenue: 106200,
             subRows: [
-              { id: "south-gd", region: "Guangdong", units: 3610, revenue: 72200 },
-              { id: "south-gx", region: "Guangxi", units: 1700, revenue: 34000 },
+              {
+                id: "south-gd",
+                region: "Guangdong",
+                units: 3610,
+                revenue: 72200,
+              },
+              {
+                id: "south-gx",
+                region: "Guangxi",
+                units: 1700,
+                revenue: 34000,
+              },
             ],
           },
           { id: "east", region: "East", units: 2750, revenue: 55000 },
@@ -241,17 +267,17 @@ export const IncrementalUpdates = {
     return (
       <div style={{ display: "grid", gap: "0.75rem" }}>
         <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button
-            type="button"
+          <Button
             onClick={() =>
               setRows((prev) => prev.filter((_, i) => i !== 0 && i !== prev.length - 1))
             }
+            size="sm"
           >
             Drop first and last
-          </button>
-          <button type="button" onClick={() => setRows((prev) => [...prev, ...makeRows(2)])}>
+          </Button>
+          <Button onClick={() => setRows((prev) => [...prev, ...makeRows(2)])} size="sm">
             Append two rows
-          </button>
+          </Button>
         </div>
         <DataTable
           data={rows}

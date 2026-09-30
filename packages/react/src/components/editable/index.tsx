@@ -17,7 +17,9 @@ function EditableRoot({ size = "md", ...rest }: EditableRootProps) {
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Editable: Omit<typeof ArkEditable, "Root"> & { Root: typeof EditableRoot } = {
+export const Editable: Omit<typeof ArkEditable, "Root"> & {
+  Root: typeof EditableRoot;
+} = {
   ...ArkEditable,
   Root: EditableRoot,
 };

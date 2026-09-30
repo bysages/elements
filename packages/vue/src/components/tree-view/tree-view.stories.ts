@@ -4,6 +4,8 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, type PropType, reactive } from "vue";
 
 import { TreeView } from ".";
+import { Button } from "../button";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Data/Tree View" };
@@ -416,40 +418,8 @@ export const ExpandCollapseAll = {
       h(TreeView.Context, null, {
         default: (tree: any) => [
           h("div", { style: { display: "flex", gap: "0.5rem" } }, [
-            h(
-              "button",
-              {
-                type: "button",
-                onClick: () => tree.expandAll(),
-                style: {
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                },
-              },
-              "Expand all",
-            ),
-            h(
-              "button",
-              {
-                type: "button",
-                onClick: () => tree.collapseAll(),
-                style: {
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                },
-              },
-              "Collapse all",
-            ),
+            h(Button, { size: "sm", onClick: () => tree.expandAll() }, () => "Expand all"),
+            h(Button, { size: "sm", onClick: () => tree.collapseAll() }, () => "Collapse all"),
           ]),
           h(TreeView.Label, () => "Library"),
           treeOf(libraryCollection),
@@ -477,19 +447,10 @@ export const Filtering = {
       TreeView.Root,
       { collection: state.collection, defaultExpandedValue: ["ink", "paper"] } as any,
       () => [
-        h("input", {
+        h(Input, {
+          modelValue: state.query,
           placeholder: "Search",
-          value: state.query,
-          onInput: (e: any) => apply(e.currentTarget.value),
-          style: {
-            border: "1px solid var(--bs-color-border)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.5rem",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-            background: "var(--bs-color-surface-2)",
-            color: "var(--bs-color-text-primary)",
-          },
+          "onUpdate:modelValue": (v: string) => apply(v),
         }),
         treeOf(state.collection),
       ],

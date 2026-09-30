@@ -17,7 +17,9 @@ function CheckboxRoot({ size = "md", ...rest }: CheckboxRootProps) {
  * HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Checkbox: Omit<typeof ArkCheckbox, "Root"> & { Root: typeof CheckboxRoot } = {
+export const Checkbox: Omit<typeof ArkCheckbox, "Root"> & {
+  Root: typeof CheckboxRoot;
+} = {
   ...ArkCheckbox,
   Root: CheckboxRoot,
 };

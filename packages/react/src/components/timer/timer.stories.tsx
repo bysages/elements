@@ -86,7 +86,13 @@ function Face({
         {units.map((unit, index) => (
           <Fragment key={unit.type}>
             {index > 0 && <Timer.Separator>{separator}</Timer.Separator>}
-            <div style={{ display: "grid", justifyItems: "center", gap: "0.125rem" }}>
+            <div
+              style={{
+                display: "grid",
+                justifyItems: "center",
+                gap: "0.125rem",
+              }}
+            >
               <Timer.Item type={unit.type as any} />
               <span
                 style={{

@@ -5,6 +5,8 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { DateInput } from ".";
+import { Button } from "../button";
+import { Checkbox } from "../checkbox";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Date Input" };
@@ -149,11 +151,19 @@ export const LeadingZeros = {
               },
             },
             [
-              h("input", {
-                type: "checkbox",
-                checked: state.zeros,
-                onChange: (e: Event) => (state.zeros = (e.target as HTMLInputElement).checked),
-              }),
+              h(
+                Checkbox.Root,
+                {
+                  size: "sm",
+                  checked: state.zeros,
+                  onCheckedChange: (e: { checked: boolean }) => (state.zeros = e.checked),
+                },
+                () => [
+                  h(Checkbox.Control, () => h(Checkbox.Indicator)),
+                  h(Checkbox.Label, () => "Force leading zeros"),
+                  h(Checkbox.HiddenInput),
+                ],
+              ),
               "Force leading zeros",
             ],
           ),
@@ -178,19 +188,11 @@ export const WithClearButton = {
       h(DateInput.Control, () => [
         h(DateInput.SegmentGroup, () => segments()),
         h(
-          "button",
+          Button,
           {
-            type: "button",
+            size: "sm",
             "aria-label": "Clear date",
             onClick: () => dateInput.value.clearValue(),
-            style: {
-              border: "1px solid var(--bs-color-border)",
-              background: "var(--bs-color-surface-2)",
-              borderRadius: "var(--bs-radius-sm)",
-              padding: "0.25rem 0.5rem",
-              font: "inherit",
-              cursor: "pointer",
-            },
           },
           "Clear",
         ),

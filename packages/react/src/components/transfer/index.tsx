@@ -1,7 +1,7 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { injectComponentStyle } from "@bysages/core";
-import { useState } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useState } from "react";
 
 import { Button } from "../button";
 import { Input } from "../input";

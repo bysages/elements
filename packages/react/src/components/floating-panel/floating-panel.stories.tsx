@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { FloatingPanel } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Overlay/Floating Panel" };
 export default meta;
@@ -84,7 +85,12 @@ function panel(
 
 function readout(text: string) {
   return (
-    <output style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" }}>
+    <output
+      style={{
+        fontSize: "var(--bs-font-size-sm)",
+        color: "var(--bs-color-text-secondary)",
+      }}
+    >
       {text}
     </output>
   );
@@ -92,19 +98,9 @@ function readout(text: string) {
 
 function outsideButton(label: string, onClick: () => void) {
   return (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "0.375rem 0.75rem",
-        border: "1px solid var(--bs-color-border)",
-        borderRadius: "var(--bs-radius-sm)",
-        background: "var(--bs-color-surface-2)",
-        font: "inherit",
-        fontSize: "var(--bs-font-size-sm)",
-      }}
-    >
+    <Button onClick={onClick} size="sm">
       {label}
-    </button>
+    </Button>
   );
 }
 

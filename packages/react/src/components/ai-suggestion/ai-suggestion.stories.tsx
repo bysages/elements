@@ -14,7 +14,14 @@ export const Basic = {
     const [prompt, setPrompt] = useState("");
     const prompts = ["Summarize the release", "What changed in core?", "Draft the changelog entry"];
     return (
-      <div style={{ display: "grid", gap: "1rem", width: "100%", maxWidth: "46rem" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "1rem",
+          width: "100%",
+          maxWidth: "46rem",
+        }}
+      >
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
           {prompts.map((prompt) => (
             <AiSuggestion key={prompt} prompt={prompt} onSelect={(value) => setPrompt(value)} />

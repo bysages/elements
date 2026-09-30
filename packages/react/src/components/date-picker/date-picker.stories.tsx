@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { DatePicker } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/Date Picker" };
 export default meta;
@@ -214,21 +215,9 @@ function TodayView() {
           <>
             {viewControl()}
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button
-                type="button"
-                onClick={() => dp.selectToday()}
-                style={{
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                }}
-              >
+              <Button onClick={() => dp.selectToday()} size="sm">
                 Today
-              </button>
+              </Button>
             </div>
             <DatePicker.Table>
               <DatePicker.TableHead>
@@ -789,20 +778,9 @@ export const FormUsage = {
         {field(inputControl)}
         {popup(<DayView />, <MonthView />, <YearView />)}
       </DatePicker.Root>
-      <button
-        type="submit"
-        style={{
-          border: "1px solid var(--bs-color-border)",
-          background: "var(--bs-color-surface-2)",
-          borderRadius: "var(--bs-radius-sm)",
-          padding: "0.25rem 0.75rem",
-          font: "inherit",
-          fontSize: "var(--bs-font-size-sm)",
-          cursor: "pointer",
-        }}
-      >
+      <Button type="submit" size="sm">
         Submit
-      </button>
+      </Button>
     </form>
   ),
 };

@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { DataTable, createColumnHelper } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Data/Table" };
@@ -249,24 +250,24 @@ export const IncrementalUpdates = {
           });
           const tools = h("div", { style: { display: "flex", gap: "0.5rem" } }, [
             h(
-              "button",
+              Button,
               {
-                type: "button",
+                size: "sm",
                 onClick: () => {
                   state.rows = state.rows.filter((_, i) => i !== 0 && i !== state.rows.length - 1);
                 },
               },
-              "Drop first and last",
+              () => "Drop first and last",
             ),
             h(
-              "button",
+              Button,
               {
-                type: "button",
+                size: "sm",
                 onClick: () => {
                   state.rows = [...state.rows, ...makeRows(2)];
                 },
               },
-              "Append two rows",
+              () => "Append two rows",
             ),
           ]);
           return h("div", { style: { display: "grid", gap: "0.75rem" } }, [tools, table]);

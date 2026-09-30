@@ -22,7 +22,6 @@ export const componentSections: Array<{
       "button-group",
       "button",
       "card",
-      "spotlight",
       "chip",
       "client-only",
       "config-provider",
@@ -32,6 +31,8 @@ export const componentSections: Array<{
       "kbd",
       "presence",
       "separator",
+      "deferred-content",
+      "user",
     ],
   },
   {
@@ -47,6 +48,7 @@ export const componentSections: Array<{
       "swap",
       "toggle",
       "toggle-group",
+      "toolbar",
     ],
   },
   {
@@ -143,6 +145,10 @@ export const componentSections: Array<{
       "transfer",
       "tree-view",
       "workflow",
+      "data-view",
+      "order-list",
+      "terminal",
+      "virtual-list",
     ],
   },
   {
@@ -174,6 +180,7 @@ export const componentSections: Array<{
       "result",
       "skeleton",
       "spinner",
+      "block-ui",
     ],
   },
   {
@@ -194,6 +201,7 @@ export const componentSections: Array<{
       "page-header",
       "scroll-area",
       "splitter",
+      "spotlight",
       "stack",
       "typography",
     ],

@@ -1,6 +1,6 @@
 import type { CollectionItem } from "@ark-ui/react/collection";
-import { TreeView as ArkTreeView } from "@ark-ui/react/tree-view";
 import type { TreeViewRootComponentProps } from "@ark-ui/react/tree-view";
+import { TreeView as ArkTreeView } from "@ark-ui/react/tree-view";
 import { injectComponentStyle } from "@bysages/core";
 
 /** Ark's TreeView, dressed in the paper-and-ink system: quiet rows where
@@ -25,7 +25,9 @@ function TreeViewRoot<T extends CollectionItem>(
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const TreeView: Omit<typeof ArkTreeView, "Root"> & { Root: typeof TreeViewRoot } = {
+export const TreeView: Omit<typeof ArkTreeView, "Root"> & {
+  Root: typeof TreeViewRoot;
+} = {
   ...ArkTreeView,
   Root: TreeViewRoot,
 };

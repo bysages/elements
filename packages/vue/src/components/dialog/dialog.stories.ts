@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
 import { Dialog } from ".";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Dialog" };
@@ -182,18 +183,7 @@ export const InitialFocus = {
         vessel(
           "Sign in",
           "Focus lands in the first field, not the close button.",
-          h("input", {
-            "data-autofocus": true,
-            placeholder: "Name",
-            style: {
-              border: "1px solid var(--bs-color-border)",
-              borderRadius: "var(--bs-radius-sm)",
-              padding: "0.375rem 0.5rem",
-              font: "inherit",
-              background: "var(--bs-color-surface-2)",
-              color: "var(--bs-color-text-primary)",
-            },
-          }),
+          h(Input, { "data-autofocus": true, placeholder: "Name" }),
         ),
       ],
     ),

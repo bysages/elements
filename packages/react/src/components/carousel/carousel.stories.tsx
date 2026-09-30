@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { Carousel } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Media/Carousel" };
 export default meta;
@@ -139,22 +140,9 @@ function ScrollToDriver() {
   const carousel = useCarousel({ slideCount: slides.length });
   return (
     <div style={{ display: "grid", gap: "0.75rem" }}>
-      <button
-        type="button"
-        onClick={() => carousel.scrollToIndex(3)}
-        style={{
-          justifySelf: "start",
-          border: "1px solid var(--bs-color-border)",
-          background: "var(--bs-color-surface-2)",
-          borderRadius: "var(--bs-radius-sm)",
-          padding: "0.25rem 0.625rem",
-          font: "inherit",
-          fontSize: "var(--bs-font-size-sm)",
-          cursor: "pointer",
-        }}
-      >
+      <Button onClick={() => carousel.scrollToIndex(3)} style={{ justifySelf: "start" }} size="sm">
         Go to slide 4
-      </button>
+      </Button>
       <Carousel.RootProvider value={carousel}>
         <Carousel.ItemGroup>{slides.map((_, index) => slide_(index))}</Carousel.ItemGroup>
         <Carousel.IndicatorGroup>
@@ -179,22 +167,13 @@ export const DynamicSlides = {
     const [page, setPage] = useState(0);
     return (
       <div style={{ display: "grid", gap: "0.75rem", maxWidth: "36rem" }}>
-        <button
-          type="button"
+        <Button
           onClick={() => setCount((value) => value + 1)}
-          style={{
-            justifySelf: "start",
-            border: "1px solid var(--bs-color-border)",
-            background: "var(--bs-color-surface-2)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.625rem",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-            cursor: "pointer",
-          }}
+          style={{ justifySelf: "start" }}
+          size="sm"
         >
           Add slide
-        </button>
+        </Button>
         <Carousel.Root
           slideCount={count}
           page={page}

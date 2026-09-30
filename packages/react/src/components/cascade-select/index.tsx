@@ -4,8 +4,8 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/react";
-import { useId, useMemo, useState } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useId, useMemo, useState } from "react";
 
 import { Input } from "../input";
 
@@ -210,7 +210,7 @@ export function CascadeSelect({
             <li key={itemValue} {...api.getItemProps(itemProps)}>
               <span {...api.getItemTextProps(itemProps)}>{item.label}</span>
               {itemState.hasChildren ? (
-                <span data-part="branch-indicator" aria-hidden="true">
+                <span data-scope="cascade-select" data-part="branch-indicator" aria-hidden="true">
                   {chevronRight}
                 </span>
               ) : null}
@@ -251,7 +251,7 @@ export function CascadeSelect({
         <div {...api.getPositionerProps()}>
           <div {...api.getContentProps()} data-size={size}>
             {filterable ? (
-              <div data-part="search">
+              <div data-scope="cascade-select" data-part="search">
                 <Input
                   size="sm"
                   value={query}
@@ -261,15 +261,22 @@ export function CascadeSelect({
                 />
               </div>
             ) : null}
-            <div data-part="corridor" data-flow={filtering ? "flat" : "columns"}>
+            <div
+              data-scope="cascade-select"
+              data-part="corridor"
+              data-flow={filtering ? "flat" : "columns"}
+            >
               {filtering ? (
                 matchPaths.length === 0 ? (
-                  <p data-part="empty">Nothing matches</p>
+                  <p data-scope="cascade-select" data-part="empty">
+                    Nothing matches
+                  </p>
                 ) : (
                   matchPaths.map((hit) => (
                     <button
                       key={hit.path.join("/")}
                       type="button"
+                      data-scope="cascade-select"
                       data-part="match"
                       data-selected={isSelected(hit.path) || undefined}
                       onClick={() => pickMatch(hit.path)}

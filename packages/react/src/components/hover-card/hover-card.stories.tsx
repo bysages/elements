@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { HoverCard } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Overlay/Hover Card" };
 export default meta;
@@ -35,7 +36,12 @@ function card() {
         <h3 style={{ margin: "0 0 0.25rem", fontFamily: "var(--bs-font-serif)" }}>
           {profile.name}
         </h3>
-        <p style={{ margin: "0 0 0.5rem", color: "var(--bs-color-text-secondary)" }}>
+        <p
+          style={{
+            margin: "0 0 0.5rem",
+            color: "var(--bs-color-text-secondary)",
+          }}
+        >
           {profile.handle}
         </p>
         <p style={{ margin: "0 0 0.75rem" }}>{profile.bio}</p>
@@ -133,10 +139,20 @@ export const MultipleTriggers = {
             <HoverCard.Arrow>
               <HoverCard.ArrowTip />
             </HoverCard.Arrow>
-            <h3 style={{ margin: "0 0 0.25rem", fontFamily: "var(--bs-font-serif)" }}>
+            <h3
+              style={{
+                margin: "0 0 0.25rem",
+                fontFamily: "var(--bs-font-serif)",
+              }}
+            >
               {active.name}
             </h3>
-            <p style={{ margin: "0 0 0.5rem", color: "var(--bs-color-text-secondary)" }}>
+            <p
+              style={{
+                margin: "0 0 0.5rem",
+                color: "var(--bs-color-text-secondary)",
+              }}
+            >
               {active.handle}
             </p>
             <p style={{ margin: 0 }}>{active.bio}</p>
@@ -153,21 +169,9 @@ export const Controlled = {
     const [open, setOpen] = useState(false);
     return (
       <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          style={{
-            border: "1px solid var(--bs-color-border)",
-            background: "var(--bs-color-surface-2)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.625rem",
-            font: "inherit",
-            fontSize: "var(--bs-font-size-sm)",
-            cursor: "pointer",
-          }}
-        >
+        <Button onClick={() => setOpen((v) => !v)} size="sm">
           Toggle
-        </button>
+        </Button>
         <HoverCard.Root open={open} onOpenChange={(e: { open: boolean }) => setOpen(e.open)}>
           {mention()}
           {card()}

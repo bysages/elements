@@ -26,12 +26,15 @@ export const cascadeSelectCss =
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
+  box-shadow: var(--bs-shadow-xs);
   color: var(--bs-color-text-primary);
   font: inherit;
   font-size: var(--bs-font-size-md);
   text-align: start;
   cursor: pointer;
-  transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    box-shadow 220ms var(--bs-ease-out);
 }
 
 [data-scope="cascade-select"][data-part="trigger"][data-placeholder-shown]
@@ -43,21 +46,42 @@ export const cascadeSelectCss =
   border-color: var(--bs-color-border-strong);
 }
 
-[data-scope="cascade-select"][data-part="trigger"]:focus-visible {
+[data-scope="cascade-select"][data-part="trigger"]:focus-visible,
+[data-scope="cascade-select"][data-part="trigger"][data-state="open"] {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+  transition: none;
 }
 
 [data-scope="cascade-select"][data-part="trigger"][data-invalid] {
   border-color: var(--bs-color-danger);
 }
 
+[data-scope="cascade-select"][data-part="trigger"][data-invalid]:focus-visible,
+[data-scope="cascade-select"][data-part="trigger"][data-invalid][data-state="open"] {
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
+}
+
 [data-scope="cascade-select"][data-part="trigger"]:disabled {
   border-color: var(--bs-color-border);
   background: var(--bs-color-surface-inset);
+  box-shadow: none;
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
+}
+
+/* Size rungs: the root's data-size re-points the control-height
+   ladder for the trigger, as anywhere in the field register. */
+[data-scope="cascade-select"][data-part="root"][data-size="sm"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-sm);
+  padding-inline: var(--bs-padding-sm);
+  font-size: var(--bs-font-size-sm);
+}
+
+[data-scope="cascade-select"][data-part="root"][data-size="lg"] [data-part="trigger"] {
+  block-size: var(--bs-control-height-lg);
+  padding-inline: var(--bs-padding-lg);
 }
 
 [data-scope="cascade-select"][data-part="indicator"] {

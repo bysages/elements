@@ -16,14 +16,17 @@ export const treeSelectCss =
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-sm);
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
+  box-shadow: var(--bs-shadow-xs);
   color: var(--bs-color-text-primary);
   font: inherit;
   font-size: var(--bs-font-size-md);
   text-align: start;
   cursor: pointer;
-  transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
+  transition:
+    border-color var(--bs-duration-fast) var(--bs-ease-out),
+    box-shadow 220ms var(--bs-ease-out);
 }
 
 [data-scope="tree-select"][data-part="control"][data-placeholder] {
@@ -34,15 +37,27 @@ export const treeSelectCss =
   border-color: var(--bs-color-border-strong);
 }
 
-[data-scope="tree-select"][data-part="control"]:focus-visible {
+[data-scope="tree-select"][data-part="control"]:focus-visible,
+[data-scope="tree-select"][data-part="control"][data-open] {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+  transition: none;
+}
+
+[data-scope="tree-select"][data-part="control"][data-invalid] {
+  border-color: var(--bs-color-danger);
+}
+
+[data-scope="tree-select"][data-part="control"][data-invalid]:focus-visible,
+[data-scope="tree-select"][data-part="control"][data-invalid][data-open] {
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
 }
 
 [data-scope="tree-select"][data-part="control"]:disabled {
   border-color: var(--bs-color-border);
   background: var(--bs-color-surface-inset);
+  box-shadow: none;
   color: var(--bs-color-text-disabled);
   cursor: not-allowed;
 }

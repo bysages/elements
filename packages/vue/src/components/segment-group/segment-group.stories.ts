@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { SegmentGroup } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Segment Group" };
@@ -80,20 +81,8 @@ export const Conditional = {
       const state = reactive({ show: false });
       return () =>
         h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [
-          h(
-            "button",
-            {
-              onClick: () => (state.show = !state.show),
-              style: {
-                padding: "0.375rem 0.75rem",
-                border: "1px solid var(--bs-color-border)",
-                borderRadius: "var(--bs-radius-sm)",
-                background: "var(--bs-color-surface-2)",
-                font: "inherit",
-                fontSize: "var(--bs-font-size-sm)",
-              },
-            },
-            () => (state.show ? "Hide" : "Show"),
+          h(Button, { size: "sm", onClick: () => (state.show = !state.show) }, () =>
+            state.show ? "Hide" : "Show",
           ),
           state.show ? group({ defaultValue: "React" }) : null,
         ]);

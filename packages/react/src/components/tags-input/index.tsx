@@ -18,7 +18,9 @@ function TagsInputRoot({ size = "md", ...rest }: TagsInputRootProps) {
  * Context. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const TagsInput: Omit<typeof ArkTagsInput, "Root"> & { Root: typeof TagsInputRoot } = {
+export const TagsInput: Omit<typeof ArkTagsInput, "Root"> & {
+  Root: typeof TagsInputRoot;
+} = {
   ...ArkTagsInput,
   Root: TagsInputRoot,
 };

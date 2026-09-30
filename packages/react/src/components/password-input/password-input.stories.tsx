@@ -179,7 +179,12 @@ export const WithValidation = {
           <PasswordInput.VisibilityTrigger>{indicator()}</PasswordInput.VisibilityTrigger>
         </PasswordInput.Control>
         {password.length > 0 && !isValid ? (
-          <p style={{ fontSize: "var(--bs-font-size-xs)", color: "var(--bs-color-danger)" }}>
+          <p
+            style={{
+              fontSize: "var(--bs-font-size-xs)",
+              color: "var(--bs-color-danger)",
+            }}
+          >
             Password must be at least 8 characters
           </p>
         ) : null}

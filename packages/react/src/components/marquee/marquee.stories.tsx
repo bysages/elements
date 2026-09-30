@@ -2,6 +2,7 @@ import { useMarquee } from "@ark-ui/react/marquee";
 import type { Meta } from "@storybook/react-vite";
 
 import { Marquee } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Media/Marquee" };
 export default meta;
@@ -40,21 +41,9 @@ function ribbon(rootProps: any) {
 
 function btn(label: string, onClick: () => void) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        border: "1px solid var(--bs-color-border)",
-        background: "var(--bs-color-surface-2)",
-        borderRadius: "var(--bs-radius-sm)",
-        padding: "0.25rem 0.625rem",
-        font: "inherit",
-        fontSize: "var(--bs-font-size-sm)",
-        cursor: "pointer",
-      }}
-    >
+    <Button onClick={onClick} size="sm">
       {label}
-    </button>
+    </Button>
   );
 }
 

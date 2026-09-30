@@ -16,7 +16,9 @@ function ToggleGroupRoot({ size = "md", ...rest }: ToggleGroupRootProps) {
  * Ark's own — Root, Item. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof ToggleGroupRoot } = {
+export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & {
+  Root: typeof ToggleGroupRoot;
+} = {
   ...ArkToggleGroup,
   Root: ToggleGroupRoot,
 };

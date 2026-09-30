@@ -1,8 +1,9 @@
 import type { Meta } from "@storybook/react-vite";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 import { Swap } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Actions/Swap" };
 export default meta;
@@ -51,27 +52,16 @@ function SwapToggle({
 }) {
   const [swapped, setSwapped] = useState(false);
   return (
-    <button
+    <Button
+      square
+      size="lg"
       aria-label={label}
       aria-pressed={swapped}
       onClick={() => setSwapped(!swapped)}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        inlineSize: "2.5rem",
-        blockSize: "2.5rem",
-        border: "1px solid var(--bs-color-border)",
-        borderRadius: "var(--bs-radius-sm)",
-        background: "var(--bs-color-surface-2)",
-        color: "var(--bs-color-text-primary)",
-        font: "inherit",
-        cursor: "pointer",
-        ...rootVars,
-      }}
+      style={rootVars}
     >
       <Swap.Root swap={swapped}>{indicators}</Swap.Root>
-    </button>
+    </Button>
   );
 }
 

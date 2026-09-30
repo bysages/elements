@@ -46,7 +46,12 @@ export const Basic = {
           placeholder="Choose a region…"
           style={{ maxWidth: "18rem" }}
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           value: {JSON.stringify(picked)}
         </p>
       </>
@@ -78,7 +83,12 @@ export const Filterable = {
           placeholder="Choose a region…"
           style={{ maxWidth: "18rem" }}
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           value: {JSON.stringify(picked)}
         </p>
       </>

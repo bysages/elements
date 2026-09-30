@@ -1,7 +1,7 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
-import { useId, type HTMLAttributes } from "react";
+import { type HTMLAttributes, useId } from "react";
 
 export interface CheckboxOption {
   label: string;

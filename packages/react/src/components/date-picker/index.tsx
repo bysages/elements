@@ -27,7 +27,9 @@ function DatePickerRoot({ size = "md", ...rest }: DatePickerRootProps) {
  * NextTrigger, Table*, MonthSelect, YearSelect, PresetTrigger. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const DatePicker: Omit<typeof ArkDatePicker, "Root"> & { Root: typeof DatePickerRoot } = {
+export const DatePicker: Omit<typeof ArkDatePicker, "Root"> & {
+  Root: typeof DatePickerRoot;
+} = {
   ...ArkDatePicker,
   Root: DatePickerRoot,
 };

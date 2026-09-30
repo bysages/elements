@@ -2,6 +2,8 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { FocusTrap } from ".";
+import { Button } from "../button";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/FocusTrap" };
@@ -32,13 +34,9 @@ export const Basic = {
                 { style: { margin: "0", fontSize: "0.875rem" } },
                 () => "Tab cannot leave this box.",
               ),
-              h("input", { placeholder: "First stop" }),
-              h("input", { placeholder: "Second stop" }),
-              h(
-                "button",
-                { style: { alignSelf: "flex-start", padding: "0.375rem 0.75rem" } },
-                () => "Cycle back",
-              ),
+              h(Input, { placeholder: "First stop" }),
+              h(Input, { placeholder: "Second stop" }),
+              h(Button, { size: "sm", style: { alignSelf: "flex-start" } }, () => "Cycle back"),
             ],
           ),
         ),

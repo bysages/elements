@@ -2,7 +2,8 @@ import { createGridCollection, useListCollection } from "@ark-ui/react/collectio
 import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
-import { Listbox, createListCollection } from ".";
+import { createListCollection, Listbox } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/Listbox" };
 export default meta;
@@ -216,8 +217,7 @@ export const SelectAll = {
       <Listbox.Root collection={frameworks} selectionMode="multiple">
         <Listbox.Context>
           {(listbox) => (
-            <button
-              type="button"
+            <Button
               onClick={() => {
                 const current = listbox.value;
                 listbox.setValue(
@@ -226,20 +226,10 @@ export const SelectAll = {
                     : frameworks.items.map((item: any) => item.value),
                 );
               }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.375rem",
-                border: "none",
-                background: "transparent",
-                font: "inherit",
-                fontSize: "var(--bs-font-size-sm)",
-                cursor: "pointer",
-                padding: "0.25rem 0",
-              }}
+              size="sm"
             >
               Select all
-            </button>
+            </Button>
           )}
         </Listbox.Context>
         <Listbox.Content>{rows(frameworks)}</Listbox.Content>
@@ -300,7 +290,10 @@ export const Horizontal = {
                 alt={item.title}
                 width={136}
                 height={76}
-                style={{ borderRadius: "var(--bs-radius-sm)", objectFit: "cover" }}
+                style={{
+                  borderRadius: "var(--bs-radius-sm)",
+                  objectFit: "cover",
+                }}
               />
               <Listbox.ItemText>{item.title}</Listbox.ItemText>
               <span

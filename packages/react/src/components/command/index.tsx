@@ -1,4 +1,4 @@
-import { useListCollection, type ListCollection } from "@ark-ui/react/collection";
+import { type ListCollection, useListCollection } from "@ark-ui/react/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";

@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Tooltip } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Tooltip" };
@@ -155,9 +156,9 @@ export const Controlled = {
       const state = reactive({ open: false });
       const btn = (label: string, onClick: () => void) =>
         h(
-          "button",
+          Button,
           {
-            type: "button",
+            size: "sm",
             onClick,
             style: {
               border: "1px solid var(--bs-color-border)",

@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 
 import { ScrollArea } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Layout/Scroll Area" };
 export default meta;
@@ -93,15 +94,6 @@ export const Nested = {
   ),
 };
 
-const BUTTON_STYLE = {
-  padding: "0.375rem 0.75rem",
-  border: "1px solid var(--bs-color-border)",
-  borderRadius: "var(--bs-radius-sm)",
-  background: "var(--bs-color-surface-2)",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-};
-
 /** The machine answers outside its anatomy: buttons walk the page through
  * the provider. */
 function RootProviderDriver() {
@@ -110,12 +102,12 @@ function RootProviderDriver() {
   return (
     <div style={{ display: "grid", gap: "0.75rem" }}>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <button type="button" onClick={edge("top")} style={BUTTON_STYLE}>
+        <Button size="sm" onClick={edge("top")}>
           Scroll to Top
-        </button>
-        <button type="button" onClick={edge("bottom")} style={BUTTON_STYLE}>
+        </Button>
+        <Button size="sm" onClick={edge("bottom")}>
           Scroll to Bottom
-        </button>
+        </Button>
       </div>
       <div style={ROOT_STYLE}>
         <ScrollArea.RootProvider value={scrollArea}>

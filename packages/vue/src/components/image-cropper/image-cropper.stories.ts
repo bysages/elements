@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, reactive } from "vue";
 
 import { ImageCropper } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Media/Image Cropper" };
 export default meta;
@@ -32,24 +33,7 @@ function frame(...extra: any[]) {
 }
 
 function button(label: string, onClick: () => void, active = false) {
-  return h(
-    "button",
-    {
-      type: "button",
-      onClick,
-      style: {
-        border: "1px solid var(--bs-color-border)",
-        borderRadius: "var(--bs-radius-sm)",
-        background: active ? "var(--bs-color-primary)" : "var(--bs-color-surface-2)",
-        color: active ? "var(--bs-color-primary-text)" : "var(--bs-color-text-primary)",
-        padding: "0.25rem 0.625rem",
-        font: "inherit",
-        fontSize: "var(--bs-font-size-sm)",
-        cursor: "pointer",
-      },
-    },
-    label,
-  );
+  return h(Button, { size: "sm", variant: active ? "solid" : "outline", onClick }, () => label);
 }
 
 function toolbar(...buttons: any[]) {

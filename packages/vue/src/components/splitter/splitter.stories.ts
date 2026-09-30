@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
 import { Splitter } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Layout/Splitter" };
@@ -139,9 +140,9 @@ export const Context = {
         const set = (id: string) => splitter.value.resizePanel(id, 10);
         return () =>
           h(
-            "button",
+            Button,
             {
-              type: "button",
+              size: "sm",
               onClick: () => set("a"),
               style: {
                 border: "1px solid var(--bs-color-border)",

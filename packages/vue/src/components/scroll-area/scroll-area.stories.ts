@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { ScrollArea } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Layout/Scroll Area" };
@@ -96,8 +97,9 @@ export const RootProvider = {
           h("div", { style: { display: "grid", gap: "0.75rem" } }, [
             h("div", { style: { display: "flex", gap: "0.5rem" } }, [
               h(
-                "button",
+                Button,
                 {
+                  size: "sm",
                   onClick: edge("top"),
                   style: {
                     padding: "0.375rem 0.75rem",
@@ -111,8 +113,9 @@ export const RootProvider = {
                 "Scroll to Top",
               ),
               h(
-                "button",
+                Button,
                 {
+                  size: "sm",
                   onClick: edge("bottom"),
                   style: {
                     padding: "0.375rem 0.75rem",

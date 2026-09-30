@@ -117,7 +117,13 @@ function page(): ReactNode {
         <strong style={{ fontSize: "var(--bs-font-size-lg)" }}>The workbench</strong>
       </Layout.Header>
       <Layout.Content>
-        <div style={{ display: "grid", gap: "var(--bs-gap-md)", maxInlineSize: "72ch" }}>
+        <div
+          style={{
+            display: "grid",
+            gap: "var(--bs-gap-md)",
+            maxInlineSize: "72ch",
+          }}
+        >
           <p style={{ margin: 0 }}>
             The content area takes the flow's full measure and holds it to a readable column.
             Sections rise onto surfaces; the skeleton only decides where they stand.

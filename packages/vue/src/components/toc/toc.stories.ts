@@ -5,6 +5,7 @@ import { defineComponent, h, reactive, ref } from "vue";
 
 import { Toc } from ".";
 import { Collapsible } from "../collapsible";
+import { NativeSelect } from "../select/native";
 import { TreeView } from "../tree-view";
 
 const meta: Meta = { title: "Components/Navigation/Toc" };
@@ -457,26 +458,15 @@ const WithSelectStory = defineComponent({
       h(Toc.Root, { items: BASIC_SECTIONS, scrollEl: pg.scrollEl }, () => [
         h(Toc.Context as any, null, {
           default: (ctx: { activeItems: any[]; scrollTo: (value: string) => void }) =>
-            h(
-              "select",
-              {
-                value: ctx.activeItems[0]?.value ?? BASIC_SECTIONS[0].value,
-                onChange: (e: Event) => ctx.scrollTo((e.target as HTMLSelectElement).value),
-                style: {
-                  width: "100%",
-                  marginBottom: "1rem",
-                  padding: "0.375rem 0.5rem",
-                  border: "1px solid var(--bs-color-border)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  background: "var(--bs-color-surface-2)",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                },
-              },
-              BASIC_SECTIONS.map((section) =>
-                h("option", { key: section.value, value: section.value }, section.label),
-              ),
-            ),
+            h(NativeSelect, {
+              options: BASIC_SECTIONS.map((section) => ({
+                label: section.label,
+                value: section.value,
+              })),
+              modelValue: ctx.activeItems[0]?.value ?? BASIC_SECTIONS[0].value,
+              "onUpdate:modelValue": (v: string) => ctx.scrollTo(v),
+              style: { width: "100%", marginBottom: "1rem" },
+            }),
         }),
         article(BASIC_SECTIONS, pg),
         nav(BASIC_SECTIONS),

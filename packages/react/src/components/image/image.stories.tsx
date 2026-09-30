@@ -23,7 +23,13 @@ export const Basic = {
  * contained picture rests on the inset surface. */
 export const Fits = {
   render: () => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "1rem",
+      }}
+    >
       {(
         [
           ["cover", "Cover crops to fill"],

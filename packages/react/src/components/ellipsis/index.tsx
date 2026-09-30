@@ -16,7 +16,10 @@ export function Ellipsis({ lines = 1, ...rest }: EllipsisProps) {
       {...rest}
       style={
         multiline
-          ? ({ ...rest.style, "--bs-ellipsis-lines": String(lines) } as CSSProperties)
+          ? ({
+              ...rest.style,
+              "--bs-ellipsis-lines": String(lines),
+            } as CSSProperties)
           : rest.style
       }
       data-scope="ellipsis"

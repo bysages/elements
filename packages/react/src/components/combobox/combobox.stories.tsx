@@ -1,7 +1,7 @@
 import { useListCollection } from "@ark-ui/react/collection";
 import { useFilter } from "@ark-ui/react/locale";
 import type { Meta } from "@storybook/react-vite";
-import { useState, type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 import { Combobox } from ".";
 

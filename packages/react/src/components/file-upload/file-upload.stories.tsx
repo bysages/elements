@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { FileUpload } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Forms/File Upload" };
 export default meta;
@@ -257,7 +258,9 @@ export const FormUsage = {
         {slips()}
         <FileUpload.HiddenInput />
       </FileUpload.Root>
-      <button type="submit">Submit</button>
+      <Button type="submit" size="sm">
+        Submit
+      </Button>
     </form>
   ),
 };

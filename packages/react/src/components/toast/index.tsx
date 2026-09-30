@@ -1,4 +1,4 @@
-import { Toaster as ArkToaster, Toast as ArkToast, createToaster } from "@ark-ui/react/toast";
+import { Toast as ArkToast, Toaster as ArkToaster, createToaster } from "@ark-ui/react/toast";
 import { injectComponentStyle } from "@bysages/core";
 
 export type { CreateToasterReturn } from "@ark-ui/react/toast";

@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Clipboard } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Actions/Clipboard" };
@@ -53,19 +54,6 @@ function trigger() {
   );
 }
 
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "0.375rem",
-};
-
 /** Copy the link from the hairline field; the trigger's ink turns bamboo
  * for as long as the machine holds the copied state. */
 export const Basic = {
@@ -99,7 +87,7 @@ export const Context = {
       h(Clipboard.Label, () => "Copy this link"),
       h(Clipboard.Context as any, null, {
         default: (clipboard: { copy: () => void; copied: boolean }) =>
-          h("button", { type: "button", onClick: () => clipboard.copy(), style: buttonStyle }, [
+          h(Button, { size: "sm", onClick: () => clipboard.copy() }, [
             clipboard.copied ? checkGlyph() : copyGlyph(),
             clipboard.copied ? "Copied!" : "Copy",
           ]),
@@ -127,13 +115,9 @@ export const Controlled = {
             ],
           ),
           h(
-            "button",
-            {
-              type: "button",
-              style: buttonStyle,
-              onClick: () => (state.value = "https://chakra-ui.com"),
-            },
-            "Change URL",
+            Button,
+            { size: "sm", onClick: () => (state.value = "https://chakra-ui.com") },
+            () => "Change URL",
           ),
         ]);
     }),

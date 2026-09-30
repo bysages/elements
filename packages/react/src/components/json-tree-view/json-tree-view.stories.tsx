@@ -58,7 +58,11 @@ export const ArrayData = {
   render: () => {
     const testArray = [1, 2, 3, 4, 5];
     Object.defineProperties(testArray, {
-      customProperty: { value: "custom value", enumerable: false, writable: false },
+      customProperty: {
+        value: "custom value",
+        enumerable: false,
+        writable: false,
+      },
       anotherProperty: { value: 42, enumerable: false, writable: false },
     });
     const sparse = [] as any[];
@@ -158,7 +162,12 @@ export const RenderValue = {
     return (
       <JsonTreeView.Root
         defaultExpandedDepth={2}
-        data={{ name: "John Doe", age: 30, email: "john.doe@example.com", NaN: Number.NaN }}
+        data={{
+          name: "John Doe",
+          age: 30,
+          email: "john.doe@example.com",
+          NaN: Number.NaN,
+        }}
       >
         <JsonTreeView.Tree
           arrow={chevron()}

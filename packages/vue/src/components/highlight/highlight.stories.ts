@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { Highlight } from ".";
+import { Input } from "../input";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Elements/Highlight" };
@@ -39,20 +40,11 @@ export const DynamicQuery = {
       const state = reactive({ query: "component" });
       return () =>
         h("div", { style: { display: "grid", gap: "1rem", justifyItems: "start" } }, [
-          h("input", {
-            value: state.query,
-            type: "text",
+          h(Input, {
+            modelValue: state.query,
             placeholder: "Search text...",
             "aria-label": "Search text",
-            onInput: (e: Event) => (state.query = (e.target as HTMLInputElement).value),
-            style: {
-              font: "inherit",
-              padding: "0.375rem 0.625rem",
-              border: "1px solid var(--bs-color-border)",
-              borderRadius: "var(--bs-radius-sm)",
-              background: "var(--bs-color-surface-2)",
-              color: "var(--bs-color-text-primary)",
-            },
+            "onUpdate:modelValue": (v: string) => (state.query = v),
           }),
           text({
             query: state.query,

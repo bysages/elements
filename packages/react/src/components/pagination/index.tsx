@@ -19,7 +19,9 @@ function PaginationRoot({ size = "md", ...rest }: PaginationRootProps) {
  */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Pagination: Omit<typeof ArkPagination, "Root"> & { Root: typeof PaginationRoot } = {
+export const Pagination: Omit<typeof ArkPagination, "Root"> & {
+  Root: typeof PaginationRoot;
+} = {
   ...ArkPagination,
   Root: PaginationRoot,
 };

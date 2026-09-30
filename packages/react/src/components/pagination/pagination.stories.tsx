@@ -215,7 +215,13 @@ export const DataSlicing = {
       <Pagination.Context>
         {(pagination: { page: number; pageSize: number; pages: Pages }) => (
           <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
-            <ul style={{ margin: 0, paddingLeft: "1.25rem", fontSize: "var(--bs-font-size-sm)" }}>
+            <ul
+              style={{
+                margin: 0,
+                paddingLeft: "1.25rem",
+                fontSize: "var(--bs-font-size-sm)",
+              }}
+            >
               {(() => {
                 const start = (pagination.page - 1) * pagination.pageSize;
                 return ledgers

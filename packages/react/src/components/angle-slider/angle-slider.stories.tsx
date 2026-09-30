@@ -22,7 +22,14 @@ function markGroup() {
 
 function dial(label: string): ReactNode[] {
   return [
-    <div key="head" style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+    <div
+      key="head"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+      }}
+    >
       <AngleSlider.Label>{label}</AngleSlider.Label>
       <AngleSlider.ValueText />
     </div>,
@@ -69,7 +76,10 @@ export const Controlled = {
     return (
       <div style={{ display: "grid", gap: "0.75rem", justifyItems: "start" }}>
         <output
-          style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" }}
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-secondary)",
+          }}
         >
           {value}°
         </output>

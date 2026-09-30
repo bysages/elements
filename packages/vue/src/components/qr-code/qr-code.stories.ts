@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive } from "vue";
 
 import { QrCode } from ".";
+import { Button } from "../button";
 import { RadioGroup } from "../radio-group";
 import { withState } from "../with-state.js";
 
@@ -79,8 +80,9 @@ export const Controlled = {
             () => [h(QrCode.Frame, () => h(QrCode.Pattern))],
           ),
           h(
-            "button",
+            Button,
             {
+              size: "sm",
               onClick: () => (state.value = "https://bysages.com"),
               style: {
                 padding: "0.375rem 0.75rem",

@@ -3,9 +3,10 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("input");
 
 import { useFieldContext } from "@ark-ui/svelte/field";
+import { applyMask } from "./mask";
 import type { InputProps } from "./props";
 
-let { value = $bindable(), size = "md", invalid = false, ...rest }: InputProps = $props();
+let { value = $bindable(), size = "md", invalid = false, mask, ...rest }: InputProps = $props();
 
 const field = useFieldContext();
 
@@ -25,6 +26,6 @@ also the seam the Form validation layer drives. -->
   data-size={size}
   data-invalid={invalid || fieldProps["data-invalid"] != null ? "" : undefined}
   oninput={(event) => {
-    value = event.currentTarget.value;
+    value = mask ? applyMask(event.currentTarget.value, mask) : event.currentTarget.value;
   }}
 />

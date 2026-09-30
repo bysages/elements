@@ -4,7 +4,7 @@ import { h } from "vue";
 import { Spotlight } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Elements/Spotlight" };
+const meta: Meta = { title: "Components/Layout/Spotlight" };
 export default meta;
 
 /** The ink-light card: the rim catches primary ink where the hand

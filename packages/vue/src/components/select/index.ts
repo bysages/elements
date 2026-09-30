@@ -29,3 +29,6 @@ export const Select: Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot 
   ...ArkSelect,
   Root: SelectRoot,
 };
+
+export { NativeSelect } from "./native";
+export type { NativeSelectOption } from "./native";

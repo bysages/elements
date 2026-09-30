@@ -21,7 +21,9 @@ function ColorPickerRoot({ size = "md", ...rest }: ColorPickerRootProps) {
  * FormatSelect, HiddenInput, Context. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot } = {
+export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & {
+  Root: typeof ColorPickerRoot;
+} = {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 };

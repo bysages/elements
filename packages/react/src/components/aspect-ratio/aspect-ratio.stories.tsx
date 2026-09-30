@@ -30,7 +30,11 @@ export const Basic = {
 export const Ratios = {
   render: () => (
     <div
-      style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--bs-space-4)" }}
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "var(--bs-space-4)",
+      }}
     >
       {["1 / 1", "4 / 3", "16 / 9"].map((ratio) => (
         <AspectRatio key={ratio} ratio={ratio}>

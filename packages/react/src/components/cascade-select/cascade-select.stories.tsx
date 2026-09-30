@@ -88,7 +88,12 @@ export const Basic = {
           data={REGIONS}
           placeholder="选择省 / 市 / 区"
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           path: {JSON.stringify(picked)}
         </p>
       </>
@@ -109,7 +114,12 @@ export const InitialValue = {
           data={REGIONS}
           placeholder="选择省 / 市 / 区"
         />
-        <p style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}>
+        <p
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
           path: {JSON.stringify(picked)}
         </p>
       </>

@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
-import { useEffect, useState } from "react";
 import type { HTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "../button";
 

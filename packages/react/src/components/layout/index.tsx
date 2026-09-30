@@ -202,6 +202,12 @@ function Sider({
   );
 }
 
-export const Layout = Object.assign(Root, { Root, Header, Sider, Content, Footer });
+export const Layout = Object.assign(Root, {
+  Root,
+  Header,
+  Sider,
+  Content,
+  Footer,
+});
 
 injectComponentStyle("layout");

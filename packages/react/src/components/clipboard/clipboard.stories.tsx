@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Clipboard } from ".";
+import { Button } from "../button";
 
 const meta: Meta = { title: "Components/Actions/Clipboard" };
 export default meta;
@@ -43,19 +44,6 @@ function trigger() {
   );
 }
 
-const buttonStyle = {
-  border: "1px solid var(--bs-color-border)",
-  background: "var(--bs-color-surface-2)",
-  borderRadius: "var(--bs-radius-sm)",
-  padding: "0.375rem 0.75rem",
-  font: "inherit",
-  fontSize: "var(--bs-font-size-sm)",
-  cursor: "pointer",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "0.375rem",
-};
-
 /** Copy the link from the hairline field; the trigger's ink turns bamboo
  * for as long as the machine holds the copied state. */
 export const Basic = {
@@ -94,10 +82,10 @@ export const Context = {
       <Clipboard.Label>Copy this link</Clipboard.Label>
       <Clipboard.Context>
         {(clipboard: { copy: () => void; copied: boolean }) => (
-          <button type="button" onClick={() => clipboard.copy()} style={buttonStyle}>
+          <Button onClick={() => clipboard.copy()} size="sm">
             {clipboard.copied ? checkGlyph : copyGlyph}
             {clipboard.copied ? "Copied!" : "Copy"}
-          </button>
+          </Button>
         )}
       </Clipboard.Context>
     </Clipboard.Root>
@@ -118,9 +106,9 @@ export const Controlled = {
             {trigger()}
           </Clipboard.Control>
         </Clipboard.Root>
-        <button type="button" style={buttonStyle} onClick={() => setValue("https://chakra-ui.com")}>
+        <Button onClick={() => setValue("https://chakra-ui.com")} size="sm">
           Change URL
-        </button>
+        </Button>
       </div>
     );
   },

@@ -17,7 +17,14 @@ export const Basic = {
 
 export const Vertical = {
   render: () => (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem", height: "2rem" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "1rem",
+        height: "2rem",
+      }}
+    >
       <span>Ink</span>
       <Separator orientation="vertical" />
       <span>Paper</span>

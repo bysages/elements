@@ -3,7 +3,9 @@ import type { Meta } from "@storybook/vue3-vite";
 import { computed, defineComponent, h, Teleport, reactive } from "vue";
 
 import { Select } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
+import { NativeSelect } from "./native";
 
 const meta: Meta = { title: "Components/Forms/Select" };
 export default meta;
@@ -250,20 +252,11 @@ export const DynamicItems = {
         return () =>
           h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
             h(
-              "button",
+              Button,
               {
-                type: "button",
+                size: "sm",
                 onClick: () => (state.small = !state.small),
-                style: {
-                  justifySelf: "start",
-                  border: "1px solid var(--bs-color-border)",
-                  background: "var(--bs-color-surface-2)",
-                  borderRadius: "var(--bs-radius-sm)",
-                  padding: "0.25rem 0.5rem",
-                  font: "inherit",
-                  fontSize: "var(--bs-font-size-sm)",
-                  cursor: "pointer",
-                },
+                style: { justifySelf: "start" },
               },
               "Toggle items",
             ),
@@ -272,5 +265,47 @@ export const DynamicItems = {
       },
     });
     return h(DynamicSelect);
+  },
+};
+
+/** The platform's own list wearing the control recipe: one native
+ * element, the trigger vocabulary unchanged. */
+export const Native = {
+  render: () => {
+    const NativeHost = defineComponent({
+      name: "NativeSelectHost",
+      setup() {
+        const state = reactive({ value: "" });
+        const options = [
+          { label: "React", value: "react" },
+          { label: "Solid", value: "solid" },
+          { label: "Vue", value: "vue" },
+          { label: "Svelte", value: "svelte" },
+        ];
+        return () =>
+          h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
+            h(NativeSelect, {
+              options,
+              modelValue: state.value,
+              placeholder: "Choose a framework",
+              "onUpdate:modelValue": (next: string) => (state.value = next),
+            }),
+            h(NativeSelect, {
+              options,
+              modelValue: "vue",
+              size: "sm",
+              "onUpdate:modelValue": () => {},
+            }),
+            h(NativeSelect, {
+              options,
+              modelValue: "solid",
+              size: "lg",
+              invalid: true,
+              "onUpdate:modelValue": () => {},
+            }),
+          ]);
+      },
+    });
+    return h(NativeHost);
   },
 };

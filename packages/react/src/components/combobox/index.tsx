@@ -1,6 +1,6 @@
 import type { CollectionItem } from "@ark-ui/react/collection";
-import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import type { ComboboxRootComponentProps } from "@ark-ui/react/combobox";
+import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { injectComponentStyle } from "@bysages/core";
 
 /** Ark's Combobox, dressed in the paper-and-ink system: the field carries
@@ -23,7 +23,9 @@ function ComboboxRoot<T extends CollectionItem>(
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Combobox: Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot } = {
+export const Combobox: Omit<typeof ArkCombobox, "Root"> & {
+  Root: typeof ComboboxRoot;
+} = {
   ...ArkCombobox,
   Root: ComboboxRoot,
 };

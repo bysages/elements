@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { DateInput } from ".";
+import { Button } from "../button";
+import { Checkbox } from "../checkbox";
 
 const meta: Meta = { title: "Components/Forms/Date Input" };
 export default meta;
@@ -157,8 +159,10 @@ export const LeadingZeros = {
             fontSize: "var(--bs-font-size-sm)",
           }}
         >
-          <input type="checkbox" checked={zeros} onChange={(e) => setZeros(e.target.checked)} />
-          Force leading zeros
+          <Checkbox.Root checked={zeros} onCheckedChange={(e) => setZeros(e.checked === true)}>
+            <Checkbox.Label>Force leading zeros</Checkbox.Label>
+            <Checkbox.HiddenInput />
+          </Checkbox.Root>
         </label>
         {field(
           {
@@ -181,21 +185,9 @@ function ClearButtonDriver() {
       <DateInput.Label>Date</DateInput.Label>
       <DateInput.Control>
         <DateInput.SegmentGroup>{segments()}</DateInput.SegmentGroup>
-        <button
-          type="button"
-          aria-label="Clear date"
-          onClick={() => dateInput.clearValue()}
-          style={{
-            border: "1px solid var(--bs-color-border)",
-            background: "var(--bs-color-surface-2)",
-            borderRadius: "var(--bs-radius-sm)",
-            padding: "0.25rem 0.5rem",
-            font: "inherit",
-            cursor: "pointer",
-          }}
-        >
+        <Button size="sm" aria-label="Clear date" onClick={() => dateInput.clearValue()}>
           Clear
-        </button>
+        </Button>
       </DateInput.Control>
       <DateInput.HiddenInput />
     </DateInput.RootProvider>

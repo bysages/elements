@@ -11,7 +11,13 @@ export default meta;
 function slider(rootProps: any, label: string, values: number[], markers?: number[]) {
   return (
     <Slider.Root {...rootProps}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
         <Slider.Label>{label}</Slider.Label>
         <Slider.ValueText />
       </div>
@@ -74,7 +80,14 @@ export const Range = {
 /** The track stands upright; the ink rises from the bottom. */
 export const Vertical = {
   render: () => (
-    <div style={{ display: "flex", gap: "3rem", height: "10rem", alignItems: "flex-start" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "3rem",
+        height: "10rem",
+        alignItems: "flex-start",
+      }}
+    >
       <Slider.Root orientation="vertical">
         <Slider.Label>Depth</Slider.Label>
         <Slider.ValueText />

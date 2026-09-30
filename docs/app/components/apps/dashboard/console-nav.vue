@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, Button } from "@bysages/vue";
+import { Button, User } from "@bysages/vue";
 
 const stops = [
   { label: "Overview", icon: "M3 3v18h18M7 14l4-4 3 3 5-6" },
@@ -87,15 +87,7 @@ function pick(label: string) {
         Settings
       </Button>
 
-      <div class="flex items-center gap-2 px-2 py-1">
-        <Avatar.Root>
-          <Avatar.Fallback>SG</Avatar.Fallback>
-        </Avatar.Root>
-        <div class="flex min-w-0 flex-col">
-          <span class="text-sm font-medium">Sage Wei</span>
-          <span class="overflow-hidden text-ellipsis text-xs text-tertiary">sage@example.com</span>
-        </div>
-      </div>
+      <User name="Sage Wei" description="sage@example.com" class="min-w-0 px-2 py-1" />
     </div>
   </div>
 </template>

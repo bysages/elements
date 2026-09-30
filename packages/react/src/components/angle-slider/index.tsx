@@ -17,7 +17,9 @@ function AngleSliderRoot({ size = "md", ...rest }: AngleSliderRootProps) {
  * Marker, HiddenInput. */
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const AngleSlider: Omit<typeof ArkAngleSlider, "Root"> & { Root: typeof AngleSliderRoot } = {
+export const AngleSlider: Omit<typeof ArkAngleSlider, "Root"> & {
+  Root: typeof AngleSliderRoot;
+} = {
   ...ArkAngleSlider,
   Root: AngleSliderRoot,
 };

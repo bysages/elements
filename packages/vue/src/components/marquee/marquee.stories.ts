@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h } from "vue";
 
 import { Marquee } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Media/Marquee" };
@@ -83,9 +84,9 @@ export const ProgrammaticControl = {
         const marquee = useMarquee();
         const btn = (label: string, onClick: () => void) =>
           h(
-            "button",
+            Button,
             {
-              type: "button",
+              size: "sm",
               onClick,
               style: {
                 border: "1px solid var(--bs-color-border)",

@@ -1,6 +1,6 @@
 import type { CollectionItem } from "@ark-ui/react/collection";
-import { Select as ArkSelect } from "@ark-ui/react/select";
 import type { SelectRootComponentProps } from "@ark-ui/react/select";
+import { Select as ArkSelect } from "@ark-ui/react/select";
 import { injectComponentStyle } from "@bysages/core";
 
 /** Ark's Select, dressed in the paper-and-ink system: the trigger is the
@@ -21,7 +21,9 @@ function SelectRoot<T extends CollectionItem>(props: SelectRootComponentProps<T,
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Select: Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot } = {
+export const Select: Omit<typeof ArkSelect, "Root"> & {
+  Root: typeof SelectRoot;
+} = {
   ...ArkSelect,
   Root: SelectRoot,
 };

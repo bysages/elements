@@ -77,4 +77,9 @@ DescriptionsItem.displayName = "DescriptionsItem";
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
 
-export const Descriptions = { Root: DescriptionsRoot, Item: DescriptionsItem, Term, Detail };
+export const Descriptions = {
+  Root: DescriptionsRoot,
+  Item: DescriptionsItem,
+  Term,
+  Detail,
+};

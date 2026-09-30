@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, reactive, Teleport } from "vue";
 
 import { FloatingPanel } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Overlay/Floating Panel" };
@@ -89,21 +90,7 @@ function readout(text: string) {
 }
 
 function outsideButton(label: string, onClick: () => void) {
-  return h(
-    "button",
-    {
-      onClick,
-      style: {
-        padding: "0.375rem 0.75rem",
-        border: "1px solid var(--bs-color-border)",
-        borderRadius: "var(--bs-radius-sm)",
-        background: "var(--bs-color-surface-2)",
-        font: "inherit",
-        fontSize: "var(--bs-font-size-sm)",
-      },
-    },
-    label,
-  );
+  return h(Button, { size: "sm", onClick }, () => label);
 }
 
 /** Toggle the sheet open, drag it by its header, resize it from the rim and

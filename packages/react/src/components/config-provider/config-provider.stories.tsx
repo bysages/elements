@@ -33,7 +33,13 @@ function demo(label: string): ReactNode {
  * own defaults — the provider carries both attributes at once. */
 export const Basic = {
   render: () => (
-    <div style={{ display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--bs-space-4)",
+        justifyItems: "start",
+      }}
+    >
       {demo("Outside — the page's own density and ink")}
       <ConfigProvider density="compact" accent="qinghua">
         {demo("Inside — compact controls under the qinghua accent")}
@@ -48,7 +54,13 @@ export const Basic = {
 export const Nested = {
   render: () => (
     <ConfigProvider density="comfortable">
-      <div style={{ display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "var(--bs-space-4)",
+          justifyItems: "start",
+        }}
+      >
         {demo("Comfortable — the outer provider's tier")}
         <ConfigProvider density="compact">
           {demo("Compact — the inner provider, its own scope only")}

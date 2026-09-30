@@ -96,7 +96,13 @@ export const Controls = {
 /** A double click opens the slate — a click merely rests on it. */
 export const DoubleClick = {
   render: () =>
-    slate({ defaultValue: "Double-click to edit", activationMode: "dblclick" } as any, "Label"),
+    slate(
+      {
+        defaultValue: "Double-click to edit",
+        activationMode: "dblclick",
+      } as any,
+      "Label",
+    ),
 };
 
 /** Long text takes a taller slate: the input grows into a textarea. */
@@ -114,7 +120,12 @@ export const Textarea = {
         </Editable.Input>
         <Editable.Preview style={{ whiteSpace: "pre-wrap" }} />
       </Editable.Area>
-      <div style={{ fontSize: "var(--bs-font-size-xs)", color: "var(--bs-color-text-tertiary)" }}>
+      <div
+        style={{
+          fontSize: "var(--bs-font-size-xs)",
+          color: "var(--bs-color-text-tertiary)",
+        }}
+      >
         Press Cmd + Enter to save
       </div>
     </Editable.Root>

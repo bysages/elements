@@ -9,7 +9,14 @@ export default meta;
  * The dot pairs color with the word — never color alone. */
 export const Basic = {
   render: () => (
-    <div style={{ display: "grid", gap: "0.75rem", width: "100%", maxWidth: "46rem" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "0.75rem",
+        width: "100%",
+        maxWidth: "46rem",
+      }}
+    >
       <AiTool name="search_web" status="running" input='{"query": "paper stock"}' />
       <AiTool
         name="search_web"

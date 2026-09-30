@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
-import { useEffect, useState } from "react";
 import type { HTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 
 /** Font-relative measures ride the root's own measure; absolute units
  * pass through untouched — the canvas needs a number, the prop may

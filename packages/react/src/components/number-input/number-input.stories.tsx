@@ -69,7 +69,12 @@ export const Basic = {
   },
   render: (args: any) =>
     control(
-      { defaultValue: "42", min: args.min, max: args.max, disabled: args.disabled },
+      {
+        defaultValue: "42",
+        min: args.min,
+        max: args.max,
+        disabled: args.disabled,
+      },
       args.label,
     ),
 };
@@ -78,7 +83,10 @@ export const Basic = {
 export const Formatting = {
   render: () =>
     control(
-      { defaultValue: "25", formatOptions: { style: "currency", currency: "USD" } } as any,
+      {
+        defaultValue: "25",
+        formatOptions: { style: "currency", currency: "USD" },
+      } as any,
       "Price",
     ),
 };
@@ -134,7 +142,10 @@ export const ValueText = {
     control({ defaultValue: "8" }, "Pickles", [
       <NumberInput.ValueText
         key="value-text"
-        style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" }}
+        style={{
+          fontSize: "var(--bs-font-size-sm)",
+          color: "var(--bs-color-text-secondary)",
+        }}
       />,
     ]),
 };

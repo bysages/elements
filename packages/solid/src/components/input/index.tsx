@@ -3,11 +3,16 @@ import { injectComponentStyle } from "@bysages/core";
 import { mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { applyMask } from "./mask";
+
 export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   value?: string | number;
   onValueChange?: (value: string) => void;
   size?: "sm" | "md" | "lg";
   invalid?: boolean;
+  /** Entry mask - `9` digit, `a` letter, `*` either, anything else is
+   * literal. e.g. `"999-99-9999"`, `"(999) 999-9999"`. */
+  mask?: string;
 }
 
 /** The bare text input: the field recipe — border, surface, focus halo —
@@ -19,7 +24,7 @@ export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
 export function Input(props: InputProps) {
   injectComponentStyle("input");
   const field = useFieldContext();
-  const [own, rest] = splitProps(props, ["value", "size", "invalid", "onValueChange"]);
+  const [own, rest] = splitProps(props, ["value", "size", "invalid", "mask", "onValueChange"]);
   return (
     <input
       {...mergeProps(() => field?.().getInputProps() ?? {}, rest, {
@@ -35,7 +40,9 @@ export function Input(props: InputProps) {
           return own.invalid || field?.().getInputProps()["data-invalid"] != null ? "" : undefined;
         },
         onInput: (event: InputEvent & { currentTarget: HTMLInputElement }) =>
-          own.onValueChange?.(event.currentTarget.value),
+          own.onValueChange?.(
+            own.mask ? applyMask(event.currentTarget.value, own.mask) : event.currentTarget.value,
+          ),
       })}
     />
   );
