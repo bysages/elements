@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { areaY, chartColors, defineChart } from "@bysages/charts";
+import { scaleBand } from "@bysages/charts/scales/band";
+import { scaleLinear } from "@bysages/charts/scales/linear";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
 import { Button, Card, Progress } from "@bysages/vue";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
 
 import { cashCollected, channels } from "./data";
 import { toaster } from "./toast";

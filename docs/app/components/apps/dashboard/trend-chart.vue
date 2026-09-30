@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { areaY, chartColors, defineChart, ruleY } from "@bysages/charts";
+import { scaleLinear } from "@bysages/charts/scales/linear";
+import { scalePoint } from "@bysages/charts/scales/point";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
 import { Card } from "@bysages/vue";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
-import { scalePoint } from "@tanstack/charts/scales/point";
 
 import { weeklyTrend } from "./data";
 

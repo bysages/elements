@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { cell, defineChart } from "@bysages/charts";
+import { scaleBand } from "@bysages/charts/scales/band";
+import { scaleOrdinal } from "@bysages/charts/scales/ordinal";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
 
 const slots = ["6a", "8a", "10a", "12p", "2p", "4p", "6p", "8p"];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

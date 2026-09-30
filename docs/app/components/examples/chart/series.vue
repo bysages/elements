@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { chartSeriesRange, defineChart, lineY } from "@bysages/charts";
+import { scaleLinear } from "@bysages/charts/scales/linear";
+import { scaleOrdinal } from "@bysages/charts/scales/ordinal";
+import { scalePoint } from "@bysages/charts/scales/point";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
-import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
-import { scalePoint } from "@tanstack/charts/scales/point";
 
 const rows = [
   { month: "Jan", region: "North", orders: 42 },

@@ -1,12 +1,12 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { areaY, barY, boxY, defineChart, dot, lineY, ruleY, waffleY } from "@tanstack/charts";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
-import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
-import { scalePoint } from "@tanstack/charts/scales/point";
 import { h } from "vue";
 
 import { chartColors, chartSeriesRange } from "../palette.js";
+import { scaleBand } from "../scales/band.js";
+import { scaleLinear } from "../scales/linear.js";
+import { scaleOrdinal } from "../scales/ordinal.js";
+import { scalePoint } from "../scales/point.js";
 import { Chart, type ChartDefinition } from "./chart.js";
 
 const meta: Meta = { title: "Components/Data/Chart" };

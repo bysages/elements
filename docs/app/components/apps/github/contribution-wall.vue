@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { cell, defineChart } from "@bysages/charts";
+import { scaleBand } from "@bysages/charts/scales/band";
+import { scaleOrdinal } from "@bysages/charts/scales/ordinal";
+import { tooltip } from "@bysages/charts/tooltip";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleOrdinal } from "@tanstack/charts/scales/ordinal";
-import { tooltip } from "@tanstack/charts/tooltip";
 import { onMounted, onUnmounted, ref } from "vue";
 
 import { type ContributionDay } from "./contributions";

@@ -36,6 +36,26 @@
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
     },
+    "./scales/band": {
+      "types": "./dist/scales/band.d.mts",
+      "import": "./dist/scales/band.mjs"
+    },
+    "./scales/linear": {
+      "types": "./dist/scales/linear.d.mts",
+      "import": "./dist/scales/linear.mjs"
+    },
+    "./scales/ordinal": {
+      "types": "./dist/scales/ordinal.d.mts",
+      "import": "./dist/scales/ordinal.mjs"
+    },
+    "./scales/point": {
+      "types": "./dist/scales/point.d.mts",
+      "import": "./dist/scales/point.mjs"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip.d.mts",
+      "import": "./dist/tooltip.mjs"
+    },
     "./vue": {
       "types": "./dist/vue/chart.d.mts",
       "import": "./dist/vue/chart.mjs"

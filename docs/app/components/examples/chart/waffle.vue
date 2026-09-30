@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineChart, waffleY } from "@bysages/charts";
+import { scaleBand } from "@bysages/charts/scales/band";
+import { scaleLinear } from "@bysages/charts/scales/linear";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
-import { scaleBand } from "@tanstack/charts/scales/band";
-import { scaleLinear } from "@tanstack/charts/scales/linear";
 
 const weeks = [
   { day: "Mon", visits: 120 },
