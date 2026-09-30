@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Card, Slider } from "@bysages/vue";
+import { Button, Card, NavigationMenu, Slider } from "@bysages/vue";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
 const { locale } = useI18n();
@@ -57,7 +57,10 @@ const albums: Album[] = [
     year: 2023,
     tracks: [
       { title: { en: "Three hundred grams", zh: "三百克" }, length: 196 },
-      { title: { en: "Drying line in March", zh: "三月的晾纸杆" }, length: 228 },
+      {
+        title: { en: "Drying line in March", zh: "三月的晾纸杆" },
+        length: 228,
+      },
       { title: { en: "Coarse twist", zh: "粗帘纹" }, length: 175 },
       { title: { en: "White on white", zh: "白上之白" }, length: 259 },
     ],
@@ -69,7 +72,10 @@ const albums: Album[] = [
     year: 2022,
     tracks: [
       { title: { en: "Hairline", zh: "发丝线" }, length: 203 },
-      { title: { en: "Halo, arriving at once", zh: "光晕，一次到来" }, length: 236 },
+      {
+        title: { en: "Halo, arriving at once", zh: "光晕，一次到来" },
+        length: 236,
+      },
       { title: { en: "Slow bleed", zh: "墨慢慢洇" }, length: 281 },
     ],
   },
@@ -134,29 +140,38 @@ watch(albumIndex, () => {
     <Card.Content class="grid gap-6 p-6! lg:grid-cols-[13rem_1fr_20rem]">
       <!-- Albums: the shelf. -->
       <div class="grid content-start gap-2">
-        <p class="m-0 text-xs uppercase tracking-label text-tertiary">{{ text.albums }}</p>
-        <button
-          v-for="(a, i) in albums"
-          :key="a.glyph"
-          class="flex items-center gap-3 rounded-sm p-2 text-left no-underline transition-colors hover:bg-surface-1"
-          :class="i === albumIndex ? 'bg-surface-1' : ''"
-          @click="albumIndex = i"
-        >
-          <span
-            class="grid size-10 shrink-0 place-items-center rounded-sm bg-primary font-serif text-lg text-primary-text"
-            aria-hidden="true"
-            >{{ a.glyph }}</span
-          >
-          <span class="min-w-0">
-            <span class="block truncate text-sm font-medium">{{ a.title[locale] }}</span>
-            <span class="block truncate text-xs text-tertiary">{{ a.year }}</span>
-          </span>
-        </button>
+        <p class="m-0 text-xs uppercase tracking-label text-tertiary">
+          {{ text.albums }}
+        </p>
+        <NavigationMenu.Root orientation="vertical">
+          <NavigationMenu.List>
+            <NavigationMenu.Item v-for="(a, i) in albums" :key="a.glyph">
+              <NavigationMenu.Link
+                href="#"
+                class="h-auto! py-1.5!"
+                :current="albumIndex === i"
+                @click.prevent="albumIndex = i"
+              >
+                <span
+                  class="grid size-10 shrink-0 place-items-center rounded-sm bg-primary font-serif text-lg text-primary-text"
+                  aria-hidden="true"
+                  >{{ a.glyph }}</span
+                >
+                <span class="min-w-0">
+                  <span class="block truncate text-sm font-medium">{{ a.title[locale] }}</span>
+                  <span class="block truncate text-xs text-tertiary">{{ a.year }}</span>
+                </span>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>
+          </NavigationMenu.List>
+        </NavigationMenu.Root>
       </div>
 
       <!-- Tracks: the queue of the chosen album. -->
       <div class="min-w-0">
-        <p class="m-0 text-xs uppercase tracking-label text-tertiary">{{ text.queue }}</p>
+        <p class="m-0 text-xs uppercase tracking-label text-tertiary">
+          {{ text.queue }}
+        </p>
         <h3 class="m-0 mt-1 font-serif text-2xl">{{ album.title[locale] }}</h3>
         <p class="m-0 mb-3 text-sm text-tertiary">{{ album.artist[locale] }}</p>
         <ul class="m-0 list-none p-0">
@@ -176,15 +191,21 @@ watch(albumIndex, () => {
 
       <!-- Now playing: the turntable face. -->
       <div class="grid content-start gap-5 rounded-md bg-surface-1 p-5">
-        <p class="m-0 text-xs uppercase tracking-label text-tertiary">{{ text.nowPlaying }}</p>
+        <p class="m-0 text-xs uppercase tracking-label text-tertiary">
+          {{ text.nowPlaying }}
+        </p>
         <span
           class="grid aspect-square w-full place-items-center rounded-md bg-primary font-serif text-6xl text-primary-text"
           aria-hidden="true"
           >{{ album.glyph }}</span
         >
         <div>
-          <p class="m-0 truncate text-sm font-medium">{{ track.title[locale] }}</p>
-          <p class="m-0 truncate text-xs text-tertiary">{{ album.artist[locale] }}</p>
+          <p class="m-0 truncate text-sm font-medium">
+            {{ track.title[locale] }}
+          </p>
+          <p class="m-0 truncate text-xs text-tertiary">
+            {{ album.artist[locale] }}
+          </p>
         </div>
 
         <div class="grid gap-1">

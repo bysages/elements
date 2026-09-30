@@ -15,12 +15,26 @@ const TabsRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     /** The register: a ruled strip, or each selection lifted into a card. */
     variant: { type: String as PropType<"line" | "card">, default: "line" },
+    /** Which rail the rule rides: a strip across, or a rail down. */
+    orientation: {
+      type: String as PropType<"horizontal" | "vertical">,
+      default: "horizontal",
+    },
   },
   setup(props, { attrs, slots }) {
     injectComponentStyle("tabs");
 
     return () =>
-      h(ArkTabs.Root, { ...attrs, "data-size": props.size, "data-variant": props.variant }, slots);
+      h(
+        ArkTabs.Root,
+        {
+          ...attrs,
+          "data-size": props.size,
+          "data-variant": props.variant,
+          orientation: props.orientation,
+        },
+        slots,
+      );
   },
 });
 

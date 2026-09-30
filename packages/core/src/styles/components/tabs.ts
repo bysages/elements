@@ -88,6 +88,56 @@ export const tabsCss = /* css */ `
 }
 
 
+/* Vertical hangs the same grammar on the other rail: the rule moves to
+ * the start edge and the ink bar measures height instead of width. The
+ * rows keep their own height — a tall row (icon over caption) must not
+ * be squeezed into the control ladder — so block-size opens and the
+ * ladder survives only as the minimum. */
+[data-scope="tabs"][data-orientation="vertical"][data-part="root"] {
+  flex-direction: row;
+}
+
+[data-scope="tabs"][data-orientation="vertical"] [data-part="list"] {
+  flex-direction: column;
+  align-items: stretch;
+  border-block-end: none;
+  border-inline-start: 1px solid var(--bs-color-border);
+}
+
+[data-scope="tabs"][data-orientation="vertical"] [data-part="trigger"] {
+  justify-content: flex-start;
+  text-align: start;
+  margin-block-end: 0;
+  margin-inline-start: -1px;
+  padding-inline: var(--bs-padding-md);
+}
+
+[data-scope="tabs"][data-part="root"][data-orientation="vertical"] [data-part="trigger"] {
+  block-size: auto;
+  min-block-size: var(--bs-control-height-md);
+}
+
+[data-scope="tabs"][data-part="root"][data-size="sm"][data-orientation="vertical"] [data-part="trigger"] {
+  min-block-size: var(--bs-control-height-sm);
+}
+
+[data-scope="tabs"][data-part="root"][data-size="lg"][data-orientation="vertical"] [data-part="trigger"] {
+  min-block-size: var(--bs-control-height-lg);
+}
+
+/* The machine inlines top and hands over --height; start pins the bar
+ * onto the rail the way end pins it under the strip. */
+[data-scope="tabs"][data-orientation="vertical"] [data-part="indicator"] {
+  inset-block-end: auto;
+  inset-inline-start: -1px;
+  inline-size: 2px;
+  block-size: var(--height, 0);
+  transition:
+    inset-block-start var(--bs-duration-base) var(--bs-ease-spring),
+    block-size var(--bs-duration-base) var(--bs-ease-spring);
+}
+
+
 /* The browser register: the ruled strip stays, the selected tab breaks
    the rule and merges into the pane below — one vessel, tab and panel. */
 [data-scope="tabs"][data-variant="card"] {

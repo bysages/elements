@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { Avatar, Badge, Button, Card, Dialog, Field, Input, Textarea } from "@bysages/vue";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Dialog,
+  Field,
+  Input,
+  NavigationMenu,
+  Textarea,
+} from "@bysages/vue";
 import { computed, reactive, ref } from "vue";
 
 const { locale } = useI18n();
@@ -181,7 +191,10 @@ const mails = reactive<Mail[]>([
     id: "m-07",
     folder: "archive",
     from: { name: "Meridian Press", email: "hello@meridian.example" },
-    subject: { en: "Joint printing, autumn catalogue", zh: "秋季目录的联合印制" },
+    subject: {
+      en: "Joint printing, autumn catalogue",
+      zh: "秋季目录的联合印制",
+    },
     body: {
       en: [
         "Would you take the letterpress inner signatures of our autumn catalogue? Sixteen pages, two inks.",
@@ -250,6 +263,11 @@ function toggleStar(mail: Mail) {
   mail.starred = !mail.starred;
 }
 
+function onFolder(key: Folder) {
+  folder.value = key;
+  selectedId.value = null;
+}
+
 function moveTo(mail: Mail, target: Exclude<Folder, "starred">) {
   mail.folder = target;
   if (selectedId.value === mail.id) selectedId.value = null;
@@ -265,8 +283,14 @@ function send() {
   const mail: Mail = {
     id,
     folder: "sent",
-    from: { name: locale.value === "zh" ? "我" : "Me", email: "sage@songyan.press" },
-    subject: { en: draft.subject || "(no subject)", zh: draft.subject || "（无主题）" },
+    from: {
+      name: locale.value === "zh" ? "我" : "Me",
+      email: "sage@songyan.press",
+    },
+    subject: {
+      en: draft.subject || "(no subject)",
+      zh: draft.subject || "（无主题）",
+    },
     body: { en: [draft.body], zh: [draft.body] },
     time: locale.value === "zh" ? "刚刚" : "now",
     unread: false,
@@ -288,7 +312,7 @@ function send() {
     <Card.Content class="p-0!">
       <div class="grid h-[38rem] md:grid-cols-[11rem_17rem_1fr]">
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
-        <nav class="hidden flex-col gap-1 border-r border-border p-3 md:flex" aria-label="Folders">
+        <div class="hidden flex-col border-r border-border p-3 md:flex">
           <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
             <Dialog.Trigger as-child class="mb-3">
               <Button class="w-full!">
@@ -332,23 +356,26 @@ function send() {
             </Teleport>
           </Dialog.Root>
 
-          <button
-            v-for="f in folderList"
-            :key="f.key"
-            class="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm no-underline transition-colors hover:bg-surface-2"
-            :class="folder === f.key ? 'bg-surface-2 font-medium text-primary' : 'text-secondary'"
-            @click="
-              folder = f.key;
-              selectedId = null;
-            "
-          >
-            <Icon :name="f.icon" />
-            {{ text.folders[f.key] }}
-            <span v-if="unreadCount(f.key)" class="ml-auto text-xs tabular-nums text-tertiary">{{
-              unreadCount(f.key)
-            }}</span>
-          </button>
-        </nav>
+          <NavigationMenu.Root orientation="vertical" class="w-full!">
+            <NavigationMenu.List>
+              <NavigationMenu.Item v-for="f in folderList" :key="f.key">
+                <NavigationMenu.Link
+                  href="#"
+                  :current="folder === f.key"
+                  @click.prevent="onFolder(f.key)"
+                >
+                  <Icon :name="f.icon" />
+                  {{ text.folders[f.key] }}
+                  <span
+                    v-if="unreadCount(f.key)"
+                    class="ml-auto text-xs tabular-nums text-tertiary"
+                    >{{ unreadCount(f.key) }}</span
+                  >
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            </NavigationMenu.List>
+          </NavigationMenu.Root>
+        </div>
 
         <!-- The list: sender, subject, one line of the letter. -->
         <div
@@ -415,7 +442,9 @@ function send() {
               </Button>
             </div>
             <div class="mb-4 flex items-start justify-between gap-4">
-              <h2 class="m-0 font-serif text-xl leading-snug">{{ selected.subject[locale] }}</h2>
+              <h2 class="m-0 font-serif text-xl leading-snug">
+                {{ selected.subject[locale] }}
+              </h2>
               <div class="flex shrink-0 gap-1">
                 <Button variant="ghost" size="sm" square @click="toggleStar(selected)">
                   <Icon
@@ -437,8 +466,12 @@ function send() {
                 <Avatar.Fallback>{{ selected.from.name.slice(0, 1) }}</Avatar.Fallback>
               </Avatar.Root>
               <div class="min-w-0">
-                <p class="m-0 truncate text-sm font-medium">{{ selected.from.name }}</p>
-                <p class="m-0 truncate text-xs text-tertiary">{{ selected.from.email }}</p>
+                <p class="m-0 truncate text-sm font-medium">
+                  {{ selected.from.name }}
+                </p>
+                <p class="m-0 truncate text-xs text-tertiary">
+                  {{ selected.from.email }}
+                </p>
               </div>
               <span class="ml-auto shrink-0 text-xs text-tertiary">{{
                 selected.time[locale]
