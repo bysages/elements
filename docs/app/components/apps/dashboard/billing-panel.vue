@@ -3,8 +3,104 @@ import { Badge, Button, Card, DatePicker, Icon, Progress, SegmentGroup } from "@
 import { CalendarDate, type DateValue } from "@internationalized/date";
 import { computed, ref } from "vue";
 
-import { currentPlan, invoices, paymentMethod } from "./data";
+import {
+  currentPlan,
+  formatCurrency,
+  formatDate,
+  invoices,
+  paymentMethod,
+  type Locale,
+} from "./data";
 import { toaster } from "./toast";
+
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    plan: {
+      name: "Scale",
+      current: "Current plan",
+      seats: "Seats",
+      seatsValue: "{used} of {total} seats",
+      perMonth: "/ mo",
+      change: "Change plan",
+      changeTitle: "Plan change requested",
+      changeBody: "The billing owner will confirm the new tier.",
+    },
+    payment: {
+      title: "Payment method",
+      expires: "Expires",
+      update: "Update card",
+      updateTitle: "Card update opened",
+      updateBody: "A secure update sheet would take over here.",
+    },
+    invoices: {
+      title: "Invoices",
+      description: "The newest first; refunded lines stay on the ledger.",
+      filter: "Filter invoices by status",
+      period: "Period",
+      clear: "Clear",
+      lastMonth: "Last month",
+      thisQuarter: "This quarter",
+      headers: {
+        invoice: "Invoice",
+        date: "Date",
+        amount: "Amount",
+        status: "Status",
+      },
+      empty: "No invoices in this window.",
+    },
+    statuses: {
+      all: "All",
+      paid: "Paid",
+      refunded: "Refunded",
+      overdue: "Overdue",
+    },
+  },
+  zh: {
+    plan: {
+      name: "规模版",
+      current: "当前方案",
+      seats: "席位",
+      seatsValue: "{used} / {total} 个席位",
+      perMonth: "/ 月",
+      change: "变更方案",
+      changeTitle: "已提交方案变更",
+      changeBody: "账单负责人将确认新的方案层级。",
+    },
+    payment: {
+      title: "支付方式",
+      expires: "有效期至",
+      update: "更新银行卡",
+      updateTitle: "已打开银行卡更新",
+      updateBody: "这里将进入安全的卡片更新流程。",
+    },
+    invoices: {
+      title: "发票记录",
+      description: "按时间倒序展示，退款记录仍保留在账簿中。",
+      filter: "按状态筛选发票",
+      period: "账期",
+      clear: "清除",
+      lastMonth: "上个月",
+      thisQuarter: "本季度",
+      headers: {
+        invoice: "发票",
+        date: "日期",
+        amount: "金额",
+        status: "状态",
+      },
+      empty: "该时间段内没有发票。",
+    },
+    statuses: {
+      all: "全部",
+      paid: "已支付",
+      refunded: "已退款",
+      overdue: "已逾期",
+    },
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as Locale]);
 
 const statusTone = {
   paid: "success",
@@ -13,6 +109,32 @@ const statusTone = {
 } as const;
 
 const statusFilter = ref("all");
+
+const planDescription = computed(
+  () => `${text.value.plan.current} · ${formatDate(currentPlan.renewal, locale.value as Locale)}`,
+);
+const planPrice = computed(
+  () => `${formatCurrency(currentPlan.price, locale.value as Locale)} ${text.value.plan.perMonth}`,
+);
+const seatsText = computed(() =>
+  text.value.plan.seatsValue
+    .replace("{used}", String(currentPlan.seatsUsed))
+    .replace("{total}", String(currentPlan.seatsTotal)),
+);
+
+function formatCardExpiry(value: string) {
+  const [year, month] = value.split("-");
+  return locale.value === "zh" ? `${year}/${month}` : `${month} / ${year}`;
+}
+
+const paymentDescription = computed(
+  () =>
+    `${paymentMethod.brand} · ${text.value.payment.expires} ${formatCardExpiry(paymentMethod.expires)}`,
+);
+
+function invoiceStatus(status: (typeof invoices)[number]["status"]) {
+  return text.value.statuses[status];
+}
 
 const range = ref<DateValue[]>([]);
 
@@ -33,42 +155,40 @@ const filteredInvoices = computed(() =>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(18rem,100%),1fr))] gap-5">
       <Card.Root>
         <Card.Header>
-          <Card.Title>{{ currentPlan.name }}</Card.Title>
-          <Card.Description>Current plan · {{ currentPlan.renewal }}</Card.Description>
+          <Card.Title>{{ text.plan.name }}</Card.Title>
+          <Card.Description>{{ planDescription }}</Card.Description>
         </Card.Header>
         <Card.Content class="grid gap-4">
-          <span class="font-serif text-3xl">{{ currentPlan.price }}</span>
+          <span class="font-serif text-3xl">{{ planPrice }}</span>
           <Progress.Root :model-value="currentPlan.seatUse">
-            <Progress.Label>Seats</Progress.Label>
+            <Progress.Label>{{ text.plan.seats }}</Progress.Label>
             <Progress.ValueText />
             <Progress.Track>
               <Progress.Range />
             </Progress.Track>
           </Progress.Root>
-          <p class="m-0 text-sm text-tertiary">{{ currentPlan.seats }}</p>
+          <p class="m-0 text-sm text-tertiary">{{ seatsText }}</p>
         </Card.Content>
         <Card.Footer>
           <Button
             size="sm"
             @click="
               toaster.create({
-                title: 'Plan change requested',
-                description: 'The billing owner will confirm the new tier.',
+                title: text.plan.changeTitle,
+                description: text.plan.changeBody,
                 type: 'info',
               })
             "
           >
-            Change plan
+            {{ text.plan.change }}
           </Button>
         </Card.Footer>
       </Card.Root>
 
       <Card.Root>
         <Card.Header>
-          <Card.Title>Payment method</Card.Title>
-          <Card.Description
-            >{{ paymentMethod.brand }} · Expires {{ paymentMethod.expires }}</Card.Description
-          >
+          <Card.Title>{{ text.payment.title }}</Card.Title>
+          <Card.Description>{{ paymentDescription }}</Card.Description>
         </Card.Header>
         <Card.Content class="grid gap-2">
           <p class="m-0 font-serif text-2xl tracking-[0.2em]">•••• {{ paymentMethod.last4 }}</p>
@@ -79,13 +199,13 @@ const filteredInvoices = computed(() =>
             size="sm"
             @click="
               toaster.create({
-                title: 'Card update opened',
-                description: 'A secure update sheet would take over here.',
+                title: text.payment.updateTitle,
+                description: text.payment.updateBody,
                 type: 'info',
               })
             "
           >
-            Update card
+            {{ text.payment.update }}
           </Button>
         </Card.Footer>
       </Card.Root>
@@ -93,43 +213,48 @@ const filteredInvoices = computed(() =>
 
     <Card.Root>
       <Card.Header>
-        <Card.Title>Invoices</Card.Title>
-        <Card.Description>The newest first; refunded lines stay on the ledger.</Card.Description>
+        <Card.Title>{{ text.invoices.title }}</Card.Title>
+        <Card.Description>{{ text.invoices.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="p-0!">
         <div class="flex flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
-          <SegmentGroup.Root v-model="statusFilter" aria-label="Filter invoices by status">
+          <SegmentGroup.Root v-model="statusFilter" :aria-label="text.invoices.filter">
             <SegmentGroup.Indicator />
             <SegmentGroup.Item value="all">
-              <SegmentGroup.ItemText>All</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ text.statuses.all }}</SegmentGroup.ItemText>
               <SegmentGroup.ItemControl />
               <SegmentGroup.ItemHiddenInput />
             </SegmentGroup.Item>
             <SegmentGroup.Item value="paid">
-              <SegmentGroup.ItemText>Paid</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ text.statuses.paid }}</SegmentGroup.ItemText>
               <SegmentGroup.ItemControl />
               <SegmentGroup.ItemHiddenInput />
             </SegmentGroup.Item>
             <SegmentGroup.Item value="refunded">
-              <SegmentGroup.ItemText>Refunded</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ text.statuses.refunded }}</SegmentGroup.ItemText>
               <SegmentGroup.ItemControl />
               <SegmentGroup.ItemHiddenInput />
             </SegmentGroup.Item>
             <SegmentGroup.Item value="overdue">
-              <SegmentGroup.ItemText>Overdue</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ text.statuses.overdue }}</SegmentGroup.ItemText>
               <SegmentGroup.ItemControl />
               <SegmentGroup.ItemHiddenInput />
             </SegmentGroup.Item>
           </SegmentGroup.Root>
-          <DatePicker.Root v-model="range" selection-mode="range" class="w-auto!">
-            <DatePicker.Label class="sr-only">Period</DatePicker.Label>
+          <DatePicker.Root
+            v-model="range"
+            selection-mode="range"
+            :locale="locale === 'zh' ? 'zh-CN' : 'en-US'"
+            class="w-auto!"
+          >
+            <DatePicker.Label class="sr-only">{{ text.invoices.period }}</DatePicker.Label>
             <DatePicker.Control>
               <DatePicker.Input :index="0" class="w-28!" />
               <DatePicker.Input :index="1" class="w-28!" />
               <DatePicker.Trigger>
                 <Icon name="calendar" />
               </DatePicker.Trigger>
-              <DatePicker.ClearTrigger>Clear</DatePicker.ClearTrigger>
+              <DatePicker.ClearTrigger>{{ text.invoices.clear }}</DatePicker.ClearTrigger>
             </DatePicker.Control>
             <Teleport to="body">
               <DatePicker.Positioner>
@@ -137,12 +262,12 @@ const filteredInvoices = computed(() =>
                   <!-- The shortcuts live in the popup: a second row here
                        would lift the inputs off the filter line. -->
                   <div class="flex gap-2">
-                    <DatePicker.PresetTrigger value="lastMonth"
-                      >Last month</DatePicker.PresetTrigger
-                    >
-                    <DatePicker.PresetTrigger value="thisQuarter"
-                      >This quarter</DatePicker.PresetTrigger
-                    >
+                    <DatePicker.PresetTrigger value="lastMonth">
+                      {{ text.invoices.lastMonth }}
+                    </DatePicker.PresetTrigger>
+                    <DatePicker.PresetTrigger value="thisQuarter">
+                      {{ text.invoices.thisQuarter }}
+                    </DatePicker.PresetTrigger>
                   </div>
                   <DatePicker.View view="day">
                     <DatePicker.Context v-slot="dp">
@@ -193,7 +318,9 @@ const filteredInvoices = computed(() =>
                       <DatePicker.Table>
                         <DatePicker.TableBody>
                           <DatePicker.TableRow
-                            v-for="(months, i) in dp.getMonthsGrid({ columns: 4 })"
+                            v-for="(months, i) in dp.getMonthsGrid({
+                              columns: 4,
+                            })"
                             :key="i"
                           >
                             <DatePicker.TableCell
@@ -224,7 +351,9 @@ const filteredInvoices = computed(() =>
                       <DatePicker.Table>
                         <DatePicker.TableBody>
                           <DatePicker.TableRow
-                            v-for="(years, i) in dp.getYearsGrid({ columns: 4 })"
+                            v-for="(years, i) in dp.getYearsGrid({
+                              columns: 4,
+                            })"
                             :key="i"
                           >
                             <DatePicker.TableCell
@@ -249,16 +378,24 @@ const filteredInvoices = computed(() =>
         <table class="w-full border-collapse text-sm">
           <thead>
             <tr class="border-b border-border text-start text-tertiary">
-              <th class="px-4 py-2 text-start font-medium">Invoice</th>
-              <th class="px-4 py-2 text-start font-medium">Date</th>
-              <th class="px-4 py-2 text-start font-medium">Amount</th>
-              <th class="px-4 py-2 text-start font-medium">Status</th>
+              <th class="px-4 py-2 text-start font-medium">
+                {{ text.invoices.headers.invoice }}
+              </th>
+              <th class="px-4 py-2 text-start font-medium">
+                {{ text.invoices.headers.date }}
+              </th>
+              <th class="px-4 py-2 text-start font-medium">
+                {{ text.invoices.headers.amount }}
+              </th>
+              <th class="px-4 py-2 text-start font-medium">
+                {{ text.invoices.headers.status }}
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="filteredInvoices.length === 0">
               <td colspan="4" class="px-4 py-6 text-center text-tertiary">
-                No invoices in this window.
+                {{ text.invoices.empty }}
               </td>
             </tr>
             <tr
@@ -267,11 +404,15 @@ const filteredInvoices = computed(() =>
               class="border-b border-border last:border-b-0"
             >
               <td class="px-4 py-2 font-medium">{{ invoice.id }}</td>
-              <td class="px-4 py-2 text-secondary">{{ invoice.date }}</td>
-              <td class="px-4 py-2 text-secondary">{{ invoice.amount }}</td>
+              <td class="px-4 py-2 text-secondary">
+                {{ formatDate(invoice.date, locale as Locale) }}
+              </td>
+              <td class="px-4 py-2 text-secondary">
+                {{ formatCurrency(invoice.amount, locale as Locale, 2) }}
+              </td>
               <td class="px-4 py-2">
                 <Badge :tone="statusTone[invoice.status]" variant="subtle">
-                  {{ invoice.status }}
+                  {{ invoiceStatus(invoice.status) }}
                 </Badge>
               </td>
             </tr>

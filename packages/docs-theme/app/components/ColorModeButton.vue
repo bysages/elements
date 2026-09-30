@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { applyTheme, getTheme, Button } from "@bysages/vue";
 
+const { t } = useDocsI18n();
+
 // The header and the footer each render a toggle; a per-instance ref
 // would let them drift apart, so the mode lives in shared app state.
 const mode = useState<"light" | "dark" | "system">("color-mode", () => getTheme().mode);
@@ -74,8 +76,8 @@ onMounted(() => {
     variant="ghost"
     size="sm"
     square
-    :aria-label="`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`"
-    :title="`Mode: ${mode}`"
+    :aria-label="mode === 'dark' ? t('docs.colorMode.toLight') : t('docs.colorMode.toDark')"
+    :title="t(`docs.colorMode.mode.${mode}`)"
     @click="toggle"
   >
     <Icon :name="mode === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'" class="bs-docs-rail-icon" />

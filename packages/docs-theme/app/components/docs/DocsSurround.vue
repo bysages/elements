@@ -7,7 +7,7 @@ defineProps<{ surround?: Array<{ title: string; path: string; description?: stri
 </script>
 
 <template>
-  <nav class="bs-docs-surround" aria-label="Pagination">
+  <nav class="bs-docs-surround" :aria-label="t('docs.pagination')">
     <Button v-if="surround?.[0]" variant="outline" size="sm" as-child>
       <NuxtLink :to="surround[0].path" class="bs-docs-surround-link">
         <span class="bs-docs-surround-direction">{{ t("docs.prev") }}</span>

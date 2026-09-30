@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { Badge, Button, Card } from "@bysages/vue";
 
-import { plans } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).pricing);
 
 function goTo(hash: string) {
   document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
@@ -11,27 +14,30 @@ function goTo(hash: string) {
 <template>
   <section id="editions" class="mx-auto max-w-[64rem] scroll-mt-20 px-6 py-14">
     <header class="mb-8 max-w-[36rem]">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">Editions</p>
-      <h2 class="m-0 font-serif text-3xl leading-tight">Pick a standing order.</h2>
-      <p class="m-0 mt-3 text-secondary">
-        Every edition is real paper on real presses — the tiers only change how much of the studio
-        is yours.
-      </p>
+      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+      <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
+      <p class="m-0 mt-3 text-secondary">{{ copy.lede }}</p>
     </header>
 
     <div class="grid items-stretch gap-5 lg:grid-cols-3">
-      <Card.Root v-for="plan in plans" :key="plan.name" :class="plan.featured && 'border-primary'">
+      <Card.Root
+        v-for="plan in copy.plans"
+        :key="plan.name"
+        :class="plan.featured && 'border-primary'"
+      >
         <Card.Header>
           <div class="flex items-center justify-between gap-2">
             <Card.Title>{{ plan.name }}</Card.Title>
-            <Badge v-if="plan.featured" tone="info" variant="subtle">Most chosen</Badge>
+            <Badge v-if="plan.featured" tone="info" variant="subtle">{{
+              copy.featuredBadge
+            }}</Badge>
           </div>
           <Card.Description>{{ plan.tagline }}</Card.Description>
         </Card.Header>
         <Card.Content class="grid content-start gap-5">
           <p class="m-0">
-            <span class="font-serif text-4xl">${{ plan.price }}</span>
-            <span class="text-sm text-tertiary"> / month</span>
+            <span class="font-serif text-4xl">{{ copy.currency }}{{ plan.price }}</span>
+            <span class="text-sm text-tertiary">{{ copy.unit }}</span>
           </p>
           <ul class="m-0 flex list-none flex-col gap-2 p-0 text-sm text-secondary">
             <li v-for="line in plan.features" :key="line" class="flex items-start gap-2">
@@ -56,7 +62,7 @@ function goTo(hash: string) {
             :variant="plan.featured ? 'solid' : 'outline'"
             @click="goTo('#contact')"
           >
-            {{ plan.featured ? "Start with Studio" : `Choose ${plan.name}` }}
+            {{ plan.cta }}
           </Button>
         </Card.Footer>
       </Card.Root>

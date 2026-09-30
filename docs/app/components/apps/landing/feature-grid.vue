@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { Card } from "@bysages/vue";
 
-import { features } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).features);
 </script>
 
 <template>
   <section id="studio" class="mx-auto max-w-[64rem] scroll-mt-20 px-6 py-14">
     <header class="mb-8 max-w-[36rem]">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">Studio</p>
-      <h2 class="m-0 font-serif text-3xl leading-tight">Slow tools, kept sharp.</h2>
+      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+      <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
     </header>
 
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      <Card.Root v-for="feature in features" :key="feature.title">
+      <Card.Root v-for="feature in copy.items" :key="feature.title">
         <Card.Content class="grid content-start gap-3">
           <span
             class="grid size-9 place-items-center rounded-sm border border-border bg-surface-2 text-secondary"

@@ -3,7 +3,9 @@ import { createListCollection } from "@ark-ui/vue/select";
 import { Button, createColumnHelper, DataTable, Input, Select, type ColumnDef } from "@bysages/vue";
 import { computed, Fragment, h, ref } from "vue";
 
-import { type OrderRow } from "./data";
+import { formatCurrency, formatRegion, formatYearMonth, type Locale, type OrderRow } from "./data";
+
+const { locale } = useI18n();
 
 const props = defineProps<{ rows: OrderRow[] }>();
 
@@ -25,24 +27,80 @@ const actionIcon = {
   "aria-hidden": true,
 };
 
+const copy = {
+  en: {
+    columns: {
+      customer: "Customer",
+      region: "Region",
+      mrr: "MRR",
+      since: "Since",
+    },
+    actions: { view: "View", edit: "Edit" },
+    statuses: {
+      all: "All statuses",
+      active: "Active",
+      trial: "Trial",
+      paused: "Paused",
+      churned: "Churned",
+    },
+    selected: "{count} selected",
+    archive: "Archive selected",
+    search: "Search customers…",
+    empty: "No accounts match.",
+  },
+  zh: {
+    columns: {
+      customer: "客户",
+      region: "地区",
+      mrr: "月度经常性收入",
+      since: "签约时间",
+    },
+    actions: { view: "查看", edit: "编辑" },
+    statuses: {
+      all: "全部状态",
+      active: "使用中",
+      trial: "试用中",
+      paused: "已暂停",
+      churned: "已流失",
+    },
+    selected: "已选 {count} 个账户",
+    archive: "归档所选",
+    search: "搜索客户…",
+    empty: "没有匹配的客户账户。",
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as Locale]);
+
 /** Every column opts out of the built-in header filters — the toolbar's
  * status select and global search are the only filters this panel
  * shows, so no column carries a status of its own. */
-const columns: ColumnDef<OrderRow, any, any>[] = [
-  helper.accessor("customer", { id: "customer", header: "Customer", enableColumnFilter: false }),
-  helper.accessor("region", { id: "region", header: "Region", enableColumnFilter: false }),
+const columns = computed<ColumnDef<OrderRow, any, any>[]>(() => [
+  helper.accessor("customer", {
+    id: "customer",
+    header: text.value.columns.customer,
+    enableColumnFilter: false,
+  }),
+  helper.accessor("region", {
+    id: "region",
+    header: text.value.columns.region,
+    enableColumnFilter: false,
+    cell: (info) => formatRegion(info.getValue(), locale.value as Locale),
+  }),
   helper.accessor("mrr", {
     id: "mrr",
-    header: "MRR",
+    header: text.value.columns.mrr,
     enableColumnFilter: false,
     meta: { numeric: true },
-    cell: (info) => (info.getValue() ? `$${info.getValue().toLocaleString("en-US")}` : "—"),
+    cell: (info) =>
+      info.getValue() ? formatCurrency(info.getValue(), locale.value as Locale) : "—",
   }),
   helper.accessor("since", {
     id: "since",
-    header: "Since",
+    header: text.value.columns.since,
     enableColumnFilter: false,
     meta: { numeric: true },
+    cell: (info) => formatYearMonth(info.getValue(), locale.value as Locale),
   }),
   helper.display({
     id: "actions",
@@ -57,7 +115,7 @@ const columns: ColumnDef<OrderRow, any, any>[] = [
             variant: "ghost",
             size: "sm",
             square: true,
-            "aria-label": `View ${row.original.customer}`,
+            "aria-label": `${text.value.actions.view} ${row.original.customer}`,
             onClick: () => emit("detail", row.original),
           },
           () => [
@@ -75,7 +133,7 @@ const columns: ColumnDef<OrderRow, any, any>[] = [
             variant: "ghost",
             size: "sm",
             square: true,
-            "aria-label": `Edit ${row.original.customer}`,
+            "aria-label": `${text.value.actions.edit} ${row.original.customer}`,
             onClick: () => emit("edit", row.original),
           },
           () => [
@@ -84,17 +142,16 @@ const columns: ColumnDef<OrderRow, any, any>[] = [
         ),
       ]),
   }),
-];
+]);
 
-const statusCollection = createListCollection({
-  items: [
-    { label: "All statuses", value: "all" },
-    { label: "Active", value: "active" },
-    { label: "Trial", value: "trial" },
-    { label: "Paused", value: "paused" },
-    { label: "Churned", value: "churned" },
-  ],
-});
+const statusCollection = computed(() =>
+  createListCollection({
+    items: Object.entries(text.value.statuses).map(([value, label]) => ({
+      value,
+      label,
+    })),
+  }),
+);
 
 const statusFilter = ref<string | null>("all");
 
@@ -126,6 +183,10 @@ const selectedRows = computed(
   () => tableRef.value?.table.getSelectedRowModel().rows.map((row) => row.original) ?? [],
 );
 
+const selectedText = computed(() =>
+  text.value.selected.replace("{count}", String(selectedRows.value.length)),
+);
+
 function archiveSelected() {
   emit("archive", selectedRows.value);
   tableRef.value?.table.toggleAllRowsSelected(false);
@@ -146,7 +207,7 @@ function archiveSelected() {
       >
         <Select.Control>
           <Select.Trigger class="w-44">
-            <Select.ValueText placeholder="All statuses" />
+            <Select.ValueText :placeholder="text.statuses.all" />
           </Select.Trigger>
         </Select.Control>
         <Teleport to="body">
@@ -163,13 +224,13 @@ function archiveSelected() {
       </Select.Root>
 
       <p v-if="selectedRows.length" class="m-0 flex items-center gap-3 text-sm text-secondary">
-        {{ selectedRows.length }} selected
-        <Button variant="outline" size="sm" @click="archiveSelected">Archive selected</Button>
+        {{ selectedText }}
+        <Button variant="outline" size="sm" @click="archiveSelected">{{ text.archive }}</Button>
       </p>
 
       <span class="flex-1" />
 
-      <Input v-model="search" class="w-60!" placeholder="Search customers…" />
+      <Input v-model="search" class="w-60!" :placeholder="text.search" />
     </div>
 
     <DataTable
@@ -182,7 +243,7 @@ function archiveSelected() {
       :page-size-options="[10, 20, 50]"
       filterable
       :show-toolbar="false"
-      empty-text="No accounts match."
+      :empty-text="text.empty"
       :initial-sorting="[{ id: 'since', desc: true }]"
     />
   </div>

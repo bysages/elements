@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useDocsI18n();
 import { NavigationMenu } from "@bysages/vue";
 
 /** The sections row Docus lifts into the header — one entry per top-level
@@ -12,7 +13,7 @@ const { Root, List, Item, Link } = NavigationMenu;
 
 <template>
   <div v-if="rows.length" class="bs-docs-header-bottom">
-    <Root class="bs-docs-header-nav" aria-label="Sections">
+    <Root class="bs-docs-header-nav" :aria-label="t('docs.sections')">
       <List>
         <Item v-for="row in rows" :key="row.to" :value="row.to">
           <Link as-child :current="row.active">

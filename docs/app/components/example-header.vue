@@ -2,6 +2,8 @@
 import { Link } from "@bysages/vue";
 
 defineProps<{ kicker?: string; title: string; lede?: string; sourceUrl?: string }>();
+
+const { t } = useDocsI18n();
 </script>
 
 <template>
@@ -20,7 +22,7 @@ defineProps<{ kicker?: string; title: string; lede?: string; sourceUrl?: string 
       target="_blank"
       rel="noopener"
       class="text-tertiary! text-sm! no-underline! hover:text-secondary! hover:underline! hover:underline-offset-[0.2em]!"
-      >View source</Link
+      >{{ t("docs.viewSource") }}</Link
     >
   </header>
 </template>

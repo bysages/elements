@@ -11,6 +11,10 @@
     "language": "Language",
     "reference": "Reference",
     "examples": "Examples",
+    "demo": {
+      "preview": "Preview",
+      "code": "Code"
+    },
     "copy": {
       "code": "Copy code",
       "copied": "Copied"
@@ -23,6 +27,43 @@
     "prev": "Previous",
     "next": "Next",
     "edit": "Edit this page",
+    "viewSource": "View source",
+    "sections": "Sections",
+    "navigation": "Navigation",
+    "documents": "Documents",
+    "pagination": "Pagination",
+    "anchor": "Link to this section",
+    "colorMode": {
+      "toLight": "Switch to light mode",
+      "toDark": "Switch to dark mode",
+      "mode": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    },
+    "theme": {
+      "settings": "Theme settings",
+      "scene": "Scene",
+      "accent": "Accent",
+      "density": "Density",
+      "accents": {
+        "auto": "Auto — follows the scene",
+        "ink": "Ink — the solemn default",
+        "qinghua": "Qinghua cobalt",
+        "celadon": "Celadon",
+        "zhusha": "Zhusha cinnabar",
+        "feicui": "Feicui — jade green",
+        "jilan": "Jilan — clear-sky blue",
+        "qingjin": "Qingjin — lapis blue"
+      },
+      "densities": {
+        "compact": "Compact",
+        "default": "Default",
+        "comfortable": "Comfortable",
+        "spacious": "Spacious"
+      }
+    },
     "assistantTitle": "Assistant",
     "assistantClear": "Clear the conversation",
     "assistantThinking": "Thinking",

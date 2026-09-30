@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { Avatar, Card } from "@bysages/vue";
 
-import { voices } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).voices);
 </script>
 
 <template>
   <section id="voices" class="mx-auto max-w-[64rem] scroll-mt-20 px-6 py-14">
     <header class="mb-8 max-w-[36rem]">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">Voices</p>
-      <h2 class="m-0 font-serif text-3xl leading-tight">What the trade says.</h2>
+      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+      <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
     </header>
 
     <div class="grid gap-5 lg:grid-cols-3">
-      <Card.Root v-for="voice in voices" :key="voice.author">
+      <Card.Root v-for="voice in copy.items" :key="voice.author">
         <Card.Content>
           <blockquote class="m-0 font-serif text-lg italic leading-snug">
             &ldquo;{{ voice.quote }}&rdquo;

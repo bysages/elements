@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { Button } from "@bysages/vue";
 
-const links = [
-  { label: "Work", href: "#work" },
-  { label: "Studio", href: "#studio" },
-  { label: "Voices", href: "#voices" },
-  { label: "Editions", href: "#editions" },
-  { label: "FAQ", href: "#faq" },
-];
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).header);
 
 // The document's smooth scroll carries plain anchors; the CTA is a real
 // button, so it walks the same path by hand.
@@ -25,21 +22,21 @@ function goTo(hash: string) {
           aria-hidden="true"
           >S</span
         >
-        <span class="text-sm font-semibold">Songyan</span>
+        <span class="text-sm font-semibold">{{ copy.brand }}</span>
       </a>
       <nav
         class="hidden flex-1 items-center gap-5 text-sm text-secondary sm:flex"
-        aria-label="Site"
+        :aria-label="copy.navLabel"
       >
         <a
-          v-for="link in links"
+          v-for="link in copy.links"
           :key="link.href"
           :href="link.href"
           class="text-secondary no-underline transition-colors hover:text-foreground"
           >{{ link.label }}</a
         >
       </nav>
-      <Button class="ml-auto! sm:ml-0!" size="sm" @click="goTo('#contact')">Start a project</Button>
+      <Button class="ml-auto! sm:ml-0!" size="sm" @click="goTo('#contact')">{{ copy.cta }}</Button>
     </div>
   </header>
 </template>

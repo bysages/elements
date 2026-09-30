@@ -54,8 +54,8 @@ const { data: highlighted } = await useAsyncData(
   <div class="bs-docs-demo">
     <Tabs.Root class="bs-docs-demo-tabs" default-value="preview">
       <Tabs.List>
-        <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
-        <Tabs.Trigger v-if="code" value="code">Code</Tabs.Trigger>
+        <Tabs.Trigger value="preview">{{ t("docs.demo.preview") }}</Tabs.Trigger>
+        <Tabs.Trigger v-if="code" value="code">{{ t("docs.demo.code") }}</Tabs.Trigger>
         <!-- The demo's path under examples/, quiet ink between the tabs
              and the workbench door — a family page stacks several demos
              and the reader should know which one is on stage. -->

@@ -1,3 +1,5 @@
+export type Locale = "en" | "zh";
+
 export type OrderStatus = "active" | "trial" | "paused" | "churned";
 
 export interface OrderRow {
@@ -142,6 +144,62 @@ export const orders: OrderRow[] = [
   },
 ];
 
+const regionLabels: Record<string, Record<Locale, string>> = {
+  Hangzhou: { en: "Hangzhou", zh: "杭州" },
+  Shanghai: { en: "Shanghai", zh: "上海" },
+  Boston: { en: "Boston", zh: "波士顿" },
+  Chicago: { en: "Chicago", zh: "芝加哥" },
+  Jingdezhen: { en: "Jingdezhen", zh: "景德镇" },
+  Toronto: { en: "Toronto", zh: "多伦多" },
+  Beijing: { en: "Beijing", zh: "北京" },
+  Portland: { en: "Portland", zh: "波特兰" },
+  Suzhou: { en: "Suzhou", zh: "苏州" },
+  Auckland: { en: "Auckland", zh: "奥克兰" },
+  Philadelphia: { en: "Philadelphia", zh: "费城" },
+  London: { en: "London", zh: "伦敦" },
+  Denver: { en: "Denver", zh: "丹佛" },
+};
+
+export function formatRegion(region: string, locale: Locale) {
+  return regionLabels[region]?.[locale] ?? region;
+}
+
+export function formatCurrency(amount: number, locale: Locale, fractionDigits = 0) {
+  return amount.toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
+    style: "currency",
+    currency: locale === "zh" ? "CNY" : "USD",
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
+}
+
+const englishMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+export function formatYearMonth(value: string, locale: Locale) {
+  const [year, month] = value.split("-").map(Number) as [number, number];
+  return locale === "zh" ? `${year}年${month}月` : `${englishMonths[month - 1]} ${year}`;
+}
+
+export function formatDate(value: string, locale: Locale) {
+  const [year, month, day] = value.split("-").map(Number) as [number, number, number];
+  return locale === "zh"
+    ? `${year}年${month}月${day}日`
+    : `${englishMonths[month - 1]} ${day}, ${year}`;
+}
+
 export const monthlyRevenue = [
   { month: "Oct", revenue: 128 },
   { month: "Nov", revenue: 141 },
@@ -168,42 +226,15 @@ export const weeklyTrend = [
 ];
 
 export interface StatFigure {
-  label: string;
-  value: string;
-  delta: string;
+  id: "mrr" | "activeAccounts" | "churnRate" | "avgContract";
   direction: "up" | "down" | "flat";
-  description: string;
 }
 
 export const statFigures: StatFigure[] = [
-  {
-    label: "Monthly recurring",
-    value: "$18,240",
-    delta: "↑ 4.2%",
-    direction: "up",
-    description: "Against last month",
-  },
-  {
-    label: "Active accounts",
-    value: "42",
-    delta: "↑ 3",
-    direction: "up",
-    description: "Two trials converted",
-  },
-  {
-    label: "Churn rate",
-    value: "2.1%",
-    delta: "↓ 0.4%",
-    direction: "up",
-    description: "Lowest in a year",
-  },
-  {
-    label: "Avg. contract",
-    value: "$1,860",
-    delta: "— 0.0%",
-    direction: "flat",
-    description: "Holding steady",
-  },
+  { id: "mrr", direction: "up" },
+  { id: "activeAccounts", direction: "up" },
+  { id: "churnRate", direction: "up" },
+  { id: "avgContract", direction: "flat" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -211,32 +242,33 @@ export const statFigures: StatFigure[] = [
 
 export const currentPlan = {
   name: "Scale",
-  seats: "24 of 30 seats",
-  renewal: "Renews Nov 1, 2026",
-  price: "$499 / mo",
+  seatsUsed: 24,
+  seatsTotal: 30,
+  renewal: "2026-11-01",
+  price: 499,
   seatUse: 80,
 };
 
 export interface Invoice {
   id: string;
   date: string;
-  amount: string;
+  amount: number;
   status: "paid" | "refunded" | "overdue";
 }
 
 /** The newest first - the ledger reads top down. */
 export const invoices: Invoice[] = [
-  { id: "INV-2041", date: "Oct 1, 2026", amount: "$499.00", status: "paid" },
-  { id: "INV-1996", date: "Sep 1, 2026", amount: "$499.00", status: "paid" },
-  { id: "INV-1932", date: "Aug 1, 2026", amount: "$521.00", status: "refunded" },
-  { id: "INV-1877", date: "Jul 1, 2026", amount: "$499.00", status: "paid" },
-  { id: "INV-1821", date: "Jun 1, 2026", amount: "$466.00", status: "overdue" },
+  { id: "INV-2041", date: "2026-10-01", amount: 499, status: "paid" },
+  { id: "INV-1996", date: "2026-09-01", amount: 499, status: "paid" },
+  { id: "INV-1932", date: "2026-08-01", amount: 521, status: "refunded" },
+  { id: "INV-1877", date: "2026-07-01", amount: 499, status: "paid" },
+  { id: "INV-1821", date: "2026-06-01", amount: 466, status: "overdue" },
 ];
 
 export const paymentMethod = {
   brand: "Visa",
   last4: "4242",
-  expires: "08 / 2028",
+  expires: "2028-08",
 };
 
 // ---------------------------------------------------------------------------
@@ -260,16 +292,16 @@ export const cashCollected = [
 ];
 
 export interface ChannelRow {
-  channel: string;
+  id: "direct" | "marketplace" | "outbound" | "events";
   share: number;
-  accounts: string;
+  accounts: number;
 }
 
 export const channels: ChannelRow[] = [
-  { channel: "Direct & referral", share: 46, accounts: "19 accounts" },
-  { channel: "Marketplace", share: 27, accounts: "11 accounts" },
-  { channel: "Outbound", share: 17, accounts: "7 accounts" },
-  { channel: "Events", share: 10, accounts: "5 accounts" },
+  { id: "direct", share: 46, accounts: 19 },
+  { id: "marketplace", share: 27, accounts: 11 },
+  { id: "outbound", share: 17, accounts: 7 },
+  { id: "events", share: 10, accounts: 5 },
 ];
 
 // ---------------------------------------------------------------------------

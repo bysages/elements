@@ -39,7 +39,7 @@ const links = computed(() => props.page?.body?.toc?.links ?? []);
     <Root :open="open" @update:open="open = $event">
       <Backdrop />
       <Positioner>
-        <Content aria-label="Table of contents">
+        <Content :aria-label="t('docs.toc')">
           <Title>{{ t("docs.toc") }}</Title>
           <DocsAsideRight :page="page" />
         </Content>

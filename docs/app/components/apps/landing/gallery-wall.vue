@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { Masonry } from "@bysages/vue";
 
-import { wallItems } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).gallery);
 </script>
 
 <template>
   <section id="work" class="mx-auto max-w-[64rem] scroll-mt-20 px-6 py-14">
     <header class="mb-8 max-w-[36rem]">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">Work</p>
-      <h2 class="m-0 font-serif text-3xl leading-tight">Recent presses.</h2>
-      <p class="m-0 mt-3 text-secondary">
-        Cards from the past season — series, proofs, and the numbers behind them.
-      </p>
+      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+      <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
+      <p class="m-0 mt-3 text-secondary">{{ copy.lede }}</p>
     </header>
 
     <Masonry :columns="3" min-column="12rem" gap="lg">
-      <template v-for="(item, i) in wallItems" :key="i">
+      <template v-for="(item, i) in copy.items" :key="i">
         <!-- The tint cards let the pigment carry them: one accent
              attribute recolors surface and ink together. -->
         <div

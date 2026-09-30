@@ -1,26 +1,89 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
 import { Button, Card, FormField, Input, Select, Switch } from "@bysages/vue";
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 
-import { consoleSettings } from "./data";
+import { consoleSettings, type Locale } from "./data";
 import { toaster } from "./toast";
 
-const timezones = createListCollection({
-  items: [
-    { label: "GMT+8 Shanghai", value: "GMT+8" },
-    { label: "GMT+0 London", value: "GMT+0" },
-    { label: "GMT-5 New York", value: "GMT-5" },
-    { label: "GMT+9 Tokyo", value: "GMT+9" },
-  ],
-});
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    workspace: {
+      title: "Workspace",
+      description: "Who this console belongs to.",
+      name: "Workspace name",
+      namePlaceholder: "By Sages Console",
+      email: "Billing email",
+      emailPlaceholder: "billing@example.com",
+      timezone: "Timezone",
+      timezonePlaceholder: "Pick a zone",
+      zones: {
+        "GMT+8": "GMT+8 Shanghai",
+        "GMT+0": "GMT+0 London",
+        "GMT-5": "GMT-5 New York",
+        "GMT+9": "GMT+9 Tokyo",
+      },
+    },
+    notifications: {
+      title: "Notifications",
+      description: "What reaches the inbox, and when.",
+      dailyDigest: "Daily digest",
+      anomalyAlerts: "Anomaly alerts",
+      weeklyReport: "Weekly report",
+    },
+    save: "Save changes",
+    savedTitle: "Settings saved",
+    savedBody: "The workspace now runs on the new values.",
+  },
+  zh: {
+    workspace: {
+      title: "工作区",
+      description: "这方控制台归谁使用。",
+      name: "工作区名称",
+      namePlaceholder: "By Sages Console",
+      email: "账单邮箱",
+      emailPlaceholder: "billing@example.com",
+      timezone: "时区",
+      timezonePlaceholder: "选择时区",
+      zones: {
+        "GMT+8": "GMT+8 上海",
+        "GMT+0": "GMT+0 伦敦",
+        "GMT-5": "GMT-5 纽约",
+        "GMT+9": "GMT+9 东京",
+      },
+    },
+    notifications: {
+      title: "通知",
+      description: "哪些消息会进入收件箱，以及何时送达。",
+      dailyDigest: "每日摘要",
+      anomalyAlerts: "异常提醒",
+      weeklyReport: "每周报表",
+    },
+    save: "保存更改",
+    savedTitle: "设置已保存",
+    savedBody: "工作区已按新配置生效。",
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as Locale]);
+
+const timezones = computed(() =>
+  createListCollection({
+    items: ["GMT+8", "GMT+0", "GMT-5", "GMT+9"].map((value) => ({
+      value,
+      label: text.value.workspace.zones[value as keyof typeof text.value.workspace.zones],
+    })),
+  }),
+);
 
 const form = reactive({ ...consoleSettings });
 
 function save() {
   toaster.create({
-    title: "Settings saved",
-    description: "The workspace now runs on the new values.",
+    title: text.value.savedTitle,
+    description: text.value.savedBody,
     type: "success",
   });
 }
@@ -30,17 +93,17 @@ function save() {
   <div class="grid content-start gap-5 lg:grid-cols-2">
     <Card.Root>
       <Card.Header>
-        <Card.Title>Workspace</Card.Title>
-        <Card.Description>Who this console belongs to.</Card.Description>
+        <Card.Title>{{ text.workspace.title }}</Card.Title>
+        <Card.Description>{{ text.workspace.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="grid content-start gap-4">
-        <FormField name="workspace" label="Workspace name">
-          <Input v-model="form.workspace" placeholder="By Sages Console" />
+        <FormField name="workspace" :label="text.workspace.name">
+          <Input v-model="form.workspace" :placeholder="text.workspace.namePlaceholder" />
         </FormField>
-        <FormField name="email" label="Billing email">
-          <Input v-model="form.email" type="email" placeholder="billing@example.com" />
+        <FormField name="email" :label="text.workspace.email">
+          <Input v-model="form.email" type="email" :placeholder="text.workspace.emailPlaceholder" />
         </FormField>
-        <FormField name="timezone" label="Timezone">
+        <FormField name="timezone" :label="text.workspace.timezone">
           <Select.Root
             :collection="timezones"
             :model-value="[form.timezone]"
@@ -48,7 +111,7 @@ function save() {
           >
             <Select.Control>
               <Select.Trigger>
-                <Select.ValueText placeholder="Pick a zone" />
+                <Select.ValueText :placeholder="text.workspace.timezonePlaceholder" />
               </Select.Trigger>
               <Select.Indicator>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -79,23 +142,23 @@ function save() {
 
     <Card.Root>
       <Card.Header>
-        <Card.Title>Notifications</Card.Title>
-        <Card.Description>What reaches the inbox, and when.</Card.Description>
+        <Card.Title>{{ text.notifications.title }}</Card.Title>
+        <Card.Description>{{ text.notifications.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="grid content-start gap-3">
         <Switch.Root v-model="form.digest">
           <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>Daily digest</Switch.Label>
+          <Switch.Label>{{ text.notifications.dailyDigest }}</Switch.Label>
           <Switch.HiddenInput />
         </Switch.Root>
         <Switch.Root v-model="form.anomalyAlerts">
           <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>Anomaly alerts</Switch.Label>
+          <Switch.Label>{{ text.notifications.anomalyAlerts }}</Switch.Label>
           <Switch.HiddenInput />
         </Switch.Root>
         <Switch.Root v-model="form.weeklyReport">
           <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>Weekly report</Switch.Label>
+          <Switch.Label>{{ text.notifications.weeklyReport }}</Switch.Label>
           <Switch.HiddenInput />
         </Switch.Root>
       </Card.Content>
@@ -107,13 +170,13 @@ function save() {
       <Button
         @click="
           toaster.create({
-            title: 'Settings saved',
-            description: 'The workspace now runs on the new values.',
+            title: text.savedTitle,
+            description: text.savedBody,
             type: 'success',
           })
         "
       >
-        Save changes
+        {{ text.save }}
       </Button>
     </div>
   </div>

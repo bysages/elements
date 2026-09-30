@@ -11,6 +11,7 @@ import { componentFamilies, exampleNames } from "./component-families.ts";
 import { componentNames } from "./component-names.ts";
 import { componentSections } from "./component-sections.ts";
 import { displayTitle } from "./display-title.ts";
+import { jsdocZh, normalizeZh } from "./jsdoc-zh.ts";
 
 /** Generate the two component shelves into content/{zh,en}:
  * 02.components (one page per family: description, live demos, props)
@@ -119,23 +120,37 @@ const prose = (text: string) =>
 const partTitle = (part: string) =>
   part.replace(/(^|-)([a-z])/g, (_, h: string, c: string) => c.toUpperCase());
 
-const markdownProps = (props: PropDoc[]): string[] => [
-  "| Prop | Type | Default | Description |",
+/** The zh shelf reads the same tables with translated headers and,
+ * when the dictionary has one, a translated cell — the English JSDoc
+ * stays the fallback so the dictionary can trail the wrappers. */
+const propCell = (family: string, part: string, p: PropDoc, locale: string) => {
+  const en = prose(p.description);
+  if (locale !== "zh") return en;
+  return normalizeZh(jsdocZh[family]?.parts?.[part]?.props?.[p.name] ?? en);
+};
+
+const markdownProps = (
+  props: PropDoc[],
+  locale: string,
+  family: string,
+  part: string,
+): string[] => [
+  locale === "zh" ? "| 属性 | 类型 | 默认值 | 描述 |" : "| Prop | Type | Default | Description |",
   "| --- | --- | --- | --- |",
   ...props.map(
     (p) =>
-      `| \`${p.name}\` | \`${cell(p.type)}\` | ${p.default ? `\`${cell(p.default)}\`` : ""} | ${prose(p.description)} |`,
+      `| \`${p.name}\` | \`${cell(p.type)}\` | ${p.default ? `\`${cell(p.default)}\`` : ""} | ${propCell(family, part, p, locale)} |`,
   ),
 ];
 
-const markdownEmits = (emits: EmitDoc[]): string[] => [
-  "| Event | Payload |",
+const markdownEmits = (emits: EmitDoc[], locale: string): string[] => [
+  locale === "zh" ? "| 事件 | 载荷 |" : "| Event | Payload |",
   "| --- | --- |",
   ...emits.map((e) => `| \`${e.name}\` | \`${cell(e.payload)}\` |`),
 ];
 
-const markdownSlots = (slots: { name: string }[]): string[] => [
-  "| Slot |",
+const markdownSlots = (slots: { name: string }[], locale: string): string[] => [
+  locale === "zh" ? "| 插槽 |" : "| Slot |",
   "| --- |",
   ...slots.map((s) => `| \`#${s.name}\` |`),
 ];
@@ -159,9 +174,12 @@ const page = (
 
 const stemOf = (index: number, slug: string) => `${String(index + 1).padStart(2, "0")}.${slug}`;
 
-/** The line a prop-less part carries in both shelves — the same words
- * the reference tables have always given them. */
-const propslessLine = "A styled part — no props of its own; it takes the anatomy's shared styling.";
+/** The line a prop-less part carries in both shelves, per shelf
+ * language. */
+const propslessLine = {
+  en: "A styled part — no props of its own; it takes the anatomy's shared styling.",
+  zh: "纯造型的部件——自身没有属性，沿用部件结构的共享样式。",
+} as const;
 
 /** Both shelves as { relative path → content }, relative to docs/. */
 function render(): Map<string, string> {
@@ -184,36 +202,9 @@ function render(): Map<string, string> {
       const doc = extraFamilies[family] ?? documentFamily(family);
       if (!doc) continue;
 
-      // Every exported part rides the component page — its own words
-      // first, then the API tables; the ones without props of their own
-      // still belong to the list the reader scans.
-      const propsGroups = Object.entries(doc.components).map(([name, c]) => {
-        const head = [`### ${name}`];
-        if (c.description) head.push("", c.description);
-        if (c.props?.length) head.push("", ...markdownProps(c.props));
-        else head.push("", propslessLine);
-        return head.join("\n");
-      });
-
       const demos = exampleNames(family).map(
         (name) => `<ComponentDemo name="${family}/${name}"></ComponentDemo>`,
       );
-
-      const referenceSections: string[] = [];
-      if (doc.anatomy?.parts?.length) {
-        referenceSections.push(doc.anatomy.parts.map((p) => `\`${partTitle(p)}\``).join(" · "));
-      }
-      for (const [name, c] of Object.entries(doc.components)) {
-        const part = [`## ${name}`];
-        if (c.description) part.push("", c.description);
-        if (c.props?.length) part.push("", ...markdownProps(c.props));
-        if (c.emits?.length) part.push("", ...markdownEmits(c.emits));
-        if (c.slots?.length) part.push("", ...markdownSlots(c.slots));
-        if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
-          part.push("", propslessLine);
-        }
-        referenceSections.push(part.join("\n"));
-      }
 
       const stem = stemOf(globalOrder.get(family)!, family);
       for (const locale of locales) {
@@ -225,6 +216,44 @@ function render(): Map<string, string> {
           label: locale === "zh" ? section.zh : section.en,
         };
 
+        // The shelves carry the wrappers' own words — the zh dictionary
+        // supplies the rendering when it has one and defers to the
+        // English JSDoc when it doesn't, so it can trail the wrappers
+        // without blanking a shelf.
+        const partDesc = (name: string, c: FamilyDoc["components"][string]) =>
+          locale === "zh"
+            ? normalizeZh(jsdocZh[family]?.parts?.[name]?.description ?? c.description)
+            : c.description;
+
+        // Every exported part rides the component page — its own words
+        // first, then the API tables; the ones without props of their
+        // own still belong to the list the reader scans.
+        const propsGroups = Object.entries(doc.components).map(([name, c]) => {
+          const head = [`### ${name}`];
+          const description = partDesc(name, c);
+          if (description) head.push("", description);
+          if (c.props?.length) head.push("", ...markdownProps(c.props, locale, family, name));
+          else head.push("", propslessLine[locale]);
+          return head.join("\n");
+        });
+
+        const referenceSections: string[] = [];
+        if (doc.anatomy?.parts?.length) {
+          referenceSections.push(doc.anatomy.parts.map((p) => `\`${partTitle(p)}\``).join(" · "));
+        }
+        for (const [name, c] of Object.entries(doc.components)) {
+          const part = [`## ${name}`];
+          const description = partDesc(name, c);
+          if (description) part.push("", description);
+          if (c.props?.length) part.push("", ...markdownProps(c.props, locale, family, name));
+          if (c.emits?.length) part.push("", ...markdownEmits(c.emits, locale));
+          if (c.slots?.length) part.push("", ...markdownSlots(c.slots, locale));
+          if (!c.props?.length && !c.emits?.length && !c.slots?.length) {
+            part.push("", propslessLine[locale]);
+          }
+          referenceSections.push(part.join("\n"));
+        }
+
         const componentPage: string[] = [];
         if (demos.length) {
           componentPage.push([`## ${usage}`, "", ...demos].join("\n\n"));
@@ -234,9 +263,13 @@ function render(): Map<string, string> {
         }
         for (const dir of Object.keys(shelves)) {
           const body = dir === "02.components" ? componentPage : referenceSections;
+          const description =
+            locale === "zh"
+              ? normalizeZh(jsdocZh[family]?.description ?? doc.description)
+              : doc.description;
           files.set(
             path.join("content", locale, dir, `${stem}.md`),
-            page(title, doc.description, body, navSection),
+            page(title, description, body, navSection),
           );
         }
       }

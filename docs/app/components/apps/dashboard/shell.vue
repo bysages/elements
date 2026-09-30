@@ -1,15 +1,44 @@
 <script setup lang="ts">
 import { Badge, Button, Drawer, Layout, Typography } from "@bysages/vue";
+import { computed } from "vue";
 
 import ConsoleNav from "./console-nav.vue";
+import type { Locale } from "./data";
 
-const headings: Record<string, string> = {
-  Overview: "Revenue console",
-  Accounts: "Accounts",
-  Billing: "Billing",
-  Reports: "Reports",
-  Settings: "Console settings",
-};
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    headings: {
+      Overview: "Revenue console",
+      Accounts: "Accounts",
+      Billing: "Billing",
+      Reports: "Reports",
+      Settings: "Console settings",
+    },
+    expandNavigation: "Expand navigation",
+    collapseNavigation: "Collapse navigation",
+    openNavigation: "Open navigation",
+    team: "Finance team",
+    drawer: "Console navigation",
+  },
+  zh: {
+    headings: {
+      Overview: "营收控制台",
+      Accounts: "客户账户",
+      Billing: "账单",
+      Reports: "报表",
+      Settings: "控制台设置",
+    },
+    expandNavigation: "展开导航",
+    collapseNavigation: "折叠导航",
+    openNavigation: "打开导航",
+    team: "财务团队",
+    drawer: "控制台导航",
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as Locale]);
 
 // The owning page swaps the content pane as the stop changes, so every
 // nav entry leads somewhere real.
@@ -22,6 +51,12 @@ function pickStop(label: string) {
   activeStop.value = label;
   navOpen.value = false;
 }
+
+const heading = computed(
+  () =>
+    text.value.headings[activeStop.value as keyof typeof text.value.headings] ??
+    text.value.headings.Overview,
+);
 </script>
 
 <template>
@@ -47,7 +82,7 @@ function pickStop(label: string) {
         size="sm"
         square
         class="@max-[60rem]:hidden!"
-        :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+        :aria-label="collapsed ? text.expandNavigation : text.collapseNavigation"
         @click="collapsed = !collapsed"
       >
         <svg
@@ -67,7 +102,7 @@ function pickStop(label: string) {
         size="sm"
         square
         class="hidden! @max-[60rem]:flex!"
-        aria-label="Open navigation"
+        :aria-label="text.openNavigation"
         @click="navOpen = true"
       >
         <svg
@@ -82,10 +117,10 @@ function pickStop(label: string) {
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </Button>
-      <Typography.Heading>{{ headings[activeStop] ?? "Revenue console" }}</Typography.Heading>
+      <Typography.Heading>{{ heading }}</Typography.Heading>
       <Badge tone="info" variant="subtle">Q3</Badge>
       <span class="flex-1" />
-      <span class="text-sm text-tertiary">Finance team</span>
+      <span class="text-sm text-tertiary">{{ text.team }}</span>
     </Layout.Header>
     <Layout.Content>
       <slot />
@@ -97,8 +132,8 @@ function pickStop(label: string) {
     <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
-        <Drawer.Content aria-label="Console navigation" class="flex flex-col">
-          <Drawer.Title class="sr-only">Console navigation</Drawer.Title>
+        <Drawer.Content :aria-label="text.drawer" class="flex flex-col">
+          <Drawer.Title class="sr-only">{{ text.drawer }}</Drawer.Title>
           <ConsoleNav v-model="activeStop" @select="pickStop" />
         </Drawer.Content>
       </Drawer.Positioner>

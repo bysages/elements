@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { footerColumns } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).footer);
 </script>
 
 <template>
@@ -13,11 +16,9 @@ import { footerColumns } from "./data";
               aria-hidden="true"
               >S</span
             >
-            <span class="text-sm font-semibold">Songyan</span>
+            <span class="text-sm font-semibold">{{ copy.brand }}</span>
           </p>
-          <p class="m-0 max-w-[18rem] text-sm text-secondary">
-            A two-press stationery works in Huizhou, China — set by hand since 2019.
-          </p>
+          <p class="m-0 max-w-[18rem] text-sm text-secondary">{{ copy.blurb }}</p>
           <a
             href="mailto:hello@songyan.example"
             class="text-sm text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
@@ -27,7 +28,7 @@ import { footerColumns } from "./data";
         </div>
 
         <nav
-          v-for="column in footerColumns"
+          v-for="column in copy.columns"
           :key="column.title"
           class="flex flex-col gap-2"
           :aria-label="column.title"
@@ -49,8 +50,8 @@ import { footerColumns } from "./data";
       <div
         class="m-0 mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6 text-xs text-tertiary"
       >
-        <span>© 2026 Songyan Press — Huizhou, China</span>
-        <span>Set in Elements</span>
+        <span>{{ copy.legal }}</span>
+        <span>{{ copy.credit }}</span>
       </div>
     </div>
   </footer>

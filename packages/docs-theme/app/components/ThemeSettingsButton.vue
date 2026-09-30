@@ -1,5 +1,7 @@
 <script setup lang="ts">
 defineOptions({ inheritAttrs: false });
+
+const { t } = useDocsI18n();
 import {
   applyTheme,
   getTheme,
@@ -41,23 +43,22 @@ const scenes = sceneNames.map((s) => ({
   dot: s.value === "auto" ? undefined : SCENE_DEFAULT_ACCENT[s.value],
 }));
 
-const accents: Array<{ value: ThemeAccent; label: string }> = [
-  { value: "auto", label: "Auto — follows the scene" },
-  { value: "ink", label: "Ink — the solemn default" },
-  { value: "qinghua", label: "Qinghua cobalt" },
-  { value: "celadon", label: "Celadon" },
-  { value: "zhusha", label: "Zhusha cinnabar" },
-  { value: "feicui", label: "Feicui — jade green" },
-  { value: "jilan", label: "Jilan — clear-sky blue" },
-  { value: "qingjin", label: "Qingjin — lapis blue" },
+// Labels ride the i18n dictionary; the values are the engine's own.
+const accents: ThemeAccent[] = [
+  "auto",
+  "ink",
+  "qinghua",
+  "celadon",
+  "zhusha",
+  "feicui",
+  "jilan",
+  "qingjin",
 ];
 
-const densities: Array<{ value: ThemeDensity; label: string }> = [
-  { value: "compact", label: "Compact" },
-  { value: "default", label: "Default" },
-  { value: "comfortable", label: "Comfortable" },
-  { value: "spacious", label: "Spacious" },
-];
+const densities: ThemeDensity[] = ["compact", "default", "comfortable", "spacious"];
+
+const accentLabel = (v: ThemeAccent) => t(`docs.theme.accents.${v}`);
+const densityLabel = (v: ThemeDensity) => t(`docs.theme.densities.${v}`);
 
 function set(partial: Partial<typeof theme>) {
   // applyTheme answers with the full theme (auto accents re-pair with the
@@ -82,8 +83,8 @@ function setScene(scene: ThemeScene) {
         variant="ghost"
         size="sm"
         square
-        aria-label="Theme settings"
-        title="Theme settings"
+        :aria-label="t('docs.theme.settings')"
+        :title="t('docs.theme.settings')"
         class="bs-docs-header-theme-settings"
       >
         <Icon name="i-lucide-sliders-horizontal" />
@@ -92,7 +93,7 @@ function setScene(scene: ThemeScene) {
     <Popover.Positioner>
       <Popover.Content class="bs-docs-theme-panel">
         <section>
-          <h3>Scene</h3>
+          <h3>{{ t("docs.theme.scene") }}</h3>
           <RadioGroup.Root
             class="bs-docs-theme-scene-grid"
             orientation="horizontal"
@@ -121,7 +122,7 @@ function setScene(scene: ThemeScene) {
           </RadioGroup.Root>
         </section>
         <section>
-          <h3>Accent</h3>
+          <h3>{{ t("docs.theme.accent") }}</h3>
           <RadioGroup.Root
             class="bs-docs-theme-swatch-row"
             orientation="horizontal"
@@ -130,26 +131,26 @@ function setScene(scene: ThemeScene) {
           >
             <RadioGroup.Item
               v-for="a in accents"
-              :key="a.value"
-              :value="a.value"
+              :key="a"
+              :value="a"
               class="bs-docs-theme-swatch"
-              :title="a.label"
-              :aria-label="a.label"
+              :title="accentLabel(a)"
+              :aria-label="accentLabel(a)"
             >
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemControl />
               <RadioGroup.ItemText />
               <span
                 class="bs-docs-theme-dot"
-                :data-accent="a.value === 'auto' || a.value === 'ink' ? undefined : a.value"
-                :data-swatch="a.value"
-                :data-ink-dot="a.value === 'ink' ? '' : undefined"
+                :data-accent="a === 'auto' || a === 'ink' ? undefined : a"
+                :data-swatch="a"
+                :data-ink-dot="a === 'ink' ? '' : undefined"
               />
             </RadioGroup.Item>
           </RadioGroup.Root>
         </section>
         <section>
-          <h3>Density</h3>
+          <h3>{{ t("docs.theme.density") }}</h3>
           <SegmentGroup.Root
             orientation="horizontal"
             :model-value="theme.density"
@@ -159,7 +160,7 @@ function setScene(scene: ThemeScene) {
             <SegmentGroup.Item v-for="d in densities" :key="d.value" :value="d.value">
               <SegmentGroup.ItemHiddenInput />
               <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemText>{{ d.label }}</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ densityLabel(d.value) }}</SegmentGroup.ItemText>
             </SegmentGroup.Item>
           </SegmentGroup.Root>
         </section>

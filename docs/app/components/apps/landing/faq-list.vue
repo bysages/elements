@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { Accordion } from "@bysages/vue";
 
-import { faqs } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).faq);
 </script>
 
 <template>
   <section id="faq" class="mx-auto max-w-[44rem] scroll-mt-20 px-6 py-14">
     <header class="mb-8">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">FAQ</p>
-      <h2 class="m-0 font-serif text-3xl leading-tight">Asked, answered.</h2>
+      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+      <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
     </header>
 
     <Accordion.Root :default-value="['run']">
-      <Accordion.Item v-for="item in faqs" :key="item.value" :value="item.value">
+      <Accordion.Item v-for="item in copy.items" :key="item.value" :value="item.value">
         <Accordion.ItemTrigger>
           {{ item.question }}
           <Accordion.ItemIndicator>

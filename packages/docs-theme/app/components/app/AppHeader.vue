@@ -42,7 +42,7 @@ const searchOpen = useDocsSearch();
         variant="ghost"
         size="sm"
         square
-        aria-label="Search"
+        :aria-label="t('docs.search')"
         class="bs-docs-header-search"
         @click="searchOpen = true"
       >
@@ -89,13 +89,13 @@ const searchOpen = useDocsSearch();
     <Root :open="menuOpen" @update:open="menuOpen = $event">
       <Backdrop />
       <Positioner>
-        <Content aria-label="Navigation" class="bs-docs-header-drawer">
+        <Content :aria-label="t('docs.navigation')" class="bs-docs-header-drawer">
           <Title>{{ t("docs.menu") }}</Title>
           <!-- The shelf row hides with the header's bottom rail, and the
                theme trigger hides with the rail itself — without these a
                phone reader is stranded in one shelf, unable to reach the
                reference, the examples, or the theme. -->
-          <nav class="bs-docs-header-drawer-sections" aria-label="Sections">
+          <nav class="bs-docs-header-drawer-sections" :aria-label="t('docs.sections')">
             <NuxtLink
               v-for="row in sections"
               :key="row.to"

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { Button, Card } from "@bysages/vue";
 
-import { swatches } from "./data";
+import { resolveLandingCopy } from "./data";
+
+const { locale } = useI18n();
+const copy = computed(() => resolveLandingCopy(locale.value).hero);
 
 // The document's smooth scroll carries plain anchors; the CTAs are real
 // buttons, so they walk the same path by hand.
@@ -17,18 +20,15 @@ function goTo(hash: string) {
   >
     <div>
       <p class="m-0 mb-4 text-xs uppercase tracking-[0.14em] text-tertiary">
-        Songyan Press · a stationery works
+        {{ copy.eyebrow }}
       </p>
       <h1 class="m-0 font-serif text-5xl leading-[1.08] text-balance sm:text-6xl">
-        Paper that answers to the hand.
+        {{ copy.title }}
       </h1>
-      <p class="m-0 mt-5 max-w-[34rem] text-lg text-secondary">
-        Letterpress stationery from a two-press studio in Huizhou — set by hand, inked in twelve
-        house pigments, bound to outlast the inbox it announces.
-      </p>
+      <p class="m-0 mt-5 max-w-[34rem] text-lg text-secondary">{{ copy.lede }}</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <Button @click="goTo('#work')">Browse the work</Button>
-        <Button variant="outline" @click="goTo('#studio')">Meet the inks</Button>
+        <Button @click="goTo('#work')">{{ copy.primaryCta }}</Button>
+        <Button variant="outline" @click="goTo('#studio')">{{ copy.secondaryCta }}</Button>
       </div>
     </div>
 
@@ -36,14 +36,16 @@ function goTo(hash: string) {
          read their pigment from the accent each one declares. -->
     <Card.Root class="w-full max-w-[24rem] justify-self-center">
       <Card.Header>
-        <Card.Description>Ink No. 04 — Qinghua</Card.Description>
+        <Card.Description>{{ copy.specimen.title }}</Card.Description>
       </Card.Header>
       <Card.Content class="flex flex-col items-center gap-6">
-        <span class="font-serif text-[7rem] leading-none" aria-hidden="true">圓</span>
+        <span class="font-serif text-[7rem] leading-none" aria-hidden="true">
+          {{ copy.specimen.glyph }}
+        </span>
         <div class="flex w-full justify-between">
           <div
-            v-for="sw in swatches"
-            :key="sw.name"
+            v-for="sw in copy.specimen.swatches"
+            :key="sw.accent"
             class="flex flex-col items-center gap-2"
             :data-accent="sw.accent"
           >
@@ -53,8 +55,7 @@ function goTo(hash: string) {
         </div>
       </Card.Content>
       <Card.Footer class="justify-between! text-xs text-tertiary">
-        <span>Cobalt ground from lapis</span>
-        <span>Sheets 110–320 gsm</span>
+        <span v-for="note in copy.specimen.notes" :key="note">{{ note }}</span>
       </Card.Footer>
     </Card.Root>
   </section>

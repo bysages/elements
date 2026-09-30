@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useDocsI18n();
 import { NavigationMenu } from "@bysages/vue";
 import { computed, inject, ref, type Ref } from "vue";
 
@@ -30,7 +31,7 @@ const { Root, List } = NavigationMenu;
 </script>
 
 <template>
-  <Root orientation="vertical" aria-label="Documents" class="bs-docs-nav">
+  <Root orientation="vertical" :aria-label="t('docs.documents')" class="bs-docs-nav">
     <List>
       <DocsNavItem v-for="row in rows" :key="row.path ?? row.title" :item="row" />
     </List>

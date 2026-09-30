@@ -1,15 +1,45 @@
 <script setup lang="ts">
 import { Button, User } from "@bysages/vue";
+import { computed } from "vue";
+
+import type { Locale } from "./data";
+
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    sections: "Console sections",
+    settings: "Settings",
+    stops: {
+      Overview: "Overview",
+      Accounts: "Accounts",
+      Billing: "Billing",
+      Reports: "Reports",
+    },
+  },
+  zh: {
+    sections: "控制台栏目",
+    settings: "设置",
+    stops: {
+      Overview: "总览",
+      Accounts: "客户账户",
+      Billing: "账单",
+      Reports: "报表",
+    },
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as Locale]);
 
 const stops = [
-  { label: "Overview", icon: "M3 3v18h18M7 14l4-4 3 3 5-6" },
+  { key: "Overview", icon: "M3 3v18h18M7 14l4-4 3 3 5-6" },
   {
-    label: "Accounts",
+    key: "Accounts",
     icon: "M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM21 21v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75",
   },
-  { label: "Billing", icon: "M2 5h20v14H2zM2 10h20" },
+  { key: "Billing", icon: "M2 5h20v14H2zM2 10h20" },
   {
-    label: "Reports",
+    key: "Reports",
     icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 15h6M9 11h2",
   },
 ];
@@ -36,14 +66,14 @@ function pick(label: string) {
       <span class="text-sm font-semibold">By Sages</span>
     </div>
 
-    <nav class="flex flex-col gap-[2px] px-2" aria-label="Console sections">
+    <nav class="flex flex-col gap-[2px] px-2" :aria-label="text.sections">
       <Button
         v-for="stop in stops"
-        :key="stop.label"
-        :variant="activeStop === stop.label ? 'solid' : 'ghost'"
+        :key="stop.key"
+        :variant="activeStop === stop.key ? 'solid' : 'ghost'"
         class="justify-start!"
-        :aria-current="activeStop === stop.label ? 'page' : undefined"
-        @click="pick(stop.label)"
+        :aria-current="activeStop === stop.key ? 'page' : undefined"
+        @click="pick(stop.key)"
       >
         <svg
           width="16"
@@ -58,7 +88,7 @@ function pick(label: string) {
         >
           <path :d="stop.icon" />
         </svg>
-        {{ stop.label }}
+        {{ text.stops[stop.key as keyof typeof text.stops] }}
       </Button>
     </nav>
 
@@ -84,7 +114,7 @@ function pick(label: string) {
             d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"
           />
         </svg>
-        Settings
+        {{ text.settings }}
       </Button>
 
       <User name="Sage Wei" description="sage@example.com" class="min-w-0 px-2 py-1" />
