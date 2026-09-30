@@ -66,17 +66,22 @@ export const datePickerCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="date-picker"][data-part="trigger"]:hover:not([data-disabled]) {
+[data-scope="date-picker"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible):not([data-state="open"]) {
   border-color: var(--bs-color-border-strong);
 }
 
-/* Open keeps the focus look: the calendar takes focus once the popup is
-   up, so :focus-visible alone would drop the halo the moment it opens. */
-[data-scope="date-picker"][data-part="trigger"]:focus-visible,
-[data-scope="date-picker"][data-part="trigger"][data-state="open"] {
+/* The halo is the keyboard's cursor; open answers with the deepened
+   edge alone — the calendar itself is the pointer's focus, and after an
+   Escape returns focus as a keyboard focus, :focus-visible shows. */
+[data-scope="date-picker"][data-part="trigger"]:focus-visible {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="date-picker"][data-part="trigger"][data-state="open"] {
+  outline: none;
+  border-color: var(--bs-focus-edge);
 }
 
 [data-scope="date-picker"][data-part="trigger"]:active:not([data-disabled]) {
@@ -110,7 +115,7 @@ export const datePickerCss =
     background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="date-picker"][data-part="clear-trigger"]:hover:not([data-disabled]) {
+[data-scope="date-picker"][data-part="clear-trigger"]:hover:not([data-disabled]):not(:focus-visible):not([data-state="open"]) {
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
 }
@@ -181,7 +186,7 @@ export const datePickerCss =
 }
 
 [data-scope="date-picker"][data-part="prev-trigger"]:hover:not([data-disabled]),
-[data-scope="date-picker"][data-part="next-trigger"]:hover:not([data-disabled]) {
+[data-scope="date-picker"][data-part="next-trigger"]:hover:not([data-disabled]):not(:focus-visible):not([data-state="open"]) {
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
 }

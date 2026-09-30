@@ -131,9 +131,9 @@ export const editableCss =
     color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="editable"][data-part="edit-trigger"]:hover:not([data-disabled]),
-[data-scope="editable"][data-part="submit-trigger"]:hover:not([data-disabled]),
-[data-scope="editable"][data-part="cancel-trigger"]:hover:not([data-disabled]) {
+[data-scope="editable"][data-part="edit-trigger"]:hover:not([data-disabled]):not(:focus-visible),
+[data-scope="editable"][data-part="submit-trigger"]:hover:not([data-disabled]):not(:focus-visible),
+[data-scope="editable"][data-part="cancel-trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);

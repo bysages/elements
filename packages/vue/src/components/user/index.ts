@@ -16,7 +16,7 @@ export const User = defineComponent({
     /** The quiet echo beneath the name: a role, a title, an address. */
     description: { type: String, default: undefined },
     /** Seal diameter: one rung of the Avatar's own ladder. */
-    size: { type: String as PropType<AvatarSize>, default: undefined },
+    size: { type: String as PropType<AvatarSize>, default: "md" },
     src: { type: String, default: undefined },
     shape: { type: String as PropType<"circle" | "square">, default: "circle" },
   },

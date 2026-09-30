@@ -42,16 +42,23 @@ export const cascadeSelectCss =
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="cascade-select"][data-part="trigger"]:hover:not(:focus):not(:disabled) {
+[data-scope="cascade-select"][data-part="trigger"]:hover:not(:focus):not(:disabled):not([data-invalid]):not([data-state="open"]) {
   border-color: var(--bs-color-border-strong);
 }
 
-[data-scope="cascade-select"][data-part="trigger"]:focus-visible,
-[data-scope="cascade-select"][data-part="trigger"][data-state="open"] {
+/* The halo is the keyboard's cursor; open answers with the deepened
+   edge alone, so a mouse-opened trigger the pointer has left doesn't
+   wear a full halo. */
+[data-scope="cascade-select"][data-part="trigger"]:focus-visible {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
   transition: none;
+}
+
+[data-scope="cascade-select"][data-part="trigger"][data-state="open"] {
+  outline: none;
+  border-color: var(--bs-focus-edge);
 }
 
 [data-scope="cascade-select"][data-part="trigger"][data-invalid] {

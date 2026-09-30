@@ -18,7 +18,7 @@ export const inputGroupCss = /* css */ `
     box-shadow var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="input-group"][data-part="root"]:hover {
+[data-scope="input-group"][data-part="root"]:hover:not(:focus-within) {
   border-color: var(--bs-color-border-strong);
 }
 

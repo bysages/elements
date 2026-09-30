@@ -186,7 +186,7 @@ export function inputStateCss(scope: string, part = "input"): string {
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="${scope}"][data-part="${part}"]:hover:not([data-disabled]) {
+[data-scope="${scope}"][data-part="${part}"]:hover:not([data-disabled]):not(:focus):not([data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 

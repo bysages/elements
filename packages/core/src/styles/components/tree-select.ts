@@ -33,7 +33,7 @@ export const treeSelectCss =
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="tree-select"][data-part="control"]:hover:not(:focus):not(:disabled) {
+[data-scope="tree-select"][data-part="control"]:hover:not(:focus):not(:disabled):not([data-invalid]):not([data-open]) {
   border-color: var(--bs-color-border-strong);
 }
 

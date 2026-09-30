@@ -26,20 +26,26 @@ export const selectCss =
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
-  box-shadow: var(--bs-shadow-xs);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="select"][data-part="control"]:hover:not([data-disabled]) {
+[data-scope="select"][data-part="control"]:hover:not([data-disabled]):not(:focus-within):not([data-invalid]):not(:has([data-part="trigger"][data-state="open"])) {
   border-color: var(--bs-color-border-strong);
 }
 
-/* Zag moves focus into the list once the select opens, so :focus-within
-   alone drops the halo the moment the popup appears; the open state keeps
-   it lit for as long as the field is being worked. */
-[data-scope="select"][data-part="control"]:focus-within,
+/* The halo rides the whole focused life of the field, pointer or
+   keyboard alike. Opening the list moves the focus into it, so the
+   open state takes the relay — the same ring, continuing without a
+   flicker — instead of dropping it the moment the pointer works the
+   list. */
+[data-scope="select"][data-part="control"]:focus-within {
+  outline: none;
+  border-color: var(--bs-focus-edge);
+  box-shadow: var(--bs-focus-ring);
+}
+
 [data-scope="select"][data-part="control"]:has([data-part="trigger"][data-state="open"]) {
   outline: none;
   border-color: var(--bs-focus-edge);
@@ -48,6 +54,12 @@ export const selectCss =
 
 [data-scope="select"][data-part="control"][data-invalid] {
   border-color: var(--bs-color-danger);
+}
+
+[data-scope="select"][data-part="control"][data-invalid]:focus-within,
+[data-scope="select"][data-part="control"][data-invalid]:has([data-part="trigger"][data-state="open"]) {
+  border-color: var(--bs-color-danger);
+  box-shadow: inset 0 0 0 1px var(--bs-color-danger);
 }
 
 [data-scope="select"][data-part="control"][data-disabled] {
@@ -270,7 +282,7 @@ export const selectCss =
   block-size: var(--bs-control-height-lg);
 }
 
-[data-scope="select"][data-part="native-root"]:hover:not([data-disabled]):not(:focus-within) {
+[data-scope="select"][data-part="native-root"]:hover:not([data-disabled]):not(:focus-within):not([data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -278,7 +290,6 @@ export const selectCss =
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
-  transition: none;
 }
 
 [data-scope="select"][data-part="native-root"][data-invalid] {
@@ -296,6 +307,7 @@ export const selectCss =
 
 [data-scope="select"][data-part="native"] {
   appearance: none;
+  outline: none;
   flex: 1;
   min-inline-size: 0;
   block-size: 100%;

@@ -35,7 +35,7 @@ export const dateInputCss =
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="date-input"][data-part="segment-group"]:hover:not([data-disabled], [data-readonly]) {
+[data-scope="date-input"][data-part="segment-group"]:hover:not([data-disabled], [data-readonly], [data-focus], [data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 

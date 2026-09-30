@@ -1,9 +1,9 @@
 export const avatarCss = /* css */ `
 [data-scope="avatar"][data-part="root"] {
-  /* A seal, not a portrait frame: fixed square, cut to a full circle. It
-     stands as tall as the largest control, so an avatar rides a row of
-     text without stretching it — and scenes retune it for free. */
-  --bs-avatar-size: var(--bs-control-height-lg);
+  /* A seal, not a portrait frame: fixed square, cut to a full circle.
+     The default rides the md rung like every control family, so an
+     avatar sits level with its row — and scenes retune it for free. */
+  --bs-avatar-size: var(--bs-control-height-md);
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
@@ -39,15 +39,20 @@ export const avatarCss = /* css */ `
   font-weight: inherit;
 }
 
-/* Size rungs ride the control heights: the default (large) stands as
-   tall as the biggest control; the smaller rungs let a credit line or a
-   dense toolbar shrink the seal without re-tuning the variable. */
+/* Size rungs ride the control heights: sm/md/lg — the default is the
+   md rung, the lg rung stands as tall as the biggest control, and the
+   smaller one lets a credit line or a dense toolbar shrink the seal
+   without re-tuning the variable. */
 [data-scope="avatar"][data-part="root"][data-size="sm"] {
   --bs-avatar-size: var(--bs-control-height-sm);
 }
 
 [data-scope="avatar"][data-part="root"][data-size="md"] {
   --bs-avatar-size: var(--bs-control-height-md);
+}
+
+[data-scope="avatar"][data-part="root"][data-size="lg"] {
+  --bs-avatar-size: var(--bs-control-height-lg);
 }
 
 

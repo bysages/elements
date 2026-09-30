@@ -37,7 +37,7 @@ export const fileUploadCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="file-upload"][data-part="trigger"]:hover:not([data-disabled]) {
+[data-scope="file-upload"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -84,7 +84,7 @@ export const fileUploadCss =
     color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="file-upload"][data-part="clear-trigger"]:hover:not([data-disabled]) {
+[data-scope="file-upload"][data-part="clear-trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -127,7 +127,7 @@ export const fileUploadCss =
     background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="file-upload"][data-part="dropzone"]:hover:not([data-disabled]) {
+[data-scope="file-upload"][data-part="dropzone"]:hover:not([data-disabled]):not([data-dragging]):not([data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 

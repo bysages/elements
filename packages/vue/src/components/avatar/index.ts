@@ -12,10 +12,10 @@ export type AvatarSize = "sm" | "md" | "lg";
 const AvatarRoot = defineComponent({
   name: "SAvatarRoot",
   props: {
-    /** Seal diameter: one rung of the control-height ladder. The
-     * default stands as tall as the biggest control, so an avatar
-     * rides a row without stretching it. */
-    size: { type: String as PropType<AvatarSize>, default: undefined },
+    /** Seal diameter: one rung of the control-height ladder — the
+     * default is the md rung, level with the other control families,
+     * so an avatar rides a row without stretching it. */
+    size: { type: String as PropType<AvatarSize>, default: "md" },
     /** The corner: round by default; square cuts it sharp, a stamp
      * beside a round portrait. */
     shape: { type: String as PropType<"circle" | "square">, default: "circle" },

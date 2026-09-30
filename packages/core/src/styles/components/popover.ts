@@ -64,13 +64,18 @@ export const popoverCss =
   box-shadow: none;
 }
 
-/* Open keeps the focus look: Zag hands focus to the popover itself, so
-   :focus-visible alone would drop the halo the moment it opens. */
-[data-scope="popover"][data-part="trigger"]:focus-visible,
-[data-scope="popover"][data-part="trigger"][data-state="open"] {
+/* The halo is the keyboard's cursor; open answers with the deepened
+   edge alone — the popover itself is the pointer's focus, and after an
+   Escape returns focus as a keyboard focus, :focus-visible shows. */
+[data-scope="popover"][data-part="trigger"]:focus-visible {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="popover"][data-part="trigger"][data-state="open"] {
+  outline: none;
+  border-color: var(--bs-focus-edge);
 }
 
 [data-scope="popover"][data-part="trigger"][data-disabled] {

@@ -51,7 +51,7 @@ export const colorPickerCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="color-picker"][data-part="trigger"]:hover:not([data-disabled]) {
+[data-scope="color-picker"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -206,7 +206,7 @@ export const colorPickerCss =
   appearance: none;
 }
 
-[data-scope="color-picker"][data-part="channel-input"]:hover {
+[data-scope="color-picker"][data-part="channel-input"]:hover:not(:focus) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -319,7 +319,7 @@ export const colorPickerCss =
   block-size: var(--bs-font-size-md);
 }
 
-[data-scope="color-picker"][data-part="eye-dropper-trigger"]:hover:not([data-disabled]) {
+[data-scope="color-picker"][data-part="eye-dropper-trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
   color: var(--bs-color-text-primary);
 }
@@ -363,7 +363,7 @@ export const colorPickerCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="color-picker"][data-part="format-trigger"]:hover:not([data-disabled]) {
+[data-scope="color-picker"][data-part="format-trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
 }
 

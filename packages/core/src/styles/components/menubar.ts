@@ -35,14 +35,21 @@ export const menubarCss = /* css */ `
   color: var(--bs-color-text-primary);
 }
 
-/* Open keeps the focus look: the machine hands focus into the menu, so
-   :focus-visible alone would drop the halo the moment it opens. */
-[data-scope="menubar"][data-part="trigger"]:focus-visible,
-[data-scope="menubar"][data-part="trigger"][data-state="open"] {
+/* The halo is the keyboard's cursor; open keeps the raised face and the
+   deepened edge alone — the open menu itself is the pointer's focus,
+   and after an Escape returns focus as a keyboard focus,
+   :focus-visible shows. */
+[data-scope="menubar"][data-part="trigger"]:focus-visible {
   outline: none;
   background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="menubar"][data-part="trigger"][data-state="open"] {
+  outline: none;
+  background: var(--bs-color-surface-0);
+  color: var(--bs-color-text-primary);
 }
 
 /* The popup keeps the menu parts and the menu stylesheet; only the

@@ -274,13 +274,20 @@ export const buttonCss = /* css */ `
   background: var(--_fill-hover);
 }
 
-/* Open keeps the focus look: Zag hands focus to the overlay itself, so
-   :focus-visible alone would drop the halo the moment it opens. */
-[data-scope][data-part="trigger"][data-variant]:focus-visible,
-[data-scope][data-part="trigger"][data-variant][data-state="open"] {
+/* The halo is the keyboard's cursor, so it waits for :focus-visible.
+   Open answers with the deepened edge alone: a mouse-opened trigger the
+   pointer has left keeps its "this one is open" edge without wearing a
+   full halo, and after an Escape hands focus back as a visible keyboard
+   focus — which :focus-visible then shows. */
+[data-scope][data-part="trigger"][data-variant]:focus-visible {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope][data-part="trigger"][data-variant][data-state="open"] {
+  outline: none;
+  border-color: var(--bs-focus-edge);
 }
 
 [data-scope][data-part="trigger"][data-variant]:active:not(:disabled) {

@@ -58,7 +58,7 @@ export const clipboardCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="clipboard"][data-part="trigger"]:hover:not([data-disabled]) {
+[data-scope="clipboard"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
   color: var(--bs-color-text-primary);
 }

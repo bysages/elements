@@ -479,7 +479,6 @@
   --bs-light-y: 0px;
   --bs-light-reach: 0.6;
   --bs-ripple-opacity: 0;
-  --bs-color-focus: oklch(0.218 0 0);
   --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
   --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
   --bs-font-serif: var(--bs-font-sans);
@@ -515,7 +514,6 @@
   --bs-light-y: 0px;
   --bs-light-reach: 0.6;
   --bs-ripple-opacity: 0;
-  --bs-color-focus: oklch(0.218 0 0);
   --bs-focus-ring: inset 0 0 0 2px var(--bs-color-focus);
   --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
   --bs-font-serif: var(--bs-font-sans);
@@ -556,8 +554,8 @@
   --bs-light-reach: 0.55;
   --bs-ripple-opacity: 0;
   --bs-color-focus: var(--bs-color-primary);
-  --bs-focus-ring: 0 0 0 2px color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
-  --bs-focus-ring-inset: inset 0 0 0 2px color-mix(in oklab, var(--bs-color-focus) 16%, transparent);
+  --bs-focus-ring: 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
 }
 
 /* The everyday stocks: missive's pages sit on the deep gray ground
@@ -681,7 +679,7 @@
   --bs-color-surface-3: oklch(1 0 0);
   --bs-color-surface-4: oklch(1 0 0);
   --bs-color-surface-5: oklch(1 0 0);
-  --bs-color-text-primary: oklch(0.185 0.004 286);
+  --bs-color-text-primary: oklch(0.141 0.005 286);
   --bs-color-text-secondary: oklch(0.552 0.016 286);
   --bs-color-text-tertiary: oklch(0.705 0.015 286);
   --bs-color-text-disabled: oklch(0.79 0.008 286);
@@ -704,7 +702,7 @@
   --bs-color-surface-3: oklch(0.24 0.006 286);
   --bs-color-surface-4: oklch(0.27 0.006 286);
   --bs-color-surface-5: oklch(0.3 0.007 286);
-  --bs-color-text-primary: oklch(0.97 0.002 286);
+  --bs-color-text-primary: oklch(0.985 0 286);
   --bs-color-text-secondary: oklch(0.65 0.012 286);
   --bs-color-text-tertiary: oklch(0.55 0.012 286);
   --bs-color-text-disabled: oklch(0.4 0.008 286);

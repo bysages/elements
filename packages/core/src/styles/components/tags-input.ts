@@ -33,7 +33,7 @@ export const tagsInputCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="tags-input"][data-part="control"]:hover:not([data-disabled]) {
+[data-scope="tags-input"][data-part="control"]:hover:not([data-disabled]):not(:focus-within):not([data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 
@@ -157,7 +157,7 @@ export const tagsInputCss =
 }
 
 [data-scope="tags-input"][data-part="item-delete-trigger"]:hover:not([data-disabled]),
-[data-scope="tags-input"][data-part="clear-trigger"]:hover:not([data-disabled]) {
+[data-scope="tags-input"][data-part="clear-trigger"]:hover:not([data-disabled]):not(:focus-within):not([data-invalid]) {
   background: var(--bs-color-surface-inset);
   color: var(--bs-color-text-primary);
 }

@@ -57,7 +57,7 @@ export const fieldControlCss = /* css */ `
    pigment hairline never trades places with the hover shade. */
 [data-scope="field"][data-part="input"]:hover:not(:disabled):not(:focus),
 [data-scope="field"][data-part="textarea"]:hover:not(:disabled):not(:focus),
-[data-scope="field"][data-part="select"]:hover:not(:disabled):not(:focus) {
+[data-scope="field"][data-part="select"]:hover:not(:disabled):not(:focus):not([data-invalid]) {
   border-color: var(--bs-color-border-strong);
 }
 

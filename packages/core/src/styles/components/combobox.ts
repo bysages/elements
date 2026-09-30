@@ -61,7 +61,7 @@ export const comboboxCss =
     box-shadow 220ms var(--bs-ease-out);
 }
 
-[data-scope="combobox"][data-part="trigger"]:hover:not([data-disabled]),
+[data-scope="combobox"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible),
 [data-scope="combobox"][data-part="clear-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
 }

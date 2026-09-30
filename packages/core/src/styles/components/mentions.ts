@@ -30,7 +30,7 @@ export const mentionsCss = /* css */ `
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="mentions"][data-part="textarea"]:hover:not([disabled], [readonly]) {
+[data-scope="mentions"][data-part="textarea"]:hover:not([disabled], [readonly], :focus) {
   border-color: var(--bs-color-border-strong);
 }
 
