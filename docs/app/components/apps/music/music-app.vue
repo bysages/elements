@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Card, NavigationMenu, Slider } from "@bysages/vue";
+import { Button, Card, List, NavigationMenu, Slider } from "@bysages/vue";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
 const { locale } = useI18n();
@@ -174,19 +174,41 @@ watch(albumIndex, () => {
         </p>
         <h3 class="m-0 mt-1 font-serif text-2xl">{{ album.title[locale] }}</h3>
         <p class="m-0 mb-3 text-sm text-tertiary">{{ album.artist[locale] }}</p>
-        <ul class="m-0 list-none p-0">
-          <li v-for="(t, i) in album.tracks" :key="i">
-            <button
-              class="flex w-full items-center gap-3 border-b border-border px-2 py-2.5 text-left no-underline transition-colors last:border-b-0 hover:bg-surface-1"
-              :class="i === trackIndex ? 'bg-surface-1 font-medium text-primary' : ''"
-              @click="openTrack(albumIndex, i)"
-            >
+        <List.Root bordered hoverable>
+          <List.Item
+            v-for="(t, i) in album.tracks"
+            :key="i"
+            role="button"
+            tabindex="0"
+            :aria-current="i === trackIndex ? 'true' : undefined"
+            class="cursor-pointer"
+            :class="i === trackIndex ? 'bg-surface-1' : ''"
+            @click="openTrack(albumIndex, i)"
+            @keydown.enter.prevent="openTrack(albumIndex, i)"
+            @keydown.space.prevent="openTrack(albumIndex, i)"
+          >
+            <List.Leading>
               <span class="w-4 text-xs tabular-nums text-tertiary">{{ i + 1 }}</span>
-              <span class="min-w-0 flex-1 truncate text-sm">{{ t.title[locale] }}</span>
+            </List.Leading>
+            <List.Content>
+              <template #title>
+                <span
+                  class="truncate text-sm"
+                  :class="i === trackIndex ? 'font-medium text-primary' : ''"
+                  >{{ t.title[locale] }}</span
+                >
+              </template>
+            </List.Content>
+            <List.Actions>
+              <Icon
+                v-if="i === trackIndex && playing"
+                name="i-lucide-volume-2"
+                class="text-primary"
+              />
               <span class="text-xs tabular-nums text-tertiary">{{ fmt(t.length) }}</span>
-            </button>
-          </li>
-        </ul>
+            </List.Actions>
+          </List.Item>
+        </List.Root>
       </div>
 
       <!-- Now playing: the turntable face. -->
