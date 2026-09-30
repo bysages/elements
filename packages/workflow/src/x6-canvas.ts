@@ -1,6 +1,7 @@
 import { Graph, History, Keyboard, MiniMap, Selection, Shape } from "@antv/x6";
 import type { Cell, EdgeMetadata, NodeMetadata } from "@antv/x6";
 import { injectComponentStyle } from "@bysages/core";
+import type { LayoutOptions } from "elkjs/lib/elk.bundled.js";
 
 import { createWorkflowStore } from "./store";
 import type { WorkflowChange, WorkflowStore } from "./store";
@@ -13,6 +14,11 @@ import type { NodeState, WorkflowEdge, WorkflowGraph, WorkflowNode } from "./typ
  * handles on the bottom, in handles on top. */
 export interface WorkflowAutoLayoutOptions {
   direction?: "TB" | "LR" | "BT" | "RL";
+  /** The ELK algorithm id — layered by default; org.eclipse.elk.mrtree
+   * sweeps the same graph as a tree. The vocabulary belongs to ELK's own
+   * option table, so the field reads its type from there instead of
+   * closing over a hand-written union. */
+  algorithm?: LayoutOptions["elk.algorithm"];
   /** The gap between layers, in px. */
   rankSep?: number;
   /** The gap between siblings on one layer, in px. */
@@ -29,6 +35,10 @@ export interface WorkflowCanvasOptions {
   onReady?: (graph: Graph) => void;
   /** Renders a live minimap into the given element. */
   minimap?: { container: HTMLElement };
+  /** Which way the flow reads — the edge the first in/out handles sit
+   * on follows it, and an unspecified layout direction inherits it.
+   * Vertical stays the default: every existing graph keeps its anatomy. */
+  orientation?: "TB" | "LR";
 }
 
 /** Viewport options for fitView. X6's own fit options are accepted in
@@ -50,7 +60,7 @@ export interface WorkflowCanvas {
   /** Frames the whole graph. Defaults to what a toolbar wants: a
    * breathing margin and no magnifying past 100%. */
   fitView(options?: WorkflowFitViewOptions): void;
-  /** Sweeps the graph with the ELK layered algorithm and writes every
+  /** Sweeps the graph with the chosen ELK algorithm and writes every
    * node's new position back through the store. Async: the layout
    * engine is heavy, so it's pulled in only when this runs. */
   layout(options?: WorkflowAutoLayoutOptions): Promise<void>;
@@ -154,12 +164,20 @@ export function createWorkflowCanvas(
     },
   });
 
-  const portGroups = {
-    in: sideGroup("top", "in"),
-    "in-alt": sideGroup("left", "in"),
-    out: sideGroup("bottom", "out"),
-    "out-alt": sideGroup("right", "out"),
-  };
+  const portGroups =
+    options.orientation === "LR"
+      ? {
+          in: sideGroup("left", "in"),
+          "in-alt": sideGroup("top", "in"),
+          out: sideGroup("right", "out"),
+          "out-alt": sideGroup("bottom", "out"),
+        }
+      : {
+          in: sideGroup("top", "in"),
+          "in-alt": sideGroup("left", "in"),
+          out: sideGroup("bottom", "out"),
+          "out-alt": sideGroup("right", "out"),
+        };
 
   const edgeAttrs = {
     line: {
@@ -304,6 +322,34 @@ export function createWorkflowCanvas(
         width: 200,
         height: 140,
         padding: 8,
+        // A zero-sized resize (the host unmounting under the observer)
+        // divides the paper ratio into Infinity, and 0 * Infinity lands a
+        // NaN in the SVG matrix. The paper never means to move or size
+        // itself non-finitely, so those calls fall through.
+        createGraph: (paperOptions) => {
+          const paper = new Graph(paperOptions);
+          // A zero-sized resize (the host unmounting under the observer)
+          // divides the paper ratio into Infinity, and 0 * Infinity lands a
+          // NaN in the SVG matrix. The paper never means to move or size
+          // itself non-finitely, so those calls fall through; the
+          // argument-less translate reads the current offset and passes
+          // through.
+          const translate = paper.translate.bind(paper) as (tx: number, ty: number) => Graph;
+          const readTranslate = paper.translate.bind(paper) as unknown as () => Graph;
+          paper.translate = ((tx?: number, ty?: number) => {
+            if (tx === undefined && ty === undefined) return readTranslate();
+            return tx !== undefined &&
+              ty !== undefined &&
+              Number.isFinite(tx) &&
+              Number.isFinite(ty)
+              ? translate(tx, ty)
+              : paper;
+          }) as typeof paper.translate;
+          const resize = paper.resize.bind(paper);
+          paper.resize = (width?: number, height?: number) =>
+            Number.isFinite(width) && Number.isFinite(height) ? resize(width!, height!) : paper;
+          return paper;
+        },
       }),
     );
   }
@@ -313,7 +359,13 @@ export function createWorkflowCanvas(
   // The canvas follows the host's box: observe the container, size the
   // SVG, never write the container back. A container that changes size
   // without a window resize (a sidebar toggle) still reaches us.
-  const followHost = () => graph.resize(container.clientWidth, container.clientHeight);
+  // A hidden host reads 0x0 — writing that size pins the SVG's inline
+  // style to zero, and a restored host can never grow back from it. Skip
+  // the collapse; the real size lands when the host shows again.
+  const followHost = () => {
+    if (container.clientWidth === 0 || container.clientHeight === 0) return;
+    graph.resize(container.clientWidth, container.clientHeight);
+  };
   followHost();
   const hostResize = new ResizeObserver(followHost);
   hostResize.observe(container);
@@ -461,6 +513,7 @@ export function createWorkflowCanvas(
   // endpoints sit on; vertical wins ties — the first in/out pair tops
   // and bottoms the node, so the anatomy's default stays the default.
   const inferDirection = (): "TB" | "LR" => {
+    if (options.orientation) return options.orientation;
     const sideOf = (nodeId: string, portId: string, dir: "in" | "out") => {
       const node = store.getNode(nodeId);
       if (!node) return dir === "in" ? "top" : "bottom";
@@ -494,13 +547,14 @@ export function createWorkflowCanvas(
     const direction = options?.direction ?? inferDirection();
     const rankSep = options?.rankSep ?? 80;
     const nodeSep = options?.nodeSep ?? 40;
+    const algorithm = options?.algorithm ?? "layered";
     elkLoader ??= import("elkjs/lib/elk.bundled.js").then(({ default: ELK }) => new ELK());
     const elk = await elkLoader;
     const { nodes, edges } = store.getGraph();
     const result = await elk.layout({
       id: "workflow",
       layoutOptions: {
-        "elk.algorithm": "layered",
+        "elk.algorithm": algorithm,
         "elk.direction": { TB: "DOWN", LR: "RIGHT", BT: "UP", RL: "LEFT" }[direction],
         "elk.spacing.nodeNode": String(nodeSep),
         "elk.layered.spacing.nodeNodeBetweenLayers": String(rankSep),

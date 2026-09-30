@@ -2,7 +2,12 @@ import { AiPromptInput, AiTool, Button } from "@bysages/vue";
 import type { Meta } from "@storybook/vue3-vite";
 import { createApp, defineComponent, h, onBeforeUnmount, onMounted, ref } from "vue";
 
-import { createWorkflowCanvas, createWorkflowStore } from "../index";
+import {
+  createWorkflowCanvas,
+  createWorkflowStore,
+  graphToOutline,
+  outlineToGraph,
+} from "../index";
 import type {
   NodeState,
   WorkflowCanvas,
@@ -326,4 +331,98 @@ export const Run = {
  * told to. */
 export const Flow = {
   render: () => h(Demo, { flow: true }),
+};
+
+/** The whole input is an outline: headings and nested lists become the
+ * tree, a json fence rides along as its section's payload, and the mrtree
+ * sweep hands out the geometry — root on the left, branches growing
+ * right. */
+const outline = `
+# Paper & Ink
+
+## Design language
+- Surfaces rest in ambient shade
+- Ink is the only hierarchy
+
+## Tokens
+- Spacing
+  - Semantic tiers
+  - Raw ramp
+- Elevation
+
+\`\`\`json
+{ "spacing": 8, "elevation": 5 }
+\`\`\`
+
+## Lighting
+- Source model
+- Pigment bleed
+`.trim();
+
+const MindmapDemo = defineComponent({
+  name: "WorkflowMindmapDemo",
+  setup() {
+    const host = ref<HTMLElement | null>(null);
+    let canvas: WorkflowCanvas | null = null;
+
+    onMounted(() => {
+      if (!host.value) return;
+      canvas = createWorkflowCanvas(host.value, createWorkflowStore(outlineToGraph(outline)), {
+        orientation: "LR",
+        renderNode: (card, node) => {
+          const label = document.createElement("span");
+          label.textContent = typeof node.data.label === "string" ? node.data.label : node.id;
+          card.append(label);
+          if (node.data.payload !== undefined) {
+            const note = document.createElement("span");
+            note.style.fontSize = "var(--bs-font-size-xs)";
+            note.style.color = "var(--bs-color-text-tertiary)";
+            note.textContent = JSON.stringify(node.data.payload);
+            card.append(note);
+          }
+        },
+      });
+      void canvas
+        .layout({ algorithm: "org.eclipse.elk.mrtree", direction: "LR" })
+        .then(() => canvas?.fitView());
+      // Double-click grows a branch — the store primitives carry the
+      // whole edit, the sweep re-hands the geometry, and the outline
+      // folds back out of the live graph.
+      canvas.graph.on("node:dblclick", ({ node }) => {
+        if (!canvas) return;
+        const id = `grown-${graphToOutline(canvas.store.getGraph()).length}`;
+        canvas.store.addNode({
+          id,
+          type: "mindmap",
+          position: { x: 0, y: 0 },
+          ports: [
+            { id: "in", dir: "in" },
+            { id: "out", dir: "out" },
+          ],
+          data: { label: "New branch" },
+        });
+        canvas.store.connect({
+          source: { node: node.id, port: "out" },
+          target: { node: id, port: "in" },
+        });
+        void canvas.layout({ algorithm: "org.eclipse.elk.mrtree", direction: "LR" });
+      });
+    });
+
+    onBeforeUnmount(() => {
+      canvas?.destroy();
+    });
+
+    return () =>
+      h("div", {
+        ref: host,
+        style: { position: "relative", inlineSize: "100%", blockSize: "36rem" },
+      });
+  },
+});
+
+/** An outline in, a tree out: the bridge parses the markdown, the mrtree
+ * sweep lays it, the canvas stays fully interactive. */
+export const Mindmap = {
+  render: () => h(MindmapDemo),
 };
