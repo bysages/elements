@@ -1,5 +1,20 @@
 <script setup lang="ts">
 import LoginForm from "./login-form.vue";
+
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    brand: "Songyan Press",
+    slogan: "Light as shadow; paper as vessel.",
+    sub: "A Huizhou letter room at work — ink in twelve colors, paper at three hundred twenty grams.",
+  },
+  zh: {
+    brand: "松烟印坊",
+    slogan: "以光为影，以纸为器。",
+    sub: "一间徽州印坊的工作台——墨有十二色，纸有三百二十克。",
+  },
+} as const;
 </script>
 
 <template>
@@ -14,11 +29,15 @@ import LoginForm from "./login-form.vue";
           aria-hidden="true"
           >S</span
         >
-        <span class="text-sm font-semibold">松烟印坊</span>
+        <span class="text-sm font-semibold">{{ copy[locale as "en" | "zh"].brand }}</span>
       </div>
       <div class="grid gap-3">
-        <p class="m-0 font-serif text-3xl leading-snug text-balance">以光为影，以纸为器。</p>
-        <p class="m-0 text-sm opacity-80">一间徽州印坊的工作台——墨有十二色，纸有三百二十克。</p>
+        <p class="m-0 font-serif text-3xl leading-snug text-balance">
+          {{ copy[locale as "en" | "zh"].slogan }}
+        </p>
+        <p class="m-0 text-sm opacity-80">
+          {{ copy[locale as "en" | "zh"].sub }}
+        </p>
       </div>
       <p class="m-0 text-xs opacity-60">Songyan Press · Huizhou</p>
     </div>

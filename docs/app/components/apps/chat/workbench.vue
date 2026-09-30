@@ -9,9 +9,24 @@ import {
   AiTool,
   Badge,
 } from "@bysages/vue";
-import { nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from "vue";
 
-import { FALLBACK_SUGGESTIONS, GREETING, SCRIPTS } from "./data";
+const { locale } = useI18n();
+
+import { FALLBACK_SUGGESTIONS, FALLBACK_TEXT, GREETING, SCRIPTS } from "./data";
+
+const copy = {
+  en: {
+    conversation: "Conversation",
+    thinking: "Thinking",
+    simulated: "Simulated — no network",
+  },
+  zh: {
+    conversation: "对话",
+    thinking: "思考中",
+    simulated: "本地模拟——不联网",
+  },
+} as const;
 
 interface ChatEntry {
   id: string;
@@ -25,11 +40,18 @@ interface ChatEntry {
 
 // The greeting is a constant: the transcript renders identically during
 // prerender, hydration, and any later visit.
-const entries = ref<ChatEntry[]>([{ id: "m0", role: "assistant", content: GREETING }]);
+const entries = ref<ChatEntry[]>([
+  {
+    id: "m0",
+    role: "assistant",
+    content: GREETING[locale.value as "en" | "zh"],
+  },
+]);
 
+const text = computed(() => copy[locale.value as "en" | "zh"]);
 const prompt = ref("");
 const busy = ref(false);
-const suggestions = ref<string[]>(FALLBACK_SUGGESTIONS);
+const suggestions = ref<string[]>(FALLBACK_SUGGESTIONS[locale.value as "en" | "zh"]);
 
 const logEl = ref<HTMLElement | null>(null);
 
@@ -49,20 +71,24 @@ function abort() {
   }
 }
 
-function finish(entry: ChatEntry, suggestions: string[]) {
+function finish(entry: ChatEntry, next: string[]) {
   entry.streaming = false;
   busy.value = false;
-  suggestions.value = suggestions;
+  suggestions.value = next;
 }
 
+// CJK streams one character at a time; latin keeps its words — the
+// splitter carries each run's own spacing so the join is the text.
 function streamText(entry: ChatEntry, text: string, suggestions: string[]) {
-  const words = text.split(" ");
+  const parts = text.match(
+    /[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]|[^\s\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]+\s*|\s+/g,
+  ) ?? [text];
   let index = 0;
   entry.streaming = true;
   timer = setInterval(() => {
-    entry.content += (index > 0 ? " " : "") + words[index];
+    entry.content += parts[index];
     index += 1;
-    if (index >= words.length) {
+    if (index >= parts.length) {
       if (timer) clearInterval(timer);
       timer = null;
       finish(entry, suggestions);
@@ -83,21 +109,28 @@ function send(value: string) {
     null;
 
   entryCounter += 1;
-  const reply: ChatEntry = {
+  // The entry must be a proxy of its own: the streamer writes content
+  // in place, and only a reactive write wakes the transcript render.
+  const reply = reactive<ChatEntry>({
     id: `m${entryCounter}`,
     role: "assistant",
     content: "",
-    reasoning: script?.reasoning,
+    reasoning: script?.reasoning?.[locale.value as "en" | "zh"],
     tool: script?.tool,
     toolStatus: script?.tool ? "pending" : undefined,
     streaming: true,
-  };
+  });
   entries.value.push(reply);
   busy.value = true;
   suggestions.value = [];
 
+  const lang = locale.value as "en" | "zh";
   const startText = () =>
-    streamText(reply, script?.text ?? FALLBACK_TEXT, script?.suggestions ?? FALLBACK_SUGGESTIONS);
+    streamText(
+      reply,
+      script?.text[lang] ?? FALLBACK_TEXT[lang],
+      script?.suggestions[lang] ?? FALLBACK_SUGGESTIONS[lang],
+    );
 
   if (reply.tool) {
     const tool = reply.tool;
@@ -113,10 +146,6 @@ function send(value: string) {
     startText();
   }
 }
-
-const FALLBACK_TEXT =
-  "There is no documentation on that yet. The shelves cover the design system's tokens, components, " +
-  "and workflows — try asking about theming, density, or any component family.";
 
 // Keep the newest stroke in view as the transcript grows.
 watch(
@@ -137,7 +166,7 @@ onBeforeUnmount(abort);
     <div
       ref="logEl"
       class="max-h-[min(60dvh,40rem)] overflow-y-auto bg-surface p-5"
-      aria-label="Conversation"
+      :aria-label="text.conversation"
     >
       <Ai.Conversation>
         <template v-for="entry in entries" :key="entry.id">
@@ -156,11 +185,11 @@ onBeforeUnmount(abort);
                 entry.tool.output
               }}</template>
             </AiTool>
-            <Ai.Reasoning v-if="entry.reasoning" label="Thinking">
+            <Ai.Reasoning v-if="entry.reasoning" :label="text.thinking">
               {{ entry.reasoning }}
             </Ai.Reasoning>
             <AiResponse v-if="entry.content" :content="entry.content" />
-            <AiLoader v-else-if="entry.streaming">Thinking</AiLoader>
+            <AiLoader v-else-if="entry.streaming">{{ text.thinking }}</AiLoader>
           </Ai.Message>
         </template>
       </Ai.Conversation>
@@ -177,7 +206,7 @@ onBeforeUnmount(abort);
 
     <AiPromptInput v-model="prompt" :busy="busy" @submit="send" @stop="abort">
       <template #footer>
-        <Badge tone="ink" variant="outline">Simulated — no network</Badge>
+        <Badge tone="ink" variant="outline">{{ text.simulated }}</Badge>
       </template>
     </AiPromptInput>
   </div>

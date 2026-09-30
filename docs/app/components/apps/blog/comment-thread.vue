@@ -1,6 +1,31 @@
 <script setup lang="ts">
 import { Avatar, Button, Comment, Input } from "@bysages/vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    section: "Comments",
+    comments: "Comments",
+    placeholder: "Add a comment…",
+    addLabel: "Add a comment",
+    post: "Post",
+    you: "You",
+    justNow: "Just now",
+  },
+  zh: {
+    section: "评论",
+    comments: "评论",
+    placeholder: "写一条评论…",
+    addLabel: "写评论",
+    post: "发布",
+    you: "我",
+    justNow: "刚刚",
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as "en" | "zh"]);
 
 import type { PostComment } from "./data";
 
@@ -20,9 +45,9 @@ function submitReply() {
   replyCounter += 1;
   replies.value.push({
     id: `reply-${replyCounter}`,
-    author: "You",
+    author: text.value.you,
     initials: "YO",
-    datetime: "Just now",
+    datetime: text.value.justNow,
     body,
   });
   draft.value = "";
@@ -30,12 +55,12 @@ function submitReply() {
 </script>
 
 <template>
-  <section class="mt-9" aria-label="Comments">
-    <h2 class="m-0 mb-5 font-serif text-xl">Comments</h2>
+  <section class="mt-9" :aria-label="text.section">
+    <h2 class="m-0 mb-5 font-serif text-xl">{{ text.comments }}</h2>
 
     <div class="grid gap-5">
       <div v-for="comment in comments" :key="comment.id">
-        <Comment :author="comment.author" :datetime="comment.datetime">
+        <Comment :author="comment.author" :datetime="comment.datetime[locale]">
           <template #avatar>
             <Avatar.Root>
               <Avatar.Fallback>{{ comment.initials }}</Avatar.Fallback>
@@ -44,7 +69,7 @@ function submitReply() {
           {{ comment.body }}
         </Comment>
         <div v-for="reply in comment.replies ?? []" :key="reply.id" class="mt-3 ps-8">
-          <Comment :author="reply.author" :datetime="reply.datetime">
+          <Comment :author="reply.author" :datetime="reply.datetime[locale]">
             <template #avatar>
               <Avatar.Root>
                 <Avatar.Fallback>{{ reply.initials }}</Avatar.Fallback>
@@ -56,7 +81,7 @@ function submitReply() {
       </div>
 
       <div v-for="reply in replies" :key="reply.id">
-        <Comment :author="reply.author" :datetime="reply.datetime">
+        <Comment :author="reply.author" :datetime="reply.datetime[locale]">
           <template #avatar>
             <Avatar.Root>
               <Avatar.Fallback>{{ reply.initials }}</Avatar.Fallback>
@@ -71,10 +96,10 @@ function submitReply() {
       <Input
         v-model="draft"
         class="flex-1"
-        placeholder="Add a comment…"
-        aria-label="Add a comment"
+        :placeholder="text.placeholder"
+        :aria-label="text.addLabel"
       />
-      <Button type="submit">Post</Button>
+      <Button type="submit">{{ text.post }}</Button>
     </form>
   </section>
 </template>

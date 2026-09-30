@@ -2,6 +2,33 @@
 import { Badge, Button, Empty, Pagination } from "@bysages/vue";
 import { computed } from "vue";
 
+import { tagLabel } from "./data";
+
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    all: "All",
+    filter: "Filter by tag",
+    emptyTitle: "Nothing under this tag yet.",
+    emptyBody: "The shelf fills as the ink dries.",
+    clear: "Clear the filter",
+    prev: "Previous page",
+    next: "Next page",
+  },
+  zh: {
+    all: "全部",
+    filter: "按标签筛选",
+    emptyTitle: "这个标签下还没有文章。",
+    emptyBody: "等墨干透，架子自然会满。",
+    clear: "清除筛选",
+    prev: "上一页",
+    next: "下一页",
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as "en" | "zh"]);
+
 import type { Post } from "./data";
 import PostCard from "./post-card.vue";
 
@@ -40,15 +67,14 @@ function toggleTag(tag: string) {
 
 <template>
   <div class="grid gap-6">
-    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by tag">
+    <div class="flex flex-wrap gap-2" role="group" :aria-label="text.filter">
       <Button
         :variant="!activeTag ? 'solid' : 'ghost'"
         size="sm"
         :aria-pressed="!activeTag"
         @click="emit('update:activeTag', null)"
+        >{{ text.all }}</Button
       >
-        All
-      </Button>
       <Button
         v-for="tag in tags"
         :key="tag"
@@ -56,9 +82,8 @@ function toggleTag(tag: string) {
         size="sm"
         :aria-pressed="activeTag === tag"
         @click="toggleTag(tag)"
+        >{{ tagLabel(tag)[locale] }}</Button
       >
-        {{ tag }}
-      </Button>
     </div>
 
     <div
@@ -69,12 +94,12 @@ function toggleTag(tag: string) {
     </div>
 
     <Empty.Root v-else class="py-16">
-      <Empty.Title>Nothing under this tag yet.</Empty.Title>
-      <Empty.Description>The shelf fills as the ink dries.</Empty.Description>
+      <Empty.Title>{{ text.emptyTitle }}</Empty.Title>
+      <Empty.Description>{{ text.emptyBody }}</Empty.Description>
       <Empty.Actions>
-        <Button variant="outline" size="sm" @click="emit('update:activeTag', null)">
-          Clear the filter
-        </Button>
+        <Button variant="outline" size="sm" @click="emit('update:activeTag', null)">{{
+          text.clear
+        }}</Button>
       </Empty.Actions>
     </Empty.Root>
 
@@ -85,7 +110,7 @@ function toggleTag(tag: string) {
         :page="page"
         @update:page="emit('update:page', $event)"
       >
-        <Pagination.PrevTrigger aria-label="Previous page">
+        <Pagination.PrevTrigger :aria-label="text.prev">
           <svg
             width="14"
             height="14"
@@ -106,7 +131,7 @@ function toggleTag(tag: string) {
             <Pagination.Item v-else :value="page.value">{{ page.value }}</Pagination.Item>
           </template>
         </Pagination.Context>
-        <Pagination.NextTrigger aria-label="Next page">
+        <Pagination.NextTrigger :aria-label="text.next">
           <svg
             width="14"
             height="14"

@@ -10,10 +10,40 @@ import ExampleHeader from "../../components/example-header.vue";
 
 definePageMeta({ layout: "default", examples: true });
 
+const { locale } = useI18n();
+
+const copy = {
+  en: {
+    seo: {
+      title: "Blog example",
+      description:
+        "A complete editorial site — filterable post grid, article view with a tracked table of contents, and a comment thread — built from Elements components.",
+    },
+    header: {
+      kicker: "Example",
+      title: "Blog",
+      lede: "An editorial site in the paper-and-ink register: a filterable post grid, an article view whose table of contents tracks the window, and a living comment thread.",
+    },
+  },
+  zh: {
+    seo: {
+      title: "博客示例",
+      description:
+        "一份完整的编辑站点——可筛选的文章网格、带跟随目录的文章页，以及一条活的评论线——全部由 Elements 组件组成。",
+    },
+    header: {
+      kicker: "示例",
+      title: "博客",
+      lede: "纸墨语气的编辑站点：可筛选的文章网格、目录跟随窗口的文章页，还有一条活的评论线。",
+    },
+  },
+} as const;
+
+const text = computed(() => copy[locale.value as "en" | "zh"]);
+
 useSeoMeta({
-  title: "Blog example",
-  description:
-    "A complete editorial site — filterable post grid, article view with a tracked table of contents, and a comment thread — built from Elements components.",
+  title: () => text.value.seo.title,
+  description: () => text.value.seo.description,
 });
 
 const config = useAppConfig() as {
@@ -58,9 +88,9 @@ function backToList() {
 <template>
   <div class="mx-auto w-full max-w-[90rem] px-6 pb-12 pt-8">
     <ExampleHeader
-      kicker="Example"
-      title="Blog"
-      lede="An editorial site in the paper-and-ink register: a filterable post grid, an article view whose table of contents tracks the window, and a living comment thread."
+      :kicker="text.header.kicker"
+      :title="text.header.title"
+      :lede="text.header.lede"
       :source-url="sourceUrl"
       class="mb-7"
     />

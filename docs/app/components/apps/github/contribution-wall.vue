@@ -4,7 +4,26 @@ import { scaleBand } from "@bysages/charts/scales/band";
 import { scaleOrdinal } from "@bysages/charts/scales/ordinal";
 import { tooltip } from "@bysages/charts/tooltip";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+
+const { locale } = useI18n();
+const lang = computed(() => locale.value as "en" | "zh");
+
+const copy = {
+  en: {
+    wall: "Contributions over the past year",
+    less: "Less",
+    more: "More",
+    commits: (n: number) => `${n} ${n === 1 ? "commit" : "commits"}`,
+  },
+  zh: {
+    wall: "过去一年的贡献",
+    less: "少",
+    more: "多",
+    commits: (n: number) => `${n} 次提交`,
+  },
+} as const;
+const text = computed(() => copy[lang.value]);
 
 import { type ContributionDay } from "./contributions";
 
@@ -40,7 +59,14 @@ const tierScale = scaleOrdinal<string, string>()
   .range(inkTiers);
 
 const definition = defineChart({
-  marks: [cell(props.days, { x: "week", y: "weekday", color: (d) => String(d.tier), inset: 1 })],
+  marks: [
+    cell(props.days, {
+      x: "week",
+      y: "weekday",
+      color: (d) => String(d.tier),
+      inset: 1,
+    }),
+  ],
   scales: {
     x: {
       scale: () =>
@@ -58,14 +84,17 @@ const definition = defineChart({
   tooltip: { use: tooltip },
 }) as ChartDefinition;
 
-const fmt = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-  timeZone: "UTC",
-});
+const fmt = computed(
+  () =>
+    new Intl.DateTimeFormat(lang.value === "zh" ? "zh-CN" : "en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    }),
+);
 const tip = (d: ContributionDay) =>
-  `${fmt.format(d.date)} — ${d.commits} ${d.commits === 1 ? "commit" : "commits"}`;
+  `${fmt.value.format(d.date)} — ${text.value.commits(d.commits)}`;
 </script>
 
 <template>
@@ -82,14 +111,14 @@ const tip = (d: ContributionDay) =>
         <Chart
           :style="{ width: WALL_W + 'px', height: WALL_H + 'px' }"
           :definition="definition"
-          aria-label="Contributions over the past year"
+          :aria-label="text.wall"
         >
           <template #tooltipBody="{ points }">{{ tip(points[0]!.datum) }}</template>
         </Chart>
       </div>
     </div>
     <figcaption class="mt-3 flex items-center justify-end gap-2 text-xs text-tertiary">
-      <span>Less</span>
+      <span>{{ text.less }}</span>
       <span class="flex gap-1">
         <span
           v-for="t in inkTiers"
@@ -98,7 +127,7 @@ const tip = (d: ContributionDay) =>
           :style="{ background: t }"
         />
       </span>
-      <span>More</span>
+      <span>{{ text.more }}</span>
     </figcaption>
   </figure>
 </template>

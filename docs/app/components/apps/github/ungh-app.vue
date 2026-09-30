@@ -2,6 +2,9 @@
 import { Avatar, Badge, Button, Card, Input, Pagination, Tabs } from "@bysages/vue";
 import { computed, ref, watch } from "vue";
 
+const { locale } = useI18n();
+const lang = computed(() => locale.value as "en" | "zh");
+
 import ContributionWall from "./contribution-wall.vue";
 import { contributionDays, contributionTotal } from "./contributions";
 
@@ -62,13 +65,64 @@ watch(query, () => (page.value = 1));
 // The bio reads the account's own words; the org seals are the two
 // projects DemoMacro belongs to.
 const bio = "Always believe that good things are about to happen.";
+
+const copy = {
+  en: {
+    follow: "Follow",
+    sponsor: "Sponsor",
+    followers: "followers",
+    following: "following",
+    orgs: "Organizations",
+    overview: "Overview",
+    repositories: "Repositories",
+    contributions: (n: number) => `${n} contributions in the last year`,
+    popular: "Popular repositories",
+    noDescription: "No description yet.",
+    find: "Find a repository…",
+    findLabel: "Find a repository",
+    public: "Public",
+    updated: "Updated",
+    noMatch: (q: string) => `Nothing matches “${q}”.`,
+    prev: "Previous page",
+    next: "Next page",
+    wall: "Contributions over the past year",
+  },
+  zh: {
+    follow: "关注",
+    sponsor: "赞助",
+    followers: "位关注者",
+    following: "位关注中",
+    orgs: "所属组织",
+    overview: "概览",
+    repositories: "仓库",
+    contributions: (n: number) => `过去一年有 ${n} 次贡献`,
+    popular: "热门仓库",
+    noDescription: "还没有简介。",
+    find: "查找仓库…",
+    findLabel: "查找仓库",
+    public: "公开",
+    updated: "更新于",
+    noMatch: (q: string) => `没有与「${q}」匹配的结果。`,
+    prev: "上一页",
+    next: "下一页",
+    wall: "过去一年的贡献",
+  },
+} as const;
+
+const text = computed(() => copy[lang.value]);
 const followers = 219;
 const following = 38;
 const email = "abc@imst.xyz";
 const website = "www.demomacro.com";
 const orgs = [
-  { username: "funish", avatar: "https://avatars.githubusercontent.com/u/66000500?v=4" },
-  { username: "bysages", avatar: "https://avatars.githubusercontent.com/u/92733738?v=4" },
+  {
+    username: "funish",
+    avatar: "https://avatars.githubusercontent.com/u/66000500?v=4",
+  },
+  {
+    username: "bysages",
+    avatar: "https://avatars.githubusercontent.com/u/92733738?v=4",
+  },
 ];
 
 // GitHub's rail carries the member's local clock — it ticks on the
@@ -80,7 +134,7 @@ onMounted(() => {
 });
 onUnmounted(() => clearInterval(clock));
 const localTime = computed(() =>
-  new Intl.DateTimeFormat("en-US", {
+  new Intl.DateTimeFormat(lang.value === "zh" ? "zh-CN" : "en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
@@ -104,13 +158,16 @@ const toneFor: Record<string, string> = {
 const languageOf = (r: UnghRepo) => demoLanguages[r.id % demoLanguages.length];
 const dotOf = (r: UnghRepo) => toneFor[languageOf(r)] ?? "bg-primary";
 
-const day = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-  timeZone: "UTC",
-});
-const fmtDate = (iso: string) => day.format(new Date(iso));
+const day = computed(
+  () =>
+    new Intl.DateTimeFormat(lang.value === "zh" ? "zh-CN" : "en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    }),
+);
+const fmtDate = (iso: string) => day.value.format(new Date(iso));
 </script>
 
 <template>
@@ -124,23 +181,27 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
         <Avatar.Fallback>{{ user.username[0] }}</Avatar.Fallback>
       </Avatar.Root>
       <div>
-        <h1 class="m-0 font-serif text-2xl leading-tight">{{ user.username }}</h1>
+        <h1 class="m-0 font-serif text-2xl leading-tight">
+          {{ user.username }}
+        </h1>
         <p class="m-0 text-tertiary">@{{ user.username }}</p>
       </div>
       <p class="m-0 text-sm leading-relaxed text-secondary">{{ bio }}</p>
       <div class="flex gap-2">
         <Button as-child class="flex-1">
-          <a :href="`https://github.com/${user.username}`" target="_blank" rel="noopener">Follow</a>
+          <a :href="`https://github.com/${user.username}`" target="_blank" rel="noopener">{{
+            text.follow
+          }}</a>
         </Button>
         <Button as-child variant="outline" class="flex-1">
           <a href="https://github.com/sponsors/DemoMacro" target="_blank" rel="noopener">
-            <Icon name="i-lucide-heart" /> Sponsor
+            <Icon name="i-lucide-heart" /> {{ text.sponsor }}
           </a>
         </Button>
       </div>
       <p class="m-0 text-sm text-secondary">
-        <b class="text-primary">{{ followers }}</b> followers ·
-        <b class="text-primary">{{ following }}</b> following
+        <b class="text-primary">{{ followers }}</b> {{ text.followers }} ·
+        <b class="text-primary">{{ following }}</b> {{ text.following }}
       </p>
       <dl class="m-0 grid list-none gap-y-2 p-0 text-sm text-secondary">
         <div class="flex items-center gap-2">
@@ -171,7 +232,7 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
         </div>
       </dl>
       <div class="flex flex-col gap-2 border-t border-border pt-3">
-        <span class="text-xs uppercase tracking-[0.14em] text-tertiary">Organizations</span>
+        <span class="text-xs uppercase tracking-[0.14em] text-tertiary">{{ text.orgs }}</span>
         <div class="flex flex-wrap gap-2">
           <a
             v-for="org in orgs"
@@ -195,16 +256,17 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
     <section class="flex min-w-0 flex-col gap-6">
       <Tabs.Root default-value="overview">
         <Tabs.List>
-          <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+          <Tabs.Trigger value="overview">{{ text.overview }}</Tabs.Trigger>
           <Tabs.Trigger value="repositories"
-            >Repositories <span class="text-tertiary">{{ repos.length }}</span></Tabs.Trigger
+            >{{ text.repositories }}
+            <span class="text-tertiary">{{ repos.length }}</span></Tabs.Trigger
           >
         </Tabs.List>
 
         <Tabs.Content value="overview" class="flex flex-col gap-6">
           <Card.Root>
             <Card.Header>
-              <Card.Title>{{ contributionTotal }} contributions in the last year</Card.Title>
+              <Card.Title>{{ text.contributions(contributionTotal) }}</Card.Title>
             </Card.Header>
             <Card.Content>
               <ContributionWall :days="contributionDays" />
@@ -212,7 +274,9 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
           </Card.Root>
 
           <section class="flex flex-col gap-3">
-            <h2 class="m-0 font-serif text-lg leading-tight">Popular repositories</h2>
+            <h2 class="m-0 font-serif text-lg leading-tight">
+              {{ text.popular }}
+            </h2>
             <div
               class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(16rem,100%),1fr))]"
             >
@@ -226,7 +290,7 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
                     >{{ r.repo }}</a
                   >
                   <p class="m-0 line-clamp-2 text-xs leading-relaxed text-secondary">
-                    {{ r.description ?? "No description yet." }}
+                    {{ r.description ?? text.noDescription }}
                   </p>
                   <span class="mt-auto flex items-center gap-2 text-xs text-tertiary">
                     <span class="size-2.5 rounded-full" :class="dotOf(r)" />
@@ -242,8 +306,8 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
         <Tabs.Content value="repositories" class="flex flex-col gap-4">
           <Input
             v-model="query"
-            placeholder="Find a repository…"
-            aria-label="Find a repository"
+            :placeholder="text.find"
+            :aria-label="text.findLabel"
             class="max-w-80!"
           />
           <Card.Root v-for="r in paged" :key="r.id">
@@ -256,10 +320,10 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
                   class="font-serif text-base font-semibold text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
                   >{{ r.name }}</a
                 >
-                <Badge tone="ink" variant="outline">Public</Badge>
+                <Badge tone="ink" variant="outline">{{ text.public }}</Badge>
               </div>
               <p class="m-0 text-sm leading-relaxed text-secondary">
-                {{ r.description ?? "No description yet." }}
+                {{ r.description ?? text.noDescription }}
               </p>
               <span class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-tertiary">
                 <span class="flex items-center gap-1.5">
@@ -268,12 +332,12 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
                 </span>
                 <span>★ {{ r.stars }}</span>
                 <span>⑂ {{ r.forks }}</span>
-                <span>Updated {{ fmtDate(r.pushedAt) }}</span>
+                <span>{{ text.updated }} {{ fmtDate(r.pushedAt) }}</span>
               </span>
             </Card.Content>
           </Card.Root>
           <p v-if="filtered.length === 0" class="m-0 text-sm text-tertiary" role="status">
-            Nothing matches “{{ query }}”.
+            {{ text.noMatch(query) }}
           </p>
           <div v-if="filtered.length > PAGE_SIZE" class="flex justify-center">
             <Pagination.Root
@@ -282,7 +346,7 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
               :page="page"
               @update:page="page = $event"
             >
-              <Pagination.PrevTrigger aria-label="Previous page">
+              <Pagination.PrevTrigger :aria-label="text.prev">
                 <Icon name="i-lucide-chevron-left" />
               </Pagination.PrevTrigger>
               <Pagination.Context v-slot="{ pages }">
@@ -293,7 +357,7 @@ const fmtDate = (iso: string) => day.format(new Date(iso));
                   <Pagination.Item v-else :value="p.value">{{ p.value }}</Pagination.Item>
                 </template>
               </Pagination.Context>
-              <Pagination.NextTrigger aria-label="Next page">
+              <Pagination.NextTrigger :aria-label="text.next">
                 <Icon name="i-lucide-chevron-right" />
               </Pagination.NextTrigger>
             </Pagination.Root>

@@ -8,6 +8,15 @@ import type { Post, PostBlock } from "./data";
 
 const props = defineProps<{ post: Post }>();
 
+const { locale } = useI18n();
+
+const copy = {
+  en: { back: "All posts", read: "read", toc: "On this page" },
+  zh: { back: "全部文章", read: "阅读", toc: "本页目录" },
+} as const;
+
+const text = computed(() => copy[locale.value as "en" | "zh"]);
+
 const emit = defineEmits<{ back: [] }>();
 
 // The TOC anchors to the headings' explicit ids — the window is the
@@ -16,7 +25,11 @@ const emit = defineEmits<{ back: [] }>();
 const tocItems = computed(() =>
   props.post.blocks
     .filter((block: PostBlock) => block.type === "h2" && block.id)
-    .map((block) => ({ value: block.id!, depth: 2, label: block.text })),
+    .map((block) => ({
+      value: block.id!,
+      depth: 2,
+      label: block.text[locale.value as "en" | "zh"],
+    })),
 );
 
 // The body is one markdown document set through the same prose styles
@@ -24,15 +37,16 @@ const tocItems = computed(() =>
 // arrives already in the house register.
 const markdown = computed(() =>
   props.post.blocks
-    .map((block) =>
-      block.type === "h2"
-        ? `## ${block.text}`
+    .map((block) => {
+      const text = block.text[locale.value as "en" | "zh"];
+      return block.type === "h2"
+        ? `## ${text}`
         : block.type === "quote"
-          ? `> ${block.text}`
+          ? `> ${text}`
           : block.type === "code"
-            ? "```\n" + block.text + "\n```"
-            : block.text,
-    )
+            ? "```\n" + text + "\n```"
+            : text;
+    })
     .join("\n\n"),
 );
 
@@ -48,7 +62,8 @@ watchPostEffect(() => {
   if (!body.value) return;
   for (const h2 of body.value.querySelectorAll("h2")) {
     const block = props.post.blocks.find(
-      (candidate) => candidate.type === "h2" && candidate.text === h2.textContent,
+      (candidate) =>
+        candidate.type === "h2" && candidate.text[locale.value as "en" | "zh"] === h2.textContent,
     );
     if (block?.id) h2.id = block.id;
   }
@@ -70,12 +85,12 @@ watchPostEffect(() => {
       >
         <path d="m15 18-6-6 6-6" />
       </svg>
-      All posts
+      {{ text.back }}
     </Button>
 
     <div class="grid grid-cols-[1fr_minmax(0,46rem)_1fr] items-start gap-8">
       <div class="col-start-2 min-w-0">
-        <Typography.Display class="mb-3">{{ post.title }}</Typography.Display>
+        <Typography.Display class="mb-3">{{ post.title[locale] }}</Typography.Display>
 
         <!-- The title's voice owns `margin: 0`, so the gap to its byline
              is written here — utilities under the component's own
@@ -86,9 +101,9 @@ watchPostEffect(() => {
           </Avatar.Root>
           <span>{{ post.author }}</span>
           <span aria-hidden="true">·</span>
-          <span>{{ post.date }}</span>
+          <span>{{ post.date[locale] }}</span>
           <span aria-hidden="true">·</span>
-          <span>{{ post.readingTime }} read</span>
+          <span>{{ post.readingTime[locale] }} {{ text.read }}</span>
         </p>
 
         <div ref="body" class="bs-docs-prose" v-html="html" />
@@ -99,7 +114,7 @@ watchPostEffect(() => {
       <aside class="col-start-3 sticky top-24 w-52 @max-[60rem]:hidden">
         <Toc.Root :items="tocItems">
           <Toc.Nav>
-            <Toc.Title>On this page</Toc.Title>
+            <Toc.Title>{{ text.toc }}</Toc.Title>
             <Toc.List>
               <Toc.Item v-for="item in tocItems" :key="item.value" :item="item">
                 <Toc.Link :href="`#${item.value}`">{{ item.label }}</Toc.Link>
