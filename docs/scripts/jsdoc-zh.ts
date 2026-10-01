@@ -81,6 +81,10 @@ export const jsdocZh: Record<string, FamilyZh> = {
     parts: {
       AiConversation: {
         description: "对话日志容器：所有消息都渲染在这一栏中，并作为屏幕阅读器的地标。",
+        props: {
+          autoScroll:
+            "回复流式生长时，读者停在底边就跟随滚动；向上回读即停止拽动，回到底边自动恢复",
+        },
       },
       AiContent: {
         description: "气泡内容区，用来放置两侧通用的内容。",
@@ -1174,7 +1178,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
         description:
           "Form：表单元素本身。拦截原生 submit 并把事件交给引擎，同时提供统一的网格和间距。",
         props: {
-          form: "`useForm` 返回的表单引擎实例，管理表单值、校验和提交",
+          form: "`useForm` 返回的表单引擎实例，管理表单值、校验和提交；可省略——无引擎时退化为布局容器与原生语义",
         },
       },
       FormField: {
