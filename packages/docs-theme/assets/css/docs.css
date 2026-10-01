@@ -404,9 +404,11 @@ body {
 .bs-docs-page {
   /* Explicit width: as a grid item with auto margins the page would
      resolve to fit-content, and the unbreakable code lines' min-content
-     would inflate it past narrow lanes (the margin then centers it). */
+     would inflate it past narrow lanes (the margin then centers it).
+     The measure stays in rem: ch follows the "0" advance, which the
+     CJK stack renders narrow and would pinch the lane in half. */
   inline-size: 100%;
-  max-inline-size: min(46rem, 72ch);
+  max-inline-size: 46rem;
   margin-inline: auto;
   padding-block: var(--bs-padding-xl) var(--bs-space-24);
 }

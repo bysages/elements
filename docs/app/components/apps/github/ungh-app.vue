@@ -24,12 +24,10 @@ interface UnghRepo {
 
 // The page is live where ungh reaches: avatar, repos, stars, forks and
 // dates all read the real account. The follower counts stay demo
-// numbers — ungh does not serve them.
-const {
-  data: userData,
-  error: userError,
-  refresh: refreshUser,
-} = await useFetch<UnghUser>("https://ungh.cc/users/find/DemoMacro", {
+// numbers — ungh does not serve them. When the network stands between
+// the site and ungh, the snapshot below keeps the page whole; it holds
+// the account as fetched, not invented numbers.
+const { data: userData } = await useFetch<UnghUser>("https://ungh.cc/users/find/DemoMacro", {
   key: "ungh-user",
 });
 const { data: reposData } = await useFetch<{ repos: UnghRepo[] }>(
@@ -37,16 +35,237 @@ const { data: reposData } = await useFetch<{ repos: UnghRepo[] }>(
   { key: "ungh-repos" },
 );
 
-const user = computed(() => userData.value?.user);
-const unreachable = computed(() =>
-  lang.value === "zh"
-    ? "档案暂时取不到,网络恢复后再试。"
-    : "The profile could not be reached. Try again once the network settles.",
+const snapshotUser: UnghUser["user"] = {
+  id: 37478508,
+  username: "DemoMacro",
+  avatar: "https://avatars.githubusercontent.com/u/37478508?v=4",
+};
+
+const snapshotRepos: UnghRepo[] = [
+  {
+    id: 1238514749,
+    name: "agentor",
+    repo: "DemoMacro/agentor",
+    description: "A toolkit for building AI agents, with full TypeScript support.",
+    stars: 1,
+    forks: 1,
+    pushedAt: "2026-08-09T12:42:54Z",
+  },
+  {
+    id: 1240805543,
+    name: "ai",
+    repo: "DemoMacro/ai",
+    description:
+      "The AI Toolkit for TypeScript. From the creators of Next.js, the AI SDK is a free open-source library for building AI-powered applications and agents ",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-07-29T05:11:55Z",
+  },
+  {
+    id: 991175123,
+    name: "apisix-sdk",
+    repo: "DemoMacro/apisix-sdk",
+    description:
+      "Apache APISIX SDK - Complete TypeScript/JavaScript client for APISIX Admin API and Control API with APISIX 3.0+ support.",
+    stars: 1,
+    forks: 0,
+    pushedAt: "2026-09-27T03:45:46Z",
+  },
+  {
+    id: 1172279440,
+    name: "awesome-kysely",
+    repo: "DemoMacro/awesome-kysely",
+    description: "A curated list of Kysely resources, tools, utilities and applications.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-03-04T06:10:13Z",
+  },
+  {
+    id: 1289328959,
+    name: "awesome-tiptap",
+    repo: "DemoMacro/awesome-tiptap",
+    description: "⚡ Delightful Tiptap packages and resources",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-07-04T16:06:02Z",
+  },
+  {
+    id: 1169045615,
+    name: "BunIt",
+    repo: "DemoMacro/BunIt",
+    description:
+      "A collection of high-performance tools and utilities exclusively built for the Bun ecosystem",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-09-20T01:30:54Z",
+  },
+  {
+    id: 1241675725,
+    name: "chat",
+    repo: "DemoMacro/chat",
+    description:
+      "A unified TypeScript SDK for building chat bots across Slack, Microsoft Teams, Google Chat, Discord, and more.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-08-04T15:59:38Z",
+  },
+  {
+    id: 724536701,
+    name: "chunmomo",
+    repo: "DemoMacro/chunmomo",
+    description: null,
+    stars: 0,
+    forks: 0,
+    pushedAt: "2023-08-13T05:56:42Z",
+  },
+  {
+    id: 1301793593,
+    name: "dashscript",
+    repo: "DemoMacro/dashscript",
+    description:
+      "JavaScript/TypeScript ergonomics, Rust performance, native + wasm + napi outputs.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-08-09T12:48:12Z",
+  },
+  {
+    id: 888324401,
+    name: "db0",
+    repo: "DemoMacro/db0",
+    description: "📚  Lightweight SQL Connector",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-03-11T05:14:32Z",
+  },
+  {
+    id: 484823640,
+    name: "DemoMacro",
+    repo: "DemoMacro/DemoMacro",
+    description: "Config files for my GitHub profile.",
+    stars: 1,
+    forks: 0,
+    pushedAt: "2025-12-26T05:05:32Z",
+  },
+  {
+    id: 156317297,
+    name: "demomacro.github.io",
+    repo: "DemoMacro/demomacro.github.io",
+    description: "https://demomacro.github.io",
+    stars: 1,
+    forks: 0,
+    pushedAt: "2024-08-02T23:29:41Z",
+  },
+  {
+    id: 1082931427,
+    name: "docen",
+    repo: "DemoMacro/docen",
+    description:
+      "A canvas DOCX editor that renders and edits with MS Office layout fidelity in the browser — built on TipTap/ProseMirror and LeaferJS — plus headless Markdown ⇄ DOCX conversion through a unified Tiptap JSON model. Fully typed; no server required.",
+    stars: 60,
+    forks: 9,
+    pushedAt: "2026-09-24T06:06:54Z",
+  },
+  {
+    id: 786106069,
+    name: "dotext-cli",
+    repo: "DemoMacro/dotext-cli",
+    description: "A simple dotext command line implementation, powered by Demo Macro.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-08-29T07:28:26Z",
+  },
+  {
+    id: 955815580,
+    name: "everything-client",
+    repo: "DemoMacro/everything-client",
+    description:
+      "A modern JavaScript library for interacting with the Everything search engine, providing a powerful cross-platform interface to search files on Windows systems.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-09-27T03:51:45Z",
+  },
+  {
+    id: 893213525,
+    name: "geoip0",
+    repo: "DemoMacro/geoip0",
+    description: "Self-hosted Geo IP Zero Configuration API Services for Serverless.",
+    stars: 5,
+    forks: 1,
+    pushedAt: "2026-09-20T01:11:02Z",
+  },
+  {
+    id: 140134532,
+    name: "gitbook-boilerplate-netlify-cms",
+    repo: "DemoMacro/gitbook-boilerplate-netlify-cms",
+    description: "Gitbook boilerplate integrated with Netlify CMS, powered by Demo Macro.",
+    stars: 8,
+    forks: 27,
+    pushedAt: "2024-10-29T16:11:00Z",
+  },
+  {
+    id: 140944662,
+    name: "hexo-boilerplate-netlify-cms",
+    repo: "DemoMacro/hexo-boilerplate-netlify-cms",
+    description: "Hexo boilerplate integrated with Netlify CMS, powered by Demo Macro.",
+    stars: 10,
+    forks: 31,
+    pushedAt: "2025-09-16T03:51:43Z",
+  },
+  {
+    id: 1156452713,
+    name: "JS.GS",
+    repo: "DemoMacro/JS.GS",
+    description:
+      "Modern URL shortener with powerful analytics - Track clicks, analyze geolocation, monitor devices, and gain insights from your shortened links.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-09-20T00:47:00Z",
+  },
+  {
+    id: 1082952082,
+    name: "markitdown",
+    repo: "DemoMacro/markitdown",
+    description: "Python tool for converting files and office documents to Markdown.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2026-04-17T05:55:55Z",
+  },
+  {
+    id: 1083006291,
+    name: "markitdown-server",
+    repo: "DemoMacro/markitdown-server",
+    description:
+      "A HTTP server for markitdown, providing RESTful API service for document to Markdown conversion.",
+    stars: 0,
+    forks: 0,
+    pushedAt: "2025-11-06T21:02:06Z",
+  },
+  {
+    id: 632995880,
+    name: "nlptools",
+    repo: "DemoMacro/nlptools",
+    description:
+      "Comprehensive NLP toolkit with high-performance string distance and similarity algorithms",
+    stars: 2,
+    forks: 0,
+    pushedAt: "2026-10-01T00:44:22Z",
+  },
+  {
+    id: 1210956321,
+    name: "office-open",
+    repo: "DemoMacro/office-open",
+    description:
+      "Create Word, Excel, and PowerPoint files (.docx, .xlsx, .pptx) from plain JSON or fully typed APIs — generate, parse, and patch. Built for AI agents, LLM tool-calling, and hand-written code alike; no Microsoft Office required, opens in every major office suite.",
+    stars: 35,
+    forks: 9,
+    pushedAt: "2026-09-30T09:16:12Z",
+  },
+];
+
+const user = computed(() => userData.value?.user ?? snapshotUser);
+const repos = computed(() =>
+  reposData.value?.repos?.length ? reposData.value.repos : snapshotRepos,
 );
-const retryLabel = computed(() => (lang.value === "zh" ? "重试" : "Retry"));
-const repos = computed(() => reposData.value?.repos ?? []);
-const totalStars = computed(() => repos.value.reduce((sum, r) => sum + r.stars, 0));
-const totalForks = computed(() => repos.value.reduce((sum, r) => sum + r.forks, 0));
 
 const popular = computed(() =>
   [...repos.value]
@@ -181,17 +400,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
 </script>
 
 <template>
-  <div
-    v-if="userError && !user"
-    class="mx-auto flex w-full max-w-[64rem] flex-col items-start gap-(--bs-gap-lg) rounded-lg border border-border bg-surface-1 px-(--bs-padding-xl) py-10"
-  >
-    <p class="m-0 text-sm text-secondary">{{ unreachable }}</p>
-    <Button size="sm" variant="outline" @click="refreshUser()">{{ retryLabel }}</Button>
-  </div>
-  <div
-    v-else-if="user"
-    class="mx-auto grid w-full max-w-[64rem] gap-(--bs-gap-2xl) lg:grid-cols-[13rem_1fr]"
-  >
+  <div class="mx-auto grid w-full max-w-[64rem] gap-(--bs-gap-2xl) lg:grid-cols-[13rem_1fr]">
     <!-- The identity column: seal, the account's own words, the two
          actions, and the meta rail GitHub carries — local clock, mail,
          site, and the org seals. -->

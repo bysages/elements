@@ -44,6 +44,13 @@ onMounted(() => {
   });
   if (wall.value) wallObserver.observe(wall.value);
 });
+
+// Scaled content meets the lane edge exactly, so one rounding pixel of
+// overflow summons both scrollbars (the single-axis rule promotes the
+// other axis to auto), the bars shrink the lane, the observer rescales,
+// and the wall oscillates forever. Past one-to-one the lane crops —
+// hidden absorbs the rounding; below it the lane still scrolls.
+const laneOverflow = computed(() => (scale.value > 1 ? "hidden" : undefined));
 onUnmounted(() => wallObserver?.disconnect());
 
 // The ink ladder replaces GitHub's green: the darker the wash of the
@@ -100,7 +107,11 @@ const tip = (d: ContributionDay) =>
 
 <template>
   <figure class="m-0">
-    <div ref="wall" class="overflow-x-auto" :style="{ height: WALL_H * scale + 'px' }">
+    <div
+      ref="wall"
+      class="overflow-x-auto"
+      :style="{ height: WALL_H * scale + 'px', overflow: laneOverflow }"
+    >
       <div
         class="origin-top-left"
         :style="{
