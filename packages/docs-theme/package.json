@@ -61,7 +61,7 @@
     "@nuxtjs/mcp-toolkit": "0.22.0",
     "@nuxtjs/robots": "6.2.3",
     "@nuxtjs/sitemap": "8.5.1",
-    "@tanstack/highlight": "0.1.0",
+    "@tanstack/highlight": "1.0.0",
     "agents": "0.24.0",
     "ai": "7.0.118",
     "better-sqlite3": "13.0.3",
