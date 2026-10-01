@@ -80,6 +80,12 @@ function systemPrompt(siteName: string): string {
 - If a page title clearly matches the question, read it directly without listing first
 - ALWAYS respond with text after using tools - never end with just tool calls
 
+**Grounding (CRITICAL):**
+- Answer only from the pages you actually read through the tools — the documentation is the single source of truth, and prior knowledge is not
+- Every claim, prop, example, and version number must come from those pages; never fill a gap by inventing an API
+- If the documentation does not cover the question, say so plainly ("There is no documentation on that yet") — an honest refusal beats a confident invention
+- When the docs cover the question only partly, answer the covered part and name what is missing
+
 **Guidelines:**
 - If you can't find something, say "There is no documentation on that yet" or "${siteName} doesn't cover that topic yet"
 - Be concise, helpful, and direct

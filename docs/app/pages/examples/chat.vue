@@ -14,24 +14,24 @@ const copy = {
     seo: {
       title: "AI Chat Workbench example",
       description:
-        "A simulated assistant conversation — streamed responses, tool calls, reasoning, and suggestion chips — composed from the Elements AI family.",
+        "A scripted conversation in the Elements AI family — streamed answers, reasoning folds, suggestion chips, and interfaces rendered inline, all composed locally.",
     },
     header: {
       kicker: "Example",
       title: "AI Chat Workbench",
-      lede: "The AI family in conversation: prompts, streamed responses, tool calls, reasoning folds, and suggestion chips. A scripted assistant plays the model locally — the docs assistant on the real site speaks the same parts.",
+      lede: "The AI family in conversation: prompts, streamed responses, reasoning folds, and suggestion chips. The demo speaks a recorded script — no gateway, nothing leaves the page.",
     },
   },
   zh: {
     seo: {
       title: "AI 工作台示例",
       description:
-        "一场模拟的助手对话——流式回答、工具调用、推理折叠与建议签，全部由 Elements 的 AI 家族组成。",
+        "Elements AI 家族的对话演示：流式回答、推理折叠与建议签，回答里直接渲染界面，全程本地生成。",
     },
     header: {
       kicker: "示例",
       title: "AI 工作台",
-      lede: "AI 家族的对话现场：提示输入、流式回答、工具调用、推理折叠与建议签。脚本助手在本地扮演模型——正式站点的文档助手用的正是同一批部件。",
+      lede: "AI 家族的对话现场：提示输入、流式回答、推理折叠与建议签。演示走本地脚本——不连网关，内容不离开页面。",
     },
   },
 } as const;

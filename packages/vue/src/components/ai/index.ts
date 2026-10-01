@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, onMounted, onUnmounted, ref } from "vue";
 
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
@@ -52,10 +52,56 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
 }
 
 /** The log itself: the column every stroke lands in, a landmark to
- * screen readers. */
-export const AiConversation = part("Conversation", "div", {
-  role: "log",
-  "aria-label": "Conversation",
+ * screen readers. While the reply streams, the log follows its growth —
+ * but only while the reader rests at the bottom edge. Climb up to reread
+ * a thought and the stream stops yanking the view back down; return to
+ * the bottom and the follow resumes. */
+export const AiConversation = defineComponent({
+  name: "AiConversation",
+  props: {
+    /** Follow the stream's growth while the reader rests at the bottom. */
+    autoScroll: { type: Boolean, default: true },
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+
+    const el = ref<HTMLElement | null>(null);
+    let observer: MutationObserver | undefined;
+    // The follow decision reads the pre-growth position: a scroll event
+    // can only come from the reader (or our own follow), so the flag is
+    // always settled before the next stream stroke lands.
+    let pinned = true;
+
+    onMounted(() => {
+      const node = el.value;
+      if (!node || !props.autoScroll) return;
+      node.addEventListener(
+        "scroll",
+        () => {
+          pinned = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
+        },
+        { passive: true },
+      );
+      observer = new MutationObserver(() => {
+        if (pinned) node.scrollTop = node.scrollHeight;
+      });
+      observer.observe(node, { childList: true, subtree: true, characterData: true });
+    });
+    onUnmounted(() => observer?.disconnect());
+
+    return () =>
+      h(
+        "div",
+        {
+          ref: el,
+          role: "log",
+          ...ctx.attrs,
+          "data-scope": "ai",
+          "data-part": "conversation",
+        },
+        ctx.slots.default?.(),
+      );
+  },
 });
 
 /** The bubble's inner measure — content that belongs to neither side

@@ -9,22 +9,22 @@ import {
   AiTool,
   Badge,
 } from "@bysages/vue";
-import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from "vue";
-
-const { locale } = useI18n();
+import { computed, onBeforeUnmount, reactive, ref } from "vue";
 
 import { FALLBACK_SUGGESTIONS, FALLBACK_TEXT, GREETING, SCRIPTS } from "./data";
+
+const { locale } = useI18n();
 
 const copy = {
   en: {
     conversation: "Conversation",
     thinking: "Thinking",
-    simulated: "Simulated — no network",
+    simulated: "Scripted demo — no network",
   },
   zh: {
     conversation: "对话",
     thinking: "思考中",
-    simulated: "本地模拟——不联网",
+    simulated: "脚本演示——不联网",
   },
 } as const;
 
@@ -38,29 +38,20 @@ interface ChatEntry {
   streaming?: boolean;
 }
 
-// The greeting is a constant: the transcript renders identically during
-// prerender, hydration, and any later visit.
-const entries = ref<ChatEntry[]>([
-  {
-    id: "m0",
-    role: "assistant",
-    content: GREETING[locale.value as "en" | "zh"],
-  },
-]);
-
 const text = computed(() => copy[locale.value as "en" | "zh"]);
+const greetingText = computed(() => GREETING[locale.value as "en" | "zh"]);
+
 const prompt = ref("");
+
+const entries = ref<ChatEntry[]>([]);
 const busy = ref(false);
-const suggestions = ref<string[]>(FALLBACK_SUGGESTIONS[locale.value as "en" | "zh"]);
+const suggestions = ref<string[]>([]);
 
-const logEl = ref<HTMLElement | null>(null);
-
-// Timer state lives outside reactivity — ids and counters never render.
 let timer: ReturnType<typeof setInterval> | null = null;
 let toolTimer: ReturnType<typeof setTimeout> | null = null;
 let entryCounter = 0;
 
-function abort() {
+function scriptAbort() {
   if (timer) clearInterval(timer);
   if (toolTimer) clearTimeout(toolTimer);
   timer = null;
@@ -71,7 +62,7 @@ function abort() {
   }
 }
 
-function finish(entry: ChatEntry, next: string[]) {
+function scriptFinish(entry: ChatEntry, next: string[]) {
   entry.streaming = false;
   busy.value = false;
   suggestions.value = next;
@@ -79,10 +70,10 @@ function finish(entry: ChatEntry, next: string[]) {
 
 // CJK streams one character at a time; latin keeps its words — the
 // splitter carries each run's own spacing so the join is the text.
-function streamText(entry: ChatEntry, text: string, suggestions: string[]) {
-  const parts = text.match(
+function scriptStream(entry: ChatEntry, body: string, next: string[]) {
+  const parts = body.match(
     /[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]|[^\s\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]+\s*|\s+/g,
-  ) ?? [text];
+  ) ?? [body];
   let index = 0;
   entry.streaming = true;
   timer = setInterval(() => {
@@ -91,21 +82,21 @@ function streamText(entry: ChatEntry, text: string, suggestions: string[]) {
     if (index >= parts.length) {
       if (timer) clearInterval(timer);
       timer = null;
-      finish(entry, suggestions);
+      scriptFinish(entry, next);
     }
   }, 28);
 }
 
 function send(value: string) {
-  const text = value.trim();
-  if (!text || busy.value) return;
-  abort();
+  const body = value.trim();
+  if (!body || busy.value) return;
+  scriptAbort();
 
   entryCounter += 1;
-  entries.value.push({ id: `m${entryCounter}`, role: "user", content: text });
+  entries.value.push({ id: `m${entryCounter}`, role: "user", content: body });
 
   const script =
-    SCRIPTS.find((entry) => entry.match.some((keyword) => text.toLowerCase().includes(keyword))) ??
+    SCRIPTS.find((entry) => entry.match.some((keyword) => body.toLowerCase().includes(keyword))) ??
     null;
 
   entryCounter += 1;
@@ -126,7 +117,7 @@ function send(value: string) {
 
   const lang = locale.value as "en" | "zh";
   const startText = () =>
-    streamText(
+    scriptStream(
       reply,
       script?.text[lang] ?? FALLBACK_TEXT[lang],
       script?.suggestions[lang] ?? FALLBACK_SUGGESTIONS[lang],
@@ -147,64 +138,61 @@ function send(value: string) {
   }
 }
 
-// Keep the newest stroke in view as the transcript grows.
-watch(
-  entries,
-  () => {
-    void nextTick(() => {
-      logEl.value?.scrollTo({ top: logEl.value.scrollHeight });
-    });
-  },
-  { deep: true },
-);
+// The opening suggestions stand in until a script offers its own next steps.
+const visibleSuggestions = computed(() => {
+  if (busy.value) return [];
+  return suggestions.value.length
+    ? suggestions.value
+    : FALLBACK_SUGGESTIONS[locale.value as "en" | "zh"];
+});
 
-onBeforeUnmount(abort);
+onBeforeUnmount(scriptAbort);
 </script>
 
 <template>
   <div class="grid gap-(--bs-gap-lg)">
-    <div
-      ref="logEl"
+    <Ai.Conversation
       class="max-h-[min(60dvh,40rem)] overflow-y-auto bg-surface p-(--bs-padding-lg)"
       :aria-label="text.conversation"
     >
-      <Ai.Conversation>
-        <template v-for="entry in entries" :key="entry.id">
-          <Ai.Message v-if="entry.role === 'user'" role="user">
-            <AiContent>{{ entry.content }}</AiContent>
-          </Ai.Message>
-          <Ai.Message v-else role="assistant">
-            <AiTool
-              v-if="entry.tool"
-              :name="entry.tool.name"
-              :status="entry.toolStatus ?? 'pending'"
-              default-open
-            >
-              <template #input>{{ entry.tool.input }}</template>
-              <template v-if="entry.toolStatus === 'completed'" #output>{{
-                entry.tool.output
-              }}</template>
-            </AiTool>
-            <Ai.Reasoning v-if="entry.reasoning" :label="text.thinking">
-              {{ entry.reasoning }}
-            </Ai.Reasoning>
-            <AiResponse v-if="entry.content" :content="entry.content" />
-            <AiLoader v-else-if="entry.streaming">{{ text.thinking }}</AiLoader>
-          </Ai.Message>
-        </template>
-      </Ai.Conversation>
-    </div>
+      <Ai.Message role="assistant">
+        <AiContent>{{ greetingText }}</AiContent>
+      </Ai.Message>
+      <template v-for="entry in entries" :key="entry.id">
+        <Ai.Message v-if="entry.role === 'user'" role="user">
+          <AiContent>{{ entry.content }}</AiContent>
+        </Ai.Message>
+        <Ai.Message v-else role="assistant">
+          <AiTool
+            v-if="entry.tool"
+            :name="entry.tool.name"
+            :status="entry.toolStatus ?? 'pending'"
+            default-open
+          >
+            <template #input>{{ entry.tool.input }}</template>
+            <template v-if="entry.toolStatus === 'completed'" #output>{{
+              entry.tool.output
+            }}</template>
+          </AiTool>
+          <Ai.Reasoning v-if="entry.reasoning" :label="text.thinking">
+            {{ entry.reasoning }}
+          </Ai.Reasoning>
+          <AiResponse v-if="entry.content" :content="entry.content" />
+          <AiLoader v-else-if="entry.streaming">{{ text.thinking }}</AiLoader>
+        </Ai.Message>
+      </template>
+    </Ai.Conversation>
 
-    <div v-if="suggestions.length && !busy" class="flex flex-wrap gap-(--bs-gap-sm)">
+    <div v-if="visibleSuggestions.length" class="flex flex-wrap gap-(--bs-gap-sm)">
       <AiSuggestion
-        v-for="suggestion in suggestions"
+        v-for="suggestion in visibleSuggestions"
         :key="suggestion"
         :prompt="suggestion"
         @select="prompt = $event"
       />
     </div>
 
-    <AiPromptInput v-model="prompt" :busy="busy" @submit="send" @stop="abort">
+    <AiPromptInput v-model="prompt" :busy="busy" @submit="send" @stop="scriptAbort">
       <template #footer>
         <Badge tone="ink" variant="outline">{{ text.simulated }}</Badge>
       </template>
