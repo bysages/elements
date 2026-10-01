@@ -1,4 +1,5 @@
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -33,7 +34,9 @@ function sheet(title: string, ...extra: ReactNode[]) {
             <Drawer.GrabberIndicator />
           </Drawer.Grabber>
           <Drawer.Title>{title}</Drawer.Title>
-          {extra}
+          {extra.map((node, index) => (
+            <Fragment key={index}>{node}</Fragment>
+          ))}
           <Drawer.CloseTrigger>{closeGlyph}</Drawer.CloseTrigger>
         </Drawer.Content>
       </Drawer.Positioner>

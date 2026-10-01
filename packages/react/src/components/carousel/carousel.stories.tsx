@@ -108,7 +108,7 @@ export const VariableSize = {
         slideCount: slides.length,
         slidesPerPage: 1.5,
         spacing: "40px",
-        autoResize: true,
+        autoSize: true,
       } as any,
       slides.map((_, index) => slide_(index)),
     ),

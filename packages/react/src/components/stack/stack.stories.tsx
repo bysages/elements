@@ -1,4 +1,5 @@
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 
 import { Stack } from ".";
 
@@ -20,12 +21,24 @@ const tile = (text: string) => (
 
 /** Siblings held apart by one named step — here the default `md`. */
 export const Basic = {
-  render: () => <Stack>{[tile("First"), tile("Second"), tile("Third")]}</Stack>,
+  render: () => (
+    <Stack>
+      {tile("First")}
+      {tile("Second")}
+      {tile("Third")}
+    </Stack>
+  ),
 };
 
 /** Turned on its side, the same step holds a row apart. */
 export const Row = {
-  render: () => <Stack direction="row">{[tile("First"), tile("Second"), tile("Third")]}</Stack>,
+  render: () => (
+    <Stack direction="row">
+      {tile("First")}
+      {tile("Second")}
+      {tile("Third")}
+    </Stack>
+  ),
 };
 
 /** Every named step of the space ramp, holding the same two tiles. */
@@ -47,7 +60,9 @@ export const Wrap = {
   render: () => (
     <div style={{ inlineSize: "24rem" }}>
       <Stack direction="row" wrap>
-        {Array.from({ length: 8 }, (_, i) => tile(`Item ${i + 1}`))}
+        {Array.from({ length: 8 }, (_, i) => tile(`Item ${i + 1}`)).map((node, index) => (
+          <Fragment key={index}>{node}</Fragment>
+        ))}
       </Stack>
     </div>
   ),

@@ -229,7 +229,12 @@ export function CascadeSelect({
             [...valuePath, collection.getNodeValue(next)],
           )
         : null;
-    return [list, child];
+    return (
+      <>
+        {list}
+        {child}
+      </>
+    );
   }
 
   return (

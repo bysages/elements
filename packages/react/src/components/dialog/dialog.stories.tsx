@@ -1,4 +1,5 @@
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -13,7 +14,9 @@ function vessel(title: string, description: string, ...extra: ReactNode[]) {
         <Dialog.Content>
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Description>{description}</Dialog.Description>
-          {extra}
+          {extra.map((node, index) => (
+            <Fragment key={index}>{node}</Fragment>
+          ))}
           <Dialog.CloseTrigger>×</Dialog.CloseTrigger>
         </Dialog.Content>
       </Dialog.Positioner>

@@ -1,5 +1,6 @@
 import { Dialog } from "@ark-ui/react/dialog";
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import { useRef, useState } from "react";
 
 import { Popover } from ".";
@@ -32,7 +33,9 @@ function vessel(title: string, ...extra: React.ReactNode[]) {
       <Popover.Content>
         <Popover.CloseTrigger>{closeGlyph()}</Popover.CloseTrigger>
         <Popover.Title>{title}</Popover.Title>
-        {extra}
+        {extra.map((node, index) => (
+          <Fragment key={index}>{node}</Fragment>
+        ))}
       </Popover.Content>
     </Popover.Positioner>
   );

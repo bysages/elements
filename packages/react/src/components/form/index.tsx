@@ -105,7 +105,7 @@ export function FormField({
     const errors = surfaced.map(errorText).filter(Boolean);
     const isInvalid = invalid || errors.length > 0;
     return (
-      <div {...{ class: klass, style }} data-form-field={name}>
+      <div {...{ className: klass, style }} data-form-field={name}>
         <ArkField.Root invalid={isInvalid} required={required} disabled={disabled}>
           {label ? <ArkField.Label>{label}</ArkField.Label> : null}
           {typeof children === "function" ? children(field) : children}

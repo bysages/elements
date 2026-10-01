@@ -24,8 +24,8 @@ const cellStyle: React.CSSProperties = {
 export const Basic = {
   render: () => (
     <Bento style={{ inlineSize: "100%" }}>
-      {TILES.map((tile) => (
-        <Bento.Cell key={tile.title + tile.span} span={tile.span} style={cellStyle}>
+      {TILES.map((tile, index) => (
+        <Bento.Cell key={index} span={tile.span} style={cellStyle}>
           <h3 style={{ margin: 0, fontSize: "0.875rem", fontWeight: 500 }}>{tile.title}</h3>
           <p
             style={{

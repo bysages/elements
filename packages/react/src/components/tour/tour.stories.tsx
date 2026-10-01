@@ -1,5 +1,6 @@
 import { waitForElement, waitForEvent } from "@ark-ui/react/tour";
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import { useState } from "react";
 
 import { Tour, type TourStepDetails, useTour } from ".";
@@ -108,7 +109,9 @@ function card(...extraContent: React.ReactNode[]) {
               }
             </Tour.Actions>
           </Tour.Control>
-          {extraContent}
+          {extraContent.map((node, index) => (
+            <Fragment key={index}>{node}</Fragment>
+          ))}
         </Tour.Content>
       </Tour.Positioner>
     </>
@@ -472,7 +475,7 @@ export const KeyboardNavigation = stage(
     <Button key="start" size="sm" onClick={() => tour.start()}>
       Start tour
     </Button>,
-    targets(["tour-key-1", "tour-key-2"], "Step"),
+    <Fragment key="targets">{targets(["tour-key-1", "tour-key-2"], "Step")}</Fragment>,
     <p
       key="hint"
       style={{

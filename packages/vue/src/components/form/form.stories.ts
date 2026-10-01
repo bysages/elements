@@ -53,13 +53,15 @@ export const Basic: Story = {
           status.value = "Submitted.";
         },
       });
-      const bind = (name: "title" | "abstract") => (field: any) =>
-        h(name === "title" ? Input : (Textarea as never), {
-          ...(name === "title" ? { placeholder: "Title of the piece" } : { rows: 3 }),
-          modelValue: field.state.value,
-          "onUpdate:modelValue": field.handleChange,
-          onBlur: field.handleBlur,
-        });
+      const bind =
+        (name: "title" | "abstract") =>
+        ({ field }: any) =>
+          h(name === "title" ? Input : (Textarea as never), {
+            ...(name === "title" ? { placeholder: "Title of the piece" } : { rows: 3 }),
+            modelValue: field.state.value,
+            "onUpdate:modelValue": field.handleChange,
+            onBlur: field.handleBlur,
+          });
       return () => [
         h(Form as never, { form }, () => [
           h(
@@ -100,7 +102,7 @@ export const CustomValidation: Story = {
                   value.includes("@") ? undefined : "Enter a valid email address.",
               },
             },
-            (field: any) =>
+            ({ field }: any) =>
               h(Input, {
                 modelValue: field.state.value,
                 "onUpdate:modelValue": field.handleChange,
@@ -117,7 +119,7 @@ export const CustomValidation: Story = {
                   value.length >= 20 ? undefined : "Write at least 20 characters.",
               },
             },
-            (field: any) =>
+            ({ field }: any) =>
               h(Textarea, {
                 rows: 3,
                 modelValue: field.state.value,
@@ -160,17 +162,20 @@ export const WithInputs: Story = {
       });
       return () => [
         h(Form as never, { form }, () => [
-          h(FormField as never, { name: "title", label: "Title", required: true }, (field: any) =>
-            h(Input, {
-              modelValue: field.state.value,
-              "onUpdate:modelValue": field.handleChange,
-              onBlur: field.handleBlur,
-            }),
+          h(
+            FormField as never,
+            { name: "title", label: "Title", required: true },
+            ({ field }: any) =>
+              h(Input, {
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
+              }),
           ),
           h(
             FormField as never,
             { name: "summary", label: "Summary", hint: "A few sentences" },
-            (field: any) =>
+            ({ field }: any) =>
               h(Textarea, {
                 rows: 3,
                 modelValue: field.state.value,
@@ -178,19 +183,22 @@ export const WithInputs: Story = {
                 onBlur: field.handleBlur,
               }),
           ),
-          h(FormField as never, { name: "topics", label: "Topics", required: true }, (field: any) =>
-            h(CheckboxGroup as never, {
-              modelValue: field.state.value,
-              "onUpdate:modelValue": field.handleChange,
-              onBlur: field.handleBlur,
-              options: [
-                { label: "Typography", value: "typography" },
-                { label: "Lighting", value: "lighting" },
-                { label: "Motion", value: "motion" },
-              ],
-            }),
+          h(
+            FormField as never,
+            { name: "topics", label: "Topics", required: true },
+            ({ field }: any) =>
+              h(CheckboxGroup as never, {
+                modelValue: field.state.value,
+                "onUpdate:modelValue": field.handleChange,
+                onBlur: field.handleBlur,
+                options: [
+                  { label: "Typography", value: "typography" },
+                  { label: "Lighting", value: "lighting" },
+                  { label: "Motion", value: "motion" },
+                ],
+              }),
           ),
-          h(FormField as never, { name: "consent" }, (field: any) =>
+          h(FormField as never, { name: "consent" }, ({ field }: any) =>
             h(
               Switch.Root as never,
               {
@@ -233,7 +241,7 @@ export const LiveValidation: Story = {
                   /^[a-z-]+$/.test(value) ? undefined : "Lowercase letters and dashes only.",
               },
             },
-            (field: any) =>
+            ({ field }: any) =>
               h(Input, {
                 modelValue: field.state.value,
                 "onUpdate:modelValue": field.handleChange,
@@ -255,7 +263,7 @@ export const Imperative: Story = {
       });
       return () => [
         h(Form as never, { form }, () => [
-          h(FormField as never, { name: "code", label: "Redemption code" }, (field: any) =>
+          h(FormField as never, { name: "code", label: "Redemption code" }, ({ field }: any) =>
             h(Input, {
               modelValue: field.state.value,
               "onUpdate:modelValue": field.handleChange,

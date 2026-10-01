@@ -88,7 +88,7 @@ export const PasteBehavior = {
 
 /** Chips stay deletable but double-click no longer opens the edit input. */
 export const DisabledEditing = {
-  render: () => field({ allowEditTag: false, defaultValue: ["Qinghua", "Celadon"] }),
+  render: () => field({ editable: false, defaultValue: ["Qinghua", "Celadon"] }),
 };
 
 /** The whole field rests: chips, delete triggers, and typing all off. */

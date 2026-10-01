@@ -38,9 +38,8 @@ function box(checked: boolean | "indeterminate", label: string, disabled = false
   return (
     <Checkbox.Root checked={checked} disabled={disabled}>
       <Checkbox.Control>
-        <Checkbox.Indicator>
-          {checked === "indeterminate" ? minusGlyph : checkGlyph}
-        </Checkbox.Indicator>
+        <Checkbox.Indicator indeterminate>{minusGlyph}</Checkbox.Indicator>
+        <Checkbox.Indicator>{checkGlyph}</Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>{label}</Checkbox.Label>
       <Checkbox.HiddenInput />
@@ -153,7 +152,8 @@ export const GroupWithSelectAll = {
           }
         >
           <Checkbox.Control>
-            <Checkbox.Indicator>{all ? checkGlyph : minusGlyph}</Checkbox.Indicator>
+            <Checkbox.Indicator indeterminate>{minusGlyph}</Checkbox.Indicator>
+            <Checkbox.Indicator>{checkGlyph}</Checkbox.Indicator>
           </Checkbox.Control>
           <Checkbox.Label>All frameworks</Checkbox.Label>
           <Checkbox.HiddenInput />

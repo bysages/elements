@@ -41,9 +41,10 @@ function minusGlyph() {
 
 function box(checked: boolean | "indeterminate", label: string, disabled = false) {
   return h(Checkbox.Root, { checked, disabled } as any, () => [
-    h(Checkbox.Control, () =>
-      h(Checkbox.Indicator, { indeterminate: minusGlyph() } as any, () => checkGlyph()),
-    ),
+    h(Checkbox.Control, () => [
+      h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusGlyph()),
+      h(Checkbox.Indicator, { key: "check" }, () => checkGlyph()),
+    ]),
     h(Checkbox.Label, () => label),
     h(Checkbox.HiddenInput),
   ]);
@@ -153,9 +154,10 @@ export const GroupWithSelectAll = {
               },
             } as any,
             () => [
-              h(Checkbox.Control, () =>
-                h(Checkbox.Indicator, { indeterminate: minusGlyph() } as any, () => checkGlyph()),
-              ),
+              h(Checkbox.Control, () => [
+                h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusGlyph()),
+                h(Checkbox.Indicator, { key: "check" }, () => checkGlyph()),
+              ]),
               h(Checkbox.Label, () => "All frameworks"),
               h(Checkbox.HiddenInput),
             ],

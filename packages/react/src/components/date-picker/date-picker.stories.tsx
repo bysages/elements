@@ -1,5 +1,6 @@
 import { parseDate } from "@ark-ui/react/date-picker";
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -287,7 +288,11 @@ function MonthYearSelectView() {
 function popup(...views: ReactNode[]) {
   return (
     <DatePicker.Positioner>
-      <DatePicker.Content>{views}</DatePicker.Content>
+      <DatePicker.Content>
+        {views.map((view, index) => (
+          <Fragment key={index}>{view}</Fragment>
+        ))}
+      </DatePicker.Content>
     </DatePicker.Positioner>
   );
 }

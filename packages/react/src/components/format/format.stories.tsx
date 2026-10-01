@@ -1,5 +1,6 @@
 import { LocaleProvider } from "@ark-ui/react/locale";
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 
 import { Format as BSFormat } from ".";
 
@@ -26,7 +27,13 @@ function row(label: string, value: React.ReactNode) {
 }
 
 function stack(...rows: React.ReactNode[]) {
-  return <div style={{ display: "grid", gap: "0.5rem" }}>{rows}</div>;
+  return (
+    <div style={{ display: "grid", gap: "0.5rem" }}>
+      {rows.map((row, index) => (
+        <Fragment key={index}>{row}</Fragment>
+      ))}
+    </div>
+  );
 }
 
 /** The plain numeral, grouped by the reader's own convention. */

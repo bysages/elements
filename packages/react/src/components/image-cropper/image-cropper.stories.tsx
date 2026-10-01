@@ -1,5 +1,6 @@
 import { useImageCropper } from "@ark-ui/react/image-cropper";
 import type { Meta } from "@storybook/react-vite";
+import { Fragment } from "react";
 import { useState } from "react";
 
 import { ImageCropper } from ".";
@@ -31,7 +32,9 @@ function frame(...extra: React.ReactNode[]) {
           <ImageCropper.Grid axis="vertical" />
         </ImageCropper.Selection>
       </ImageCropper.Viewport>
-      {extra}
+      {extra.map((node, index) => (
+        <Fragment key={index}>{node}</Fragment>
+      ))}
     </>
   );
 }
@@ -45,7 +48,13 @@ function button(label: string, onClick: () => void, active = false) {
 }
 
 function toolbar(...buttons: React.ReactNode[]) {
-  return <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>{buttons}</div>;
+  return (
+    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      {buttons.map((node, index) => (
+        <Fragment key={index}>{node}</Fragment>
+      ))}
+    </div>
+  );
 }
 
 function readout(label: string, value: string) {
@@ -79,9 +88,11 @@ export const AspectRatio = {
     return (
       <div style={{ display: "grid", gap: "0.75rem", maxWidth: "36rem" }}>
         {toolbar(
-          aspects.map((aspect) =>
-            button(aspect.label, () => setRatio(aspect.value), ratio === aspect.value),
-          ),
+          aspects.map((aspect) => (
+            <Fragment key={aspect.label}>
+              {button(aspect.label, () => setRatio(aspect.value), ratio === aspect.value)}
+            </Fragment>
+          )),
         )}
         <ImageCropper.Root aspectRatio={ratio}>{frame()}</ImageCropper.Root>
       </div>
