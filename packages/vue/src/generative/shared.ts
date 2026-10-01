@@ -1,6 +1,7 @@
 import { createListCollection } from "@ark-ui/vue/select";
 import { createToaster } from "@ark-ui/vue/toast";
 import { useBoundProp } from "@json-render/vue";
+import type { BaseComponentProps } from "@json-render/vue";
 import { h } from "vue";
 import type { VNode } from "vue";
 
@@ -8,16 +9,12 @@ import { Stack } from "../components/stack/index";
 import { Toaster } from "../components/toast/index";
 import { Typography } from "../components/typography/index";
 
-/** What one registry component receives: the spec's props, the rendered
- * children, the named slots, the event bus, and the two-way binding
- * write-back paths. */
-export interface GenerativeContext {
-  props: any;
-  children?: VNode | VNode[];
-  slots?: Record<string, (() => VNode[]) | undefined>;
-  emit: (event: string) => void;
-  bindings?: Record<string, string | undefined>;
-}
+/** What one registry component receives — json-render's own render
+ * context. The entry stays a hand-rolled shape because the faces are
+ * gathered by glob before the catalog exists (there is no catalog type
+ * to close the props or the component over yet), but the context the
+ * component runs in is the library's contract, not ours. */
+export type GenerativeContext = BaseComponentProps<any>;
 
 /** One family's claim in the generative vocabulary: the catalog entry
  * (what the model may compose) rides beside the assembly (how it
