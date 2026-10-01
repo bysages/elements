@@ -13,7 +13,7 @@ pnpm exec vp check                          # lint, format & type check
 cd packages/<pkg> && pnpm dev               # storybook for one package (port 6006)
 ```
 
-Prerequisites: Node.js 18+, pnpm 9+.
+Prerequisites: Node.js 20+, pnpm 10.
 
 ## Contribution Workflow
 

@@ -35,6 +35,7 @@
 | [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Svelte 组件                                                |
 | [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | 令牌主题的图表                                             |
 | [@bysages/workflow](./packages/workflow/README.md)     | ![npm](https://img.shields.io/npm/v/@bysages/workflow)   | 无头流程图协议 + X6 画布编辑器                             |
+| [@bysages/icons](./packages/icons/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/icons)      | Iconify 格式字形注册表，所有框架包装共用一套标准图标       |
 | [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | 包装 Vue 组件的 Nuxt 模块                                  |
 | [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | 构建文档站的 Nuxt Content 层                               |
 

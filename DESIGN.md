@@ -333,6 +333,12 @@ optical size across the product. Key actions pair icon + label; icon-only
 controls carry an accessible name, a tooltip, and a sufficient hit area.
 Optical alignment over mathematical centering.
 
+The canonical set is **Lucide** — feather-lineage strokes on a 24px grid
+(2px, rounded caps and joins): the most actively maintained open set, warm
+and neutral on paper, and the set code-generating agents name by default.
+The set ships curated — `@bysages/icons` holds only the glyphs the system
+names, never the whole collection.
+
 ## Controls
 
 **Button** — primary (ink by default), secondary, ghost, destructive, link.

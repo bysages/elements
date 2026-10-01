@@ -81,6 +81,7 @@ packages/vue/src/       @bysages/vue — Ark wrappers for Vue
 packages/solid/src/     @bysages/solid — Ark wrappers for Solid
 packages/svelte/src/    @bysages/svelte — Ark wrappers for Svelte
 packages/charts/src/    @bysages/charts — TanStack Charts re-exported per framework, inked from the tokens
+packages/icons/src/     @bysages/icons — iconify-format glyph registry, one canonical set for the framework wrappers
 packages/workflow/src/  @bysages/workflow — headless workflow graph protocol (store/serialize) + the X6 canvas adapter, styled from core
 packages/nuxt/src/      @bysages/nuxt — Nuxt module: auto-imports every Vue family, one build-time stylesheet
 packages/docs-theme/    @bysages/docs-theme — Nuxt Content layer that renders a documentation site in the design system
@@ -100,11 +101,12 @@ Commands live in [CONTRIBUTING.md](./CONTRIBUTING.md) → Development Setup. The
 
 Several trees in the repo are **build output — never edit them by hand**; change the source the generator reads, then re-run the generator:
 
-| Generated                            | Source of truth                                                                                                                                   | Regenerate                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `docs/content/**` (both shelves)     | wrapper JSDoc/types (via docgen) · `docs/scripts/component-sections.ts` (shelf partition) · `docs/app/components/examples/<family>/*.vue` (demos) | `pnpm docs:content` (`docs:content:check` to verify) |
-| `docs/app/storybook-links.json`      | vue stories (demo → story deep links)                                                                                                             | `pnpm --filter @bysages/docs-site build:links`       |
-| `docs/public/storybook/` (workbench) | vue + react stories, static builds (`/storybook/`, `/storybook/react/`)                                                                           | `pnpm --filter @bysages/docs-site build:workbench`   |
+| Generated                              | Source of truth                                                                                                                                   | Regenerate                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `docs/content/**` (both shelves)       | wrapper JSDoc/types (via docgen) · `docs/scripts/component-sections.ts` (shelf partition) · `docs/app/components/examples/<family>/*.vue` (demos) | `pnpm docs:content` (`docs:content:check` to verify) |
+| `docs/app/storybook-links.json`        | vue stories (demo → story deep links)                                                                                                             | `pnpm --filter @bysages/docs-site build:links`       |
+| `docs/public/storybook/` (workbench)   | vue + react stories, static builds (`/storybook/`, `/storybook/react/`)                                                                           | `pnpm --filter @bysages/docs-site build:workbench`   |
+| `packages/icons/src/data.generated.ts` | `icons.config.json` — the curated list the generator reads                                                                                        | `pnpm --filter @bysages/icons generate`              |
 
 Rules that follow:
 
