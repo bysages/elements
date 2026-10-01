@@ -40,16 +40,16 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter \"./packages/**\" -r dev",
-    "build": "pnpm --filter \"./packages/**\" -r build",
+    "dev": "pnpm --filter \"./packages/*\" -r dev",
+    "build": "pnpm --filter \"./packages/*\" -r build",
     "check": "vp check --fix",
     "test": "vp test run",
     "bench": "vp test bench",
     "docs:content": "tsx docs/scripts/generate-component-docs.ts",
     "docs:content:check": "tsx docs/scripts/generate-component-docs.ts --check",
-    "version": "pnpm --filter \"./packages/**\" -r exec basis version",
+    "version": "pnpm --filter \"./packages/*\" -r exec basis version",
     "postinstall": "pnpm build && vp config && basis git setup",
-    "release": "pnpm --filter \"./packages/**\" -r run release"
+    "release": "pnpm --filter \"./packages/*\" -r run release"
   },
   "devDependencies": {
     "@funish/basis": "0.3.0",
