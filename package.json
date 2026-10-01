@@ -49,7 +49,8 @@
     "docs:content:check": "tsx docs/scripts/generate-component-docs.ts --check",
     "version": "pnpm --filter \"./packages/*\" -r exec basis version",
     "postinstall": "pnpm build && vp config && basis git setup",
-    "release": "pnpm --filter \"./packages/*\" -r run release"
+    "release": "pnpm --filter \"./packages/*\" -r run release",
+    "generate:generative": "tsx scripts/generate-generative-faces.ts"
   },
   "devDependencies": {
     "@funish/basis": "0.3.0",

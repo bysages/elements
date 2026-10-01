@@ -37,7 +37,7 @@ English | [简体中文](./README.zh-CN.md)
 | [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Components for Svelte                                                       |
 | [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | Token-themed charts                                                         |
 | [@bysages/workflow](./packages/workflow/README.md)     | ![npm](https://img.shields.io/npm/v/@bysages/workflow)   | Headless workflow graph protocol + X6 canvas editor                         |
-| [@bysages/icons](./packages/icons/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/icons)      | Iconify-format glyph registry, one canonical set for every wrapper          |
+| [@bysages/icons](./packages/icons/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/icons)      | The Lucide collection as named exports, one canonical set for every wrapper |
 | [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | Nuxt module wrapping the Vue components                                     |
 | [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | Nuxt Content layer for Elements documentation sites                         |
 
@@ -93,6 +93,15 @@ The docs site is built for agents: every page is available as raw markdown, the 
 ```bash
 claude mcp add --transport http elements https://elements.bysages.com/mcp
 ```
+
+The library is also built _by_ agents: every component family carries a
+generative face — a zod-typed catalog entry (props, slots, description)
+that lives beside the component — and the faces compose into a
+[json-render](https://json-render.dev) catalog. An AI assembles real
+Elements components from a prompt, safely constrained to the components
+you registered: no free-form HTML, no stray styles, the design system
+holds. Every framework package ships the same vocabulary and its own
+renderer under `@bysages/<fw>/generative`.
 
 See the [AI integration guide](https://elements.bysages.com/en/guide/ai) for details.
 

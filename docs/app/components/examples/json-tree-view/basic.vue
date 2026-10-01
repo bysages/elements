@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { chevron_right } from "@bysages/icons";
 import { Icon, JsonTreeView } from "@bysages/vue";
 
 const data = {
@@ -14,7 +15,7 @@ const data = {
   <JsonTreeView.Root :data="data" :default-expanded-depth="1">
     <JsonTreeView.Tree>
       <template #arrow>
-        <Icon name="chevron-right" />
+        <Icon :glyph="chevron_right" />
       </template>
     </JsonTreeView.Tree>
   </JsonTreeView.Root>

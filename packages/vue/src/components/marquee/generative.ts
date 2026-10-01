@@ -24,7 +24,7 @@ export default defineEntry({
         h(Marquee.Content, () =>
           names.map((name: string) =>
             h(Marquee.Item, { key: name }, () => [
-              h(Icon, { name: "ink-bottle" }),
+              h(Icon, { name: "droplet" }),
               h("span", () => name),
             ]),
           ),

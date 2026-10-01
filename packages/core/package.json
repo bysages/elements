@@ -37,6 +37,10 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./icons": {
+      "types": "./dist/icons/index.d.mts",
+      "import": "./dist/icons/index.mjs"
     }
   },
   "scripts": {
@@ -46,6 +50,7 @@
     "release": "basis publish"
   },
   "dependencies": {
+    "@bysages/icons": "workspace:*",
     "@bysages/tokens": "workspace:*"
   }
 }

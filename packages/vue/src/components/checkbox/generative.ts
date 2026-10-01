@@ -1,18 +1,13 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { defineEntry } from "../../generative/shared";
 import { Checkbox } from "./index";
 
 /** One independent box with its label. */
 export default defineEntry({
   Checkbox: {
-    props: z.object({
-      label: z.string(),
-      checked: z.boolean().optional(),
-      disabled: z.boolean().optional(),
-    }),
-    description: "One independent box with its label.",
+    ...faces.Checkbox,
     component: ({ props }) => {
       const mark = () =>
         h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" }, [

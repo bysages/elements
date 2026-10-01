@@ -1,11 +1,13 @@
 import { injectComponentStyle } from "@bysages/core";
-import { getIcon } from "@bysages/icons";
+import { getIcon } from "@bysages/core/icons";
+import type { IconifyIcon } from "@bysages/core/icons";
 import type { HTMLAttributes } from "react";
 
 /** The inkwell: a standard box that keeps any inline svg at its optical
  * measure and in the text's own ink — the icon carries no pigment and no
- * size of its own. Bring a glyph through `name` from the registry, or
- * bring your own; the well renders either. */
+ * size of its own. Bring a glyph through `glyph` (a direct registry
+ * import), through `name` from the whitelisted registry, or bring your
+ * own; the well renders either. */
 export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** Size steps follow the surrounding font size; `inherit` is the
    * default — one em of the text the icon sits in. */
@@ -13,17 +15,20 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** The accessible name. Without it the icon is presentation-only and
    * hidden from the accessibility tree. */
   label?: string;
-  /** A glyph from the registry. Ignored when children are given — an
-   * explicit glyph always wins over the registry. */
+  /** A glyph from the registry, imported directly. Ignored when children
+   * are given — an explicit glyph always wins. */
+  glyph?: IconifyIcon;
+  /** A registry name — only the whitelisted set the wrappers draw
+   * themselves. Ignored when `glyph` or children are given. */
   name?: string;
 }
 
-export function Icon({ size = "inherit", label, name, children, ...rest }: IconProps) {
+export function Icon({ size = "inherit", label, glyph, name, children, ...rest }: IconProps) {
   injectComponentStyle("icon");
-  const glyph = name && children == null ? getIcon(name) : undefined;
-  if (name && children == null && !glyph) {
+  const resolved = glyph ?? (name && children == null ? getIcon(name) : undefined);
+  if (name && children == null && glyph == null && !resolved) {
     console.error(
-      `[icons] unknown icon name "${name}" — extend packages/icons/icons.config.json and rerun the generator`,
+      `[icons] unknown icon name "${name}" — not in the wrappers' whitelist; import the glyph from @bysages/icons and pass it as glyph`,
     );
   }
   return (
@@ -37,12 +42,12 @@ export function Icon({ size = "inherit", label, name, children, ...rest }: IconP
       data-size={size}
     >
       {children ??
-        (glyph ? (
+        (resolved ? (
           <svg
-            viewBox={`0 0 ${glyph.width ?? 24} ${glyph.height ?? 24}`}
+            viewBox={`0 0 ${resolved.width ?? 24} ${resolved.height ?? 24}`}
             fill="currentColor"
             aria-hidden="true"
-            dangerouslySetInnerHTML={{ __html: glyph.body }}
+            dangerouslySetInnerHTML={{ __html: resolved.body }}
           />
         ) : null)}
     </span>

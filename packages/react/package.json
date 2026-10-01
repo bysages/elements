@@ -110,6 +110,10 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./generative": {
+      "types": "./dist/generative/index.d.mts",
+      "import": "./dist/generative/index.mjs"
     }
   },
   "scripts": {
@@ -131,6 +135,8 @@
     "@zag-js/react": "1.44.0"
   },
   "devDependencies": {
+    "@json-render/core": "0.21.0",
+    "@json-render/react": "0.21.0",
     "@storybook/addon-a11y": "10.6.1",
     "@storybook/react-vite": "10.6.1",
     "@types/react": "19.3.0",
@@ -142,7 +148,21 @@
     "zod": "4.6.5"
   },
   "peerDependencies": {
+    "@json-render/core": "^0.21.0",
+    "@json-render/react": "^0.21.0",
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "zod": "^4.0"
+  },
+  "peerDependenciesMeta": {
+    "@json-render/core": {
+      "optional": true
+    },
+    "@json-render/react": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   }
 }

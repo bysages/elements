@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { minus, x } from "@bysages/icons";
 import { FloatingPanel, Icon } from "@bysages/vue";
 
 const axes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
@@ -16,7 +17,7 @@ const axes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
             <FloatingPanel.Title>Notes</FloatingPanel.Title>
             <FloatingPanel.Control>
               <FloatingPanel.StageTrigger stage="minimized">
-                <Icon name="minus" />
+                <Icon :glyph="minus" />
               </FloatingPanel.StageTrigger>
               <FloatingPanel.StageTrigger stage="maximized">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -24,7 +25,7 @@ const axes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
                 </svg>
               </FloatingPanel.StageTrigger>
               <FloatingPanel.CloseTrigger>
-                <Icon name="x" />
+                <Icon :glyph="x" />
               </FloatingPanel.CloseTrigger>
             </FloatingPanel.Control>
           </FloatingPanel.Header>

@@ -1,0 +1,36 @@
+import { createElement } from "react";
+
+import { faces } from "../../generative/faces.generated";
+import { labelled, slug } from "../../generative/shared";
+import { defineEntry } from "../../generative/shared";
+import { RadioGroup } from "./index";
+
+/** Several boxes where exactly one may hold. */
+export default defineEntry({
+  RadioGroup: {
+    ...faces.RadioGroup,
+    component: ({ props }) => {
+      const values = props.items ?? ["Xuan", "Mian", "Lusong"];
+      return labelled(
+        props.label,
+        createElement(
+          RadioGroup.Root,
+          { defaultValue: slug(values[0] ?? "") },
+          createElement(
+            "div",
+            { style: { display: "flex", flexDirection: "column", gap: "0.5rem" } },
+            values.map((value: string) =>
+              createElement(
+                RadioGroup.Item,
+                { key: value, value },
+                createElement(RadioGroup.ItemControl),
+                createElement(RadioGroup.ItemText, null, value),
+                createElement(RadioGroup.ItemHiddenInput),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  },
+});

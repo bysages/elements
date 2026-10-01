@@ -1,14 +1,13 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { defineEntry } from "../../generative/shared";
 import { Progress } from "./index";
 
 /** A working track that fills toward done. */
 export default defineEntry({
   Progress: {
-    props: z.object({ value: z.number().optional(), label: z.string().optional() }),
-    description: "A working track that fills toward done.",
+    ...faces.Progress,
     component: ({ props }) =>
       h(
         Progress.Root,

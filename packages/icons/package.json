@@ -1,7 +1,7 @@
 {
   "name": "@bysages/icons",
   "version": "0.3.0",
-  "description": "Icon registry for By Sages Elements — iconify-format glyphs drawn from a curated collection, one canonical set for every framework wrapper",
+  "description": "Icon registry for By Sages Elements — the Lucide collection as named exports, one canonical set for every framework wrapper",
   "keywords": [
     "design-system",
     "iconify",
@@ -35,15 +35,17 @@
     }
   },
   "scripts": {
-    "generate": "node scripts/generate.mjs",
+    "generate": "node scripts/generate-icons.mjs",
     "dev": "basis build --stub",
     "build": "vp pack",
     "prepack": "pnpm build",
     "release": "basis publish"
   },
+  "dependencies": {
+    "@iconify/types": "2.0.0"
+  },
   "devDependencies": {
     "@iconify-json/lucide": "1.2.138",
-    "@iconify/types": "2.0.0",
     "@iconify/utils": "3.1.7"
   }
 }

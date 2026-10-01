@@ -2,3 +2,6 @@ packages:
   - packages/**
   - docs
   - "!**/test/**"
+
+overrides:
+  typescript: 6.0.3

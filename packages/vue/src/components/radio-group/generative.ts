@@ -1,6 +1,6 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { labelled, slug } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { RadioGroup } from "./index";
@@ -8,8 +8,7 @@ import { RadioGroup } from "./index";
 /** Several boxes where exactly one may hold. */
 export default defineEntry({
   RadioGroup: {
-    props: z.object({ label: z.string().optional(), items: z.array(z.string()).optional() }),
-    description: "Several boxes where exactly one may hold.",
+    ...faces.RadioGroup,
     component: ({ props }) => {
       const values = props.items ?? ["Xuan", "Mian", "Lusong"];
       return labelled(

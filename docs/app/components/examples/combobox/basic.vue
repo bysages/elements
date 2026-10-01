@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useListCollection } from "@ark-ui/vue/combobox";
 import { useFilter } from "@ark-ui/vue/locale";
+import { check, chevron_down, x } from "@bysages/icons";
 import { Combobox, Icon } from "@bysages/vue";
 
 const filters = useFilter({ sensitivity: "base" });
@@ -23,10 +24,10 @@ const { collection, filter } = useListCollection({
     <Combobox.Control>
       <Combobox.Input placeholder="e.g. Apple" />
       <Combobox.ClearTrigger>
-        <Icon name="x" />
+        <Icon :glyph="x" />
       </Combobox.ClearTrigger>
       <Combobox.Trigger>
-        <Icon name="chevron-down" />
+        <Icon :glyph="chevron_down" />
       </Combobox.Trigger>
     </Combobox.Control>
     <Teleport to="body">
@@ -36,7 +37,7 @@ const { collection, filter } = useListCollection({
           <Combobox.Item v-for="item in collection.items" :key="item.value" :item="item">
             <Combobox.ItemText>{{ item.label }}</Combobox.ItemText>
             <Combobox.ItemIndicator>
-              <Icon name="check" />
+              <Icon :glyph="check" />
             </Combobox.ItemIndicator>
           </Combobox.Item>
         </Combobox.Content>

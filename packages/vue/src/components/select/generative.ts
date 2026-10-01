@@ -1,6 +1,6 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { labelled, collectionFor, useBound } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { Icon } from "../icon";
@@ -9,13 +9,7 @@ import { Select } from "./index";
 /** A choice field that opens a ruled list; options carry label and value. */
 export default defineEntry({
   Select: {
-    props: z.object({
-      label: z.string().optional(),
-      placeholder: z.string().optional(),
-      options: z.array(z.object({ label: z.string(), value: z.string() })),
-      value: z.string().optional(),
-    }),
-    description: "A choice field that opens a ruled list; options carry label and value.",
+    ...faces.Select,
     component: ({ props, bindings }) => {
       const [value, setValue] = useBound<string>(props.value, bindings?.value);
       const collection = collectionFor(props.options);

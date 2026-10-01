@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { pause, play, rotate_ccw } from "@bysages/icons";
 import { Icon, Timer } from "@bysages/vue";
 
 const units = [
@@ -20,16 +21,16 @@ const units = [
     </Timer.Area>
     <Timer.Control>
       <Timer.ActionTrigger action="start">
-        <Icon name="play" />
+        <Icon :glyph="play" />
         Start
       </Timer.ActionTrigger>
       <Timer.ActionTrigger action="pause">
-        <Icon name="pause" />
+        <Icon :glyph="pause" />
         Pause
       </Timer.ActionTrigger>
       <Timer.ActionTrigger action="resume">Resume</Timer.ActionTrigger>
       <Timer.ActionTrigger action="reset">
-        <Icon name="rotate-ccw" />
+        <Icon :glyph="rotate_ccw" />
         Reset
       </Timer.ActionTrigger>
     </Timer.Control>

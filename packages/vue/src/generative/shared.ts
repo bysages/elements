@@ -8,6 +8,7 @@ import type { VNode } from "vue";
 import { Stack } from "../components/stack/index";
 import { Toaster } from "../components/toast/index";
 import { Typography } from "../components/typography/index";
+export { headingClass, initials, slug } from "./faces";
 
 /** What one registry component receives — json-render's own render
  * context. The entry stays a hand-rolled shape because the faces are
@@ -32,15 +33,6 @@ export function defineEntry<T extends Record<string, GenerativeEntry>>(entries: 
   return entries;
 }
 
-/** Map a catalog Heading level to a measure — the serif voice stays, the
- * size steps down. */
-export const headingClass: Record<string, string> = {
-  "1": "text-4xl",
-  "2": "text-3xl",
-  "3": "text-2xl",
-  "4": "text-xl",
-};
-
 export const textVoices = {
   body: Typography.Body,
   lead: Typography.Lead,
@@ -53,19 +45,11 @@ export const textVoices = {
 export function useBound<T>(value: unknown, path?: string) {
   return useBoundProp<T>(value as T, path);
 }
-export function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
 /** The machine keeps its state in the collection's identity, so one
  * option list yields one collection — a fresh one per render would
  * reset the open state under the pointer. */
-export type SelectOption = { label: string; value: string };
+import type { SelectOption } from "./faces";
+export type { SelectOption };
 
 const collectionCache = new Map<string, ReturnType<typeof createListCollection<SelectOption>>>();
 
@@ -93,15 +77,6 @@ export function labelled(label: string | undefined, control: VNode) {
 export function slotted(children: VNode | VNode[] | undefined) {
   if (!children) return [];
   return Array.isArray(children) ? children : [children];
-}
-
-export function slug(value: string) {
-  return (
-    value
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "") || value
-  );
 }
 
 /** The workbench keeps one toaster so generated notices land in the same

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { pen_line, plus } from "@bysages/icons";
 import { Button, FloatButton, Icon } from "@bysages/vue";
 import { ref } from "vue";
 
@@ -21,10 +22,10 @@ const compose = () => {
     </p>
     <FloatButton v-model:open="open" placement="bottom-start">
       <FloatButton.Trigger label="Actions">
-        <Icon name="plus" />
+        <Icon :glyph="plus" />
       </FloatButton.Trigger>
       <FloatButton.Item label="Compose" @click="compose">
-        <Icon name="pen-line" />
+        <Icon :glyph="pen_line" />
       </FloatButton.Item>
     </FloatButton>
   </div>

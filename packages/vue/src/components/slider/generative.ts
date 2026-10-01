@@ -1,6 +1,6 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { Slider } from "./index";
@@ -8,8 +8,7 @@ import { Slider } from "./index";
 /** A ruled track the hand slides between bounds. */
 export default defineEntry({
   Slider: {
-    props: z.object({ label: z.string().optional(), value: z.number().optional() }),
-    description: "A ruled track the hand slides between bounds.",
+    ...faces.Slider,
     component: ({ props }) =>
       labelled(
         props.label,

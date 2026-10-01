@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { check } from "@bysages/icons";
 import { Checkbox, Icon } from "@bysages/vue";
 </script>
 
@@ -7,7 +8,7 @@ import { Checkbox, Icon } from "@bysages/vue";
     <Checkbox.Root default-checked>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <Icon name="check" />
+          <Icon :glyph="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Ship the register</Checkbox.Label>
@@ -16,7 +17,7 @@ import { Checkbox, Icon } from "@bysages/vue";
     <Checkbox.Root>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <Icon name="check" />
+          <Icon :glyph="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Outline the story</Checkbox.Label>
@@ -25,7 +26,7 @@ import { Checkbox, Icon } from "@bysages/vue";
     <Checkbox.Root disabled>
       <Checkbox.Control>
         <Checkbox.Indicator>
-          <Icon name="check" />
+          <Icon :glyph="check" />
         </Checkbox.Indicator>
       </Checkbox.Control>
       <Checkbox.Label>Archived</Checkbox.Label>

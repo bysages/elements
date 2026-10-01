@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { check, x } from "@bysages/icons";
 import { Editable, Icon } from "@bysages/vue";
 </script>
 
@@ -26,10 +27,10 @@ import { Editable, Icon } from "@bysages/vue";
         </svg>
       </Editable.EditTrigger>
       <Editable.SubmitTrigger aria-label="Submit">
-        <Icon name="check" />
+        <Icon :glyph="check" />
       </Editable.SubmitTrigger>
       <Editable.CancelTrigger aria-label="Cancel">
-        <Icon name="x" />
+        <Icon :glyph="x" />
       </Editable.CancelTrigger>
     </Editable.Control>
   </Editable.Root>

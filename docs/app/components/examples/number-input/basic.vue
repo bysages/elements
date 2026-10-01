@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { chevron_down, chevron_up, pause } from "@bysages/icons";
 import { Icon, NumberInput } from "@bysages/vue";
 </script>
 
@@ -8,13 +9,13 @@ import { Icon, NumberInput } from "@bysages/vue";
     <NumberInput.Control>
       <NumberInput.Input />
       <NumberInput.Scrubber>
-        <Icon name="pause" />
+        <Icon :glyph="pause" />
       </NumberInput.Scrubber>
       <NumberInput.IncrementTrigger aria-label="Increment">
-        <Icon name="chevron-up" />
+        <Icon :glyph="chevron_up" />
       </NumberInput.IncrementTrigger>
       <NumberInput.DecrementTrigger aria-label="Decrement">
-        <Icon name="chevron-down" />
+        <Icon :glyph="chevron_down" />
       </NumberInput.DecrementTrigger>
     </NumberInput.Control>
   </NumberInput.Root>

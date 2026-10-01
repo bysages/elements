@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { x } from "@bysages/icons";
 import { Drawer, Icon } from "@bysages/vue";
 </script>
 
@@ -16,7 +17,7 @@ import { Drawer, Icon } from "@bysages/vue";
           </Drawer.Description>
           <p>The rest of the sheet is yours to fill.</p>
           <Drawer.CloseTrigger>
-            <Icon name="x" />
+            <Icon :glyph="x" />
           </Drawer.CloseTrigger>
         </Drawer.Content>
       </Drawer.Positioner>

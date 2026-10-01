@@ -336,8 +336,9 @@ Optical alignment over mathematical centering.
 The canonical set is **Lucide** — feather-lineage strokes on a 24px grid
 (2px, rounded caps and joins): the most actively maintained open set, warm
 and neutral on paper, and the set code-generating agents name by default.
-The set ships curated — `@bysages/icons` holds only the glyphs the system
-names, never the whole collection.
+`@bysages/icons` exports the collection whole, as named exports; the
+wrappers' own registry curates only the glyphs the components draw, and
+consumers that name any other glyph import it straight from the package.
 
 ## Controls
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { file } from "@bysages/icons";
 import { FileUpload, Icon } from "@bysages/vue";
 </script>
 
@@ -12,7 +13,7 @@ import { FileUpload, Icon } from "@bysages/vue";
       <FileUpload.Context v-slot="{ acceptedFiles }">
         <FileUpload.Item v-for="file in acceptedFiles" :key="file.name" :file="file">
           <FileUpload.ItemPreview>
-            <Icon name="file" />
+            <Icon :glyph="file" />
           </FileUpload.ItemPreview>
           <FileUpload.ItemName />
           <FileUpload.ItemSizeText />

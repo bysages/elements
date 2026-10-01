@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
+import { globe, plus } from "@bysages/icons";
 import {
   AiAttachment,
   AiAttachments,
@@ -81,7 +82,7 @@ const send = (value: string) => {
         <Menu.Root>
           <Menu.Trigger as-child>
             <Button variant="ghost" square aria-label="Attach">
-              <Icon name="plus" />
+              <Icon :glyph="plus" />
             </Button>
           </Menu.Trigger>
           <Teleport to="body">
@@ -94,7 +95,7 @@ const send = (value: string) => {
           </Teleport>
         </Menu.Root>
         <Toggle.Root v-model:pressed="webSearch" type="button">
-          <Icon name="globe" />
+          <Icon :glyph="globe" />
           <span>Web search</span>
         </Toggle.Root>
       </template>

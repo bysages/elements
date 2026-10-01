@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { Button, Tooltip } from "@bysages/vue";
+import { download } from "@bysages/icons";
+import { Button, Icon, Tooltip } from "@bysages/vue";
 </script>
 
 <template>
   <Tooltip.Root>
     <Tooltip.Trigger as-child>
       <Button variant="outline" size="sm">
-        <Icon name="i-lucide-download" />
+        <Icon :glyph="download" />
         Hover me
       </Button>
     </Tooltip.Trigger>

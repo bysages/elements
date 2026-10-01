@@ -1,13 +1,6 @@
-import type { IconifyIcon } from "@iconify/types";
-
-import * as glyphs from "./data.generated.js";
-
+// The whole collection as named exports — a consumer that knows which
+// glyph it wants imports that one name. Runtime lookup lives in the
+// consumers that need it (@bysages/core/icons curates the wrappers'
+// whitelist there); this package is only the set itself.
+export * from "./data.generated";
 export type { IconifyIcon } from "@iconify/types";
-
-/** The registry holds only the curated list in icons.config.json — a name
- * outside it is a miss, and the wrappers treat a miss as a loud error. */
-export function getIcon(name: string): IconifyIcon | undefined {
-  // Registry names are kebab-case; generated exports are the same names
-  // with underscores, since a module export cannot carry a hyphen.
-  return (glyphs as Record<string, IconifyIcon>)[name.replace(/-/g, "_")];
-}

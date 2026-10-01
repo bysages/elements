@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { calendar, chevron_right } from "@bysages/icons";
 import { DatePicker, Icon } from "@bysages/vue";
 </script>
 
@@ -8,7 +9,7 @@ import { DatePicker, Icon } from "@bysages/vue";
     <DatePicker.Control>
       <DatePicker.Input />
       <DatePicker.Trigger>
-        <Icon name="calendar" />
+        <Icon :glyph="calendar" />
       </DatePicker.Trigger>
     </DatePicker.Control>
     <Teleport to="body">
@@ -18,11 +19,11 @@ import { DatePicker, Icon } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>
@@ -51,11 +52,11 @@ import { DatePicker, Icon } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>
@@ -80,11 +81,11 @@ import { DatePicker, Icon } from "@bysages/vue";
             <DatePicker.Context v-slot="dp">
               <DatePicker.ViewControl>
                 <DatePicker.PrevTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.PrevTrigger>
                 <DatePicker.ViewTrigger><DatePicker.RangeText /></DatePicker.ViewTrigger>
                 <DatePicker.NextTrigger>
-                  <Icon name="chevron-right" />
+                  <Icon :glyph="chevron_right" />
                 </DatePicker.NextTrigger>
               </DatePicker.ViewControl>
               <DatePicker.Table>

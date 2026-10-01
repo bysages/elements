@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { check, x } from "@bysages/icons";
 import { Icon, Swap } from "@bysages/vue";
 import { ref } from "vue";
 
@@ -15,10 +16,10 @@ const swapped = ref(false);
   >
     <Swap.Root :swap="swapped">
       <Swap.Indicator type="on">
-        <Icon name="check" />
+        <Icon :glyph="check" />
       </Swap.Indicator>
       <Swap.Indicator type="off">
-        <Icon name="x" />
+        <Icon :glyph="x" />
       </Swap.Indicator>
     </Swap.Root>
   </button>

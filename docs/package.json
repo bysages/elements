@@ -13,6 +13,7 @@
   "dependencies": {
     "@bysages/charts": "workspace:*",
     "@bysages/docs-theme": "workspace:*",
+    "@bysages/icons": "workspace:*",
     "@bysages/workflow": "workspace:*",
     "@internationalized/date": "3.12.4",
     "@json-render/core": "0.21.0",

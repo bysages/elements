@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { chevron_down } from "@bysages/icons";
 import { Icon, Menu } from "@bysages/vue";
 </script>
 
@@ -7,7 +8,7 @@ import { Icon, Menu } from "@bysages/vue";
     <Menu.Trigger>
       <span>File</span>
       <Menu.Indicator>
-        <Icon name="chevron-down" />
+        <Icon :glyph="chevron_down" />
       </Menu.Indicator>
     </Menu.Trigger>
     <Teleport to="body">

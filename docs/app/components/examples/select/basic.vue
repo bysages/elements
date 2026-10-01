@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createListCollection } from "@ark-ui/vue/select";
+import { check, chevrons_up_down, x } from "@bysages/icons";
 import { Icon, Select } from "@bysages/vue";
 
 const collection = createListCollection({
@@ -20,10 +21,10 @@ const collection = createListCollection({
         <Select.ValueText placeholder="Select" />
       </Select.Trigger>
       <Select.ClearTrigger>
-        <Icon name="x" />
+        <Icon :glyph="x" />
       </Select.ClearTrigger>
       <Select.Indicator>
-        <Icon name="chevrons-up-down" />
+        <Icon :glyph="chevrons_up_down" />
       </Select.Indicator>
     </Select.Control>
     <Teleport to="body">
@@ -34,7 +35,7 @@ const collection = createListCollection({
             <Select.Item v-for="item in collection.items" :key="item.value" :item="item">
               <Select.ItemText>{{ item.label }}</Select.ItemText>
               <Select.ItemIndicator>
-                <Icon name="check" />
+                <Icon :glyph="check" />
               </Select.ItemIndicator>
             </Select.Item>
           </Select.ItemGroup>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { rotate_cw } from "@bysages/icons";
 import { Button, Icon, Input, InputGroup } from "@bysages/vue";
 </script>
 
@@ -6,7 +7,7 @@ import { Button, Icon, Input, InputGroup } from "@bysages/vue";
   <InputGroup class="max-w-96">
     <InputGroup.Addon>
       <Button variant="ghost" square aria-label="Insert handle">
-        <Icon name="rotate-cw" />
+        <Icon :glyph="rotate_cw" />
       </Button>
     </InputGroup.Addon>
     <Input placeholder="username" />

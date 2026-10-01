@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { x } from "@bysages/icons";
 import { Drawer, Icon } from "@bysages/vue";
 
 const directions = [
@@ -27,7 +28,7 @@ const directions = [
               the page, and the grabber rides the leading edge on the side sheets.
             </p>
             <Drawer.CloseTrigger>
-              <Icon name="x" />
+              <Icon :glyph="x" />
             </Drawer.CloseTrigger>
           </Drawer.Content>
         </Drawer.Positioner>

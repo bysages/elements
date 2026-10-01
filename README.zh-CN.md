@@ -35,7 +35,7 @@
 | [@bysages/svelte](./packages/svelte/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/svelte)     | Svelte 组件                                                |
 | [@bysages/charts](./packages/charts/README.md)         | ![npm](https://img.shields.io/npm/v/@bysages/charts)     | 令牌主题的图表                                             |
 | [@bysages/workflow](./packages/workflow/README.md)     | ![npm](https://img.shields.io/npm/v/@bysages/workflow)   | 无头流程图协议 + X6 画布编辑器                             |
-| [@bysages/icons](./packages/icons/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/icons)      | Iconify 格式字形注册表，所有框架包装共用一套标准图标       |
+| [@bysages/icons](./packages/icons/README.md)           | ![npm](https://img.shields.io/npm/v/@bysages/icons)      | 以具名导出呈现的 Lucide 全集，所有框架包装共用一套标准图标 |
 | [@bysages/nuxt](./packages/nuxt/README.md)             | ![npm](https://img.shields.io/npm/v/@bysages/nuxt)       | 包装 Vue 组件的 Nuxt 模块                                  |
 | [@bysages/docs-theme](./packages/docs-theme/README.md) | ![npm](https://img.shields.io/npm/v/@bysages/docs-theme) | 构建文档站的 Nuxt Content 层                               |
 
@@ -89,6 +89,13 @@ Nuxt 应用通过模块自动导入全部组件族并处理 SSR 样式——见 
 ```bash
 claude mcp add --transport http elements https://elements.bysages.com/mcp
 ```
+
+这个库也为 agent 而建：每个组件族都带一张生成式面孔——一份紧挨组件的
+zod 类型目录条目（props、slots、描述）——所有面孔汇成一份
+[json-render](https://json-render.dev) 目录。AI 可以从提示词组装出真正的
+Elements 组件，且被安全地约束在你注册过的组件之内：没有自由发挥的
+HTML，没有失控的样式，设计系统始终成立。四个框架包共享同一套词汇表，
+各自在 `@bysages/<fw>/generative` 下提供渲染器。
 
 详见 [AI 集成指南](https://elements.bysages.com/zh/guide/ai)。
 

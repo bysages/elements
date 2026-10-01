@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createTreeCollection } from "@ark-ui/vue/tree-view";
+import { chevron_right } from "@bysages/icons";
 import { Icon, TreeView } from "@bysages/vue";
 
 interface Node {
@@ -43,7 +44,7 @@ const collection = createTreeCollection<Node>({
         <TreeView.Branch>
           <TreeView.BranchControl>
             <TreeView.BranchIndicator>
-              <Icon name="chevron-right" />
+              <Icon :glyph="chevron_right" />
             </TreeView.BranchIndicator>
             <TreeView.BranchText>{{ node.name }}</TreeView.BranchText>
           </TreeView.BranchControl>

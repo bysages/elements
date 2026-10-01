@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { eye, eye_off } from "@bysages/icons";
 import { Icon, PasswordInput } from "@bysages/vue";
 </script>
 
@@ -9,9 +10,9 @@ import { Icon, PasswordInput } from "@bysages/vue";
       <PasswordInput.Input placeholder="••••••••" />
       <PasswordInput.VisibilityTrigger>
         <PasswordInput.Indicator>
-          <Icon name="eye" />
+          <Icon :glyph="eye" />
           <template #fallback>
-            <Icon name="eye-off" />
+            <Icon :glyph="eye_off" />
           </template>
         </PasswordInput.Indicator>
       </PasswordInput.VisibilityTrigger>

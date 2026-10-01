@@ -13,6 +13,7 @@
 - 💡 **Lighting engine** — elevation, pigment bleed, and pointer-carried light computed into CSS variables (`setLight`, `attachDynamicLight`); component styles only ever consume light (以光为影 — light as shadow)
 - 🖋️ **Ink ripple** — a press feedback pass that bleeds pigment from the pointer, delegated at the root and tuneable per element
 - 🧩 **Style injection** — `injectComponentStyle()` ships each family's stylesheet at import time, guarded by a head marker so SSR builds that inline styles never double-inject
+- 🗂 **Icon registry** — `@bysages/core/icons` curates the few glyphs the wrappers draw from [`@bysages/icons`](../icons/README.md) and exposes them through `getIcon()`; anything beyond the whitelist is a direct named import
 
 ## Installation
 

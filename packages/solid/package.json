@@ -110,6 +110,10 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./generative": {
+      "types": "./dist/generative/index.d.mts",
+      "import": "./dist/generative/index.mjs"
     }
   },
   "scripts": {
@@ -130,11 +134,28 @@
     "@zag-js/solid": "1.44.0"
   },
   "devDependencies": {
+    "@json-render/core": "0.21.0",
+    "@json-render/solid": "0.21.0",
     "ai": "7.0.126",
     "solid-js": "1.9.15",
-    "unplugin-solid": "3.0.0"
+    "unplugin-solid": "3.0.0",
+    "zod": "4.6.5"
   },
   "peerDependencies": {
-    "solid-js": "^1.9"
+    "@json-render/core": "^0.21.0",
+    "@json-render/solid": "^0.21.0",
+    "solid-js": "^1.9",
+    "zod": "^4.0"
+  },
+  "peerDependenciesMeta": {
+    "@json-render/core": {
+      "optional": true
+    },
+    "@json-render/solid": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   }
 }

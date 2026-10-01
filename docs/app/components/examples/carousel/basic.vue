@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { chevron_left, chevron_right } from "@bysages/icons";
 import { Carousel, Icon } from "@bysages/vue";
 
 const slides = ["Chapter One", "Chapter Two", "Chapter Three"];
@@ -8,11 +9,11 @@ const slides = ["Chapter One", "Chapter Two", "Chapter Three"];
   <Carousel.Root :slide-count="slides.length">
     <Carousel.Control>
       <Carousel.PrevTrigger>
-        <Icon name="chevron-left" />
+        <Icon :glyph="chevron_left" />
       </Carousel.PrevTrigger>
       <Carousel.ProgressText />
       <Carousel.NextTrigger>
-        <Icon name="chevron-right" />
+        <Icon :glyph="chevron_right" />
       </Carousel.NextTrigger>
     </Carousel.Control>
     <Carousel.ItemGroup>

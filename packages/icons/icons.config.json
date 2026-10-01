@@ -1,25 +1,3 @@
 {
-  "collection": "@iconify-json/lucide",
-  "icons": [
-    "calendar",
-    "check",
-    "chevron-down",
-    "chevron-left",
-    "chevron-right",
-    "chevron-up",
-    "chevrons-up-down",
-    "eye",
-    "eye-off",
-    "file",
-    "globe",
-    "minus",
-    "pause",
-    "pen-line",
-    "play",
-    "plus",
-    "rotate-ccw",
-    "rotate-cw",
-    "trash-2",
-    "x"
-  ]
+  "collection": "@iconify-json/lucide"
 }

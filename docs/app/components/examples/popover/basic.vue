@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { x } from "@bysages/icons";
 import { Icon, Popover } from "@bysages/vue";
 </script>
 
@@ -8,7 +9,7 @@ import { Icon, Popover } from "@bysages/vue";
     <Popover.Positioner>
       <Popover.Content>
         <Popover.CloseTrigger>
-          <Icon name="x" />
+          <Icon :glyph="x" />
         </Popover.CloseTrigger>
         <Popover.Title>Reading notes</Popover.Title>
         <Popover.Description>

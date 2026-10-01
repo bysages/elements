@@ -4,11 +4,11 @@
 ![npm downloads](https://img.shields.io/npm/dw/@bysages/react)
 ![npm license](https://img.shields.io/npm/l/@bysages/react)
 
-> By Sages Elements for React — 90+ accessible component families, headless by construction, dressed by the paper-and-ink style layer. Ported from the Vue reference implementation, API for API.
+> By Sages Elements for React — 140+ accessible component families, headless by construction, dressed by the paper-and-ink style layer. Ported from the Vue reference implementation, API for API.
 
 ## Features
 
-- 🧩 **90+ families** — actions, forms, overlays, navigation, data, layout, and an AI conversation family on ai-sdk formats
+- 🧩 **140+ families** — actions, forms, overlays, navigation, data, layout, an AI conversation family on ai-sdk formats, and a full generative vocabulary
 - 🏛️ **Headless inside** — interaction, state, ARIA, and positioning come from proven headless state machines; wrappers add API narrowing and style injection, no DOM of their own
 - 🎨 **Token-styled** — every visual value is a CSS custom property from `@bysages/core`; light/dark, accent pigments, contrast and density tiers are data, never hardcoded styles
 - 📦 **Container-driven** — components respond to `@container`, not the viewport; the same component composes in a sidebar, a card, or a page
@@ -65,6 +65,20 @@ export function App() {
   );
 }
 ```
+
+## Generative UI
+
+Every family carries a generative face — a zod-typed catalog entry that
+lives beside the component. The faces compose into a
+[json-render](https://json-render.dev) catalog and render through the
+same package:
+
+```ts
+import { catalog } from "@bysages/react/generative";
+```
+
+Point an AI SDK stream at the renderer and a prompt becomes real,
+on-brand components — constrained to the families you registered.
 
 ## Documentation
 
