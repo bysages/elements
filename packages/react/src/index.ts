@@ -131,3 +131,8 @@ export * from "./components/transfer";
 export * from "./components/tree-select";
 export * from "./components/tree-view";
 export * from "./components/watermark";
+export * from "./components/spotlight";
+export * from "./components/dock";
+export * from "./components/browser";
+export * from "./components/bento";
+export * from "./components/result";

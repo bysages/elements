@@ -87,6 +87,7 @@ const preview: Preview = {
           "Media",
           "Feedback",
           "Layout",
+          "AI",
         ];
         const nameA = (a.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";
         const nameB = (b.title ?? "").match(/^Components\/([^/]+)/)?.[1] ?? "";

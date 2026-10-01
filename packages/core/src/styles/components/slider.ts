@@ -70,16 +70,15 @@ export const sliderCss =
 
 /* The thumb is a paper seal riding the ink: surface fill, primary hairline,
    focus turns the ring primary — never a background change. Its size rides
-   the control height at a fixed share (five eighths), not the density
-   scale — scenes that grow the targets grow the thumb with them, never
-   past the track it sits on. */
+   the part ladder the boxes ride, not the density scale — scenes that
+   grow the targets grow the thumb with them, never past the track. */
 [data-scope="slider"][data-part="thumb"] {
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: calc(var(--bs-control-height-md) * 0.625);
-  block-size: calc(var(--bs-control-height-md) * 0.625);
+  inline-size: var(--bs-part-size-sm);
+  block-size: var(--bs-part-size-sm);
   border: 1px solid var(--bs-color-primary);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
@@ -178,12 +177,12 @@ export const sliderCss =
 /* Size rungs: the root's data-size re-points the part-size ladder for
    the thumb seal; the control keeps its grab margin either way. */
 [data-scope="slider"][data-part="root"][data-size="sm"] [data-part="thumb"] {
-  inline-size: var(--bs-part-size-sm);
-  block-size: var(--bs-part-size-sm);
+  inline-size: calc(var(--bs-part-size-sm) * 0.875);
+  block-size: calc(var(--bs-part-size-sm) * 0.875);
 }
 
 [data-scope="slider"][data-part="root"][data-size="lg"] [data-part="thumb"] {
-  inline-size: var(--bs-part-size-lg);
-  block-size: var(--bs-part-size-lg);
+  inline-size: var(--bs-part-size-md);
+  block-size: var(--bs-part-size-md);
 }
 `;

@@ -9,7 +9,9 @@ import { avatarGroupCss } from "./avatar-group";
 import { backTopCss } from "./back-top";
 import { badgeCss } from "./badge";
 import { bannerCss } from "./banner";
+import { bentoCss } from "./bento";
 import { breadcrumbCss } from "./breadcrumb";
+import { browserCss } from "./browser";
 import { buttonCss } from "./button";
 import { buttonGroupCss } from "./button-group";
 import { calendarCss } from "./calendar";
@@ -30,6 +32,7 @@ import { dateInputCss } from "./date-input";
 import { datePickerCss } from "./date-picker";
 import { descriptionsCss } from "./descriptions";
 import { dialogCss } from "./dialog";
+import { dockCss } from "./dock";
 import { drawerCss } from "./drawer";
 import { dynamicInputCss } from "./dynamic-input";
 import { editableCss } from "./editable";
@@ -74,6 +77,7 @@ import { progressGroupCss } from "./progress-group";
 import { qrCodeCss } from "./qr-code";
 import { radioGroupCss } from "./radio-group";
 import { ratingGroupCss } from "./rating-group";
+import { resultCss } from "./result";
 import { scrollAreaCss } from "./scroll-area";
 import { segmentGroupCss } from "./segment-group";
 import { selectCss } from "./select";
@@ -84,6 +88,7 @@ import { sliderCss } from "./slider";
 import { spinnerCss } from "./spinner";
 import { splitButtonCss } from "./split-button";
 import { splitterCss } from "./splitter";
+import { spotlightCss } from "./spotlight";
 import { stackCss } from "./stack";
 import { statCss } from "./stat";
 import { stepsCss } from "./steps";
@@ -171,6 +176,7 @@ export const componentStyles: Record<string, string> = {
   popconfirm: popconfirmCss,
   popover: popoverCss,
   progress: progressCss,
+  result: resultCss,
   "qr-code": qrCodeCss,
   "radio-group": radioGroupCss,
   "rating-group": ratingGroupCss,
@@ -230,6 +236,13 @@ export const componentStyles: Record<string, string> = {
   "float-button": floatButtonCss,
   layout: layoutCss,
   workflow: workflowCss,
+
+  // The showcase vessels: pointer-lit card, magnifying dock, browser
+  // mockup, and the bento lattice. No Ark machine — pure anatomy.
+  spotlight: spotlightCss,
+  dock: dockCss,
+  browser: browserCss,
+  bento: bentoCss,
 };
 
 export {
@@ -312,4 +325,8 @@ export {
   treeSelectCss,
   treeViewCss,
   workflowCss,
+  spotlightCss,
+  dockCss,
+  browserCss,
+  bentoCss,
 };

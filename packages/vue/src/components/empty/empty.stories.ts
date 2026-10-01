@@ -5,7 +5,7 @@ import { Empty } from ".";
 import { Button } from "../button";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/Layout/Empty" };
+const meta: Meta = { title: "Components/Feedback/Empty" };
 export default meta;
 type Story = StoryObj<typeof Empty>;
 
