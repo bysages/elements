@@ -24,6 +24,11 @@ const copy = {
     open: "Open the example",
     source: "View source",
     apps: {
+      generative: {
+        title: "Generative UI",
+        description:
+          "Prompt to interface: a recorded spec stream composes Elements components — rendered live, bound to state, inside the catalog's guardrails.",
+      },
       dashboard: {
         title: "Admin Dashboard",
         description:
@@ -92,6 +97,11 @@ const copy = {
     open: "打开示例",
     source: "查看源码",
     apps: {
+      generative: {
+        title: "生成式界面",
+        description:
+          "从提示词到界面：一段回放的规格流搭出 Elements 组件的界面——可交互、绑定状态，只使用目录内的组件。",
+      },
       dashboard: {
         title: "管理控制台",
         description:
@@ -180,7 +190,8 @@ type ExampleName =
   | "landing"
   | "chat"
   | "github"
-  | "mobile";
+  | "mobile"
+  | "generative";
 
 const apps: Array<{ name: ExampleName; components: string[] }> = [
   {
@@ -215,6 +226,10 @@ const apps: Array<{ name: ExampleName; components: string[] }> = [
   },
   { name: "github", components: ["Chart", "Tabs", "Card", "Badge", "Avatar", "Button"] },
   { name: "mobile", components: ["ConfigProvider", "Avatar", "Badge", "Input", "Icon"] },
+  {
+    name: "generative",
+    components: ["Stack", "Card", "Stat", "Alert", "Input", "Switch", "Select"],
+  },
 ];
 </script>
 

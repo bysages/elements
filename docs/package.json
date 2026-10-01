@@ -15,14 +15,16 @@
     "@bysages/docs-theme": "workspace:*",
     "@bysages/workflow": "workspace:*",
     "@internationalized/date": "3.12.4",
+    "@json-render/core": "0.21.0",
+    "@json-render/vue": "0.21.0",
     "@nuxtjs/i18n": "10.6.0",
     "@tanstack/markdown": "0.0.15",
-    "minisearch": "7.2.0"
+    "minisearch": "7.2.0",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.3.3",
     "nuxt": "4.5.2",
-    "tailwindcss": "4.3.3",
-    "zod": "4.6.5"
+    "tailwindcss": "4.3.3"
   }
 }

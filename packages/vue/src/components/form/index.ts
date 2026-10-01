@@ -35,8 +35,10 @@ export const Form = defineComponent({
   name: "Form",
   props: {
     /** The engine instance from `useForm` — values, validation and
-     * submit all live there. */
-    form: { type: Object as PropType<AnyFormApi>, required: true },
+     * submit all live there. Optional: a form assembled without an
+     * engine (the generative vessel) degrades to layout and native
+     * semantics. */
+    form: { type: Object as PropType<AnyFormApi>, required: false, default: undefined },
   },
   setup(props, { attrs, slots }) {
     injectComponentStyle("form");
@@ -53,7 +55,7 @@ export const Form = defineComponent({
           novalidate: true,
           onSubmit: (event: Event) => {
             event.preventDefault();
-            void props.form.handleSubmit();
+            void props.form?.handleSubmit();
           },
         },
         slots.default?.(),
