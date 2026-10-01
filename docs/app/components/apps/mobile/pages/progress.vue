@@ -32,7 +32,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
           <Progress.Range />
         </Progress.Track>
       </Progress.Root>
-      <Progress.Root :value="100">
+      <Progress.Root :model-value="100">
         <Progress.Track>
           <Progress.Range />
         </Progress.Track>
