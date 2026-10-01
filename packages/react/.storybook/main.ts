@@ -26,6 +26,10 @@ const config: StorybookConfig = {
       : Object.assign({}, resolve.alias, { "@antv/x6": x6Bundle });
     return {
       ...config,
+      // The static build deploys under the docs site at
+      // /storybook/react/ — every asset URL must carry the prefix or
+      // the docs domain serves 404s.
+      base: "/storybook/react/",
       resolve: { ...resolve, alias },
     };
   },

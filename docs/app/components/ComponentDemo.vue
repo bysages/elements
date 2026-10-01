@@ -29,7 +29,12 @@ const code = ref((await sourceLoaders[path.value]?.().catch(() => "")) ?? "");
 // links file is generated from the workbench's own build index, so a
 // demo deep-links to the exact story that renders it.
 const storyId = (workbenchLinks as Record<string, string>)[props.name];
+// The two workbenches mirror story titles one-to-one, so the same id
+// deep-links into either — the door only chooses the prefix.
 const workbenchHref = computed(() => (storyId ? `/storybook/?path=/story/${storyId}` : undefined));
+const reactWorkbenchHref = computed(() =>
+  storyId ? `/storybook/react/?path=/story/${storyId}` : undefined,
+);
 
 const copied = ref(false);
 const { t } = useDocsI18n();
@@ -66,8 +71,22 @@ const { data: highlighted } = await useAsyncData(
           :href="workbenchHref"
           target="_blank"
           rel="noreferrer"
+          :title="t('docs.workbench')"
+          :aria-label="t('docs.workbench')"
         >
-          {{ t("docs.workbench") }}
+          Vue
+          <Icon name="i-lucide-external-link" />
+        </a>
+        <a
+          v-if="reactWorkbenchHref"
+          class="bs-docs-demo-workbench"
+          :href="reactWorkbenchHref"
+          target="_blank"
+          rel="noreferrer"
+          :title="t('docs.workbench')"
+          :aria-label="t('docs.workbench')"
+        >
+          React
           <Icon name="i-lucide-external-link" />
         </a>
         <Tabs.Indicator />

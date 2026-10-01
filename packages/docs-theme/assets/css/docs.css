@@ -807,6 +807,12 @@ body {
   color: var(--bs-color-primary);
 }
 
+/* A second framework door follows the first: the push-right belongs to
+   the leading link alone, the follower just sits beside it. */
+.bs-docs-demo-workbench + .bs-docs-demo-workbench {
+  margin-inline-start: var(--bs-gap-sm);
+}
+
 .bs-docs-demo-workbench [data-part] {
   inline-size: 0.875rem;
   block-size: 0.875rem;

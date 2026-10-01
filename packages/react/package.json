@@ -1,6 +1,6 @@
 {
   "name": "@bysages/react",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "By Sages Elements components for React — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -115,6 +115,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "vp pack",
+    "build:workbench": "storybook build -o ../../docs/public/storybook/react",
     "prepack": "pnpm build",
     "release": "basis publish"
   },

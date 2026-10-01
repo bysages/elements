@@ -104,7 +104,7 @@ Several trees in the repo are **build output — never edit them by hand**; chan
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `docs/content/**` (both shelves)     | wrapper JSDoc/types (via docgen) · `docs/scripts/component-sections.ts` (shelf partition) · `docs/app/components/examples/<family>/*.vue` (demos) | `pnpm docs:content` (`docs:content:check` to verify) |
 | `docs/app/storybook-links.json`      | vue stories (demo → story deep links)                                                                                                             | `pnpm --filter @bysages/docs-site build:links`       |
-| `docs/public/storybook/` (workbench) | vue stories, static build                                                                                                                         | `pnpm --filter @bysages/docs-site build:workbench`   |
+| `docs/public/storybook/` (workbench) | vue + react stories, static builds (`/storybook/`, `/storybook/react/`)                                                                           | `pnpm --filter @bysages/docs-site build:workbench`   |
 
 Rules that follow:
 

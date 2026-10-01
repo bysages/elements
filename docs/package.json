@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build:workbench": "pnpm --filter @bysages/vue build:workbench",
+    "build:workbench": "pnpm --filter @bysages/vue build:workbench && pnpm --filter @bysages/react build:workbench",
     "build:links": "tsx scripts/generate-storybook-links.ts",
     "build": "pnpm run build:workbench && pnpm run build:links && nuxt build"
   },
