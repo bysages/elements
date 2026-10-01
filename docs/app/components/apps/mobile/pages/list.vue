@@ -1,13 +1,59 @@
 <script setup lang="ts">
 import { Avatar, Badge } from "@bysages/vue";
 
+const { locale } = useI18n();
 const toast = inject("phone-toast") as (title: string) => void;
 
 const chats = [
-  { name: "编辑部", initials: "编", desc: "周四的排期表已发出", time: "09:41", unread: 2 },
-  { name: "航运通知", initials: "航", desc: "您的订单已到驿站", time: "08:15", unread: 5 },
-  { name: "山间书房", initials: "山", desc: "本周读书会改到周六", time: "昨天", unread: 0 },
+  {
+    id: "editorial",
+    name: { en: "Editorial", zh: "编辑部" },
+    initials: { en: "ED", zh: "编" },
+    desc: { en: "Thursday's schedule has been sent", zh: "周四的排期表已发出" },
+    time: { en: "09:41", zh: "09:41" },
+    unread: 2,
+  },
+  {
+    id: "shipping",
+    name: { en: "Shipping notices", zh: "航运通知" },
+    initials: { en: "SN", zh: "航" },
+    desc: {
+      en: "Your order has arrived at the pickup point",
+      zh: "您的订单已到驿站",
+    },
+    time: { en: "08:15", zh: "08:15" },
+    unread: 5,
+  },
+  {
+    id: "library",
+    name: { en: "Hillside Library", zh: "山间书房" },
+    initials: { en: "HL", zh: "山" },
+    desc: {
+      en: "This week's book club has moved to Saturday",
+      zh: "本周读书会改到周六",
+    },
+    time: { en: "Yesterday", zh: "昨天" },
+    unread: 0,
+  },
 ];
+
+const rows = [
+  { id: "favorites", label: { en: "Favorites", zh: "收藏" } },
+  { id: "albums", label: { en: "Albums", zh: "相册" } },
+  { id: "cards", label: { en: "Cards", zh: "卡包" } },
+  { id: "stickers", label: { en: "Stickers", zh: "表情" } },
+];
+
+const copy = {
+  en: { opened: (name: string) => `Opened “${name}”` },
+  zh: { opened: (name: string) => `打开了「${name}」` },
+} as const;
+
+const text = computed(() => copy[locale.value as "en" | "zh"]);
+
+function open(name: string) {
+  toast(text.value.opened(name));
+}
 </script>
 
 <template>
@@ -15,20 +61,20 @@ const chats = [
     <div class="divide-y divide-border bg-surface-2">
       <button
         v-for="chat in chats"
-        :key="chat.name"
+        :key="chat.id"
         class="flex w-full cursor-pointer items-center gap-3 bg-transparent px-4 py-3 text-left"
         type="button"
-        @click="toast(`打开了「${chat.name}」`)"
+        @click="open(chat.name[locale])"
       >
         <Avatar.Root size="md">
-          <Avatar.Fallback>{{ chat.initials }}</Avatar.Fallback>
+          <Avatar.Fallback>{{ chat.initials[locale] }}</Avatar.Fallback>
         </Avatar.Root>
         <span class="min-w-0 flex-1">
-          <span class="block truncate text-[17px] text-foreground">{{ chat.name }}</span>
-          <span class="block truncate text-xs text-tertiary">{{ chat.desc }}</span>
+          <span class="block truncate text-md text-foreground">{{ chat.name[locale] }}</span>
+          <span class="block truncate text-xs text-tertiary">{{ chat.desc[locale] }}</span>
         </span>
         <span class="flex flex-col items-end gap-1">
-          <span class="text-xs text-tertiary">{{ chat.time }}</span>
+          <span class="text-xs text-tertiary">{{ chat.time[locale] }}</span>
           <Badge
             v-if="chat.unread"
             tone="danger"
@@ -41,13 +87,13 @@ const chats = [
     </div>
     <div class="mt-4 divide-y divide-border bg-surface-2">
       <button
-        v-for="label in ['收藏', '相册', '卡包', '表情']"
-        :key="label"
+        v-for="row in rows"
+        :key="row.id"
         class="flex w-full cursor-pointer items-center justify-between bg-transparent px-4 py-3 text-left text-sm text-foreground"
         type="button"
-        @click="toast(`打开了「${label}」`)"
+        @click="open(row.label[locale])"
       >
-        {{ label }}
+        {{ row.label[locale] }}
         <Icon name="i-lucide-chevron-right" class="size-5 text-tertiary" />
       </button>
     </div>

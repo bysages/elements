@@ -13,20 +13,25 @@ import ProgressPage from "./pages/progress.vue";
 import TabbarPage from "./pages/tabbar.vue";
 import ToastPage from "./pages/toast.vue";
 
+const { locale } = useI18n();
+
 /** The classic open mobile-spec sample station, replicated whole: one
  * index of grouped cells, every entry opening a live page inside the
  * same frame — navigation, dialogs, toasts and forms all run for real. */
-const pages: Record<string, { title: string; comp: Component }> = {
-  home: { title: "元件示例", comp: HomePage },
-  button: { title: "Button 按钮", comp: ButtonPage },
-  form: { title: "Form 表单", comp: FormPage },
-  list: { title: "List 列表", comp: ListPage },
-  badge: { title: "Badge 徽章", comp: BadgePage },
-  progress: { title: "Progress 进度条", comp: ProgressPage },
-  dialog: { title: "Dialog 对话框", comp: DialogPage },
-  toast: { title: "Toast 轻提示", comp: ToastPage },
-  msg: { title: "Msg 结果页", comp: MsgPage },
-  tabbar: { title: "Tabbar 标签栏", comp: TabbarPage },
+const pages: Record<string, { title: { en: string; zh: string }; comp: Component }> = {
+  home: { title: { en: "Components", zh: "元件示例" }, comp: HomePage },
+  button: { title: { en: "Button", zh: "Button 按钮" }, comp: ButtonPage },
+  form: { title: { en: "Form", zh: "Form 表单" }, comp: FormPage },
+  list: { title: { en: "List", zh: "List 列表" }, comp: ListPage },
+  badge: { title: { en: "Badge", zh: "Badge 徽章" }, comp: BadgePage },
+  progress: {
+    title: { en: "Progress", zh: "Progress 进度条" },
+    comp: ProgressPage,
+  },
+  dialog: { title: { en: "Dialog", zh: "Dialog 对话框" }, comp: DialogPage },
+  toast: { title: { en: "Toast", zh: "Toast 轻提示" }, comp: ToastPage },
+  msg: { title: { en: "Msg page", zh: "Msg 结果页" }, comp: MsgPage },
+  tabbar: { title: { en: "Tabbar", zh: "Tabbar 标签栏" }, comp: TabbarPage },
 };
 
 const current = ref("home");
@@ -47,6 +52,7 @@ provide("phone-toast", (title: string) =>
 <template>
   <div
     data-phone
+    data-scene="missive"
     class="relative flex h-[40rem] w-[24.375rem] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-border bg-surface-0"
   >
     <header
@@ -55,15 +61,15 @@ provide("phone-toast", (title: string) =>
       <button
         v-if="current !== 'home'"
         class="grid size-8 cursor-pointer place-items-center rounded-sm bg-transparent text-secondary"
-        aria-label="返回"
+        :aria-label="locale === 'en' ? 'Back' : '返回'"
         type="button"
         @click="go('home')"
       >
         <Icon name="i-lucide-chevron-left" class="size-6" />
       </button>
       <span v-else class="size-8" />
-      <span class="flex-1 text-center text-[17px] font-medium text-foreground">{{
-        page().title
+      <span class="flex-1 text-center text-md font-medium text-foreground">{{
+        page().title[locale]
       }}</span>
       <span class="size-8" />
     </header>
