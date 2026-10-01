@@ -28,4 +28,7 @@ export const Select: Omit<typeof ArkSelect, "Root"> & {
   Root: SelectRoot,
 };
 
+/** The platform's own list wearing the control recipe. */
+export { NativeSelect, type NativeSelectOption, type NativeSelectProps } from "./native";
+
 injectComponentStyle("select");

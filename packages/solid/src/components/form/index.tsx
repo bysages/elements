@@ -4,6 +4,9 @@ import { createForm, createField } from "@tanstack/solid-form";
 import { createContext, useContext, splitProps, Show, type Component, type JSX } from "solid-js";
 
 export { createForm, createField };
+/** The other frameworks' hook names, so a form script crosses the
+ * matrix without renaming the engine calls. */
+export { createForm as useForm, createField as useField };
 export type { SolidFormApi } from "@tanstack/solid-form";
 export type { FormApi, FieldApi } from "@tanstack/form-core";
 

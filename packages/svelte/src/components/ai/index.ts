@@ -32,9 +32,11 @@ export type {
  * work is never ours. Parts stay agnostic of any client; consumers map
  * their message format (e.g. the `UIMessage` parts re-exported below)
  * onto these primitives. */
+export { AiConversation, AiContent, AiActions, AiLoader };
+
 export const Ai = Object.assign(AiConversation, {
   Conversation: AiConversation,
-  Content: AiContent,
+  MessageContent: AiContent,
   Message,
   Response,
   Reasoning,

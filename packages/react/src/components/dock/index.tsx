@@ -61,3 +61,6 @@ export function DockItem({ children, ...rest }: DockItemProps) {
     </div>
   );
 }
+
+/** The whole family under one handle — Dock.Root, Dock.Item. */
+export const Dock = Object.assign(DockRoot, { Root: DockRoot, Item: DockItem });

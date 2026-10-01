@@ -16,7 +16,8 @@ export const Basic = {
         h(
           DownloadTrigger as any,
           {
-            data: { downloadUrl: "data:text/plain;charset=utf-8,Ink, paper, light." },
+            data: "Ink, paper, light.",
+            mimeType: "text/plain",
             fileName: "elements.txt",
             style: {
               display: "inline-flex",

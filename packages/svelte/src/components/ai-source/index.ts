@@ -5,5 +5,6 @@ import AiSourcesComponent from "./AiSources.svelte";
  * them under a response. */
 export const AiSource = AiSourceComponent;
 export const AiSources = AiSourcesComponent;
+export { AiSource as Source, AiSources as Sources };
 
 export type { SourceProps, SourcesProps } from "./props";

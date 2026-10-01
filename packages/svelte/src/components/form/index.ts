@@ -9,6 +9,9 @@ export const Form = FormComponent;
 export const FormField = FormFieldComponent;
 
 export { createForm, createField } from "@tanstack/svelte-form";
+/** The other frameworks' hook names, so a form script crosses the
+ * matrix without renaming the engine calls. */
+export { createForm as useForm, createField as useField } from "@tanstack/svelte-form";
 export type { SvelteFormApi } from "@tanstack/svelte-form";
 export type { FormApi, FieldApi } from "@tanstack/form-core";
 export type { AnyFormApi } from "./context";

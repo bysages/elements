@@ -59,3 +59,6 @@ export function BentoCell({ span = 1, rowSpan = 1, children, ...rest }: BentoCel
     </div>
   );
 }
+
+/** The whole family under one handle — Bento.Root, Bento.Cell. */
+export const Bento = Object.assign(BentoRoot, { Root: BentoRoot, Cell: BentoCell });

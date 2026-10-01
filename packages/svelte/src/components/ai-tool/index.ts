@@ -4,5 +4,6 @@ import AiToolComponent from "./AiTool.svelte";
  * was reached by and the state it reached in on the trigger, its
  * input and output folded inside. */
 export const AiTool = AiToolComponent;
+export { AiTool as Tool };
 
 export type { ToolProps, ToolStatus } from "./props";

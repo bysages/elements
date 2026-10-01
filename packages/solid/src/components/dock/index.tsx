@@ -46,7 +46,9 @@ export function DockRoot(props: DockProps) {
       style={{ ...(rest.style as JSX.CSSProperties), "--bs-dock-max-scale": String(maxScale()) }}
       onPointerMove={magnify}
       onPointerLeave={reset}
-    />
+    >
+      {rest.children}
+    </div>
   );
 }
 
@@ -55,5 +57,12 @@ export function DockRoot(props: DockProps) {
 export function DockItem(props: DockItemProps) {
   injectComponentStyle("dock");
 
-  return <div {...props} data-scope="dock" data-part="item" />;
+  return (
+    <div {...props} data-scope="dock" data-part="item">
+      {props.children}
+    </div>
+  );
 }
+
+/** The whole family under one handle — Dock.Root, Dock.Item. */
+export const Dock = Object.assign(DockRoot, { Root: DockRoot, Item: DockItem });

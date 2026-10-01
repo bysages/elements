@@ -88,7 +88,7 @@ packages/docs-theme/    @bysages/docs-theme — Nuxt Content layer that renders 
 
 Each package develops and demonstrates its components through **Storybook** — stories are colocated next to the source (`src/components/**/*.stories.tsx`) and served with `pnpm dev` from the package root (dev-only, never published). One story file per component, mirroring the wrapper layout. The docs site (Nuxt + Nuxt Content, Docus-style layer with our own UI) lives in `docs/` and consumes `@bysages/docs-theme`.
 
-The whole matrix is real today — wrappers for the four frameworks, charts, workflow, the Nuxt module, and the docs layer. `@bysages/table` (TanStack Table) ships in the vue and react wrappers; the solid and svelte ports are pending.
+The whole matrix is real today — wrappers for the four frameworks, charts, workflow, the Nuxt module, and the docs layer. `@bysages/table` (TanStack Table) ships in all four wrappers.
 
 ## Build
 

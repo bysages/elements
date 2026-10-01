@@ -36,6 +36,8 @@ export function Spotlight(props: SpotlightProps) {
       onPointerLeave={(event: PointerEvent) =>
         (event.currentTarget as HTMLElement).removeAttribute("data-hovered")
       }
-    />
+    >
+      {props.children}
+    </div>
   );
 }

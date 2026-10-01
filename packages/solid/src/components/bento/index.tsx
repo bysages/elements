@@ -27,7 +27,9 @@ export function BentoRoot(props: BentoProps) {
       data-scope="bento"
       data-part="root"
       style={{ "--bs-bento-columns": String(own.columns ?? 3) }}
-    />
+    >
+      {rest.children}
+    </div>
   );
 }
 
@@ -47,6 +49,11 @@ export function BentoCell(props: BentoCellProps) {
         "--bs-bento-span-x": String(own.span ?? 1),
         "--bs-bento-span-y": String(own.rowSpan ?? 1),
       }}
-    />
+    >
+      {rest.children}
+    </div>
   );
 }
+
+/** The whole family under one handle — Bento.Root, Bento.Cell. */
+export const Bento = Object.assign(BentoRoot, { Root: BentoRoot, Cell: BentoCell });
