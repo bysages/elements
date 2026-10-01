@@ -16,7 +16,7 @@
     "@bysages/workflow": "workspace:*",
     "@internationalized/date": "3.12.4",
     "@nuxtjs/i18n": "10.6.0",
-    "@tanstack/markdown": "0.0.15",
+    "@tanstack/markdown": "1.0.0",
     "minisearch": "7.2.0"
   },
   "devDependencies": {
