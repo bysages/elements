@@ -18,3 +18,8 @@ export const chartSeriesRange: string[] = Object.values(chartColors);
 
 /** The quiet ink for grids, guides, and secondary marks. */
 export const chartHairline = "var(--bs-color-border)";
+
+/** Annotation ink — mean lines, guides, footnotes on the plot. A
+ * reference line is a remark, not a mark, so it never borrows a
+ * pigment that carries state. */
+export const chartMuted = "var(--bs-color-text-tertiary)";

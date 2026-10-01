@@ -66,8 +66,8 @@ function toggleTag(tag: string) {
 </script>
 
 <template>
-  <div class="grid gap-6">
-    <div class="flex flex-wrap gap-2" role="group" :aria-label="text.filter">
+  <div class="grid gap-(--bs-gap-xl)">
+    <div class="flex flex-wrap gap-(--bs-gap-sm)" role="group" :aria-label="text.filter">
       <Button
         :variant="!activeTag ? 'solid' : 'ghost'"
         size="sm"
@@ -88,9 +88,15 @@ function toggleTag(tag: string) {
 
     <div
       v-if="visible.length"
-      class="grid gap-5 grid-cols-[repeat(auto-fill,minmax(min(22rem,100%),1fr))]"
+      class="post-shelf grid gap-(--bs-gap-lg) grid-cols-[repeat(auto-fill,minmax(min(22rem,100%),1fr))]"
     >
-      <PostCard v-for="post in visible" :key="post.id" :post="post" @open="emit('open', post)" />
+      <PostCard
+        v-for="(post, i) in visible"
+        :key="post.id"
+        :post="post"
+        :style="{ '--bs-i': i }"
+        @open="emit('open', post)"
+      />
     </div>
 
     <Empty.Root v-else class="py-16">
@@ -148,3 +154,12 @@ function toggleTag(tag: string) {
     </div>
   </div>
 </template>
+
+<style>
+/* The shelf assembles one card at a time — followers rise on the
+   stagger string; reduced motion parks both the lift and the delay. */
+.post-shelf > * {
+  animation: bs-item-in var(--bs-duration-base) var(--bs-ease-out) both;
+  animation-delay: calc(var(--bs-i, 0) * var(--bs-stagger-step));
+}
+</style>

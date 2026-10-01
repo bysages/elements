@@ -27,7 +27,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 </script>
 
 <template>
-  <div class="space-y-3 p-4">
+  <div class="space-y-(--bs-margin-md) p-(--bs-padding-lg)">
     <Button class="w-full" variant="outline" @click="toast(text.saved)">{{ text.success }}</Button>
     <Button class="w-full" variant="outline" @click="toast(text.message)">
       {{ text.plain }}

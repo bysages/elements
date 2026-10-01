@@ -141,7 +141,7 @@ export const commandCss =
   box-shadow: 0 1px 0 var(--bs-color-border);
   color: var(--bs-color-text-secondary);
   font-size: max(var(--bs-font-size-xs), 0.8125em);
-  line-height: 1.2;
+  line-height: var(--bs-line-height-tight);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

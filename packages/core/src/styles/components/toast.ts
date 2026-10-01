@@ -26,9 +26,9 @@ export const toastCss =
   padding: var(--bs-padding-md);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-2);
+  background: var(--bs-color-surface-5);
   color: var(--bs-color-text-primary);
-  box-shadow: var(--bs-elevation-3);
+  box-shadow: var(--bs-elevation-5);
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
   translate: var(--x, 0) var(--y, 0);
   scale: var(--scale, 1);

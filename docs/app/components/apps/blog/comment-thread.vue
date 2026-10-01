@@ -56,9 +56,11 @@ function submitReply() {
 
 <template>
   <section class="mt-9" :aria-label="text.section">
-    <h2 class="m-0 mb-5 font-serif text-xl">{{ text.comments }}</h2>
+    <h2 class="m-0 mb-(--bs-margin-lg) font-serif text-xl">
+      {{ text.comments }}
+    </h2>
 
-    <div class="grid gap-5">
+    <div class="grid gap-(--bs-gap-lg)">
       <div v-for="comment in comments" :key="comment.id">
         <Comment :author="comment.author" :datetime="comment.datetime[locale]">
           <template #avatar>
@@ -68,7 +70,11 @@ function submitReply() {
           </template>
           {{ comment.body }}
         </Comment>
-        <div v-for="reply in comment.replies ?? []" :key="reply.id" class="mt-3 ps-8">
+        <div
+          v-for="reply in comment.replies ?? []"
+          :key="reply.id"
+          class="mt-(--bs-margin-md) ps-(--bs-padding-2xl)"
+        >
           <Comment :author="reply.author" :datetime="reply.datetime[locale]">
             <template #avatar>
               <Avatar.Root>
@@ -92,7 +98,7 @@ function submitReply() {
       </div>
     </div>
 
-    <form class="mt-6 flex gap-3" @submit.prevent="submitReply">
+    <form class="mt-(--bs-margin-xl) flex gap-(--bs-gap-md)" @submit.prevent="submitReply">
       <Input
         v-model="draft"
         class="flex-1"

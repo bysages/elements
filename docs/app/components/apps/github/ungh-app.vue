@@ -25,7 +25,11 @@ interface UnghRepo {
 // The page is live where ungh reaches: avatar, repos, stars, forks and
 // dates all read the real account. The follower counts stay demo
 // numbers — ungh does not serve them.
-const { data: userData } = await useFetch<UnghUser>("https://ungh.cc/users/find/DemoMacro", {
+const {
+  data: userData,
+  error: userError,
+  refresh: refreshUser,
+} = await useFetch<UnghUser>("https://ungh.cc/users/find/DemoMacro", {
   key: "ungh-user",
 });
 const { data: reposData } = await useFetch<{ repos: UnghRepo[] }>(
@@ -34,6 +38,12 @@ const { data: reposData } = await useFetch<{ repos: UnghRepo[] }>(
 );
 
 const user = computed(() => userData.value?.user);
+const unreachable = computed(() =>
+  lang.value === "zh"
+    ? "档案暂时取不到,网络恢复后再试。"
+    : "The profile could not be reached. Try again once the network settles.",
+);
+const retryLabel = computed(() => (lang.value === "zh" ? "重试" : "Retry"));
 const repos = computed(() => reposData.value?.repos ?? []);
 const totalStars = computed(() => repos.value.reduce((sum, r) => sum + r.stars, 0));
 const totalForks = computed(() => repos.value.reduce((sum, r) => sum + r.forks, 0));
@@ -171,11 +181,21 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
 </script>
 
 <template>
-  <div v-if="user" class="mx-auto grid w-full max-w-[64rem] gap-8 lg:grid-cols-[13rem_1fr]">
+  <div
+    v-if="userError && !user"
+    class="mx-auto flex w-full max-w-[64rem] flex-col items-start gap-(--bs-gap-lg) rounded-lg border border-border bg-surface-1 px-(--bs-padding-xl) py-10"
+  >
+    <p class="m-0 text-sm text-secondary">{{ unreachable }}</p>
+    <Button size="sm" variant="outline" @click="refreshUser()">{{ retryLabel }}</Button>
+  </div>
+  <div
+    v-else-if="user"
+    class="mx-auto grid w-full max-w-[64rem] gap-(--bs-gap-2xl) lg:grid-cols-[13rem_1fr]"
+  >
     <!-- The identity column: seal, the account's own words, the two
          actions, and the meta rail GitHub carries — local clock, mail,
          site, and the org seals. -->
-    <aside class="flex flex-col gap-3">
+    <aside class="flex flex-col gap-(--bs-gap-md)">
       <Avatar.Root class="size-36!">
         <Avatar.Image :src="user.avatar" :alt="user.username" />
         <Avatar.Fallback>{{ user.username[0] }}</Avatar.Fallback>
@@ -187,7 +207,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
         <p class="m-0 text-tertiary">@{{ user.username }}</p>
       </div>
       <p class="m-0 text-sm leading-relaxed text-secondary">{{ bio }}</p>
-      <div class="flex gap-2">
+      <div class="flex gap-(--bs-gap-sm)">
         <Button as-child class="flex-1">
           <a :href="`https://github.com/${user.username}`" target="_blank" rel="noopener">{{
             text.follow
@@ -203,12 +223,12 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
         <b class="text-primary">{{ followers }}</b> {{ text.followers }} ·
         <b class="text-primary">{{ following }}</b> {{ text.following }}
       </p>
-      <dl class="m-0 grid list-none gap-y-2 p-0 text-sm text-secondary">
-        <div class="flex items-center gap-2">
+      <dl class="m-0 grid list-none gap-y-(--bs-gap-sm) p-0 text-sm text-secondary">
+        <div class="flex items-center gap-(--bs-gap-sm)">
           <Icon name="i-lucide-clock" class="text-tertiary" />
           <dd class="m-0">{{ localTime }} (UTC +08:00)</dd>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-(--bs-gap-sm)">
           <Icon name="i-lucide-mail" class="text-tertiary" />
           <dd class="m-0">
             <a
@@ -218,7 +238,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             >
           </dd>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-(--bs-gap-sm)">
           <Icon name="i-lucide-link" class="text-tertiary" />
           <dd class="m-0">
             <a
@@ -231,9 +251,9 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
           </dd>
         </div>
       </dl>
-      <div class="flex flex-col gap-2 border-t border-border pt-3">
+      <div class="flex flex-col gap-(--bs-gap-sm) border-t border-border pt-(--bs-padding-md)">
         <span class="text-xs uppercase tracking-[0.14em] text-tertiary">{{ text.orgs }}</span>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-(--bs-gap-sm)">
           <a
             v-for="org in orgs"
             :key="org.username"
@@ -241,7 +261,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             target="_blank"
             rel="noopener"
             :title="`@${org.username}`"
-            class="flex items-center gap-1.5 text-sm font-semibold text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
+            class="flex items-center gap-(--bs-gap-xs) text-sm font-semibold text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
           >
             <Avatar.Root size="sm">
               <Avatar.Image :src="org.avatar" :alt="org.username" />
@@ -253,7 +273,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
       </div>
     </aside>
 
-    <section class="flex min-w-0 flex-col gap-6">
+    <section class="flex min-w-0 flex-col gap-(--bs-gap-xl)">
       <Tabs.Root default-value="overview">
         <Tabs.List>
           <Tabs.Trigger value="overview">{{ text.overview }}</Tabs.Trigger>
@@ -263,7 +283,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
           >
         </Tabs.List>
 
-        <Tabs.Content value="overview" class="flex flex-col gap-6">
+        <Tabs.Content value="overview" class="flex flex-col gap-(--bs-gap-xl)">
           <Card.Root>
             <Card.Header>
               <Card.Title>{{ text.contributions(contributionTotal) }}</Card.Title>
@@ -273,15 +293,15 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             </Card.Content>
           </Card.Root>
 
-          <section class="flex flex-col gap-3">
+          <section class="flex flex-col gap-(--bs-gap-md)">
             <h2 class="m-0 font-serif text-lg leading-tight">
               {{ text.popular }}
             </h2>
             <div
-              class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(16rem,100%),1fr))]"
+              class="grid gap-(--bs-gap-lg) [grid-template-columns:repeat(auto-fill,minmax(min(16rem,100%),1fr))]"
             >
               <Card.Root v-for="r in popular" :key="r.id">
-                <Card.Content class="grid content-start gap-2!">
+                <Card.Content class="grid content-start gap-(--bs-gap-sm)!">
                   <a
                     :href="`https://github.com/${r.repo}`"
                     target="_blank"
@@ -292,7 +312,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
                   <p class="m-0 line-clamp-2 text-xs leading-relaxed text-secondary">
                     {{ r.description ?? text.noDescription }}
                   </p>
-                  <span class="mt-auto flex items-center gap-2 text-xs text-tertiary">
+                  <span class="mt-auto flex items-center gap-(--bs-gap-sm) text-xs text-tertiary">
                     <span class="size-2.5 rounded-full" :class="dotOf(r)" />
                     {{ languageOf(r) }}
                     <span>★ {{ r.stars }}</span>
@@ -303,7 +323,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
           </section>
         </Tabs.Content>
 
-        <Tabs.Content value="repositories" class="flex flex-col gap-4">
+        <Tabs.Content value="repositories" class="flex flex-col gap-(--bs-gap-lg)">
           <Input
             v-model="query"
             :placeholder="text.find"
@@ -311,8 +331,8 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             class="max-w-80!"
           />
           <Card.Root v-for="r in paged" :key="r.id">
-            <Card.Content class="grid content-start gap-2!">
-              <div class="flex items-center gap-3">
+            <Card.Content class="grid content-start gap-(--bs-gap-sm)!">
+              <div class="flex items-center gap-(--bs-gap-md)">
                 <a
                   :href="`https://github.com/${r.repo}`"
                   target="_blank"
@@ -325,8 +345,10 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
               <p class="m-0 text-sm leading-relaxed text-secondary">
                 {{ r.description ?? text.noDescription }}
               </p>
-              <span class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-tertiary">
-                <span class="flex items-center gap-1.5">
+              <span
+                class="flex flex-wrap items-center gap-x-(--bs-gap-md) gap-y-(--bs-gap-xs) text-xs text-tertiary"
+              >
+                <span class="flex items-center gap-(--bs-gap-xs)">
                   <span class="size-2.5 rounded-full" :class="dotOf(r)" />
                   {{ languageOf(r) }}
                 </span>

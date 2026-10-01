@@ -17,7 +17,7 @@ export const kbdCss = /* css */ `
      (mainstream systems run 0.75-0.85 of the body), but never below the
      xs floor. */
   font-size: max(var(--bs-font-size-xs), 0.8125em);
-  line-height: 1.2;
+  line-height: var(--bs-line-height-tight);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

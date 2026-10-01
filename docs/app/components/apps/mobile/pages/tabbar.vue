@@ -43,7 +43,7 @@ const activeTab = computed(() => tabs.find((tab) => tab.id === active.value));
       <button
         v-for="tab in tabs"
         :key="tab.id"
-        class="relative flex flex-1 cursor-pointer flex-col items-center bg-transparent py-2 text-xs transition-colors duration-(--bs-duration-fast) ease-(--bs-ease-out) active:bg-surface-inset"
+        class="relative flex flex-1 cursor-pointer flex-col items-center bg-transparent py-(--bs-padding-sm) text-xs transition-colors duration-(--bs-duration-fast) ease-(--bs-ease-out) active:bg-surface-inset"
         :class="active === tab.id ? 'text-primary' : 'text-tertiary'"
         type="button"
         @click="active = tab.id"
@@ -53,7 +53,7 @@ const activeTab = computed(() => tabs.find((tab) => tab.id === active.value));
           <Badge
             v-if="tab.badge"
             tone="danger"
-            class="absolute -top-0.5 -right-2.5 min-w-4 rounded-full px-1 text-center text-xs"
+            class="absolute -top-0.5 -right-2.5 min-w-4 rounded-full px-(--bs-padding-xs) text-center text-xs"
           >
             {{ tab.badge }}
           </Badge>

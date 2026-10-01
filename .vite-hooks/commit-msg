@@ -1,2 +1,1 @@
-#!/usr/bin/env sh
-basis git lint-commit "$@"
+basis git lint-commit

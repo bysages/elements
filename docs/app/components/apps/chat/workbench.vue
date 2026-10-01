@@ -162,10 +162,10 @@ onBeforeUnmount(abort);
 </script>
 
 <template>
-  <div class="grid gap-4">
+  <div class="grid gap-(--bs-gap-lg)">
     <div
       ref="logEl"
-      class="max-h-[min(60dvh,40rem)] overflow-y-auto bg-surface p-5"
+      class="max-h-[min(60dvh,40rem)] overflow-y-auto bg-surface p-(--bs-padding-lg)"
       :aria-label="text.conversation"
     >
       <Ai.Conversation>
@@ -195,7 +195,7 @@ onBeforeUnmount(abort);
       </Ai.Conversation>
     </div>
 
-    <div v-if="suggestions.length && !busy" class="flex flex-wrap gap-2">
+    <div v-if="suggestions.length && !busy" class="flex flex-wrap gap-(--bs-gap-sm)">
       <AiSuggestion
         v-for="suggestion in suggestions"
         :key="suggestion"

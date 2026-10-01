@@ -10,7 +10,14 @@ export const dialogCss =
      sticky header (overlay - 20) must fall under the scrim. */
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0) - 1);
   background: var(--bs-color-scrim);
+  /* The scrim fades both ways: it mounts at zero, rises when the machine
+     opens, and the same transition walks it back down on close. */
+  opacity: 0;
   transition: opacity var(--bs-duration-slow) var(--bs-ease-out);
+}
+
+[data-scope="dialog"][data-part="backdrop"][data-state="open"] {
+  opacity: 1;
 }
 
 [data-scope="dialog"][data-part="positioner"] {
@@ -46,7 +53,7 @@ export const dialogCss =
   padding: var(--bs-padding-xl);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-2);
+  background: var(--bs-color-surface-4);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-elevation-4);
   transition:

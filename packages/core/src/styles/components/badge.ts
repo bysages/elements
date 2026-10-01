@@ -22,7 +22,7 @@ export const badgeCss = /* css */ `
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
   letter-spacing: var(--bs-tracking-label);
-  line-height: 1.6;
+  line-height: var(--bs-line-height-normal);
   white-space: nowrap;
 }
 

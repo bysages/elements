@@ -15,7 +15,7 @@ export const calendarCss = /* css */ `
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
-  box-shadow: var(--bs-shadow-e1);
+  box-shadow: var(--bs-elevation-1);
 }
 
 [data-scope="calendar"][data-part="header"] {

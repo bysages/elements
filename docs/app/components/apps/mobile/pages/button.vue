@@ -40,8 +40,8 @@ function submit() {
 </script>
 
 <template>
-  <div class="space-y-5 p-4">
-    <div class="space-y-3">
+  <div class="space-y-(--bs-margin-lg) p-(--bs-padding-lg)">
+    <div class="space-y-(--bs-margin-md)">
       <Button class="w-full" size="lg" @click="toast(text.primary)">{{ text.primary }}</Button>
       <Button class="w-full" size="lg" variant="outline" @click="toast(text.secondary)">{{
         text.secondary
@@ -53,7 +53,7 @@ function submit() {
         text.danger
       }}</Button>
     </div>
-    <div class="flex gap-3">
+    <div class="flex gap-(--bs-gap-md)">
       <Button class="flex-1" size="sm" variant="outline" @click="toast(text.small)">{{
         text.small
       }}</Button>

@@ -34,7 +34,7 @@ export const terminalCss = /* css */ `
 
 [data-scope="terminal"][data-part="line"] {
   color: color-mix(in oklab, var(--bs-color-gray-100) 90%, transparent);
-  line-height: 1.6;
+  line-height: var(--bs-line-height-relaxed);
   white-space: pre-wrap;
   word-break: break-word;
 }

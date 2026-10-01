@@ -32,11 +32,18 @@ export const listCss = /* css */ `
    full bleed of its container. */
 [data-scope="list"][data-part="item"][role="button"] {
   cursor: pointer;
+  transition: background var(--bs-duration-fast) var(--bs-ease-out);
 }
 
 [data-scope="list"][data-part="root"][data-hoverable] [data-scope="list"][data-part="item"]:hover,
 [data-scope="list"][data-part="item"][role="button"]:hover {
   background: var(--bs-color-surface-0);
+}
+
+/* Pressing sinks the row one step deeper than the hover wash — the page
+   answers the finger before the action lands. */
+[data-scope="list"][data-part="item"][role="button"]:active {
+  background: var(--bs-color-surface-inset);
 }
 
 [data-scope="list"][data-part="item"]:focus-visible {

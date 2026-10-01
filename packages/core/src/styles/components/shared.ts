@@ -26,7 +26,7 @@ export function popupContentCss(scope: string, minInlineSize = "17rem"): string 
   min-inline-size: ${minInlineSize};
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-2);
+  background: var(--bs-color-surface-3);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-elevation-3);
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
@@ -40,6 +40,16 @@ export function popupContentCss(scope: string, minInlineSize = "17rem"): string 
 
 [data-scope="${scope}"][data-state="open"][data-part="content"] {
   animation: bs-ink-in var(--bs-duration-slow) var(--bs-ease-out);
+}
+
+/* Exits stay a plain fade — faster than the entrance, unobtrusive. The
+   machine holds the popup mounted until the fade lands. */
+[data-scope="${scope}"][data-part="content"] {
+  transition: opacity var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scope="${scope}"][data-state="closed"][data-part="content"] {
+  opacity: 0;
 }
 `;
 }

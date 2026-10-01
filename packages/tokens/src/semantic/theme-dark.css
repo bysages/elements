@@ -86,6 +86,13 @@
   --bs-color-info-subtle: color-mix(in oklab, var(--bs-color-info) 16%, transparent);
   --bs-color-info-subtle-text: var(--bs-color-info-300);
 
+  /* Syntax inks at night: same print palette as light, lifted to the
+     lighter steps so grammar keeps its colour relations on dark paper. */
+  --bs-color-syntax-string: oklch(0.75 0.09 300);
+  --bs-color-syntax-literal: oklch(0.78 0.08 70);
+  --bs-color-syntax-tag: oklch(0.75 0.08 160);
+  --bs-color-syntax-function: oklch(0.75 0.08 255);
+
   /* Elevation in the dark: cast shadows need far more opacity to read against
      a dark ground, so every level carries a faint warm hairline of light to
      cut the raised surface out of the one below it. Same lighting parts as

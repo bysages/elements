@@ -67,6 +67,14 @@ export const progressCss =
   animation: bs-progress-drift-y 1.4s var(--bs-ease-in-out) infinite;
 }
 
+/* Reduced motion parks the drift: the half-range stays put, so presence
+   still reads, only without the endless sweep. */
+@media (prefers-reduced-motion: reduce) {
+  [data-scope="progress"][data-part="range"][data-state="indeterminate"] {
+    animation: none;
+  }
+}
+
 /* The circular view rides the same grammar: a quiet groove, an ink arc,
    both drawn by the machine's --percent. */
 [data-scope="progress"][data-part="view"] {

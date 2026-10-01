@@ -22,7 +22,7 @@ const emit = defineEmits<{ open: [] }>();
       <Card.Description>{{ post.excerpt[locale] }}</Card.Description>
     </Card.Header>
     <Card.Content>
-      <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+      <ul class="m-0 flex list-none flex-wrap gap-(--bs-gap-sm) p-0">
         <li v-for="tag in post.tags" :key="tag">
           <Badge tone="ink" variant="outline">{{ tag[locale] }}</Badge>
         </li>
@@ -31,7 +31,7 @@ const emit = defineEmits<{ open: [] }>();
     <!-- Core paints the footer's flex + items-center + gap (unlayered);
          only the space-between is ours, and no core rule competes for it. -->
     <Card.Footer class="justify-between">
-      <span class="flex items-center gap-2 text-sm text-tertiary">
+      <span class="flex items-center gap-(--bs-gap-sm) text-sm text-tertiary">
         <Avatar.Root size="sm">
           <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
         </Avatar.Root>

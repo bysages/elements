@@ -64,7 +64,7 @@ function runAction(action: (typeof actions)[number], index: number) {
 </script>
 
 <template>
-  <div class="space-y-3 p-4">
+  <div class="space-y-(--bs-margin-md) p-(--bs-padding-lg)">
     <Button class="w-full" variant="outline" @click="alertOpen = true">{{
       text.alertButton
     }}</Button>
@@ -79,13 +79,17 @@ function runAction(action: (typeof actions)[number], index: number) {
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content class="w-72">
-          <Dialog.Title class="pt-5 text-center">{{ text.alert.title }}</Dialog.Title>
-          <Dialog.Description class="px-6 py-4 text-center text-sm text-secondary">
+          <Dialog.Title class="pt-(--bs-padding-lg) text-center">{{
+            text.alert.title
+          }}</Dialog.Title>
+          <Dialog.Description
+            class="px-(--bs-padding-xl) py-(--bs-padding-lg) text-center text-sm text-secondary"
+          >
             {{ text.alert.description }}
           </Dialog.Description>
           <div class="border-t border-border">
             <button
-              class="w-full cursor-pointer bg-transparent py-3 text-center text-md text-primary"
+              class="w-full cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md text-primary"
               type="button"
               @click="alertOpen = false"
             >
@@ -100,20 +104,24 @@ function runAction(action: (typeof actions)[number], index: number) {
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content class="w-72">
-          <Dialog.Title class="pt-5 text-center">{{ text.confirm.title }}</Dialog.Title>
-          <Dialog.Description class="px-6 py-4 text-center text-sm text-secondary">
+          <Dialog.Title class="pt-(--bs-padding-lg) text-center">{{
+            text.confirm.title
+          }}</Dialog.Title>
+          <Dialog.Description
+            class="px-(--bs-padding-xl) py-(--bs-padding-lg) text-center text-sm text-secondary"
+          >
             {{ text.confirm.description }}
           </Dialog.Description>
           <div class="grid grid-cols-2 border-t border-border">
             <button
-              class="cursor-pointer border-r border-border bg-transparent py-3 text-center text-md text-secondary"
+              class="cursor-pointer border-r border-border bg-transparent py-(--bs-padding-md) text-center text-md text-secondary"
               type="button"
               @click="confirmOpen = false"
             >
               {{ text.confirm.cancel }}
             </button>
             <button
-              class="cursor-pointer bg-transparent py-3 text-center text-md text-danger"
+              class="cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md text-danger"
               type="button"
               @click="
                 confirmOpen = false;
@@ -131,11 +139,11 @@ function runAction(action: (typeof actions)[number], index: number) {
       <Dialog.Backdrop />
       <Dialog.Positioner class="items-end">
         <Dialog.Content class="w-full rounded-b-none border-x-0 border-b-0">
-          <div class="divide-y divide-border py-2">
+          <div class="divide-y divide-border py-(--bs-padding-sm)">
             <button
               v-for="(action, i) in actions"
               :key="action.id"
-              class="w-full cursor-pointer bg-transparent py-3.5 text-center text-md"
+              class="w-full cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md"
               :class="i === actions.length - 1 ? 'text-secondary' : 'text-foreground'"
               type="button"
               @click="runAction(action, i)"

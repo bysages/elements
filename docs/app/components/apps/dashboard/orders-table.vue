@@ -80,17 +80,22 @@ const columns = computed<ColumnDef<OrderRow, any, any>[]>(() => [
     id: "customer",
     header: text.value.columns.customer,
     enableColumnFilter: false,
+    // A floor per column: below the card's comfort the tracks stop
+    // shrinking and the viewport lane scrolls instead of clipping.
+    minSize: 140,
   }),
   helper.accessor("region", {
     id: "region",
     header: text.value.columns.region,
     enableColumnFilter: false,
+    minSize: 96,
     cell: (info) => formatRegion(info.getValue(), locale.value as Locale),
   }),
   helper.accessor("mrr", {
     id: "mrr",
     header: text.value.columns.mrr,
     enableColumnFilter: false,
+    minSize: 110,
     meta: { numeric: true },
     cell: (info) =>
       info.getValue() ? formatCurrency(info.getValue(), locale.value as Locale) : "—",
@@ -99,12 +104,14 @@ const columns = computed<ColumnDef<OrderRow, any, any>[]>(() => [
     id: "since",
     header: text.value.columns.since,
     enableColumnFilter: false,
+    minSize: 96,
     meta: { numeric: true },
     cell: (info) => formatYearMonth(info.getValue(), locale.value as Locale),
   }),
   helper.display({
     id: "actions",
     header: "",
+    minSize: 96,
     // vue-table v9's flexRender h()es non-vnode objects — an array of
     // buttons must ride a Fragment, not a bare array.
     cell: ({ row }) =>
@@ -194,8 +201,8 @@ function archiveSelected() {
 </script>
 
 <template>
-  <div class="grid gap-4">
-    <div class="flex flex-wrap items-center gap-4">
+  <div class="grid gap-(--bs-gap-lg)">
+    <div class="flex flex-wrap items-center gap-(--bs-gap-lg)">
       <!-- w-auto! outranks the unlayered field baseline that makes select
            roots fill their container — a toolbar slot is a layout
            decision, and this flex line decides the width. -->
@@ -223,7 +230,10 @@ function archiveSelected() {
         <Select.HiddenSelect />
       </Select.Root>
 
-      <p v-if="selectedRows.length" class="m-0 flex items-center gap-3 text-sm text-secondary">
+      <p
+        v-if="selectedRows.length"
+        class="m-0 flex items-center gap-(--bs-gap-md) text-sm text-secondary"
+      >
         {{ selectedText }}
         <Button variant="outline" size="sm" @click="archiveSelected">{{ text.archive }}</Button>
       </p>

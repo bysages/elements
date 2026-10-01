@@ -52,9 +52,9 @@ function submit() {
 </script>
 
 <template>
-  <div class="grid min-h-[34rem] place-items-center p-6 sm:p-10">
+  <div class="grid min-h-[34rem] place-items-center p-(--bs-padding-xl) sm:p-10">
     <div class="w-full max-w-sm text-center">
-      <div v-if="verified" class="grid place-items-center gap-3">
+      <div v-if="verified" class="grid place-items-center gap-(--bs-gap-md)">
         <span
           class="grid size-12 place-items-center rounded-full bg-primary text-primary-text"
           aria-hidden="true"
@@ -64,8 +64,8 @@ function submit() {
         <p class="m-0 text-sm text-secondary">{{ text.verified }}</p>
       </div>
 
-      <div v-else class="grid justify-items-center gap-5">
-        <div class="grid gap-1">
+      <div v-else class="grid justify-items-center gap-(--bs-gap-lg)">
+        <div class="grid gap-(--bs-gap-xs)">
           <h2 class="m-0 font-serif text-2xl">{{ text.title }}</h2>
           <p class="m-0 text-sm text-secondary">{{ text.lede }}</p>
         </div>
@@ -97,7 +97,7 @@ function submit() {
       <a
         v-if="!verified"
         href="#"
-        class="mt-5 inline-block text-xs text-tertiary no-underline hover:text-secondary"
+        class="mt-(--bs-margin-lg) inline-block text-xs text-tertiary no-underline hover:text-secondary"
         >{{ text.back }}</a
       >
     </div>

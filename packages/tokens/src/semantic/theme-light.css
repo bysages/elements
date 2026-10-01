@@ -30,8 +30,11 @@
   --bs-color-scrim: oklch(0.15 0.007 76 / 0.4);
 
   --bs-color-text-primary: var(--bs-color-gray-900);
-  --bs-color-text-secondary: var(--bs-color-gray-600);
-  --bs-color-text-tertiary: var(--bs-color-gray-500);
+  /* The quiet voices still clear AA on the resting paper: secondary at
+     gray-700 and tertiary at gray-600 both hold past 4.5:1 on surface-0,
+     so metadata never trades legibility for hierarchy. */
+  --bs-color-text-secondary: var(--bs-color-gray-700);
+  --bs-color-text-tertiary: var(--bs-color-gray-600);
   --bs-color-text-disabled: var(--bs-color-gray-400);
   --bs-color-text-inverse: var(--bs-color-surface-2);
   /* Ink over the scrim — the dimmed room behind dialogs and lightboxes.
@@ -100,6 +103,14 @@
   --bs-color-info-hover: var(--bs-color-info-700);
   --bs-color-info-subtle: var(--bs-color-info-100);
   --bs-color-info-subtle-text: var(--bs-color-info-800);
+
+  /* Syntax inks label grammar, never state: a red tag in code is a tag,
+     not an error, so the code colours are their own print palette —
+     kept apart from the semantic pigments above on purpose. */
+  --bs-color-syntax-string: oklch(0.42 0.1 300);
+  --bs-color-syntax-literal: oklch(0.48 0.09 65);
+  --bs-color-syntax-tag: oklch(0.45 0.07 160);
+  --bs-color-syntax-function: oklch(0.42 0.09 255);
 
   /* Lighting — elevation shadows are computed, never copy-pasted. Every
      shadow draws its ink from --bs-shadow-ink, this theme's warm shadow hue,

@@ -12,21 +12,25 @@ function goTo(hash: string) {
 </script>
 
 <template>
-  <section id="editions" class="mx-auto max-w-[64rem] scroll-mt-20 px-6 py-14">
-    <header class="mb-8 max-w-[36rem]">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+  <section id="editions" class="mx-auto max-w-[64rem] scroll-mt-20 px-(--bs-padding-xl) py-16">
+    <header class="mb-(--bs-margin-2xl) max-w-[36rem]">
+      <p
+        class="m-0 mb-(--bs-margin-md) text-xs uppercase tracking-(--bs-tracking-eyebrow) text-tertiary"
+      >
+        {{ copy.kicker }}
+      </p>
       <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
-      <p class="m-0 mt-3 text-secondary">{{ copy.lede }}</p>
+      <p class="m-0 mt-(--bs-margin-md) text-secondary">{{ copy.lede }}</p>
     </header>
 
-    <div class="grid items-stretch gap-5 lg:grid-cols-3">
+    <div class="grid items-stretch gap-(--bs-gap-lg) lg:grid-cols-3">
       <Card.Root
         v-for="plan in copy.plans"
         :key="plan.name"
         :class="plan.featured && 'border-primary'"
       >
         <Card.Header>
-          <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center justify-between gap-(--bs-gap-sm)">
             <Card.Title>{{ plan.name }}</Card.Title>
             <Badge v-if="plan.featured" tone="info" variant="subtle">{{
               copy.featuredBadge
@@ -34,13 +38,17 @@ function goTo(hash: string) {
           </div>
           <Card.Description>{{ plan.tagline }}</Card.Description>
         </Card.Header>
-        <Card.Content class="grid content-start gap-5">
+        <Card.Content class="grid content-start gap-(--bs-gap-lg)">
           <p class="m-0">
             <span class="font-serif text-4xl">{{ copy.currency }}{{ plan.price }}</span>
             <span class="text-sm text-tertiary">{{ copy.unit }}</span>
           </p>
-          <ul class="m-0 flex list-none flex-col gap-2 p-0 text-sm text-secondary">
-            <li v-for="line in plan.features" :key="line" class="flex items-start gap-2">
+          <ul class="m-0 flex list-none flex-col gap-(--bs-gap-sm) p-0 text-sm text-secondary">
+            <li
+              v-for="line in plan.features"
+              :key="line"
+              class="flex items-start gap-(--bs-gap-sm)"
+            >
               <span class="mt-0.5 text-primary" aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path

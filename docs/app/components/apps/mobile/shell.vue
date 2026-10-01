@@ -56,7 +56,7 @@ provide("phone-toast", (title: string) =>
     class="relative flex h-[40rem] w-[24.375rem] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-border bg-surface-0"
   >
     <header
-      class="flex shrink-0 items-center gap-2 border-b border-border bg-surface-2 px-2 py-2.5"
+      class="flex shrink-0 items-center gap-(--bs-gap-sm) border-b border-border bg-surface-2 px-(--bs-padding-sm) py-(--bs-padding-sm)"
     >
       <button
         v-if="current !== 'home'"

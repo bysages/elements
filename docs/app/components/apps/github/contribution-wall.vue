@@ -30,8 +30,9 @@ import { type ContributionDay } from "./contributions";
 const props = defineProps<{ days: ContributionDay[] }>();
 
 // The wall lays out on its own 624x84 stage — every cell squares on the
-// fixed step — then the stage scales as one piece to fill the card, the
-// way the reference profile scales its chart with the viewport.
+// fixed step. Wide cards scale the stage up to fill; a narrow lane never
+// shrinks below one-to-one, because a contribution cell smaller than its
+// own tooltip anchor cannot be read or touched — it scrolls instead.
 const WALL_W = 624;
 const WALL_H = 84;
 const wall = ref<HTMLElement>();
@@ -39,7 +40,7 @@ const scale = ref(1);
 let wallObserver: ResizeObserver | undefined;
 onMounted(() => {
   wallObserver = new ResizeObserver(() => {
-    scale.value = (wall.value?.clientWidth ?? WALL_W) / WALL_W;
+    scale.value = Math.max(1, (wall.value?.clientWidth ?? WALL_W) / WALL_W);
   });
   if (wall.value) wallObserver.observe(wall.value);
 });
@@ -99,7 +100,7 @@ const tip = (d: ContributionDay) =>
 
 <template>
   <figure class="m-0">
-    <div ref="wall" class="overflow-hidden" :style="{ height: WALL_H * scale + 'px' }">
+    <div ref="wall" class="overflow-x-auto" :style="{ height: WALL_H * scale + 'px' }">
       <div
         class="origin-top-left"
         :style="{
@@ -117,9 +118,11 @@ const tip = (d: ContributionDay) =>
         </Chart>
       </div>
     </div>
-    <figcaption class="mt-3 flex items-center justify-end gap-2 text-xs text-tertiary">
+    <figcaption
+      class="mt-(--bs-margin-md) flex items-center justify-end gap-(--bs-gap-sm) text-xs text-tertiary"
+    >
       <span>{{ text.less }}</span>
-      <span class="flex gap-1">
+      <span class="flex gap-(--bs-gap-xs)">
         <span
           v-for="t in inkTiers"
           :key="t"

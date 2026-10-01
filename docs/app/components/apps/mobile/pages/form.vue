@@ -65,22 +65,22 @@ function submit() {
 </script>
 
 <template>
-  <div class="pb-6">
+  <div class="pb-(--bs-padding-xl)">
     <div class="divide-y divide-border bg-surface-2">
-      <label class="flex items-center gap-3 px-4 py-2.5">
+      <label class="flex items-center gap-(--bs-gap-md) px-(--bs-padding-lg) py-(--bs-padding-sm)">
         <span class="w-12 shrink-0 text-sm text-foreground">{{ text.name }}</span>
         <Input v-model="name" :placeholder="text.namePlaceholder" class="flex-1" />
       </label>
-      <div class="flex items-center gap-3 px-4 py-2.5">
+      <div class="flex items-center gap-(--bs-gap-md) px-(--bs-padding-lg) py-(--bs-padding-sm)">
         <span class="w-12 shrink-0 text-sm text-foreground">{{ text.bio }}</span>
         <Textarea v-model="bio" :placeholder="text.bioPlaceholder" class="flex-1" />
       </div>
       <Switch.Root
         v-model="notify"
-        class="flex w-full cursor-pointer items-center justify-between px-4 py-3"
+        class="flex w-full cursor-pointer items-center justify-between px-(--bs-padding-lg) py-(--bs-padding-md)"
       >
         <span class="text-sm text-foreground">{{ text.notifications }}</span>
-        <span class="flex items-center gap-3">
+        <span class="flex items-center gap-(--bs-gap-md)">
           <Switch.Control>
             <Switch.Thumb />
           </Switch.Control>
@@ -88,14 +88,16 @@ function submit() {
         </span>
       </Switch.Root>
     </div>
-    <div class="mt-4 bg-surface-2 px-4 py-3">
-      <p class="pb-2 text-xs text-tertiary">{{ text.gender }}</p>
-      <RadioGroup.Root v-model="gender" class="flex gap-6">
+    <div class="mt-(--bs-margin-lg) bg-surface-2 px-(--bs-padding-lg) py-(--bs-padding-md)">
+      <p class="pb-(--bs-padding-sm) text-xs text-tertiary">
+        {{ text.gender }}
+      </p>
+      <RadioGroup.Root v-model="gender" class="flex gap-(--bs-gap-xl)">
         <RadioGroup.Item
           v-for="option in genders"
           :key="option.value"
           :value="option.value"
-          class="flex cursor-pointer items-center gap-2"
+          class="flex cursor-pointer items-center gap-(--bs-gap-sm)"
         >
           <RadioGroup.ItemControl />
           <RadioGroup.ItemText class="text-sm text-foreground">{{
@@ -105,11 +107,13 @@ function submit() {
         </RadioGroup.Item>
       </RadioGroup.Root>
     </div>
-    <div class="mt-4 bg-surface-2 px-4 py-3">
-      <p class="pb-2 text-xs text-tertiary">{{ text.interests }}</p>
+    <div class="mt-(--bs-margin-lg) bg-surface-2 px-(--bs-padding-lg) py-(--bs-padding-md)">
+      <p class="pb-(--bs-padding-sm) text-xs text-tertiary">
+        {{ text.interests }}
+      </p>
       <CheckboxGroup v-model="interests" :options="interestOptions" />
     </div>
-    <div class="px-4 pt-5">
+    <div class="px-(--bs-padding-lg) pt-(--bs-padding-lg)">
       <Button class="w-full" @click="submit">{{ text.submit }}</Button>
     </div>
   </div>

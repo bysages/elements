@@ -312,9 +312,9 @@ function send() {
     <Card.Content class="p-0!">
       <div class="grid h-[38rem] md:grid-cols-[11rem_17rem_1fr]">
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
-        <div class="hidden flex-col border-r border-border p-3 md:flex">
+        <div class="hidden flex-col border-r border-border p-(--bs-padding-md) md:flex">
           <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
-            <Dialog.Trigger as-child class="mb-3">
+            <Dialog.Trigger as-child class="mb-(--bs-margin-md)">
               <Button class="w-full!">
                 <Icon name="i-lucide-pen-line" />
                 {{ text.compose }}
@@ -328,7 +328,7 @@ function send() {
                   <Dialog.CloseTrigger :aria-label="locale === 'zh' ? '关闭' : 'Close'">
                     <Icon name="i-lucide-x" />
                   </Dialog.CloseTrigger>
-                  <div class="grid gap-3 py-2">
+                  <div class="grid gap-(--bs-gap-md) py-(--bs-padding-sm)">
                     <Field.Root>
                       <Field.Label>{{ text.to }}</Field.Label>
                       <Input v-model="draft.to" type="email" placeholder="to@songyan.press" />
@@ -342,7 +342,7 @@ function send() {
                       <Textarea v-model="draft.body" :rows="6" />
                     </Field.Root>
                   </div>
-                  <div class="flex justify-end gap-2">
+                  <div class="flex justify-end gap-(--bs-gap-sm)">
                     <Button variant="ghost" @click="composing = false">{{
                       locale === "zh" ? "取消" : "Cancel"
                     }}</Button>
@@ -382,21 +382,30 @@ function send() {
           class="flex min-h-0 flex-col border-border md:border-r"
           :class="selected ? 'hidden md:flex' : 'flex'"
         >
-          <div class="p-2">
+          <div class="p-(--bs-padding-sm)">
             <Input v-model="query" :placeholder="text.search" />
           </div>
           <div class="min-h-0 flex-1 overflow-y-auto">
+            <!-- The hover seat is surface-0, one full step darker than the
+                 card — the same wash the List rows earn. surface-1 sits
+                 within a hair of the card in light scenes, so its wash
+                 vanishes; the selected row carries no hover wash, so its
+                 pigment survives the pointer. -->
             <div
               v-for="mail in visible"
               :key="mail.id"
               role="button"
               tabindex="0"
-              class="flex w-full cursor-pointer flex-col gap-0.5 border-b border-border px-3 py-2.5 text-left transition-colors hover:bg-surface-1"
-              :class="selectedId === mail.id ? 'bg-surface-1' : ''"
+              class="flex w-full cursor-pointer flex-col gap-0.5 border-b border-border px-(--bs-padding-md) py-(--bs-padding-sm) text-left transition-colors duration-(--bs-duration-fast) ease-(--bs-ease-out)"
+              :class="
+                selectedId === mail.id
+                  ? 'bg-primary-subtle text-primary-subtle-text'
+                  : 'hover:bg-surface-0'
+              "
               @click="pick(mail)"
               @keydown.enter.prevent="pick(mail)"
             >
-              <span class="flex items-center gap-2">
+              <span class="flex items-center gap-(--bs-gap-sm)">
                 <span v-if="mail.unread" class="size-1.5 shrink-0 rounded-full bg-primary" />
                 <span class="truncate text-sm" :class="mail.unread ? 'font-medium' : ''">{{
                   mail.from.name
@@ -408,7 +417,7 @@ function send() {
               <span class="truncate text-sm" :class="mail.unread ? 'font-medium' : ''">{{
                 mail.subject[locale]
               }}</span>
-              <span class="flex items-center gap-1">
+              <span class="flex items-center gap-(--bs-gap-xs)">
                 <button
                   class="p-0.5 no-underline"
                   :class="mail.starred ? 'text-primary' : 'text-tertiary hover:text-secondary'"
@@ -424,7 +433,7 @@ function send() {
                 <span class="truncate text-xs text-tertiary">{{ mail.body[locale][0] }}</span>
               </span>
             </div>
-            <p v-if="!visible.length" class="p-6 text-center text-sm text-tertiary">
+            <p v-if="!visible.length" class="p-(--bs-padding-xl) text-center text-sm text-tertiary">
               {{ text.empty }}
             </p>
           </div>
@@ -432,67 +441,69 @@ function send() {
 
         <!-- The letter itself. -->
         <div
-          class="flex min-h-0 flex-col overflow-y-auto p-6"
+          class="flex min-h-0 flex-col overflow-y-auto p-(--bs-padding-xl)"
           :class="selected ? 'block' : 'hidden md:block'"
         >
-          <template v-if="selected">
-            <div class="mb-3 flex items-center gap-1 md:hidden">
-              <Button variant="ghost" size="sm" @click="selectedId = null">
-                <Icon name="i-lucide-arrow-left" />
-              </Button>
-            </div>
-            <div class="mb-4 flex items-start justify-between gap-4">
-              <h2 class="m-0 font-serif text-xl leading-snug">
-                {{ selected.subject[locale] }}
-              </h2>
-              <div class="flex shrink-0 gap-1">
-                <Button variant="ghost" size="sm" square @click="toggleStar(selected)">
-                  <Icon
-                    name="i-lucide-star"
-                    mode="svg"
-                    :class="selected.starred ? 'fill-icon text-primary' : ''"
-                  />
-                </Button>
-                <Button variant="ghost" size="sm" square @click="moveTo(selected, 'archive')">
-                  <Icon name="i-lucide-archive" />
-                </Button>
-                <Button variant="ghost" size="sm" square @click="moveTo(selected, 'trash')">
-                  <Icon name="i-lucide-trash-2" />
+          <Transition name="bs-fade" mode="out-in">
+            <div v-if="selected">
+              <div class="mb-(--bs-margin-md) flex items-center gap-(--bs-gap-xs) md:hidden">
+                <Button variant="ghost" size="sm" @click="selectedId = null">
+                  <Icon name="i-lucide-arrow-left" />
                 </Button>
               </div>
-            </div>
-            <div class="mb-5 flex items-center gap-3">
-              <Avatar.Root class="size-9">
-                <Avatar.Fallback>{{ selected.from.name.slice(0, 1) }}</Avatar.Fallback>
-              </Avatar.Root>
-              <div class="min-w-0">
-                <p class="m-0 truncate text-sm font-medium">
-                  {{ selected.from.name }}
-                </p>
-                <p class="m-0 truncate text-xs text-tertiary">
-                  {{ selected.from.email }}
+              <div class="mb-(--bs-margin-lg) flex items-start justify-between gap-(--bs-gap-lg)">
+                <h2 class="m-0 font-serif text-xl leading-snug">
+                  {{ selected.subject[locale] }}
+                </h2>
+                <div class="flex shrink-0 gap-(--bs-gap-xs)">
+                  <Button variant="ghost" size="sm" square @click="toggleStar(selected)">
+                    <Icon
+                      name="i-lucide-star"
+                      mode="svg"
+                      :class="selected.starred ? 'fill-icon text-primary' : ''"
+                    />
+                  </Button>
+                  <Button variant="ghost" size="sm" square @click="moveTo(selected, 'archive')">
+                    <Icon name="i-lucide-archive" />
+                  </Button>
+                  <Button variant="ghost" size="sm" square @click="moveTo(selected, 'trash')">
+                    <Icon name="i-lucide-trash-2" />
+                  </Button>
+                </div>
+              </div>
+              <div class="mb-(--bs-margin-lg) flex items-center gap-(--bs-gap-md)">
+                <Avatar.Root class="size-9">
+                  <Avatar.Fallback>{{ selected.from.name.slice(0, 1) }}</Avatar.Fallback>
+                </Avatar.Root>
+                <div class="min-w-0">
+                  <p class="m-0 truncate text-sm font-medium">
+                    {{ selected.from.name }}
+                  </p>
+                  <p class="m-0 truncate text-xs text-tertiary">
+                    {{ selected.from.email }}
+                  </p>
+                </div>
+                <span class="ml-auto shrink-0 text-xs text-tertiary">{{
+                  selected.time[locale]
+                }}</span>
+              </div>
+              <div class="grid gap-(--bs-gap-md)">
+                <p
+                  v-for="(para, i) in selected.body[locale]"
+                  :key="i"
+                  class="m-0 text-sm leading-relaxed text-primary"
+                >
+                  {{ para }}
                 </p>
               </div>
-              <span class="ml-auto shrink-0 text-xs text-tertiary">{{
-                selected.time[locale]
-              }}</span>
+              <div v-if="selected.label" class="mt-(--bs-margin-lg)">
+                <Badge tone="ink" variant="outline">{{ selected.label[locale] }}</Badge>
+              </div>
             </div>
-            <div class="grid gap-3">
-              <p
-                v-for="(para, i) in selected.body[locale]"
-                :key="i"
-                class="m-0 text-sm leading-relaxed text-secondary"
-              >
-                {{ para }}
-              </p>
-            </div>
-            <div v-if="selected.label" class="mt-5">
-              <Badge tone="ink" variant="outline">{{ selected.label[locale] }}</Badge>
-            </div>
-          </template>
-          <p v-else class="grid h-full place-items-center text-sm text-tertiary">
-            {{ text.drafts }}
-          </p>
+            <p v-else class="grid h-full place-items-center text-sm text-tertiary">
+              {{ text.drafts }}
+            </p>
+          </Transition>
         </div>
       </div>
     </Card.Content>

@@ -137,9 +137,11 @@ watch(albumIndex, () => {
 
 <template>
   <Card.Root>
-    <Card.Content class="grid gap-6 p-6! lg:grid-cols-[13rem_1fr_20rem]">
+    <Card.Content
+      class="grid gap-(--bs-gap-xl) p-(--bs-padding-xl)! lg:grid-cols-[13rem_1fr_20rem]"
+    >
       <!-- Albums: the shelf. -->
-      <div class="grid content-start gap-2">
+      <div class="grid content-start gap-(--bs-gap-sm)">
         <p class="m-0 text-xs uppercase tracking-label text-tertiary">
           {{ text.albums }}
         </p>
@@ -148,7 +150,7 @@ watch(albumIndex, () => {
             <NavigationMenu.Item v-for="(a, i) in albums" :key="a.glyph">
               <NavigationMenu.Link
                 href="#"
-                class="h-auto! py-1.5!"
+                class="h-auto! py-(--bs-padding-xs)!"
                 :current="albumIndex === i"
                 @click.prevent="albumIndex = i"
               >
@@ -172,8 +174,12 @@ watch(albumIndex, () => {
         <p class="m-0 text-xs uppercase tracking-label text-tertiary">
           {{ text.queue }}
         </p>
-        <h3 class="m-0 mt-1 font-serif text-2xl">{{ album.title[locale] }}</h3>
-        <p class="m-0 mb-3 text-sm text-tertiary">{{ album.artist[locale] }}</p>
+        <h3 class="m-0 mt-(--bs-margin-xs) font-serif text-2xl">
+          {{ album.title[locale] }}
+        </h3>
+        <p class="m-0 mb-(--bs-margin-md) text-sm text-tertiary">
+          {{ album.artist[locale] }}
+        </p>
         <List.Root bordered hoverable>
           <List.Item
             v-for="(t, i) in album.tracks"
@@ -182,7 +188,7 @@ watch(albumIndex, () => {
             tabindex="0"
             :aria-current="i === trackIndex ? 'true' : undefined"
             class="cursor-pointer"
-            :class="i === trackIndex ? 'bg-surface-1' : ''"
+            :class="i === trackIndex ? 'bg-primary-subtle text-primary-subtle-text' : ''"
             @click="openTrack(albumIndex, i)"
             @keydown.enter.prevent="openTrack(albumIndex, i)"
             @keydown.space.prevent="openTrack(albumIndex, i)"
@@ -212,7 +218,7 @@ watch(albumIndex, () => {
       </div>
 
       <!-- Now playing: the turntable face. -->
-      <div class="grid content-start gap-5 rounded-md bg-surface-1 p-5">
+      <div class="grid content-start gap-(--bs-gap-lg) rounded-md bg-surface-1 p-(--bs-padding-lg)">
         <p class="m-0 text-xs uppercase tracking-label text-tertiary">
           {{ text.nowPlaying }}
         </p>
@@ -230,7 +236,7 @@ watch(albumIndex, () => {
           </p>
         </div>
 
-        <div class="grid gap-1">
+        <div class="grid gap-(--bs-gap-xs)">
           <Slider.Root
             :model-value="[elapsed]"
             :min="0"
@@ -253,7 +259,7 @@ watch(albumIndex, () => {
           </div>
         </div>
 
-        <div class="flex items-center justify-center gap-2">
+        <div class="flex items-center justify-center gap-(--bs-gap-sm)">
           <Button variant="ghost" size="sm" square :aria-label="text.prev" @click="step(-1)">
             <Icon name="i-lucide-skip-back" />
           </Button>
@@ -270,7 +276,7 @@ watch(albumIndex, () => {
           </Button>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-(--bs-gap-md)">
           <Icon name="i-lucide-volume-2" class="shrink-0 text-tertiary" />
           <Slider.Root v-model="volume" :min="0" :max="100" :step="1" class="flex-1">
             <Slider.Control>

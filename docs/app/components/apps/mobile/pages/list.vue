@@ -57,12 +57,12 @@ function open(name: string) {
 </script>
 
 <template>
-  <div class="pb-4">
+  <div class="pb-(--bs-padding-lg)">
     <div class="divide-y divide-border bg-surface-2">
       <button
         v-for="chat in chats"
         :key="chat.id"
-        class="flex w-full cursor-pointer items-center gap-3 bg-transparent px-4 py-3 text-left"
+        class="flex w-full cursor-pointer items-center gap-(--bs-gap-md) bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left"
         type="button"
         @click="open(chat.name[locale])"
       >
@@ -73,23 +73,23 @@ function open(name: string) {
           <span class="block truncate text-md text-foreground">{{ chat.name[locale] }}</span>
           <span class="block truncate text-xs text-tertiary">{{ chat.desc[locale] }}</span>
         </span>
-        <span class="flex flex-col items-end gap-1">
+        <span class="flex flex-col items-end gap-(--bs-gap-xs)">
           <span class="text-xs text-tertiary">{{ chat.time[locale] }}</span>
           <Badge
             v-if="chat.unread"
             tone="danger"
-            class="min-w-4 rounded-full px-1.5 text-center text-xs"
+            class="min-w-4 rounded-full px-(--bs-padding-xs) text-center text-xs"
           >
             {{ chat.unread }}
           </Badge>
         </span>
       </button>
     </div>
-    <div class="mt-4 divide-y divide-border bg-surface-2">
+    <div class="mt-(--bs-margin-lg) divide-y divide-border bg-surface-2">
       <button
         v-for="row in rows"
         :key="row.id"
-        class="flex w-full cursor-pointer items-center justify-between bg-transparent px-4 py-3 text-left text-sm text-foreground"
+        class="flex w-full cursor-pointer items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-sm text-foreground"
         type="button"
         @click="open(row.label[locale])"
       >

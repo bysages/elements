@@ -406,7 +406,7 @@ body {
      resolve to fit-content, and the unbreakable code lines' min-content
      would inflate it past narrow lanes (the margin then centers it). */
   inline-size: 100%;
-  max-inline-size: 46rem;
+  max-inline-size: min(46rem, 72ch);
   margin-inline: auto;
   padding-block: var(--bs-padding-xl) var(--bs-space-24);
 }
@@ -600,7 +600,7 @@ body {
     background: var(--bs-color-surface-inset);
     border-radius: var(--bs-radius-sm);
     font-family: var(--bs-font-mono);
-    font-size: 0.875em;
+    font-size: max(var(--bs-font-size-xs), 0.875em);
   }
 
   .bs-docs-prose pre {
@@ -672,21 +672,21 @@ body {
 }
 
 .th-string {
-  color: var(--bs-color-success);
+  color: var(--bs-color-syntax-string);
 }
 
 .th-number,
 .th-literal {
-  color: var(--bs-color-warning);
+  color: var(--bs-color-syntax-literal);
 }
 
 .th-tag,
 .th-selector {
-  color: var(--bs-color-danger);
+  color: var(--bs-color-syntax-tag);
 }
 
 .th-function {
-  color: var(--bs-color-info);
+  color: var(--bs-color-syntax-function);
 }
 
 /* Object keys (JSON's `property`, the bulk of any config block) ride the
@@ -832,7 +832,7 @@ body {
 
 .bs-docs-demo-missing {
   margin: 0;
-  color: var(--bs-color-text-muted);
+  color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
 }
 
@@ -1052,13 +1052,13 @@ body {
   text-overflow: ellipsis;
   font-size: var(--bs-font-size-xs);
   font-weight: var(--bs-font-weight-medium);
-  line-height: 1.2;
+  line-height: var(--bs-line-height-tight);
   color: var(--bs-color-text-primary);
 }
 
 .bs-docs-theme-scene-glyph {
-  font-size: 0.6875rem;
-  line-height: 1.2;
+  font-size: var(--bs-font-size-xs);
+  line-height: var(--bs-line-height-tight);
   color: var(--bs-color-text-tertiary);
 }
 
@@ -1098,6 +1098,9 @@ body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--bs-gap-sm);
+  /* Two pixels of optical breath around the radio stack — below the
+     token ramp on purpose; any real spacing step would misalign the
+     swatch grid against its neighbours. */
   padding: 0.125rem 0;
 }
 
@@ -1178,6 +1181,8 @@ body {
 
 .bs-docs-language-flag {
   font-size: var(--bs-font-size-lg);
+  /* A flag glyph centers on its own em square; the four line-height
+     ladders are for text, not pictographs. */
   line-height: 1;
 }
 
@@ -1561,8 +1566,8 @@ body {
 .bs-docs-page-card-icon {
   display: inline-flex;
   padding: var(--bs-padding-lg) var(--bs-padding-lg) 0;
-  color: var(--bs-color-primary);
-  font-size: 1.5rem;
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-2xl);
 }
 
 .bs-docs-page-card-icon svg {
@@ -1661,4 +1666,34 @@ body {
 [data-theme-flipping]::before,
 [data-theme-flipping]::after {
   transition: none !important;
+}
+
+/* Vue <Transition name="bs-fade"> — the shell's dissolve between mounted
+   states: ink-in on entry, a plain faster fade on the way out. */
+.bs-fade-enter-active {
+  animation: bs-ink-in var(--bs-duration-slow) var(--bs-ease-out);
+}
+
+.bs-fade-leave-active {
+  transition: opacity var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+.bs-fade-leave-to {
+  opacity: 0;
+}
+
+/* Coarse pointers need more than a 28px seat: the header's square
+   triggers keep their visual size but extend their hit area by a
+   transparent halo, so a thumb lands inside the target instead of on
+   its edge. */
+@media (pointer: coarse) {
+  .bs-docs-header [data-scope="button"][data-square="true"][data-size="sm"] {
+    position: relative;
+  }
+
+  .bs-docs-header [data-scope="button"][data-square="true"][data-size="sm"]::after {
+    content: "";
+    position: absolute;
+    inset: -7px;
+  }
 }

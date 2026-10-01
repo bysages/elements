@@ -187,7 +187,7 @@ const statusCollection = computed(() =>
               </template>
             </FormField>
 
-            <div class="flex justify-end gap-3">
+            <div class="flex justify-end gap-(--bs-gap-md)">
               <Button variant="ghost" @click="emit('close')">{{ text.cancel }}</Button>
               <Button type="submit">{{ text.save }}</Button>
             </div>

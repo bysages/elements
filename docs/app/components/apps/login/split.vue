@@ -23,7 +23,7 @@ const copy = {
          line in the middle, colophon at the bottom — the panel answers
          "whose door is this" before the form asks for a key. -->
     <div class="hidden flex-col justify-between bg-primary p-10 text-primary-text lg:flex">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-(--bs-gap-sm)">
         <span
           class="grid size-6 place-items-center rounded-sm bg-primary-text text-[0.75rem] font-semibold text-primary"
           aria-hidden="true"
@@ -31,7 +31,7 @@ const copy = {
         >
         <span class="text-sm font-semibold">{{ copy[locale as "en" | "zh"].brand }}</span>
       </div>
-      <div class="grid gap-3">
+      <div class="grid gap-(--bs-gap-md)">
         <p class="m-0 font-serif text-3xl leading-snug text-balance">
           {{ copy[locale as "en" | "zh"].slogan }}
         </p>
@@ -42,7 +42,7 @@ const copy = {
       <p class="m-0 text-xs opacity-60">Songyan Press · Huizhou</p>
     </div>
 
-    <div class="grid place-items-center p-6 sm:p-10">
+    <div class="grid place-items-center p-(--bs-padding-xl) sm:p-10">
       <div class="w-full max-w-sm">
         <LoginForm />
       </div>

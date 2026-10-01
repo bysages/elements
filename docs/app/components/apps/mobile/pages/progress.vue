@@ -22,10 +22,12 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 </script>
 
 <template>
-  <div class="space-y-6 p-4">
-    <div class="space-y-4 bg-surface-2 p-4">
+  <div class="space-y-(--bs-margin-xl) p-(--bs-padding-lg)">
+    <div class="space-y-(--bs-margin-lg) bg-surface-2 p-(--bs-padding-lg)">
       <Progress.Root v-model="value">
-        <Progress.Label class="pb-1.5 text-sm text-foreground">{{ text.uploading }}</Progress.Label>
+        <Progress.Label class="pb-(--bs-padding-xs) text-sm text-foreground">{{
+          text.uploading
+        }}</Progress.Label>
         <Progress.Track>
           <Progress.Range />
         </Progress.Track>
@@ -36,12 +38,12 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
         </Progress.Track>
       </Progress.Root>
     </div>
-    <div class="flex items-center justify-around bg-surface-2 p-4">
+    <div class="flex items-center justify-around bg-surface-2 p-(--bs-padding-lg)">
       <Spinner size="sm" />
       <Spinner size="md" />
       <Spinner size="lg" />
     </div>
-    <div class="flex justify-center gap-3">
+    <div class="flex justify-center gap-(--bs-gap-md)">
       <Button variant="outline" size="sm" @click="value = Math.max(0, value - 10)">{{
         text.decrease
       }}</Button>

@@ -39,6 +39,10 @@
   --bs-line-height-normal: 1.5;
   --bs-line-height-relaxed: 1.625;
 
+  /* Eyebrow kickers share one tracked voice — the same whisper everywhere
+     an eyebrow announces a section, so no page improvises its own. */
+  --bs-tracking-eyebrow: 0.14em;
+
   /* Control labels carry a whisper of tracking — upright and unhurried is a
      property of CJK typesetting, not of any single typeface. */
   --bs-tracking-label: 0.02em;

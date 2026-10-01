@@ -8,8 +8,10 @@ const copy = computed(() => resolveLandingCopy(locale.value).brands);
 </script>
 
 <template>
-  <section class="mx-auto max-w-[64rem] px-6 py-10">
-    <p class="m-0 mb-5 text-center text-xs uppercase tracking-[0.14em] text-tertiary">
+  <section class="mx-auto max-w-[64rem] px-(--bs-padding-xl) py-10">
+    <p
+      class="m-0 mb-(--bs-margin-lg) text-center text-xs uppercase tracking-(--bs-tracking-eyebrow) text-tertiary"
+    >
       {{ copy.kicker }}
     </p>
     <Marquee.Root spacing="1.5rem">
@@ -19,7 +21,7 @@ const copy = computed(() => resolveLandingCopy(locale.value).brands);
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 3 3 9l9 12 9-12-9-6Z" />
             </svg>
-            <span class="text-sm uppercase tracking-[0.14em]">{{ brand }}</span>
+            <span class="text-sm uppercase tracking-(--bs-tracking-eyebrow)">{{ brand }}</span>
           </Marquee.Item>
         </Marquee.Content>
       </Marquee.Viewport>

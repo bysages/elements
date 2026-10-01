@@ -32,15 +32,17 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 </script>
 
 <template>
-  <div class="space-y-5 p-4">
-    <div class="flex items-center justify-around bg-surface-2 px-4 py-6">
+  <div class="space-y-(--bs-margin-lg) p-(--bs-padding-lg)">
+    <div
+      class="flex items-center justify-around bg-surface-2 px-(--bs-padding-lg) py-(--bs-padding-xl)"
+    >
       <span class="relative">
         <Avatar.Root size="lg">
           <Avatar.Fallback>{{ text.seal }}</Avatar.Fallback>
         </Avatar.Root>
         <Badge
           tone="danger"
-          class="absolute -top-1 -right-1.5 min-w-4 rounded-full px-1 text-center text-xs"
+          class="absolute -top-1 -right-1.5 min-w-4 rounded-full px-(--bs-padding-xs) text-center text-xs"
           >6</Badge
         >
       </span>
@@ -50,10 +52,14 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
       </span>
       <Button variant="outline">
         {{ text.messages }}
-        <Badge tone="danger" class="ml-1 rounded-full px-1.5 text-xs">8</Badge>
+        <Badge tone="danger" class="ml-(--bs-margin-xs) rounded-full px-(--bs-padding-xs) text-xs"
+          >8</Badge
+        >
       </Button>
     </div>
-    <div class="flex items-center justify-around bg-surface-2 px-4 py-6">
+    <div
+      class="flex items-center justify-around bg-surface-2 px-(--bs-padding-lg) py-(--bs-padding-xl)"
+    >
       <Badge>{{ text.variants.default }}</Badge>
       <Badge variant="outline">{{ text.variants.outline }}</Badge>
       <Badge tone="success" variant="subtle">{{ text.variants.success }}</Badge>

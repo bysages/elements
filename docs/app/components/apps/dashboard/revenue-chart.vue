@@ -48,7 +48,13 @@ const definition = computed(
         }),
       ],
       scales: {
-        x: { scale: scaleBand, padding: 0.24 },
+        x: {
+          scale: scaleBand,
+          padding: 0.24,
+          /* Narrow lanes thin the month labels by collision, keeping the
+             first and the last; the tooltip still names every month. */
+          axis: { tickLabels: { thin: { minGap: 40, priority: "ends" } } },
+        },
         y: {
           scale: scaleLinear,
           nice: true,

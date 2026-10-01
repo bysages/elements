@@ -70,7 +70,7 @@ const figures = computed(() =>
 </script>
 
 <template>
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(min(13rem,100%),1fr))] gap-4">
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(min(13rem,100%),1fr))] gap-(--bs-gap-lg)">
     <Stat.Root v-for="figure in figures" :key="figure.label">
       <Stat.Label>{{ figure.label }}</Stat.Label>
       <Stat.Value>{{ figure.value }}</Stat.Value>

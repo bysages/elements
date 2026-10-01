@@ -37,7 +37,12 @@ const copy = {
     add: "Add task",
     cancel: "Cancel",
     filters: { all: "All", todo: "To do", doing: "In progress", done: "Done" },
-    priorities: { any: "Any priority", high: "High", med: "Medium", low: "Low" },
+    priorities: {
+      any: "Any priority",
+      high: "High",
+      med: "Medium",
+      low: "Low",
+    },
     priorityLabel: { high: "High", med: "Medium", low: "Low" },
     empty: "No tasks in this drawer.",
     left: (n: number) => `${n} open`,
@@ -65,7 +70,10 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 const tasks = reactive<Task[]>([
   {
     id: "t-01",
-    title: { en: "Proof edition No. 12, second pass", zh: "第十二辑校样，第二遍" },
+    title: {
+      en: "Proof edition No. 12, second pass",
+      zh: "第十二辑校样，第二遍",
+    },
     status: "doing",
     priority: "high",
     due: { en: "Thu", zh: "周四" },
@@ -124,7 +132,13 @@ const tasks = reactive<Task[]>([
 const statusFilter = ref<Status | "all">("all");
 const priorityFilter = ref<string[]>(["any"]);
 
-const priorityTone: Record<Priority, string> = { high: "danger", med: "warning", low: "info" };
+// Priority speaks in ink weight, not pigment: the semantic colors stay
+// reserved for state, so a high-priority task is simply the heaviest seal.
+const priorityTone: Record<Priority, { tone: "ink"; variant: "solid" | "outline" | "subtle" }> = {
+  high: { tone: "ink", variant: "solid" },
+  med: { tone: "ink", variant: "outline" },
+  low: { tone: "ink", variant: "subtle" },
+};
 
 const statusTone: Record<
   Status,
@@ -207,7 +221,7 @@ function add() {
               <Dialog.CloseTrigger :aria-label="locale === 'zh' ? '关闭' : 'Close'">
                 <Icon name="i-lucide-x" />
               </Dialog.CloseTrigger>
-              <div class="grid gap-3 py-2">
+              <div class="grid gap-(--bs-gap-md) py-(--bs-padding-sm)">
                 <Field.Root required>
                   <Field.Label>{{ text.title }}</Field.Label>
                   <Input v-model="draft.title" :placeholder="text.titlePlaceholder" />
@@ -246,7 +260,7 @@ function add() {
                   <Input v-model="draft.due" type="date" />
                 </Field.Root>
               </div>
-              <div class="flex justify-end gap-2">
+              <div class="flex justify-end gap-(--bs-gap-sm)">
                 <Button variant="ghost" @click="composing = false">{{ text.cancel }}</Button>
                 <Button :disabled="!draft.title.trim()" @click="add">{{ text.add }}</Button>
               </div>
@@ -256,7 +270,9 @@ function add() {
       </Dialog.Root>
     </Card.Header>
     <Card.Content>
-      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div
+        class="mb-(--bs-margin-lg) flex flex-wrap items-center justify-between gap-(--bs-gap-md)"
+      >
         <SegmentGroup.Root
           size="sm"
           :model-value="statusFilter"
@@ -315,7 +331,7 @@ function add() {
         <li
           v-for="task in visible"
           :key="task.id"
-          class="flex items-center gap-3 border-b border-border py-3 last:border-b-0"
+          class="flex items-center gap-(--bs-gap-md) border-b border-border py-(--bs-padding-md) last:border-b-0"
         >
           <Checkbox.Root
             :checked="checkedState(task.status)"
@@ -339,7 +355,10 @@ function add() {
           <Badge :tone="statusTone[task.status].tone" :variant="statusTone[task.status].variant">
             {{ text.filters[task.status] }}
           </Badge>
-          <Badge :tone="priorityTone[task.priority]" variant="subtle">
+          <Badge
+            :tone="priorityTone[task.priority].tone"
+            :variant="priorityTone[task.priority].variant"
+          >
             {{ text.priorityLabel[task.priority] }}
           </Badge>
           <span class="hidden w-20 shrink-0 text-xs tabular-nums text-tertiary sm:block">{{
@@ -350,7 +369,7 @@ function add() {
           </Avatar.Root>
         </li>
       </ul>
-      <p v-if="!visible.length" class="m-0 py-8 text-center text-sm text-tertiary">
+      <p v-if="!visible.length" class="m-0 py-(--bs-padding-2xl) text-center text-sm text-tertiary">
         {{ text.empty }}
       </p>
     </Card.Content>

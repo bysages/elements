@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { areaY, chartColors, defineChart, ruleY } from "@bysages/charts";
+import { areaY, chartColors, chartMuted, defineChart, ruleY } from "@bysages/charts";
 import { scaleLinear } from "@bysages/charts/scales/linear";
 import { scalePoint } from "@bysages/charts/scales/point";
 import { Chart, type ChartDefinition } from "@bysages/charts/vue";
@@ -50,7 +50,7 @@ const definition = computed(
           fillOpacity: 0.12,
           strokeWidth: 2,
         }),
-        ruleY([mean], { stroke: chartColors.danger, strokeDasharray: "4 3" }),
+        ruleY([mean], { stroke: chartMuted, strokeDasharray: "4 3" }),
       ],
       scales: {
         x: { scale: () => scalePoint<string>().padding(0.3) },

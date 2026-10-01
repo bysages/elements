@@ -8,9 +8,13 @@ const copy = computed(() => resolveLandingCopy(locale.value).faq);
 </script>
 
 <template>
-  <section id="faq" class="mx-auto max-w-[44rem] scroll-mt-20 px-6 py-14">
-    <header class="mb-8">
-      <p class="m-0 mb-3 text-xs uppercase tracking-[0.14em] text-tertiary">{{ copy.kicker }}</p>
+  <section id="faq" class="mx-auto max-w-[44rem] scroll-mt-20 px-(--bs-padding-xl) py-16">
+    <header class="mb-(--bs-margin-2xl)">
+      <p
+        class="m-0 mb-(--bs-margin-md) text-xs uppercase tracking-(--bs-tracking-eyebrow) text-tertiary"
+      >
+        {{ copy.kicker }}
+      </p>
       <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
     </header>
 

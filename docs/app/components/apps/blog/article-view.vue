@@ -72,7 +72,7 @@ watchPostEffect(() => {
 </script>
 
 <template>
-  <article class="grid gap-5">
+  <article class="grid gap-(--bs-gap-lg)">
     <Button variant="ghost" size="sm" class="justify-self-start" @click="emit('back')">
       <svg
         width="14"
@@ -88,14 +88,20 @@ watchPostEffect(() => {
       {{ text.back }}
     </Button>
 
-    <div class="grid grid-cols-[1fr_minmax(0,46rem)_1fr] items-start gap-8">
-      <div class="col-start-2 min-w-0">
-        <Typography.Display class="mb-3">{{ post.title[locale] }}</Typography.Display>
+    <div
+      class="grid grid-cols-[1fr_minmax(0,46rem)_1fr] items-start gap-(--bs-gap-2xl) @max-[60rem]:grid-cols-1"
+    >
+      <div class="col-start-2 min-w-0 @max-[60rem]:col-start-1">
+        <Typography.Display class="mb-(--bs-margin-md)">{{
+          post.title[locale]
+        }}</Typography.Display>
 
         <!-- The title's voice owns `margin: 0`, so the gap to its byline
              is written here — utilities under the component's own
              specificity would silently lose. -->
-        <p class="m-0 mb-7 mt-3 flex items-center gap-2 text-sm text-tertiary">
+        <p
+          class="m-0 mb-(--bs-margin-xl) mt-(--bs-margin-md) flex items-center gap-(--bs-gap-sm) text-sm text-tertiary"
+        >
           <Avatar.Root>
             <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
           </Avatar.Root>

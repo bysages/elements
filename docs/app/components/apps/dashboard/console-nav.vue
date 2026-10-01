@@ -57,7 +57,7 @@ function pick(label: string) {
 
 <template>
   <div class="flex h-full flex-col">
-    <div class="flex items-center gap-2 p-4">
+    <div class="flex items-center gap-(--bs-gap-sm) p-(--bs-padding-lg)">
       <span
         class="grid size-5 place-items-center rounded-sm bg-primary text-[0.6875rem] font-semibold text-primary-text"
         aria-hidden="true"
@@ -66,7 +66,7 @@ function pick(label: string) {
       <span class="text-sm font-semibold">By Sages</span>
     </div>
 
-    <nav class="flex flex-col gap-[2px] px-2" :aria-label="text.sections">
+    <nav class="flex flex-col gap-[2px] px-(--bs-padding-sm)" :aria-label="text.sections">
       <Button
         v-for="stop in stops"
         :key="stop.key"
@@ -92,7 +92,9 @@ function pick(label: string) {
       </Button>
     </nav>
 
-    <div class="mt-auto flex flex-col gap-2 border-t border-border px-2 py-3">
+    <div
+      class="mt-auto flex flex-col gap-(--bs-gap-sm) border-t border-border px-(--bs-padding-sm) py-(--bs-padding-md)"
+    >
       <Button
         variant="ghost"
         class="justify-start!"
@@ -117,7 +119,11 @@ function pick(label: string) {
         {{ text.settings }}
       </Button>
 
-      <User name="Sage Wei" description="sage@example.com" class="min-w-0 px-2 py-1" />
+      <User
+        name="Sage Wei"
+        description="sage@example.com"
+        class="min-w-0 px-(--bs-padding-sm) py-(--bs-padding-xs)"
+      />
     </div>
   </div>
 </template>

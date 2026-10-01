@@ -45,16 +45,18 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 </script>
 
 <template>
-  <div class="pb-4">
+  <div class="pb-(--bs-padding-lg)">
     <section v-for="group in groups" :key="group.id">
-      <p class="px-4 pt-4 pb-1.5 text-xs text-tertiary">
+      <p
+        class="px-(--bs-padding-lg) pt-(--bs-padding-lg) pb-(--bs-padding-xs) text-xs text-tertiary"
+      >
         {{ group.label[locale] }}
       </p>
       <div class="divide-y divide-border bg-surface-2">
         <button
           v-for="item in group.items"
           :key="item.id"
-          class="flex w-full cursor-pointer items-center justify-between bg-transparent px-4 py-3.5 text-left text-md text-foreground"
+          class="flex w-full cursor-pointer items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-md text-foreground"
           type="button"
           @click="nav.go(item.id)"
         >
@@ -63,6 +65,8 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
         </button>
       </div>
     </section>
-    <p class="px-4 pt-5 text-center text-xs text-tertiary">{{ text.live }}</p>
+    <p class="px-(--bs-padding-lg) pt-(--bs-padding-lg) text-center text-xs text-tertiary">
+      {{ text.live }}
+    </p>
   </div>
 </template>

@@ -110,7 +110,7 @@ const definition = computed(
         areaY(localizedCash.value, {
           x: "month",
           y: "cash",
-          fill: chartColors.success,
+          fill: chartColors.ink,
           fillOpacity: 0.14,
           strokeWidth: 2,
         }),
@@ -129,8 +129,8 @@ const definition = computed(
 </script>
 
 <template>
-  <div class="grid content-start gap-5">
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(22rem,100%),1fr))] gap-5">
+  <div class="grid content-start gap-(--bs-gap-lg)">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(22rem,100%),1fr))] gap-(--bs-gap-lg)">
       <Card.Root>
         <Card.Header>
           <Card.Title>{{ text.cash.title }}</Card.Title>
@@ -146,7 +146,7 @@ const definition = computed(
           <Card.Title>{{ text.sources.title }}</Card.Title>
           <Card.Description>{{ text.sources.description }}</Card.Description>
         </Card.Header>
-        <Card.Content class="grid content-start gap-4">
+        <Card.Content class="grid content-start gap-(--bs-gap-lg)">
           <Progress.Root v-for="row in localizedChannels" :key="row.id" :model-value="row.share">
             <Progress.Label>{{ row.label }} · {{ row.accountsText }}</Progress.Label>
             <Progress.ValueText />

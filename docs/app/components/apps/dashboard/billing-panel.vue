@@ -151,14 +151,14 @@ const filteredInvoices = computed(() =>
 </script>
 
 <template>
-  <div class="grid content-start gap-5">
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(18rem,100%),1fr))] gap-5">
+  <div class="grid content-start gap-(--bs-gap-lg)">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(18rem,100%),1fr))] gap-(--bs-gap-lg)">
       <Card.Root>
         <Card.Header>
           <Card.Title>{{ text.plan.name }}</Card.Title>
           <Card.Description>{{ planDescription }}</Card.Description>
         </Card.Header>
-        <Card.Content class="grid gap-4">
+        <Card.Content class="grid gap-(--bs-gap-lg)">
           <span class="font-serif text-3xl">{{ planPrice }}</span>
           <Progress.Root :model-value="currentPlan.seatUse">
             <Progress.Label>{{ text.plan.seats }}</Progress.Label>
@@ -190,7 +190,7 @@ const filteredInvoices = computed(() =>
           <Card.Title>{{ text.payment.title }}</Card.Title>
           <Card.Description>{{ paymentDescription }}</Card.Description>
         </Card.Header>
-        <Card.Content class="grid gap-2">
+        <Card.Content class="grid gap-(--bs-gap-sm)">
           <p class="m-0 font-serif text-2xl tracking-[0.2em]">•••• {{ paymentMethod.last4 }}</p>
         </Card.Content>
         <Card.Footer>
@@ -217,7 +217,9 @@ const filteredInvoices = computed(() =>
         <Card.Description>{{ text.invoices.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="p-0!">
-        <div class="flex flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3">
+        <div
+          class="flex flex-wrap items-center gap-x-(--bs-gap-xl) gap-y-(--bs-gap-md) px-(--bs-padding-lg) py-(--bs-padding-md)"
+        >
           <SegmentGroup.Root v-model="statusFilter" :aria-label="text.invoices.filter">
             <SegmentGroup.Indicator />
             <SegmentGroup.Item value="all">
@@ -249,8 +251,8 @@ const filteredInvoices = computed(() =>
           >
             <DatePicker.Label class="sr-only">{{ text.invoices.period }}</DatePicker.Label>
             <DatePicker.Control>
-              <DatePicker.Input :index="0" class="w-28!" />
-              <DatePicker.Input :index="1" class="w-28!" />
+              <DatePicker.Input :index="0" class="w-28! @max-[28rem]:w-full!" />
+              <DatePicker.Input :index="1" class="w-28! @max-[28rem]:w-full!" />
               <DatePicker.Trigger>
                 <Icon name="i-lucide-calendar" />
               </DatePicker.Trigger>
@@ -261,7 +263,7 @@ const filteredInvoices = computed(() =>
                 <DatePicker.Content>
                   <!-- The shortcuts live in the popup: a second row here
                        would lift the inputs off the filter line. -->
-                  <div class="flex gap-2">
+                  <div class="flex gap-(--bs-gap-sm)">
                     <DatePicker.PresetTrigger value="lastMonth">
                       {{ text.invoices.lastMonth }}
                     </DatePicker.PresetTrigger>
@@ -375,49 +377,60 @@ const filteredInvoices = computed(() =>
             </Teleport>
           </DatePicker.Root>
         </div>
-        <table class="w-full border-collapse text-sm">
-          <thead>
-            <tr class="border-b border-border text-start text-tertiary">
-              <th class="px-4 py-2 text-start font-medium">
-                {{ text.invoices.headers.invoice }}
-              </th>
-              <th class="px-4 py-2 text-start font-medium">
-                {{ text.invoices.headers.date }}
-              </th>
-              <th class="px-4 py-2 text-start font-medium">
-                {{ text.invoices.headers.amount }}
-              </th>
-              <th class="px-4 py-2 text-start font-medium">
-                {{ text.invoices.headers.status }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="filteredInvoices.length === 0">
-              <td colspan="4" class="px-4 py-6 text-center text-tertiary">
-                {{ text.invoices.empty }}
-              </td>
-            </tr>
-            <tr
-              v-for="invoice in filteredInvoices"
-              :key="invoice.id"
-              class="border-b border-border last:border-b-0"
-            >
-              <td class="px-4 py-2 font-medium">{{ invoice.id }}</td>
-              <td class="px-4 py-2 text-secondary">
-                {{ formatDate(invoice.date, locale as Locale) }}
-              </td>
-              <td class="px-4 py-2 text-secondary">
-                {{ formatCurrency(invoice.amount, locale as Locale, 2) }}
-              </td>
-              <td class="px-4 py-2">
-                <Badge :tone="statusTone[invoice.status]" variant="subtle">
-                  {{ invoiceStatus(invoice.status) }}
-                </Badge>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="-mx-1 overflow-x-auto px-(--bs-padding-xs)">
+          <table class="w-full min-w-[36rem] border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-border text-start tracking-label text-tertiary">
+                <th class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-start font-medium">
+                  {{ text.invoices.headers.invoice }}
+                </th>
+                <th class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-end font-medium">
+                  {{ text.invoices.headers.date }}
+                </th>
+                <th class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-end font-medium">
+                  {{ text.invoices.headers.amount }}
+                </th>
+                <th class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-start font-medium">
+                  {{ text.invoices.headers.status }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="filteredInvoices.length === 0">
+                <td
+                  colspan="4"
+                  class="px-(--bs-padding-lg) py-(--bs-padding-xl) text-center text-tertiary"
+                >
+                  {{ text.invoices.empty }}
+                </td>
+              </tr>
+              <tr
+                v-for="invoice in filteredInvoices"
+                :key="invoice.id"
+                class="border-b border-border last:border-b-0"
+              >
+                <td class="px-(--bs-padding-lg) py-(--bs-padding-sm) font-medium">
+                  {{ invoice.id }}
+                </td>
+                <td
+                  class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-end text-secondary tabular-nums"
+                >
+                  {{ formatDate(invoice.date, locale as Locale) }}
+                </td>
+                <td
+                  class="px-(--bs-padding-lg) py-(--bs-padding-sm) text-end font-medium tabular-nums"
+                >
+                  {{ formatCurrency(invoice.amount, locale as Locale, 2) }}
+                </td>
+                <td class="px-(--bs-padding-lg) py-(--bs-padding-sm)">
+                  <Badge :tone="statusTone[invoice.status]" variant="subtle">
+                    {{ invoiceStatus(invoice.status) }}
+                  </Badge>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </Card.Content>
     </Card.Root>
   </div>

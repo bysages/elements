@@ -90,13 +90,13 @@ function save() {
 </script>
 
 <template>
-  <div class="grid content-start gap-5 lg:grid-cols-2">
+  <div class="grid content-start gap-(--bs-gap-lg) lg:grid-cols-2">
     <Card.Root>
       <Card.Header>
         <Card.Title>{{ text.workspace.title }}</Card.Title>
         <Card.Description>{{ text.workspace.description }}</Card.Description>
       </Card.Header>
-      <Card.Content class="grid content-start gap-4">
+      <Card.Content class="grid content-start gap-(--bs-gap-lg)">
         <FormField name="workspace" :label="text.workspace.name">
           <Input v-model="form.workspace" :placeholder="text.workspace.namePlaceholder" />
         </FormField>
@@ -145,7 +145,7 @@ function save() {
         <Card.Title>{{ text.notifications.title }}</Card.Title>
         <Card.Description>{{ text.notifications.description }}</Card.Description>
       </Card.Header>
-      <Card.Content class="grid content-start gap-3">
+      <Card.Content class="grid content-start gap-(--bs-gap-md)">
         <Switch.Root v-model:checked="form.digest">
           <Switch.Control><Switch.Thumb /></Switch.Control>
           <Switch.Label>{{ text.notifications.dailyDigest }}</Switch.Label>

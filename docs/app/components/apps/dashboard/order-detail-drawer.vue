@@ -74,7 +74,10 @@ const statusTone: Record<OrderStatus, string> = {
           <Drawer.Title>{{ row?.customer ?? text.fallback }}</Drawer.Title>
           <Drawer.Description>{{ text.description }}</Drawer.Description>
 
-          <dl v-if="row" class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2">
+          <dl
+            v-if="row"
+            class="m-0 grid grid-cols-[auto_1fr] gap-x-(--bs-gap-xl) gap-y-(--bs-gap-sm)"
+          >
             <dt class="text-sm text-tertiary">{{ text.fields.status }}</dt>
             <dd class="m-0 flex">
               <Badge :tone="statusTone[row.status]" variant="subtle">

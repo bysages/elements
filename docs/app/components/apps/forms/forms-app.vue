@@ -120,7 +120,7 @@ const frequency = ref<string[]>(["weekly"]);
 </script>
 
 <template>
-  <div class="grid gap-6 lg:grid-cols-2">
+  <div class="grid gap-(--bs-gap-xl) lg:grid-cols-2">
     <Card.Root>
       <Card.Header>
         <Card.Title>{{ text.profile.title }}</Card.Title>
@@ -165,7 +165,9 @@ const frequency = ref<string[]>(["weekly"]);
           </FormField>
           <Button type="submit">{{ text.profile.save }}</Button>
         </Form>
-        <p role="status" class="m-0 mt-3 text-sm text-tertiary">{{ profileStatus }}</p>
+        <p role="status" class="m-0 mt-(--bs-margin-md) text-sm text-tertiary">
+          {{ profileStatus }}
+        </p>
       </Card.Content>
     </Card.Root>
 
@@ -174,8 +176,10 @@ const frequency = ref<string[]>(["weekly"]);
         <Card.Title>{{ text.notify.title }}</Card.Title>
         <Card.Description>{{ text.notify.lede }}</Card.Description>
       </Card.Header>
-      <Card.Content class="grid content-start gap-1">
-        <label class="flex items-center justify-between gap-4 border-b border-border py-3">
+      <Card.Content class="grid content-start gap-(--bs-gap-xs)">
+        <label
+          class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
+        >
           <span class="text-sm">{{ text.notify.orders }}</span>
           <Switch.Root v-model:checked="orders">
             <Switch.HiddenInput />
@@ -184,7 +188,9 @@ const frequency = ref<string[]>(["weekly"]);
             </Switch.Control>
           </Switch.Root>
         </label>
-        <label class="flex items-center justify-between gap-4 border-b border-border py-3">
+        <label
+          class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
+        >
           <span class="text-sm">{{ text.notify.letters }}</span>
           <Switch.Root v-model:checked="letters">
             <Switch.HiddenInput />
@@ -193,7 +199,9 @@ const frequency = ref<string[]>(["weekly"]);
             </Switch.Control>
           </Switch.Root>
         </label>
-        <label class="flex items-center justify-between gap-4 border-b border-border py-3">
+        <label
+          class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
+        >
           <span class="text-sm">{{ text.notify.weekly }}</span>
           <Switch.Root v-model:checked="weekly">
             <Switch.HiddenInput />
@@ -203,7 +211,7 @@ const frequency = ref<string[]>(["weekly"]);
           </Switch.Root>
         </label>
 
-        <Field.Root class="mt-4">
+        <Field.Root class="mt-(--bs-margin-lg)">
           <Field.Label>{{ text.notify.frequency }}</Field.Label>
           <Select.Root :collection="frequencyCollection" v-model="frequency">
             <Select.Control>
@@ -231,10 +239,12 @@ const frequency = ref<string[]>(["weekly"]);
           </Select.Root>
         </Field.Root>
 
-        <div class="mt-4">
+        <div class="mt-(--bs-margin-lg)">
           <Button @click="notifyStatus = text.notify.saved">{{ text.notify.save }}</Button>
         </div>
-        <p role="status" class="m-0 text-sm text-tertiary">{{ notifyStatus }}</p>
+        <p role="status" class="m-0 text-sm text-tertiary">
+          {{ notifyStatus }}
+        </p>
       </Card.Content>
     </Card.Root>
   </div>

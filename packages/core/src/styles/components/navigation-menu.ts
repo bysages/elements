@@ -150,8 +150,8 @@ export const navigationMenuCss =
   translate: var(--trigger-x, 0) 0;
   inline-size: var(--trigger-width, 0);
   transition:
-    translate 200ms var(--bs-ease-out),
-    inline-size 200ms var(--bs-ease-out);
+    translate var(--bs-duration-base) var(--bs-ease-spring),
+    inline-size var(--bs-duration-base) var(--bs-ease-out);
 }
 
 /* The panel is the shared popup vessel (surface, hairline, elevation,
