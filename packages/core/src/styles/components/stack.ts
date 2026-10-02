@@ -11,4 +11,16 @@ export const stackCss = /* css */ `
 [data-scope="stack"][data-part="root"][data-direction="row"] {
   flex-direction: row;
 }
+
+/* A column stretches its children to the measure — vessels and fields
+   want the fill. The control register hugs its content instead: a
+   button or a seal pulled across the column reads as broken. */
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="avatar"][data-part="root"],
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="badge"][data-part="root"],
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="button"][data-part="root"],
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="checkbox"][data-part="root"],
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="spinner"][data-part="root"],
+[data-scope="stack"][data-part="root"][data-direction="column"] > [data-scope="switch"][data-part="root"] {
+  align-self: flex-start;
+}
 `;
