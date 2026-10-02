@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, Card, Input, Switch } from "@bysages/vue";
+import { Button, Card, Input, PageHeader, Switch } from "@bysages/vue";
 import { computed, ref } from "vue";
 
 import DesignPanel from "./design-panel.vue";
@@ -47,11 +47,14 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 
 <template>
   <div class="grid content-start gap-(--bs-gap-xl)">
-    <header class="max-w-[48rem]">
-      <p class="m-0 mb-2 text-sm uppercase tracking-label text-tertiary">Elements</p>
-      <h1 class="m-0 mb-3 font-serif text-4xl leading-tight">{{ text.heading }}</h1>
-      <p class="m-0 text-secondary">{{ text.lede }}</p>
-    </header>
+    <PageHeader.Root>
+      <PageHeader.Heading>
+        <div class="min-w-0">
+          <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
+          <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
+        </div>
+      </PageHeader.Heading>
+    </PageHeader.Root>
 
     <div class="grid items-start gap-(--bs-gap-xl) xl:grid-cols-[18rem_minmax(0,1fr)_18rem]">
       <ClientOnly>
@@ -67,7 +70,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
         <Card.Content>
           <div
             id="workbench-design-preview"
-            class="grid gap-(--bs-gap-lg) p-(--bs-padding-xl) transition-colors"
+            class="grid gap-(--bs-gap-lg) rounded-sm border border-border bg-surface-0 p-(--bs-padding-xl) transition-colors"
             data-theme="light"
             data-density="default"
           >

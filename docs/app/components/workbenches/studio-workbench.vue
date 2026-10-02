@@ -8,6 +8,7 @@ import {
   DataTable,
   Input,
   JsonTreeView,
+  PageHeader,
   Tabs,
   Textarea,
   Typography,
@@ -62,6 +63,7 @@ const copy = {
       import: "Import",
       apply: "Apply",
       invalid: "Not a valid composition JSON.",
+      importHint: "Paste a composition JSON, then apply to replace the current one.",
     },
   },
   zh: {
@@ -98,6 +100,7 @@ const copy = {
       import: "导入",
       apply: "应用",
       invalid: "不是有效的组合 JSON。",
+      importHint: "粘贴一段组合 JSON，应用后替换当前组合。",
     },
   },
 } as const;
@@ -481,11 +484,14 @@ function importJson() {
 
 <template>
   <div class="grid content-start gap-(--bs-gap-xl)">
-    <header class="max-w-[48rem]">
-      <p class="m-0 mb-2 text-sm uppercase tracking-label text-tertiary">Elements</p>
-      <h1 class="m-0 mb-3 font-serif text-4xl leading-tight">{{ text.heading }}</h1>
-      <p class="m-0 text-secondary">{{ text.lede }}</p>
-    </header>
+    <PageHeader.Root>
+      <PageHeader.Heading>
+        <div class="min-w-0">
+          <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
+          <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
+        </div>
+      </PageHeader.Heading>
+    </PageHeader.Root>
 
     <div class="grid items-start gap-(--bs-gap-lg) xl:grid-cols-[20rem_minmax(0,1fr)_24rem]">
       <div class="grid min-w-0 content-start gap-(--bs-gap-lg)">
@@ -562,7 +568,7 @@ function importJson() {
           <div
             v-else
             id="workbench-studio-preview"
-            class="grid min-h-[32rem] content-start gap-(--bs-gap-lg) p-(--bs-padding-xl) transition-colors"
+            class="grid min-h-[32rem] content-start gap-(--bs-gap-lg) rounded-sm border border-border bg-surface-0 p-(--bs-padding-xl) transition-colors"
             data-theme="light"
             data-density="default"
           >
@@ -586,12 +592,19 @@ function importJson() {
         </Tabs.List>
         <Tabs.Content value="inspector">
           <Card.Root class="min-w-0">
+            <Card.Header>
+              <Card.Title as-child>
+                <h2 class="flex items-center justify-between gap-(--bs-gap-sm)">
+                  <span>{{ text.inspector.title }}</span>
+                  <Badge v-if="selectedLabel" tone="ink" variant="outline">{{
+                    selectedLabel
+                  }}</Badge>
+                </h2>
+              </Card.Title>
+            </Card.Header>
             <Card.Content class="grid content-start gap-(--bs-gap-md)">
-              <div class="flex items-center justify-between gap-(--bs-gap-sm)">
-                <Typography.Label>{{ text.inspector.props }}</Typography.Label>
-                <Badge v-if="selectedLabel" tone="ink" variant="outline">{{ selectedLabel }}</Badge>
-              </div>
               <template v-if="selectedNode">
+                <Typography.Label>{{ text.inspector.props }}</Typography.Label>
                 <Textarea
                   v-model="propsDraft"
                   rows="8"
@@ -599,9 +612,10 @@ function importJson() {
                   :aria-label="text.inspector.props"
                 />
                 <p v-if="propsError" class="m-0 text-sm text-danger">{{ propsError }}</p>
-                <Button variant="outline" size="sm" @click="applyProps">{{
-                  text.inspector.apply
-                }}</Button>
+                <Button variant="outline" size="sm" @click="applyProps">
+                  <Icon name="i-lucide-check" />
+                  {{ text.inspector.apply }}
+                </Button>
               </template>
               <Typography.Muted v-else>{{ text.inspector.empty }}</Typography.Muted>
 
@@ -616,22 +630,29 @@ function importJson() {
                 </JsonTreeView.Root>
                 <div class="flex flex-wrap gap-(--bs-gap-sm)">
                   <Button variant="outline" size="sm" @click="copyJson">
+                    <Icon :name="copied ? 'i-lucide-check' : 'i-lucide-copy'" />
                     {{ copied ? text.json.copied : text.json.copy }}
                   </Button>
-                  <Button variant="outline" size="sm" @click="downloadJson">{{
-                    text.json.download
-                  }}</Button>
+                  <Button variant="outline" size="sm" @click="downloadJson">
+                    <Icon name="i-lucide-download" />
+                    {{ text.json.download }}
+                  </Button>
                 </div>
-                <Textarea
-                  v-model="importDraft"
-                  rows="5"
-                  class="font-mono text-xs"
-                  :aria-label="text.json.title"
-                />
+                <div class="grid content-start gap-(--bs-gap-xs)">
+                  <Typography.Label>{{ text.json.import }}</Typography.Label>
+                  <Textarea
+                    v-model="importDraft"
+                    rows="5"
+                    class="font-mono text-xs"
+                    :placeholder="text.json.importHint"
+                    :aria-label="text.json.import"
+                  />
+                </div>
                 <p v-if="importError" class="m-0 text-sm text-danger">{{ importError }}</p>
-                <Button variant="outline" size="sm" @click="importJson">{{
-                  text.json.apply
-                }}</Button>
+                <Button variant="outline" size="sm" @click="importJson">
+                  <Icon name="i-lucide-arrow-right-to-line" />
+                  {{ text.json.apply }}
+                </Button>
               </div>
             </Card.Content>
           </Card.Root>

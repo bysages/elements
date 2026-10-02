@@ -199,7 +199,11 @@ function currentHost(): HTMLElement | null {
 
 function applyScene(host: HTMLElement | null, mode: DesignMode = config.value.mode) {
   if (!host) return;
-  host.dataset.theme = mode;
+  /* "system" means the specimen reads the room: a literal data-theme value
+     would pin nothing and still blind the scene's own dark detection, which
+     keys on the attribute's absence. */
+  if (mode === "system") delete host.dataset.theme;
+  else host.dataset.theme = mode;
   if (resolvedContrast.value === "high") host.dataset.contrast = "high";
   else delete host.dataset.contrast;
   host.dataset.density = config.value.density;

@@ -10,6 +10,11 @@
 [data-theme="light"],
 :host([data-theme="light"]) {
   color-scheme: light;
+  /* Re-anchor the ink at the theme boundary: `color` declared upstream is
+     already resolved — a var() on an ancestor never re-reads a scope's
+     tokens, so a themed subtree would keep the room's old ink on its own
+     paper. */
+  color: var(--bs-color-text-primary);
 
   /* Surfaces: the ground rests in ambient shade; raised surfaces catch the
      light. Warm paper whites throughout — pure #ffffff never appears, it

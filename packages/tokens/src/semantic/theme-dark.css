@@ -7,6 +7,11 @@
 [data-theme="dark"],
 :host([data-theme="dark"]) {
   color-scheme: dark;
+  /* Re-anchor the ink at the theme boundary: `color` declared upstream is
+     already resolved — a var() on an ancestor never re-reads a scope's
+     tokens, so a themed subtree would keep the room's old ink on its own
+     paper. */
+  color: var(--bs-color-text-primary);
 
   /* Lacquer surfaces: warm black at every step, never pure #000. */
   --bs-color-surface-0: oklch(0.165 0.008 75);

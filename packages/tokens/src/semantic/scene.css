@@ -33,6 +33,12 @@
    that declares these variables on `:root` (themes, primitives via accent's
    placement) and before density.css, whose explicit tiers must win over
    scene defaults. */
+[data-scene] {
+  /* Re-anchor the ink at the scene boundary, for the same reason the themes
+     re-anchor theirs: an inherited `color` was already resolved in the
+     room's register, and the scene's paper must not wear it. */
+  color: var(--bs-color-text-primary);
+}
 
 [data-scene="civic"] {
   /* 典章 — for elders and civic desks: the square-cut register of official

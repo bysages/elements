@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge, Card } from "@bysages/vue";
+import { Badge, Card, PageHeader } from "@bysages/vue";
 
 // The examples gallery sits outside the content shelves — real pages
 // under app/pages/examples — so this index is the entry the header's
@@ -235,10 +235,14 @@ const apps: Array<{ name: ExampleName; components: string[] }> = [
 
 <template>
   <div class="mx-auto w-full max-w-[90rem] px-6 pb-12 pt-8">
-    <header class="mb-8 max-w-[44rem]">
-      <h1 class="m-0 mb-3 font-serif text-4xl leading-tight">{{ text.heading }}</h1>
-      <p class="m-0 text-secondary">{{ text.lede }}</p>
-    </header>
+    <PageHeader.Root class="mb-8">
+      <PageHeader.Heading>
+        <div class="min-w-0">
+          <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
+          <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
+        </div>
+      </PageHeader.Heading>
+    </PageHeader.Root>
 
     <div class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,100%),1fr))] gap-5">
       <Card.Root v-for="app in apps" :key="app.name">
