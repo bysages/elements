@@ -60,6 +60,7 @@ export const Menubar = defineComponent({
                     "button",
                     {
                       type: "button",
+                      role: "menuitem",
                       "data-scope": "menubar",
                       "data-part": "trigger",
                     },

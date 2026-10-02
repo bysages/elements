@@ -301,8 +301,9 @@ const WithHoverStory = defineComponent({
                 )
               : h(Toc.List, () =>
                   HOVER_SECTIONS.map((section) =>
-                    h("div", {
+                    h("li", {
                       key: section.value,
+                      "aria-hidden": "true",
                       style: {
                         height: "0.375rem",
                         margin: "0.375rem 0",
@@ -459,6 +460,7 @@ const WithSelectStory = defineComponent({
         h(Toc.Context as any, null, {
           default: (ctx: { activeItems: any[]; scrollTo: (value: string) => void }) =>
             h(NativeSelect, {
+              "aria-label": "Jump to section",
               options: BASIC_SECTIONS.map((section) => ({
                 label: section.label,
                 value: section.value,
@@ -552,10 +554,14 @@ const WithTreeViewStory = defineComponent({
             h(TreeView.BranchIndicator, () => "▸"),
           ]),
           h(TreeView.BranchContent, () =>
-            (node.children ?? []).map((child: any, index: number) =>
-              child.children?.length
-                ? branchRow(collection.findNode(child.id), [...indexPath, index])
-                : leafRow(child),
+            h(
+              "ul",
+              { style: { listStyle: "none", margin: 0, padding: 0 } },
+              (node.children ?? []).map((child: any, index: number) =>
+                child.children?.length
+                  ? branchRow(collection.findNode(child.id), [...indexPath, index])
+                  : leafRow(child),
+              ),
             ),
           ),
         ]),

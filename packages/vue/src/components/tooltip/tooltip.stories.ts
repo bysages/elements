@@ -131,7 +131,9 @@ export const MultipleTriggers = {
           () => [
             h("div", { style: { display: "flex", gap: "0.25rem" } }, () =>
               tools.map((tool) =>
-                h(Tooltip.Trigger, { key: tool.id, value: tool.id }, () => glyph(tool.path)),
+                h(Tooltip.Trigger, { key: tool.id, value: tool.id, "aria-label": tool.label }, () =>
+                  glyph(tool.path),
+                ),
               ),
             ),
             h(Tooltip.Positioner, () =>
@@ -170,7 +172,7 @@ export const Controlled = {
               cursor: "pointer",
             },
           },
-          label,
+          () => label,
         );
       return () =>
         h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [

@@ -169,7 +169,7 @@ export const Command = defineComponent({
                 h(ArkDialog.Content, { asChild: true }, () =>
                   h(
                     "div",
-                    { "data-scope": "command", "data-part": "content" },
+                    { "data-scope": "command", "data-part": "content", "aria-label": "Commands" },
                     h(
                       ArkCombobox.Root,
                       {

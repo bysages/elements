@@ -35,6 +35,7 @@ export const VirtualList = defineComponent({
         {
           ...ctx.attrs,
           ref: viewport,
+          tabindex: 0,
           "data-scope": "virtual-list",
           "data-part": "root",
           style: {

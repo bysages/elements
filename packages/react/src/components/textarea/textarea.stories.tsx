@@ -15,8 +15,8 @@ export const Basic = {
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "var(--bs-space-3)", maxWidth: "24rem" }}>
-      <Textarea invalid defaultValue="Too short" rows={2} />
-      <Textarea disabled defaultValue="Sealed" rows={2} />
+      <Textarea invalid defaultValue="Too short" rows={2} aria-label="Short note, invalid" />
+      <Textarea disabled defaultValue="Sealed" rows={2} aria-label="Sealed note" />
     </div>
   ),
 };

@@ -93,7 +93,7 @@ export const Controlled = {
                 fontSize: "var(--bs-font-size-sm)",
               },
             },
-            "Point to bysages.com",
+            () => "Point to bysages.com",
           ),
         ]);
     }),

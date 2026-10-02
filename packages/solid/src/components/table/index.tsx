@@ -802,7 +802,7 @@ export function DataTable(props: DataTableProps) {
           />
         </div>
       ) : null}
-      <div data-scope="table" data-part="viewport" ref={setViewport}>
+      <div data-scope="table" data-part="viewport" tabindex={0} ref={setViewport}>
         <div
           role="table"
           data-scope="table"
@@ -877,7 +877,7 @@ export function DataTable(props: DataTableProps) {
                     <For each={group.headers}>
                       {(header) => (
                         <div
-                          role="columnheader"
+                          role="cell"
                           data-scope="table"
                           data-part="footer-cell"
                           data-numeric={header.column.columnDef.meta?.numeric ? "" : undefined}

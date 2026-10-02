@@ -90,9 +90,6 @@ export const OrderList = defineComponent({
         "div",
         {
           ...ctx.attrs,
-          role: "listbox",
-          "aria-label": props.label ?? undefined,
-          "aria-multiselectable": false,
           "data-scope": "order-list",
           "data-part": "root",
           onDragleave: (event: DragEvent) => {
@@ -104,7 +101,11 @@ export const OrderList = defineComponent({
         [
           h(
             "ol",
-            { "data-scope": "order-list", "data-part": "list" },
+            {
+              "data-scope": "order-list",
+              "data-part": "list",
+              "aria-label": props.label ?? undefined,
+            },
             rows().map((option, index) => {
               const seam =
                 dropLine.value && dropLine.value.index === index
@@ -116,9 +117,8 @@ export const OrderList = defineComponent({
                 "li",
                 {
                   key: option.value,
-                  role: "option",
-                  "aria-selected": true,
                   draggable: true,
+                  "aria-roledescription": "Sortable item",
                   "data-scope": "order-list",
                   "data-part": "item",
                   "data-dragging": dragging.value === option.value ? "" : undefined,

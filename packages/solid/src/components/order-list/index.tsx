@@ -85,9 +85,6 @@ export function OrderList(props: OrderListProps) {
   return (
     <div
       {...rest}
-      role="listbox"
-      aria-label={own.label}
-      aria-multiselectable={false}
       data-scope="order-list"
       data-part="root"
       data-uid={uid}
@@ -96,7 +93,7 @@ export function OrderList(props: OrderListProps) {
         if (!event.relatedTarget || !host.contains(event.relatedTarget as Node)) setDropLine(null);
       }}
     >
-      <ol data-scope="order-list" data-part="list">
+      <ol data-scope="order-list" data-part="list" aria-label={own.label}>
         <For each={rows()}>
           {(option, index) => {
             const seam = () =>
@@ -107,9 +104,8 @@ export function OrderList(props: OrderListProps) {
                 : undefined;
             return (
               <li
-                role="option"
-                aria-selected="true"
                 draggable
+                aria-roledescription="Sortable item"
                 data-scope="order-list"
                 data-part="item"
                 data-dragging={dragging() === option.value ? "" : undefined}

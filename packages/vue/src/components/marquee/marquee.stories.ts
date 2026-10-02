@@ -98,7 +98,7 @@ export const ProgrammaticControl = {
                 cursor: "pointer",
               },
             },
-            label,
+            () => label,
           );
         return () =>
           h("div", { style: { display: "grid", gap: "0.75rem" } }, [

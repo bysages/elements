@@ -136,7 +136,7 @@ export function Command({
         <ArkDialog.Positioner asChild>
           <div data-scope="command" data-part="positioner">
             <ArkDialog.Content asChild>
-              <div data-scope="command" data-part="content">
+              <div data-scope="command" data-part="content" aria-label="Commands">
                 <ArkCombobox.Root
                   // The machine types its collection as
                   // ListCollection<unknown>; ours is ListCollection<string>

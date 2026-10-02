@@ -125,7 +125,9 @@ export const PhoneInput = {
             } as any,
             () => [
               h(Select.Control, () => [
-                h(Select.Trigger, () => h(Select.ValueText, { placeholder: "+" })),
+                h(Select.Trigger, { "aria-label": "Country code" }, () =>
+                  h(Select.ValueText, { placeholder: "+" }),
+                ),
                 h(Select.Indicator, () => "▾"),
               ]),
               h(Select.Positioner, () =>

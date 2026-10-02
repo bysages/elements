@@ -18,6 +18,7 @@ export const Basic: Story = {
         h(
           "div",
           {
+            tabindex: 0,
             style: {
               maxBlockSize: "16rem",
               overflowY: "auto",

@@ -25,7 +25,7 @@ version. Inside an open menu the machine handles arrows and Escape. -->
     <ArkMenu.Root positioning={{ placement: "bottom-start" }}>
       <ArkMenu.Trigger>
         {#snippet asChild(props)}
-          <button {...props()} type="button" data-scope="menubar" data-part="trigger">
+          <button {...props()} type="button" role="menuitem" data-scope="menubar" data-part="trigger">
             {group.label}
           </button>
         {/snippet}

@@ -258,11 +258,16 @@ export const CascadeSelect = defineComponent({
             "button",
             {
               ...api.value.getTriggerProps(),
+              "aria-labelledby": id + ":value-text",
               "data-invalid": props.invalid ? "" : undefined,
               disabled: props.disabled || undefined,
             },
             [
-              h("span", api.value.getValueTextProps(), display.value ?? props.placeholder),
+              h(
+                "span",
+                { ...api.value.getValueTextProps(), id: id + ":value-text" },
+                display.value ?? props.placeholder,
+              ),
               h("span", api.value.getIndicatorProps(), chevronDown()),
             ],
           ),

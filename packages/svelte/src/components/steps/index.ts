@@ -7,11 +7,16 @@
  */
 import { Steps as ArkSteps } from "@ark-ui/svelte/steps";
 
+import StepsItem from "./StepsItem.svelte";
 import StepsRoot from "./StepsRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Steps: Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot } = {
+export const Steps: Omit<typeof ArkSteps, "Root" | "Item"> & {
+  Root: typeof StepsRoot;
+  Item: typeof StepsItem;
+} = {
   ...ArkSteps,
   Root: StepsRoot,
+  Item: StepsItem,
 };

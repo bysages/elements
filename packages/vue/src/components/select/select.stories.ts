@@ -220,9 +220,7 @@ export const Overflow = {
       ]),
       h(Teleport, { to: "body" }, () => [
         h(Select.Positioner, () =>
-          h(
-            Select.Content,
-            { style: { maxBlockHeight: "8rem", overflowY: "auto" } } as any,
+          h(Select.Content, { style: { maxBlockHeight: "8rem", overflowY: "auto" } } as any, () =>
             rows(cities),
           ),
         ),
@@ -258,7 +256,7 @@ export const DynamicItems = {
                 onClick: () => (state.small = !state.small),
                 style: { justifySelf: "start" },
               },
-              "Toggle items",
+              () => "Toggle items",
             ),
             shell({}, collection.value, rows(collection.value)),
           ]);
@@ -288,12 +286,14 @@ export const Native = {
               options,
               modelValue: state.value,
               placeholder: "Choose a framework",
+              "aria-label": "Framework",
               "onUpdate:modelValue": (next: string) => (state.value = next),
             }),
             h(NativeSelect, {
               options,
               modelValue: "vue",
               size: "sm",
+              "aria-label": "Framework, small",
               "onUpdate:modelValue": () => {},
             }),
             h(NativeSelect, {
@@ -301,6 +301,7 @@ export const Native = {
               modelValue: "solid",
               size: "lg",
               invalid: true,
+              "aria-label": "Framework, large",
               "onUpdate:modelValue": () => {},
             }),
           ]);

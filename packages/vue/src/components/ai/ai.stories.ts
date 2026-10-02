@@ -74,7 +74,7 @@ export const Basic = {
               ...state.messages.map((message) =>
                 h(Ai.Message, { role: message.role }, () =>
                   message.role === "user"
-                    ? h(Ai.MessageContent, message.text)
+                    ? h(Ai.MessageContent, () => message.text)
                     : [
                         h(Ai.Response, { content: message.text }),
                         h(

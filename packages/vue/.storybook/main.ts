@@ -33,6 +33,14 @@ const config: StorybookConfig = {
       ...config,
       base: "/storybook/",
       resolve: { ...resolve, alias },
+      // Vue esm-bundler asks for its compile-time feature flags; the
+      // bundler warns on every page until they are pinned.
+      define: {
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false,
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+        ...config.define,
+      },
     };
   },
 };

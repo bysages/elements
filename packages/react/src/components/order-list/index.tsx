@@ -98,9 +98,6 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
   return (
     <div
       {...rest}
-      role="listbox"
-      aria-label={label ?? undefined}
-      aria-multiselectable={false}
       data-scope="order-list"
       data-part="root"
       onDragLeave={(event) => {
@@ -108,16 +105,15 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
         if (!event.relatedTarget || !host.contains(event.relatedTarget as Node)) setDropLine(null);
       }}
     >
-      <ol data-scope="order-list" data-part="list">
+      <ol data-scope="order-list" data-part="list" aria-label={label ?? undefined}>
         {rows.map((option, index) => {
           const seam =
             dropLine && dropLine.index === index ? (dropLine.before ? "top" : "bottom") : undefined;
           return (
             <li
               key={option.value}
-              role="option"
-              aria-selected
               draggable
+              aria-roledescription="Sortable item"
               data-scope="order-list"
               data-part="item"
               data-dragging={dragging.current === option.value ? "" : undefined}

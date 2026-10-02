@@ -12,6 +12,8 @@ let {
   invalid = false,
   placeholder,
   disabled = false,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
   ...rest
 }: NativeSelectProps = $props();
 
@@ -35,6 +37,8 @@ list behind the same hairline shell the framed select wears. -->
 >
   <select
     {...fieldProps}
+    aria-label={ariaLabel}
+    aria-labelledby={ariaLabelledby}
     bind:value
     data-scope="select"
     data-part="native"

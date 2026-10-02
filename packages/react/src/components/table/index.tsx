@@ -884,7 +884,7 @@ export function DataTable(rawProps: DataTableProps) {
             {group.headers.map((header) => (
               <div
                 key={header.column.id}
-                role="columnheader"
+                role="cell"
                 data-scope="table"
                 data-part="footer-cell"
                 data-numeric={header.column.columnDef.meta?.numeric ? "" : undefined}
@@ -1001,7 +1001,7 @@ export function DataTable(rawProps: DataTableProps) {
       }
     >
       {toolbar}
-      <div data-scope="table" data-part="viewport" ref={viewport}>
+      <div data-scope="table" data-part="viewport" ref={viewport} tabIndex={0}>
         <div
           role="table"
           data-scope="table"

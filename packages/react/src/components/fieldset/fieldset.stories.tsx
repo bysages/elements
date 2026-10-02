@@ -111,7 +111,7 @@ export const PhoneInput = {
           <Field.Root>
             <Select.Root collection={extensions} defaultValue={["+1"]} onValueChange={focusInput}>
               <Select.Control>
-                <Select.Trigger>
+                <Select.Trigger aria-label="Country code">
                   <Select.ValueText placeholder="+" />
                 </Select.Trigger>
                 <Select.Indicator>▾</Select.Indicator>

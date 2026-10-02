@@ -87,7 +87,7 @@ export const Context = {
       h(Clipboard.Label, () => "Copy this link"),
       h(Clipboard.Context as any, null, {
         default: (clipboard: { copy: () => void; copied: boolean }) =>
-          h(Button, { size: "sm", onClick: () => clipboard.copy() }, [
+          h(Button, { size: "sm", onClick: () => clipboard.copy() }, () => [
             clipboard.copied ? checkGlyph() : copyGlyph(),
             clipboard.copied ? "Copied!" : "Copy",
           ]),

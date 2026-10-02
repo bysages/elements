@@ -38,6 +38,8 @@ export function NativeSelect(props: NativeSelectProps) {
     "placeholder",
     "disabled",
     "onValueChange",
+    "aria-label",
+    "aria-labelledby",
   ]);
   const [select, setSelect] = createSignal<HTMLSelectElement | null>(null);
   // The browser picks the first enabled option the moment the option
@@ -64,6 +66,8 @@ export function NativeSelect(props: NativeSelectProps) {
     >
       <select
         {...fieldProps}
+        aria-label={own["aria-label"]}
+        aria-labelledby={own["aria-labelledby"]}
         ref={setSelect}
         data-scope="select"
         data-part="native"

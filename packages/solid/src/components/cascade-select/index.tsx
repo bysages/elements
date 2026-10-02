@@ -265,6 +265,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
       <div {...mergeProps(() => api().getControlProps())}>
         <button
           {...mergeProps(() => api().getTriggerProps(), {
+            "aria-labelledby": id + ":value-text",
             get disabled() {
               return own.disabled || undefined;
             },
@@ -274,7 +275,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
             },
           })}
         >
-          <span {...mergeProps(() => api().getValueTextProps())}>
+          <span {...mergeProps(() => api().getValueTextProps(), { id: id + ":value-text" })}>
             {display() ?? own.placeholder ?? "Select…"}
           </span>
           <span {...mergeProps(() => api().getIndicatorProps())}>{chevronDown()}</span>

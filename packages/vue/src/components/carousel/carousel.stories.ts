@@ -125,7 +125,7 @@ export const ScrollTo = {
                 onClick: () => carousel.value.scrollToIndex(3),
                 style: { justifySelf: "start" },
               },
-              "Go to slide 4",
+              () => "Go to slide 4",
             ),
             h(Carousel.RootProvider, { value: carousel.value } as any, () => [
               h(Carousel.ItemGroup, () => slides.map((slide, index) => slide_(index))),
@@ -208,7 +208,7 @@ function strip(rootProps: any, items: any, indicators?: any) {
     ]),
     h(
       Carousel.IndicatorGroup,
-      () => indicators ?? slides.map((_, index) => h(Carousel.Indicator, { key: index, index })),
+      indicators ?? slides.map((_, index) => h(Carousel.Indicator, { key: index, index })),
     ),
   ]);
 }

@@ -28,17 +28,21 @@ export const Basic = {
       const open = ref(false);
       const status = ref("Nothing run yet.");
       return () => [
-        h(Button, { onClick: () => ((open.value = true), (status.value = "Palette is up.")) }, [
-          "Open command palette",
-          h(
-            "span",
-            {
-              style:
-                "margin-inline-start: var(--bs-space-2); font-size: var(--bs-font-size-xs); color: var(--bs-color-text-tertiary);",
-            },
-            "Ctrl K",
-          ),
-        ]),
+        h(
+          Button,
+          { onClick: () => ((open.value = true), (status.value = "Palette is up.")) },
+          () => [
+            "Open command palette",
+            h(
+              "span",
+              {
+                style:
+                  "margin-inline-start: var(--bs-space-2); font-size: var(--bs-font-size-xs); color: var(--bs-color-text-tertiary);",
+              },
+              "Ctrl K",
+            ),
+          ],
+        ),
         h(Command, {
           items: commands,
           placeholder: "Type a command…",

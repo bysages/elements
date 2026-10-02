@@ -928,7 +928,7 @@ export const DataTable = defineComponent({
                       "div",
                       {
                         key: header.column.id,
-                        role: "columnheader",
+                        role: "cell",
                         "data-scope": "table",
                         "data-part": "footer-cell",
                         "data-numeric": header.column.columnDef.meta?.numeric ? "" : undefined,
@@ -1053,7 +1053,12 @@ export const DataTable = defineComponent({
           toolbar,
           h(
             "div",
-            { "data-scope": "table", "data-part": "viewport", ref: viewport },
+            {
+              "data-scope": "table",
+              "data-part": "viewport",
+              ref: viewport,
+              tabindex: 0,
+            },
             h(
               "div",
               {

@@ -150,7 +150,12 @@ export function Command(props: CommandProps) {
             <div {...positionerProps()} data-scope="command" data-part="positioner">
               <ArkDialog.Content
                 asChild={(contentProps) => (
-                  <div {...contentProps()} data-scope="command" data-part="content">
+                  <div
+                    {...contentProps()}
+                    data-scope="command"
+                    data-part="content"
+                    aria-label="Commands"
+                  >
                     <ArkCombobox.Root
                       // The machine types its collection as
                       // ListCollection<unknown>; ours is ListCollection<string>

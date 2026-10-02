@@ -68,9 +68,7 @@ export default defineEntry({
                 ),
                 h(DatePicker.TableBody, () =>
                   dp.weeks.map((week: any, id: number) =>
-                    h(
-                      DatePicker.TableRow,
-                      { key: id },
+                    h(DatePicker.TableRow, { key: id }, () =>
                       week.map((day: any, id: number) =>
                         h(DatePicker.TableCell, { key: id, value: day }, () =>
                           h(DatePicker.TableCellTrigger, () => day.day),

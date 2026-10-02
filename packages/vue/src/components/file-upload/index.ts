@@ -21,10 +21,34 @@ const FileUploadRoot = defineComponent({
   },
 });
 
+/** The inner trigger repeats the click binding the dropzone already
+ * owns, and no flavor of taming a nested button survives the audit —
+ * assistive tech can still land on it. So the visual cue is a plain
+ * span wearing the trigger props; the dropzone stays the one real
+ * control, keyboard included. */
+const FileUploadTrigger = defineComponent({
+  name: "SFileUploadTrigger",
+  inheritAttrs: false,
+  setup(_, { slots }) {
+    return () =>
+      h(ArkFileUpload.Trigger, { asChild: true }, () =>
+        h(
+          "span",
+          { "data-scope": "file-upload", "data-part": "trigger", "aria-hidden": "true" },
+          slots.default?.(),
+        ),
+      );
+  },
+});
+
 /* Ark's namespace is frozen — spread copies the members as data
  * properties so Root can be the sized wrapper while the rest stay
  * Ark's own parts. */
-export const FileUpload: Omit<typeof ArkFileUpload, "Root"> & { Root: typeof FileUploadRoot } = {
+export const FileUpload: Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
+  Root: typeof FileUploadRoot;
+  Trigger: typeof FileUploadTrigger;
+} = {
   ...ArkFileUpload,
   Root: FileUploadRoot,
+  Trigger: FileUploadTrigger,
 };

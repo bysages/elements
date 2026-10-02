@@ -46,7 +46,13 @@ export function Menubar(props: MenubarProps) {
           <ArkMenu.Root positioning={{ placement: "bottom-start" }}>
             <ArkMenu.Trigger
               asChild={(triggerProps) => (
-                <button {...triggerProps()} type="button" data-scope="menubar" data-part="trigger">
+                <button
+                  {...triggerProps()}
+                  type="button"
+                  role="menuitem"
+                  data-scope="menubar"
+                  data-part="trigger"
+                >
                   {group.label}
                 </button>
               )}

@@ -256,7 +256,7 @@ export const SelectAll = {
                 padding: "0.25rem 0",
               },
             },
-            "Select all",
+            () => "Select all",
           );
       },
     });

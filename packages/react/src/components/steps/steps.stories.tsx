@@ -47,7 +47,11 @@ export const Progress = {
   render: () => (
     <Steps.Root count={ITEMS.length}>
       <Steps.Context>
-        {(steps) => <Steps.Progress>Done {Math.round(steps.percent)}%</Steps.Progress>}
+        {(steps) => (
+          <Steps.Progress aria-label="Step progress">
+            Done {Math.round(steps.percent)}%
+          </Steps.Progress>
+        )}
       </Steps.Context>
     </Steps.Root>
   ),

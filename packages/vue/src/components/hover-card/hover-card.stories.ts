@@ -161,7 +161,7 @@ export const Controlled = {
               onClick: () => (state.open = !state.open),
               style: { justifySelf: "start" },
             },
-            "Toggle",
+            () => "Toggle",
           ),
           h(
             HoverCard.Root,

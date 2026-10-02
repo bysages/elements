@@ -27,7 +27,7 @@ export default defineEntry({
       return h(Accordion.Root, { defaultValue: [first] }, () =>
         items.map((item: string, index: number) =>
           h(Accordion.Item, { key: item, value: slug(item) }, () => [
-            h(Accordion.ItemTrigger, () => [item, h(Accordion.ItemIndicator, chevron)]),
+            h(Accordion.ItemTrigger, () => [item, h(Accordion.ItemIndicator, () => chevron)]),
             h(Accordion.ItemContent, () =>
               index === 0 ? slotted(children) : [h("p", () => item + " — details to follow.")],
             ),

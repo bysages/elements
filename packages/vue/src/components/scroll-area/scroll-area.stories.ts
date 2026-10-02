@@ -110,7 +110,7 @@ export const RootProvider = {
                     fontSize: "var(--bs-font-size-sm)",
                   },
                 },
-                "Scroll to Top",
+                () => "Scroll to Top",
               ),
               h(
                 Button,
@@ -126,7 +126,7 @@ export const RootProvider = {
                     fontSize: "var(--bs-font-size-sm)",
                   },
                 },
-                "Scroll to Bottom",
+                () => "Scroll to Bottom",
               ),
             ]),
             h("div", { style: ROOT_STYLE }, [

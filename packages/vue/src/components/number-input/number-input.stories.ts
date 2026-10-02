@@ -112,7 +112,7 @@ export const Scrubber = {
     h(NumberInput.Root, { defaultValue: "32" }, () => [
       h(NumberInput.Label, () => "Drag me"),
       h(NumberInput.Control, () => [
-        h(NumberInput.Scrubber, { "aria-label": "Scrub value" }, () => gripGlyph()),
+        h(NumberInput.Scrubber, null, () => gripGlyph()),
         h(NumberInput.Input as any),
         h(NumberInput.IncrementTrigger, { "aria-label": "Increment" }, () => chevron("up")),
         h(NumberInput.DecrementTrigger, { "aria-label": "Decrement" }, () => chevron("down")),

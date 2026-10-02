@@ -140,6 +140,7 @@ export const PageSizeControl = {
             >
               <label style={{ fontSize: "var(--bs-font-size-sm)" }}>Items per page</label>
               <select
+                aria-label="Items per page"
                 onChange={(e) => pagination.setPageSize(Number(e.target.value))}
                 value={pagination.pageSize}
                 style={{

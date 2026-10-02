@@ -41,7 +41,17 @@ function Root({ bordered = false, hoverable = false, children, ...rest }: ListRo
 }
 Root.displayName = "ListRoot";
 
-const Item = part("Item", "li");
+function Item({ children, ...attrs }: HTMLAttributes<HTMLElement>) {
+  // A row the caller wires to the pointer stays a list item; focus
+  // and the keyboard handlers still ride the row itself.
+  delete attrs.role;
+  return (
+    <li {...attrs} data-scope="list" data-part="item">
+      {children}
+    </li>
+  );
+}
+Item.displayName = "ListItem";
 const Leading = part("Leading", "div");
 const Actions = part("Actions", "div");
 

@@ -31,6 +31,7 @@ export function VirtualList(props: VirtualListProps) {
     <div
       {...rest}
       ref={setViewport}
+      tabindex={0}
       data-scope="virtual-list"
       data-part="root"
       style={{

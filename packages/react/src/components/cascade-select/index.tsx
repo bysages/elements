@@ -242,13 +242,16 @@ export function CascadeSelect({
       <div {...api.getControlProps()}>
         <button
           {...api.getTriggerProps()}
+          aria-labelledby={id + ":value-text"}
           onClick={(event) => {
             api.getTriggerProps().onClick?.(event);
             setQuery("");
           }}
           disabled={disabled || undefined}
         >
-          <span {...api.getValueTextProps()}>{display || placeholder}</span>
+          <span {...api.getValueTextProps()} id={id + ":value-text"}>
+            {display || placeholder}
+          </span>
           <span {...api.getIndicatorProps()}>{chevronDown}</span>
         </button>
       </div>

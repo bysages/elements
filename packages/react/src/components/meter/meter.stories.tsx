@@ -27,7 +27,7 @@ export const Levels: Story = {
  * text instead of a percentage. */
 export const Composed: Story = {
   render: () => (
-    <Meter.Root value={5} min={0} max={31} level="warning">
+    <Meter.Root value={5} min={0} max={31} level="warning" aria-label="Days in the field">
       <Meter.Label>September</Meter.Label>
       <Meter.ValueText>5 / 31 days</Meter.ValueText>
       <Meter.Track />

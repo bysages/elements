@@ -194,7 +194,7 @@ export const WithClearButton = {
             "aria-label": "Clear date",
             onClick: () => dateInput.value.clearValue(),
           },
-          "Clear",
+          () => "Clear",
         ),
       ]),
       h(DateInput.HiddenInput),

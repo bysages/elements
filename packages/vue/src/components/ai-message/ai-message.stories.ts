@@ -23,10 +23,10 @@ export const Basic = {
       },
       [
         h(AiMessage, { role: "user" }, () =>
-          h(AiContent, "Draft a short note announcing the ink release."),
+          h(AiContent, () => "Draft a short note announcing the ink release."),
         ),
         h(AiMessage, { role: "assistant" }, () =>
-          h(AiContent, "The draft is ready — three sections, one summary."),
+          h(AiContent, () => "The draft is ready — three sections, one summary."),
         ),
       ],
     ),

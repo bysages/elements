@@ -34,10 +34,14 @@ export const Composed: Story = {
   render: () =>
     withState(
       () => () =>
-        h(Meter.Root as any, { value: 5, min: 0, max: 31, level: "warning" }, () => [
-          h(Meter.Label, () => "September"),
-          h(Meter.ValueText, () => "5 / 31 days"),
-          h(Meter.Track as any),
-        ]),
+        h(
+          Meter.Root as any,
+          { value: 5, min: 0, max: 31, level: "warning", "aria-label": "Days in the field" },
+          () => [
+            h(Meter.Label, () => "September"),
+            h(Meter.ValueText, () => "5 / 31 days"),
+            h(Meter.Track as any),
+          ],
+        ),
     ),
 };

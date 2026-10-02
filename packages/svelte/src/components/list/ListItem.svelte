@@ -4,7 +4,7 @@ injectComponentStyle("list");
 
 import type { ListItemProps } from "./props";
 
-let { children, ...rest }: ListItemProps = $props();
+let { children, role: _role, ...rest }: ListItemProps = $props();
 </script>
 
 <li {...rest} data-scope="list" data-part="item">

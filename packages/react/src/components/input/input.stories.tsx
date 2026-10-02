@@ -26,12 +26,14 @@ export const Sizes = {
 /** Under the Field family the input answers to the field's invalid
  * state; standing alone it takes the `invalid` prop. */
 export const Invalid = {
-  render: () => <Input invalid defaultValue="not-an-email" type="email" />,
+  render: () => (
+    <Input invalid defaultValue="not-an-email" type="email" aria-label="Email address" />
+  ),
 };
 
 /** Disabled: muted surface, no shadow, no cursor tricks. */
 export const Disabled = {
-  render: () => <Input disabled value="Read only" />,
+  render: () => <Input disabled value="Read only" aria-label="Read-only field" />,
 };
 
 /** Controlled — the value the parent holds is the value the input

@@ -33,6 +33,7 @@ ten-thousand-row list costs the DOM a window, not the ledger. -->
 <div
   bind:this={viewport}
   {...rest}
+  tabindex={0}
   data-scope="virtual-list"
   data-part="root"
   style="block-size: {blockHeight}"

@@ -153,7 +153,7 @@ export const MultipleTriggers = {
       >
         <div style={{ display: "flex", gap: "0.25rem" }}>
           {TOOLS.map((tool) => (
-            <Tooltip.Trigger key={tool.id} value={tool.id}>
+            <Tooltip.Trigger key={tool.id} value={tool.id} aria-label={tool.label}>
               {glyph(tool.path)}
             </Tooltip.Trigger>
           ))}

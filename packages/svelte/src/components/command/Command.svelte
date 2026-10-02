@@ -125,7 +125,7 @@ grafts onto the sheet's list. -->
         <div {...positionerProps()} data-scope="command" data-part="positioner">
           <ArkDialog.Content>
             {#snippet asChild(contentProps)}
-              <div {...contentProps()} data-scope="command" data-part="content">
+              <div {...contentProps()} data-scope="command" data-part="content" aria-label="Commands">
                 <ArkCombobox.Root
                   collection={collection}
                   {inputValue}

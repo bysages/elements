@@ -25,9 +25,25 @@ const TreeViewRoot = defineComponent({
   },
 });
 
+/** The node checkbox rides inside the branch control — a focusable
+ * role there would nest one interactive element in another, so the
+ * state stays visual and the branch itself answers the keyboard. */
+const TreeViewNodeCheckbox = defineComponent({
+  name: "STreeViewNodeCheckbox",
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(ArkTreeView.NodeCheckbox, { ...attrs, "aria-hidden": "true", role: "presentation" }, slots);
+  },
+});
+
 /* Ark's namespace is frozen — spread copies the members as data properties
  * so Root can be the sized wrapper while the rest stay Ark's own parts. */
-export const TreeView: Omit<typeof ArkTreeView, "Root"> & { Root: typeof TreeViewRoot } = {
+export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox"> & {
+  Root: typeof TreeViewRoot;
+  NodeCheckbox: typeof TreeViewNodeCheckbox;
+} = {
   ...ArkTreeView,
   Root: TreeViewRoot,
+  NodeCheckbox: TreeViewNodeCheckbox,
 };

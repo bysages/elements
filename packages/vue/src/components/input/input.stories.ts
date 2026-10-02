@@ -27,12 +27,19 @@ export const Sizes: Story = {
 /** Under the Field family the input answers to the field's invalid
  * state; standing alone it takes the `invalid` prop. */
 export const Invalid: Story = {
-  render: () => () => h(Input, { invalid: true, defaultValue: "not-an-email", type: "email" }),
+  render: () => () =>
+    h(Input, {
+      invalid: true,
+      defaultValue: "not-an-email",
+      type: "email",
+      "aria-label": "Email address",
+    }),
 };
 
 /** Disabled: muted surface, no shadow, no cursor tricks. */
 export const Disabled: Story = {
-  render: () => () => h(Input, { disabled: true, value: "Read only" }),
+  render: () => () =>
+    h(Input, { disabled: true, value: "Read only", "aria-label": "Read-only field" }),
 };
 
 /** Controlled with v-model — the value the parent holds is the value

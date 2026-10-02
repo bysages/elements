@@ -154,7 +154,7 @@ export const Context = {
                 cursor: "pointer",
               },
             },
-            "Set A to 10%",
+            () => "Set A to 10%",
           );
       },
     });

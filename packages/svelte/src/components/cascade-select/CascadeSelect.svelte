@@ -183,13 +183,14 @@ its full route. -->
   <div {...api.getControlProps()}>
     <button
       {...api.getTriggerProps()}
+      aria-labelledby={id + ":value-text"}
       onclick={(event) => {
         api.getTriggerProps().onclick?.(event);
         query = "";
       }}
       disabled={disabled || undefined}
     >
-      <span {...api.getValueTextProps()}>{display ?? placeholder}</span>
+      <span {...api.getValueTextProps()} id={id + ":value-text"}>{display ?? placeholder}</span>
       <span {...api.getIndicatorProps()}>
         <svg
           viewBox="0 0 24 24"

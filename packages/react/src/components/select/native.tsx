@@ -32,6 +32,8 @@ export function NativeSelect({
   placeholder,
   disabled = false,
   onValueChange,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
   ...rest
 }: NativeSelectProps) {
   injectComponentStyle("select");
@@ -51,6 +53,8 @@ export function NativeSelect({
     >
       <select
         {...fieldProps}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
         value={value ?? ""}
         data-scope="select"
         data-part="native"

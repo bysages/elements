@@ -48,9 +48,6 @@ Dragging rides the native drag events — a hairline of primary ink
 marks the seam the row will land on. -->
 <div
   {...rest}
-  role="listbox"
-  aria-label={label}
-  aria-multiselectable={false}
   data-scope="order-list"
   data-part="root"
   ondragleave={(event) => {
@@ -58,12 +55,11 @@ marks the seam the row will land on. -->
     if (!event.relatedTarget || !host.contains(event.relatedTarget as Node)) dropLine = null;
   }}
 >
-  <ol data-scope="order-list" data-part="list">
+  <ol data-scope="order-list" data-part="list" aria-label={label}>
     {#each rows as option, index (option.value)}
       <li
-        role="option"
-        aria-selected="true"
         draggable
+        aria-roledescription="Sortable item"
         data-scope="order-list"
         data-part="item"
         data-dragging={dragging === option.value ? "" : undefined}

@@ -15,7 +15,12 @@ function part(name: string, tag: string): Component<JSX.HTMLAttributes<HTMLEleme
   return Component;
 }
 
-const Item = part("Item", "li");
+function Item(props: JSX.HTMLAttributes<HTMLLIElement>) {
+  // A row the caller wires to the pointer stays a list item; focus
+  // and the keyboard handlers still ride the row itself.
+  const [, rest] = splitProps(props, ["role"]);
+  return <li {...rest} data-scope="list" data-part="item" />;
+}
 const Leading = part("Leading", "div");
 const Actions = part("Actions", "div");
 

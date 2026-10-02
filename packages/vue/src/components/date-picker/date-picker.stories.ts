@@ -78,9 +78,7 @@ function dayView() {
           ),
           h(DatePicker.TableBody, () =>
             dp.weeks.map((week: any, id: number) =>
-              h(
-                DatePicker.TableRow,
-                { key: id },
+              h(DatePicker.TableRow, { key: id }, () =>
                 week.map((day: any, id: number) =>
                   h(DatePicker.TableCell, { key: id, value: day }, () =>
                     h(DatePicker.TableCellTrigger, () => day.day),
@@ -111,7 +109,7 @@ function dayViewWithWeekNumbers() {
           ),
           h(DatePicker.TableBody, () =>
             dp.weeks.map((week: any, id: number) =>
-              h(DatePicker.TableRow, { key: id }, [
+              h(DatePicker.TableRow, { key: id }, () => [
                 h(DatePicker.WeekNumberCell as any, { weekIndex: id, week }, () =>
                   dp.getWeekNumber(week),
                 ),
@@ -136,17 +134,17 @@ function monthView() {
         viewControl(),
         h(DatePicker.Table, () =>
           h(DatePicker.TableBody, () =>
-            dp.getMonthsGrid({ columns: 4 }).map((months: any, id: number) =>
-              h(
-                DatePicker.TableRow,
-                { key: id },
-                months.map((month: any, id: number) =>
-                  h(DatePicker.TableCell, { key: id, value: month.value }, () =>
-                    h(DatePicker.TableCellTrigger, () => month.label),
+            dp
+              .getMonthsGrid({ columns: 4 })
+              .map((months: any, id: number) =>
+                h(DatePicker.TableRow, { key: id }, () =>
+                  months.map((month: any, id: number) =>
+                    h(DatePicker.TableCell, { key: id, value: month.value }, () =>
+                      h(DatePicker.TableCellTrigger, () => month.label),
+                    ),
                   ),
                 ),
               ),
-            ),
           ),
         ),
       ],
@@ -161,17 +159,17 @@ function yearView() {
         viewControl(),
         h(DatePicker.Table, () =>
           h(DatePicker.TableBody, () =>
-            dp.getYearsGrid({ columns: 4 }).map((years: any, id: number) =>
-              h(
-                DatePicker.TableRow,
-                { key: id },
-                years.map((year: any, id: number) =>
-                  h(DatePicker.TableCell, { key: id, value: year.value }, () =>
-                    h(DatePicker.TableCellTrigger, () => year.label),
+            dp
+              .getYearsGrid({ columns: 4 })
+              .map((years: any, id: number) =>
+                h(DatePicker.TableRow, { key: id }, () =>
+                  years.map((year: any, id: number) =>
+                    h(DatePicker.TableCell, { key: id, value: year.value }, () =>
+                      h(DatePicker.TableCellTrigger, () => year.label),
+                    ),
                   ),
                 ),
               ),
-            ),
           ),
         ),
       ],
@@ -368,9 +366,7 @@ export const SelectToday = {
                   ),
                   h(DatePicker.TableBody, () =>
                     dp.weeks.map((week: any, id: number) =>
-                      h(
-                        DatePicker.TableRow,
-                        { key: id },
+                      h(DatePicker.TableRow, { key: id }, () =>
                         week.map((day: any, id: number) =>
                           h(DatePicker.TableCell, { key: id, value: day }, () =>
                             h(DatePicker.TableCellTrigger, () => day.day),
@@ -457,9 +453,7 @@ export const MonthYearSelect = {
                   ),
                   h(DatePicker.TableBody, () =>
                     dp.weeks.map((week: any, id: number) =>
-                      h(
-                        DatePicker.TableRow,
-                        { key: id },
+                      h(DatePicker.TableRow, { key: id }, () =>
                         week.map((day: any, id: number) =>
                           h(DatePicker.TableCell, { key: id, value: day }, () =>
                             h(DatePicker.TableCellTrigger, () => day.day),

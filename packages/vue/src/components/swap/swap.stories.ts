@@ -50,7 +50,7 @@ function swapToggle(label: string, rootVars: Record<string, string>, indicators:
             onClick: () => (state.swapped = !state.swapped),
             style: rootVars,
           },
-          [h(Swap.Root, { swap: state.swapped }, indicators)],
+          () => [h(Swap.Root, { swap: state.swapped }, indicators)],
         );
     },
   };

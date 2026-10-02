@@ -122,7 +122,7 @@ export const Scrubber = {
     <NumberInput.Root defaultValue="32">
       <NumberInput.Label>Drag me</NumberInput.Label>
       <NumberInput.Control>
-        <NumberInput.Scrubber aria-label="Scrub value">{gripGlyph()}</NumberInput.Scrubber>
+        <NumberInput.Scrubber>{gripGlyph()}</NumberInput.Scrubber>
         <NumberInput.Input />
         <NumberInput.IncrementTrigger aria-label="Increment">
           {chevron("up")}

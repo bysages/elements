@@ -137,6 +137,7 @@ export const PageSizeControl = {
             () => [
               h("label", { style: { fontSize: "var(--bs-font-size-sm)" } }, () => "Items per page"),
               h(NativeSelect, {
+                "aria-label": "Items per page",
                 options: [5, 10, 20].map((n) => ({ label: String(n), value: String(n) })),
                 modelValue: String(pagination.pageSize),
                 "onUpdate:modelValue": (v: string) => pagination.setPageSize(Number(v)),

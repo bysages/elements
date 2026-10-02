@@ -503,7 +503,7 @@ function cellStyle(column: TColumn, span: number) {
       />
     </div>
   {/if}
-  <div data-scope="table" data-part="viewport" bind:this={viewportEl}>
+  <div data-scope="table" data-part="viewport" tabindex={0} bind:this={viewportEl}>
     <div
       role="table"
       data-scope="table"
@@ -611,7 +611,7 @@ function cellStyle(column: TColumn, span: number) {
             <div role="row" data-scope="table" data-part="row">
               {#each group.headers as header (header.column.id)}
                 <div
-                  role="columnheader"
+                  role="cell"
                   data-scope="table"
                   data-part="footer-cell"
                   data-numeric={header.column.columnDef.meta?.numeric ? "" : undefined}

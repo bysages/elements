@@ -452,6 +452,7 @@ function WithSelectStory() {
       <Toc.Context>
         {(ctx: { activeItems: any[]; scrollTo: (value: string) => void }) => (
           <select
+            aria-label="Jump to section"
             value={ctx.activeItems[0]?.value ?? BASIC_SECTIONS[0].value}
             onChange={(e) => ctx.scrollTo((e.target as HTMLSelectElement).value)}
             style={{
@@ -581,7 +582,9 @@ function WithTreeViewStory() {
           <TreeView.BranchIndicator>▸</TreeView.BranchIndicator>
         </TreeView.BranchControl>
         <TreeView.BranchContent>
-          {(node.children ?? []).map((child, index) => childRow(child, indexPath, index))}
+          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            {(node.children ?? []).map((child, index) => childRow(child, indexPath, index))}
+          </ul>
         </TreeView.BranchContent>
       </TreeView.Branch>
     </TreeView.NodeProvider>

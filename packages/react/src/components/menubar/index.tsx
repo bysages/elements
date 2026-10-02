@@ -42,7 +42,7 @@ export function Menubar({ items, onSelect, children, ...rest }: MenubarProps) {
       {items.map((group) => (
         <ArkMenu.Root key={group.label} positioning={{ placement: "bottom-start" }}>
           <ArkMenu.Trigger asChild>
-            <button type="button" data-scope="menubar" data-part="trigger">
+            <button type="button" role="menuitem" data-scope="menubar" data-part="trigger">
               {group.label}
             </button>
           </ArkMenu.Trigger>

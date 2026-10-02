@@ -17,8 +17,13 @@ export const Basic: Story = {
 export const States: Story = {
   render: () => () =>
     h("div", { style: "display: grid; gap: var(--bs-space-3); max-inline-size: 24rem;" }, [
-      h(Textarea, { invalid: true, defaultValue: "Too short", rows: 2 }),
-      h(Textarea, { disabled: true, defaultValue: "Sealed", rows: 2 }),
+      h(Textarea, {
+        invalid: true,
+        defaultValue: "Too short",
+        rows: 2,
+        "aria-label": "Short note, invalid",
+      }),
+      h(Textarea, { disabled: true, defaultValue: "Sealed", rows: 2, "aria-label": "Sealed note" }),
     ]),
 };
 

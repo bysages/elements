@@ -21,7 +21,12 @@ const title = "A long chapter title walks into a narrow column and leaves its ta
 export const Basic: Story = {
   render: () =>
     withState(
-      () => () => h("div", { style: { inlineSize: "20rem" } }, h(Ellipsis, { title }, title)),
+      () => () =>
+        h(
+          "div",
+          { style: { inlineSize: "20rem" } },
+          h(Ellipsis, { title }, () => title),
+        ),
     ),
 };
 
@@ -39,7 +44,10 @@ export const Lines: Story = {
         h(
           "div",
           { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--bs-space-4)" } },
-          [h(Ellipsis, { key: 2, lines: 2 }, prose), h(Ellipsis, { key: 4, lines: 4 }, prose)],
+          [
+            h(Ellipsis, { key: 2, lines: 2 }, () => prose),
+            h(Ellipsis, { key: 4, lines: 4 }, () => prose),
+          ],
         ),
     ),
 };

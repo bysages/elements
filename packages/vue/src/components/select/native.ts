@@ -40,12 +40,23 @@ export const NativeSelect = defineComponent({
     });
     return () => {
       const fieldProps = field?.value?.getInputProps() ?? {};
+      // Accessible naming rides the select itself — the wrapper span
+      // never carries it.
+      const {
+        "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledby,
+        ...rootAttrs
+      } = ctx.attrs;
+      const named = {
+        ...(ariaLabel != null ? { "aria-label": ariaLabel as string } : null),
+        ...(ariaLabelledby != null ? { "aria-labelledby": ariaLabelledby as string } : null),
+      };
       const empty = props.modelValue == null || props.modelValue === "";
       const off = props.disabled || field?.value?.disabled === true;
       return h(
         "span",
         {
-          ...ctx.attrs,
+          ...rootAttrs,
           "data-scope": "select",
           "data-part": "native-root",
           "data-size": props.size,
@@ -58,6 +69,7 @@ export const NativeSelect = defineComponent({
             "select",
             {
               ...fieldProps,
+              ...named,
               ref: select,
               "data-scope": "select",
               "data-part": "native",

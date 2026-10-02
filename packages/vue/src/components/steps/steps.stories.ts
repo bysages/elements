@@ -30,6 +30,9 @@ export const Basic = {
                   h("span", item.title),
                 ]),
                 h(Steps.Separator),
+                h(Steps.Content, () =>
+                  h("p", { style: { paddingInlineStart: "2rem" } }, item.title),
+                ),
               ]),
             ),
           ),
@@ -52,9 +55,13 @@ export const Basic = {
 export const Progress = {
   render: () =>
     h(Steps.Root, { count: items.length }, () => [
-      h(Steps.Progress, null, {
-        default: (progress: { percent: number }) => `Done ${Math.round(progress.percent)}%`,
-      }),
+      h(
+        Steps.Progress,
+        { "aria-label": "Step progress" },
+        {
+          default: (progress: { percent: number }) => `Done ${Math.round(progress.percent)}%`,
+        },
+      ),
     ]),
 };
 
@@ -73,6 +80,9 @@ export const Vertical = {
                   h("span", item.title),
                 ]),
                 h(Steps.Separator),
+                h(Steps.Content, () =>
+                  h("p", { style: { paddingInlineStart: "2rem" } }, item.title),
+                ),
               ]),
             ),
           ),
