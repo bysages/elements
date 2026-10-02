@@ -56,7 +56,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
       </PageHeader.Heading>
     </PageHeader.Root>
 
-    <div class="grid items-start gap-(--bs-gap-xl) xl:grid-cols-[18rem_minmax(0,1fr)_18rem]">
+    <div class="grid items-start gap-(--bs-gap-lg) xl:grid-cols-[20rem_minmax(0,1fr)_24rem]">
       <ClientOnly>
         <DesignPanel preview-id="workbench-design-preview" />
       </ClientOnly>

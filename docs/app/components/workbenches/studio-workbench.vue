@@ -13,7 +13,7 @@ import {
   Textarea,
   Typography,
 } from "@bysages/vue";
-import { catalog, registry } from "@bysages/vue/generative";
+import { catalog, faceFamilies, registry } from "@bysages/vue/generative";
 import {
   ActionProvider,
   Renderer,
@@ -23,6 +23,7 @@ import {
 } from "@json-render/vue";
 import { computed, h, ref, watch } from "vue";
 
+import { componentSections } from "../../../scripts/component-sections";
 import DesignPanel from "./design-panel.vue";
 import { COMPONENT_MIME, ROOT_ID, type StudioNode, type StudioNodes } from "./studio-types";
 
@@ -57,9 +58,9 @@ const copy = {
     invalid: "The composition is not a valid spec yet.",
     json: {
       title: "JSON",
-      copy: "Copy",
+      copy: "Copy JSON",
       copied: "Copied",
-      download: "Download",
+      download: "Download JSON",
       import: "Import",
       apply: "Apply",
       invalid: "Not a valid composition JSON.",
@@ -94,9 +95,9 @@ const copy = {
     invalid: "当前组合还不是合法规格。",
     json: {
       title: "JSON",
-      copy: "复制",
+      copy: "复制 JSON",
       copied: "已复制",
-      download: "下载",
+      download: "下载 JSON",
       import: "导入",
       apply: "应用",
       invalid: "不是有效的组合 JSON。",
@@ -180,10 +181,26 @@ const nodes = ref<StudioNodes>({
 const selectedId = ref(ROOT_ID);
 
 const search = ref("");
-const filteredComponents = computed(() => {
+
+/** The catalog walks the same shelves the docs site does — one grouping,
+ * and the shelf each face joins is the family that registered it, not a
+ * guess from its name (Layout and its parts would never match that way).
+ * A face whose family no shelf claims lands on a trailing shelf. */
+const catalogGroups = computed(() => {
   const query = search.value.trim().toLowerCase();
-  if (!query) return componentNames;
-  return componentNames.filter((name) => name.toLowerCase().includes(query));
+  const matches = (name: string) => !query || name.toLowerCase().includes(query);
+  const groups = componentSections.map((section) => ({
+    key: section.slug,
+    label: locale.value === "zh" ? section.zh : section.en,
+    items: componentNames.filter(
+      (name) => section.families.includes(faceFamilies[name] ?? "") && matches(name),
+    ),
+  }));
+  const claimed = new Set(groups.flatMap((group) => group.items));
+  const rest = componentNames.filter((name) => !claimed.has(name) && matches(name));
+  if (rest.length)
+    groups.push({ key: "other", label: locale.value === "zh" ? "其他" : "Other", items: rest });
+  return groups.filter((group) => group.items.length > 0);
 });
 
 function allNodes(): StudioNode[] {
@@ -270,41 +287,43 @@ const compositionColumns = col.columns([
     cell: ({ row }) => {
       const item = row.original;
       const selected = item.id === selectedId.value;
-      return h("span", { class: "flex min-w-0 items-center gap-(--bs-gap-sm)" }, [
+      const edge = h("span", { class: "flex items-center gap-(--bs-gap-xs)" }, [
+        item.childCount
+          ? h("span", { class: "text-xs text-tertiary tabular-nums" }, String(item.childCount))
+          : null,
         h(
           Button,
           {
-            variant: selected ? "solid" : "ghost",
+            variant: "ghost",
             size: "sm",
-            class: "min-w-0 justify-start",
-            "aria-pressed": selected,
-            onClick: () => {
-              selectedId.value = item.id;
-            },
+            square: true,
+            "aria-label": `${text.value.tree.remove} ${item.type}`,
+            onClick: () => removeNode(item.id),
           },
-          () => item.type,
+          () => "×",
         ),
-        item.childCount
-          ? h("span", { class: "text-xs text-tertiary" }, String(item.childCount))
-          : null,
       ]);
+      return h(
+        "span",
+        { class: "flex min-w-0 flex-1 items-center justify-between gap-(--bs-gap-sm)" },
+        [
+          h(
+            Button,
+            {
+              variant: selected ? "solid" : "ghost",
+              size: "sm",
+              class: "min-w-0 justify-start",
+              "aria-pressed": selected,
+              onClick: () => {
+                selectedId.value = item.id;
+              },
+            },
+            () => item.type,
+          ),
+          edge,
+        ],
+      );
     },
-  }),
-  col.display({
-    id: "actions",
-    header: () => "",
-    cell: ({ row }) =>
-      h(
-        Button,
-        {
-          variant: "ghost",
-          size: "sm",
-          square: true,
-          "aria-label": `${text.value.tree.remove} ${row.original.type}`,
-          onClick: () => removeNode(row.original.id),
-        },
-        () => "×",
-      ),
   }),
 ]);
 
@@ -504,20 +523,31 @@ function importJson() {
           </Card.Header>
           <Card.Content class="grid content-start gap-(--bs-gap-sm)">
             <Input v-model="search" :placeholder="text.palette.search" type="search" />
-            <ul class="m-0 grid max-h-[22rem] content-start gap-1 overflow-y-auto list-none p-0">
-              <li v-for="name in filteredComponents" :key="name">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  class="w-full cursor-grab! justify-start! active:cursor-grabbing!"
-                  draggable="true"
-                  @click="addTo(name)"
-                  @dragstart="startComponent($event, name)"
-                >
-                  {{ name }}
-                </Button>
-              </li>
-            </ul>
+            <div class="m-0 grid max-h-[24rem] content-start gap-(--bs-gap-md) overflow-y-auto">
+              <section
+                v-for="group in catalogGroups"
+                :key="group.key"
+                class="grid content-start gap-(--bs-gap-xs)"
+              >
+                <Typography.Label class="sticky top-0 z-10 bg-surface-2">
+                  {{ group.label }}
+                </Typography.Label>
+                <div class="flex flex-wrap gap-1">
+                  <Button
+                    v-for="name in group.items"
+                    :key="name"
+                    variant="outline"
+                    size="sm"
+                    class="cursor-grab! active:cursor-grabbing!"
+                    draggable="true"
+                    @click="addTo(name)"
+                    @dragstart="startComponent($event, name)"
+                  >
+                    {{ name }}
+                  </Button>
+                </div>
+              </section>
+            </div>
           </Card.Content>
         </Card.Root>
 
@@ -628,7 +658,7 @@ function importJson() {
                 >
                   <JsonTreeView.Tree />
                 </JsonTreeView.Root>
-                <div class="flex flex-wrap gap-(--bs-gap-sm)">
+                <div class="flex flex-wrap justify-end gap-(--bs-gap-sm)">
                   <Button variant="outline" size="sm" @click="copyJson">
                     <Icon :name="copied ? 'i-lucide-check' : 'i-lucide-copy'" />
                     {{ copied ? text.json.copied : text.json.copy }}

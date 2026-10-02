@@ -2,12 +2,14 @@
 import {
   Button,
   Card,
+  ColorPicker,
   RadioGroup,
   SCENE_DEFAULT_ACCENT,
   SCENE_DEFAULT_CONTRAST,
   Select,
   Textarea,
   createListCollection,
+  parseColor,
   type ThemeAccent,
   type ThemeContrast,
   type ThemeDensity,
@@ -79,7 +81,7 @@ const copy = {
       resetAll: "Reset all",
       resetOne: "Reset token",
       empty: "No variable matches that search.",
-      hint: "Colors, sizes, spacing, type, borders, shadows, focus, light and motion are all editable.",
+      hint: "Colors, sizes, spacing, type, borders, shadows, focus, light and motion are all editable. Each field starts from the value the system resolves.",
       value: "Value",
     },
     copy: "Copy CSS",
@@ -129,7 +131,7 @@ const copy = {
       resetAll: "全部重置",
       resetOne: "重置变量",
       empty: "没有匹配的变量。",
-      hint: "颜色、尺寸、间距、字体、边框、阴影、焦点、光和动效都可编辑。",
+      hint: "颜色、尺寸、间距、字体、边框、阴影、焦点、光和动效都可编辑；输入框已填入当前值，改动即覆盖。",
       value: "值",
     },
     copy: "复制 CSS",
@@ -152,6 +154,7 @@ const config = ref({
 });
 
 const overrides = ref<Record<string, string>>({});
+const tokenDefaults = ref<Record<string, string>>({});
 const tokenSearch = ref("");
 const availableTokens = ref<string[]>([]);
 const copied = ref(false);
@@ -168,11 +171,128 @@ const sceneCollection = options(
   ["auto", ...Object.keys(SCENE_DEFAULT_ACCENT)] as const,
   text.value.scenes,
 );
+/* The named pigments stay the quick picks — the same round chips the
+   theme panel in the header draws — and the picker's own area is the
+   free-form entry beside them. */
+const ACCENT_PRESETS = [
+  "auto",
+  "ink",
+  "qinghua",
+  "celadon",
+  "zhusha",
+  "feicui",
+  "jilan",
+  "qingjin",
+] as const;
+
+const accentHexes = ref<Partial<Record<ThemeAccent, string>>>({});
+const customAccent = ref<string | null>(null);
+
 const accentSwatches = computed(() =>
-  (["auto", "ink", "qinghua", "celadon", "zhusha", "feicui", "jilan", "qingjin"] as const).map(
-    (value) => ({ value: value as ThemeAccent, label: text.value.accents[value]! }),
-  ),
+  ACCENT_PRESETS.map((accent) => ({
+    value: accent,
+    label: text.value.accents[accent]!,
+  })),
 );
+
+/** Resolve any CSS color by painting it: one canvas pixel of the real
+   thing gives the sRGB channels the picker and the swatches compare, no
+   matter which wide-gamut form the token was written in. */
+function cssColorToHex(cssColor: string): string {
+  if (!cssColor) return "";
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d");
+  if (!context) return "";
+  context.fillStyle = cssColor;
+  context.fillRect(0, 0, 1, 1);
+  const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
+}
+
+function probeAccentHex(accent: ThemeAccent): string {
+  const probe = document.createElement("div");
+  if (accent !== "ink") probe.dataset.accent = accent;
+  probe.style.display = "none";
+  document.body.appendChild(probe);
+  const raw = getComputedStyle(probe).getPropertyValue("--bs-color-primary").trim();
+  const hex = cssColorToHex(raw);
+  probe.remove();
+  return hex;
+}
+
+function normalizeHex(value: string): string {
+  const hex = value.trim().match(/^#([0-9a-f]{6})(?:[0-9a-f]{2})?$/i);
+  if (hex) return `#${hex[1]!.toLowerCase()}`;
+  const rgba = value.match(/rgba?\(([^)]+)\)/i);
+  if (rgba) {
+    const [r, g, b] = rgba[1]!.split(",").map((part) => parseFloat(part));
+    if ([r, g, b].every((n) => Number.isFinite(n)))
+      return `#${[r, g, b]
+        .map((n) =>
+          Math.max(0, Math.min(255, Math.round(n)))
+            .toString(16)
+            .padStart(2, "0"),
+        )
+        .join("")}`;
+  }
+  return "";
+}
+
+function relativeLuminance(hex: string): number {
+  const channel = (index: number) => {
+    const value = parseInt(hex.slice(index, index + 2), 16) / 255;
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(1) + 0.7152 * channel(3) + 0.0722 * channel(5);
+}
+
+/** A free pigment lays the whole primary register under the interface:
+   the hover and active steps mix toward black, the fill rides the base,
+   and the subtle and border tints dilute — the same shape a named
+   pigment writes, derived instead of copied. */
+function accentDerivation(hex: string): Record<string, string> {
+  return {
+    "--bs-color-primary": hex,
+    "--bs-color-primary-hover": `color-mix(in oklab, ${hex} 86%, black)`,
+    "--bs-color-primary-active": `color-mix(in oklab, ${hex} 74%, black)`,
+    "--bs-color-primary-fill": "var(--bs-color-primary)",
+    "--bs-color-primary-fill-hover": "var(--bs-color-primary-hover)",
+    "--bs-color-primary-text":
+      relativeLuminance(hex) > 0.55 ? "oklch(0.25 0.01 95)" : "oklch(0.988 0.004 95)",
+    "--bs-color-primary-subtle": `color-mix(in oklab, ${hex} 14%, transparent)`,
+    "--bs-color-primary-subtle-text": `color-mix(in oklab, ${hex} 55%, black)`,
+    "--bs-color-primary-border": `color-mix(in oklab, ${hex} 45%, transparent)`,
+    "--bs-color-focus": "var(--bs-color-primary)",
+  };
+}
+
+const currentAccentHex = computed(() => {
+  if (customAccent.value) return customAccent.value;
+  const accent = resolvedAccent.value ?? "ink";
+  return accentHexes.value[accent] ?? "";
+});
+
+/* The machine wants a Color object, not a string — parse once here so the
+   template can hand the picker a real value. */
+const pickerColor = computed(() =>
+  currentAccentHex.value ? parseColor(currentAccentHex.value) : undefined,
+);
+
+function onAccentPick(details: string | { valueAsString?: string }) {
+  const hex = normalizeHex(typeof details === "string" ? details : (details.valueAsString ?? ""));
+  if (!hex) return;
+  const preset = accentSwatches.value.find((swatch) => swatch.hex === hex);
+  if (preset) {
+    config.value.accent = preset.accent;
+    customAccent.value = null;
+  } else {
+    config.value.accent = "ink";
+    customAccent.value = hex;
+  }
+}
+
 const contrastCollection = options(["normal", "high"] as const, text.value.contrasts);
 const densityCollection = options(
   ["compact", "default", "comfortable", "spacious"] as const,
@@ -209,22 +329,48 @@ function applyScene(host: HTMLElement | null, mode: DesignMode = config.value.mo
   host.dataset.density = config.value.density;
   if (config.value.scene === "auto") delete host.dataset.scene;
   else host.dataset.scene = config.value.scene;
-  if (resolvedAccent.value) host.dataset.accent = resolvedAccent.value;
+  if (resolvedAccent.value && !customAccent.value) host.dataset.accent = resolvedAccent.value;
   else delete host.dataset.accent;
 
   for (const name of [...host.style].filter((name) => name.startsWith("--bs-")))
     host.style.removeProperty(name);
+  if (customAccent.value)
+    for (const [name, value] of Object.entries(accentDerivation(customAccent.value)))
+      host.style.setProperty(name, value);
   for (const [name, value] of Object.entries(overrides.value)) {
     if (value.trim()) host.style.setProperty(name, value.trim());
   }
 }
 
+/* Every editor opens on the value the specimen actually resolves, so a
+   deviation is always a visible diff against a named default. The read
+   happens with the visitor's overrides lifted — they are the diff, never
+   part of the baseline. */
+function captureDefaults() {
+  const host = currentHost();
+  if (!host || !availableTokens.value.length) return;
+  const style = getComputedStyle(host);
+  const saved = new Map<string, string>();
+  for (const name of [...host.style].filter((name) => name.startsWith("--bs-"))) {
+    saved.set(name, host.style.getPropertyValue(name));
+    host.style.removeProperty(name);
+  }
+  const resolved: Record<string, string> = {};
+  for (const name of availableTokens.value) {
+    const value = style.getPropertyValue(name).trim();
+    if (value) resolved[name] = value;
+  }
+  for (const [name, value] of saved) host.style.setProperty(name, value);
+  tokenDefaults.value = resolved;
+}
+
 async function applyToHost() {
   await nextTick();
   applyScene(currentHost());
+  captureDefaults();
 }
 
-watch([config, overrides], applyToHost, { deep: true, flush: "post" });
+watch([config, overrides, customAccent], applyToHost, { deep: true, flush: "post" });
 
 function tokenNames(): string[] {
   const names = new Set<string>();
@@ -288,7 +434,8 @@ const tokenGroups = computed(() => {
 const modifiedCount = computed(() => Object.keys(overrides.value).length);
 
 function setOverride(name: string, value: string) {
-  if (value.trim()) overrides.value[name] = value;
+  const fallback = tokenDefaults.value[name]?.trim();
+  if (value.trim() && value.trim() !== fallback) overrides.value[name] = value;
   else delete overrides.value[name];
 }
 
@@ -298,11 +445,23 @@ function resetOverride(name: string) {
 
 function resetOverrides() {
   overrides.value = {};
+  customAccent.value = null;
 }
 
 onMounted(async () => {
-  availableTokens.value = tokenNames();
   await applyToHost();
+  /* A token the specimen cannot resolve lives inside a component's own
+     register; editing it at the page level is a no-op, so the panel only
+     offers the variables the dress can actually move. */
+  const host = currentHost();
+  const style = host ? getComputedStyle(host) : null;
+  availableTokens.value = tokenNames().filter(
+    (name) => !style || !!style.getPropertyValue(name).trim(),
+  );
+  captureDefaults();
+  accentHexes.value = Object.fromEntries(
+    ACCENT_PRESETS.map((accent) => [accent, probeAccentHex(accent)]),
+  );
 });
 
 function cssBlock(selector: string, mode: DesignMode): string {
@@ -439,30 +598,70 @@ defineExpose({ applyToHost });
 
         <div class="grid content-start gap-(--bs-gap-xs)">
           <span class="text-sm font-medium">{{ text.controls.accent }}</span>
-          <RadioGroup.Root
-            class="bs-docs-theme-swatch-row"
-            orientation="horizontal"
-            :model-value="config.accent"
-            @update:model-value="(v: string) => (config.accent = v as ThemeAccent)"
-          >
-            <RadioGroup.Item
-              v-for="a in accentSwatches"
-              :key="a.value"
-              :value="a.value"
-              class="bs-docs-theme-swatch"
-              :title="a.label"
-              :aria-label="a.label"
+          <div class="flex flex-wrap items-center gap-(--bs-gap-sm)">
+            <ColorPicker.Root
+              v-if="currentAccentHex"
+              class="flex w-full flex-wrap items-center gap-(--bs-gap-sm)"
+              :model-value="pickerColor"
+              default-format="rgba"
+              @value-change="onAccentPick"
             >
-              <RadioGroup.ItemHiddenInput />
-              <RadioGroup.ItemControl />
-              <RadioGroup.ItemText />
-              <span
-                class="bs-docs-theme-dot"
-                :data-accent="a.value === 'auto' || a.value === 'ink' ? undefined : a.value"
-                :data-ink-dot="a.value === 'ink' ? '' : undefined"
-              />
-            </RadioGroup.Item>
-          </RadioGroup.Root>
+              <ColorPicker.Control class="w-full">
+                <ColorPicker.ChannelInput channel="hex" class="bs-docs-accent-hex" />
+                <ColorPicker.Trigger
+                  :aria-label="text.controls.accent"
+                  :title="text.controls.accent"
+                >
+                  <ColorPicker.ValueSwatch />
+                </ColorPicker.Trigger>
+              </ColorPicker.Control>
+              <RadioGroup.Root
+                class="bs-docs-theme-swatch-row"
+                orientation="horizontal"
+                :model-value="config.accent === 'auto' && !customAccent ? 'auto' : config.accent"
+                @update:model-value="
+                  (v: string) => {
+                    config.accent = v as ThemeAccent;
+                    customAccent = null;
+                  }
+                "
+              >
+                <RadioGroup.Item
+                  v-for="a in accentSwatches"
+                  :key="a.value"
+                  :value="a.value"
+                  class="bs-docs-theme-swatch"
+                  :title="a.label"
+                  :aria-label="a.label"
+                >
+                  <RadioGroup.ItemHiddenInput />
+                  <RadioGroup.ItemControl />
+                  <RadioGroup.ItemText />
+                  <span
+                    class="bs-docs-theme-dot"
+                    :data-accent="a.value === 'auto' || a.value === 'ink' ? undefined : a.value"
+                    :data-swatch="a.value"
+                    :data-ink-dot="a.value === 'ink' ? '' : undefined"
+                  />
+                </RadioGroup.Item>
+              </RadioGroup.Root>
+              <Teleport to="body">
+                <ColorPicker.Positioner>
+                  <ColorPicker.Content>
+                    <ColorPicker.Area>
+                      <ColorPicker.AreaBackground />
+                      <ColorPicker.AreaThumb />
+                    </ColorPicker.Area>
+                    <ColorPicker.ChannelSlider channel="hue">
+                      <ColorPicker.ChannelSliderTrack />
+                      <ColorPicker.ChannelSliderThumb />
+                    </ColorPicker.ChannelSlider>
+                  </ColorPicker.Content>
+                </ColorPicker.Positioner>
+              </Teleport>
+              <ColorPicker.HiddenInput />
+            </ColorPicker.Root>
+          </div>
         </div>
       </Card.Content>
     </Card.Root>
@@ -517,7 +716,7 @@ defineExpose({ applyToHost });
                   </Button>
                 </div>
                 <Textarea
-                  :model-value="overrides[name] ?? ''"
+                  :model-value="overrides[name] ?? tokenDefaults[name] ?? ''"
                   rows="2"
                   class="font-mono text-xs"
                   :aria-label="`${name} ${text.tokens.value}`"
@@ -543,11 +742,11 @@ defineExpose({ applyToHost });
       </Card.Content>
 
       <Card.Footer class="grid gap-(--bs-gap-sm)">
-        <div class="flex gap-(--bs-gap-sm)">
-          <Button variant="outline" class="flex-1" @click="copyCss">
+        <div class="flex justify-end gap-(--bs-gap-sm)">
+          <Button variant="outline" @click="copyCss">
             {{ copied ? text.copied : text.copy }}
           </Button>
-          <Button class="flex-1" @click="downloadCss">{{ text.download }}</Button>
+          <Button @click="downloadCss">{{ text.download }}</Button>
         </div>
         <p v-if="config.mode === 'system'" class="m-0 text-xs text-tertiary">
           {{ text.systemNote }}

@@ -293,6 +293,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="cell-main"] {
   display: flex;
+  flex: 1;
   align-items: center;
   gap: var(--bs-gap-sm);
   min-inline-size: 0;

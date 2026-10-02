@@ -1,4 +1,4 @@
-import { ColorPicker as ArkColorPicker } from "@ark-ui/vue/color-picker";
+import { ColorPicker as ArkColorPicker, parseColor } from "@ark-ui/vue/color-picker";
 import { injectComponentStyle } from "@bysages/core";
 import { defineComponent, h, type PropType } from "vue";
 
@@ -32,3 +32,5 @@ export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 };
+
+export { parseColor };

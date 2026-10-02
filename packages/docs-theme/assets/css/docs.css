@@ -1162,6 +1162,13 @@ body {
   font-size: var(--bs-font-size-xs);
 }
 
+/* The workbench pairs its hex field with the md register the selects
+   beside it use; core keeps every channel input at sm, so the sheet
+   re-points just this one field. */
+.bs-docs-accent-hex[data-scope="color-picker"][data-part="channel-input"] {
+  block-size: var(--bs-control-height-md);
+}
+
 /* The header rail's ghost icons — mode, assistant — share one register. */
 .bs-docs-rail-icon {
   inline-size: 1rem;

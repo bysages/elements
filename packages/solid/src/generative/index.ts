@@ -49,4 +49,11 @@ const { registry } = defineRegistry(catalog, {
   ),
 });
 
+/** Which family each face came home from. A family may speak under
+ * several names - Layout plus its parts, Bento plus its cell - and the
+ * palette groups by provenance, never by guessing from the name. */
+export const faceFamilies: Record<string, string> = Object.fromEntries(
+  Object.entries(entries).map(([name, entry]) => [name, entry._from]),
+);
+
 export { registry };
