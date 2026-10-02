@@ -1,6 +1,9 @@
 import { TreeView as ArkTreeView } from "@ark-ui/vue/tree-view";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_right } from "@bysages/icons";
 import { defineComponent, h, type PropType } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 /** TreeView, dressed in the paper-and-ink system: quiet rows where
  * selection is pure light on the paper, one hairline plumb line per depth,
@@ -37,13 +40,26 @@ const TreeViewNodeCheckbox = defineComponent({
   },
 });
 
+/* A branch is born with its chevron — the indicator stays a consumer's
+ * slot to override, never a chore to remember. */
+const TreeViewBranchIndicator = defineComponent({
+  name: "STreeViewBranchIndicator",
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(ArkTreeView.BranchIndicator, attrs, () => slots.default?.() ?? [glyphNode(chevron_right)]);
+  },
+});
+
 /* Ark's namespace is frozen — spread copies the members as data properties
  * so Root can be the sized wrapper while the rest stay Ark's own parts. */
-export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox"> & {
+export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox" | "BranchIndicator"> & {
   Root: typeof TreeViewRoot;
   NodeCheckbox: typeof TreeViewNodeCheckbox;
+  BranchIndicator: typeof TreeViewBranchIndicator;
 } = {
   ...ArkTreeView,
   Root: TreeViewRoot,
   NodeCheckbox: TreeViewNodeCheckbox,
+  BranchIndicator: TreeViewBranchIndicator,
 };

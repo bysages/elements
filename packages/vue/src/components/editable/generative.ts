@@ -1,8 +1,10 @@
+import { check, pencil, x } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
+import { glyphNode } from "../../internal/glyph";
 import { Editable } from "./index";
 
 /** Text that turns into a field when activated, and back on commit. */
@@ -15,12 +17,14 @@ export default defineEntry({
     }),
     description: "Text that turns into a field when activated, and back on commit.",
     component: ({ props }) => {
-      const glyph = (d: string) =>
-        h(
-          "svg",
-          { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 2 },
-          [h("path", { d, "stroke-linecap": "round", "stroke-linejoin": "round" })],
-        );
+      const glyph = (d: string) => {
+        const byPath: Record<string, ReturnType<typeof glyphNode>> = {
+          "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z": glyphNode(pencil),
+          "m5 12.5 5 5L19 7": glyphNode(check),
+          "m6 6 12 12M18 6 6 18": glyphNode(x),
+        };
+        return byPath[d] ?? glyphNode(pencil);
+      };
       return labelled(
         props.label,
         h(

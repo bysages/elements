@@ -1,8 +1,10 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
 import { injectComponentStyle } from "@bysages/core";
+import { arrow_left, arrow_right, check } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType, type Ref } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -13,35 +15,11 @@ export interface TransferItem {
 }
 
 function checkGlyph() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 3,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m5 12.5 5 5L19 7" })],
-  );
+  return glyphNode(check);
 }
 
 function arrowGlyph(direction: "right" | "left") {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: direction === "right" ? "M5 12h14m-6-6 6 6-6 6" : "M19 12H5m6-6-6 6 6 6" })],
-  );
+  return direction === "right" ? glyphNode(arrow_right) : glyphNode(arrow_left);
 }
 
 /**

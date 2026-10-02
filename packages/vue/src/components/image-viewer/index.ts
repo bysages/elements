@@ -1,9 +1,11 @@
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
 import { injectComponentStyle } from "@bysages/core";
+import { rotate_cw, x, zoom_in, zoom_out } from "@bysages/icons";
 import type { SetupContext } from "vue";
-import { defineComponent, h, ref, watch } from "vue";
+import { defineComponent, h, ref, watch, type VNode } from "vue";
 import { Teleport } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 
@@ -11,24 +13,12 @@ const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
-/** The toolbar's line-drawn glyphs, fresh per render. */
+/** The toolbar's glyphs, drawn from the house icon set. */
 const TOOL_GLYPHS = {
-  zoomIn: () => [
-    h("circle", { cx: 11, cy: 11, r: 7 }),
-    h("path", { d: "m16.2 16.2 4.8 4.8" }),
-    h("path", { d: "M8 11h6" }),
-    h("path", { d: "M11 8v6" }),
-  ],
-  zoomOut: () => [
-    h("circle", { cx: 11, cy: 11, r: 7 }),
-    h("path", { d: "m16.2 16.2 4.8 4.8" }),
-    h("path", { d: "M8 11h6" }),
-  ],
-  rotate: () => [
-    h("path", { d: "M20.49 12A8.5 8.5 0 1 1 18 6.06" }),
-    h("path", { d: "M20.5 3.5v4h-4" }),
-  ],
-  close: () => [h("path", { d: "m6 6 12 12" }), h("path", { d: "M18 6 6 18" })],
+  zoomIn: () => glyphNode(zoom_in),
+  zoomOut: () => glyphNode(zoom_out),
+  rotate: () => glyphNode(rotate_cw),
+  close: () => glyphNode(x),
 };
 
 /**
@@ -89,7 +79,7 @@ export const ImageViewer = defineComponent({
       rotation.value = (rotation.value + 90) % 360;
     }
 
-    function toolButton(label: string, glyph: () => any[], onClick: () => void) {
+    function toolButton(label: string, glyph: () => VNode, onClick: () => void) {
       return h(
         Button,
         { variant: "ghost", square: true, size: "lg", "aria-label": label, onClick },

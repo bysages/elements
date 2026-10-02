@@ -1,12 +1,14 @@
 import { DEFAULT_ENVIRONMENT, useEnvironmentContext } from "@ark-ui/vue/environment";
 import { DEFAULT_LOCALE, useLocaleContext, useFilter } from "@ark-ui/vue/locale";
 import { injectComponentStyle } from "@bysages/core";
+import { check, chevron_down, chevron_right } from "@bysages/icons";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/vue";
 import type { SetupContext, VNodeArrayChildren } from "vue";
 import { computed, defineComponent, h, useId, ref, watch, type PropType } from "vue";
 import { Teleport } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Input } from "../input";
 
 export interface CascadeSelectNode {
@@ -17,51 +19,15 @@ export interface CascadeSelectNode {
 }
 
 function chevronDown() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m6 9 6 6 6-6" })],
-  );
+  return glyphNode(chevron_down);
 }
 
 function chevronRight() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m9 18 6-6-6-6" })],
-  );
+  return glyphNode(chevron_right);
 }
 
 function checkGlyph() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 3,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m5 12.5 5 5L19 7" })],
-  );
+  return glyphNode(check);
 }
 
 /**

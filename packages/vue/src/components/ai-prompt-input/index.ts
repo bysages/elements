@@ -1,27 +1,15 @@
 import { injectComponentStyle } from "@bysages/core";
+import { arrow_up } from "@bysages/icons";
 import type { Component, PropType, SetupContext, VNode } from "vue";
 import { computed, defineComponent, h, ref } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 import { Field } from "../field";
 import { MentionsVessel, type MentionEntry } from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
 
-const arrowUpGlyph = () =>
-  h(
-    "svg",
-    {
-      viewBox: "0 0 16 16",
-      width: 14,
-      height: 14,
-      "aria-hidden": "true",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": "1.5",
-      "stroke-linecap": "square",
-    },
-    [h("path", { d: "M8 13V3M3.5 7.5 8 3l4.5 4.5" })],
-  );
+const arrowUpGlyph = () => glyphNode(arrow_up, { width: 14, height: 14 });
 
 const stopGlyph = () =>
   h("svg", { viewBox: "0 0 16 16", width: 14, height: 14, "aria-hidden": "true" }, [

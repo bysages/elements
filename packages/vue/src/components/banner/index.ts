@@ -1,6 +1,9 @@
 import { injectComponentStyle } from "@bysages/core";
+import { x } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 const Root = defineComponent({
   name: "BannerRoot",
@@ -68,16 +71,7 @@ const Close = defineComponent({
           "data-scope": "banner",
           "data-part": "close",
         },
-        [
-          h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": true }, [
-            h("path", {
-              d: "M4 4l8 8M12 4l-8 8",
-              stroke: "currentColor",
-              "stroke-width": 1.5,
-              "stroke-linecap": "round",
-            }),
-          ]),
-        ],
+        [glyphNode(x)],
       );
   },
 });

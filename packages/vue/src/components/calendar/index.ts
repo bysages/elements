@@ -1,8 +1,11 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/vue/date-picker";
 import type { DatePickerRootProps, UseDatePickerContext } from "@ark-ui/vue/date-picker";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_left, chevron_right } from "@bysages/icons";
 import type { PropType, SetupContext, UnwrapRef } from "vue";
 import { defineComponent, h } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 export type {
   DatePickerFocusChangeDetails,
@@ -13,20 +16,7 @@ export type {
 } from "@ark-ui/vue/date-picker";
 
 function chevron(dir: "left" | "right") {
-  return h(
-    "svg",
-    {
-      width: 16,
-      height: 16,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "aria-hidden": true,
-      style: dir === "left" ? { transform: "rotate(180deg)" } : undefined,
-    },
-    [h("path", { d: "m9 5 7 7-7 7" })],
-  );
+  return glyphNode(dir === "left" ? chevron_left : chevron_right, { width: 16, height: 16 });
 }
 
 /** The date-picker's month grid, standing on the page without its

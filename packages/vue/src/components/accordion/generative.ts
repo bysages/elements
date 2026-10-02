@@ -1,8 +1,10 @@
+import { chevron_down } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { slotted, slug } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
+import { glyphNode } from "../../internal/glyph";
 import { Accordion } from "./index";
 
 /** A ruled sheet folded into rows; items name the rows, children fill the first. */
@@ -13,16 +15,7 @@ export default defineEntry({
     description: "A ruled sheet folded into rows; items name the rows, children fill the first.",
     component: ({ props, children }) => {
       const items = props.items ?? ["What is Elements?", "How do tokens work?"];
-      const chevron = () =>
-        h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": "true" }, [
-          h("path", {
-            d: "M4 6l4 4 4-4",
-            stroke: "currentColor",
-            "stroke-width": "1.5",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-          }),
-        ]);
+      const chevron = () => glyphNode(chevron_down);
       const first = slug(items[0] ?? "");
       return h(Accordion.Root, { defaultValue: [first] }, () =>
         items.map((item: string, index: number) =>

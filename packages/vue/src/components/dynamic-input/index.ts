@@ -1,7 +1,9 @@
 import { injectComponentStyle } from "@bysages/core";
+import { x } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -99,19 +101,5 @@ export const DynamicInput = defineComponent({
 
 /** The one glyph a remove seal needs: a single crossing stroke. */
 function crossIcon() {
-  return h(
-    "svg",
-    {
-      width: 16,
-      height: 16,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "M18 6 6 18M6 6l12 12" })],
-  );
+  return glyphNode(x, { width: 16, height: 16 });
 }

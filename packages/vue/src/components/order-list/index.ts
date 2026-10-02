@@ -1,35 +1,24 @@
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_down, chevron_up } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, ref, type PropType } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 export interface OrderOption {
   label: string;
   value: string;
 }
 
-function arrowGlyph(paths: string[]) {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      width: 12,
-      height: 12,
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    () => paths.map((d) => h("path", { d })),
-  );
+function arrowGlyph(glyph: typeof chevron_up, rail?: string) {
+  return glyphNode(glyph, { width: 12, height: 12 }, rail ?? "");
 }
 
 const ARROWS = {
-  up: ["m18 15-6-6-6 6"],
-  down: ["m6 9 6 6 6-6"],
-  top: ["m18 15-6-6-6 6", "M5 4h14"],
-  bottom: ["m6 9 6 6 6-6", "M5 20h14"],
+  up: [chevron_up] as const,
+  down: [chevron_down] as const,
+  top: [chevron_up, '<path d="M5 4h14"/>'] as const,
+  bottom: [chevron_down, '<path d="M5 20h14"/>'] as const,
 };
 
 /** A ledger the reader may rewrite: rows move by grip or by the side
@@ -166,7 +155,7 @@ export const OrderList = defineComponent({
                         disabled: index === 0,
                         onClick: () => move(option.value, -index),
                       },
-                      arrowGlyph(ARROWS.top),
+                      arrowGlyph(ARROWS.top[0], ARROWS.top[1]),
                     ),
                     h(
                       "button",
@@ -178,7 +167,7 @@ export const OrderList = defineComponent({
                         disabled: index === 0,
                         onClick: () => move(option.value, -1),
                       },
-                      arrowGlyph(ARROWS.up),
+                      arrowGlyph(ARROWS.up[0]),
                     ),
                     h(
                       "button",
@@ -190,7 +179,7 @@ export const OrderList = defineComponent({
                         disabled: index === rows().length - 1,
                         onClick: () => move(option.value, 1),
                       },
-                      arrowGlyph(ARROWS.down),
+                      arrowGlyph(ARROWS.down[0]),
                     ),
                     h(
                       "button",
@@ -202,7 +191,7 @@ export const OrderList = defineComponent({
                         disabled: index === rows().length - 1,
                         onClick: () => move(option.value, rows().length - 1 - index),
                       },
-                      arrowGlyph(ARROWS.bottom),
+                      arrowGlyph(ARROWS.bottom[0], ARROWS.bottom[1]),
                     ),
                   ]),
                 ],

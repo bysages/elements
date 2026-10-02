@@ -1,9 +1,11 @@
 import { Menu as ArkMenu } from "@ark-ui/vue/menu";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_down } from "@bysages/icons";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 import { Teleport } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 
 export interface SplitButtonEntry {
@@ -105,21 +107,7 @@ export const SplitButton = defineComponent({
 
 /** One stroke pointing down: all a fitted dropdown arrow needs. */
 function chevronDown() {
-  return h(
-    "svg",
-    {
-      width: 16,
-      height: 16,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m6 9 6 6 6-6" })],
-  );
+  return glyphNode(chevron_down, { width: 16, height: 16 });
 }
 
 // The popup keeps the menu parts, so the menu stylesheet dresses them.

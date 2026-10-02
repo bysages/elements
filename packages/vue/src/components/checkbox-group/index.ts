@@ -1,8 +1,11 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
 import { useFieldContext } from "@ark-ui/vue/field";
 import { injectComponentStyle } from "@bysages/core";
+import { check } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, useId, type PropType } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 export interface CheckboxOption {
   label: string;
@@ -11,19 +14,7 @@ export interface CheckboxOption {
 }
 
 function checkGlyph() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 3,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m5 12.5 5 5L19 7" })],
-  );
+  return glyphNode(check);
 }
 
 /**

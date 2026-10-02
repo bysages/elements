@@ -1,6 +1,9 @@
 import { useFieldContext } from "@ark-ui/vue/field";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_down } from "@bysages/icons";
 import { defineComponent, h, ref, watchPostEffect, type PropType, type SetupContext } from "vue";
+
+import { glyphNode } from "../../internal/glyph";
 
 /** One row of the platform's own list. */
 export interface NativeSelectOption {
@@ -99,25 +102,10 @@ export const NativeSelect = defineComponent({
               ),
             ],
           ),
-          h(
-            "svg",
-            {
-              "data-scope": "select",
-              "data-part": "native-icon",
-              viewBox: "0 0 16 16",
-              "aria-hidden": "true",
-            },
-            [
-              h("path", {
-                d: "M4 6l4 4 4-4",
-                fill: "none",
-                stroke: "currentColor",
-                "stroke-width": "1.5",
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round",
-              }),
-            ],
-          ),
+          glyphNode(chevron_down, {
+            "data-scope": "select",
+            "data-part": "native-icon",
+          }),
         ],
       );
     };

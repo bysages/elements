@@ -1,8 +1,10 @@
+import { calendar, chevron_left, chevron_right } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
+import { glyphNode } from "../../internal/glyph";
 import { DatePicker } from "./index";
 
 /** A field that opens a calendar to pick a date. */
@@ -11,38 +13,9 @@ export default defineEntry({
     props: z.object({ label: z.string().optional() }),
     description: "A field that opens a calendar to pick a date.",
     component: ({ props }) => {
-      const calendar = () =>
-        h(
-          "svg",
-          {
-            width: 16,
-            height: 16,
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            "stroke-width": 1.75,
-            "aria-hidden": true,
-          },
-          [
-            h("rect", { x: 3, y: 5, width: 18, height: 16, rx: 1.5 }),
-            h("path", { d: "M3 9.5h18M8 3v4M16 3v4" }),
-          ],
-        );
+      const calendarGlyph = () => glyphNode(calendar, { width: 16, height: 16 });
       const chevron = (left: boolean) =>
-        h(
-          "svg",
-          {
-            width: 16,
-            height: 16,
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            "stroke-width": 1.75,
-            "aria-hidden": true,
-            style: left ? { transform: "rotate(180deg)" } : undefined,
-          },
-          [h("path", { d: "m9 5 7 7-7 7" })],
-        );
+        glyphNode(left ? chevron_left : chevron_right, { width: 16, height: 16 });
       const viewControl = () =>
         h(DatePicker.ViewControl, () => [
           h(DatePicker.PrevTrigger, () => chevron(true)),
@@ -83,7 +56,7 @@ export default defineEntry({
         );
       const field = h(DatePicker.Control, () => [
         h(DatePicker.Input as never),
-        h(DatePicker.Trigger, () => calendar()),
+        h(DatePicker.Trigger, () => calendarGlyph()),
       ]);
       const popup = h(DatePicker.Positioner, () => h(DatePicker.Content, () => [dayView()]));
       return labelled(

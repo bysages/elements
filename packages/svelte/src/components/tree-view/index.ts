@@ -7,18 +7,21 @@
  * NodeRenameInput, plus createTreeCollection. */
 import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
 
+import TreeViewBranchIndicator from "./TreeViewBranchIndicator.svelte";
 import TreeViewNodeCheckbox from "./TreeViewNodeCheckbox.svelte";
 import TreeViewRoot from "./TreeViewRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox"> & {
+export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox" | "BranchIndicator"> & {
   Root: typeof TreeViewRoot;
   NodeCheckbox: typeof TreeViewNodeCheckbox;
+  BranchIndicator: typeof TreeViewBranchIndicator;
 } = {
   ...ArkTreeView,
   Root: TreeViewRoot,
   NodeCheckbox: TreeViewNodeCheckbox,
+  BranchIndicator: TreeViewBranchIndicator,
 };
 
 export type { TreeViewRootProps } from "./props";

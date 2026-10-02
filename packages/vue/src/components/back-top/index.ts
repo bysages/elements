@@ -1,7 +1,9 @@
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_up } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, onBeforeUnmount, onMounted, ref } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 
 export interface BackTopProps {
@@ -108,19 +110,5 @@ export const BackTop = defineComponent({
 
 /** The single glyph a way-home control needs: one stroke pointing up. */
 function chevronUp() {
-  return h(
-    "svg",
-    {
-      width: 16,
-      height: 16,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m6 14 6-6 6 6" })],
-  );
+  return glyphNode(chevron_up, { width: 16, height: 16 });
 }

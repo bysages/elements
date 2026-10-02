@@ -1,8 +1,10 @@
+import { upload } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
+import { glyphNode } from "../../internal/glyph";
 import { FileUpload } from "./index";
 
 /** A dropzone that accepts files; accept is a comma list like image/png. */
@@ -15,20 +17,7 @@ export default defineEntry({
     }),
     description: "A dropzone that accepts files; accept is a comma list like image/png.",
     component: ({ props }) => {
-      const upload = () =>
-        h(
-          "svg",
-          {
-            width: 20,
-            height: 20,
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            "stroke-width": 1.75,
-            "aria-hidden": true,
-          },
-          [h("path", { d: "M12 16V5m0 0-4 4m4-4 4 4M5 19h14" })],
-        );
+      const uploadGlyph = () => glyphNode(upload, { width: 20, height: 20 });
       return labelled(
         props.label,
         h(
@@ -36,7 +25,7 @@ export default defineEntry({
           { accept: props.accept, maxFiles: props.multiple ? 5 : 1 } as never,
           () => [
             h(FileUpload.Dropzone, () => [
-              upload(),
+              uploadGlyph(),
               h("span", () => "Drop files here or"),
               h(FileUpload.Trigger, () => "Choose files"),
             ]),

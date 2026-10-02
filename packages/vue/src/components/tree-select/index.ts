@@ -2,10 +2,12 @@ import { useFilter } from "@ark-ui/vue/locale";
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/vue/tree-view";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_right } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 import { Teleport } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Input } from "../input";
 
 export interface TreeSelectNode {
@@ -16,19 +18,7 @@ export interface TreeSelectNode {
 }
 
 function chevron() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m9 18 6-6-6-6" })],
-  );
+  return glyphNode(chevron_right);
 }
 
 function chevronDown() {

@@ -1,54 +1,15 @@
 import { injectComponentStyle } from "@bysages/core";
+import { file, image, x } from "@bysages/icons";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-const imageGlyph = () =>
-  h(
-    "svg",
-    {
-      viewBox: "0 0 16 16",
-      "aria-hidden": "true",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": "1.5",
-      "stroke-linecap": "square",
-    },
-    [
-      h("rect", { x: 2.5, y: 3.5, width: 11, height: 9 }),
-      h("path", { d: "M2.5 10.5 6 7l3 3 2-1.5 2.5 2" }),
-      h("circle", { cx: 6, cy: 6, r: 0.75, fill: "currentColor", stroke: "none" }),
-    ],
-  );
+import { glyphNode } from "../../internal/glyph";
 
-const fileGlyph = () =>
-  h(
-    "svg",
-    {
-      viewBox: "0 0 16 16",
-      "aria-hidden": "true",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": "1.5",
-      "stroke-linecap": "square",
-    },
-    [h("path", { d: "M4 2.5h5l3 3V13.5H4z" }), h("path", { d: "M9 2.5v3h3" })],
-  );
+const imageGlyph = () => glyphNode(image);
 
-const removeGlyph = () =>
-  h(
-    "svg",
-    {
-      viewBox: "0 0 16 16",
-      width: 12,
-      height: 12,
-      "aria-hidden": "true",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": "1.5",
-      "stroke-linecap": "square",
-    },
-    [h("path", { d: "M4 4l8 8M12 4l-8 8" })],
-  );
+const fileGlyph = () => glyphNode(file);
+
+const removeGlyph = () => glyphNode(x, { width: 12, height: 12 });
 
 const IMAGE_EXTS = ["png", "jpg", "jpeg", "gif", "webp", "svg", "avif", "bmp", "ico"];
 

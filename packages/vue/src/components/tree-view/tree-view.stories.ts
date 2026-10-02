@@ -1,9 +1,11 @@
 import { useFilter } from "@ark-ui/vue/locale";
 import { createTreeCollection } from "@ark-ui/vue/tree-view";
+import { chevron_right } from "@bysages/icons";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, type PropType, reactive } from "vue";
 
 import { TreeView } from ".";
+import { glyphNode } from "../../internal/glyph";
 import { Button } from "../button";
 import { Input } from "../input";
 import { withState } from "../with-state.js";
@@ -47,22 +49,6 @@ const libraryCollection = createTreeCollection<Node>({
     ],
   },
 });
-
-function chevron() {
-  return h(
-    "svg",
-    {
-      width: 14,
-      height: 14,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 1.75,
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m9 5 7 7-7 7" })],
-  );
-}
 
 const checkboxGlyph = () =>
   h(
@@ -120,7 +106,7 @@ const Node = defineComponent({
               ? [
                   h(TreeView.Branch, () => [
                     h(TreeView.BranchControl, () => [
-                      h(TreeView.BranchIndicator, () => chevron()),
+                      h(TreeView.BranchIndicator),
                       h(TreeView.BranchText, () => props.node.name),
                     ]),
                     h(TreeView.BranchContent, () => [
@@ -158,7 +144,7 @@ const NodeWithCheckbox = defineComponent({
               ? [
                   h(TreeView.Branch, () => [
                     h(TreeView.BranchControl, () => [
-                      h(TreeView.BranchIndicator, () => chevron()),
+                      h(TreeView.BranchIndicator),
                       h(TreeView.BranchText, () => props.node.name),
                       checkbox(),
                     ]),
@@ -193,7 +179,7 @@ const NodeWithLinks = defineComponent({
           ? [
               h(TreeView.Branch, () => [
                 h(TreeView.BranchControl, () => [
-                  h(TreeView.BranchIndicator, () => chevron()),
+                  h(TreeView.BranchIndicator),
                   h(TreeView.BranchText, () => props.node.name),
                 ]),
                 h(TreeView.BranchContent, () => [
@@ -240,7 +226,9 @@ const AsyncNode = defineComponent({
                   h(TreeView.Branch, () => [
                     h(TreeView.BranchControl, () => [
                       h(TreeView.BranchIndicator, () =>
-                        state.loading ? h("span", { style: { opacity: 0.5 } }, "…") : chevron(),
+                        state.loading
+                          ? h("span", { style: { opacity: 0.5 } }, "…")
+                          : glyphNode(chevron_right),
                       ),
                       h(TreeView.BranchText, () => props.node.name),
                     ]),

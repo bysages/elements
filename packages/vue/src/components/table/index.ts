@@ -1,5 +1,6 @@
 import { createListCollection } from "@ark-ui/vue/select";
 import { injectComponentStyle } from "@bysages/core";
+import { chevron_down, chevron_left, chevron_right } from "@bysages/icons";
 import type { SortingState } from "@tanstack/vue-table";
 import {
   FlexRender,
@@ -55,6 +56,7 @@ import {
   type PropType,
 } from "vue";
 
+import { glyphNode } from "../../internal/glyph";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
@@ -63,21 +65,9 @@ export type { ColumnDef, SortingState };
 
 /** The pagination bar's arrows — thin chevrons for the row of seals. */
 function pageGlyph(direction: "start" | "end") {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      width: 14,
-      height: 14,
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6" })],
-  );
+  return direction === "start"
+    ? glyphNode(chevron_left, { width: 14, height: 14 })
+    : glyphNode(chevron_right, { width: 14, height: 14 });
 }
 
 /** Column metadata understood by this table: mark columns whose values
@@ -224,36 +214,12 @@ function mark(el: HTMLElement, attr: string, on: boolean) {
 }
 
 function chevronGlyph() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2.5,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m9 6 6 6-6 6" })],
-  );
+  return glyphNode(chevron_right);
 }
 
 /** The page-size select's pointing chevron. */
 function chevronDownGlyph() {
-  return h(
-    "svg",
-    {
-      viewBox: "0 0 24 24",
-      fill: "none",
-      stroke: "currentColor",
-      "stroke-width": 2.5,
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "aria-hidden": true,
-    },
-    [h("path", { d: "m6 9 6 6 6-6" })],
-  );
+  return glyphNode(chevron_down);
 }
 
 function selectBox(checked: boolean, indeterminate: boolean, onToggle: () => void, label: string) {
