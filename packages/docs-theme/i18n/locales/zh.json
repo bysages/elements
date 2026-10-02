@@ -11,6 +11,8 @@
     "language": "语言",
     "reference": "参考",
     "examples": "示例",
+    "design": "设计",
+    "studio": "工作台",
     "demo": {
       "preview": "预览",
       "code": "代码"

@@ -152,6 +152,13 @@ export interface DataTableProps {
    * under its target. Rows need a stable `id`. Row dragging rests while
    * sorting or filtering hides the data order. */
   reorderable?: boolean;
+  /** Also accept drags that begin outside the table: the hovered row
+   * answers with the same before / inside / after bands as an internal
+   * drag, and the drop reports through `rowDrop`. */
+  externalDrops?: boolean;
+  /** Expand every branch when the table mounts; the user's collapses
+   * survive reorders. */
+  defaultExpanded?: boolean;
 }
 
 const SELECT_COL_ID = "__select";
@@ -264,6 +271,7 @@ export const DataTable = defineComponent({
   emits: {
     rowReorder: (_rows: RowData[]) => true,
     columnReorder: (_ids: string[]) => true,
+    rowDrop: (_row: RowData, _event: DragEvent, _zone: "before" | "inside" | "after") => true,
   },
   props: {
     data: { type: Array as PropType<RowData[]>, required: true },
@@ -289,6 +297,8 @@ export const DataTable = defineComponent({
     globalFilterPlaceholder: { type: String, default: "Filter rows" },
     emptyText: { type: String, default: "No rows" },
     reorderable: Boolean,
+    externalDrops: Boolean,
+    defaultExpanded: Boolean,
   },
   setup(rawProps, { expose, emit }) {
     injectComponentStyle("table");
@@ -385,6 +395,7 @@ export const DataTable = defineComponent({
       autoResetExpanded: false,
       initialState: {
         ...(props.initialSorting ? { sorting: props.initialSorting } : {}),
+        ...(props.defaultExpanded ? { expanded: true } : {}),
         ...(props.paginated
           ? { pagination: { pageIndex: 0, pageSize: props.pageSize ?? 10 } }
           : {}),
@@ -619,7 +630,28 @@ export const DataTable = defineComponent({
     }
 
     function onRowDragOver(row: TRow, e: DragEvent) {
-      if (!dragRowId || dragRowId === String(row.id)) return;
+      // No dragRowId means the drag began outside the table; only the
+      // external-drop contract answers it, reading the row as the adopt
+      // target.
+      if (!dragRowId) {
+        if (!props.externalDrops) return;
+        const hover = e.currentTarget as HTMLElement;
+        const zone = props.tree
+          ? rowZone(row, e)
+          : e.clientY - hover.getBoundingClientRect().top < hover.getBoundingClientRect().height / 2
+            ? "before"
+            : "after";
+        e.preventDefault();
+        e.dataTransfer!.dropEffect = "copy";
+        if (lastRowDrop !== hover) clearRowDrop();
+        mark(hover, "data-drop-before", zone === "before");
+        mark(hover, "data-drop-inside", zone === "inside");
+        mark(hover, "data-drop-after", zone === "after");
+        hover.style.setProperty("--bs-drop-indent", String(props.tree ? row.depth : 0));
+        lastRowDrop = hover;
+        return;
+      }
+      if (dragRowId === String(row.id)) return;
       const el = e.currentTarget as HTMLElement;
       let zone: "before" | "inside" | "after";
       if (props.tree) {
@@ -650,9 +682,23 @@ export const DataTable = defineComponent({
 
     function onRowDrop(row: TRow, e: DragEvent) {
       e.preventDefault();
-      if (!dragRowId || dragRowId === String(row.id)) return;
+      if (!dragRowId) {
+        if (props.externalDrops) {
+          const zone = props.tree
+            ? rowZone(row, e)
+            : e.clientY - (e.currentTarget as HTMLElement).getBoundingClientRect().top <
+                (e.currentTarget as HTMLElement).getBoundingClientRect().height / 2
+              ? ("before" as const)
+              : ("after" as const);
+          emit("rowDrop", row.original, e, zone);
+          clearRowDrop();
+        }
+        return;
+      }
+      if (dragRowId === String(row.id)) return;
       const el = e.currentTarget as HTMLElement;
       const box = el.getBoundingClientRect();
+      const pos = (e.clientY - box.top) / box.height;
       const targetId = String(row.id);
 
       if (props.tree) {
@@ -673,7 +719,6 @@ export const DataTable = defineComponent({
         }
         emit("rowReorder", next);
       } else {
-        const pos = (e.clientY - box.top) / box.height;
         const from = props.data.findIndex((r) => String((r as TreeNode).id) === dragRowId);
         const to = props.data.findIndex((r) => String((r as TreeNode).id) === targetId);
         if (from < 0 || to < 0) return;
@@ -829,7 +874,7 @@ export const DataTable = defineComponent({
         style.transform = `translateY(${item.start}px)`;
         style.blockSize = `${item.size}px`;
       }
-      const draggable = rowDraggable.value;
+      const draggable = rowDraggable.value || props.externalDrops;
       return h(
         "div",
         {
@@ -839,7 +884,7 @@ export const DataTable = defineComponent({
           "data-part": "row",
           "data-selected": row.getIsSelected() || undefined,
           draggable: draggable || undefined,
-          onDragstart: draggable ? (e: DragEvent) => onRowDragStart(row, e) : undefined,
+          onDragstart: rowDraggable.value ? (e: DragEvent) => onRowDragStart(row, e) : undefined,
           onDragover: draggable ? (e: DragEvent) => onRowDragOver(row, e) : undefined,
           onDragleave: draggable ? onRowDragLeave : undefined,
           onDrop: draggable ? (e: DragEvent) => onRowDrop(row, e) : undefined,

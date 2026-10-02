@@ -54,22 +54,30 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
   const navigation = provided ?? inject<Ref<NavItem[]>>("navigation");
 
   // The site owns its pages; the theme only mirrors what the router
-  // registered, so the examples entry appears without any configuration
+  // registered, so a gallery entry appears without any configuration
   // and never lies about a page the site doesn't have.
-  const hasExamplesRoute = computed(() =>
-    useRouter()
-      .getRoutes()
-      .some((item) => item.path.split("/").includes("examples")),
+  const registeredSegments = computed(
+    () =>
+      new Set(
+        useRouter()
+          .getRoutes()
+          .flatMap((item) => item.path.split("/"))
+          .filter(Boolean),
+      ),
   );
 
-  // Example pages opt into the chrome with `examples: true` in their page
-  // meta — full-width, no sidebar, but the sections row (with its Examples
-  // entry) stays so the reader can walk back into the docs.
-  const isDocsPage = computed(() => route.meta.layout === "docs" || route.meta.examples === true);
+  // Gallery pages opt into the chrome with `gallery: true` in their page
+  // meta — full-width, no sidebar, but the sections row stays so the
+  // reader can walk back into the docs. `examples: true` is the older
+  // spelling and keeps working for sites built before the gallery row.
+  const isDocsPage = computed(
+    () =>
+      route.meta.layout === "docs" || route.meta.gallery === true || route.meta.examples === true,
+  );
 
   const subNavigationMode = computed(() => {
     if (!isDocsPage.value) return undefined;
-    return (appConfig.navigation as { sub?: "header" | "aside" } | undefined)?.sub;
+    return (appConfig.navigation as { sub?: "header" | "aside" | undefined } | undefined)?.sub;
   });
 
   // The shelf below the locale segment. During a locale switch the
@@ -102,16 +110,21 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
         to: getFirstPagePath(item),
         active: !!item.path && onShelf(route.path, item.path),
       }));
-    // The examples gallery is a real page tree, not a content shelf, so
-    // it can't ride the content tree. The row shows what the site
-    // actually registers: the entry joins only when an /examples route
-    // exists, and the label comes from the messages (`docs.examples`).
-    if (!hasExamplesRoute.value) return shelf;
-    const examplesTo = localePath("/examples");
-    return [
-      ...shelf,
-      { label: t("docs.examples"), to: examplesTo, active: onShelf(route.path, examplesTo) },
-    ];
+    // Galleries are real page trees, not content shelves, so they can't
+    // ride the content tree. An entry joins only when its route exists.
+    const galleries = (
+      [
+        { key: "examples", segment: "examples" },
+        { key: "design", segment: "design" },
+        { key: "studio", segment: "studio" },
+      ] as const
+    )
+      .filter(({ segment }) => registeredSegments.value.has(segment))
+      .map(({ key, segment }) => {
+        const to = localePath(`/${segment}`);
+        return { label: t(`docs.${key}`), to, active: onShelf(route.path, to) };
+      });
+    return [...shelf, ...galleries];
   });
 
   const sidebarNavigation = computed(() => {

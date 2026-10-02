@@ -7,11 +7,12 @@ const draft = ref("");
 </script>
 
 <template>
-  <Ai.PromptInput
-    v-if="!isOpen"
-    v-model="draft"
-    class="bs-docs-assistant-float"
-    :placeholder="t('docs.assistant')"
-    @submit="open($event)"
-  />
+  <div v-if="!isOpen" role="region" :aria-label="t('docs.assistantTitle')">
+    <Ai.PromptInput
+      v-model="draft"
+      class="bs-docs-assistant-float"
+      :placeholder="t('docs.assistant')"
+      @submit="open($event)"
+    />
+  </div>
 </template>

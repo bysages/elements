@@ -11,6 +11,8 @@
     "language": "Language",
     "reference": "Reference",
     "examples": "Examples",
+    "design": "Design",
+    "studio": "Studio",
     "demo": {
       "preview": "Preview",
       "code": "Code"

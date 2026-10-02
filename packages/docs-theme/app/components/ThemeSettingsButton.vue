@@ -160,7 +160,7 @@ function setScene(scene: ThemeScene) {
             <SegmentGroup.Item v-for="d in densities" :key="d.value" :value="d.value">
               <SegmentGroup.ItemHiddenInput />
               <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemText>{{ densityLabel(d.value) }}</SegmentGroup.ItemText>
+              <SegmentGroup.ItemText>{{ densityLabel(d) }}</SegmentGroup.ItemText>
             </SegmentGroup.Item>
           </SegmentGroup.Root>
         </section>
