@@ -3,6 +3,7 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h, Teleport } from "vue";
 
 import { ColorPicker } from ".";
+import { SegmentGroup } from "../segment-group/index.js";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Color Picker" };
@@ -68,9 +69,36 @@ function channelRow(channels: string[]) {
   );
 }
 
-/** The seal trigger holds the picked color; the popup opens the picking
- * area, the hue and alpha tracks beside the eyedropper, the saved swatches,
- * and one channel-input row per format, switched by the format select. */
+/** The formats ride our own segment group through the picker's context —
+ * the native select would dress the closed control but never its list. */
+function formatSwitch() {
+  return h(ColorPicker.Context as any, null, {
+    default: (api: any) =>
+      h(
+        SegmentGroup.Root,
+        {
+          value: api.format,
+          onValueChange: (e: { value: string }) => api.setFormat(e.value),
+        },
+        () => [
+          h(SegmentGroup.Indicator),
+          ...["rgba", "hsla"].map((format) =>
+            h(SegmentGroup.Item, { key: format, value: format }, () => [
+              h(SegmentGroup.ItemText, () => format),
+              h(SegmentGroup.ItemControl),
+              h(SegmentGroup.ItemHiddenInput),
+            ]),
+          ),
+        ],
+      ),
+  });
+}
+
+/** One hex input beside the seal trigger — alpha lives in the popup where
+ * the slider and its channel input already speak for it. The popup opens
+ * the picking area, the hue and alpha tracks beside the eyedropper, the
+ * saved swatches, one channel-input row per format, and the format
+ * segment group. */
 export const Basic = {
   args: {
     label: "Ink color",
@@ -82,7 +110,6 @@ export const Basic = {
           h(ColorPicker.Label, () => args.label),
           h(ColorPicker.Control, () => [
             h(ColorPicker.ChannelInput as any, { channel: "hex" }),
-            h(ColorPicker.ChannelInput as any, { channel: "alpha" }),
             h(ColorPicker.Trigger, () => [
               h(ColorPicker.TransparencyGrid),
               h(ColorPicker.ValueSwatch),
@@ -126,7 +153,7 @@ export const Basic = {
                 h(ColorPicker.View as any, { format: "hsla" }, () =>
                   channelRow(["hue", "saturation", "lightness", "alpha"]),
                 ),
-                h(ColorPicker.FormatSelect),
+                formatSwitch(),
               ]),
             ),
           ]),

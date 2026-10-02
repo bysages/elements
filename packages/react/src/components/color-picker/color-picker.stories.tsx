@@ -2,6 +2,7 @@ import { parseColor } from "@ark-ui/react/color-picker";
 import type { Meta } from "@storybook/react-vite";
 
 import { ColorPicker } from ".";
+import { SegmentGroup } from "../segment-group/index.js";
 
 const meta: Meta = { title: "Components/Forms/Color Picker" };
 export default meta;
@@ -58,9 +59,32 @@ function channelRow(channels: string[]) {
   );
 }
 
-/** The seal trigger holds the picked color; the popup opens the picking
- * area, the hue and alpha tracks beside the eyedropper, the saved swatches,
- * and one channel-input row per format, switched by the format select. */
+/** The formats ride our own segment group through the picker's context —
+ * the native select would dress the closed control but never its list. */
+function formatSwitch() {
+  return (
+    <ColorPicker.Context>
+      {(api: any) => (
+        <SegmentGroup.Root value={api.format} onValueChange={(e: any) => api.setFormat(e.value)}>
+          <SegmentGroup.Indicator />
+          {["rgba", "hsla"].map((format) => (
+            <SegmentGroup.Item key={format} value={format}>
+              <SegmentGroup.ItemText>{format}</SegmentGroup.ItemText>
+              <SegmentGroup.ItemControl />
+              <SegmentGroup.ItemHiddenInput />
+            </SegmentGroup.Item>
+          ))}
+        </SegmentGroup.Root>
+      )}
+    </ColorPicker.Context>
+  );
+}
+
+/** One hex input beside the seal trigger — alpha lives in the popup where
+ * the slider and its channel input already speak for it. The popup opens
+ * the picking area, the hue and alpha tracks beside the eyedropper, the
+ * saved swatches, one channel-input row per format, and the format
+ * segment group. */
 export const Basic = {
   args: {
     label: "Ink color",
@@ -70,7 +94,6 @@ export const Basic = {
       <ColorPicker.Label>{args.label}</ColorPicker.Label>
       <ColorPicker.Control>
         <ColorPicker.ChannelInput channel="hex" />
-        <ColorPicker.ChannelInput channel="alpha" />
         <ColorPicker.Trigger>
           <ColorPicker.TransparencyGrid />
           <ColorPicker.ValueSwatch />
@@ -112,7 +135,7 @@ export const Basic = {
           <ColorPicker.View format="hsla">
             {channelRow(["hue", "saturation", "lightness", "alpha"])}
           </ColorPicker.View>
-          <ColorPicker.FormatSelect />
+          {formatSwitch()}
         </ColorPicker.Content>
       </ColorPicker.Positioner>
       <ColorPicker.HiddenInput />

@@ -71,22 +71,35 @@ export const colorPickerCss =
   cursor: not-allowed;
 }
 
-/* The swatch sits as a seal inset into the trigger's paper face — never a
-   full-bleed fill, which would read as a foreign block rather than ink on
-   paper. A hairline under the pigment keeps pale picks visible. */
-[data-scope="color-picker"][data-part="swatch"] {
-  position: absolute;
+/* The value swatch sits as a seal inset into the trigger's paper face —
+   never a full-bleed fill, which would read as a foreign block rather
+   than ink on paper. A hairline under the pigment keeps pale picks
+   visible. Scoped to the trigger: the saved swatches of a swatch group
+   are their own square, sized from the control ladder. */
+[data-scope="color-picker"][data-part="trigger"] [data-part="swatch"] {
+  /* The machine inlines a relative position on the value swatch as its own
+     layout anchor; the stylesheet is the only visual layer, so the seal
+     insets here take precedence. */
+  position: absolute !important;
   inset: var(--bs-space-1);
   border-radius: var(--bs-radius-xs);
   box-shadow: inset 0 0 0 1px var(--bs-color-border);
 }
 
-/* The checkerboard is painted before the track/swatch in DOM order and
-   stacks in the same inset — never the parent background, or the whole
-   control would read as transparent. */
+/* The checkerboard underlies translucent ink — inside a slider track it
+   fills the lane, inside the trigger it insets with the swatch. */
 [data-scope="color-picker"][data-part="transparency-grid"] {
   position: absolute;
-  inset: var(--bs-space-1);
+  inset: 0;
+  border-radius: inherit;
+}
+
+[data-scope="color-picker"][data-part="trigger"] [data-part="transparency-grid"] {
+  /* The machine inlines a full-bleed lane for the checkerboard; in the
+     trigger it must inset with the swatch, so the stylesheet takes over. */
+  inset: var(--bs-space-1) !important;
+  inline-size: auto !important;
+  block-size: auto !important;
   border-radius: var(--bs-radius-xs);
 }
 
@@ -271,7 +284,7 @@ export const colorPickerCss =
   box-shadow: 0 0 0 1px var(--bs-color-primary);
 }
 
-[data-scope="color-picker"][data-part="swatch"] {
+[data-scope="color-picker"][data-part="swatch-group"] [data-part="swatch"] {
   display: grid;
   place-items: center;
   inline-size: var(--bs-control-height-md);
@@ -401,14 +414,14 @@ export const colorPickerCss =
 /* Size rungs: the root's data-size re-points the ladder for the swatch
    seal and its passengers — the area and sliders keep their own register. */
 [data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="trigger"],
-[data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="swatch"],
+[data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="swatch-group"] [data-part="swatch"],
 [data-scope="color-picker"][data-part="root"][data-size="sm"] [data-part="eye-dropper-trigger"] {
   inline-size: var(--bs-control-height-sm);
   block-size: var(--bs-control-height-sm);
 }
 
 [data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="trigger"],
-[data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="swatch"],
+[data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="swatch-group"] [data-part="swatch"],
 [data-scope="color-picker"][data-part="root"][data-size="lg"] [data-part="eye-dropper-trigger"] {
   inline-size: var(--bs-control-height-lg);
   block-size: var(--bs-control-height-lg);
