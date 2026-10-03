@@ -2,7 +2,7 @@
 import { provideConfig } from "./context";
 import type { ConfigProviderProps } from "./props";
 
-let { density, scene, accent, dir, locale, lang, children, ...rest }: ConfigProviderProps = $props();
+let { density, scene, accent, dir, locale, messages, lang, children, ...rest }: ConfigProviderProps = $props();
 
 provideConfig({
   get density() {
@@ -19,6 +19,9 @@ provideConfig({
   },
   get locale() {
     return locale;
+  },
+  get messages() {
+    return messages;
   },
 });
 </script>

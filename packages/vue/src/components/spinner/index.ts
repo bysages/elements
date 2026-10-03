@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
 export const Spinner = defineComponent({
@@ -15,6 +17,7 @@ export const Spinner = defineComponent({
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("spinner");
+    const messages = useComponentMessages();
 
     return () =>
       h(
@@ -22,7 +25,8 @@ export const Spinner = defineComponent({
         {
           ...ctx.attrs,
           role: "status",
-          "aria-label": ctx.attrs["aria-label"] ?? "Loading",
+          "aria-label":
+            (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.spinner.loading,
           "data-scope": "spinner",
           "data-part": "root",
           "data-size": props.size,

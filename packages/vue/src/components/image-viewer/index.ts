@@ -2,10 +2,12 @@ import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
 import { injectComponentStyle } from "@bysages/core";
 import { rotate_cw, x, zoom_in, zoom_out } from "@bysages/icons";
 import type { SetupContext } from "vue";
+import type { PropType } from "vue";
 import { defineComponent, h, ref, watch, type VNode } from "vue";
 import { Teleport } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 
@@ -33,6 +35,10 @@ export interface ImageViewerProps {
   alt?: string;
   open?: boolean;
   zoomable?: boolean;
+  /** Intrinsic size, handed to the image itself to reserve its box. */
+  width?: string | number;
+  /** Intrinsic size, handed to the image itself to reserve its box. */
+  height?: string | number;
 }
 
 export const ImageViewer = defineComponent({
@@ -42,12 +48,21 @@ export const ImageViewer = defineComponent({
     alt: { type: String, default: "" },
     open: { type: Boolean, default: undefined },
     zoomable: { type: Boolean, default: true },
+    width: {
+      type: [String, Number] as PropType<ImageViewerProps["width"]>,
+      default: undefined,
+    },
+    height: {
+      type: [String, Number] as PropType<ImageViewerProps["height"]>,
+      default: undefined,
+    },
   },
   emits: {
     "update:open": (_value: boolean) => true,
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("image-viewer");
+    const messages = useComponentMessages();
 
     // Controlled when the caller owns `open`; uncontrolled otherwise —
     // an undefined `open` must not reach the machine, or it would
@@ -136,6 +151,8 @@ export const ImageViewer = defineComponent({
                     "data-part": "viewport",
                     src: props.src,
                     alt: props.alt,
+                    width: props.width,
+                    height: props.height,
                     style: {
                       transform: `scale(${scale.value}) rotate(${rotation.value}deg)`,
                     },
@@ -147,12 +164,20 @@ export const ImageViewer = defineComponent({
                     h(ButtonGroup, () => [
                       ...(props.zoomable
                         ? [
-                            toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP)),
-                            toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP)),
+                            toolButton(messages.value.imageViewer.zoomIn, TOOL_GLYPHS.zoomIn, () =>
+                              zoom(SCALE_STEP),
+                            ),
+                            toolButton(
+                              messages.value.imageViewer.zoomOut,
+                              TOOL_GLYPHS.zoomOut,
+                              () => zoom(-SCALE_STEP),
+                            ),
                           ]
                         : []),
-                      toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate),
-                      toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false)),
+                      toolButton(messages.value.imageViewer.rotate, TOOL_GLYPHS.rotate, rotate),
+                      toolButton(messages.value.imageViewer.close, TOOL_GLYPHS.close, () =>
+                        setOpen(false),
+                      ),
                     ]),
                   ]),
                 ],

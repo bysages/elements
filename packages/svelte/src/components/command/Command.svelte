@@ -8,6 +8,7 @@ import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
 import { Portal } from "@ark-ui/svelte/portal";
 import { untrack } from "svelte";
 
+import { useComponentMessages } from "../config-provider/messages";
 import type { CommandEntry, CommandProps } from "./props";
 
 let {
@@ -16,7 +17,7 @@ let {
   open = $bindable(false),
   autoFilter = true,
   inputValue,
-  emptyText = "No matching commands",
+  emptyText,
   onSelect,
   onOpenChange,
   onInputValueChange,
@@ -25,6 +26,10 @@ let {
 // The list has no popup of its own, but the machine still opens and
 // closes its content (outside click on the sheet dims the list);
 // re-entry through the field brings it back.
+const messages = useComponentMessages();
+const placeholderText = $derived(placeholder ?? messages().command.search);
+const emptyMessage = $derived(emptyText ?? messages().command.noMatches);
+
 let listOpen = $state(true);
 
 // The field's live text, kept so a caller's new list can be
@@ -125,7 +130,7 @@ grafts onto the sheet's list. -->
         <div {...positionerProps()} data-scope="command" data-part="positioner">
           <ArkDialog.Content>
             {#snippet asChild(contentProps)}
-              <div {...contentProps()} data-scope="command" data-part="content" aria-label="Commands">
+              <div {...contentProps()} data-scope="command" data-part="content" aria-label={messages().command.palette}>
                 <ArkCombobox.Root
                   collection={collection}
                   {inputValue}
@@ -141,7 +146,8 @@ grafts onto the sheet's list. -->
                       <input
                         {...inputProps()}
                         type="text"
-                        placeholder={placeholder}
+                        placeholder={placeholderText}
+                        aria-label={messages().command.search}
                         data-scope="command"
                         data-part="input"
                       />
@@ -179,7 +185,7 @@ grafts onto the sheet's list. -->
                           {/if}
                         {/each}
                         {#if groups.size === 0}
-                          <div data-scope="command" data-part="empty">{emptyText}</div>
+                          <div data-scope="command" data-part="empty">{emptyMessage}</div>
                         {/if}
                       </div>
                     {/snippet}

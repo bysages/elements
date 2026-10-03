@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { formatMessage, useComponentMessages } from "../../internal/messages";
+
 const imageGlyph = (
   <svg
     viewBox="0 0 16 16"
@@ -76,6 +78,7 @@ export interface AttachmentProps extends HTMLAttributes<HTMLSpanElement> {
 
 export function Attachment({ name, size, status = "ready", onRemove, ...rest }: AttachmentProps) {
   injectComponentStyle("ai");
+  const messages = useComponentMessages();
   return (
     <span {...rest} data-scope="ai" data-part="attachment" data-status={status}>
       {isImage(name) ? imageGlyph : fileGlyph}
@@ -84,7 +87,7 @@ export function Attachment({ name, size, status = "ready", onRemove, ...rest }: 
       <button
         type="button"
         data-remove=""
-        aria-label={`Remove ${name}`}
+        aria-label={formatMessage(messages.ai.removeAttachment, { name })}
         onClick={() => onRemove?.()}
       >
         {removeGlyph}

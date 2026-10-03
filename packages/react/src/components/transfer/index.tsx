@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useState } from "react";
 
+import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -68,6 +69,7 @@ export function Transfer({
 }: TransferProps) {
   injectComponentStyle("transfer");
   injectComponentStyle("checkbox");
+  const messages = useComponentMessages();
   const [checkedSource, setCheckedSource] = useState<Set<string>>(() => new Set());
   const [checkedTarget, setCheckedTarget] = useState<Set<string>>(() => new Set());
   const [sourceQuery, setSourceQuery] = useState("");
@@ -128,8 +130,8 @@ export function Transfer({
               size="sm"
               value={query}
               onValueChange={onQuery}
-              placeholder="Filter…"
-              aria-label={`Filter ${title}`}
+              placeholder={messages.transfer.filter}
+              aria-label={formatMessage(messages.transfer.filter, { name: title })}
             />
           </div>
         ) : null}
@@ -174,7 +176,7 @@ export function Transfer({
           size="sm"
           square
           disabled={checkedSource.size === 0 || disabled}
-          aria-label="Move right"
+          aria-label={messages.transfer.moveRight}
           onClick={() => move(true)}
         >
           {arrowGlyph("right")}
@@ -184,7 +186,7 @@ export function Transfer({
           size="sm"
           square
           disabled={checkedTarget.size === 0 || disabled}
-          aria-label="Move left"
+          aria-label={messages.transfer.moveLeft}
           onClick={() => move(false)}
         >
           {arrowGlyph("left")}

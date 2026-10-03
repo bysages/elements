@@ -2,6 +2,7 @@ import { h } from "vue";
 import { z } from "zod";
 
 import { defineEntry } from "../../generative/shared";
+import { Stack } from "../stack";
 import { Ai } from "./index";
 
 /** A small assistant face: prompt input above a response pane. */
@@ -10,7 +11,7 @@ export default defineEntry({
     props: z.object({ placeholder: z.string().optional(), content: z.string().optional() }),
     description: "A small assistant face: prompt input above a response pane.",
     component: ({ props }) =>
-      h(Ai.Conversation, { style: { gap: "0.75rem" } }, () => [
+      h(Ai.Conversation, {}, () => [
         props.content != null
           ? h(Ai.Response as never, { content: props.content! } as never)
           : null,
@@ -33,7 +34,7 @@ export default defineEntry({
     description: "A row of suggested prompts as chips.",
     component: ({ props }) => {
       const prompts = props.items ?? ["Draft a brief", "List tokens"];
-      return h("div", { style: { display: "flex", flexWrap: "wrap", gap: "0.5rem" } }, () =>
+      return h(Stack, { direction: "row", gap: "sm", wrap: true }, () =>
         prompts.map((prompt: string) =>
           h(Ai.Suggestion as never, { key: prompt, prompt } as never),
         ),

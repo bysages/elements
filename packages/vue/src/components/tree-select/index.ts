@@ -8,6 +8,7 @@ import { computed, defineComponent, h, ref, type PropType } from "vue";
 import { Teleport } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
 export interface TreeSelectNode {
@@ -52,6 +53,7 @@ export const TreeSelect = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("tree-select");
     injectComponentStyle("tree-view");
+    const messages = useComponentMessages();
 
     const open = ref(false);
     const query = ref("");
@@ -198,8 +200,8 @@ export const TreeSelect = defineComponent({
                             size: "sm",
                             modelValue: query.value,
                             "onUpdate:modelValue": (value: string) => (query.value = value),
-                            placeholder: "Filter…",
-                            "aria-label": "Filter options",
+                            placeholder: messages.value.command.filter,
+                            "aria-label": messages.value.select.filter,
                           }),
                         ]),
                       ]

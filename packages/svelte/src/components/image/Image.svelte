@@ -4,7 +4,16 @@ injectComponentStyle("image");
 
 import type { ImageProps } from "./props";
 
-let { src, alt = "", fit = "cover", loading = "lazy", fallback, ...rest }: ImageProps = $props();
+let {
+  src,
+  alt = "",
+  fit = "cover",
+  width,
+  height,
+  loading = "lazy",
+  fallback,
+  ...rest
+}: ImageProps = $props();
 
 type ImageState = "loading" | "loaded" | "error";
 
@@ -29,6 +38,8 @@ give. -->
     data-part="img"
     {src}
     {alt}
+    {width}
+    {height}
     {loading}
     decoding="async"
     onload={() => (state = "loaded")}

@@ -6,6 +6,7 @@ import { defineComponent, h } from "vue";
 import { Teleport } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
 export interface SplitButtonEntry {
@@ -50,6 +51,7 @@ export const SplitButton = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("split-button");
     injectComponentStyle("menu");
+    const messages = useComponentMessages();
 
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "split-button", "data-part": "root" }, () => [
@@ -74,7 +76,7 @@ export const SplitButton = defineComponent({
                 square: true,
                 size: props.size,
                 disabled: props.disabled,
-                "aria-label": "More actions",
+                "aria-label": messages.value.more.actions,
               },
               chevronDown,
             ),

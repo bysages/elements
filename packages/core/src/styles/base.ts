@@ -42,6 +42,38 @@ export const baseCss = /* css */ `
 :where([data-scope]) {
   font-family: var(--bs-font-sans);
 }
+
+/* Viewport insets the browser cannot know from the layout: a display
+   notch or home indicator is device chrome, not page margin. Overlay
+   seating consumes these; ordinary flow is left alone. */
+:root,
+:host {
+  --bs-safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --bs-safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --bs-safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --bs-safe-area-inset-left: env(safe-area-inset-left, 0px);
+}
+
+/* Ordinary controls answer a tap without inviting zoom or the browser's
+   ink highlight. Gesture surfaces keep their own "touch-action: none"
+   because their component rules outrank this zero-specificity default. */
+:where(
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  [data-part="trigger"],
+  [data-part="item"],
+  [data-part="option"],
+  [data-part="control"],
+  [data-part="tab"],
+  [data-part="marker"],
+  [data-part="handle"]
+) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 `;
 
 /** Press feedback that rides the motion attribute, not any one component —
@@ -74,7 +106,7 @@ export const inkRippleCss = /* css */ `
 }
 
 [data-motion~="ink-ripple"][data-ripple="press"]::after {
-  animation: bs-ripple-press var(--bs-ripple-duration, calc(650ms * var(--bs-motion-scale, 1)))
+  animation: bs-ripple-press var(--bs-ripple-duration)
     var(--bs-ripple-ease, var(--bs-ease-out)) forwards;
 }
 
@@ -82,9 +114,9 @@ export const inkRippleCss = /* css */ `
    the same-name animation carries it over instead of restarting — while
    the dissolve fades on top of it. */
 [data-motion~="ink-ripple"][data-ripple="release"]::after {
-  animation: bs-ripple-press var(--bs-ripple-duration, calc(650ms * var(--bs-motion-scale, 1)))
+  animation: bs-ripple-press var(--bs-ripple-duration)
       var(--bs-ripple-ease, var(--bs-ease-out)) forwards,
-    bs-ripple-fade var(--bs-ripple-release, calc(320ms * var(--bs-motion-scale, 1))) ease-out
+    bs-ripple-fade var(--bs-ripple-release) ease-out
       forwards;
 }
 
@@ -119,7 +151,7 @@ export const inkRippleCss = /* css */ `
 @media (prefers-reduced-motion: reduce) {
   [data-motion~="ink-ripple"][data-ripple="press"]::after,
   [data-motion~="ink-ripple"][data-ripple="release"]::after {
-    animation-duration: 1ms;
+    animation-duration: var(--bs-duration-instant);
   }
 }
 `;

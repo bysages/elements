@@ -107,7 +107,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="header-cell"][data-sort="asc"]::after,
 [data-scope="table"][data-part="header-cell"][data-sort="desc"]::after {
-  font-size: 0.625rem;
+  font-size: var(--bs-font-size-2xs);
   color: var(--bs-color-primary);
 }
 

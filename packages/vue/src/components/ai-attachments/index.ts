@@ -4,6 +4,7 @@ import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { formatMessage, useComponentMessages } from "../../internal/messages";
 
 const imageGlyph = () => glyphNode(image);
 
@@ -46,12 +47,14 @@ export const Attachment = defineComponent({
   emits: { remove: () => true },
   setup(props, { emit, attrs }: SetupContext) {
     injectComponentStyle("ai");
+    const messages = useComponentMessages();
+    const { "aria-label": consumerLabel, ...rootAttrs } = attrs;
 
     return () =>
       h(
         "span",
         {
-          ...attrs,
+          ...rootAttrs,
           "data-scope": "ai",
           "data-part": "attachment",
           "data-status": props.status,
@@ -65,7 +68,9 @@ export const Attachment = defineComponent({
             {
               type: "button",
               "data-remove": "",
-              "aria-label": `Remove ${props.name}`,
+              "aria-label":
+                consumerLabel ??
+                formatMessage(messages.value.ai.removeAttachment, { name: props.name }),
               onClick: () => emit("remove"),
             },
             removeGlyph(),

@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -43,6 +44,7 @@ export function DynamicInput({
   ...rest
 }: DynamicInputProps) {
   injectComponentStyle("dynamic-input");
+  const messages = useComponentMessages();
   const values = value ?? [""];
 
   const update = (index: number, next: string) => {
@@ -82,7 +84,7 @@ export function DynamicInput({
             square
             size={size}
             disabled={disabled || !canRemove}
-            aria-label={`Remove entry ${index + 1}`}
+            aria-label={messages.dynamicEntry.remove}
             onClick={() => remove(index)}
           >
             {crossIcon()}

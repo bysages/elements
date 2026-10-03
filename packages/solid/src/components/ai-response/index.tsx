@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import { createEffect, createMemo, onMount, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 import { wrapResponseTables } from "./tables";
 
@@ -25,6 +26,7 @@ export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
 export function Response(props: ResponseProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["content", "highlighter", "copyLabel", "copiedLabel"]);
+  const messages = useComponentMessages();
   const html = createMemo(() =>
     renderHtml(own.content, own.highlighter ? { highlighter: own.highlighter } : undefined),
   );
@@ -36,13 +38,17 @@ export function Response(props: ResponseProps) {
   onMount(() =>
     createEffect(() => {
       void html();
-      if (root) decorateCodeCopy(root, own.copyLabel ?? "Copy code");
+      if (root) decorateCodeCopy(root, own.copyLabel ?? messages().ai.copyCode);
       if (root) wrapResponseTables(root);
     }),
   );
 
   const onClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (event) => {
-    void clickCodeCopy(event, own.copyLabel ?? "Copy code", own.copiedLabel ?? "Copied");
+    void clickCodeCopy(
+      event,
+      own.copyLabel ?? messages().ai.copyCode,
+      own.copiedLabel ?? messages().ai.copied,
+    );
   };
 
   return (

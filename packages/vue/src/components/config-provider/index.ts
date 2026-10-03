@@ -1,4 +1,4 @@
-import type { ThemeScene } from "@bysages/core";
+import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import type { SetupContext } from "vue";
 import {
   computed,
@@ -34,6 +34,9 @@ export interface ConfigContext {
   dir?: "ltr" | "rtl";
   /** BCP-47 locale, landing as the native `lang` attribute. */
   locale?: string;
+  /** Partial replacement copy for wrapper-owned controls; unresolved
+   * leaves keep the locale default. */
+  messages?: ComponentMessagesOverride;
 }
 
 /** Where descendants read the provider's snapshot from — the hook the
@@ -55,6 +58,7 @@ export interface ConfigProviderProps {
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
+  messages?: ComponentMessagesOverride;
 }
 
 /**
@@ -72,6 +76,10 @@ export const ConfigProvider = defineComponent({
     accent: { type: String, default: undefined },
     dir: { type: String as PropType<"ltr" | "rtl">, default: undefined },
     locale: { type: String, default: undefined },
+    messages: {
+      type: Object as PropType<ComponentMessagesOverride>,
+      default: undefined,
+    },
   },
   setup(props, ctx: SetupContext) {
     provide(
@@ -82,6 +90,7 @@ export const ConfigProvider = defineComponent({
         accent: props.accent,
         dir: props.dir,
         locale: props.locale,
+        messages: props.messages,
       })),
     );
 

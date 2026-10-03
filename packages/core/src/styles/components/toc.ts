@@ -75,7 +75,7 @@ export const tocCss = /* css */ `
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   transition:
-    top 200ms var(--bs-ease-out),
-    height 200ms var(--bs-ease-out);
+    top var(--bs-duration-base) var(--bs-ease-out),
+    height var(--bs-duration-base) var(--bs-ease-out);
 }
 `;

@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /** A trail of waymarks: Root wraps the nav, List the ordered trail, and
  * each Item carries a Link — or the Current page — parted by a quiet
  * Separator. Links take href and the rest through attributes. */
@@ -25,7 +27,20 @@ function part<P extends HTMLAttributes<HTMLElement> = HTMLAttributes<HTMLElement
   return Component;
 }
 
-const Root = part("Root", "nav", { "aria-label": "Breadcrumb" });
+function Root({ children, ...rest }: HTMLAttributes<HTMLElement>) {
+  const messages = useComponentMessages();
+
+  return (
+    <nav
+      {...rest}
+      aria-label={rest["aria-label"] ?? messages.breadcrumb.label}
+      data-scope="breadcrumb"
+      data-part="root"
+    >
+      {children}
+    </nav>
+  );
+}
 const List = part("List", "ol");
 const Item = part("Item", "li");
 const Link = part<AnchorHTMLAttributes<HTMLAnchorElement>>("Link", "a");

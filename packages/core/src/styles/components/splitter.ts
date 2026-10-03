@@ -103,7 +103,7 @@ export const splitterCss = /* css */ `
   box-shadow: var(--bs-shadow-xs);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 200ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="splitter"][data-part="resize-trigger-indicator"][data-orientation="horizontal"] {

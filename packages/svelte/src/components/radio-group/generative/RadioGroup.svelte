@@ -12,7 +12,7 @@
   <Stack gap="xs">
     <Typography.Label>{props.label}</Typography.Label>
     <RadioGroup.Root defaultValue={slug(values[0] ?? "")}>
-      <div style="display:flex;flex-direction:column;gap:0.5rem">
+      <Stack direction="column" gap="sm">
         {#each values as value (value)}
           <RadioGroup.Item value={value}>
             <RadioGroup.ItemControl />
@@ -20,12 +20,12 @@
             <RadioGroup.ItemHiddenInput />
           </RadioGroup.Item>
         {/each}
-      </div>
+      </Stack>
     </RadioGroup.Root>
   </Stack>
 {:else}
   <RadioGroup.Root defaultValue={slug(values[0] ?? "")}>
-    <div style="display:flex;flex-direction:column;gap:0.5rem">
+    <Stack direction="column" gap="sm">
       {#each values as value (value)}
         <RadioGroup.Item value={value}>
           <RadioGroup.ItemControl />
@@ -33,6 +33,6 @@
           <RadioGroup.ItemHiddenInput />
         </RadioGroup.Item>
       {/each}
-    </div>
+    </Stack>
   </RadioGroup.Root>
 {/if}

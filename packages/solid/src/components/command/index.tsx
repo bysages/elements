@@ -5,6 +5,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, Show, createEffect, createSignal, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface CommandEntry {
   label: string;
   value: string;
@@ -76,6 +78,7 @@ function Row(props: { entry: CommandEntry }) {
 export function Command(props: CommandProps) {
   injectComponentStyle("command");
   injectComponentStyle("dialog");
+  const messages = useComponentMessages();
   const [own, rest] = splitProps(props, [
     "items",
     "placeholder",
@@ -154,7 +157,7 @@ export function Command(props: CommandProps) {
                     {...contentProps()}
                     data-scope="command"
                     data-part="content"
-                    aria-label="Commands"
+                    aria-label={messages().command.palette}
                   >
                     <ArkCombobox.Root
                       // The machine types its collection as
@@ -185,7 +188,8 @@ export function Command(props: CommandProps) {
                           <input
                             {...inputProps()}
                             type="text"
-                            placeholder={own.placeholder}
+                            placeholder={own.placeholder ?? messages().command.search}
+                            aria-label={messages().command.search}
                             data-scope="command"
                             data-part="input"
                           />
@@ -229,7 +233,7 @@ export function Command(props: CommandProps) {
                             </For>
                             <Show when={sections().length === 0}>
                               <div data-scope="command" data-part="empty">
-                                {own.emptyText ?? "No matching commands"}
+                                {own.emptyText ?? messages().command.noMatches}
                               </div>
                             </Show>
                           </div>

@@ -12,6 +12,7 @@ import {
   type Ref,
 } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
@@ -99,6 +100,9 @@ const Trigger = defineComponent({
   },
   setup(props, ctx: SetupContext) {
     const context = inject(FLOAT_BUTTON_CONTEXT);
+    const messages = useComponentMessages();
+    const consumerLabel = ctx.attrs["aria-label"] as string | undefined;
+
     return () =>
       h(
         Button,
@@ -107,7 +111,7 @@ const Trigger = defineComponent({
           square: true,
           size: context?.size.value ?? "lg",
           onClick: () => context?.toggle(),
-          "aria-label": props.label || "Actions",
+          "aria-label": consumerLabel ?? props.label ?? messages.value.floatButton.actions,
           "aria-expanded": context ? context.open.value : false,
         },
         () => ctx.slots.default?.(),

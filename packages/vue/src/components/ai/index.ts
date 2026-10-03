@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, onMounted, onUnmounted, ref } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
 import { PromptInput } from "../ai-prompt-input";
@@ -64,6 +65,8 @@ export const AiConversation = defineComponent({
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("ai");
+    const messages = useComponentMessages();
+    const { "aria-label": consumerLabel, ...rootAttrs } = ctx.attrs;
 
     const el = ref<HTMLElement | null>(null);
     let observer: MutationObserver | undefined;
@@ -95,7 +98,8 @@ export const AiConversation = defineComponent({
         {
           ref: el,
           role: "log",
-          ...ctx.attrs,
+          ...rootAttrs,
+          "aria-label": consumerLabel ?? messages.value.ai.conversation,
           "data-scope": "ai",
           "data-part": "conversation",
         },
@@ -112,7 +116,27 @@ export const AiContent = part("Content", "div");
 export const AiActions = part("Actions", "div");
 
 /** The while-it-works whisper for the in-flight turns. */
-export const AiLoader = part("Loader", "span", { role: "status", "aria-label": "Loading" });
+export const AiLoader = defineComponent({
+  name: "AiLoader",
+  setup(_, ctx: SetupContext) {
+    injectComponentStyle("ai");
+    const messages = useComponentMessages();
+
+    return () =>
+      h(
+        "span",
+        {
+          ...ctx.attrs,
+          role: "status",
+          "aria-label":
+            (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.ai.loading,
+          "data-scope": "ai",
+          "data-part": "loader",
+        },
+        ctx.slots.default?.(),
+      );
+  },
+});
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.Message`, and the rest, exactly as before the split. */

@@ -9,6 +9,7 @@ import { computed, defineComponent, h, useId, ref, watch, type PropType } from "
 import { Teleport } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
 export interface CascadeSelectNode {
@@ -56,6 +57,7 @@ export const CascadeSelect = defineComponent({
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("cascade-select");
+    const messages = useComponentMessages();
 
     const id = useId();
     const locale = useLocaleContext(DEFAULT_LOCALE);
@@ -251,8 +253,8 @@ export const CascadeSelect = defineComponent({
                           size: "sm",
                           modelValue: query.value,
                           "onUpdate:modelValue": (value: string) => (query.value = value),
-                          placeholder: "Filter…",
-                          "aria-label": "Filter options",
+                          placeholder: messages.value.command.filter,
+                          "aria-label": messages.value.select.filter,
                         }),
                       ]),
                     ]

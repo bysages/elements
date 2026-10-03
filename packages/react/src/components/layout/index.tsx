@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, HTMLAttributes, KeyboardEvent, PointerEvent, ReactNode } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /** Declare which edge the skeleton reserves for its sider — without
  * it the root is a single column. */
 export interface LayoutRootProps extends HTMLAttributes<HTMLDivElement> {
@@ -91,6 +93,7 @@ function Sider({
   ...rest
 }: LayoutSiderProps) {
   const layout = useContext(LAYOUT_CONTEXT);
+  const messages = useComponentMessages();
   const rail = useRef<HTMLElement | null>(null);
   const [dragging, setDragging] = useState(false);
   // The rail's live width: a controlled prop when given, a local
@@ -164,7 +167,7 @@ function Sider({
         role="separator"
         aria-orientation="vertical"
         tabIndex={0}
-        aria-label="Resize sidebar"
+        aria-label={messages.sidebar.resize}
         aria-valuenow={Math.round(rail.current ? rail.current.getBoundingClientRect().width : 0)}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

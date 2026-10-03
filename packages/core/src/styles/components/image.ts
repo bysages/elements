@@ -27,7 +27,7 @@ export const imageCss = /* css */ `
 
 /* Waiting is the skeleton's breath — same wash, same pace. */
 [data-scope="image"][data-part="root"][data-state="loading"] {
-  animation: bs-image-breathe 1600ms var(--bs-ease-in-out) infinite;
+  animation: bs-image-breathe var(--bs-duration-loop) var(--bs-ease-in-out) infinite;
 }
 
 [data-scope="image"][data-part="img"] {

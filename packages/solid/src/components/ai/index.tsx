@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle, type ComponentMessages } from "@bysages/core";
 import type { JSX } from "solid-js";
 
 import { Action } from "../ai-action";
@@ -9,6 +9,7 @@ import { Response } from "../ai-response";
 import { AiSource as Source, AiSources as Sources } from "../ai-source";
 import { Suggestion } from "../ai-suggestion";
 import { Tool } from "../ai-tool";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export type {
   DataUIPart,
@@ -29,16 +30,25 @@ export type {
  * `data-ai` marker, so the machine work is never ours. Parts stay
  * agnostic of any client; consumers map their message format (e.g. the
  * `UIMessage` parts re-exported here) onto these primitives. */
-function part(name: string, extra: Partial<JSX.HTMLAttributes<HTMLDivElement>> = {}) {
+type PartExtra =
+  | Partial<JSX.HTMLAttributes<HTMLDivElement>>
+  | ((messages: ComponentMessages) => Partial<JSX.HTMLAttributes<HTMLDivElement>>);
+
+function part(name: string, extra: PartExtra = {}) {
   function Component(props: JSX.HTMLAttributes<HTMLDivElement>) {
-    return <div {...extra} {...props} data-scope="ai" data-part={name.toLowerCase()} />;
+    const messages = useComponentMessages();
+    const partExtra = typeof extra === "function" ? extra(messages()) : extra;
+    return <div {...partExtra} {...props} data-scope="ai" data-part={name.toLowerCase()} />;
   }
   return Component;
 }
 
 /** The log itself: the column every stroke lands in, a landmark to
  * screen readers. */
-export const AiConversation = part("Conversation", { role: "log", "aria-label": "Conversation" });
+export const AiConversation = part("Conversation", (messages) => ({
+  role: "log",
+  "aria-label": messages.ai.conversation,
+}));
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
@@ -48,7 +58,10 @@ export const AiContent = part("Content");
 export const AiActions = part("Actions");
 
 /** The while-it-works whisper for the in-flight turns. */
-export const AiLoader = part("Loader", { role: "status", "aria-label": "Loading" });
+export const AiLoader = part("Loader", (messages) => ({
+  role: "status",
+  "aria-label": messages.ai.loading,
+}));
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.MessageContent`, and the rest. */

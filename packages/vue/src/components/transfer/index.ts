@@ -5,6 +5,7 @@ import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType, type Ref } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -42,6 +43,7 @@ export const Transfer = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("transfer");
     injectComponentStyle("checkbox");
+    const messages = useComponentMessages();
 
     const target = computed(() => new Set(props.modelValue));
     const checkedSource = ref(new Set<string>());
@@ -93,8 +95,8 @@ export const Transfer = defineComponent({
                   size: "sm",
                   modelValue: query.value,
                   "onUpdate:modelValue": (v: string) => (query.value = v),
-                  placeholder: "Filter…",
-                  "aria-label": `Filter ${title}`,
+                  placeholder: messages.value.command.filter,
+                  "aria-label": formatMessage(messages.value.transfer.filter, { name: title }),
                 }),
               ]),
             ]
@@ -147,7 +149,7 @@ export const Transfer = defineComponent({
               size: "sm",
               square: true,
               disabled: checkedSource.value.size === 0 || props.disabled,
-              "aria-label": "Move right",
+              "aria-label": messages.value.transfer.moveRight,
               onClick: () => move(true),
             },
             () => arrowGlyph("right"),
@@ -159,7 +161,7 @@ export const Transfer = defineComponent({
               size: "sm",
               square: true,
               disabled: checkedTarget.value.size === 0 || props.disabled,
-              "aria-label": "Move left",
+              "aria-label": messages.value.transfer.moveLeft,
               onClick: () => move(false),
             },
             () => arrowGlyph("left"),

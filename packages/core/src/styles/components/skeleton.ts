@@ -7,7 +7,7 @@ export const skeletonCss = /* css */ `
   block-size: 1rem;
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-inset);
-  animation: bs-skeleton-breathe 1600ms var(--bs-ease-in-out) infinite;
+  animation: bs-skeleton-breathe var(--bs-duration-loop) var(--bs-ease-in-out) infinite;
 }
 
 @keyframes bs-skeleton-breathe {

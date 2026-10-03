@@ -19,8 +19,8 @@ export const marqueeCss = /* css */ `
   inline-size: max-content;
   animation-name: bs-marquee-x;
   animation-timing-function: linear;
-  animation-duration: var(--marquee-duration, 30s);
-  animation-delay: var(--marquee-delay, 0s);
+  animation-duration: var(--marquee-duration, var(--bs-duration-marquee));
+  animation-delay: var(--marquee-delay, var(--bs-duration-none));
   animation-iteration-count: var(--marquee-loop-count, infinite);
 }
 

@@ -5,6 +5,7 @@ import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import { Button } from "../button";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export interface SplitButtonEntry {
   label: string;
@@ -60,6 +61,7 @@ export function SplitButton(props: SplitButtonProps) {
   const variant = () => own.variant ?? "solid";
   const tone = () => own.tone ?? "ink";
   const size = () => own.size ?? "md";
+  const messages = useComponentMessages();
   return (
     <div {...rest} data-scope="split-button" data-part="root">
       <Button
@@ -81,7 +83,7 @@ export function SplitButton(props: SplitButtonProps) {
               {...propsFn()}
               type="button"
               disabled={own.disabled}
-              aria-label="More actions"
+              aria-label={messages().more.actions}
               data-variant={variant()}
               data-tone={tone()}
               data-size={size()}

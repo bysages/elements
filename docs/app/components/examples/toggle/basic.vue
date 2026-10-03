@@ -4,9 +4,15 @@ import { Toggle } from "@bysages/vue";
 
 <template>
   <Toggle.Root aria-label="Toggle bold">
-    <Toggle.Indicator>B</Toggle.Indicator>
+    <Toggle.Indicator>
+      <template #default>B</template>
+      <template #fallback>B</template>
+    </Toggle.Indicator>
   </Toggle.Root>
   <Toggle.Root :default-pressed="true" aria-label="Toggle italic">
-    <Toggle.Indicator>I</Toggle.Indicator>
+    <Toggle.Indicator>
+      <template #default>I</template>
+      <template #fallback>I</template>
+    </Toggle.Indicator>
   </Toggle.Root>
 </template>

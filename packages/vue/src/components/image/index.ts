@@ -22,6 +22,10 @@ export interface ImageProps {
   alt?: string;
   fit?: "cover" | "contain" | "fill" | "none";
   loading?: "lazy" | "eager";
+  /** Intrinsic size, handed to the image itself to reserve its box. */
+  width?: string | number;
+  /** Intrinsic size, handed to the image itself to reserve its box. */
+  height?: string | number;
 }
 
 export const Image = defineComponent({
@@ -36,6 +40,14 @@ export const Image = defineComponent({
     loading: {
       type: String as PropType<ImageProps["loading"]>,
       default: "lazy",
+    },
+    width: {
+      type: [String, Number] as PropType<ImageProps["width"]>,
+      default: undefined,
+    },
+    height: {
+      type: [String, Number] as PropType<ImageProps["height"]>,
+      default: undefined,
     },
   },
   setup(props, ctx: SetupContext) {
@@ -67,6 +79,8 @@ export const Image = defineComponent({
             src: props.src,
             alt: props.alt,
             loading: props.loading,
+            width: props.width,
+            height: props.height,
             decoding: "async",
             onLoad: () => (state.value = "loaded"),
             onError: () => (state.value = "error"),

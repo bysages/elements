@@ -64,7 +64,7 @@ export const scrollAreaCss = /* css */ `
 }
 
 [data-scope="scroll-area"][data-part="scrollbar"][data-scrolling] {
-  transition-duration: 0ms;
+  transition-duration: var(--bs-duration-none);
 }
 
 [data-scope="scroll-area"][data-part="scrollbar"][data-orientation="vertical"] {

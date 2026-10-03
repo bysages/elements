@@ -9,6 +9,7 @@ import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/svelte";
 
 import Input from "../input/Input.svelte";
+import { useComponentMessages } from "../config-provider/messages";
 import type { CascadeSelectNode, CascadeSelectProps } from "./props";
 
 let {
@@ -22,6 +23,8 @@ let {
   disabled = false,
   ...rest
 }: CascadeSelectProps = $props();
+
+const messages = useComponentMessages();
 
 const id = $props.id();
 const locale = useLocaleContext();
@@ -211,7 +214,7 @@ its full route. -->
       <div {...api.getContentProps()} data-size={size}>
         {#if filterable}
           <div data-scope="cascade-select" data-part="search">
-            <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
+            <Input size="sm" bind:value={query} placeholder={messages().select.filter} aria-label={messages().select.filter} />
           </div>
         {/if}
         <div data-scope="cascade-select" data-part="corridor" data-flow={filtering ? "flat" : "columns"}>

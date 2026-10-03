@@ -3,6 +3,7 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
 export interface SplitButtonEntry {
@@ -52,6 +53,7 @@ export function SplitButton({
 }: SplitButtonProps) {
   injectComponentStyle("split-button");
   injectComponentStyle("menu");
+  const messages = useComponentMessages();
   return (
     <div {...rest} data-scope="split-button" data-part="root">
       <Button variant={variant} tone={tone} size={size} disabled={disabled} onClick={onClick}>
@@ -70,7 +72,7 @@ export function SplitButton({
             data-size={size}
             data-square="true"
             data-motion="ink-ripple lit"
-            aria-label="More actions"
+            aria-label={messages.more.actions}
           >
             {chevronDown()}
           </button>

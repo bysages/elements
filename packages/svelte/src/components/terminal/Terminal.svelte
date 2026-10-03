@@ -2,9 +2,13 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("terminal");
 
+import { useComponentMessages } from "../config-provider/messages";
 import type { TerminalProps } from "./props";
 
-let { lines = [], prompt = "$", placeholder, label, onCommand, ...rest }: TerminalProps = $props();
+let { lines = [], prompt = "$", placeholder, label, onCommand, ...rest }: TerminalProps =
+  $props();
+
+const messages = useComponentMessages();
 
 let draft = $state("");
 let scroll: HTMLDivElement | undefined = $state();
@@ -38,7 +42,7 @@ the lines prop, so history stays theirs to shape. -->
       data-part="input"
       bind:value={draft}
       placeholder={placeholder}
-      aria-label={label ? `${label} command line` : "Command line"}
+      aria-label={messages().terminal.commandLine}
       spellcheck="false"
       autocomplete="off"
       onkeydown={(event) => {

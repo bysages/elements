@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext, VNode } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Pagination } from "../pagination";
 
 /** One vessel, two layouts: the caller renders each record through the
@@ -19,6 +20,7 @@ export const DataView = defineComponent({
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("data-view");
+    const messages = useComponentMessages();
 
     const page = ref(1);
     const pageCount = computed(() =>
@@ -59,7 +61,11 @@ export const DataView = defineComponent({
                   "onUpdate:page": (next: number) => (page.value = next),
                 },
                 () => [
-                  h(Pagination.PrevTrigger as never, { "aria-label": "Previous page" }, () => "‹"),
+                  h(
+                    Pagination.PrevTrigger as never,
+                    { "aria-label": messages.value.pagination.previous },
+                    () => "‹",
+                  ),
                   h(Pagination.Context, null, {
                     pages: ({ pages }: { pages: Array<{ type: string; value?: number }> }) =>
                       pages.map((entry, index) =>
@@ -72,7 +78,11 @@ export const DataView = defineComponent({
                             ),
                       ),
                   }),
-                  h(Pagination.NextTrigger as never, { "aria-label": "Next page" }, () => "›"),
+                  h(
+                    Pagination.NextTrigger as never,
+                    { "aria-label": messages.value.pagination.next },
+                    () => "›",
+                  ),
                 ],
               ),
             )

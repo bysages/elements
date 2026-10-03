@@ -17,19 +17,19 @@ export const swapCss = /* css */ `
 
 /* Ink bleeds in on the spring — arriving with the blur dissolve. */
 [data-scope="swap"][data-part="indicator"][data-state="open"] {
-  animation: bs-swap-in 220ms var(--bs-ease-spring);
+  animation: bs-swap-in var(--bs-duration-base) var(--bs-ease-spring);
 }
 
 /* Light lets go — the departing impression dissolves away. */
 [data-scope="swap"][data-part="indicator"][data-state="closed"] {
-  animation: bs-swap-out 120ms var(--bs-ease-out);
+  animation: bs-swap-out var(--bs-duration-fast) var(--bs-ease-out);
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-scope="swap"][data-part="indicator"][data-state="open"],
   [data-scope="swap"][data-part="indicator"][data-state="closed"] {
-    animation-duration: 1ms;
+    animation-duration: var(--bs-duration-instant);
   }
 }
 

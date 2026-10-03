@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, nextTick, ref, watch, type PropType } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /** A quiet console: the transcript above, the prompt line below. The
  * component owns only the reading and the caret — each entered line
  * leaves as an event, and the caller answers through the lines prop,
@@ -19,6 +21,7 @@ export const Terminal = defineComponent({
   emits: ["command"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("terminal");
+    const messages = useComponentMessages();
 
     const draft = ref("");
     const scroll = ref<HTMLElement | null>(null);
@@ -64,7 +67,7 @@ export const Terminal = defineComponent({
               "data-part": "input",
               value: draft.value,
               placeholder: props.placeholder ?? undefined,
-              "aria-label": props.label ? `${props.label} command line` : "Command line",
+              "aria-label": props.label ?? messages.value.terminal.commandLine,
               spellcheck: false,
               autocomplete: "off",
               onInput: (event: InputEvent) =>

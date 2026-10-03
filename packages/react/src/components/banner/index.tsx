@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { ButtonHTMLAttributes, HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
 
 export interface BannerRootProps extends HTMLAttributes<HTMLElement> {
@@ -42,19 +44,28 @@ const Actions = part("Actions", "div");
 
 /** The quiet close: a plain square-cut button; dismissal stays the
  * consumer's state. */
-const Close = (rest: ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    {...rest}
-    type={rest.type ?? "button"}
-    aria-label={rest["aria-label"] ?? "Dismiss"}
-    data-scope="banner"
-    data-part="close"
-  >
-    <svg viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
-    </svg>
-  </button>
-);
+const Close = (rest: ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const messages = useComponentMessages();
+
+  return (
+    <button
+      {...rest}
+      type={rest.type ?? "button"}
+      aria-label={rest["aria-label"] ?? messages.banner.dismiss}
+      data-scope="banner"
+      data-part="close"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+        <path
+          d="M4 4l8 8M12 4l-8 8"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
+};
 
 export const Banner = Object.assign(Root, {
   Root,

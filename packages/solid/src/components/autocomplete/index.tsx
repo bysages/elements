@@ -4,6 +4,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface AutoCompleteProps {
   value?: string;
   items?: string[];
@@ -24,6 +26,7 @@ export interface AutoCompleteProps {
  * otherwise.
  */
 export function AutoComplete(props: AutoCompleteProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("combobox");
   const [own, rest] = splitProps(props, [
     "value",
@@ -62,7 +65,7 @@ export function AutoComplete(props: AutoCompleteProps) {
       <Portal>
         <ArkCombobox.Positioner>
           <ArkCombobox.Content>
-            <ArkCombobox.Empty>No matches</ArkCombobox.Empty>
+            <ArkCombobox.Empty>{messages().command.noMatches}</ArkCombobox.Empty>
             <For each={collection().items}>
               {(item) => (
                 <ArkCombobox.Item item={item}>

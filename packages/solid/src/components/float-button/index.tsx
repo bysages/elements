@@ -3,6 +3,7 @@ import { createContext, createSignal, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { Button } from "../button";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
 
@@ -84,6 +85,7 @@ const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = { lg: "md", md: "sm", sm
 function FloatButtonTrigger(props: FloatButtonTriggerProps) {
   const [own, rest] = splitProps(props, ["label", "children"]);
   const context = useContext(FloatButtonContextKey);
+  const messages = useComponentMessages();
   return (
     <Button
       {...rest}
@@ -91,7 +93,7 @@ function FloatButtonTrigger(props: FloatButtonTriggerProps) {
       square
       size={context?.size() ?? "lg"}
       onClick={() => context?.toggle()}
-      aria-label={own.label || "Actions"}
+      aria-label={own.label || messages().floatButton.actions}
       aria-expanded={context?.open() ?? false}
     >
       {own.children}

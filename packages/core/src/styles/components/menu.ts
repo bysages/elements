@@ -49,7 +49,7 @@ export const menuCss =
   transition:
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="menu"][data-part="trigger"]:hover:not([data-disabled]) {
@@ -95,7 +95,7 @@ export const menuCss =
   align-items: center;
   color: var(--bs-color-text-tertiary);
   transform-origin: center;
-  transition: transform 200ms var(--bs-ease-spring);
+  transition: transform var(--bs-duration-base) var(--bs-ease-spring);
 }
 
 [data-scope="menu"][data-part="trigger"][data-state="open"] [data-scope="menu"][data-part="indicator"] {

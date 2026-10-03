@@ -83,7 +83,7 @@ export const imageViewerCss = /* css */ `
      its corners stay at the control register. */
   inline-size: max-content;
   margin-inline: auto;
-  margin-block-end: var(--bs-margin-xl);
+  margin-block-end: max(var(--bs-margin-xl), var(--bs-safe-area-inset-bottom));
   padding: var(--bs-padding-xs);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: color-mix(in oklab, var(--bs-color-gray-900) 72%, transparent);

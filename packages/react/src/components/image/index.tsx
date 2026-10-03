@@ -24,6 +24,12 @@ export interface ImageProps extends Omit<HTMLAttributes<HTMLElement>, "onError" 
   alt?: string;
   fit?: "cover" | "contain" | "fill" | "none";
   loading?: "lazy" | "eager";
+  /** Intrinsic rendered width, reserved on the image to avoid layout
+   * shift while the source loads. */
+  width?: number | string;
+  /** Intrinsic rendered height, reserved on the image to avoid layout
+   * shift while the source loads. */
+  height?: number | string;
   /** Shown in place of the picture when the source breaks. */
   fallback?: ReactNode;
 }
@@ -33,6 +39,8 @@ export function Image({
   alt = "",
   fit = "cover",
   loading = "lazy",
+  width,
+  height,
   fallback,
   ...rest
 }: ImageProps) {
@@ -52,6 +60,8 @@ export function Image({
         alt={alt}
         loading={loading}
         decoding="async"
+        width={width}
+        height={height}
         onLoad={() => setState("loaded")}
         onError={() => setState("error")}
       />

@@ -6,6 +6,7 @@ import { Portal } from "solid-js/web";
 
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -52,6 +53,10 @@ const TOOL_GLYPHS = {
 export interface ImageViewerProps {
   src: string;
   alt?: string;
+  /** Intrinsic dimensions for the image element, reserving the layout
+   * box before bytes arrive. */
+  width?: number | string;
+  height?: number | string;
   open?: boolean;
   zoomable?: boolean;
   /** The openness changed — from the scrim, Escape or the toolbar. */
@@ -60,7 +65,16 @@ export interface ImageViewerProps {
 
 export function ImageViewer(props: ImageViewerProps) {
   injectComponentStyle("image-viewer");
-  const [own] = splitProps(props, ["src", "alt", "open", "zoomable", "onOpenChange"]);
+  const [own] = splitProps(props, [
+    "src",
+    "alt",
+    "width",
+    "height",
+    "open",
+    "zoomable",
+    "onOpenChange",
+  ]);
+  const messages = useComponentMessages();
   // Controlled when the caller owns `open`; uncontrolled otherwise —
   // an undefined `open` must not reach the machine, or it would
   // override the machine's own decisions.
@@ -139,16 +153,22 @@ export function ImageViewer(props: ImageViewerProps) {
               data-part="viewport"
               src={own.src}
               alt={own.alt ?? ""}
+              width={own.width}
+              height={own.height}
               style={{ transform: `scale(${scale()}) rotate(${rotation()}deg)` }}
             />
             <div data-scope="image-viewer" data-part="toolbar">
               <ButtonGroup>
                 <Show when={own.zoomable ?? true}>
-                  {toolButton("Zoom in", TOOL_GLYPHS.zoomIn, () => zoom(SCALE_STEP))}
-                  {toolButton("Zoom out", TOOL_GLYPHS.zoomOut, () => zoom(-SCALE_STEP))}
+                  {toolButton(messages().imageViewer.zoomIn, TOOL_GLYPHS.zoomIn, () =>
+                    zoom(SCALE_STEP),
+                  )}
+                  {toolButton(messages().imageViewer.zoomOut, TOOL_GLYPHS.zoomOut, () =>
+                    zoom(-SCALE_STEP),
+                  )}
                 </Show>
-                {toolButton("Rotate 90 degrees", TOOL_GLYPHS.rotate, rotate)}
-                {toolButton("Close", TOOL_GLYPHS.close, () => setOpen(false))}
+                {toolButton(messages().imageViewer.rotate, TOOL_GLYPHS.rotate, rotate)}
+                {toolButton(messages().imageViewer.close, TOOL_GLYPHS.close, () => setOpen(false))}
               </ButtonGroup>
             </div>
           </ArkDialog.Content>

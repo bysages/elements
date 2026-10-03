@@ -22,7 +22,7 @@ export const toggleCss = /* css */ `
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="toggle"][data-part="root"] svg {

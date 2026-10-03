@@ -3,6 +3,7 @@ import { Index, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { Button } from "../button";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
 
 export interface DynamicInputProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -33,6 +34,7 @@ export interface DynamicInputProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * emptied itself would leave the reader no place to type.
  */
 export function DynamicInput(props: DynamicInputProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("dynamic-input");
   const [own, rest] = splitProps(props, [
     "value",
@@ -90,7 +92,7 @@ export function DynamicInput(props: DynamicInputProps) {
               size={own.size ?? "md"}
               square
               disabled={own.disabled || !canRemove()}
-              aria-label={`Remove entry ${index + 1}`}
+              aria-label={`${messages().dynamicEntry.remove} ${index + 1}`}
               onClick={() => remove(index)}
             >
               {crossIcon()}

@@ -579,7 +579,7 @@ export const aiCss = /* css */ `
 @media (prefers-reduced-motion: reduce) {
   [data-scope="ai"][data-part="loader"]::before,
   [data-scope="ai"][data-part="loader"]::after {
-    animation-duration: 1ms;
+    animation-duration: var(--bs-duration-instant);
     animation-iteration-count: 1;
     opacity: 0.7;
   }

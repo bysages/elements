@@ -7,7 +7,8 @@
    a taller, heavier cut, and the line reads out of true. The CJK set falls in
    behind — MiSans and HarmonyOS Sans into PingFang / YaHei. Sizes are fixed
    rem values outside the density scale; compact UI may choose
-   --bs-font-size-sm but never below it. */
+   --bs-font-size-sm but never below it; table microcopy is the one
+   sanctioned 2xs exception. */
 
 :root,
 :host {
@@ -20,6 +21,7 @@
     ui-monospace, "Cascadia Code", "JetBrains Mono", Consolas, "PingFang SC", "Microsoft YaHei",
     monospace;
 
+  --bs-font-size-2xs: 0.625rem;
   --bs-font-size-xs: 0.75rem;
   --bs-font-size-sm: 0.8125rem;
   --bs-font-size-md: 0.875rem;

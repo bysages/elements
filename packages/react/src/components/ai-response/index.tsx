@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import type { HTMLAttributes, MouseEvent } from "react";
 import { useEffect, useRef } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 import { wrapResponseTables } from "./tables";
 
@@ -18,20 +19,19 @@ export interface ResponseProps extends HTMLAttributes<HTMLDivElement> {
   /** Optional code-highlighting function re-inking fenced blocks; the
    * component stays agnostic about which engine provides it. */
   highlighter?: (code: string, lang?: string) => string;
-  /** The copy stamp's accessible name before the copy lands. */
+  /** The copy stamp's accessible name before the copy lands; leave
+   * unset for the resolved default. */
   copyLabel?: string;
-  /** The copy stamp's accessible name once the text has landed. */
+  /** The copy stamp's accessible name once the text has landed; leave
+   * unset for the resolved default. */
   copiedLabel?: string;
 }
 
-export function Response({
-  content,
-  highlighter,
-  copyLabel = "Copy code",
-  copiedLabel = "Copied",
-  ...rest
-}: ResponseProps) {
+export function Response({ content, highlighter, copyLabel, copiedLabel, ...rest }: ResponseProps) {
   injectComponentStyle("ai");
+  const messages = useComponentMessages();
+  const resolvedCopyLabel = copyLabel ?? messages.ai.copyCode;
+  const resolvedCopiedLabel = copiedLabel ?? messages.ai.copied;
   const root = useRef<HTMLDivElement>(null);
 
   // The markdown is one innerHTML string, rebuilt on every stream
@@ -39,12 +39,12 @@ export function Response({
   // delegated click serves them all.
   useEffect(() => {
     const host = root.current;
-    if (host) decorateCodeCopy(host, copyLabel);
+    if (host) decorateCodeCopy(host, resolvedCopyLabel);
     if (host) wrapResponseTables(host);
-  }, [content, highlighter, copyLabel]);
+  }, [content, highlighter, resolvedCopyLabel]);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
-    void clickCodeCopy(event.nativeEvent, copyLabel, copiedLabel);
+    void clickCodeCopy(event.nativeEvent, resolvedCopyLabel, resolvedCopiedLabel);
   };
 
   return (

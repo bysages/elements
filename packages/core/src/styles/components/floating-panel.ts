@@ -19,7 +19,7 @@ export const floatingPanelCss =
   flex-direction: column;
   overflow: hidden;
   pointer-events: auto;
-  transition: box-shadow 220ms var(--bs-ease-out);
+  transition: box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 /* The sheet that sits behind every other keeps its place in the stack, and
@@ -52,7 +52,7 @@ export const floatingPanelCss =
   transition:
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="floating-panel"][data-part="trigger"]:hover:not([data-disabled]) {
@@ -170,6 +170,7 @@ export const floatingPanelCss =
   gap: var(--bs-gap-md);
   flex: 1 1 auto;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: var(--bs-padding-md);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);

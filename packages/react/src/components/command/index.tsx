@@ -5,6 +5,8 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import { useEffect, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export interface CommandEntry {
   label: string;
   value: string;
@@ -53,13 +55,16 @@ export function Command({
   open,
   autoFilter = true,
   inputValue,
-  emptyText = "No matching commands",
+  emptyText,
   onSelect,
   onOpenChange,
   onInputValueChange,
 }: CommandProps) {
   injectComponentStyle("command");
   injectComponentStyle("dialog");
+  const messages = useComponentMessages();
+  const resolvedPlaceholder = placeholder ?? messages.command.search;
+  const resolvedEmptyText = emptyText ?? messages.command.noMatches;
   const [internalOpen, setInternalOpen] = useState(false);
   // The list has no popup of its own, but the machine still opens and
   // closes its content (outside click on the sheet dims the list);
@@ -136,7 +141,7 @@ export function Command({
         <ArkDialog.Positioner asChild>
           <div data-scope="command" data-part="positioner">
             <ArkDialog.Content asChild>
-              <div data-scope="command" data-part="content" aria-label="Commands">
+              <div data-scope="command" data-part="content" aria-label={messages.command.palette}>
                 <ArkCombobox.Root
                   // The machine types its collection as
                   // ListCollection<unknown>; ours is ListCollection<string>
@@ -162,7 +167,8 @@ export function Command({
                   <ArkCombobox.Input asChild>
                     <input
                       type="text"
-                      placeholder={placeholder}
+                      placeholder={resolvedPlaceholder}
+                      aria-label={resolvedPlaceholder}
                       data-scope="command"
                       data-part="input"
                     />
@@ -187,7 +193,7 @@ export function Command({
                       )}
                       {groups.size === 0 ? (
                         <div data-scope="command" data-part="empty">
-                          {emptyText}
+                          {resolvedEmptyText}
                         </div>
                       ) : null}
                     </div>

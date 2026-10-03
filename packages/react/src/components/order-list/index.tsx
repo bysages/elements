@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type DragEvent, type HTMLAttributes, useRef, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export interface OrderOption {
   label: string;
   value: string;
@@ -49,6 +51,7 @@ export interface OrderListProps extends HTMLAttributes<HTMLDivElement> {
  * touch keeps the buttons as its route. */
 export function OrderList({ value, options, label, onValueChange, ...rest }: OrderListProps) {
   injectComponentStyle("order-list");
+  const messages = useComponentMessages();
   const dragging = useRef<string | null>(null);
   const [dropLine, setDropLine] = useState<{
     index: number;
@@ -139,10 +142,15 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
               <span data-scope="order-list" data-part="controls">
                 {(
                   [
-                    ["Move to top", ARROWS.top, -index, 0],
-                    ["Move up", ARROWS.up, -1, 0],
-                    ["Move down", ARROWS.down, 1, rows.length - 1],
-                    ["Move to bottom", ARROWS.bottom, rows.length - 1 - index, rows.length - 1],
+                    [messages.orderList.toTop, ARROWS.top, -index, 0],
+                    [messages.orderList.moveUp, ARROWS.up, -1, 0],
+                    [messages.orderList.moveDown, ARROWS.down, 1, rows.length - 1],
+                    [
+                      messages.orderList.toBottom,
+                      ARROWS.bottom,
+                      rows.length - 1 - index,
+                      rows.length - 1,
+                    ],
                   ] as const
                 ).map(([aria, paths, offset, edge]) => (
                   <button

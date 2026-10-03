@@ -64,6 +64,27 @@ body {
   flex-direction: column;
 }
 
+.bs-docs-skip-link {
+  position: fixed;
+  inset-block-start: var(--bs-space-2);
+  inset-inline-start: var(--bs-space-2);
+  z-index: calc(var(--bs-z-overlay) + 1);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  background: var(--bs-color-surface-2);
+  color: var(--bs-color-text-primary);
+  font-size: var(--bs-font-size-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  transform: translateY(calc(-100% - var(--bs-space-4)));
+}
+
+.bs-docs-skip-link:focus-visible {
+  transform: none;
+  box-shadow: var(--bs-focus-ring);
+}
+
 .bs-docs-header {
   position: sticky;
   inset-block-start: 0;
@@ -72,6 +93,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--bs-gap-md);
+  min-inline-size: 0;
   padding: var(--bs-padding-sm) var(--bs-padding-xl);
   background: var(--bs-color-surface-0);
   border-block-end: 1px solid var(--bs-color-border);
@@ -79,6 +101,7 @@ body {
 
 .bs-docs-brand {
   display: inline-flex;
+  min-inline-size: 0;
   color: inherit;
   text-decoration: none;
 }
@@ -94,19 +117,24 @@ body {
 
 .bs-docs-brand-lockup {
   display: inline-flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--bs-gap-sm);
 }
 
 .bs-docs-brand-name {
+  overflow: hidden;
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-lg);
   font-weight: var(--bs-font-weight-semibold);
   letter-spacing: var(--bs-tracking-label);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bs-docs-header-center {
   flex: 1;
+  min-inline-size: 0;
   /* The search field seats itself at the header's true center, between
      brand and rail — docus's register. */
   display: flex;
@@ -115,8 +143,12 @@ body {
 
 .bs-docs-header-end {
   display: inline-flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--bs-gap-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
 }
 
 /* The mobile toggle opens the drawer that carries the whole tree; it only
@@ -232,7 +264,7 @@ body {
   /* The bar's own padding steps down with the viewport — the rail needs
      the room more than the edges do. */
   .bs-docs-header {
-    padding-inline: var(--bs-padding-lg);
+    padding-inline: var(--bs-padding-md);
   }
 
   /* A pointer's shortcut means nothing on a touch screen. */
@@ -258,6 +290,9 @@ body {
   min-inline-size: 0;
   flex: 1;
   inline-size: 100%;
+  scroll-margin-block-start: calc(
+    var(--bs-control-height-md) + var(--bs-padding-sm) * 2 + var(--bs-space-2)
+  );
 }
 
 /* ---------------------------------------------------------------- */
@@ -480,6 +515,9 @@ body {
   .bs-docs-prose h4,
   .bs-docs-api h2,
   .bs-docs-api h3 {
+    scroll-margin-block-start: calc(
+      var(--bs-control-height-md) + var(--bs-padding-sm) * 2 + var(--bs-space-2)
+    );
     font-family: var(--bs-font-serif);
     letter-spacing: var(--bs-tracking-label);
     line-height: var(--bs-line-height-snug);
@@ -570,11 +608,15 @@ body {
    wheel over plain tables, so a lane that never scrolls stays a
    transparent block in the page's own flow. */
   .bs-docs-prose [data-table-scroll] {
+    inline-size: 100%;
+    max-inline-size: 100%;
     margin: var(--bs-margin-xl) 0;
+    overflow-x: hidden;
   }
 
   .bs-docs-prose [data-table-scroll][data-scrollable] {
     overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
 
   .bs-docs-prose table {
@@ -775,6 +817,7 @@ body {
 
 .bs-docs-demo[data-scope="tabs"][data-part="root"] {
   gap: 0;
+  min-inline-size: 0;
   margin-block: var(--bs-margin-xl);
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
@@ -783,12 +826,28 @@ body {
 }
 
 .bs-docs-demo [data-part="list"] {
+  min-inline-size: 0;
   padding-inline: var(--bs-padding-sm);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
 }
 
-.bs-docs-demo [data-part="trigger"] {
+.bs-docs-demo [data-part="list"] > * {
+  flex: none;
+}
+
+.bs-docs-demo [data-scope="tabs"][data-part="trigger"] {
+  /* The strip is a scroll container, so the line variant's -1px rule
+     overlap would leak into scrollable overflow and create a false
+     vertical track. Keep the controls inside their own row height. */
+  margin-block-end: 0;
   font-family: var(--bs-font-mono);
   font-size: var(--bs-font-size-sm);
+}
+
+.bs-docs-demo [data-scope="tabs"][data-part="indicator"] {
+  inset-block-end: 0;
 }
 
 /* The workbench door sits in the tab row, after the triggers: a quiet
@@ -831,11 +890,8 @@ body {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--bs-gap-md);
-  margin: 0 var(--bs-padding-md);
+  margin: var(--bs-padding-sm) var(--bs-padding-md);
   padding: var(--bs-padding-xl) var(--bs-padding-lg);
-  background: var(--bs-color-surface-1);
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-lg);
 }
 
 .bs-docs-demo-missing {
@@ -1333,6 +1389,7 @@ body {
 .bs-docs-assistant-log {
   flex: 1;
   min-block-size: 0;
+  overscroll-behavior: contain;
   /* Inline stays clipped: a lone `overflow-block` computes the other
      axis to auto, and the conversation must scroll inside its blocks —
      pre, table — never sideways as a panel. */
@@ -1560,7 +1617,7 @@ body {
   display: grid;
   /* Nineteen rem keeps the section at three lanes, so a six-card run
      composes as a full 3x2 at width, 2x3 mid, 1x6 on a rail. */
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
   gap: var(--bs-gap-md);
 }
 

@@ -29,7 +29,10 @@ export const dialogCss =
   z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
   display: grid;
   place-items: center;
-  padding: var(--bs-padding-lg);
+  padding-block-start: max(var(--bs-padding-lg), var(--bs-safe-area-inset-top));
+  padding-inline: max(var(--bs-padding-lg), var(--bs-safe-area-inset-right))
+    max(var(--bs-padding-lg), var(--bs-safe-area-inset-left));
+  padding-block-end: max(var(--bs-padding-lg), var(--bs-safe-area-inset-bottom));
 }
 
 /* The dialog owns the top of the restraint ladder: a white sheet with a
@@ -49,6 +52,7 @@ export const dialogCss =
   inline-size: min(32rem, 100%);
   max-block-size: 80dvh;
   overflow: auto;
+  overscroll-behavior: contain;
   /* Vessel padding — 24px; a 512px sheet reads cramped on 16. */
   padding: var(--bs-padding-xl);
   border: 1px solid var(--bs-color-border);

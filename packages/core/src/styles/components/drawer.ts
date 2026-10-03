@@ -52,8 +52,10 @@ export const drawerCss =
   inline-size: 100%;
   max-block-size: 92dvh;
   overflow: auto;
+  overscroll-behavior: contain;
   /* Vessel padding — 24px, room for the sheet's full measure. */
   padding: var(--bs-padding-xl);
+  padding-block-end: max(var(--bs-padding-xl), var(--bs-safe-area-inset-bottom));
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg) var(--bs-radius-lg) 0 0;
   background: var(--bs-color-surface-2);
@@ -68,6 +70,11 @@ export const drawerCss =
 
 [data-scope="drawer"][data-part="content"][data-swipe-direction="up"] {
   border-radius: 0 0 var(--bs-radius-lg) var(--bs-radius-lg);
+  padding-block-end: max(var(--bs-padding-xl), var(--bs-safe-area-inset-bottom));
+}
+
+[data-scope="drawer"][data-part="content"][data-swipe-direction="down"] {
+  padding-block-start: max(var(--bs-padding-xl), var(--bs-safe-area-inset-top));
 }
 
 /* A side sheet keeps a drawer's measure, not the canvas': at full width
@@ -76,12 +83,14 @@ export const drawerCss =
    belongs. */
 [data-scope="drawer"][data-part="content"][data-swipe-direction="left"] {
   inline-size: min(24rem, 85%);
+  padding-inline-start: max(var(--bs-padding-xl), var(--bs-safe-area-inset-left));
   max-block-size: none;
   border-radius: 0 var(--bs-radius-lg) var(--bs-radius-lg) 0;
 }
 
 [data-scope="drawer"][data-part="content"][data-swipe-direction="right"] {
   inline-size: min(24rem, 85%);
+  padding-inline-end: max(var(--bs-padding-xl), var(--bs-safe-area-inset-right));
   max-block-size: none;
   border-radius: var(--bs-radius-lg) 0 0 var(--bs-radius-lg);
 }
@@ -176,7 +185,7 @@ export const drawerCss =
   transition:
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="drawer"][data-part="trigger"]:hover:not([data-disabled]) {

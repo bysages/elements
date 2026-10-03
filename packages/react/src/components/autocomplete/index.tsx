@@ -4,6 +4,8 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /**
  * Free text with suggestions: the reader types anything, the list
  * narrows to help, and both a pick and a custom value end up in the
@@ -35,6 +37,7 @@ export function AutoComplete({
   ...rest
 }: AutoCompleteProps) {
   injectComponentStyle("combobox");
+  const messages = useComponentMessages();
   const { collection, filter: filterItems } = useListCollection({
     initialItems: items,
     filter: (item: string, input: string) =>
@@ -64,7 +67,7 @@ export function AutoComplete({
       <Portal>
         <ArkCombobox.Positioner>
           <ArkCombobox.Content>
-            <ArkCombobox.Empty>No matches</ArkCombobox.Empty>
+            <ArkCombobox.Empty>{messages.command.noMatches}</ArkCombobox.Empty>
             {collection.items.map((item: string) => (
               <ArkCombobox.Item key={item} item={item}>
                 <ArkCombobox.ItemText>{item}</ArkCombobox.ItemText>

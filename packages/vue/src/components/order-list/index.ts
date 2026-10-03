@@ -4,6 +4,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, ref, type PropType } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 
 export interface OrderOption {
   label: string;
@@ -38,6 +39,7 @@ export const OrderList = defineComponent({
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("order-list");
+    const messages = useComponentMessages();
 
     const dragging = ref<string | null>(null);
     const dropLine = ref<{ index: number; before: boolean } | null>(null);
@@ -149,7 +151,7 @@ export const OrderList = defineComponent({
                       "button",
                       {
                         type: "button",
-                        "aria-label": "Move to top",
+                        "aria-label": messages.value.orderList.toTop,
                         "data-scope": "order-list",
                         "data-part": "move",
                         disabled: index === 0,
@@ -161,7 +163,7 @@ export const OrderList = defineComponent({
                       "button",
                       {
                         type: "button",
-                        "aria-label": "Move up",
+                        "aria-label": messages.value.orderList.moveUp,
                         "data-scope": "order-list",
                         "data-part": "move",
                         disabled: index === 0,
@@ -173,7 +175,7 @@ export const OrderList = defineComponent({
                       "button",
                       {
                         type: "button",
-                        "aria-label": "Move down",
+                        "aria-label": messages.value.orderList.moveDown,
                         "data-scope": "order-list",
                         "data-part": "move",
                         disabled: index === rows().length - 1,
@@ -185,7 +187,7 @@ export const OrderList = defineComponent({
                       "button",
                       {
                         type: "button",
-                        "aria-label": "Move to bottom",
+                        "aria-label": messages.value.orderList.toBottom,
                         "data-scope": "order-list",
                         "data-part": "move",
                         disabled: index === rows().length - 1,

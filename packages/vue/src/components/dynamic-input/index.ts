@@ -4,6 +4,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -35,6 +36,8 @@ export const DynamicInput = defineComponent({
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("dynamic-input");
+    const messages = useComponentMessages();
+    const { "aria-label": consumerLabel, ...rootAttrs } = ctx.attrs;
 
     const update = (index: number, value: string) => {
       const next = props.modelValue.slice();
@@ -57,7 +60,7 @@ export const DynamicInput = defineComponent({
       const values = props.modelValue;
       const canRemove = values.length > Math.max(props.min, 1);
       const canAdd = props.max === undefined || values.length < props.max;
-      return h("div", { ...ctx.attrs, "data-scope": "dynamic-input", "data-part": "root" }, () => [
+      return h("div", { ...rootAttrs, "data-scope": "dynamic-input", "data-part": "root" }, () => [
         ...values.map((value, index) =>
           h("div", { key: index, "data-scope": "dynamic-input", "data-part": "row" }, () => [
             h(Input, {
@@ -75,7 +78,7 @@ export const DynamicInput = defineComponent({
                 square: true,
                 size: props.size,
                 disabled: props.disabled || !canRemove,
-                "aria-label": `Remove entry ${index + 1}`,
+                "aria-label": consumerLabel ?? messages.value.dynamicEntry.remove,
                 onClick: () => remove(index),
               },
               () => [crossIcon()],

@@ -6,6 +6,7 @@ import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 
 import { Button } from "../button";
 import { Input } from "../input";
+import { formatMessage, useComponentMessages } from "../config-provider/messages";
 import type { TransferItem, TransferProps } from "./props";
 
 let {
@@ -16,6 +17,8 @@ let {
   disabled = false,
   ...rest
 }: TransferProps = $props();
+
+const messages = useComponentMessages();
 
 let checkedSource = $state(new Set<string>());
 let checkedTarget = $state(new Set<string>());
@@ -62,8 +65,8 @@ function move(toTarget: boolean) {
         <Input
           size="sm"
           value={side === "source" ? sourceQuery : targetQuery}
-          placeholder="Filter…"
-          aria-label={`Filter ${title}`}
+          placeholder={formatMessage(messages().transfer.filter, { name: title ?? "" })}
+          aria-label={formatMessage(messages().transfer.filter, { name: title ?? "" })}
           oninput={(event) => {
             const query = event.currentTarget.value;
             if (side === "source") sourceQuery = query;
@@ -118,7 +121,7 @@ stays on the left. -->
       size="sm"
       square
       disabled={checkedSource.size === 0 || disabled}
-      aria-label="Move right"
+      aria-label={messages().transfer.moveRight}
       onclick={() => move(true)}
     >
       <svg
@@ -138,7 +141,7 @@ stays on the left. -->
       size="sm"
       square
       disabled={checkedTarget.size === 0 || disabled}
-      aria-label="Move left"
+      aria-label={messages().transfer.moveLeft}
       onclick={() => move(false)}
     >
       <svg

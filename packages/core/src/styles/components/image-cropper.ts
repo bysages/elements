@@ -48,7 +48,7 @@ export const imageCropperCss =
 }
 
 [data-scope="image-cropper"][data-part="selection"][data-shape="circle"] {
-  border-radius: 9999px;
+  border-radius: var(--bs-radius-full);
 }
 
 [data-scope="image-cropper"][data-part="selection"]:focus-visible {
@@ -141,7 +141,7 @@ export const imageCropperCss =
   position: absolute;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms var(--bs-ease-out);
+  transition: opacity var(--bs-duration-base) var(--bs-ease-out);
 }
 
 [data-scope="image-cropper"][data-part="grid"][data-axis="horizontal"] {

@@ -34,7 +34,7 @@ export const fileUploadCss =
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     background-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="file-upload"][data-part="trigger"]:hover:not([data-disabled]):not(:focus-visible) {

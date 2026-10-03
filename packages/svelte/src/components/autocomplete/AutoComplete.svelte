@@ -6,6 +6,8 @@ import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
 import { Portal } from "@ark-ui/svelte/portal";
 
+import { useComponentMessages } from "../config-provider/messages";
+
 import type { AutoCompleteProps } from "./props";
 
 let {
@@ -18,6 +20,7 @@ let {
 }: AutoCompleteProps =
   $props();
 
+const messages = useComponentMessages();
 const { collection, filter: filterItems } = useListCollection<string>({
   initialItems: items,
   filter: (item, input) =>
@@ -51,7 +54,7 @@ one job. -->
   <Portal>
     <ArkCombobox.Positioner>
       <ArkCombobox.Content>
-        <ArkCombobox.Empty>No matches</ArkCombobox.Empty>
+        <ArkCombobox.Empty>{messages().command.noMatches}</ArkCombobox.Empty>
         {#each collection().items as item (item)}
           <ArkCombobox.Item item={item}>
             <ArkCombobox.ItemText>{item}</ArkCombobox.ItemText>

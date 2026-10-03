@@ -38,7 +38,7 @@ export const angleSliderCss =
   box-shadow: var(--bs-shadow-xs);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="angle-slider"][data-part="control"]:active:not([data-disabled]) {

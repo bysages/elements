@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, SetupContext, SlotsType } from "vue";
 import { computed, defineComponent, h, inject, provide, ref, watch, type PropType } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
+
 /**
  * The application skeleton: Root, Header, Sider, Content, Footer —
  * the admin arrangement dressed in the paper-and-ink surfaces. The
@@ -109,6 +111,7 @@ const Sider = defineComponent({
       SlotsType<{ default?: (props: { collapsed: boolean }) => any }>
     >,
   ) {
+    const messages = useComponentMessages();
     const collapsed = ref(props.collapsed);
     watch(
       () => props.collapsed,
@@ -185,7 +188,7 @@ const Sider = defineComponent({
               role: "separator",
               "aria-orientation": "vertical",
               tabindex: 0,
-              "aria-label": "Resize sidebar",
+              "aria-label": messages.value.sidebar.resize,
               "aria-valuenow": Math.round(
                 rail.value ? rail.value.getBoundingClientRect().width : 0,
               ),

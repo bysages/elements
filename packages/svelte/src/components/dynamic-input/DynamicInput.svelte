@@ -4,6 +4,7 @@ injectComponentStyle("dynamic-input");
 
 import { Button } from "../button";
 import { Input } from "../input";
+import { useComponentMessages } from "../config-provider/messages";
 import type { DynamicInputProps } from "./props";
 
 let {
@@ -17,6 +18,8 @@ let {
   invalid = false,
   ...rest
 }: DynamicInputProps = $props();
+
+const messages = useComponentMessages();
 
 const canRemove = $derived(value.length > Math.max(min, 1));
 const canAdd = $derived(max === undefined || value.length < max);
@@ -59,7 +62,7 @@ truth. -->
         square
         {size}
         disabled={disabled || !canRemove}
-        aria-label={`Remove entry ${index + 1}`}
+        aria-label={messages().dynamicEntry.remove}
         onclick={() => remove(index)}
       >
         <svg

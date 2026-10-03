@@ -3,6 +3,7 @@ import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { Button } from "../button";
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Field } from "../field";
 
 function arrowUpGlyph() {
@@ -91,6 +92,8 @@ export function PromptInput(props: PromptInputProps) {
     "footerEnd",
   ]);
 
+  const messages = useComponentMessages();
+
   const send = () => {
     const value = (own.value ?? "").trim();
     if (!value || own.disabled || own.busy) return;
@@ -114,7 +117,7 @@ export function PromptInput(props: PromptInputProps) {
         size="sm"
         square
         type="button"
-        aria-label="Stop"
+        aria-label={messages().ai.stop}
         disabled={own.disabled}
         onClick={() => own.onStop?.()}
       >
@@ -126,7 +129,7 @@ export function PromptInput(props: PromptInputProps) {
         size="sm"
         square
         type="submit"
-        aria-label="Send"
+        aria-label={messages().ai.send}
         disabled={own.disabled || !(own.value ?? "").trim()}
       >
         {arrowUpGlyph()}
@@ -155,7 +158,8 @@ export function PromptInput(props: PromptInputProps) {
             autoresize
             rows={1}
             value={own.value ?? ""}
-            placeholder={own.placeholder ?? "Send a message"}
+            placeholder={own.placeholder ?? messages().ai.send}
+            aria-label={messages().ai.conversation}
             disabled={own.disabled}
             onInput={(event) => own.onValueChange?.(event.currentTarget.value)}
             onKeyDown={(event) => {

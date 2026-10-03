@@ -58,13 +58,13 @@ export const progressCss =
    without claiming a measure. */
 [data-scope="progress"][data-part="range"][data-state="indeterminate"] {
   inline-size: 50%;
-  animation: bs-progress-drift 1.4s var(--bs-ease-in-out) infinite;
+  animation: bs-progress-drift var(--bs-duration-loop) var(--bs-ease-in-out) infinite;
 }
 
 [data-scope="progress"][data-part="range"][data-orientation="vertical"][data-state="indeterminate"] {
   inline-size: 100%;
   block-size: 50%;
-  animation: bs-progress-drift-y 1.4s var(--bs-ease-in-out) infinite;
+  animation: bs-progress-drift-y var(--bs-duration-loop) var(--bs-ease-in-out) infinite;
 }
 
 /* Reduced motion parks the drift: the half-range stays put, so presence

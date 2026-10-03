@@ -1,3 +1,4 @@
+import type { ComponentMessagesOverride } from "@bysages/core";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
@@ -10,5 +11,7 @@ export interface ConfigProviderProps extends HTMLAttributes<HTMLDivElement> {
   dir?: "ltr" | "rtl";
   /** BCP-47 locale, landing as the native `lang` attribute. */
   locale?: string;
+  /** Partial leaf overrides applied on top of the locale defaults. */
+  messages?: ComponentMessagesOverride;
   children?: Snippet;
 }

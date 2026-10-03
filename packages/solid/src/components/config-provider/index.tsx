@@ -1,4 +1,4 @@
-import type { ThemeScene } from "@bysages/core";
+import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import { createContext, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
@@ -25,6 +25,8 @@ export interface ConfigContext {
   dir?: "ltr" | "rtl";
   /** BCP-47 locale, landing as the native `lang` attribute. */
   locale?: string;
+  /** Wrapper-owned copy, resolved with `locale` and merged over its locale defaults leaf by leaf. */
+  messages?: ComponentMessagesOverride;
 }
 
 /** Solid context for the provider's snapshot — a custom part reads it
@@ -44,6 +46,7 @@ export interface ConfigProviderProps extends JSX.HTMLAttributes<HTMLDivElement> 
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
+  messages?: ComponentMessagesOverride;
 }
 
 /**
@@ -60,6 +63,7 @@ export function ConfigProvider(props: ConfigProviderProps) {
     "accent",
     "dir",
     "locale",
+    "messages",
     "children",
   ]);
   return (
@@ -70,6 +74,7 @@ export function ConfigProvider(props: ConfigProviderProps) {
         accent: own.accent,
         dir: own.dir,
         locale: own.locale,
+        messages: own.messages,
       })}
     >
       <div

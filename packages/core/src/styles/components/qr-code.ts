@@ -69,7 +69,7 @@ export const qrCodeCss = /* css */ `
   transition:
     background-color var(--bs-duration-fast) var(--bs-ease-out),
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="qr-code"][data-part="download-trigger"]:hover:not([data-disabled]) {

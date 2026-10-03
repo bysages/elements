@@ -44,6 +44,8 @@ import type {
 import { createVirtualizer } from "@tanstack/svelte-virtual";
 import { createListCollection } from "@ark-ui/svelte/select";
 import { get } from "svelte/store";
+
+import { formatMessage, useComponentMessages } from "../config-provider/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 import { containsNode, findNode, mark, removeById, replaceById, type TreeNode } from "./table-utils";
@@ -67,13 +69,16 @@ let {
   pageSizeOptions = [10, 20, 50],
   stickyFooter = false,
   initialSorting,
-  globalFilterPlaceholder = "Filter rows",
-  emptyText = "No rows",
+  globalFilterPlaceholder,
+  emptyText,
   reorderable = false,
   onRowReorder,
   onColumnReorder,
   ...rest
 }: DataTableProps = $props();
+
+const messages = useComponentMessages();
+const globalFilterText = $derived(globalFilterPlaceholder ?? messages().table.filterAll);
 
 const SELECT_COL_ID = "__select";
 const SELECT_COL_WIDTH = 48;
@@ -496,8 +501,8 @@ function cellStyle(column: TColumn, span: number) {
         type="search"
         data-scope="table"
         data-part="global-filter"
-        aria-label="Filter all columns"
-        placeholder={globalFilterPlaceholder}
+        aria-label={messages().table.filterAll}
+        placeholder={globalFilterText}
         value={(table.atoms.globalFilter.get() as string) ?? ""}
         oninput={(e) => table.setGlobalFilter((e.currentTarget as HTMLInputElement).value)}
       />
@@ -528,7 +533,7 @@ function cellStyle(column: TColumn, span: number) {
                     type="checkbox"
                     checked={all}
                     indeterminate={table.getIsSomeRowsSelected() && !all}
-                    aria-label="Select all rows"
+                    aria-label={messages().table.selectAllRows}
                     onchange={() => table.toggleAllRowsSelected(!all)}
                   />
                 </div>
@@ -567,9 +572,9 @@ function cellStyle(column: TColumn, span: number) {
                       type="text"
                       data-scope="table"
                       data-part="header-filter"
-                      aria-label={`Filter ${column.id}`}
+                      aria-label={formatMessage(messages().table.filterColumn, { name: column.id })}
                       value={(column.getFilterValue() as string) ?? ""}
-                      placeholder="Filter"
+                      placeholder={messages().command.filter}
                       draggable={false}
                       onclick={(e) => e.stopPropagation()}
                       ondragstart={(e) => e.stopPropagation()}
@@ -602,7 +607,7 @@ function cellStyle(column: TColumn, span: number) {
           {/each}
         {/if}
         {#if rows.length === 0}
-          <div data-scope="table" data-part="empty">{emptyText}</div>
+          <div data-scope="table" data-part="empty">{emptyText ?? messages().table.empty}</div>
         {/if}
       </div>
       {#if stickyFooter && hasFooters}
@@ -630,11 +635,14 @@ function cellStyle(column: TColumn, span: number) {
   {#if paginated}
     {@const pagination = table.atoms.pagination.get()}
     {@const sizeItems = createListCollection({
-      items: pageSizeOptions.map((size) => ({ label: `${size} / page`, value: String(size) })),
+      items: pageSizeOptions.map((size) => ({
+        label: formatMessage(messages().table.perPage, { size }),
+        value: String(size),
+      })),
     })}
     <div data-scope="table" data-part="pagination">
       <span data-scope="table" data-part="page-status">
-        {`${table.getRowCount()} rows`}
+        {formatMessage(messages().table.rowsCount, { count: table.getRowCount() })}
       </span>
       <div data-scope="table" data-part="page-nav">
         <ArkSelect.Root
@@ -644,7 +652,7 @@ function cellStyle(column: TColumn, span: number) {
           positioning={{ placement: "top-start" }}
         >
           <ArkSelect.Control>
-            <ArkSelect.Trigger aria-label="Rows per page">
+            <ArkSelect.Trigger aria-label={messages().table.rowsPerPage}>
               <ArkSelect.ValueText />
               <ArkSelect.Indicator>
                 <svg
@@ -755,7 +763,7 @@ function cellStyle(column: TColumn, span: number) {
               type="checkbox"
               checked={row.getIsSelected()}
               indeterminate={false}
-              aria-label="Select row"
+              aria-label={messages().table.selectRow}
               onchange={() => row.toggleSelected(!row.getIsSelected())}
             />
           {:else if isExpandHost}
@@ -766,7 +774,7 @@ function cellStyle(column: TColumn, span: number) {
                 data-part="expander"
                 data-expanded={row.getIsExpanded() || undefined}
                 data-leaf={!row.getCanExpand() || undefined}
-                aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+                aria-label={row.getIsExpanded() ? messages().table.collapseRow : messages().table.expandRow}
                 onclick={() => row.toggleExpanded()}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

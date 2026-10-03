@@ -2,6 +2,7 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("layout");
 
+import { useComponentMessages } from "../config-provider/messages";
 import { useLayout } from "./context";
 import type { LayoutSiderProps } from "./props";
 
@@ -15,6 +16,8 @@ let {
   children,
   ...rest
 }: LayoutSiderProps = $props();
+
+const messages = useComponentMessages();
 
 const layout = useLayout();
 
@@ -96,7 +99,7 @@ function onKeyDown(event: KeyboardEvent) {
       role="separator"
       aria-orientation="vertical"
       tabindex={0}
-      aria-label="Resize sidebar"
+      aria-label={messages().sidebar.resize}
       aria-valuenow={rail ? Math.round(rail.getBoundingClientRect().width) : 0}
       onpointerdown={onPointerDown}
       onpointermove={onPointerMove}

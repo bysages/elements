@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
 export type FloatButtonPlacement = "bottom-end" | "bottom-start" | "top-end" | "top-start";
@@ -90,13 +91,14 @@ const STEP_DOWN: Record<FloatButtonSize, "sm" | "md"> = {
 
 function Trigger({ label, children }: { label?: string; children?: ReactNode }) {
   const context = useContext(FLOAT_BUTTON_CONTEXT);
+  const messages = useComponentMessages();
   return (
     <Button
       variant="solid"
       square
       size={context?.size ?? "lg"}
       onClick={() => context?.toggle()}
-      aria-label={label || "Actions"}
+      aria-label={label || messages.floatButton.actions}
       aria-expanded={context ? context.open : false}
     >
       {children}

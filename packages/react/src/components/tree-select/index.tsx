@@ -6,6 +6,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 import { useMemo, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
 export interface TreeSelectNode {
@@ -93,6 +94,7 @@ export function TreeSelect({
 }: TreeSelectProps) {
   injectComponentStyle("tree-select");
   injectComponentStyle("tree-view");
+  const messages = useComponentMessages();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const filterFns = useFilter({ sensitivity: "base" });
@@ -190,8 +192,8 @@ export function TreeSelect({
                   size="sm"
                   value={query}
                   onValueChange={setQuery}
-                  placeholder="Filter…"
-                  aria-label="Filter options"
+                  placeholder={messages.select.filter}
+                  aria-label={messages.select.filter}
                 />
               </div>
             ) : null}

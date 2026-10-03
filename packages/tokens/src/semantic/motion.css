@@ -17,10 +17,20 @@
   /* Durations ride --bs-motion-scale so a scene preset can tune the pace
      (a snappier instrument, an unhurried civic register) without touching
      the reduced-motion floor below, which declares 1ms directly. */
+  /* A truly zero-length step: transitions end without playing. */
+  --bs-duration-none: 0ms;
   --bs-duration-instant: calc(80ms * var(--bs-motion-scale, 1));
   --bs-duration-fast: calc(140ms * var(--bs-motion-scale, 1));
   --bs-duration-base: calc(200ms * var(--bs-motion-scale, 1));
   --bs-duration-slow: calc(320ms * var(--bs-motion-scale, 1));
+
+  /* Shadow light trails the surface; sustained ambient motion keeps its
+     own semantic tempo so scenes can tune it and reduced motion can
+     silence it without touching component sheets. */
+  --bs-duration-shadow: calc(var(--bs-duration-base) * 1.5);
+  --bs-duration-loop: calc(1600ms * var(--bs-motion-scale, 1));
+  --bs-duration-spinner: calc(900ms * var(--bs-motion-scale, 1));
+  --bs-duration-marquee: calc(30s * var(--bs-motion-scale, 1));
 
   --bs-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --bs-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -79,10 +89,15 @@
 @media (prefers-reduced-motion: reduce) {
   :root,
   :host {
+    --bs-duration-none: 0ms;
     --bs-duration-instant: 1ms;
     --bs-duration-fast: 1ms;
     --bs-duration-base: 1ms;
     --bs-duration-slow: 1ms;
+    --bs-duration-shadow: 1ms;
+    --bs-duration-loop: 1ms;
+    --bs-duration-spinner: 1ms;
+    --bs-duration-marquee: 1ms;
     --bs-stagger-step: 0ms;
   }
 }

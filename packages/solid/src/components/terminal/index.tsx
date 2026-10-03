@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { For, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onCommand"> {
   /** The transcript, oldest line first. */
   lines?: string[];
@@ -16,6 +18,7 @@ export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
  * leaves as an event, and the caller answers through the lines prop,
  * so history stays theirs to shape. */
 export function Terminal(props: TerminalProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("terminal");
   const [own, rest] = splitProps(props, ["lines", "prompt", "placeholder", "label", "onCommand"]);
   const [draft, setDraft] = createSignal("");
@@ -52,7 +55,7 @@ export function Terminal(props: TerminalProps) {
           data-part="input"
           value={draft()}
           placeholder={own.placeholder}
-          aria-label={own.label ? `${own.label} command line` : "Command line"}
+          aria-label={own.label ?? messages().terminal.commandLine}
           spellcheck={false}
           autocomplete="off"
           onInput={(event) => setDraft(event.currentTarget.value)}

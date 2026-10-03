@@ -26,7 +26,7 @@ export const treeSelectCss =
   cursor: pointer;
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="tree-select"][data-part="control"][data-placeholder] {

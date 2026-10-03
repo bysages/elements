@@ -2,9 +2,12 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("spinner");
 
+import { useComponentMessages } from "../config-provider/messages";
 import type { SpinnerProps } from "./props";
 
-let { size = "md", children, ...rest }: SpinnerProps = $props();
+let { size = "md", "aria-label": label, children, ...rest }: SpinnerProps = $props();
+
+const messages = useComponentMessages();
 </script>
 
 <!-- A wheel of waiting: one arc of ink turning about its center. Quiet
@@ -12,7 +15,7 @@ by default — it reports progress without claiming attention. -->
 <span
   {...rest}
   role="status"
-  aria-label={rest["aria-label"] ?? "Loading"}
+  aria-label={label ?? messages().spinner.loading}
   data-scope="spinner"
   data-part="root"
   data-size={size}

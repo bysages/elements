@@ -23,6 +23,10 @@ function placeholderGlyph() {
 export interface ImageProps extends JSX.HTMLAttributes<HTMLElement> {
   src: string;
   alt?: string;
+  /** Intrinsic dimensions for the image element, reserving the layout
+   * box before bytes arrive. */
+  width?: number | string;
+  height?: number | string;
   fit?: "cover" | "contain" | "fill" | "none";
   loading?: "lazy" | "eager";
   /** What a broken source leaves instead of the picture. */
@@ -31,7 +35,15 @@ export interface ImageProps extends JSX.HTMLAttributes<HTMLElement> {
 
 export function Image(props: ImageProps) {
   injectComponentStyle("image");
-  const [own, rest] = splitProps(props, ["src", "alt", "fit", "loading", "fallback"]);
+  const [own, rest] = splitProps(props, [
+    "src",
+    "alt",
+    "width",
+    "height",
+    "fit",
+    "loading",
+    "fallback",
+  ]);
   const [state, setState] = createSignal<"loading" | "loaded" | "error">("loading");
 
   // A new source starts the wait over — the last picture's state must
@@ -56,6 +68,8 @@ export function Image(props: ImageProps) {
         data-part="img"
         src={own.src}
         alt={own.alt ?? ""}
+        width={own.width}
+        height={own.height}
         loading={own.loading ?? "lazy"}
         decoding="async"
         onLoad={() => setState("loaded")}

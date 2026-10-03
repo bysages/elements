@@ -7,14 +7,24 @@ import { Portal } from "@ark-ui/svelte/portal";
 
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
+import { useComponentMessages } from "../config-provider/messages";
 import type { ImageViewerProps } from "./props";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
-let { src, alt = "", open = $bindable(false), zoomable = true, onOpenChange }: ImageViewerProps =
-  $props();
+let {
+  src,
+  alt = "",
+  width,
+  height,
+  open = $bindable(false),
+  zoomable = true,
+  onOpenChange,
+}: ImageViewerProps = $props();
+
+const messages = useComponentMessages();
 
 let scale = $state(1);
 let rotation = $state(0);
@@ -112,16 +122,18 @@ of the lightbox rests in the page while it is closed. -->
           data-part="viewport"
           {src}
           {alt}
+          {width}
+          {height}
           style:transform={`scale(${scale}) rotate(${rotation}deg)`}
         />
         <div data-scope="image-viewer" data-part="toolbar">
           <ButtonGroup>
             {#if zoomable}
-              {@render tool("Zoom in", () => zoom(SCALE_STEP), zoomIn)}
-              {@render tool("Zoom out", () => zoom(-SCALE_STEP), zoomOut)}
+              {@render tool(messages().imageViewer.zoomIn, () => zoom(SCALE_STEP), zoomIn)}
+              {@render tool(messages().imageViewer.zoomOut, () => zoom(-SCALE_STEP), zoomOut)}
             {/if}
-            {@render tool("Rotate 90 degrees", turn, turnGlyph)}
-            {@render tool("Close", () => setOpen(false), closeGlyph)}
+            {@render tool(messages().imageViewer.rotate, turn, turnGlyph)}
+            {@render tool(messages().imageViewer.close, () => setOpen(false), closeGlyph)}
           </ButtonGroup>
         </div>
       </ArkDialog.Content>

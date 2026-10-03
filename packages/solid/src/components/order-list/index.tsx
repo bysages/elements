@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { For, createSignal, createUniqueId, splitProps, type JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface OrderOption {
   label: string;
   value: string;
@@ -46,6 +48,7 @@ export interface OrderListProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * hairline of primary ink marks the seam the row will land on — so
  * touch keeps the buttons as its route. */
 export function OrderList(props: OrderListProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("order-list");
   const uid = createUniqueId();
   const [own, rest] = splitProps(props, ["value", "options", "label", "onValueChange"]);
@@ -141,7 +144,7 @@ export function OrderList(props: OrderListProps) {
                 <span data-scope="order-list" data-part="controls">
                   <button
                     type="button"
-                    aria-label="Move to top"
+                    aria-label={messages().orderList.toTop}
                     data-scope="order-list"
                     data-part="move"
                     disabled={index() === 0}
@@ -151,7 +154,7 @@ export function OrderList(props: OrderListProps) {
                   </button>
                   <button
                     type="button"
-                    aria-label="Move up"
+                    aria-label={messages().orderList.moveUp}
                     data-scope="order-list"
                     data-part="move"
                     disabled={index() === 0}
@@ -161,7 +164,7 @@ export function OrderList(props: OrderListProps) {
                   </button>
                   <button
                     type="button"
-                    aria-label="Move down"
+                    aria-label={messages().orderList.moveDown}
                     data-scope="order-list"
                     data-part="move"
                     disabled={index() === rows().length - 1}
@@ -171,7 +174,7 @@ export function OrderList(props: OrderListProps) {
                   </button>
                   <button
                     type="button"
-                    aria-label="Move to bottom"
+                    aria-label={messages().orderList.toBottom}
                     data-scope="order-list"
                     data-part="move"
                     disabled={index() === rows().length - 1}

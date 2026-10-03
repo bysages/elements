@@ -104,7 +104,7 @@ export const treeViewCss =
   align-items: center;
   color: var(--bs-color-text-tertiary);
   transform-origin: center;
-  transition: transform 200ms var(--bs-ease-spring);
+  transition: transform var(--bs-duration-base) var(--bs-ease-spring);
 }
 
 [data-scope="tree-view"][data-part="branch-indicator"][data-state="open"] {

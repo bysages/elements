@@ -28,7 +28,7 @@ export const selectCss =
   background: var(--bs-color-surface-2);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="select"][data-part="control"]:hover:not([data-disabled]):not(:focus-within):not([data-invalid]):not(:has([data-part="trigger"][data-state="open"])) {

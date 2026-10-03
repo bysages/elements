@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
 import { PromptInput } from "../ai-prompt-input";
@@ -42,10 +43,21 @@ function part(name: string, tag: string, extra: Record<string, string> = {}) {
 
 /** The log itself: the column every stroke lands in, a landmark to
  * screen readers. */
-export const AiConversation = part("Conversation", "div", {
-  role: "log",
-  "aria-label": "Conversation",
-});
+function AiConversation({ children, ...rest }: HTMLAttributes<HTMLElement>) {
+  const messages = useComponentMessages();
+
+  return (
+    <div
+      {...rest}
+      role="log"
+      aria-label={rest["aria-label"] ?? messages.ai.conversation}
+      data-scope="ai"
+      data-part="conversation"
+    >
+      {children}
+    </div>
+  );
+}
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
@@ -55,10 +67,21 @@ export const AiContent = part("Content", "div");
 export const AiActions = part("Actions", "div");
 
 /** The while-it-works whisper for the in-flight turns. */
-export const AiLoader = part("Loader", "span", {
-  role: "status",
-  "aria-label": "Loading",
-});
+function AiLoader({ children, ...rest }: HTMLAttributes<HTMLElement>) {
+  const messages = useComponentMessages();
+
+  return (
+    <span
+      {...rest}
+      role="status"
+      aria-label={rest["aria-label"] ?? messages.ai.loading}
+      data-scope="ai"
+      data-part="loader"
+    >
+      {children}
+    </span>
+  );
+}
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.Message`, and the rest, exactly as before the split. */

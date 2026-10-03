@@ -6,6 +6,7 @@ import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
 import { Portal } from "@ark-ui/svelte/portal";
 
 import { Button } from "../button";
+import { useComponentMessages } from "../config-provider/messages";
 import type { SplitButtonProps } from "./props";
 
 let {
@@ -19,6 +20,8 @@ let {
   onSelect,
   ...rest
 }: SplitButtonProps = $props();
+
+const messages = useComponentMessages();
 </script>
 
 <!-- A primary action with its alternatives one seam away: the main
@@ -39,7 +42,7 @@ same register whose entries emit `onSelect` with their value. -->
         <button
           {...props()}
           disabled={disabled}
-          aria-label="More actions"
+          aria-label={messages().more.actions}
           data-variant={variant}
           data-tone={tone}
           data-size={size}

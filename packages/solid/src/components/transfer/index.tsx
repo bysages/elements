@@ -4,6 +4,10 @@ import { For, Show, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { Button } from "../button";
+import {
+  formatComponentMessage,
+  useComponentMessages,
+} from "../config-provider/use-component-messages";
 import { Input } from "../input";
 
 export interface TransferItem {
@@ -61,6 +65,7 @@ export interface TransferProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * panel.
  */
 export function Transfer(props: TransferProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("transfer");
   injectComponentStyle("checkbox");
   const [own, rest] = splitProps(props, [
@@ -130,8 +135,8 @@ export function Transfer(props: TransferProps) {
               size="sm"
               value={query()}
               onValueChange={setQuery}
-              placeholder="Filter…"
-              aria-label={`Filter ${title}`}
+              placeholder={formatComponentMessage(messages().transfer.filter, { name: title })}
+              aria-label={formatComponentMessage(messages().transfer.filter, { name: title })}
             />
           </div>
         </Show>
@@ -182,7 +187,7 @@ export function Transfer(props: TransferProps) {
           size="sm"
           square
           disabled={checkedSource().size === 0 || own.disabled}
-          aria-label="Move right"
+          aria-label={messages().transfer.moveRight}
           onClick={() => move(true)}
         >
           {arrowGlyph("right")}
@@ -192,7 +197,7 @@ export function Transfer(props: TransferProps) {
           size="sm"
           square
           disabled={checkedTarget().size === 0 || own.disabled}
-          aria-label="Move left"
+          aria-label={messages().transfer.moveLeft}
           onClick={() => move(false)}
         >
           {arrowGlyph("left")}

@@ -46,6 +46,10 @@ import type {
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createMemo, createSignal, onCleanup, onMount, type JSX } from "solid-js";
 
+import {
+  formatComponentMessage,
+  useComponentMessages,
+} from "../config-provider/use-component-messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
@@ -250,6 +254,7 @@ const chevronGlyph = (
 );
 
 export function DataTable(props: DataTableProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("table");
   if (props.virtual && props.merge) {
     console.warn("[DataTable] `virtual` and `merge` are mutually exclusive; merge wins.");
@@ -660,7 +665,7 @@ export function DataTable(props: DataTableProps) {
           type="checkbox"
           checked={row.getIsSelected()}
           {...({ indeterminate: false } as CheckboxAttrs)}
-          aria-label="Select row"
+          aria-label={messages().table.selectRow}
           onchange={() => row.toggleSelected(!row.getIsSelected())}
         />
       );
@@ -677,7 +682,9 @@ export function DataTable(props: DataTableProps) {
             data-part="expander"
             data-expanded={row.getIsExpanded() || undefined}
             data-leaf={!row.getCanExpand() || undefined}
-            aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+            aria-label={
+              row.getIsExpanded() ? messages().table.collapseRow : messages().table.expandRow
+            }
             onclick={() => row.toggleExpanded()}
           >
             {chevronGlyph}
@@ -768,9 +775,11 @@ export function DataTable(props: DataTableProps) {
             type="text"
             data-scope="table"
             data-part="header-filter"
-            aria-label={`Filter ${column.id}`}
+            aria-label={formatComponentMessage(messages().table.filterColumn, {
+              name: column.id,
+            })}
             value={(column.getFilterValue() as string) ?? ""}
-            placeholder="Filter"
+            placeholder={messages().command.filter}
             draggable={false}
             onclick={(e: MouseEvent) => e.stopPropagation()}
             // Text selection owns a drag from inside the filter box.
@@ -795,7 +804,7 @@ export function DataTable(props: DataTableProps) {
             type="search"
             data-scope="table"
             data-part="global-filter"
-            aria-label="Filter all columns"
+            aria-label={messages().table.filterAll}
             placeholder={props.globalFilterPlaceholder}
             value={(table.atoms.globalFilter.get() as string) ?? ""}
             oninput={(e: Event) => table.setGlobalFilter((e.target as HTMLInputElement).value)}
@@ -831,7 +840,7 @@ export function DataTable(props: DataTableProps) {
                             {...({
                               indeterminate: table.getIsSomeRowsSelected() && !all,
                             } as CheckboxAttrs)}
-                            aria-label="Select all rows"
+                            aria-label={messages().table.selectAllRows}
                             onchange={() => table.toggleAllRowsSelected(!all)}
                           />
                         </div>
@@ -862,7 +871,7 @@ export function DataTable(props: DataTableProps) {
             )}
             {rows().length === 0 ? (
               <div data-scope="table" data-part="empty">
-                {props.emptyText}
+                {props.emptyText ?? messages().table.empty}
               </div>
             ) : null}
           </div>
@@ -897,13 +906,17 @@ export function DataTable(props: DataTableProps) {
       {props.paginated ? (
         <div data-scope="table" data-part="pagination">
           <span data-scope="table" data-part="page-status">
-            {`${table.getRowCount()} rows`}
+            {formatComponentMessage(messages().table.rowsCount, {
+              count: table.getRowCount(),
+            })}
           </span>
           <div data-scope="table" data-part="page-nav">
             <ArkSelect.Root
               collection={createListCollection({
                 items: (props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({
-                  label: `${size} / page`,
+                  label: formatComponentMessage(messages().table.perPage, {
+                    size,
+                  }),
                   value: String(size),
                 })),
               })}
@@ -912,7 +925,7 @@ export function DataTable(props: DataTableProps) {
               positioning={{ placement: "top-start" }}
             >
               <ArkSelect.Control>
-                <ArkSelect.Trigger aria-label="Rows per page">
+                <ArkSelect.Trigger aria-label={messages().table.rowsPerPage}>
                   <ArkSelect.ValueText />
                   <ArkSelect.Indicator>{chevronDownGlyph()}</ArkSelect.Indicator>
                 </ArkSelect.Trigger>
@@ -921,7 +934,9 @@ export function DataTable(props: DataTableProps) {
                 <ArkSelect.Content>
                   <For
                     each={(props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({
-                      label: `${size} / page`,
+                      label: formatComponentMessage(messages().table.perPage, {
+                        size,
+                      }),
                       value: String(size),
                     }))}
                   >

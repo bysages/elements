@@ -1,4 +1,4 @@
-import type { ThemeScene } from "@bysages/core";
+import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext } from "react";
 
@@ -25,6 +25,8 @@ export interface ConfigContext {
   dir?: "ltr" | "rtl";
   /** BCP-47 locale, landing as the native `lang` attribute. */
   locale?: string;
+  /** Partial leaf overrides for wrapper-owned runtime copy. */
+  messages?: ComponentMessagesOverride;
 }
 
 const ConfigContextImpl = createContext<ConfigContext>({});
@@ -42,6 +44,7 @@ export interface ConfigProviderProps extends HTMLAttributes<HTMLDivElement> {
   accent?: string;
   dir?: "ltr" | "rtl";
   locale?: string;
+  messages?: ComponentMessagesOverride;
   children?: ReactNode;
 }
 
@@ -58,11 +61,12 @@ export function ConfigProvider({
   accent,
   dir,
   locale,
+  messages,
   children,
   ...rest
 }: ConfigProviderProps) {
   return (
-    <ConfigContextImpl.Provider value={{ density, scene, accent, dir, locale }}>
+    <ConfigContextImpl.Provider value={{ density, scene, accent, dir, locale, messages }}>
       <div
         {...rest}
         data-scope="config-provider"

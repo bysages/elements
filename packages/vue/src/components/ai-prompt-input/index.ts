@@ -4,6 +4,7 @@ import type { Component, PropType, SetupContext, VNode } from "vue";
 import { computed, defineComponent, h, ref } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
 import { MentionsVessel, type MentionEntry } from "../mentions";
@@ -57,6 +58,8 @@ export const PromptInput = defineComponent({
   },
   setup(props, { emit, attrs, slots }: SetupContext) {
     injectComponentStyle("ai");
+    const messages = useComponentMessages();
+    const { "aria-label": consumerLabel, ...formAttrs } = attrs;
 
     // The field part is a component; its root element rides `$el`.
     const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
@@ -98,7 +101,7 @@ export const PromptInput = defineComponent({
               size: "sm",
               square: true,
               type: "button",
-              "aria-label": "Stop",
+              "aria-label": messages.value.ai.stop,
               disabled: props.disabled,
               onClick: () => emit("stop"),
             }
@@ -107,7 +110,7 @@ export const PromptInput = defineComponent({
               size: "sm",
               square: true,
               type: "submit",
-              "aria-label": "Send",
+              "aria-label": messages.value.ai.send,
               disabled: props.disabled || !props.modelValue.trim(),
             },
         () => [props.busy ? stopGlyph() : arrowUpGlyph()],
@@ -121,7 +124,7 @@ export const PromptInput = defineComponent({
       return h(
         "form",
         {
-          ...attrs,
+          ...formAttrs,
           "data-scope": "ai",
           "data-part": "prompt",
           onSubmit: (event: Event) => {
@@ -143,6 +146,7 @@ export const PromptInput = defineComponent({
                 rows: 1,
                 modelValue: props.modelValue,
                 placeholder: props.placeholder,
+                "aria-label": consumerLabel ?? messages.value.ai.conversation,
                 disabled: props.disabled,
                 "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
                 onInput: () => mentions.onInput(),

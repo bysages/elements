@@ -12,7 +12,10 @@ export const commandCss =
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 20dvh var(--bs-padding-lg) var(--bs-padding-lg);
+  padding-block-start: max(20dvh, var(--bs-safe-area-inset-top));
+  padding-inline: max(var(--bs-padding-lg), var(--bs-safe-area-inset-right))
+    max(var(--bs-padding-lg), var(--bs-safe-area-inset-left));
+  padding-block-end: max(var(--bs-padding-lg), var(--bs-safe-area-inset-bottom));
 }
 
 /* The sheet: a wide vessel at the top of the elevation ladder, entering

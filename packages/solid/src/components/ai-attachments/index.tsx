@@ -2,6 +2,11 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import {
+  formatComponentMessage,
+  useComponentMessages,
+} from "../config-provider/use-component-messages";
+
 function imageGlyph() {
   return (
     <svg
@@ -86,6 +91,7 @@ export interface AttachmentProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 export function Attachment(props: AttachmentProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["name", "size", "status", "onRemove"]);
+  const messages = useComponentMessages();
   return (
     <span {...rest} data-scope="ai" data-part="attachment" data-status={own.status ?? "ready"}>
       {isImage(own.name) ? imageGlyph() : fileGlyph()}
@@ -94,7 +100,7 @@ export function Attachment(props: AttachmentProps) {
       <button
         type="button"
         data-remove=""
-        aria-label={`Remove ${own.name}`}
+        aria-label={formatComponentMessage(messages().ai.removeAttachment, { name: own.name })}
         onClick={() => own.onRemove?.()}
       >
         {removeGlyph()}

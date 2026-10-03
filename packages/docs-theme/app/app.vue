@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import tokens from "@bysages/tokens";
 import type { Collections } from "@nuxt/content";
 import { computed } from "vue";
 
@@ -12,7 +13,7 @@ const description = app.seo?.description ?? app.docs?.description;
 
 // The navigation follows the reader's shelf: one docs collection per
 // locale under i18n, the single collection otherwise.
-const { locale, isEnabled } = useDocsI18n();
+const { locale, isEnabled, t } = useDocsI18n();
 const collectionName = computed(() =>
   isEnabled.value ? (`docs_${locale.value.replace("-", "_")}` as keyof Collections) : "docs",
 );
@@ -39,6 +40,52 @@ const navigation = computed(() => {
 
 provide("navigation", navigation);
 
+const colorTokens = tokens as Record<string, string>;
+const themeColor = useState("docs-theme-color", () => colorTokens["bs-color-gray-50"]);
+const route = useRoute();
+
+let themeObserver: MutationObserver | undefined;
+
+// The browser color must be concrete, while the shell’s paper is a themed
+// custom property; read it back from the painted body on every theme
+// attribute change so scenes and modes stay in sync with the browser chrome.
+function syncThemeColor() {
+  themeColor.value = getComputedStyle(document.body).backgroundColor;
+}
+
+function markMainContent() {
+  const main = document.querySelector<HTMLElement>("main.bs-docs-main");
+  if (!main) return;
+  main.id = "main-content";
+  main.tabIndex = -1;
+}
+
+onMounted(() => {
+  markMainContent();
+  syncThemeColor();
+  themeObserver = new MutationObserver(syncThemeColor);
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-contrast", "data-density", "data-scene", "data-accent"],
+  });
+});
+
+watch(
+  () => route.fullPath,
+  () => {
+    nextTick(markMainContent);
+  },
+);
+
+onBeforeUnmount(() => {
+  themeObserver?.disconnect();
+  themeObserver = undefined;
+});
+
+useHead({
+  meta: [{ name: "theme-color", content: themeColor }],
+});
+
 useSeoMeta({
   titleTemplate: app.seo?.titleTemplate ?? `%s · ${name}`,
   title: name,
@@ -57,6 +104,7 @@ useHead({
   <!-- Navigation progress as a hairline of ink across the top of the page. -->
   <NuxtLoadingIndicator color="var(--bs-color-primary)" :height="2" />
   <div class="bs-docs">
+    <a class="bs-docs-skip-link" href="#main-content">{{ t("docs.skipToContent") }}</a>
     <AppHeader v-if="$route.meta.header !== false" />
     <NuxtLayout>
       <NuxtPage />

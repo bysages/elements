@@ -2,9 +2,12 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("order-list");
 
+import { useComponentMessages } from "../config-provider/messages";
 import type { OrderListProps } from "./props";
 
 let { value = $bindable([]), options, label, ...rest }: OrderListProps = $props();
+
+const messages = useComponentMessages();
 
 let dragging: string | null = $state(null);
 let dropLine: { index: number; before: boolean } | null = $state(null);
@@ -88,16 +91,16 @@ marks the seam the row will land on. -->
         <span data-scope="order-list" data-part="grip" aria-hidden="true">⋮⋮</span>
         <span data-scope="order-list" data-part="label">{option.label}</span>
         <span data-scope="order-list" data-part="controls">
-          <button type="button" aria-label="Move to top" data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -index)}>
+          <button type="button" aria-label={messages().orderList.toTop} data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -index)}>
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6" /><path d="M5 4h14" /></svg>
           </button>
-          <button type="button" aria-label="Move up" data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -1)}>
+          <button type="button" aria-label={messages().orderList.moveUp} data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -1)}>
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6" /></svg>
           </button>
-          <button type="button" aria-label="Move down" data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, 1)}>
+          <button type="button" aria-label={messages().orderList.moveDown} data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, 1)}>
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
           </button>
-          <button type="button" aria-label="Move to bottom" data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, rows.length - 1 - index)}>
+          <button type="button" aria-label={messages().orderList.toBottom} data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, rows.length - 1 - index)}>
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /><path d="M5 20h14" /></svg>
           </button>
         </span>

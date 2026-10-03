@@ -41,7 +41,7 @@ export const toastCss =
     scale var(--bs-duration-base) var(--bs-ease-spring),
     opacity var(--bs-duration-base) var(--bs-ease-out),
     height var(--bs-duration-base) var(--bs-ease-out),
-    box-shadow 220ms var(--bs-ease-out);
+    box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 /* Leaving is quicker than arriving — ink lifts off the page without

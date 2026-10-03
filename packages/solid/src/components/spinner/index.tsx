@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface SpinnerProps extends JSX.HTMLAttributes<HTMLElement> {
   size?: "sm" | "md" | "lg";
 }
@@ -10,11 +12,12 @@ export interface SpinnerProps extends JSX.HTMLAttributes<HTMLElement> {
 export function Spinner(props: SpinnerProps) {
   injectComponentStyle("spinner");
   const [own, rest] = splitProps(props, ["size"]);
+  const messages = useComponentMessages();
   return (
     <span
       {...rest}
       role="status"
-      aria-label={rest["aria-label"] ?? "Loading"}
+      aria-label={rest["aria-label"] ?? messages().spinner.loading}
       data-scope="spinner"
       data-part="root"
       data-size={own.size ?? "md"}

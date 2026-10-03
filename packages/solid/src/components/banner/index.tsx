@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
 
 export interface BannerRootProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -43,11 +45,12 @@ const Actions = part("Actions", "div");
  * consumer's state. */
 function Close(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [own, rest] = splitProps(props, ["type"]);
+  const messages = useComponentMessages();
   return (
     <button
       {...rest}
       type={own.type ?? "button"}
-      aria-label={rest["aria-label"] ?? "Dismiss"}
+      aria-label={rest["aria-label"] ?? messages().banner.dismiss}
       data-scope="banner"
       data-part="close"
     >

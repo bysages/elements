@@ -5,7 +5,7 @@ export const spinnerCss = /* css */ `
   display: inline-flex;
   flex: none;
   color: var(--bs-color-text-tertiary);
-  animation: bs-spinner-turn 0.9s linear infinite;
+  animation: bs-spinner-turn var(--bs-duration-spinner) linear infinite;
 }
 
 [data-scope="spinner"][data-part="root"][data-size="sm"] {
@@ -34,7 +34,7 @@ export const spinnerCss = /* css */ `
 
 @media (prefers-reduced-motion: reduce) {
   [data-scope="spinner"][data-part="root"] {
-    animation-duration: 1ms;
+    animation-duration: var(--bs-duration-instant);
     animation-iteration-count: 1;
   }
 }

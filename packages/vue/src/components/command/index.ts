@@ -6,6 +6,8 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, ref, watch, type PropType } from "vue";
 import { Teleport } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export interface CommandEntry {
   label: string;
   value: string;
@@ -55,12 +57,14 @@ export const Command = defineComponent({
     open: { type: Boolean, default: undefined },
     autoFilter: { type: Boolean, default: true },
     inputValue: { type: String, default: undefined },
-    emptyText: { type: String, default: "No matching commands" },
+    emptyText: { type: String, default: undefined },
     onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },
   },
   emits: ["update:open", "update:inputValue"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("command");
+    const messages = useComponentMessages();
+    const consumerLabel = ctx.attrs["aria-label"] as string | undefined;
     injectComponentStyle("dialog");
 
     const internalOpen = ref(false);
@@ -150,7 +154,13 @@ export const Command = defineComponent({
               ),
         );
         if (groups.size === 0) {
-          nodes.push(h("div", { "data-scope": "command", "data-part": "empty" }, props.emptyText));
+          nodes.push(
+            h(
+              "div",
+              { "data-scope": "command", "data-part": "empty" },
+              props.emptyText ?? messages.value.command.noMatches,
+            ),
+          );
         }
         return nodes;
       };
@@ -169,7 +179,11 @@ export const Command = defineComponent({
                 h(ArkDialog.Content, { asChild: true }, () =>
                   h(
                     "div",
-                    { "data-scope": "command", "data-part": "content", "aria-label": "Commands" },
+                    {
+                      "data-scope": "command",
+                      "data-part": "content",
+                      "aria-label": consumerLabel ?? messages.value.command.palette,
+                    },
                     h(
                       ArkCombobox.Root,
                       {
@@ -200,7 +214,8 @@ export const Command = defineComponent({
                         h(ArkCombobox.Input as never, { asChild: true }, () =>
                           h("input", {
                             type: "text",
-                            placeholder: props.placeholder,
+                            placeholder: props.placeholder ?? messages.value.command.search,
+                            "aria-label": messages.value.command.search,
                             "data-scope": "command",
                             "data-part": "input",
                           }),

@@ -8,6 +8,7 @@ import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/svelte/tree-view";
 
 import Input from "../input/Input.svelte";
+import { useComponentMessages } from "../config-provider/messages";
 import type { TreeSelectNode, TreeSelectProps } from "./props";
 
 let {
@@ -19,6 +20,8 @@ let {
   disabled = false,
   ...rest
 }: TreeSelectProps = $props();
+
+const messages = useComponentMessages();
 
 let open = $state(false);
 let query = $state("");
@@ -112,11 +115,7 @@ function pick(details: { selectedValue: string[] }) {
       </ArkTreeView.Branch>
     {:else}
       <ArkTreeView.Item>
-        {#snippet asChild(props)}
-          <span {...props()} style="display: flex; inline-size: 100%">
-            <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
-          </span>
-        {/snippet}
+        <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
       </ArkTreeView.Item>
     {/if}
   </ArkTreeView.NodeProvider>
@@ -170,7 +169,7 @@ matches keep their ancestors and the branches fan open. -->
       <ArkPopover.Content data-scope="tree-select" data-part="content" data-size={size}>
         {#if filterable}
           <div data-scope="tree-select" data-part="search">
-            <Input size="sm" bind:value={query} placeholder="Filter…" aria-label="Filter options" />
+            <Input size="sm" bind:value={query} placeholder={messages().select.filter} aria-label={messages().select.filter} />
           </div>
         {/if}
         <div data-scope="tree-select" data-part="body">

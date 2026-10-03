@@ -15,6 +15,7 @@ import {
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
 
 export interface CascadeSelectNode {
@@ -95,6 +96,7 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * runs — each hit still reads as its full route.
  */
 export function CascadeSelect(props: CascadeSelectProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("cascade-select");
   const [own, rest] = splitProps(props, [
     "value",
@@ -290,8 +292,8 @@ export function CascadeSelect(props: CascadeSelectProps) {
                   size="sm"
                   value={query()}
                   onValueChange={setQuery}
-                  placeholder="Filter…"
-                  aria-label="Filter options"
+                  placeholder={messages().select.filter}
+                  aria-label={messages().select.filter}
                 />
               </div>
             </Show>

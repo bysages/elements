@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type HTMLAttributes, type ReactNode, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Pagination } from "../pagination";
 
 export interface DataViewProps extends HTMLAttributes<HTMLDivElement> {
@@ -28,6 +29,7 @@ export function DataView({
 }: DataViewProps) {
   injectComponentStyle("data-view");
   const [page, setPage] = useState(1);
+  const messages = useComponentMessages();
   const pageCount = pageSize ? Math.max(1, Math.ceil(items.length / pageSize)) : 1;
   const visible = pageSize ? items.slice((page - 1) * pageSize, page * pageSize) : items;
   return (
@@ -49,7 +51,9 @@ export function DataView({
             siblingCount={1}
             onPageChange={(details) => setPage(details.page)}
           >
-            <Pagination.PrevTrigger aria-label="Previous page">‹</Pagination.PrevTrigger>
+            <Pagination.PrevTrigger aria-label={messages.pagination.previous}>
+              ‹
+            </Pagination.PrevTrigger>
             <Pagination.Context>
               {(pagination) =>
                 pagination.pages.map((entry, index) =>
@@ -65,7 +69,7 @@ export function DataView({
                 )
               }
             </Pagination.Context>
-            <Pagination.NextTrigger aria-label="Next page">›</Pagination.NextTrigger>
+            <Pagination.NextTrigger aria-label={messages.pagination.next}>›</Pagination.NextTrigger>
           </Pagination.Root>
         </div>
       ) : null}

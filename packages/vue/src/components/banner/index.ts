@@ -4,6 +4,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { useComponentMessages } from "../../internal/messages";
 
 const Root = defineComponent({
   name: "BannerRoot",
@@ -61,13 +62,15 @@ const Actions = part("Actions", "div");
 const Close = defineComponent({
   name: "BannerClose",
   setup(_, ctx: SetupContext) {
+    const messages = useComponentMessages();
+
     return () =>
       h(
         "button",
         {
           ...ctx.attrs,
           type: (ctx.attrs.type as string) ?? "button",
-          "aria-label": (ctx.attrs["aria-label"] as string) ?? "Dismiss",
+          "aria-label": (ctx.attrs["aria-label"] as string) ?? messages.value.banner.dismiss,
           "data-scope": "banner",
           "data-part": "close",
         },

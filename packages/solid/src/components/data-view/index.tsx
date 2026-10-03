@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { For, Show, createSignal, createUniqueId, splitProps, type JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Pagination } from "../pagination";
 
 export interface DataViewProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -22,6 +23,7 @@ export function DataView(props: DataViewProps) {
   injectComponentStyle("data-view");
   const uid = createUniqueId();
   const [own, rest] = splitProps(props, ["items", "layout", "pageSize", "renderItem", "header"]);
+  const messages = useComponentMessages();
   const [page, setPage] = createSignal(1);
   const pageCount = () =>
     own.pageSize ? Math.max(1, Math.ceil(own.items.length / own.pageSize)) : 1;
@@ -48,7 +50,9 @@ export function DataView(props: DataViewProps) {
             siblingCount={1}
             onPageChange={(details) => setPage(details.page)}
           >
-            <Pagination.PrevTrigger aria-label="Previous page">‹</Pagination.PrevTrigger>
+            <Pagination.PrevTrigger aria-label={messages().pagination.previous}>
+              ‹
+            </Pagination.PrevTrigger>
             <Pagination.Context>
               {(pagination) => (
                 <For each={pagination().pages}>
@@ -64,7 +68,9 @@ export function DataView(props: DataViewProps) {
                 </For>
               )}
             </Pagination.Context>
-            <Pagination.NextTrigger aria-label="Next page">›</Pagination.NextTrigger>
+            <Pagination.NextTrigger aria-label={messages().pagination.next}>
+              ›
+            </Pagination.NextTrigger>
           </Pagination.Root>
         </div>
       </Show>

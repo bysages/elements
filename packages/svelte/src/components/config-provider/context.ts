@@ -1,4 +1,4 @@
-import type { ThemeScene } from "@bysages/core";
+import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import { getContext, setContext } from "svelte";
 
 /** The four density tiers the token layer's `[data-density]` selectors
@@ -24,6 +24,9 @@ export interface ConfigContext {
   dir?: "ltr" | "rtl";
   /** BCP-47 locale, landing as the native `lang` attribute. */
   locale?: string;
+
+  /** Partial leaf overrides applied on top of the locale defaults. */
+  messages?: ComponentMessagesOverride;
 }
 
 export const CONFIG_KEY: unique symbol = Symbol("bysages-config");

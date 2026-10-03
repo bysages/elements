@@ -56,68 +56,66 @@ const { data: highlighted } = await useAsyncData(
 </script>
 
 <template>
-  <div class="bs-docs-demo">
-    <Tabs.Root class="bs-docs-demo-tabs" default-value="preview">
-      <Tabs.List>
-        <Tabs.Trigger value="preview">{{ t("docs.demo.preview") }}</Tabs.Trigger>
-        <Tabs.Trigger v-if="code" value="code">{{ t("docs.demo.code") }}</Tabs.Trigger>
-        <!-- The demo's path under examples/, quiet ink between the tabs
-             and the workbench door — a family page stacks several demos
-             and the reader should know which one is on stage. -->
-        <span class="font-mono text-xs text-tertiary">{{ name }}</span>
-        <a
-          v-if="workbenchHref"
-          class="bs-docs-demo-workbench"
-          :href="workbenchHref"
-          target="_blank"
-          rel="noreferrer"
-          :title="t('docs.workbench')"
-          :aria-label="t('docs.workbench')"
-        >
-          Vue
-          <Icon name="i-lucide-external-link" />
-        </a>
-        <a
-          v-if="reactWorkbenchHref"
-          class="bs-docs-demo-workbench"
-          :href="reactWorkbenchHref"
-          target="_blank"
-          rel="noreferrer"
-          :title="t('docs.workbench')"
-          :aria-label="t('docs.workbench')"
-        >
-          React
-          <Icon name="i-lucide-external-link" />
-        </a>
-        <Tabs.Indicator />
-      </Tabs.List>
-      <Tabs.Content value="preview">
-        <div class="bs-docs-demo-canvas">
-          <component :is="demo" v-if="demo" />
-          <p v-else class="bs-docs-demo-missing">No example yet.</p>
+  <Tabs.Root class="bs-docs-demo" default-value="preview">
+    <Tabs.List>
+      <Tabs.Trigger value="preview">{{ t("docs.demo.preview") }}</Tabs.Trigger>
+      <Tabs.Trigger v-if="code" value="code">{{ t("docs.demo.code") }}</Tabs.Trigger>
+      <!-- The demo's path under examples/, quiet ink between the tabs
+           and the workbench door — a family page stacks several demos
+           and the reader should know which one is on stage. -->
+      <span class="font-mono text-xs text-tertiary">{{ name }}</span>
+      <a
+        v-if="workbenchHref"
+        class="bs-docs-demo-workbench"
+        :href="workbenchHref"
+        target="_blank"
+        rel="noreferrer"
+        :title="t('docs.workbench')"
+        :aria-label="t('docs.workbench')"
+      >
+        Vue
+        <Icon name="i-lucide-external-link" />
+      </a>
+      <a
+        v-if="reactWorkbenchHref"
+        class="bs-docs-demo-workbench"
+        :href="reactWorkbenchHref"
+        target="_blank"
+        rel="noreferrer"
+        :title="t('docs.workbench')"
+        :aria-label="t('docs.workbench')"
+      >
+        React
+        <Icon name="i-lucide-external-link" />
+      </a>
+      <Tabs.Indicator />
+    </Tabs.List>
+    <Tabs.Content value="preview">
+      <div class="bs-docs-demo-canvas">
+        <component :is="demo" v-if="demo" />
+        <p v-else class="bs-docs-demo-missing">No example yet.</p>
+      </div>
+    </Tabs.Content>
+    <Tabs.Content v-if="code" value="code">
+      <!-- The code pane shares the printed-block vessel of the markdown
+           blocks: label bar on top, copy at its end. shiki's own
+           pre/code lands inside; the plain pre is the fallback while
+           the highlight route is unreachable. -->
+      <div class="bs-docs-pre bs-docs-demo-code-panel">
+        <div class="bs-docs-pre-bar">
+          <span class="bs-docs-pre-label">{{ name }}.vue</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            :aria-label="copied ? t('docs.copy.copied') : t('docs.copy.code')"
+            @click="copy"
+          >
+            {{ copied ? t("docs.copy.copied") : t("docs.copy.code") }}
+          </Button>
         </div>
-      </Tabs.Content>
-      <Tabs.Content v-if="code" value="code">
-        <!-- The code pane shares the printed-block vessel of the markdown
-             blocks: label bar on top, copy at its end. shiki's own
-             pre/code lands inside; the plain pre is the fallback while
-             the highlight route is unreachable. -->
-        <div class="bs-docs-pre bs-docs-demo-code-panel">
-          <div class="bs-docs-pre-bar">
-            <span class="bs-docs-pre-label">{{ name }}.vue</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              :aria-label="copied ? t('docs.copy.copied') : t('docs.copy.code')"
-              @click="copy"
-            >
-              {{ copied ? t("docs.copy.copied") : t("docs.copy.code") }}
-            </Button>
-          </div>
-          <div v-if="highlighted" class="bs-docs-demo-code" v-html="highlighted"></div>
-          <pre v-else class="bs-docs-demo-code"><code>{{ code }}</code></pre>
-        </div>
-      </Tabs.Content>
-    </Tabs.Root>
-  </div>
+        <div v-if="highlighted" class="bs-docs-demo-code" v-html="highlighted"></div>
+        <pre v-else class="bs-docs-demo-code"><code>{{ code }}</code></pre>
+      </div>
+    </Tabs.Content>
+  </Tabs.Root>
 </template>

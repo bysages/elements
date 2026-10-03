@@ -2,19 +2,27 @@ import { injectComponentStyle } from "@bysages/core";
 import { mergeProps } from "solid-js";
 import type { Component, JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 /** A trail of waymarks: Root wraps the nav, List the ordered trail, and
  * each Item carries a Link — or the Current page — parted by a quiet
  * Separator. Links take href and the rest through attributes. */
+type PartExtra =
+  | Record<string, string>
+  | ((messages: { breadcrumb: { label: string } }) => Record<string, string>);
+
 function part<P extends Record<string, unknown>>(
   name: string,
   tag: string,
-  extra: Record<string, string> = {},
+  extra: PartExtra = {},
 ): Component<P> {
   return ((props: P) => {
+    const messages = useComponentMessages();
+    const partExtra = typeof extra === "function" ? extra(messages()) : extra;
     const Tag = tag as "nav";
     return (
       <Tag
-        {...extra}
+        {...partExtra}
         {...(props as JSX.HTMLAttributes<HTMLElement>)}
         data-scope="breadcrumb"
         data-part={name.toLowerCase()}
@@ -23,7 +31,7 @@ function part<P extends Record<string, unknown>>(
   }) as Component<P>;
 }
 
-const Root = part("Root", "nav", { "aria-label": "Breadcrumb" });
+const Root = part("Root", "nav", (messages) => ({ "aria-label": messages.breadcrumb.label }));
 const List = part("List", "ol");
 const Item = part("Item", "li");
 const Link = part("Link", "a");

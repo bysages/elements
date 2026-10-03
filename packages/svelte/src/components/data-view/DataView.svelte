@@ -3,9 +3,13 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("data-view");
 
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";
+import { useComponentMessages } from "../config-provider/messages";
 import type { DataViewProps } from "./props";
 
-let { items, layout = "list", pageSize, renderItem, header, ...rest }: DataViewProps = $props();
+let { items, layout = "list", pageSize, renderItem, header, ...rest }: DataViewProps =
+  $props();
+
+const messages = useComponentMessages();
 
 let page = $state(1);
 const pageCount = $derived(pageSize ? Math.max(1, Math.ceil(items.length / pageSize)) : 1);
@@ -35,7 +39,7 @@ lattice and pages them with the pagination family's own parts. -->
         siblingCount={1}
         onPageChange={(details) => (page = details.page)}
       >
-        <ArkPagination.PrevTrigger aria-label="Previous page">‹</ArkPagination.PrevTrigger>
+        <ArkPagination.PrevTrigger aria-label={messages().pagination.previous}>‹</ArkPagination.PrevTrigger>
         <ArkPagination.Context>
           {#snippet children(pagination)}
             {#each pagination.pages as entry, index (index)}
@@ -47,7 +51,7 @@ lattice and pages them with the pagination family's own parts. -->
             {/each}
           {/snippet}
         </ArkPagination.Context>
-        <ArkPagination.NextTrigger aria-label="Next page">›</ArkPagination.NextTrigger>
+        <ArkPagination.NextTrigger aria-label={messages().pagination.next}>›</ArkPagination.NextTrigger>
       </ArkPagination.Root>
     </div>
   {/if}

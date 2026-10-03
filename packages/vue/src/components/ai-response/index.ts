@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import type { PropType } from "vue";
 import { computed, defineComponent, h, ref, watchPostEffect } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 
 /** Wide tables ride a scrolling lane instead of bursting the column.
@@ -65,12 +66,15 @@ export const Response = defineComponent({
       default: undefined,
     },
     /** The copy stamp's accessible name before the copy lands. */
-    copyLabel: { type: String, default: "Copy code" },
+    copyLabel: { type: String, default: undefined },
     /** The copy stamp's accessible name once the text has landed. */
-    copiedLabel: { type: String, default: "Copied" },
+    copiedLabel: { type: String, default: undefined },
   },
   setup(props) {
     injectComponentStyle("ai");
+    const messages = useComponentMessages();
+    const copyLabel = computed(() => props.copyLabel ?? messages.value.ai.copyCode);
+    const copiedLabel = computed(() => props.copiedLabel ?? messages.value.ai.copied);
 
     const html = computed(() =>
       renderHtml(props.content, props.highlighter ? { highlighter: props.highlighter } : undefined),
@@ -82,13 +86,13 @@ export const Response = defineComponent({
     // single delegated click serves them all.
     watchPostEffect(() => {
       void html.value;
-      void props.copyLabel;
-      if (root.value) decorateCodeCopy(root.value, props.copyLabel);
+      void copyLabel.value;
+      if (root.value) decorateCodeCopy(root.value, copyLabel.value);
       if (root.value) wrapResponseTables(root.value);
     });
 
     const onClick = (event: MouseEvent) => {
-      void clickCodeCopy(event, props.copyLabel, props.copiedLabel);
+      void clickCodeCopy(event, copyLabel.value, copiedLabel.value);
     };
 
     return () =>

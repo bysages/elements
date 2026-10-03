@@ -7,6 +7,7 @@ import { For, Show, createMemo, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
 
 export interface TreeSelectNode {
@@ -52,6 +53,7 @@ export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * matches keep their ancestors and the branches fan open.
  */
 export function TreeSelect(props: TreeSelectProps) {
+  const messages = useComponentMessages();
   injectComponentStyle("tree-select");
   injectComponentStyle("tree-view");
   const [own, rest] = splitProps(props, [
@@ -133,7 +135,7 @@ export function TreeSelect(props: TreeSelectProps) {
           fallback={
             <ArkTreeView.Item
               asChild={(propsFn) => (
-                <span {...propsFn()} style={{ display: "flex", "inline-size": "100%" }}>
+                <span {...propsFn()}>
                   <ArkTreeView.ItemText>{rowProps.node.label}</ArkTreeView.ItemText>
                 </span>
               )}
@@ -201,8 +203,8 @@ export function TreeSelect(props: TreeSelectProps) {
                   size="sm"
                   value={query()}
                   onValueChange={setQuery}
-                  placeholder="Filter…"
-                  aria-label="Filter options"
+                  placeholder={messages().select.filter}
+                  aria-label={messages().select.filter}
                 />
               </div>
             </Show>

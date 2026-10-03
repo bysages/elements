@@ -5,8 +5,8 @@ export const backTopCss = /* css */ `
    elevation, recomposed from the lighting parts. */
 [data-scope="back-top"][data-part="root"] {
   position: fixed;
-  inset-inline-end: var(--bs-space-6);
-  inset-block-end: var(--bs-space-6);
+  inset-inline-end: calc(var(--bs-space-6) + var(--bs-safe-area-inset-right));
+  inset-block-end: calc(var(--bs-space-6) + var(--bs-safe-area-inset-bottom));
   z-index: var(--bs-z-overlay);
   transition:
     opacity var(--bs-duration-base) var(--bs-ease-out),
@@ -18,7 +18,7 @@ export const backTopCss = /* css */ `
    corner while the content travels underneath. */
 [data-scope="back-top"][data-part="root"][data-container] {
   position: sticky;
-  inset-block-end: var(--bs-space-4);
+  inset-block-end: calc(var(--bs-space-4) + var(--bs-safe-area-inset-bottom));
   z-index: auto;
   margin-inline-start: auto;
   inline-size: fit-content;
@@ -39,7 +39,7 @@ export const backTopCss = /* css */ `
 [data-scope="back-top"][data-part="root"][data-state="shown"]:hover [data-scope="button"][data-part="root"] {
   --bs-shadow-color: color-mix(in oklab, var(--bs-shadow-ink) 30%, transparent);
   box-shadow: var(--bs-elevation-2);
-  transition: box-shadow 220ms var(--bs-ease-out);
+  transition: box-shadow var(--bs-duration-shadow) var(--bs-ease-out);
 }
 
 [data-scope="back-top"][data-part="root"][data-state="shown"]:hover [data-scope="button"][data-part="root"] {

@@ -7,6 +7,7 @@ import { normalizeProps, useMachine } from "@zag-js/react";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useId, useMemo, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
 export interface CascadeSelectNode {
@@ -93,6 +94,7 @@ export function CascadeSelect({
   ...rest
 }: CascadeSelectProps) {
   injectComponentStyle("cascade-select");
+  const messages = useComponentMessages();
   const id = useId();
   const locale = useLocaleContext();
   const env = useEnvironmentContext();
@@ -264,8 +266,8 @@ export function CascadeSelect({
                   size="sm"
                   value={query}
                   onValueChange={setQuery}
-                  placeholder="Filter…"
-                  aria-label="Filter options"
+                  placeholder={messages.select.filter}
+                  aria-label={messages.select.filter}
                 />
               </div>
             ) : null}

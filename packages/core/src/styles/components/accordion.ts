@@ -65,7 +65,7 @@ export const accordionCss =
   justify-content: center;
   color: var(--bs-color-text-tertiary);
   transform-origin: center;
-  transition: transform 200ms var(--bs-ease-spring);
+  transition: transform var(--bs-duration-base) var(--bs-ease-spring);
 }
 
 [data-scope="accordion"][data-part="item-trigger"][data-state="open"]

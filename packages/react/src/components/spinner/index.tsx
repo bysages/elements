@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
   size?: "sm" | "md" | "lg";
 }
@@ -9,11 +11,12 @@ export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
  * default — it reports progress without claiming attention. */
 export function Spinner({ size = "md", children, ...rest }: SpinnerProps) {
   injectComponentStyle("spinner");
+  const messages = useComponentMessages();
   return (
     <span
       {...rest}
       role="status"
-      aria-label={rest["aria-label"] ?? "Loading"}
+      aria-label={rest["aria-label"] ?? messages.spinner.loading}
       data-scope="spinner"
       data-part="root"
       data-size={size}

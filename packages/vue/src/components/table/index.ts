@@ -57,6 +57,7 @@ import {
 } from "vue";
 
 import { glyphNode } from "../../internal/glyph";
+import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
@@ -260,14 +261,15 @@ export const DataTable = defineComponent({
     },
     stickyFooter: Boolean,
     initialSorting: { type: Array as PropType<SortingState> },
-    globalFilterPlaceholder: { type: String, default: "Filter rows" },
-    emptyText: { type: String, default: "No rows" },
+    globalFilterPlaceholder: { type: String, default: undefined },
+    emptyText: { type: String, default: undefined },
     reorderable: Boolean,
     externalDrops: Boolean,
     defaultExpanded: Boolean,
   },
   setup(rawProps, { expose, emit }) {
     injectComponentStyle("table");
+    const messages = useComponentMessages();
 
     // Declared defaults keep these present at runtime.
     const props = rawProps as DataTableProps & Required<Pick<DataTableProps, "pageSizeOptions">>;
@@ -724,7 +726,7 @@ export const DataTable = defineComponent({
           row.getIsSelected(),
           false,
           () => row.toggleSelected(!row.getIsSelected()),
-          "Select row",
+          messages.value.table.selectRow,
         );
       } else if (isExpandHost) {
         content = h(
@@ -743,7 +745,9 @@ export const DataTable = defineComponent({
                 "data-part": "expander",
                 "data-expanded": row.getIsExpanded() || undefined,
                 "data-leaf": !row.getCanExpand() || undefined,
-                "aria-label": row.getIsExpanded() ? "Collapse row" : "Expand row",
+                "aria-label": row.getIsExpanded()
+                  ? messages.value.table.collapseRow
+                  : messages.value.table.expandRow,
                 onClick: () => row.toggleExpanded(),
               },
               chevronGlyph(),
@@ -792,9 +796,9 @@ export const DataTable = defineComponent({
             type: "text",
             "data-scope": "table",
             "data-part": "header-filter",
-            "aria-label": `Filter ${column.id}`,
+            "aria-label": formatMessage(messages.value.table.filterColumn, { name: column.id }),
             value: (column.getFilterValue() as string) ?? "",
-            placeholder: "Filter",
+            placeholder: messages.value.command.filter,
             draggable: false,
             onClick: (e: Event) => e.stopPropagation(),
             // Text selection owns a drag from inside the filter box.
@@ -889,7 +893,7 @@ export const DataTable = defineComponent({
                       all,
                       table.getIsSomeRowsSelected() && !all,
                       () => table.toggleAllRowsSelected(!all),
-                      "Select all rows",
+                      messages.value.table.selectAllRows,
                     ),
                   ],
                 );
@@ -916,7 +920,13 @@ export const DataTable = defineComponent({
             ? virtualRows.value.map((_, index) => renderRow(bodyRows[index]!, index))
             : bodyRows.map((row) => renderRow(row, -1))),
           ...(bodyRows.length === 0
-            ? [h("div", { "data-scope": "table", "data-part": "empty" }, props.emptyText)]
+            ? [
+                h(
+                  "div",
+                  { "data-scope": "table", "data-part": "empty" },
+                  props.emptyText ?? messages.value.table.empty,
+                ),
+              ]
             : []),
         ],
       );
@@ -962,7 +972,7 @@ export const DataTable = defineComponent({
             const pagination = table.atoms.pagination.get();
             const rowCount = table.getRowCount();
             const sizeItems = props.pageSizeOptions.map((size) => ({
-              label: `${size} / page`,
+              label: formatMessage(messages.value.table.perPage, { size }),
               value: String(size),
             }));
             const pageSize = h(
@@ -980,10 +990,14 @@ export const DataTable = defineComponent({
                 h(
                   ArkSelect.Control as never,
                   {},
-                  h(ArkSelect.Trigger as never, { "aria-label": "Rows per page" }, () => [
-                    h(ArkSelect.ValueText as never),
-                    h(ArkSelect.Indicator as never, () => chevronDownGlyph()),
-                  ]),
+                  h(
+                    ArkSelect.Trigger as never,
+                    { "aria-label": messages.value.table.rowsPerPage },
+                    () => [
+                      h(ArkSelect.ValueText as never),
+                      h(ArkSelect.Indicator as never, () => chevronDownGlyph()),
+                    ],
+                  ),
                 ),
                 h(Teleport, { to: "body" }, [
                   h(ArkSelect.Positioner as never, () =>
@@ -1029,7 +1043,11 @@ export const DataTable = defineComponent({
               ],
             );
             return h("div", { "data-scope": "table", "data-part": "pagination" }, [
-              h("span", { "data-scope": "table", "data-part": "page-status" }, `${rowCount} rows`),
+              h(
+                "span",
+                { "data-scope": "table", "data-part": "page-status" },
+                formatMessage(messages.value.table.rowsCount, { count: rowCount }),
+              ),
               h("div", { "data-scope": "table", "data-part": "page-nav" }, [pageSize, pager]),
             ]);
           })()
@@ -1042,8 +1060,8 @@ export const DataTable = defineComponent({
                 type: "search",
                 "data-scope": "table",
                 "data-part": "global-filter",
-                "aria-label": "Filter all columns",
-                placeholder: props.globalFilterPlaceholder,
+                "aria-label": messages.value.table.filterAll,
+                placeholder: props.globalFilterPlaceholder ?? messages.value.command.filter,
                 value: (table.atoms.globalFilter.get() as string) ?? "",
                 onInput: (e: Event) => table.setGlobalFilter((e.target as HTMLInputElement).value),
               }),

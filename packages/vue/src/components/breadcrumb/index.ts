@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { useComponentMessages } from "../../internal/messages";
+
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
     name: "Breadcrumb" + name,
@@ -23,7 +25,28 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
   });
 }
 
-const Root = part("Root", "nav", { "aria-label": "Breadcrumb" });
+const Root = defineComponent({
+  name: "BreadcrumbRoot",
+  setup(_, ctx: SetupContext) {
+    injectComponentStyle("breadcrumb");
+    const messages = useComponentMessages();
+
+    return () => {
+      const { "aria-label": consumerLabel, ...attrs } = ctx.attrs;
+
+      return h(
+        "nav",
+        {
+          ...attrs,
+          "aria-label": consumerLabel ?? messages.value.breadcrumb.label,
+          "data-scope": "breadcrumb",
+          "data-part": "root",
+        },
+        ctx.slots.default?.(),
+      );
+    };
+  },
+});
 const List = part("List", "ol");
 const Item = part("Item", "li");
 const Link = part("Link", "a");

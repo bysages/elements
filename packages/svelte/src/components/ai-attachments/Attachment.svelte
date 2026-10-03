@@ -2,6 +2,7 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("ai");
 
+import { formatMessage, useComponentMessages } from "../config-provider/messages";
 import type { AttachmentProps } from "./props";
 
 const IMAGE_EXTS = ["png", "jpg", "jpeg", "gif", "webp", "svg", "avif", "bmp", "ico"];
@@ -21,7 +22,11 @@ const humanSize = (bytes: number): string => {
   return `${value.toFixed(1)} ${units[unit]}`;
 };
 
-let { name, size, status = "ready", onRemove, ...rest }: AttachmentProps = $props();
+let { name, size, status = "ready", onRemove, "aria-label": label, ...rest }: AttachmentProps =
+  $props();
+const messages = useComponentMessages();
+const removeLabel = $derived(label ?? formatMessage(messages().ai.removeAttachment, { name }));
+
 </script>
 
 <!-- One file riding the prompt: its glyph by extension, its name and
@@ -58,7 +63,7 @@ dashed ghost, error as danger ink. -->
   {#if size !== undefined}
     <span>{humanSize(size)}</span>
   {/if}
-  <button type="button" data-remove aria-label={`Remove ${name}`} onclick={() => onRemove?.()}>
+  <button type="button" data-remove aria-label={removeLabel} onclick={() => onRemove?.()}>
     <svg
       viewBox="0 0 16 16"
       width="12"

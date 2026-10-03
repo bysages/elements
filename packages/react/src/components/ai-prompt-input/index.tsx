@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useRef } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
 import type { MentionEntry } from "../mentions";
@@ -83,7 +84,8 @@ export function PromptInput({
   onValueChange,
   onSubmit,
   onStop,
-  placeholder = "Send a message",
+  placeholder,
+  "aria-label": ariaLabel,
   disabled = false,
   busy = false,
   mentions,
@@ -97,6 +99,8 @@ export function PromptInput({
   injectComponentStyle("ai");
   // The field part is a component; its ref carries the textarea itself.
   const fieldRef = useRef<HTMLTextAreaElement | null>(null);
+  const messages = useComponentMessages();
+  const placeholderText = placeholder ?? messages.ai.conversation;
 
   const mentionState = useMentions(
     () => ({ items: mentions?.items ?? [], trigger: mentions?.trigger }),
@@ -122,7 +126,7 @@ export function PromptInput({
       size="sm"
       square
       type="button"
-      aria-label="Stop"
+      aria-label={messages.ai.stop}
       disabled={disabled}
       onClick={() => onStop?.()}
     >
@@ -134,7 +138,7 @@ export function PromptInput({
       size="sm"
       square
       type="submit"
-      aria-label="Send"
+      aria-label={messages.ai.send}
       disabled={disabled || !value.trim()}
     >
       {arrowUpGlyph}
@@ -162,7 +166,8 @@ export function PromptInput({
             autoresize
             rows={1}
             value={value}
-            placeholder={placeholder}
+            placeholder={placeholderText}
+            aria-label={ariaLabel ?? messages.ai.conversation}
             disabled={disabled}
             onChange={(event) => {
               onValueChange?.(event.target.value);

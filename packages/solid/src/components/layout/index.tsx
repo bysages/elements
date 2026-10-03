@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { createContext, createEffect, createSignal, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { useComponentMessages } from "../config-provider/use-component-messages";
+
 export interface LayoutRootProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** Declare which edge the skeleton reserves for its sider — without
    * it the root is a single column. */
@@ -117,6 +119,7 @@ function LayoutSider(props: LayoutSiderProps) {
 
   const layout = useContext(LayoutContext);
   const [dragging, setDragging] = createSignal(false);
+  const messages = useComponentMessages();
   let rail: HTMLElement | undefined;
   let startPointerX = 0;
   let startWidth = 0;
@@ -163,7 +166,7 @@ function LayoutSider(props: LayoutSiderProps) {
         role="separator"
         aria-orientation="vertical"
         tabindex={0}
-        aria-label="Resize sidebar"
+        aria-label={messages().sidebar.resize}
         aria-valuenow={railWidth()}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

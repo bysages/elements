@@ -46,6 +46,7 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from "react";
 
+import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
@@ -276,11 +277,13 @@ export function DataTable(rawProps: DataTableProps) {
     paginated = false,
     pageSize = 10,
     pageSizeOptions = [10, 20, 50],
-    globalFilterPlaceholder = "Filter rows",
-    emptyText = "No rows",
+    globalFilterPlaceholder,
+    emptyText,
     reorderable = false,
   } = props;
   const merge = props.merge;
+  const messages = useComponentMessages();
+  const globalFilterText = globalFilterPlaceholder ?? messages.table.filterAll;
   const virtual = virtualProp && !merge;
   const mergeMode = !virtualProp && !!merge;
 
@@ -699,7 +702,7 @@ export function DataTable(rawProps: DataTableProps) {
           checked={row.getIsSelected()}
           indeterminate={false}
           onToggle={() => row.toggleSelected(!row.getIsSelected())}
-          label="Select row"
+          label={messages.table.selectRow}
         />
       );
     } else if (isExpandHost) {
@@ -715,7 +718,7 @@ export function DataTable(rawProps: DataTableProps) {
             data-part="expander"
             data-expanded={row.getIsExpanded() || undefined}
             data-leaf={!row.getCanExpand() || undefined}
-            aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+            aria-label={row.getIsExpanded() ? messages.table.collapseRow : messages.table.expandRow}
             onClick={() => row.toggleExpanded()}
           >
             <ChevronGlyph />
@@ -778,9 +781,9 @@ export function DataTable(rawProps: DataTableProps) {
             type="text"
             data-scope="table"
             data-part="header-filter"
-            aria-label={`Filter ${column.id}`}
+            aria-label={formatMessage(messages.table.filterColumn, { name: column.id })}
             value={(column.getFilterValue() as string) ?? ""}
-            placeholder="Filter"
+            placeholder={messages.command.filter}
             draggable={false}
             onClick={(e) => e.stopPropagation()}
             onDragStart={(e) => e.stopPropagation()}
@@ -841,7 +844,7 @@ export function DataTable(rawProps: DataTableProps) {
                     checked={all}
                     indeterminate={table.getIsSomeRowsSelected() && !all}
                     onToggle={() => table.toggleAllRowsSelected(!all)}
-                    label="Select all rows"
+                    label={messages.table.selectAllRows}
                   />
                 </div>
               );
@@ -866,7 +869,7 @@ export function DataTable(rawProps: DataTableProps) {
         : rows.map((row) => renderRow(row, -1))}
       {rows.length === 0 ? (
         <div data-scope="table" data-part="empty">
-          {emptyText}
+          {emptyText ?? messages.table.empty}
         </div>
       ) : null}
     </div>
@@ -906,7 +909,7 @@ export function DataTable(rawProps: DataTableProps) {
         const rowCount = table.getRowCount();
         const sizeItems = createListCollection({
           items: pageSizeOptions.map((size) => ({
-            label: `${size} / page`,
+            label: formatMessage(messages.table.perPage, { size }),
             value: String(size),
           })),
         });
@@ -918,7 +921,7 @@ export function DataTable(rawProps: DataTableProps) {
             positioning={{ placement: "top-start" }}
           >
             <ArkSelect.Control>
-              <ArkSelect.Trigger aria-label="Rows per page">
+              <ArkSelect.Trigger aria-label={messages.table.rowsPerPage}>
                 <ArkSelect.ValueText />
                 <ArkSelect.Indicator>{chevronDownGlyph()}</ArkSelect.Indicator>
               </ArkSelect.Trigger>
@@ -962,7 +965,7 @@ export function DataTable(rawProps: DataTableProps) {
         return (
           <div data-scope="table" data-part="pagination">
             <span data-scope="table" data-part="page-status">
-              {rowCount} rows
+              {formatMessage(messages.table.rowsCount, { count: rowCount })}
             </span>
             <div data-scope="table" data-part="page-nav">
               {pageSize}
@@ -980,8 +983,8 @@ export function DataTable(rawProps: DataTableProps) {
           type="search"
           data-scope="table"
           data-part="global-filter"
-          aria-label="Filter all columns"
-          placeholder={globalFilterPlaceholder}
+          aria-label={messages.table.filterAll}
+          placeholder={globalFilterText}
           value={(table.atoms.globalFilter.get() as string) ?? ""}
           onInput={(e) => table.setGlobalFilter((e.target as HTMLInputElement).value)}
         />

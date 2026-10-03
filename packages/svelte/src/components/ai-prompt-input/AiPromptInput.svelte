@@ -5,6 +5,8 @@ injectComponentStyle("ai");
 import { Button } from "../button";
 import { Field } from "../field";
 import { MentionsVessel, useMentions } from "../mentions";
+
+import { useComponentMessages } from "../config-provider/messages";
 import type { MentionEntry } from "../mentions";
 
 import type { PromptInputProps } from "./props";
@@ -14,7 +16,7 @@ let {
   onValueChange,
   onSubmit,
   onStop,
-  placeholder = "Send a message",
+  placeholder,
   disabled = false,
   busy = false,
   mentions,
@@ -27,6 +29,9 @@ let {
 }: PromptInputProps = $props();
 
 let textareaEl = $state<HTMLTextAreaElement | null>(null);
+
+const messages = useComponentMessages();
+const placeholderText = $derived(placeholder ?? messages().ai.send);
 
 const mentionState = useMentions(
   () => ({ items: mentions?.items ?? [], trigger: mentions?.trigger }),
@@ -60,7 +65,7 @@ const hasFooter = $derived(footer != null);
       size="sm"
       square
       type="button"
-      aria-label="Stop"
+      aria-label={messages().ai.stop}
       {disabled}
       onclick={() => onStop?.()}
     >
@@ -74,7 +79,7 @@ const hasFooter = $derived(footer != null);
       size="sm"
       square
       type="submit"
-      aria-label="Send"
+      aria-label={messages().ai.send}
       disabled={disabled || !value.trim()}
     >
       <svg
@@ -125,7 +130,8 @@ the seal becomes a stop seal and Enter holds its breath. -->
         bind:value
         autoresize
         rows={1}
-        {placeholder}
+        {placeholderText}
+        aria-label={messages().ai.conversation}
         {disabled}
         oninput={() => mentionState.onInput()}
         onkeydown={(event) => {

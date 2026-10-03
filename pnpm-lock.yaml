@@ -136,6 +136,9 @@ importers:
       '@bysages/nuxt':
         specifier: workspace:*
         version: link:../nuxt
+      '@bysages/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       '@bysages/vue':
         specifier: workspace:*
         version: link:../vue

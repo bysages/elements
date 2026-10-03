@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type HTMLAttributes, type KeyboardEvent, useEffect, useRef, useState } from "react";
 
+import { useComponentMessages } from "../../internal/messages";
+
 export interface TerminalProps extends HTMLAttributes<HTMLDivElement> {
   /** The transcript, oldest line first. */
   lines?: string[];
@@ -24,6 +26,8 @@ export function Terminal({
   ...rest
 }: TerminalProps) {
   injectComponentStyle("terminal");
+  const messages = useComponentMessages();
+  const commandLineLabel = label ?? messages.terminal.commandLine;
   const [draft, setDraft] = useState("");
   const scroll = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -36,13 +40,7 @@ export function Terminal({
     onCommand?.(text);
   }
   return (
-    <div
-      {...rest}
-      role="log"
-      aria-label={label ?? undefined}
-      data-scope="terminal"
-      data-part="root"
-    >
+    <div {...rest} role="log" aria-label={commandLineLabel} data-scope="terminal" data-part="root">
       <div ref={scroll} data-scope="terminal" data-part="scroll">
         {lines.map((line, index) => (
           <div key={index} data-scope="terminal" data-part="line">
@@ -59,7 +57,7 @@ export function Terminal({
           data-part="input"
           value={draft}
           placeholder={placeholder}
-          aria-label={label ? `${label} command line` : "Command line"}
+          aria-label={commandLineLabel}
           spellCheck={false}
           autoComplete="off"
           onInput={(event) => setDraft((event.target as HTMLInputElement).value)}

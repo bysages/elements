@@ -36,9 +36,8 @@ let { value, min, max, onValueChange, children, ...rest }: CalendarProps = $prop
           stroke="currentColor"
           stroke-width="1.75"
           aria-hidden="true"
-          style="transform: rotate(180deg)"
         >
-          <path d="m9 5 7 7-7 7" />
+          <path d="m15 5-7 7 7 7" />
         </svg>
       </ArkDatePicker.PrevTrigger>
       <ArkDatePicker.ViewTrigger>
