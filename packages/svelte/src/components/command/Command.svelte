@@ -37,7 +37,7 @@ let listOpen = $state(true);
 let fieldText = $state("");
 
 const { collection, set, filter } = useListCollection<string>({
-  initialItems: items.map((entry) => entry.value),
+  initialItems: untrack(() => items.map((entry) => entry.value)),
   filter: (value, input) => {
     const entry = items.find((candidate) => candidate.value === value);
     if (!entry) return false;

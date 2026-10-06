@@ -3,7 +3,7 @@ import { Button, PageHeader } from "@bysages/vue";
 </script>
 
 <template>
-  <PageHeader.Root>
+  <PageHeader>
     <PageHeader.Heading>
       <div class="min-w-0">
         <PageHeader.Title>Ledger of correspondence</PageHeader.Title>
@@ -16,5 +16,5 @@ import { Button, PageHeader } from "@bysages/vue";
         <Button size="sm">New letter</Button>
       </PageHeader.Actions>
     </PageHeader.Heading>
-  </PageHeader.Root>
+  </PageHeader>
 </template>

@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { chevron } from "../ai/chevron";
 import { Collapsible } from "../collapsible";
 
@@ -13,7 +14,7 @@ export interface ReasoningProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningProps) {
+function ReasoningImpl({ label = "Thinking", children, ...rest }: ReasoningProps) {
   injectComponentStyle("ai");
   return (
     <Collapsible.Root {...rest} data-ai="reasoning">
@@ -29,4 +30,6 @@ export function Reasoning({ label = "Thinking", children, ...rest }: ReasoningPr
     </Collapsible.Root>
   );
 }
+
+export const Reasoning = withSelfRoot(ReasoningImpl);
 export { Reasoning as AiReasoning };

@@ -1,9 +1,8 @@
-import { check } from "@bysages/icons";
 import { h } from "vue";
 
 import { faces } from "../../generative/faces";
 import { defineEntry } from "../../generative/shared";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { Checkbox } from "./index";
 
 /** One independent box with its label. */
@@ -11,7 +10,7 @@ export default defineEntry({
   Checkbox: {
     ...faces.Checkbox,
     component: ({ props }) => {
-      const mark = () => glyphNode(check);
+      const mark = () => iconNode("check");
       return h(
         Checkbox.Root as never,
         { defaultChecked: props.checked ?? false, disabled: props.disabled },

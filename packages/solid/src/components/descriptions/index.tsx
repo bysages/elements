@@ -2,6 +2,13 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+/** Simple term/detail records for the callable facade. */
+export interface DescriptionsItemData {
+  term: string;
+  detail: string;
+  span?: number;
+}
+
 /**
  * A ledger laid flat: term and detail pairs in one quiet grid. The
  * horizontal layout reads as a table of two columns; the vertical one
@@ -14,10 +21,18 @@ export interface DescriptionsRootProps extends JSX.HTMLAttributes<HTMLDListEleme
   bordered?: boolean;
   /** Pairs across the grid: one ledger per column. */
   column?: number;
+  items?: DescriptionsItemData[];
 }
 
 function Root(props: DescriptionsRootProps) {
-  const [own, rest] = splitProps(props, ["layout", "bordered", "column", "style"]);
+  const [own, rest] = splitProps(props, [
+    "layout",
+    "bordered",
+    "column",
+    "items",
+    "children",
+    "style",
+  ]);
   return (
     <dl
       {...rest}
@@ -26,7 +41,9 @@ function Root(props: DescriptionsRootProps) {
       data-part="root"
       data-layout={own.layout ?? "horizontal"}
       data-bordered={own.bordered || undefined}
-    />
+    >
+      {own.children ?? renderItems(own.items)}
+    </dl>
   );
 }
 
@@ -52,6 +69,15 @@ function Item(props: JSX.HTMLAttributes<HTMLDivElement> & { span?: number }) {
 
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
+
+function renderItems(items?: DescriptionsItemData[]) {
+  return items?.map((item) => (
+    <Item span={item.span}>
+      <Term>{item.term}</Term>
+      <Detail>{item.detail}</Detail>
+    </Item>
+  ));
+}
 
 export const Descriptions = Object.assign(Root, { Root, Item, Term, Detail });
 

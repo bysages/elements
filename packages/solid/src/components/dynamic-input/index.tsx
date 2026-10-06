@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { Index, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
@@ -33,7 +35,7 @@ export interface DynamicInputProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * past `max`, and the group always keeps one row: an entry list that
  * emptied itself would leave the reader no place to type.
  */
-export function DynamicInput(props: DynamicInputProps) {
+export const DynamicInput = withSelfRoot(function DynamicInput(props: DynamicInputProps) {
   const messages = useComponentMessages();
   injectComponentStyle("dynamic-input");
   const [own, rest] = splitProps(props, [
@@ -112,23 +114,9 @@ export function DynamicInput(props: DynamicInputProps) {
       </div>
     </div>
   );
-}
+});
 
-/** The one glyph a remove seal needs: a single crossing stroke. */
+/** The one icon a remove seal needs: a single crossing stroke. */
 function crossIcon() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.75}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M18 6 6 18M6 6l12 12" />
-    </svg>
-  );
+  return iconNode("x", { width: "16", height: "16" });
 }

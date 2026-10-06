@@ -3,11 +3,5 @@ import { Progress } from "@bysages/vue";
 </script>
 
 <template>
-  <Progress.Root :default-value="42">
-    <Progress.Label>Copying the archive</Progress.Label>
-    <Progress.ValueText />
-    <Progress.Track>
-      <Progress.Range />
-    </Progress.Track>
-  </Progress.Root>
+  <Progress :default-value="42" label="Copying the archive" />
 </template>

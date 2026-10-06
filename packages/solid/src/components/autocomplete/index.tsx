@@ -4,9 +4,13 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+import { Combobox } from "../combobox";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export interface AutoCompleteProps {
+  id?: string;
   value?: string;
   items?: string[];
   placeholder?: string;
@@ -25,10 +29,11 @@ export interface AutoCompleteProps {
  * matching is a case-insensitive substring unless `filter` says
  * otherwise.
  */
-export function AutoComplete(props: AutoCompleteProps) {
+function AutoCompleteImpl(props: AutoCompleteProps) {
   const messages = useComponentMessages();
   injectComponentStyle("combobox");
   const [own, rest] = splitProps(props, [
+    "id",
     "value",
     "items",
     "placeholder",
@@ -36,6 +41,7 @@ export function AutoComplete(props: AutoCompleteProps) {
     "filter",
     "onValueChange",
   ]);
+  const id = useElementId("autocomplete", () => props.id);
   const { collection, filter } = useListCollection({
     initialItems: own.items ?? [],
     filter: (item, input) =>
@@ -45,6 +51,7 @@ export function AutoComplete(props: AutoCompleteProps) {
   return (
     <ArkCombobox.Root
       {...rest}
+      id={id()}
       collection={collection()}
       inputValue={own.value}
       data-size={own.size ?? "md"}
@@ -79,3 +86,6 @@ export function AutoComplete(props: AutoCompleteProps) {
     </ArkCombobox.Root>
   );
 }
+
+export const AutoComplete = defineFamily(AutoCompleteImpl, Combobox) as typeof AutoCompleteImpl &
+  typeof Combobox;

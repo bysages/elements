@@ -7,6 +7,7 @@ import ResultTitleComponent from "./Title.svelte";
 /** A verdict drawn after the deed — Result, Result.Icon, Result.Title,
  * Result.Description, Result.Extra. */
 export const Result = Object.assign(ResultComponent, {
+  Root: ResultComponent,
   Icon: ResultIconComponent,
   Title: ResultTitleComponent,
   Description: ResultDescriptionComponent,

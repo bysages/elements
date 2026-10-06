@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Whitespace chosen by name: the named steps point at the space ramp so
  * siblings are held apart by one token, never by ad-hoc margins. */
 const gapVars: Record<string, string> = {
@@ -21,7 +23,7 @@ export interface StackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   justify?: string;
 }
 
-export function Stack(props: StackProps) {
+export const Stack = withSelfRoot(function Stack(props: StackProps) {
   injectComponentStyle("stack");
   const [own, rest] = splitProps(props, ["direction", "gap", "wrap", "align", "justify"]);
   return (
@@ -39,4 +41,4 @@ export function Stack(props: StackProps) {
       data-direction={own.direction ?? "column"}
     />
   );
-}
+});

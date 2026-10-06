@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { onCleanup, onMount, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 
 export interface BackTopProps extends JSX.HTMLAttributes<HTMLButtonElement> {
@@ -30,7 +32,7 @@ export interface BackTopProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * paper, hairline and halo are its; this family owns only the floating
  * and the entrance.
  */
-export function BackTop(props: BackTopProps) {
+export const BackTop = withSelfRoot(function BackTop(props: BackTopProps) {
   injectComponentStyle("back-top");
   const [own, rest] = splitProps(props, ["threshold", "label", "scrollEl"]);
   const [visible, setVisible] = createSignal(false);
@@ -87,23 +89,9 @@ export function BackTop(props: BackTopProps) {
       </Button>
     </div>
   );
-}
+});
 
-/** The single glyph a way-home control needs: one stroke pointing up. */
+/** The single icon a way-home control needs: one stroke pointing up. */
 function chevronUp() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.75}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 14 6-6 6 6" />
-    </svg>
-  );
+  return iconNode("chevron-up", { width: "16", height: "16" });
 }

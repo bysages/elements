@@ -1,20 +1,13 @@
 <script setup lang="ts">
 import { Avatar, AvatarGroup } from "@bysages/vue";
+
+const people = ["Q", "C", "Z", "T"];
 </script>
 
 <template>
   <AvatarGroup>
-    <Avatar.Root>
-      <Avatar.Fallback>SG</Avatar.Fallback>
-    </Avatar.Root>
-    <Avatar.Root>
-      <Avatar.Fallback>LM</Avatar.Fallback>
-    </Avatar.Root>
-    <Avatar.Root>
-      <Avatar.Fallback>WZ</Avatar.Fallback>
-    </Avatar.Root>
-    <Avatar.Root>
-      <Avatar.Fallback>+6</Avatar.Fallback>
-    </Avatar.Root>
+    <Avatar v-for="person in people" :key="person">
+      <Avatar.Fallback>{{ person }}</Avatar.Fallback>
+    </Avatar>
   </AvatarGroup>
 </template>

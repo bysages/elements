@@ -1,0 +1,12 @@
+<script>
+  // React Aria's focus-scope cleanup restores HTMLElement.prototype.focus by
+  // assignment. Some Storybook chunks load two copies, so keep the host
+  // method replaceable across both workbenches.
+  const focus = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "focus");
+  if (focus)
+    Object.defineProperty(HTMLElement.prototype, "focus", {
+      ...focus,
+      writable: true,
+      configurable: true,
+    });
+</script>

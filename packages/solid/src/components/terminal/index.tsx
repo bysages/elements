@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { For, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onCommand"> {
@@ -17,7 +18,7 @@ export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
  * component owns only the reading and the caret — each entered line
  * leaves as an event, and the caller answers through the lines prop,
  * so history stays theirs to shape. */
-export function Terminal(props: TerminalProps) {
+export const Terminal = withSelfRoot(function Terminal(props: TerminalProps) {
   const messages = useComponentMessages();
   injectComponentStyle("terminal");
   const [own, rest] = splitProps(props, ["lines", "prompt", "placeholder", "label", "onCommand"]);
@@ -69,4 +70,4 @@ export function Terminal(props: TerminalProps) {
       </div>
     </div>
   );
-}
+});

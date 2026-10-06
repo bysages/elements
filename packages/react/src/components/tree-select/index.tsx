@@ -6,8 +6,11 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 import { useMemo, useState } from "react";
 
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
+import { Popover } from "../popover";
 
 export interface TreeSelectNode {
   label: string;
@@ -16,19 +19,7 @@ export interface TreeSelectNode {
   disabled?: boolean;
 }
 
-const chevron = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-);
+const chevron = iconNode("chevron-right");
 
 const chevronDown = (
   <span data-part="chevron" aria-hidden="true">
@@ -82,7 +73,7 @@ export interface TreeSelectProps extends HTMLAttributes<HTMLDivElement> {
   onValueChange?: (value: string) => void;
 }
 
-export function TreeSelect({
+function TreeSelectImpl({
   value,
   data,
   placeholder = "Select…",
@@ -94,6 +85,7 @@ export function TreeSelect({
 }: TreeSelectProps) {
   injectComponentStyle("tree-select");
   injectComponentStyle("tree-view");
+  const hostId = useElementId("tree-select", rest);
   const messages = useComponentMessages();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -162,6 +154,7 @@ export function TreeSelect({
   return (
     <ArkPopover.Root
       {...rest}
+      id={`${hostId}:popover`}
       open={open}
       onOpenChange={(details) => {
         setOpen(details.open);
@@ -204,6 +197,7 @@ export function TreeSelect({
                 </p>
               ) : (
                 <ArkTreeView.Root
+                  id={`${hostId}:tree`}
                   collection={visibleCollection}
                   selectionMode="single"
                   selectedValue={value ? [value] : []}
@@ -226,6 +220,9 @@ export function TreeSelect({
     </ArkPopover.Root>
   );
 }
+
+export const TreeSelect = Object.assign(TreeSelectImpl, Popover) as typeof TreeSelectImpl &
+  typeof Popover;
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.

@@ -1,26 +1,27 @@
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
 import { injectComponentStyle } from "@bysages/core";
-import { rotate_cw, x, zoom_in, zoom_out } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import type { PropType } from "vue";
 import { defineComponent, h, ref, watch, type VNode } from "vue";
-import { Teleport } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
+import { Dialog } from "../dialog";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
 /** The toolbar's glyphs, drawn from the house icon set. */
-const TOOL_GLYPHS = {
-  zoomIn: () => glyphNode(zoom_in),
-  zoomOut: () => glyphNode(zoom_out),
-  rotate: () => glyphNode(rotate_cw),
-  close: () => glyphNode(x),
+const TOOL_ICONS = {
+  zoomIn: () => iconNode("zoom-in"),
+  zoomOut: () => iconNode("zoom-out"),
+  rotate: () => iconNode("rotate-cw"),
+  close: () => iconNode("x"),
 };
 
 /**
@@ -41,7 +42,7 @@ export interface ImageViewerProps {
   height?: string | number;
 }
 
-export const ImageViewer = defineComponent({
+const ImageViewerFacade = defineComponent({
   name: "ImageViewer",
   props: {
     src: { type: String, required: true },
@@ -67,6 +68,7 @@ export const ImageViewer = defineComponent({
     // Controlled when the caller owns `open`; uncontrolled otherwise —
     // an undefined `open` must not reach the machine, or it would
     // override the machine's own decisions.
+    const hostId = useElementId("image-viewer", ctx.attrs);
     const localOpen = ref(false);
     const scale = ref(1);
     const rotation = ref(0);
@@ -94,7 +96,7 @@ export const ImageViewer = defineComponent({
       rotation.value = (rotation.value + 90) % 360;
     }
 
-    function toolButton(label: string, glyph: () => VNode, onClick: () => void) {
+    function toolButton(label: string, icon: () => VNode, onClick: () => void) {
       return h(
         Button,
         { variant: "ghost", square: true, size: "lg", "aria-label": label, onClick },
@@ -110,7 +112,7 @@ export const ImageViewer = defineComponent({
               "stroke-linejoin": "round",
               "aria-hidden": true,
             },
-            glyph(),
+            icon(),
           ),
       );
     }
@@ -119,6 +121,7 @@ export const ImageViewer = defineComponent({
       h(
         ArkDialog.Root,
         {
+          id: `${hostId.value}:dialog`,
           // The picture is heavy: nothing of the lightbox rests in the
           // page while it is closed.
           open: isOpen(),
@@ -127,64 +130,63 @@ export const ImageViewer = defineComponent({
           unmountOnExit: true,
         },
         () => [
-          h(Teleport, { to: "body" }, [
-            h(ArkDialog.Backdrop, { class: "bs-image-viewer-backdrop" }),
-            h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>
-              h(
-                ArkDialog.Content,
-                {
-                  class: "bs-image-viewer-content",
-                  "aria-label": props.alt || "Image preview",
-                  // The content owns the whole screen, so the machine's
-                  // outside-click never fires — the scrim is always
-                  // "inside". A bare click on the content itself (the
-                  // page around the picture and its toolbar) reads as
-                  // the scrim and closes; clicks on the picture or the
-                  // tools carry their own targets and stay.
-                  onClick: (event: MouseEvent) => {
-                    if (event.target === event.currentTarget) setOpen(false);
-                  },
+          h(ArkDialog.Backdrop, { class: "bs-image-viewer-backdrop" }),
+          h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>
+            h(
+              ArkDialog.Content,
+              {
+                class: "bs-image-viewer-content",
+                "aria-label": props.alt || "Image preview",
+                // The content owns the whole screen, so the machine's
+                // outside-click never fires — the scrim is always
+                // "inside". A bare click on the content itself (the
+                // page around the picture and its toolbar) reads as
+                // the scrim and closes; clicks on the picture or the
+                // tools carry their own targets and stay.
+                onClick: (event: MouseEvent) => {
+                  if (event.target === event.currentTarget) setOpen(false);
                 },
-                () => [
-                  h("img", {
-                    "data-scope": "image-viewer",
-                    "data-part": "viewport",
-                    src: props.src,
-                    alt: props.alt,
-                    width: props.width,
-                    height: props.height,
-                    style: {
-                      transform: `scale(${scale.value}) rotate(${rotation.value}deg)`,
-                    },
-                  }),
-                  // The tray's children ride an array: an element's function
-                  // children that return a single vnode are dropped by the
-                  // runtime in silence.
-                  h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, [
-                    h(ButtonGroup, () => [
-                      ...(props.zoomable
-                        ? [
-                            toolButton(messages.value.imageViewer.zoomIn, TOOL_GLYPHS.zoomIn, () =>
-                              zoom(SCALE_STEP),
-                            ),
-                            toolButton(
-                              messages.value.imageViewer.zoomOut,
-                              TOOL_GLYPHS.zoomOut,
-                              () => zoom(-SCALE_STEP),
-                            ),
-                          ]
-                        : []),
-                      toolButton(messages.value.imageViewer.rotate, TOOL_GLYPHS.rotate, rotate),
-                      toolButton(messages.value.imageViewer.close, TOOL_GLYPHS.close, () =>
-                        setOpen(false),
-                      ),
-                    ]),
+              },
+              () => [
+                h("img", {
+                  "data-scope": "image-viewer",
+                  "data-part": "viewport",
+                  src: props.src,
+                  alt: props.alt,
+                  width: props.width,
+                  height: props.height,
+                  style: {
+                    transform: `scale(${scale.value}) rotate(${rotation.value}deg)`,
+                  },
+                }),
+                // The tray's children ride an array: an element's function
+                // children that return a single vnode are dropped by the
+                // runtime in silence.
+                h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, [
+                  h(ButtonGroup, () => [
+                    ...(props.zoomable
+                      ? [
+                          toolButton(messages.value.imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
+                            zoom(SCALE_STEP),
+                          ),
+                          toolButton(messages.value.imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
+                            zoom(-SCALE_STEP),
+                          ),
+                        ]
+                      : []),
+                    toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, rotate),
+                    toolButton(messages.value.imageViewer.close, TOOL_ICONS.close, () =>
+                      setOpen(false),
+                    ),
                   ]),
-                ],
-              ),
+                ]),
+              ],
             ),
-          ]),
+          ),
         ],
       );
   },
 });
+
+export const ImageViewer = defineFamily(ImageViewerFacade, Dialog) as typeof ImageViewerFacade &
+  typeof Dialog;

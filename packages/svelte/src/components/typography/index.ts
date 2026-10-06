@@ -9,6 +9,7 @@ import TypographyMuted from "./TypographyMuted.svelte";
  * heading ride the song-serif, the rest ride the hei. Nothing here is
  * decorative — hierarchy is size, weight, and space. */
 export const Typography = Object.assign(TypographyDisplay, {
+  Root: TypographyDisplay,
   Display: TypographyDisplay,
   Heading: TypographyHeading,
   Lead: TypographyLead,

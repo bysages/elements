@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Typography" + name,
@@ -29,11 +31,13 @@ const Label = part("Label", "p");
  * heading ride the song-serif, the rest ride the hei. Nothing here is
  * decorative — hierarchy is size, weight, and space. */
 
-export const Typography = Object.assign(Display, {
-  Display,
-  Heading,
-  Lead,
-  Body,
-  Muted,
-  Label,
-});
+export const Typography = withSelfRoot(
+  Object.assign(Display, {
+    Display,
+    Heading,
+    Lead,
+    Body,
+    Muted,
+    Label,
+  }),
+);

@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { Show, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { Spinner } from "../spinner";
 
 export interface BlockUIProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -12,7 +13,7 @@ export interface BlockUIProps extends JSX.HTMLAttributes<HTMLDivElement> {
 /** A curtain over content that must wait: the blocked region keeps its
  * shape and dims under frosted paper while a quiet wheel reports the
  * wait. Callers own the state; the curtain only answers it. */
-export function BlockUI(props: BlockUIProps) {
+export const BlockUI = withSelfRoot(function BlockUI(props: BlockUIProps) {
   injectComponentStyle("block-ui");
   const [own, rest] = splitProps(props, ["blocked", "children"]);
   return (
@@ -31,4 +32,4 @@ export function BlockUI(props: BlockUIProps) {
       </Show>
     </div>
   );
-}
+});

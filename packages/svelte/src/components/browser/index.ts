@@ -6,6 +6,7 @@ import BrowserUrlBarComponent from "./BrowserUrlBar.svelte";
 
 /** A browser window as a vessel: Root, TitleBar, Dots, UrlBar, Body. */
 export const Browser = Object.assign(BrowserComponent, {
+  Root: BrowserComponent,
   TitleBar: BrowserTitleBarComponent,
   Dots: BrowserDotsComponent,
   UrlBar: BrowserUrlBarComponent,

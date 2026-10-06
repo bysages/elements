@@ -1,15 +1,16 @@
 import { injectComponentStyle } from "@bysages/core";
-import { check, circle_x, info, triangle_alert } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
+
+import { iconBody } from "../../internal/icon";
 
 type Status = "success" | "warning" | "danger" | "info";
 
 const MARK =
-  `<g data-for="success">${check.body}</g>` +
-  `<g data-for="warning">${triangle_alert.body}</g>` +
-  `<g data-for="danger">${circle_x.body}</g>` +
-  `<g data-for="info">${info.body}</g>`;
+  `<g data-for="success">${iconBody("check")}</g>` +
+  `<g data-for="warning">${iconBody("triangle-alert")}</g>` +
+  `<g data-for="danger">${iconBody("circle-x")}</g>` +
+  `<g data-for="info">${iconBody("info")}</g>`;
 
 const Root = defineComponent({
   name: "SResultRoot",

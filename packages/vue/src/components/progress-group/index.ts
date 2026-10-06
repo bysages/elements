@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** One verdict on the bar. */
 export interface ProgressSegment {
   value: number;
@@ -22,72 +24,82 @@ export interface ProgressGroupProps {
   showLegend?: boolean;
 }
 
-export const ProgressGroup = defineComponent({
-  name: "ProgressGroup",
-  props: {
-    segments: {
-      type: Array as PropType<ProgressSegment[]>,
-      required: true,
+export const ProgressGroup = withSelfRoot(
+  defineComponent({
+    name: "ProgressGroup",
+    props: {
+      segments: {
+        type: Array as PropType<ProgressSegment[]>,
+        required: true,
+      },
+      max: { type: Number, default: undefined },
+      showLegend: { type: Boolean, default: true },
     },
-    max: { type: Number, default: undefined },
-    showLegend: { type: Boolean, default: true },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("progress-group");
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("progress-group");
 
-    return () => {
-      // A zero whole must not divide — the bar simply stays empty.
-      const total = props.max ?? props.segments.reduce((sum, segment) => sum + segment.value, 0);
-      const share = (value: number) => (total > 0 ? `${(value / total) * 100}%` : "0%");
-      const nameOf = (segment: ProgressSegment, index: number) =>
-        segment.label ?? segment.pigment ?? `Segment ${index + 1}`;
+      return () => {
+        // A zero whole must not divide — the bar simply stays empty.
+        const total = props.max ?? props.segments.reduce((sum, segment) => sum + segment.value, 0);
+        const share = (value: number) => (total > 0 ? `${(value / total) * 100}%` : "0%");
+        const nameOf = (segment: ProgressSegment, index: number) =>
+          segment.label ?? segment.pigment ?? `Segment ${index + 1}`;
 
-      return h("div", { ...ctx.attrs, "data-scope": "progress-group", "data-part": "root" }, () => [
-        h("div", { "data-scope": "progress-group", "data-part": "track" }, () =>
-          props.segments.map((segment, index) =>
-            h("div", {
-              key: index,
-              "data-scope": "progress-group",
-              "data-part": "segment",
-              "data-pigment": segment.pigment,
-              role: "progressbar",
-              "aria-valuenow": segment.value,
-              "aria-valuemin": 0,
-              "aria-valuemax": total,
-              "aria-label": nameOf(segment, index),
-              style: { inlineSize: share(segment.value) },
-            }),
-          ),
-        ),
-        props.showLegend
-          ? h("div", { "data-scope": "progress-group", "data-part": "legend" }, () =>
+        return h(
+          "div",
+          { ...ctx.attrs, "data-scope": "progress-group", "data-part": "root" },
+          () => [
+            h("div", { "data-scope": "progress-group", "data-part": "track" }, () =>
               props.segments.map((segment, index) =>
-                h(
-                  "div",
-                  {
-                    key: index,
-                    "data-scope": "progress-group",
-                    "data-part": "legend-item",
-                    "data-pigment": segment.pigment,
-                  },
-                  [
-                    h("span", {
-                      "data-scope": "progress-group",
-                      "data-part": "swatch",
-                      "aria-hidden": "true",
-                    }),
-                    h("span", { "data-scope": "progress-group", "data-part": "legend-label" }, () =>
-                      nameOf(segment, index),
-                    ),
-                    h("span", { "data-scope": "progress-group", "data-part": "legend-value" }, () =>
-                      String(segment.value),
-                    ),
-                  ],
-                ),
+                h("div", {
+                  key: index,
+                  "data-scope": "progress-group",
+                  "data-part": "segment",
+                  "data-pigment": segment.pigment,
+                  role: "progressbar",
+                  "aria-valuenow": segment.value,
+                  "aria-valuemin": 0,
+                  "aria-valuemax": total,
+                  "aria-label": nameOf(segment, index),
+                  style: { inlineSize: share(segment.value) },
+                }),
               ),
-            )
-          : null,
-      ]);
-    };
-  },
-});
+            ),
+            props.showLegend
+              ? h("div", { "data-scope": "progress-group", "data-part": "legend" }, () =>
+                  props.segments.map((segment, index) =>
+                    h(
+                      "div",
+                      {
+                        key: index,
+                        "data-scope": "progress-group",
+                        "data-part": "legend-item",
+                        "data-pigment": segment.pigment,
+                      },
+                      [
+                        h("span", {
+                          "data-scope": "progress-group",
+                          "data-part": "swatch",
+                          "aria-hidden": "true",
+                        }),
+                        h(
+                          "span",
+                          { "data-scope": "progress-group", "data-part": "legend-label" },
+                          () => nameOf(segment, index),
+                        ),
+                        h(
+                          "span",
+                          { "data-scope": "progress-group", "data-part": "legend-value" },
+                          () => String(segment.value),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : null,
+          ],
+        );
+      };
+    },
+  }),
+);

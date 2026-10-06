@@ -31,9 +31,21 @@ function room(id: string) {
   );
 }
 
-/** Two rooms, one divide: drag the seal thumb to re-partition the
- * paper. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <Splitter
+      items={[
+        { id: "draft", label: "Draft" },
+        { id: "notes", label: "Notes" },
+      ]}
+      defaultValue={[40, 60]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   render: () => (
     <Splitter.Root panels={[{ id: "a" }, { id: "b" }]}>
       {room("a")}
@@ -49,7 +61,13 @@ export const Collapsible = {
   render: () => (
     <Splitter.Root
       panels={[
-        { id: "a", collapsible: true, collapsedSize: 5, minSize: 10, maxSize: 20 },
+        {
+          id: "a",
+          collapsible: true,
+          collapsedSize: 5,
+          minSize: 10,
+          maxSize: 20,
+        },
         { id: "b", minSize: 50 },
       ]}
       defaultSize={[15, 20]}

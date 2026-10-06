@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { type CSSProperties, type HTMLAttributes, type ReactNode, useRef } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface VirtualListProps extends HTMLAttributes<HTMLDivElement> {
   items: unknown[];
   /** The height every row occupies — fixed rows keep it simple. */
@@ -16,7 +18,7 @@ export interface VirtualListProps extends HTMLAttributes<HTMLDivElement> {
  * scroll length by a spacer sized from the row height, the rows
  * themselves are positioned against it — a ten-thousand-row list
  * costs the DOM a window, not the ledger. */
-export function VirtualList({
+function VirtualListImpl({
   items,
   itemHeight = 40,
   height = 320,
@@ -69,3 +71,5 @@ export function VirtualList({
     </div>
   );
 }
+
+export const VirtualList = withSelfRoot(VirtualListImpl);

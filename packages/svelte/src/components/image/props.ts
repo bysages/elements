@@ -10,7 +10,7 @@ export interface ImageProps extends HTMLAttributes<HTMLElement> {
   /** Intrinsic height passed to the image, so layout is stable while it loads. */
   height?: number | string;
   loading?: "lazy" | "eager";
-  /** What a broken source leaves — the quiet placeholder glyph by
+  /** What a broken source leaves — the quiet placeholder icon by
    * default. */
   fallback?: Snippet;
 }

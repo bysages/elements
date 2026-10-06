@@ -775,18 +775,18 @@ body {
   overflow: clip;
 }
 
-.bs-docs-code-group [data-part="list"] {
+.bs-docs-code-group [data-scope="tabs"][data-part="list"] {
   padding-inline: var(--bs-padding-sm);
 }
 
 /* The family's own tab strip rides the vessel: one mono adjustment, the
    rest is the stock tabs anatomy (list rule, travelling ink indicator). */
-.bs-docs-code-group [data-part="trigger"] {
+.bs-docs-code-group [data-scope="tabs"][data-part="trigger"] {
   font-family: var(--bs-font-mono);
   font-size: var(--bs-font-size-sm);
 }
 
-.bs-docs-code-group [data-part="content"] {
+.bs-docs-code-group [data-scope="tabs"][data-part="content"] {
   /* The pane dissolves fully into the vessel — the pre carries its own
      measure, and a cushion under it would read as a stray gap. */
   padding: 0;
@@ -822,10 +822,9 @@ body {
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
-  overflow: clip;
 }
 
-.bs-docs-demo [data-part="list"] {
+.bs-docs-demo [data-scope="tabs"][data-part="list"] {
   min-inline-size: 0;
   padding-inline: var(--bs-padding-sm);
   overflow-x: auto;
@@ -833,7 +832,7 @@ body {
   scrollbar-width: thin;
 }
 
-.bs-docs-demo [data-part="list"] > * {
+.bs-docs-demo [data-scope="tabs"][data-part="list"] > * {
   flex: none;
 }
 

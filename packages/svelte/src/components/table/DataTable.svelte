@@ -43,8 +43,9 @@ import type {
 } from "@tanstack/svelte-table";
 import { createVirtualizer } from "@tanstack/svelte-virtual";
 import { createListCollection } from "@ark-ui/svelte/select";
-import { get } from "svelte/store";
+import { untrack } from "svelte";
 
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import { formatMessage, useComponentMessages } from "../config-provider/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
@@ -83,14 +84,16 @@ const globalFilterText = $derived(globalFilterPlaceholder ?? messages().table.fi
 const SELECT_COL_ID = "__select";
 const SELECT_COL_WIDTH = 48;
 
-if (virtual && merge) {
-  console.warn("[DataTable] `virtual` and `merge` are mutually exclusive; merge wins.");
-}
+untrack(() => {
+  if (virtual && merge) {
+    console.warn("[DataTable] `virtual` and `merge` are mutually exclusive; merge wins.");
+  }
+});
 
 /** Features follow the construction-time switches: sorting, selection,
  * expansion, pinning, and spanning are always part of the one-stop
  * shape; filtering and pagination ride their own render paths. */
-const features = tableFeatures({
+const features = untrack(() => tableFeatures({
   rowSortingFeature,
   sortedRowModel: createSortedRowModel(),
   // Built-ins registered by name from the individual exports — the
@@ -132,31 +135,34 @@ const features = tableFeatures({
       }
     : {}),
   ...(paginated ? { rowPaginationFeature, paginatedRowModel: createPaginatedRowModel() } : {}),
-});
+}));
 
 /** The select column leads; merged columns opt into value-based row
  * spanning at the model level. Built once: column inputs stay stable
  * for the life of the instance, like the features above. */
 type Features = typeof features;
-const mergeIds = new Set(merge ?? []);
 // Columns defined by accessorKey carry no id of their own; TanStack
 // derives the column id from that key.
 const defId = (def: ColumnDef<any, any, any>) =>
   def.id ?? ("accessorKey" in def ? String(def.accessorKey) : "");
-const cols = columns.map((def) =>
-  mergeIds.has(defId(def)) ? { ...def, spanRows: true } : def,
-) as ColumnDef<Features, any, any>[];
-if (selectable) {
-  cols.unshift({
-    id: SELECT_COL_ID,
-    size: SELECT_COL_WIDTH,
-    enableSorting: false,
-    header: () => "",
-    cell: () => "",
-  });
-}
+const cols = untrack(() => {
+  const mergeIds = new Set(merge ?? []);
+  const mapped = columns.map((def) =>
+    mergeIds.has(defId(def)) ? { ...def, spanRows: true } : def,
+  ) as ColumnDef<Features, any, any>[];
+  if (selectable) {
+    mapped.unshift({
+      id: SELECT_COL_ID,
+      size: SELECT_COL_WIDTH,
+      enableSorting: false,
+      header: () => "",
+      cell: () => "",
+    });
+  }
+  return mapped;
+});
 
-const table = createTable<Features, any>({
+const table = untrack(() => createTable<Features, any>({
   features,
   columns: cols,
   // The getter keeps row data reactive: the adapter re-reads it inside
@@ -177,7 +183,7 @@ const table = createTable<Features, any>({
       ? { columnPinning: { start: pinStart ?? [], end: pinEnd ?? [] } }
       : {}),
   },
-});
+}));
 
 /** Instance-shaped aliases for the helpers below. */
 type TColumn = Column<Features, any, unknown>;
@@ -508,6 +514,8 @@ function cellStyle(column: TColumn, span: number) {
       />
     </div>
   {/if}
+  <!-- The scroll viewport is intentionally focusable so keyboard users can scroll the fixed-height table. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div data-scope="table" data-part="viewport" tabindex={0} bind:this={viewportEl}>
     <div
       role="table"
@@ -655,19 +663,7 @@ function cellStyle(column: TColumn, span: number) {
             <ArkSelect.Trigger aria-label={messages().table.rowsPerPage}>
               <ArkSelect.ValueText />
               <ArkSelect.Indicator>
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
+                <InternalIcon name="chevron-down" size="sm" />
               </ArkSelect.Indicator>
             </ArkSelect.Trigger>
           </ArkSelect.Control>
@@ -688,22 +684,10 @@ function cellStyle(column: TColumn, span: number) {
           page={pagination.pageIndex + 1}
           onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
         >
-          {#snippet glyph(direction: "start" | "end")}
-            <svg
-              viewBox="0 0 24 24"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
-            </svg>
+          {#snippet icon(direction: "start" | "end")}
+            <InternalIcon name={direction === "start" ? "chevron-left" : "chevron-right"} size="sm" />
           {/snippet}
-          <ArkPagination.PrevTrigger>{@render glyph("start")}</ArkPagination.PrevTrigger>
+          <ArkPagination.PrevTrigger>{@render icon("start")}</ArkPagination.PrevTrigger>
           <ArkPagination.Context>
             {#snippet children(scope: { pages: { type: string; value: number }[] })}
               {#each scope.pages as page, index (page.type === "ellipsis" ? `e${index}` : page.value)}
@@ -715,7 +699,7 @@ function cellStyle(column: TColumn, span: number) {
               {/each}
             {/snippet}
           </ArkPagination.Context>
-          <ArkPagination.NextTrigger>{@render glyph("end")}</ArkPagination.NextTrigger>
+          <ArkPagination.NextTrigger>{@render icon("end")}</ArkPagination.NextTrigger>
         </ArkPagination.Root>
       </div>
     </div>
@@ -727,6 +711,7 @@ function cellStyle(column: TColumn, span: number) {
     role="row"
     data-scope="table"
     data-part="row"
+    tabindex={rowDraggable ? 0 : -1}
     data-selected={row.getIsSelected() || undefined}
     draggable={rowDraggable || undefined}
     ondragstart={(e) => onRowDragStart(row, e)}
@@ -777,9 +762,7 @@ function cellStyle(column: TColumn, span: number) {
                 aria-label={row.getIsExpanded() ? messages().table.collapseRow : messages().table.expandRow}
                 onclick={() => row.toggleExpanded()}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="m9 6 6 6-6 6" />
-                </svg>
+                <InternalIcon name="chevron-right" />
               </button>
               <FlexRender cell={cell} />
             </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { Select } from ".";
 import { Button } from "../button";
+import { NativeSelect } from "./native";
 
 const meta: Meta = { title: "Components/Forms/Select" };
 export default meta;
@@ -17,6 +18,8 @@ const frameworks = createListCollection({
     { label: "Svelte", value: "svelte" },
   ],
 });
+
+const facadeOptions = [...frameworks.items];
 
 const cities = createListCollection({
   items: [
@@ -126,18 +129,26 @@ export const Basic = {
   args: {
     placeholder: "Select",
   },
-  render: (args: any) =>
-    shell(
-      {},
-      frameworks,
-      [
-        <Select.ItemGroup key="frameworks">
-          <Select.ItemGroupLabel>Frameworks</Select.ItemGroupLabel>
-          {rows(frameworks)}
-        </Select.ItemGroup>,
-      ],
-      args.placeholder,
-    ),
+  render: (args: any) => (
+    <Select
+      options={facadeOptions}
+      label="Framework"
+      groupLabel="Frameworks"
+      placeholder={args.placeholder}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: the same vessel, assembled from
+ * Ark's parts when the caller needs full control. */
+export const Anatomy = {
+  render: () =>
+    shell({}, frameworks, [
+      <Select.ItemGroup key="frameworks">
+        <Select.ItemGroupLabel>Frameworks</Select.ItemGroupLabel>
+        {rows(frameworks)}
+      </Select.ItemGroup>,
+    ]),
 };
 
 /** The selection answers to state — the trigger mirrors the caller. */
@@ -246,6 +257,74 @@ export const DynamicItems = {
           Toggle items
         </Button>
         {shell({}, collection, rows(collection))}
+      </div>
+    );
+  },
+};
+
+/** The platform's own list wearing the control recipe: one native
+ * element, the trigger vocabulary unchanged. */
+export const Native = {
+  render: function NativeStories() {
+    const [value, setValue] = useState("");
+    const options = [
+      { label: "React", value: "react" },
+      { label: "Solid", value: "solid" },
+      { label: "Vue", value: "vue" },
+      { label: "Svelte", value: "svelte" },
+    ];
+
+    return (
+      <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
+        <NativeSelect
+          options={options}
+          value={value}
+          placeholder="Choose a framework"
+          aria-label="Framework"
+          onValueChange={(next) => setValue(Array.isArray(next) ? (next[0] ?? "") : next)}
+        />
+        <NativeSelect options={options} value="vue" size="sm" aria-label="Framework, small" />
+        <NativeSelect
+          options={options}
+          value="solid"
+          size="lg"
+          invalid
+          aria-label="Framework, large"
+        />
+      </div>
+    );
+  },
+};
+
+/** The facade is the one-tag path: scalar and list models are translated
+ * at the boundary while the same anatomy underneath does the work. */
+export const Facade = {
+  render: function FacadeStory() {
+    const [value, setValue] = useState("vue");
+    const [values, setValues] = useState(["react"]);
+    const options = [
+      { label: "React", value: "react" },
+      { label: "Solid", value: "solid" },
+      { label: "Vue", value: "vue" },
+      { label: "Svelte", value: "svelte" },
+    ];
+
+    return (
+      <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
+        <Select
+          options={options}
+          value={value}
+          label="Framework"
+          onValueChange={(next) => setValue(Array.isArray(next) ? (next[0] ?? "") : next)}
+        />
+        <Select
+          options={options}
+          value={values}
+          multiple
+          placeholder="Frameworks"
+          size="sm"
+          onValueChange={(next) => setValues(Array.isArray(next) ? next : [next])}
+        />
       </div>
     );
   },

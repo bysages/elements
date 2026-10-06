@@ -5,6 +5,7 @@ injectComponentStyle("combobox");
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
 import { Portal } from "@ark-ui/svelte/portal";
+import { untrack } from "svelte";
 
 import { useComponentMessages } from "../config-provider/messages";
 
@@ -21,10 +22,14 @@ let {
   $props();
 
 const messages = useComponentMessages();
-const { collection, filter: filterItems } = useListCollection<string>({
-  initialItems: items,
+const { collection, filter: filterItems, set } = useListCollection<string>({
+  initialItems: untrack(() => items),
   filter: (item, input) =>
     filter ? filter(item, input) : item.toLowerCase().includes(input.toLowerCase()),
+});
+
+$effect(() => {
+  set(items);
 });
 </script>
 

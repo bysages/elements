@@ -25,5 +25,4 @@ and the invalid state. -->
   data-invalid={invalid || fieldProps["data-invalid"] != null ? "" : undefined}
   oninput={(event) => {
     value = event.currentTarget.value;
-  }}
-/>
+  }}></textarea>

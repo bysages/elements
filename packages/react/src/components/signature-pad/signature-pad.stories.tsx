@@ -9,6 +9,11 @@ import { Field } from "../field";
 const meta: Meta = { title: "Components/Forms/Signature Pad" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <SignaturePad label="Sign below" />,
+};
+
 function undoGlyph() {
   return (
     <svg
@@ -41,7 +46,7 @@ function pad(label = "Sign below") {
 
 /** Sign below the guide hairline; the clear trigger wipes the paper without
  * leaving the field. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Sign below",
     disabled: false,

@@ -1,7 +1,7 @@
 import { useListCollection } from "@ark-ui/vue/combobox";
 import { useFilter } from "@ark-ui/vue/locale";
 import type { Meta } from "@storybook/vue3-vite";
-import { defineComponent, h, Teleport, type PropType, reactive } from "vue";
+import { defineComponent, h, type PropType, reactive } from "vue";
 
 import { Combobox } from ".";
 import { withState } from "../with-state.js";
@@ -32,7 +32,7 @@ function chevronDown() {
   );
 }
 
-function checkGlyph() {
+function checkIcon() {
   return h(
     "svg",
     {
@@ -48,7 +48,7 @@ function checkGlyph() {
   );
 }
 
-function xGlyph() {
+function xIcon() {
   return h(
     "svg",
     {
@@ -68,7 +68,7 @@ function itemsFrom(collection: { items: Item[] | readonly Item[] }, showNew = fa
   return collection.items.map((item) =>
     h(Combobox.Item, { key: item.value, item }, () => [
       h(Combobox.ItemText, () => (showNew && item.isNew ? `Create "${item.label}"` : item.label)),
-      h(Combobox.ItemIndicator, () => checkGlyph()),
+      h(Combobox.ItemIndicator, () => checkIcon()),
     ]),
   );
 }
@@ -82,13 +82,26 @@ function control(...children: any[]) {
 }
 
 function popup(children: any) {
-  return h(Teleport, { to: "body" }, () => [
-    h(Combobox.Positioner, () =>
-      // A function keeps reactive rows live; a plain array is static JSX.
-      h(Combobox.Content, () => (typeof children === "function" ? children() : children)),
-    ),
-  ]);
+  return h(Combobox.Positioner, () =>
+    // A function keeps reactive rows live; a plain array is static JSX.
+    h(Combobox.Content, () => (typeof children === "function" ? children() : children)),
+  );
 }
+
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () =>
+    h(Combobox, {
+      options: [
+        { label: "Apple", value: "apple" },
+        { label: "Banana", value: "banana" },
+        { label: "Cherry", value: "cherry" },
+      ],
+      defaultValue: "apple",
+      label: "Fruit",
+      placeholder: "e.g. Apple",
+    }),
+};
 
 /** Story scaffolding: one fruit combobox whose collection, root props, and
  * item rows vary per story. */
@@ -142,7 +155,7 @@ const ComboboxStory = defineComponent({
         } as any,
         () => [
           h(Combobox.Label, () => props.label),
-          control(...(props.withClear ? [h(Combobox.ClearTrigger, () => xGlyph())] : [])),
+          control(...(props.withClear ? [h(Combobox.ClearTrigger, () => xIcon())] : [])),
           popup(rows()),
         ],
       );
@@ -151,7 +164,7 @@ const ComboboxStory = defineComponent({
 
 /** Type to filter; the matching strokes take the primary ink while the
  * checked row holds the flat fill. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Fruit",
   },
@@ -209,7 +222,7 @@ export const Grouping = {
               ...items.map((item) =>
                 h(Combobox.Item, { key: item.value, item }, () => [
                   h(Combobox.ItemText, () => item.label),
-                  h(Combobox.ItemIndicator, () => checkGlyph()),
+                  h(Combobox.ItemIndicator, () => checkIcon()),
                 ]),
               ),
             ]),
@@ -286,14 +299,14 @@ export const Creatable = {
                 ...collection.value.items.map((item) =>
                   h(Combobox.Item, { key: item.value, item }, () => [
                     h(Combobox.ItemText, () => item.label),
-                    h(Combobox.ItemIndicator, () => checkGlyph()),
+                    h(Combobox.ItemIndicator, () => checkIcon()),
                   ]),
                 ),
                 ...(candidate()
                   ? [
                       h(Combobox.Item, { key: "create", item: candidate()! }, () => [
                         h(Combobox.ItemText, () => `Create "${candidate()!.label}"`),
-                        h(Combobox.ItemIndicator, () => checkGlyph()),
+                        h(Combobox.ItemIndicator, () => checkIcon()),
                       ]),
                     ]
                   : []),

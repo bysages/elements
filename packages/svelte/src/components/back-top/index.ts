@@ -1,3 +1,4 @@
+import { withSelfRoot } from "../../internal/family";
 import BackTopComponent from "./BackTop.svelte";
 
 /** A way home: after the page has scrolled past `threshold`, a small
@@ -7,6 +8,6 @@ import BackTopComponent from "./BackTop.svelte";
  * back into an instant jump. The control itself is the shared `Button`
  * (outline, square) — the paper, hairline and halo are its; this family
  * owns only the floating and the entrance. */
-export const BackTop = BackTopComponent;
+export const BackTop = withSelfRoot(BackTopComponent);
 
 export type { BackTopProps } from "./props";

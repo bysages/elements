@@ -1,5 +1,8 @@
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import { injectComponentStyle } from "@bysages/core";
+
+import { defineFamily } from "../../internal/family";
+import DialogFacade from "./Dialog.svelte";
+import DialogRoot from "./DialogRoot.svelte";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/svelte/dialog";
 
@@ -7,6 +10,10 @@ export type { DialogOpenChangeDetails } from "@ark-ui/svelte/dialog";
  * in on elevation, the backdrop fades, and nested overlays stack through
  * the shared z-index ladder. The API is Ark's own — Root, Trigger,
  * Backdrop, Positioner, Content, Title, Description, CloseTrigger. */
-export const Dialog = ArkDialog;
-
-injectComponentStyle("dialog");
+export const Dialog: typeof DialogFacade &
+  Omit<typeof ArkDialog, "Root"> & {
+    Root: typeof DialogRoot;
+  } = defineFamily(DialogFacade, {
+  ...ArkDialog,
+  Root: DialogRoot,
+});

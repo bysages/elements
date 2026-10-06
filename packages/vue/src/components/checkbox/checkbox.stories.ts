@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Checkbox" };
 export default meta;
 
-function checkGlyph() {
+function checkIcon() {
   return h(
     "svg",
     {
@@ -24,7 +24,7 @@ function checkGlyph() {
   );
 }
 
-function minusGlyph() {
+function minusIcon() {
   return h(
     "svg",
     {
@@ -42,16 +42,26 @@ function minusGlyph() {
 function box(checked: boolean | "indeterminate", label: string, disabled = false) {
   return h(Checkbox.Root, { checked, disabled } as any, () => [
     h(Checkbox.Control, () => [
-      h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusGlyph()),
-      h(Checkbox.Indicator, { key: "check" }, () => checkGlyph()),
+      h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusIcon()),
+      h(Checkbox.Indicator, { key: "check" }, () => checkIcon()),
     ]),
     h(Checkbox.Label, () => label),
     h(Checkbox.HiddenInput),
   ]);
 }
 
-/** The three resting postures: checked, unchecked, and a disabled row. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () =>
+    h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
+      h(Checkbox, { defaultValue: true, label: "Ship the register" }),
+      h(Checkbox, { defaultValue: false, label: "Outline the story" }),
+      h(Checkbox, { defaultValue: false, label: "Archived", disabled: true }),
+    ]),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   render: () =>
     h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
       box(true, "Ship the register"),
@@ -75,7 +85,7 @@ export const Controlled = {
             },
           } as any,
           () => [
-            h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+            h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkIcon())),
             h(Checkbox.Label, () => "Controlled"),
             h(Checkbox.HiddenInput),
           ],
@@ -104,7 +114,7 @@ export const WithForm = {
       },
       [
         h(Checkbox.Root, { name: "terms", value: "accepted" }, () => [
-          h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+          h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkIcon())),
           h(Checkbox.Label, () => "Accept the terms"),
           h(Checkbox.HiddenInput),
         ]),
@@ -121,7 +131,7 @@ const frameworks = [
 
 function groupRow(item: { label: string; value: string }) {
   return h(Checkbox.Root, { value: item.value }, () => [
-    h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+    h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkIcon())),
     h(Checkbox.Label, () => item.label),
     h(Checkbox.HiddenInput),
   ]);
@@ -155,8 +165,8 @@ export const GroupWithSelectAll = {
             } as any,
             () => [
               h(Checkbox.Control, () => [
-                h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusGlyph()),
-                h(Checkbox.Indicator, { key: "check" }, () => checkGlyph()),
+                h(Checkbox.Indicator, { indeterminate: true, key: "minus" }, () => minusIcon()),
+                h(Checkbox.Indicator, { key: "check" }, () => checkIcon()),
               ]),
               h(Checkbox.Label, () => "All frameworks"),
               h(Checkbox.HiddenInput),

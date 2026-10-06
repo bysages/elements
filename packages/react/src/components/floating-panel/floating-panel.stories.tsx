@@ -7,7 +7,7 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Overlay/Floating Panel" };
 export default meta;
 
-function glyph(d: string) {
+function icon(d: string) {
   return (
     <svg
       width={12}
@@ -37,21 +37,21 @@ function stage(
         <FloatingPanel.DragTrigger>
           <FloatingPanel.Header>
             <FloatingPanel.Title>
-              {glyph("M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01")}
+              {icon("M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01")}
               {title}
             </FloatingPanel.Title>
             <FloatingPanel.Control>
               <FloatingPanel.StageTrigger stage="minimized">
-                {glyph("M5 12h14")}
+                {icon("M5 12h14")}
               </FloatingPanel.StageTrigger>
               <FloatingPanel.StageTrigger stage="maximized">
-                {glyph("M4 9V4h5M20 15v5h-5")}
+                {icon("M4 9V4h5M20 15v5h-5")}
               </FloatingPanel.StageTrigger>
               <FloatingPanel.StageTrigger stage="default">
-                {glyph("M15 15l-6-6M15 9v6H9")}
+                {icon("M15 15l-6-6M15 9v6H9")}
               </FloatingPanel.StageTrigger>
               <FloatingPanel.CloseTrigger>
-                {glyph("M6 6l12 12M18 6L6 18")}
+                {icon("M6 6l12 12M18 6L6 18")}
               </FloatingPanel.CloseTrigger>
             </FloatingPanel.Control>
           </FloatingPanel.Header>
@@ -108,12 +108,13 @@ function outsideButton(label: string, onClick: () => void) {
  * stage it small, large or home from the control seals. */
 export const Basic = {
   args: {
-    triggerText: "Open panel",
-    title: "Notes",
-    body: "A sheet of paper you can move: drag the header, pull the rim.",
+    trigger: "Open panel",
+    label: "Notes",
+    content: "A sheet of paper you can move: drag the header, pull the rim.",
   },
-  render: (args: any) =>
-    panel({}, { trigger: args.triggerText, title: args.title, body: args.body }),
+  render: (args: any) => (
+    <FloatingPanel trigger={args.trigger} label={args.label} content={args.content} />
+  ),
 };
 
 /** The bar reads its own state: the paragraph names the panel open or
@@ -201,3 +202,6 @@ export const AnchorPosition = {
 export const LazyMount = {
   render: () => panel({ lazyMount: true, unmountOnExit: true }),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

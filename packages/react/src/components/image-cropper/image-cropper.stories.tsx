@@ -73,6 +73,12 @@ function readout(label: string, value: string) {
 /** Drag the lit window to frame, pull the corner seals to resize; the rule
  * of thirds surfaces only while the frame is being decided. */
 export const Basic = {
+  render: () => <ImageCropper src={PHOTO} alt={PHOTO_ALT} />,
+};
+
+/** The same cropper through its parts: viewport, selection, handles,
+ * and grid stay visible as the anatomy contract. */
+export const Anatomy = {
   render: () => <ImageCropper.Root>{frame()}</ImageCropper.Root>,
 };
 

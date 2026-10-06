@@ -61,6 +61,25 @@ export const ratingGroupCss =
   color: var(--bs-color-primary);
 }
 
+/* Facade and anatomy share one glyph contract: the icon fills the seal and
+   the ink fills the mark itself, regardless of whether it is a bare svg or
+   brought through the Icon well. */
+[data-scope="rating-group"][data-part="item"] [data-scope="icon"] {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+[data-scope="rating-group"][data-part="item"] svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+[data-scope="rating-group"][data-part="item"] svg path {
+  fill: currentColor;
+  stroke: none;
+  stroke-width: 0;
+}
+
 /* Half steps bleed the ink only halfway across the glyph. */
 [data-scope="rating-group"][data-part="item"][data-half] {
   color: color-mix(in oklab, var(--bs-color-primary) 50%, var(--bs-color-text-tertiary));

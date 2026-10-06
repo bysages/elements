@@ -79,9 +79,20 @@ function strip(rootProps: any, items: ReactNode, indicators?: ReactNode) {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => (
+    <Carousel
+      items={["Chapter One", "Chapter Two", "Chapter Three"]}
+      defaultValue={1}
+      label="Chapters"
+    />
+  ),
+};
+
 /** Prev/next as quiet outline controls, the lane clipped to one slide,
  * dots underneath with the current page in ink. */
-export const Basic = {
+export const Anatomy = {
   args: {
     orientation: "horizontal",
   },

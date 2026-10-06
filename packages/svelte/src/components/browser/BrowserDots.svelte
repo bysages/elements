@@ -14,6 +14,6 @@ const tones = ["danger", "warning", "success"];
      semantics reserved for danger, warning, and success. -->
 <div {...rest} data-scope="browser" data-part="dots">
   {#each tones as tone (tone)}
-    <span data-scope="browser" data-part="dot" data-tone={tone} />
+    <span data-scope="browser" data-part="dot" data-tone={tone}></span>
   {/each}
 </div>

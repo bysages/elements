@@ -4,43 +4,24 @@ import { Show, createEffect, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { useComponentMessages } from "../config-provider/use-component-messages";
+import { Dialog } from "../dialog";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
-/** The toolbar's line-drawn glyphs, fresh per render. */
-const TOOL_GLYPHS = {
-  zoomIn: () => (
-    <>
-      <circle cx={11} cy={11} r={7} />
-      <path d="m16.2 16.2 4.8 4.8" />
-      <path d="M8 11h6" />
-      <path d="M11 8v6" />
-    </>
-  ),
-  zoomOut: () => (
-    <>
-      <circle cx={11} cy={11} r={7} />
-      <path d="m16.2 16.2 4.8 4.8" />
-      <path d="M8 11h6" />
-    </>
-  ),
-  rotate: () => (
-    <>
-      <path d="M20.49 12A8.5 8.5 0 1 1 18 6.06" />
-      <path d="M20.5 3.5v4h-4" />
-    </>
-  ),
-  close: () => (
-    <>
-      <path d="m6 6 12 12" />
-      <path d="M18 6 6 18" />
-    </>
-  ),
+/** The toolbar's icons, drawn from the house icon set. */
+const TOOL_ICONS = {
+  zoomIn: () => iconNode("zoom-in"),
+  zoomOut: () => iconNode("zoom-out"),
+  rotate: () => iconNode("rotate-cw"),
+  close: () => iconNode("x"),
 };
 
 /**
@@ -63,7 +44,7 @@ export interface ImageViewerProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function ImageViewer(props: ImageViewerProps) {
+function ImageViewerImpl(props: ImageViewerProps) {
   injectComponentStyle("image-viewer");
   const [own] = splitProps(props, [
     "src",
@@ -74,6 +55,7 @@ export function ImageViewer(props: ImageViewerProps) {
     "zoomable",
     "onOpenChange",
   ]);
+  const id = useElementId("image-viewer");
   const messages = useComponentMessages();
   // Controlled when the caller owns `open`; uncontrolled otherwise —
   // an undefined `open` must not reach the machine, or it would
@@ -105,26 +87,17 @@ export function ImageViewer(props: ImageViewerProps) {
     setRotation((rotation() + 90) % 360);
   }
 
-  function toolButton(label: string, glyph: () => JSX.Element, onClick: () => void) {
+  function toolButton(label: string, icon: () => JSX.Element, onClick: () => void) {
     return (
       <Button variant="ghost" square size="lg" aria-label={label} onClick={onClick}>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width={1.5}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          {glyph()}
-        </svg>
+        {icon()}
       </Button>
     );
   }
 
   return (
     <ArkDialog.Root
+      id={id()}
       open={isOpen()}
       onOpenChange={(details) => setOpen(details.open)}
       // The picture is heavy: nothing of the lightbox rests in the
@@ -160,15 +133,15 @@ export function ImageViewer(props: ImageViewerProps) {
             <div data-scope="image-viewer" data-part="toolbar">
               <ButtonGroup>
                 <Show when={own.zoomable ?? true}>
-                  {toolButton(messages().imageViewer.zoomIn, TOOL_GLYPHS.zoomIn, () =>
+                  {toolButton(messages().imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
                     zoom(SCALE_STEP),
                   )}
-                  {toolButton(messages().imageViewer.zoomOut, TOOL_GLYPHS.zoomOut, () =>
+                  {toolButton(messages().imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
                     zoom(-SCALE_STEP),
                   )}
                 </Show>
-                {toolButton(messages().imageViewer.rotate, TOOL_GLYPHS.rotate, rotate)}
-                {toolButton(messages().imageViewer.close, TOOL_GLYPHS.close, () => setOpen(false))}
+                {toolButton(messages().imageViewer.rotate, TOOL_ICONS.rotate, rotate)}
+                {toolButton(messages().imageViewer.close, TOOL_ICONS.close, () => setOpen(false))}
               </ButtonGroup>
             </div>
           </ArkDialog.Content>
@@ -177,3 +150,6 @@ export function ImageViewer(props: ImageViewerProps) {
     </ArkDialog.Root>
   );
 }
+
+export const ImageViewer = defineFamily(ImageViewerImpl, Dialog) as typeof ImageViewerImpl &
+  typeof Dialog;

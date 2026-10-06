@@ -43,6 +43,15 @@ export const toggleGroupCss = /* css */ `
   block-size: 1rem;
 }
 
+/* Text toggles widen around their label while keeping the same register;
+   icon toggles stay square seals. */
+[data-scope="toggle-group"][data-part="item"][data-variant="text"] {
+  inline-size: auto;
+  min-inline-size: var(--bs-control-height-md);
+  padding-inline: var(--bs-padding-sm);
+  white-space: nowrap;
+}
+
 [data-scope="toggle-group"][data-part="item"]:hover:not([data-state="on"], [data-disabled]) {
   border-color: var(--bs-color-border-strong);
   color: var(--bs-color-text-primary);

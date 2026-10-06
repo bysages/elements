@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The paper-ink hairline as a component: a named rule between sections.
  * Decorative separators drop the separator role, since the page reads
  * fine without them. */
@@ -10,7 +12,7 @@ export interface SeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
   decorative?: boolean;
 }
 
-export function Separator(props: SeparatorProps) {
+export const Separator = withSelfRoot(function Separator(props: SeparatorProps) {
   injectComponentStyle("separator");
   const [own, rest] = splitProps(props, ["orientation", "decorative"]);
   const orientation = () => own.orientation ?? "horizontal";
@@ -24,4 +26,4 @@ export function Separator(props: SeparatorProps) {
       aria-orientation={own.decorative ? undefined : orientation()}
     />
   );
-}
+});

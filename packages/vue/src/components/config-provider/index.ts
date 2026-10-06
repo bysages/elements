@@ -11,6 +11,8 @@ import {
   type PropType,
 } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The four density tiers the token layer's `[data-density]` selectors
  * name — whitespace and control heights compress, readability never
  * does. */
@@ -68,51 +70,53 @@ export interface ConfigProviderProps {
  * descendants through `useConfig`, so interactive behavior (formatting,
  * messages) and visual theming stay one decision.
  */
-export const ConfigProvider = defineComponent({
-  name: "ConfigProvider",
-  props: {
-    density: { type: String as PropType<ConfigDensity>, default: undefined },
-    scene: { type: String as PropType<ConfigScene>, default: undefined },
-    accent: { type: String, default: undefined },
-    dir: { type: String as PropType<"ltr" | "rtl">, default: undefined },
-    locale: { type: String, default: undefined },
-    messages: {
-      type: Object as PropType<ComponentMessagesOverride>,
-      default: undefined,
+export const ConfigProvider = withSelfRoot(
+  defineComponent({
+    name: "ConfigProvider",
+    props: {
+      density: { type: String as PropType<ConfigDensity>, default: undefined },
+      scene: { type: String as PropType<ConfigScene>, default: undefined },
+      accent: { type: String, default: undefined },
+      dir: { type: String as PropType<"ltr" | "rtl">, default: undefined },
+      locale: { type: String, default: undefined },
+      messages: {
+        type: Object as PropType<ComponentMessagesOverride>,
+        default: undefined,
+      },
     },
-  },
-  setup(props, ctx: SetupContext) {
-    provide(
-      configInjectionKey,
-      computed<ConfigContext>(() => ({
-        density: props.density,
-        scene: props.scene,
-        accent: props.accent,
-        dir: props.dir,
-        locale: props.locale,
-        messages: props.messages,
-      })),
-    );
-
-    return () => {
-      const { density, scene, accent, dir, locale } = props;
-      return h(
-        "div",
-        {
-          ...ctx.attrs,
-          "data-scope": "config-provider",
-          "data-part": "root",
-          // Absent fields must not land on the element at all — the
-          // token selectors fire on presence, and an empty attribute
-          // would read as a value.
-          ...(density != null ? { "data-density": density } : {}),
-          ...(scene != null ? { "data-scene": scene } : {}),
-          ...(accent != null ? { "data-accent": accent } : {}),
-          ...(dir != null ? { dir } : {}),
-          ...(locale != null ? { lang: locale } : {}),
-        },
-        () => ctx.slots.default?.(),
+    setup(props, ctx: SetupContext) {
+      provide(
+        configInjectionKey,
+        computed<ConfigContext>(() => ({
+          density: props.density,
+          scene: props.scene,
+          accent: props.accent,
+          dir: props.dir,
+          locale: props.locale,
+          messages: props.messages,
+        })),
       );
-    };
-  },
-});
+
+      return () => {
+        const { density, scene, accent, dir, locale } = props;
+        return h(
+          "div",
+          {
+            ...ctx.attrs,
+            "data-scope": "config-provider",
+            "data-part": "root",
+            // Absent fields must not land on the element at all — the
+            // token selectors fire on presence, and an empty attribute
+            // would read as a value.
+            ...(density != null ? { "data-density": density } : {}),
+            ...(scene != null ? { "data-scene": scene } : {}),
+            ...(accent != null ? { "data-accent": accent } : {}),
+            ...(dir != null ? { dir } : {}),
+            ...(locale != null ? { lang: locale } : {}),
+          },
+          () => ctx.slots.default?.(),
+        );
+      };
+    },
+  }),
+);

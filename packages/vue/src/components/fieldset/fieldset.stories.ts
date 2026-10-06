@@ -11,7 +11,26 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Fieldset" };
 export default meta;
 
-function checkGlyph() {
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(Fieldset, { label: "Contact details", description: "All fields are required." }, () => [
+      h(Field, {
+        key: "name",
+        label: "Name",
+        placeholder: "John Doe",
+        required: true,
+      }),
+      h(Field, {
+        key: "email",
+        label: "Email",
+        placeholder: "john@example.com",
+        required: true,
+      }),
+    ]),
+};
+
+function checkIcon() {
   return h(
     "svg",
     {
@@ -34,7 +53,7 @@ function checkGlyph() {
 }
 
 /** A serif legend heading a column of fields — the grouped form unit. */
-export const Basic = {
+export const Anatomy = {
   args: {
     legend: "Contact details",
     nameLabel: "Name",
@@ -54,7 +73,10 @@ export const Basic = {
           ]),
           h(Field.Root, null, () => [
             h(Field.Label, () => args.emailLabel),
-            h(Field.Input as any, { type: "email", placeholder: args.emailPlaceholder }),
+            h(Field.Input as any, {
+              type: "email",
+              placeholder: args.emailPlaceholder,
+            }),
           ]),
         ]),
     ),
@@ -163,12 +185,12 @@ export const WithCheckbox = {
     h(Fieldset.Root, null, () => [
       h(Fieldset.Legend, () => "Email preferences"),
       h(Checkbox.Root, { defaultChecked: true }, () => [
-        h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+        h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkIcon())),
         h(Checkbox.Label, () => "Product updates"),
         h(Checkbox.HiddenInput),
       ]),
       h(Checkbox.Root, null, () => [
-        h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkGlyph())),
+        h(Checkbox.Control, () => h(Checkbox.Indicator, () => checkIcon())),
         h(Checkbox.Label, () => "Marketing emails"),
         h(Checkbox.HiddenInput),
       ]),

@@ -1,12 +1,14 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
 import { injectComponentStyle } from "@bysages/core";
-import { arrow_left, arrow_right, check } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType, type Ref } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
+import { Checkbox } from "../checkbox";
 import { Input } from "../input";
 
 export interface TransferItem {
@@ -15,12 +17,12 @@ export interface TransferItem {
   disabled?: boolean;
 }
 
-function checkGlyph() {
-  return glyphNode(check);
+function checkIcon() {
+  return iconNode("check");
 }
 
-function arrowGlyph(direction: "right" | "left") {
-  return direction === "right" ? glyphNode(arrow_right) : glyphNode(arrow_left);
+function arrowIcon(direction: "right" | "left") {
+  return direction === "right" ? iconNode("arrow-right") : iconNode("arrow-left");
 }
 
 /**
@@ -30,7 +32,7 @@ function arrowGlyph(direction: "right" | "left") {
  * `data` stays on the left. `searchable` adds a filter line to each
  * panel.
  */
-export const Transfer = defineComponent({
+const TransferFacade = defineComponent({
   name: "Transfer",
   props: {
     modelValue: { type: Array as PropType<string[]>, default: () => [] },
@@ -44,6 +46,7 @@ export const Transfer = defineComponent({
     injectComponentStyle("transfer");
     injectComponentStyle("checkbox");
     const messages = useComponentMessages();
+    const id = useElementId("transfer", ctx.attrs);
 
     const target = computed(() => new Set(props.modelValue));
     const checkedSource = ref(new Set<string>());
@@ -111,13 +114,14 @@ export const Transfer = defineComponent({
                 return h(
                   ArkCheckbox.Root as never,
                   {
+                    id: `${id.value}-${side}-${item.value}`,
                     key: item.value,
                     checked: checked.has(item.value),
                     disabled: locked,
                     onCheckedChange: () => toggle(checked, item.value),
                   },
                   () => [
-                    h(ArkCheckbox.Control, () => h(ArkCheckbox.Indicator, () => checkGlyph())),
+                    h(ArkCheckbox.Control, () => h(ArkCheckbox.Indicator, () => checkIcon())),
                     h(ArkCheckbox.Label, { "data-part": "label" }, () => item.label),
                     h(ArkCheckbox.HiddenInput as never),
                   ],
@@ -139,7 +143,14 @@ export const Transfer = defineComponent({
         targetItems,
       );
 
-      return h("div", { ...ctx.attrs, "data-scope": "transfer", "data-part": "root" }, [
+      const rootProps = {
+        id: id.value,
+        ...ctx.attrs,
+        "data-scope": "transfer",
+        "data-part": "root",
+      };
+
+      return h("div", rootProps, [
         sourcePanel,
         h("div", { "data-scope": "transfer", "data-part": "operations" }, [
           h(
@@ -152,7 +163,7 @@ export const Transfer = defineComponent({
               "aria-label": messages.value.transfer.moveRight,
               onClick: () => move(true),
             },
-            () => arrowGlyph("right"),
+            () => arrowIcon("right"),
           ),
           h(
             Button,
@@ -164,7 +175,7 @@ export const Transfer = defineComponent({
               "aria-label": messages.value.transfer.moveLeft,
               onClick: () => move(false),
             },
-            () => arrowGlyph("left"),
+            () => arrowIcon("left"),
           ),
         ]),
         targetPanel,
@@ -175,3 +186,6 @@ export const Transfer = defineComponent({
 
 // The rows are the checkbox family's own seals — the transfer stylesheet
 // only dresses the ledgers around them.
+
+export const Transfer = defineFamily(TransferFacade, Checkbox) as typeof TransferFacade &
+  typeof Checkbox;

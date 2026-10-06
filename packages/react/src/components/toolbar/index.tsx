@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface ToolbarProps extends HTMLAttributes<HTMLDivElement> {
   /** Accessible name when more than one toolbar shares a page. */
   label?: string;
@@ -15,7 +17,7 @@ export interface ToolbarProps extends HTMLAttributes<HTMLDivElement> {
 /** A workbench rail: the start tools at the leading edge, the end tools
  * at the trailing, the rail itself carrying the toolbar role so
  * assistive tech reads it as one group of commands. */
-export function Toolbar({ label, start, end, children, ...rest }: ToolbarProps) {
+function ToolbarImpl({ label, start, end, children, ...rest }: ToolbarProps) {
   injectComponentStyle("toolbar");
   return (
     <div
@@ -36,3 +38,5 @@ export function Toolbar({ label, start, end, children, ...rest }: ToolbarProps) 
     </div>
   );
 }
+
+export const Toolbar = withSelfRoot(ToolbarImpl);

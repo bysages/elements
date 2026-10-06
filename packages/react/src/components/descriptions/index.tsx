@@ -1,6 +1,15 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
+/** Simple term/detail records for the callable facade. */
+export interface DescriptionsItemData {
+  term: string;
+  detail: string;
+  span?: number;
+}
+
 /** A ledger laid flat: term and detail pairs in one quiet grid. The
  * horizontal layout reads as a table of two columns; the vertical one
  * stacks each pair for narrow measures. */
@@ -11,12 +20,14 @@ export interface DescriptionsRootProps extends HTMLAttributes<HTMLDListElement> 
   bordered?: boolean;
   /** Pairs across the grid: one ledger per column. */
   column?: number;
+  items?: DescriptionsItemData[];
 }
 
 export function DescriptionsRoot({
   layout = "horizontal",
   bordered = false,
   column = 1,
+  items,
   children,
   ...rest
 }: DescriptionsRootProps) {
@@ -35,7 +46,13 @@ export function DescriptionsRoot({
         } as HTMLAttributes<HTMLDListElement>["style"]
       }
     >
-      {children}
+      {children ??
+        items?.map((item) => (
+          <DescriptionsItem key={item.term} span={item.span}>
+            <Term>{item.term}</Term>
+            <Detail>{item.detail}</Detail>
+          </DescriptionsItem>
+        ))}
     </dl>
   );
 }
@@ -77,9 +94,8 @@ DescriptionsItem.displayName = "DescriptionsItem";
 const Term = part("Term", "dt");
 const Detail = part("Detail", "dd");
 
-export const Descriptions = {
-  Root: DescriptionsRoot,
+export const Descriptions = Object.assign(withSelfRoot(DescriptionsRoot), {
   Item: DescriptionsItem,
   Term,
   Detail,
-};
+});

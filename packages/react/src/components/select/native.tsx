@@ -2,6 +2,8 @@ import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, SelectHTMLAttributes } from "react";
 
+import { iconNode } from "../../internal/icon";
+
 /** One row of the platform's own list. */
 export interface NativeSelectOption {
   label: string;
@@ -72,16 +74,10 @@ export function NativeSelect({
           </option>
         ))}
       </select>
-      <svg data-scope="select" data-part="native-icon" viewBox="0 0 16 16" aria-hidden="true">
-        <path
-          d="M4 6l4 4 4-4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      {iconNode("chevron-down", {
+        "data-scope": "select",
+        "data-part": "native-icon",
+      })}
     </span>
   );
 }

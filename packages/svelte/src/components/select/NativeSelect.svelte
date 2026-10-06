@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("select");
 
 import { useFieldContext } from "@ark-ui/svelte/field";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import type { NativeSelectProps } from "./native-props";
 
 let {
@@ -51,14 +52,7 @@ list behind the same hairline shell the framed select wears. -->
       <option value={option.value} disabled={option.disabled}>{option.label}</option>
     {/each}
   </select>
-  <svg data-scope="select" data-part="native-icon" viewBox="0 0 16 16" aria-hidden="true">
-    <path
-      d="M4 6l4 4 4-4"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
+  <span data-scope="select" data-part="native-icon">
+    <InternalIcon name="chevron-down" />
+  </span>
 </span>

@@ -16,16 +16,12 @@ const FrameHead = () =>
 </script>
 
 <template>
-  <!-- The sandboxed document only exists client-side; hydrating the head
-       slot against the server's would mismatch. -->
-  <ClientOnly>
-    <!-- The vessel's dress is the consumer's (the wrapper carries no
-         anatomy); the class also resets the UA's fossil 2px inset border. -->
-    <Frame class="bs-docs-frame">
-      <template #head>
-        <FrameHead />
-      </template>
-      <p>A <em>frame</em> renders its slot in a sandboxed document.</p>
-    </Frame>
-  </ClientOnly>
+  <!-- The vessel's dress is the consumer's (the wrapper carries no
+       anatomy); the class also resets the UA's fossil 2px inset border. -->
+  <Frame class="bs-docs-frame">
+    <template #head>
+      <FrameHead />
+    </template>
+    <p>A <em>frame</em> renders its slot in a sandboxed document.</p>
+  </Frame>
 </template>

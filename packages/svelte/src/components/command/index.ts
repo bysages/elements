@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import CommandComponent from "./Command.svelte";
 
 /** The command palette: a modal sheet at the top of the page carrying a
@@ -9,7 +10,7 @@ import CommandComponent from "./Command.svelte";
  * driving our own list: the vessel and the list live inside the sheet,
  * so the combobox renders no separate popup and the machine's content
  * grafts onto the sheet's list. */
-export const Command = CommandComponent;
+export const Command = withSelfRoot(CommandComponent);
 
 export type { CommandEntry, CommandProps } from "./props";
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.

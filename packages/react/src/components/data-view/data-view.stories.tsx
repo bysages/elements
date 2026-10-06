@@ -6,6 +6,17 @@ import { Avatar } from "../avatar";
 const meta: Meta = { title: "Components/Data/Data View" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <DataView
+      items={RECORDS}
+      pageSize={6}
+      renderItem={(item) => <span>{(item as any).title}</span>}
+    />
+  ),
+};
+
 const RECORDS = Array.from({ length: 23 }, (_, index) => ({
   id: index + 1,
   title: `Ledger entry ${index + 1}`,
@@ -39,6 +50,11 @@ export const Ledger = {
       }}
     />
   ),
+};
+
+/** The same ledger through the anatomy contract, kept as a named story. */
+export const Anatomy = {
+  render: Ledger.render,
 };
 
 /** The lattice layout: equal tiles that shrink with the container. */

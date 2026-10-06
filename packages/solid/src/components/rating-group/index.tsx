@@ -3,8 +3,11 @@ import type { RatingGroupRootProps as ArkRatingGroupRootProps } from "@ark-ui/so
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Ark's RatingGroup, dressed in the paper-and-ink system: a row of quiet
- * seals whose glyphs take the primary pigment as they light up. The API is
+ * seals whose icons take the primary pigment as they light up. The API is
  * Ark's own — Root, Label, Control, Item, HiddenInput (plus the Context and
  * ItemContext render helpers). */
 
@@ -15,14 +18,19 @@ type RatingGroupOwnProps = {
 
 function RatingGroupRoot(props: ArkRatingGroupRootProps & RatingGroupOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkRatingGroup.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("rating-group", () => rest.id);
+  return <ArkRatingGroup.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const RatingGroup: Omit<typeof ArkRatingGroup, "Root"> & { Root: typeof RatingGroupRoot } = {
-  ...ArkRatingGroup,
-  Root: RatingGroupRoot,
-};
+export const RatingGroup: typeof RatingGroupRoot &
+  Omit<typeof ArkRatingGroup, "Root"> & { Root: typeof RatingGroupRoot } = defineFamily(
+  RatingGroupRoot,
+  {
+    ...ArkRatingGroup,
+    Root: RatingGroupRoot,
+  },
+);
 
 injectComponentStyle("rating-group");

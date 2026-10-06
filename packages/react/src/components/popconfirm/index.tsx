@@ -4,7 +4,9 @@ import { injectComponentStyle } from "@bysages/core";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
+import { Popover } from "../popover";
 
 /**
  * A question at the point of no return: the trigger opens a small
@@ -14,6 +16,7 @@ import { Button } from "../button";
  * (wrap a group in a span otherwise).
  */
 export interface PopconfirmProps {
+  id?: string;
   /** The question the reader is answering. */
   message: string;
   confirmText?: string;
@@ -23,15 +26,17 @@ export interface PopconfirmProps {
   onCancel?: () => void;
 }
 
-export function Popconfirm({
+function PopconfirmImpl({
   message,
   confirmText = "Confirm",
   cancelText = "Cancel",
   children,
   onConfirm,
   onCancel,
+  id,
 }: PopconfirmProps) {
   injectComponentStyle("popconfirm");
+  const hostId = useElementId("popconfirm", { id });
   const [open, setOpen] = useState(false);
   function settle(confirmed: boolean) {
     setOpen(false);
@@ -39,6 +44,7 @@ export function Popconfirm({
   }
   return (
     <ArkPopover.Root
+      id={`${hostId}:popover`}
       open={open}
       onOpenChange={(details) => setOpen(details.open)}
       positioning={{ placement: "top" }}
@@ -62,3 +68,6 @@ export function Popconfirm({
     </ArkPopover.Root>
   );
 }
+
+export const Popconfirm = Object.assign(PopconfirmImpl, Popover) as typeof PopconfirmImpl &
+  typeof Popover;

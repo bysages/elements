@@ -415,3 +415,6 @@ export const VaryingHeight = {
     );
   },
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

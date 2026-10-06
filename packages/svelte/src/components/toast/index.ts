@@ -1,5 +1,8 @@
 import { Toaster as ArkToaster, Toast as ArkToast, createToaster } from "@ark-ui/svelte/toast";
-import { injectComponentStyle } from "@bysages/core";
+
+import { defineFamily, withSelfRoot } from "../../internal/family";
+import ToastFacade from "./Toast.svelte";
+import ToastRoot from "./ToastRoot.svelte";
 
 export type { CreateToasterReturn } from "@ark-ui/svelte/toast";
 export { createToaster };
@@ -9,7 +12,11 @@ export { createToaster };
  * translate variables carry the slide. The API is Ark's own — Toaster,
  * Root, Title, Description, ActionTrigger, CloseTrigger, plus
  * createToaster. */
-export const Toast = ArkToast;
-export const Toaster = ArkToaster;
-
-injectComponentStyle("toast");
+export const Toast: typeof ToastFacade &
+  Omit<typeof ArkToast, "Root"> & {
+    Root: typeof ToastRoot;
+  } = defineFamily(ToastFacade, {
+  ...ArkToast,
+  Root: ToastRoot,
+});
+export const Toaster = withSelfRoot(ArkToaster);

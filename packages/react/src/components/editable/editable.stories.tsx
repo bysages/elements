@@ -7,6 +7,11 @@ import { Field } from "../field";
 const meta: Meta = { title: "Components/Forms/Editable" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <Editable defaultValue="Hello World" label="Title" placeholder="Enter text…" />,
+};
+
 function icon(d: string) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -36,7 +41,7 @@ function slate(rootProps: any, label: string, extras: React.ReactNode[] = []) {
 
 /** Click the text to edit it — the preview becomes the field, and the
  * submit seal carries the ink. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Label",
     placeholder: "Enter text…",

@@ -13,6 +13,10 @@ export const dataViewCss = /* css */ `
   gap: var(--bs-gap-md);
 }
 
+[data-scope="data-view"][data-part="content"][data-layout="list"] > [data-scope="data-view"][data-part="cell"] {
+  padding-block: var(--bs-padding-sm);
+}
+
 [data-scope="data-view"][data-part="content"][data-layout="list"] > [data-scope="data-view"][data-part="cell"] + [data-scope="data-view"][data-part="cell"] {
   border-block-start: 1px solid var(--bs-color-border);
 }

@@ -39,25 +39,31 @@ function alignItem(align: string) {
   );
 }
 
-/** The alignment bench: one seal pressed at rest, the others waiting. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    orientation: "horizontal",
-    label: "Text alignment",
+  render: () => {
+    const aligns = [
+      { value: "left", label: "Align left", icon: "text-align-start" },
+      { value: "center", label: "Align center", icon: "text-align-center" },
+      { value: "right", label: "Align right", icon: "text-align-end" },
+      { value: "justify", label: "Align justified", icon: "text-align-justify" },
+    ];
+    return h(ToggleGroup, {
+      items: aligns,
+      defaultValue: ["left"],
+      label: "Text alignment",
+    });
   },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h(
-          ToggleGroup.Root,
-          {
-            defaultValue: ["left"],
-            orientation: args.orientation,
-            "aria-label": args.label,
-          },
-          () => Object.keys(alignPaths).map(alignItem),
-        ),
-    ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const aligns = ["left", "center", "right"];
+    return h(ToggleGroup.Root, { defaultValue: ["left"], "aria-label": "Text alignment" }, () =>
+      aligns.map(alignItem),
+    );
+  },
 };
 
 /** The presses answer to the caller — the group only mirrors. */
@@ -115,7 +121,12 @@ export const Disabled = {
         Object.keys(textPaths).map((value) =>
           h(
             ToggleGroup.Item,
-            { key: value, value, "aria-label": value, disabled: value === "italic" },
+            {
+              key: value,
+              value,
+              "aria-label": value,
+              disabled: value === "italic",
+            },
             () => icon(textPaths[value]),
           ),
         ),

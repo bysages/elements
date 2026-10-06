@@ -41,14 +41,14 @@ const shown = ref(true);
 @keyframes bs-docs-note-in {
   from {
     opacity: 0;
-    filter: blur(4px);
+    transform: translateY(-2px) scale(0.995);
   }
 }
 
 @keyframes bs-docs-note-out {
   to {
     opacity: 0;
-    filter: blur(4px);
+    transform: translateY(2px) scale(0.995);
   }
 }
 

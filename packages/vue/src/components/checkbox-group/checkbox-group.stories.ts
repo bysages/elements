@@ -20,7 +20,7 @@ export const Basic: Story = {
     withState(() => {
       const picked = ref(["ship"]);
       return () => [
-        h(CheckboxGroup, {
+        h(CheckboxGroup as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string[]) => (picked.value = v),
           options: OPTIONS,
@@ -40,7 +40,7 @@ export const Horizontal: Story = {
     withState(() => {
       const picked = ref<string[]>([]);
       return () =>
-        h(CheckboxGroup, {
+        h(CheckboxGroup as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string[]) => (picked.value = v),
           options: OPTIONS.slice(0, 2),
@@ -51,5 +51,6 @@ export const Horizontal: Story = {
 
 /** The whole group can go quiet at once. */
 export const Disabled: Story = {
-  render: () => () => h(CheckboxGroup, { modelValue: ["ship"], options: OPTIONS, disabled: true }),
+  render: () => () =>
+    h(CheckboxGroup as never, { modelValue: ["ship"], options: OPTIONS, disabled: true }),
 };

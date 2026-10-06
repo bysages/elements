@@ -6,6 +6,7 @@ import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
 import { Portal } from "@ark-ui/svelte/portal";
 
 import { Button } from "../button";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import { ButtonGroup } from "../button-group";
 import { useComponentMessages } from "../config-provider/messages";
 import type { ImageViewerProps } from "./props";
@@ -52,43 +53,10 @@ function turn() {
 }
 </script>
 
-{#snippet tool(label: string, onclick: () => void, glyph: Snippet)}
+{#snippet tool(label: string, onclick: () => void, icon: string)}
   <Button variant="ghost" square size="lg" aria-label={label} {onclick}>
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      {@render glyph()}
-    </svg>
+    <InternalIcon name={icon} />
   </Button>
-{/snippet}
-
-{#snippet zoomIn()}
-  <circle cx="11" cy="11" r="7" />
-  <path d="m16.2 16.2 4.8 4.8" />
-  <path d="M8 11h6" />
-  <path d="M11 8v6" />
-{/snippet}
-
-{#snippet zoomOut()}
-  <circle cx="11" cy="11" r="7" />
-  <path d="m16.2 16.2 4.8 4.8" />
-  <path d="M8 11h6" />
-{/snippet}
-
-{#snippet turnGlyph()}
-  <path d="M20.49 12A8.5 8.5 0 1 1 18 6.06" />
-  <path d="M20.5 3.5v4h-4" />
-{/snippet}
-
-{#snippet closeGlyph()}
-  <path d="m6 6 12 12" />
-  <path d="M18 6 6 18" />
 {/snippet}
 
 <!-- A lightbox: the picture over a dimmed page, with a small toolbar
@@ -129,11 +97,11 @@ of the lightbox rests in the page while it is closed. -->
         <div data-scope="image-viewer" data-part="toolbar">
           <ButtonGroup>
             {#if zoomable}
-              {@render tool(messages().imageViewer.zoomIn, () => zoom(SCALE_STEP), zoomIn)}
-              {@render tool(messages().imageViewer.zoomOut, () => zoom(-SCALE_STEP), zoomOut)}
+              {@render tool(messages().imageViewer.zoomIn, () => zoom(SCALE_STEP), "zoom-in")}
+              {@render tool(messages().imageViewer.zoomOut, () => zoom(-SCALE_STEP), "zoom-out")}
             {/if}
-            {@render tool(messages().imageViewer.rotate, turn, turnGlyph)}
-            {@render tool(messages().imageViewer.close, () => setOpen(false), closeGlyph)}
+            {@render tool(messages().imageViewer.rotate, turn, "rotate-cw")}
+            {@render tool(messages().imageViewer.close, () => setOpen(false), "x")}
           </ButtonGroup>
         </div>
       </ArkDialog.Content>

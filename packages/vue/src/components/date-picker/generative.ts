@@ -1,10 +1,9 @@
-import { calendar, chevron_left, chevron_right } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { DatePicker } from "./index";
 
 /** A field that opens a calendar to pick a date. */
@@ -13,9 +12,9 @@ export default defineEntry({
     props: z.object({ label: z.string().optional() }),
     description: "A field that opens a calendar to pick a date.",
     component: ({ props }) => {
-      const calendarGlyph = () => glyphNode(calendar, { width: 16, height: 16 });
+      const calendarIcon = () => iconNode("calendar", { width: 16, height: 16 });
       const chevron = (left: boolean) =>
-        glyphNode(left ? chevron_left : chevron_right, { width: 16, height: 16 });
+        iconNode(left ? "chevron-left" : "chevron-right", { width: 16, height: 16 });
       const viewControl = () =>
         h(DatePicker.ViewControl, () => [
           h(DatePicker.PrevTrigger, () => chevron(true)),
@@ -56,7 +55,7 @@ export default defineEntry({
         );
       const field = h(DatePicker.Control, () => [
         h(DatePicker.Input as never),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
       ]);
       const popup = h(DatePicker.Positioner, () => h(DatePicker.Content, () => [dayView()]));
       return labelled(

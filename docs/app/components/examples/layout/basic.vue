@@ -7,10 +7,7 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
 <template>
   <!-- The border and paper make the skeleton read as a window on the
        demo canvas — a bare grid melts into the page around it. -->
-  <Layout.Root
-    sider="start"
-    class="min-h-72 overflow-clip rounded-lg border border-border bg-surface-0"
-  >
+  <Layout sider="start" class="min-h-72 overflow-clip rounded-lg border border-border bg-surface-0">
     <Layout.Sider>
       <nav class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)">
         <Button v-for="stop in stops" :key="stop" variant="ghost" class="justify-start!">
@@ -34,5 +31,5 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
     <Layout.Footer>
       <p class="m-0 text-tertiary">By Sages Elements — the paper-and-ink system.</p>
     </Layout.Footer>
-  </Layout.Root>
+  </Layout>
 </template>

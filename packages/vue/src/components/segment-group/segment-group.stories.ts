@@ -24,13 +24,36 @@ function group(extraProps: Record<string, any> = {}, values = frameworks) {
   ]);
 }
 
-/** One ink stroke slides beneath the chosen segment. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    orientation: "horizontal",
+  render: () => {
+    const periods = [
+      { value: "day", label: "Day" },
+      { value: "week", label: "Week" },
+      { value: "month", label: "Month" },
+    ];
+    return h(SegmentGroup, { items: periods, defaultValue: "week" });
   },
-  render: (args: any) =>
-    withState(() => () => group({ defaultValue: "Vue", orientation: args.orientation })),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const periods = [
+      { value: "day", label: "Day" },
+      { value: "week", label: "Week" },
+    ];
+    return h(SegmentGroup.Root, { defaultValue: "week" }, () => [
+      h(SegmentGroup.Indicator),
+      ...periods.map((period) =>
+        h(SegmentGroup.Item, { key: period.value, value: period.value }, () => [
+          h(SegmentGroup.ItemText, () => period.label),
+          h(SegmentGroup.ItemControl),
+          h(SegmentGroup.ItemHiddenInput),
+        ]),
+      ),
+    ]);
+  },
 };
 
 /** The choice answers to the caller — the group only mirrors it. */

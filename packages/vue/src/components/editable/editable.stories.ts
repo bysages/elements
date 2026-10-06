@@ -8,11 +8,28 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Editable" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(Editable, {
+      defaultValue: "Hello World",
+      label: "Title",
+      placeholder: "Enter text…",
+    }),
+};
+
 function icon(d: string) {
   return () =>
-    h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": 2 }, [
-      h("path", { d, "stroke-linecap": "round", "stroke-linejoin": "round" }),
-    ]);
+    h(
+      "svg",
+      {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": 2,
+      },
+      [h("path", { d, "stroke-linecap": "round", "stroke-linejoin": "round" })],
+    );
 }
 
 const pencil = icon("M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z");
@@ -31,7 +48,7 @@ function slate(rootProps: any, label: string, extras: any[] = []) {
 
 /** Click the text to edit it — the preview becomes the field, and the
  * submit seal carries the ink. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Label",
     placeholder: "Enter text…",
@@ -90,7 +107,13 @@ export const Controls = {
 /** A double click opens the slate — a click merely rests on it. */
 export const DoubleClick = {
   render: () =>
-    slate({ defaultValue: "Double-click to edit", activationMode: "dblclick" } as any, "Label"),
+    slate(
+      {
+        defaultValue: "Double-click to edit",
+        activationMode: "dblclick",
+      } as any,
+      "Label",
+    ),
 };
 
 /** Long text takes a taller slate: the input grows into a textarea. */
@@ -117,7 +140,12 @@ export const Textarea = {
         ]),
         h(
           "div",
-          { style: { fontSize: "var(--bs-font-size-xs)", color: "var(--bs-color-text-tertiary)" } },
+          {
+            style: {
+              fontSize: "var(--bs-font-size-xs)",
+              color: "var(--bs-color-text-tertiary)",
+            },
+          },
           () => "Press Cmd + Enter to save",
         ),
       ],

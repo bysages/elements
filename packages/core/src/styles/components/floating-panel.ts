@@ -8,6 +8,10 @@ export const floatingPanelCss =
    --x/--y pair inline); the positioner stays a hit-transparent frame. */
 [data-scope="floating-panel"][data-part="positioner"] {
   pointer-events: none;
+  /* The machine writes its own stacking var (not the shared --z-index:
+     auto case), so this consumer contract needs the shared ladder to win
+     over the machine's viewport-local layer count. */
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0)) !important;
 }
 
 /* A draggable sheet is the popup vessel let loose: same paper, same

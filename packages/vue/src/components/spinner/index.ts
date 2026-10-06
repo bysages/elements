@@ -2,54 +2,57 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
-export const Spinner = defineComponent({
-  name: "Spinner",
-  props: {
-    /** One rung of the control ladder for the wheel's diameter. */
-    size: {
-      type: String as PropType<"sm" | "md" | "lg">,
-      default: "md",
+export const Spinner = withSelfRoot(
+  defineComponent({
+    name: "Spinner",
+    props: {
+      /** One rung of the control ladder for the wheel's diameter. */
+      size: {
+        type: String as PropType<"sm" | "md" | "lg">,
+        default: "md",
+      },
     },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("spinner");
-    const messages = useComponentMessages();
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("spinner");
+      const messages = useComponentMessages();
 
-    return () =>
-      h(
-        "span",
-        {
-          ...ctx.attrs,
-          role: "status",
-          "aria-label":
-            (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.spinner.loading,
-          "data-scope": "spinner",
-          "data-part": "root",
-          "data-size": props.size,
-        },
-        [
-          h("svg", { viewBox: "0 0 24 24", fill: "none", "aria-hidden": true }, [
-            h("circle", {
-              cx: 12,
-              cy: 12,
-              r: 9,
-              stroke: "currentColor",
-              "stroke-opacity": 0.2,
-              "stroke-width": 2.5,
-            }),
-            h("path", {
-              d: "M21 12a9 9 0 0 0-9-9",
-              stroke: "currentColor",
-              "stroke-width": 2.5,
-              "stroke-linecap": "round",
-            }),
-          ]),
-          ctx.slots.default?.(),
-        ],
-      );
-  },
-});
+      return () =>
+        h(
+          "span",
+          {
+            ...ctx.attrs,
+            role: "status",
+            "aria-label":
+              (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.spinner.loading,
+            "data-scope": "spinner",
+            "data-part": "root",
+            "data-size": props.size,
+          },
+          [
+            h("svg", { viewBox: "0 0 24 24", fill: "none", "aria-hidden": true }, [
+              h("circle", {
+                cx: 12,
+                cy: 12,
+                r: 9,
+                stroke: "currentColor",
+                "stroke-opacity": 0.2,
+                "stroke-width": 2.5,
+              }),
+              h("path", {
+                d: "M21 12a9 9 0 0 0-9-9",
+                stroke: "currentColor",
+                "stroke-width": 2.5,
+                "stroke-linecap": "round",
+              }),
+            ]),
+            ctx.slots.default?.(),
+          ],
+        );
+    },
+  }),
+);

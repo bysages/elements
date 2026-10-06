@@ -2,9 +2,12 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("descriptions");
 
+import DescriptionsDetail from "./DescriptionsDetail.svelte";
+import DescriptionsItem from "./DescriptionsItem.svelte";
+import DescriptionsTerm from "./DescriptionsTerm.svelte";
 import type { DescriptionsRootProps } from "./props";
 
-let { layout = "horizontal", bordered = false, column = 1, children, ...rest }: DescriptionsRootProps = $props();
+let { layout = "horizontal", bordered = false, column = 1, items, children, ...rest }: DescriptionsRootProps = $props();
 </script>
 
 <dl
@@ -15,5 +18,14 @@ let { layout = "horizontal", bordered = false, column = 1, children, ...rest }: 
   data-layout={layout}
   data-bordered={bordered || undefined}
 >
-  {@render children?.()}
+  {#if children}
+    {@render children()}
+  {:else}
+    {#each items ?? [] as item}
+      <DescriptionsItem span={item.span}>
+        <DescriptionsTerm>{item.term}</DescriptionsTerm>
+        <DescriptionsDetail>{item.detail}</DescriptionsDetail>
+      </DescriptionsItem>
+    {/each}
+  {/if}
 </dl>

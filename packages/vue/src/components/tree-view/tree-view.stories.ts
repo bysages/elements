@@ -1,11 +1,10 @@
 import { useFilter } from "@ark-ui/vue/locale";
 import { createTreeCollection } from "@ark-ui/vue/tree-view";
-import { chevron_right } from "@bysages/icons";
 import type { Meta } from "@storybook/vue3-vite";
 import { defineComponent, h, type PropType, reactive } from "vue";
 
 import { TreeView } from ".";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 import { Input } from "../input";
 import { withState } from "../with-state.js";
@@ -50,7 +49,7 @@ const libraryCollection = createTreeCollection<Node>({
   },
 });
 
-const checkboxGlyph = () =>
+const checkboxIcon = () =>
   h(
     "svg",
     {
@@ -67,7 +66,7 @@ const checkboxGlyph = () =>
     [h("path", { d: "m4 12.5 5 5L20 6.5" })],
   );
 
-const linkGlyph = () =>
+const linkIcon = () =>
   h(
     "svg",
     {
@@ -135,7 +134,7 @@ const NodeWithCheckbox = defineComponent({
   },
   setup(props) {
     const checkbox = () =>
-      h(TreeView.NodeCheckbox, () => h(TreeView.NodeCheckboxIndicator, () => checkboxGlyph()));
+      h(TreeView.NodeCheckbox, () => h(TreeView.NodeCheckboxIndicator, () => checkboxIcon()));
     return () =>
       h(TreeView.NodeProvider, { node: props.node, indexPath: props.indexPath }, () =>
         h(TreeView.NodeContext, null, {
@@ -202,7 +201,7 @@ const NodeWithLinks = defineComponent({
                     href: props.node.href ?? "#",
                     style: { color: "inherit", textDecoration: "none" },
                   },
-                  [h(TreeView.ItemText, () => props.node.name), linkGlyph()],
+                  [h(TreeView.ItemText, () => props.node.name), linkIcon()],
                 ),
               ),
             ],
@@ -228,7 +227,7 @@ const AsyncNode = defineComponent({
                       h(TreeView.BranchIndicator, () =>
                         state.loading
                           ? h("span", { style: { opacity: 0.5 } }, "…")
-                          : glyphNode(chevron_right),
+                          : iconNode("chevron-right"),
                       ),
                       h(TreeView.BranchText, () => props.node.name),
                     ]),
@@ -258,8 +257,32 @@ function treeOf(collection: ReturnType<typeof createTreeCollection<Node>>, compo
   );
 }
 
-/** The library tree: branches open on click, files sit at the leaves. */
+/** The facade is the one-tag path for the common completion. */
 export const Basic = {
+  render: () =>
+    h(TreeView, {
+      options: [
+        {
+          label: "ink",
+          value: "ink",
+          children: [
+            { label: "brush.md", value: "ink/brush" },
+            { label: "stone.md", value: "ink/stone" },
+          ],
+        },
+        {
+          label: "paper",
+          value: "paper",
+          children: [{ label: "xuan.md", value: "paper/xuan" }],
+        },
+      ],
+      defaultValue: ["ink/brush"],
+      label: "Library",
+    }),
+};
+
+/** The library tree: branches open on click, files sit at the leaves. */
+export const Anatomy = {
   args: {
     label: "Library",
   },

@@ -5,9 +5,7 @@ import { Avatar, Button, Comment } from "@bysages/vue";
 <template>
   <Comment author="Sage Wei" datetime="Today, 09:12" class="w-full">
     <template #avatar>
-      <Avatar.Root>
-        <Avatar.Fallback>SW</Avatar.Fallback>
-      </Avatar.Root>
+      <Avatar>SW</Avatar>
     </template>
     The registry reads cleaner since the hairlines went in — the eye knows where one entry ends.
     <template #actions>

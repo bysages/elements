@@ -48,19 +48,18 @@ function sheet(title: string, ...extra: ReactNode[]) {
  * behind it. */
 export const Basic = {
   args: {
-    triggerLabel: "Open drawer",
-    title: "Settings",
-    description: "Preferences travel with the sheet — pull the grabber to put them away.",
+    trigger: "Open drawer",
+    label: "Settings",
+    description: "Preferences travel with the sheet — pull the grabber to put it away.",
+    content: "The rest of the sheet is yours to fill.",
   },
   render: (args: any) => (
-    <Drawer.Root>
-      <Drawer.Trigger>{args.triggerLabel}</Drawer.Trigger>
-      {sheet(
-        args.title,
-        <Drawer.Description>{args.description}</Drawer.Description>,
-        <p>The rest of the sheet is yours to fill.</p>,
-      )}
-    </Drawer.Root>
+    <Drawer
+      trigger={args.trigger}
+      label={args.label}
+      description={args.description}
+      content={args.content}
+    />
   ),
 };
 
@@ -298,3 +297,6 @@ export const Controlled = {
     );
   },
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

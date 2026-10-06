@@ -7,6 +7,18 @@ import { Field } from "../field";
 const meta: Meta = { title: "Components/Forms/Password Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <PasswordInput
+      label="Password"
+      placeholder="Enter a password"
+      autoComplete="new-password"
+      required
+    />
+  ),
+};
+
 function eye(open: boolean) {
   return (
     <svg
@@ -43,7 +55,7 @@ const meterStyle = { display: "flex", gap: "0.25rem", marginTop: "0.375rem" };
 
 /** The masked field with its reveal eye — the indicator swaps eye for
  * eye-off in the same seat. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Password",
     placeholder: "Enter a password",

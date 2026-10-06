@@ -3,7 +3,7 @@ import { Timeline } from "@bysages/vue";
 </script>
 
 <template>
-  <Timeline.Root>
+  <Timeline>
     <Timeline.Item>
       <Timeline.Marker />
       <Timeline.Content>
@@ -22,5 +22,5 @@ import { Timeline } from "@bysages/vue";
         <strong>Seal</strong> — the red stamp closes the finished work.
       </Timeline.Content>
     </Timeline.Item>
-  </Timeline.Root>
+  </Timeline>
 </template>

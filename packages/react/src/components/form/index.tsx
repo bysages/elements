@@ -3,6 +3,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { type ComponentType, createContext, useContext } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 export type { FieldApi, FormApi } from "@tanstack/form-core";
 export { useField, useForm } from "@tanstack/react-form";
 
@@ -34,7 +36,7 @@ export interface FormProps extends HTMLAttributes<HTMLFormElement> {
   form: AnyFormApi;
 }
 
-export function Form({ form, children, ...rest }: FormProps) {
+function FormImpl({ form, children, ...rest }: FormProps) {
   injectComponentStyle("form");
   injectComponentStyle("field");
   return (
@@ -54,6 +56,8 @@ export function Form({ form, children, ...rest }: FormProps) {
     </FormContext.Provider>
   );
 }
+
+export const Form = withSelfRoot(FormImpl);
 
 /**
  * The named slot in the grid: label, control, hint — and the engine's
@@ -76,7 +80,7 @@ export interface FormFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   children?: ReactNode | ((field: any) => ReactNode);
 }
 
-export function FormField({
+function FormFieldImpl({
   form: formProp,
   name,
   label,
@@ -123,6 +127,8 @@ export function FormField({
     </form.Field>
   );
 }
+
+export const FormField = withSelfRoot(FormFieldImpl);
 
 // The fields inside are the field family's own recipe — the form
 // stylesheet only lays the grid and routes the errors.

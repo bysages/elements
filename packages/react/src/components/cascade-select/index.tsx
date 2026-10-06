@@ -5,8 +5,11 @@ import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import type { HTMLAttributes, ReactNode } from "react";
-import { useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
@@ -17,47 +20,11 @@ export interface CascadeSelectNode {
   disabled?: boolean;
 }
 
-const chevronDown = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
+const chevronDown = iconNode("chevron-down");
+const chevronRight = iconNode("chevron-right");
+const checkIcon = iconNode("check");
 
-const chevronRight = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-);
-
-const checkGlyph = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={3}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m5 12.5 5 5L19 7" />
-  </svg>
-);
+/**
 
 /**
  * A corridor of linked columns: pick a branch and the next column
@@ -81,7 +48,7 @@ export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
   onValueChange?: (value: string[][]) => void;
 }
 
-export function CascadeSelect({
+function CascadeSelectImpl({
   value,
   data,
   placeholder = "Select…",
@@ -95,7 +62,7 @@ export function CascadeSelect({
 }: CascadeSelectProps) {
   injectComponentStyle("cascade-select");
   const messages = useComponentMessages();
-  const id = useId();
+  const id = useElementId("cascade-select", rest);
   const locale = useLocaleContext();
   const env = useEnvironmentContext();
 
@@ -216,7 +183,7 @@ export function CascadeSelect({
                   {chevronRight}
                 </span>
               ) : null}
-              <span {...api.getItemIndicatorProps(itemProps)}>{checkGlyph}</span>
+              <span {...api.getItemIndicatorProps(itemProps)}>{checkIcon}</span>
             </li>
           );
         })}
@@ -305,3 +272,5 @@ export function CascadeSelect({
     </div>
   );
 }
+
+export const CascadeSelect = withSelfRoot(CascadeSelectImpl);

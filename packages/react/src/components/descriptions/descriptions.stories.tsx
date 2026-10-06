@@ -2,12 +2,21 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Descriptions } from ".";
 
+const facts = [
+  { term: "Paper", detail: "Warm ground" },
+  { term: "Ink", detail: "Content first" },
+];
+
 const meta: Meta = { title: "Components/Data/Descriptions" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <Descriptions items={facts} />,
+};
 /** The horizontal ledger: terms down the leading column, details
  * trailing. */
-export const Basic = {
+export const Anatomy = {
   render: () => (
     <Descriptions.Root>
       <Descriptions.Item>
@@ -42,6 +51,26 @@ export const Vertical = {
         <Descriptions.Term>Binding</Descriptions.Term>
         <Descriptions.Detail>Thread-sewn, wrapped in paper</Descriptions.Detail>
       </Descriptions.Item>
+    </Descriptions.Root>
+  ),
+};
+
+/** The framed register: one hairline round the whole, terms on inset
+ * paper, pairs across the grid. */
+export const Bordered = {
+  render: () => (
+    <Descriptions.Root bordered column={2}>
+      {[
+        ["Calligrapher", "Lin Wanzhi"],
+        ["Ink", "Qinghua cobalt, first grinding"],
+        ["Paper", "Jingxian xuan, raw edge"],
+        ["Seal", "方寸为章 — square-cut, 6 mm"],
+      ].map(([term, detail]) => (
+        <Descriptions.Item key={term}>
+          <Descriptions.Term>{term}</Descriptions.Term>
+          <Descriptions.Detail>{detail}</Descriptions.Detail>
+        </Descriptions.Item>
+      ))}
     </Descriptions.Root>
   ),
 };

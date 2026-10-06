@@ -2,10 +2,21 @@ import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
 import { AvatarGroup } from ".";
+import { Avatar } from "../avatar";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Elements/Avatar Group" };
 export default meta;
+
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(AvatarGroup, () =>
+      ["Q", "C", "Z", "T"].map((label) =>
+        h(Avatar, { key: label }, () => h(Avatar.Fallback, () => label)),
+      ),
+    ),
+};
 
 /** A demo avatar: sized in `em`, so the group's font-size sets the face. */
 function face(label: string, background: string) {
@@ -34,11 +45,11 @@ function face(label: string, background: string) {
 
 /** Avatars overlap one row, each rimmed in the ground so the pile stays
  * legible. */
-export const Basic = {
+export const Anatomy = {
   render: () =>
     withState(
       () => () =>
-        h(AvatarGroup as any, () => [
+        h(AvatarGroup.Root as any, () => [
           face("沈", "var(--bs-color-primary)"),
           face("竹", "var(--bs-color-success)"),
           face("丹", "var(--bs-color-danger)"),

@@ -534,11 +534,11 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   "checkbox-group": {
     description:
-      'CheckboxGroup：复选框组，用一个标签管理多个答案。一组带标签的复选框纵向或横向排列，并绑定同一个数组。切换复选框会添加或移除它的值；组本身只提供语义（`role="group"`），复选框仍由状态机驱动。放进 `Field.Root` 后，组会接入字段上下文；Form 按名称传入的 invalid 和 disabled 状态会同时作用于每个复选框。',
+      "CheckboxGroup：复选框组，用一个标签管理多个答案。一组带标签的复选框纵向或横向排列，并绑定同一个数组。选项列表映射到 Ark 的复选框组，选择、表单接线和数量限制由组状态机管理。放进 `Field.Root` 后，组会接入字段上下文；invalid 和 disabled 状态会同时作用于每个复选框。",
     parts: {
       CheckboxGroup: {
         description:
-          'CheckboxGroup：复选框组，用一个标签管理多个答案。一组带标签的复选框纵向或横向排列，并绑定同一个数组。切换复选框会添加或移除它的值；组本身只提供语义（`role="group"`），复选框仍由状态机驱动。放进 `Field.Root` 后，组会接入字段上下文；Form 按名称传入的 invalid 和 disabled 状态会同时作用于每个复选框。',
+          "CheckboxGroup：复选框组，用一个标签管理多个答案。一组带标签的复选框纵向或横向排列，并绑定同一个数组。选项列表映射到 Ark 的复选框组，选择、表单接线和数量限制由组状态机管理。放进 `Field.Root` 后，组会接入字段上下文；invalid 和 disabled 状态会同时作用于每个复选框。",
         props: {
           size: "复选框组统一的尺寸档位；写入各根元素的 data-size，供样式表调整",
         },
@@ -871,6 +871,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
         props: {
           bordered: "是否显示边框",
           column: "每行键值对组数",
+          items: "facade 直接渲染的键值对数组；与默认插槽二选一",
         },
       },
       DescriptionsItem: {
@@ -1169,7 +1170,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   "focus-trap": {
     description:
-      "FocusTrap：在子树内捕获焦点，供不属于 dialog 状态机但仍需要键盘边界的容器使用。和 Ark 的其他 utility 一样无头。",
+      "FocusTrap：在子树内捕获焦点，供不属于 dialog 状态机但仍需要键盘边界的容器使用。无头实现，页面保留全部视觉决策。",
   },
   form: {
     description: "Form：表单元素本身。拦截原生 submit 并把事件交给引擎，同时提供统一的网格和间距。",
@@ -1501,7 +1502,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   menu: {
     description:
-      "Menu：菜单。安静的纸质浮层带 elevation，行在悬停时出现光照，选中项使用墨色平铺填充。部件：Root、Trigger、ContextTrigger、Indicator、Positioner、Content、Item、ItemText、ItemIndicator、ItemGroup、ItemGroupLabel、TriggerItem、Separator、Arrow、ArrowTip。Ark 的 namespace 已冻结；展开 namespace 时会把成员复制成 data properties，使 Root 可以承担尺寸包装，Content 承担档位，其余仍使用 Ark 自身部件。",
+      "Menu：菜单。安静的纸质浮层带 elevation，行在悬停时出现光照，选中项使用墨色平铺填充。部件：Root、Trigger、ContextTrigger、Indicator、Positioner、Content、Item、ItemText、ItemIndicator、ItemGroup、ItemGroupLabel、TriggerItem、Separator、Arrow、ArrowTip。",
     parts: {
       Item: {
         props: {
@@ -1781,7 +1782,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   presence: {
     description:
-      "Presence：让子组件的挂载与卸载配合 CSS 进出场动画。它实现 Ark “动画结束后再移除元素”的延迟卸载契约，也可用于我们自己的组合组件。",
+      "Presence：让子组件的挂载与卸载配合 CSS 进出场动画。它实现“动画结束后再移除元素”的延迟卸载契约，也可用于我们自己的组合组件。",
   },
   progress: {
     description:
@@ -1925,8 +1926,31 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   select: {
     description:
-      "Select：选择器。触发器就是整个控件，列表淡入展开为纸质浮层，选中行使用墨色平铺填充。部件：Root、Label、Control、Trigger、ValueText、Indicator、ClearTrigger、HiddenSelect、Positioner、Content、List、Item、ItemText、ItemIndicator、ItemGroup、ItemGroupLabel。",
+      "Select：选择器。触发器就是整个控件，列表淡入展开为纸质浮层，选中行使用墨色平铺填充。高层 Select 用 options 和 v-model 配置完整控件；部件用于精细组合。部件：Select、Root、Label、Control、Trigger、ValueText、Indicator、ClearTrigger、HiddenSelect、Positioner、Content、List、Item、ItemText、ItemIndicator、ItemGroup、ItemGroupLabel。",
     parts: {
+      Select: {
+        description:
+          "Select：高层选择器。options 生成纸质浮层中的选项；modelValue 支持单个值或多值数组，label 提供字段名，placeholder 提供空态提示。",
+        props: {
+          autoComplete:
+            "隐藏 `select` 的 `autocomplete` 属性，用于启用浏览器自动填充，例如省州字段用 `address-level1`",
+          defaultValue: "非受控时的初始值；`multiple` 为 `true` 时是字符串数组",
+          deselectable: "为 `true` 时点击已选项可取消选择；仅单选模式适用",
+          disabled: "为 `true` 时禁用选择器",
+          form: "底层 `select` 关联的表单",
+          invalid: "为 `true` 时标记选择器无效",
+          label: "字段标签；未提供时 `placeholder` 用于触发器的无障碍标签",
+          modelValue: "受控的已选值；`multiple` 为 `false` 时是字符串，为 `true` 时是字符串数组",
+          multiple: "为 `true` 时允许选择多个选项",
+          name: "底层 `select` 的 `name` 属性，用于表单提交",
+          options: "选项集合，每项提供 `label` 和 `value`",
+          groupLabel: "平铺选项列表上方的分组标题",
+          placeholder: "未选择时显示的提示文本",
+          readOnly: "为 `true` 时选择器只读",
+          required: "为 `true` 时选择器必填",
+          size: "触发器高度，可为 `sm`、`md` 或 `lg`",
+        },
+      },
       Item: {
         props: {
           item: "要渲染的选项",

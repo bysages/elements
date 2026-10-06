@@ -102,7 +102,24 @@ const viewport = () => h(NavigationMenu.ViewportPositioner, () => h(NavigationMe
  * trigger. */
 export const Basic = {
   args: {
-    guidesLink: "Guides",
+    items: [
+      { label: "Quick start", href: "#quick-start" },
+      { label: "Styling", href: "#styling" },
+      { label: "Guides", href: "#guides", current: true },
+    ],
+  },
+  render: (args: any) => withState(() => () => h(NavigationMenu, args)),
+};
+
+/** The anatomy is the composition path: the same bar, assembled from
+ * Ark's parts when triggers open grouped panels. */
+export const Anatomy = {
+  args: {
+    items: [
+      { label: "Quick start", href: "#quick-start" },
+      { label: "Styling", href: "#styling" },
+      { label: "Guides", href: "#guides", current: true },
+    ],
   },
   render: (args: any) =>
     withState(
@@ -111,7 +128,7 @@ export const Basic = {
           h(NavigationMenu.List, () => [
             menuPanel("overview", columns),
             h(NavigationMenu.Item, () =>
-              h(NavigationMenu.Link, { href: "#guides", current: true }, () => args.guidesLink),
+              h(NavigationMenu.Link, { href: "#guides", current: true }, () => args.items[2].label),
             ),
             menuPanel("resources", columns.slice().reverse()),
           ]),
@@ -119,7 +136,6 @@ export const Basic = {
         ]),
     ),
 };
-
 /** The bar reads its own state: the context reports which trigger holds
  * the ink, or none. */
 export const Context = {

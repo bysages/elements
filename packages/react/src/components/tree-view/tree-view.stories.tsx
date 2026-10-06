@@ -95,7 +95,33 @@ function Node({ node, indexPath }: { node: Node; indexPath: number[] }) {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
 export const Basic = {
+  render: () => (
+    <TreeView
+      options={[
+        {
+          label: "ink",
+          value: "ink",
+          children: [
+            { label: "brush.md", value: "ink/brush" },
+            { label: "stone.md", value: "ink/stone" },
+          ],
+        },
+        {
+          label: "paper",
+          value: "paper",
+          children: [{ label: "xuan.md", value: "paper/xuan" }],
+        },
+      ]}
+      defaultValue={["ink/brush"]}
+      label="Library"
+    />
+  ),
+};
+
+/** The composition path remains available. */
+export const Anatomy = {
   args: {
     label: "Library",
   },

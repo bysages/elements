@@ -46,6 +46,9 @@ import type {
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createMemo, createSignal, onCleanup, onMount, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import {
   formatComponentMessage,
   useComponentMessages,
@@ -54,44 +57,18 @@ import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
 /** The pagination bar's arrows — thin chevrons for the row of seals. */
-function pageGlyph(direction: "start" | "end") {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={14}
-      height={14}
-      fill="none"
-      stroke="currentColor"
-      stroke-width={2}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
-    </svg>
-  );
+function pageIcon(direction: "start" | "end") {
+  return direction === "start"
+    ? iconNode("chevron-left", { width: "14", height: "14" })
+    : iconNode("chevron-right", { width: "14", height: "14" });
 }
 
 export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
 
 /** The page-size select's pointing chevron. */
-function chevronDownGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={14}
-      height={14}
-      fill="none"
-      stroke="currentColor"
-      stroke-width={2.5}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
+function chevronDownIcon() {
+  return iconNode("chevron-down", { width: "14", height: "14" });
 }
 /** Column metadata understood by this table: mark columns whose values
  * read right-aligned in tabular figures. The type parameters mirror the
@@ -239,21 +216,9 @@ function mark(el: HTMLElement, attr: string, on: boolean) {
   else el.removeAttribute(attr);
 }
 
-const chevronGlyph = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m9 6 6 6-6 6" />
-  </svg>
-);
-
-export function DataTable(props: DataTableProps) {
+const chevronIcon = iconNode("chevron-right");
+export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) {
+  const id = useElementId("table");
   const messages = useComponentMessages();
   injectComponentStyle("table");
   if (props.virtual && props.merge) {
@@ -687,7 +652,7 @@ export function DataTable(props: DataTableProps) {
             }
             onclick={() => row.toggleExpanded()}
           >
-            {chevronGlyph}
+            {chevronIcon}
           </button>
           <FlexRender cell={cell} />
         </div>
@@ -912,6 +877,7 @@ export function DataTable(props: DataTableProps) {
           </span>
           <div data-scope="table" data-part="page-nav">
             <ArkSelect.Root
+              id={id()}
               collection={createListCollection({
                 items: (props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({
                   label: formatComponentMessage(messages().table.perPage, {
@@ -927,7 +893,7 @@ export function DataTable(props: DataTableProps) {
               <ArkSelect.Control>
                 <ArkSelect.Trigger aria-label={messages().table.rowsPerPage}>
                   <ArkSelect.ValueText />
-                  <ArkSelect.Indicator>{chevronDownGlyph()}</ArkSelect.Indicator>
+                  <ArkSelect.Indicator>{chevronDownIcon()}</ArkSelect.Indicator>
                 </ArkSelect.Trigger>
               </ArkSelect.Control>
               <ArkSelect.Positioner>
@@ -951,12 +917,13 @@ export function DataTable(props: DataTableProps) {
               </ArkSelect.Positioner>
             </ArkSelect.Root>
             <ArkPagination.Root
+              id={`${id()}-pagination`}
               count={table.getRowCount()}
               pageSize={table.atoms.pagination.get().pageSize}
               page={table.atoms.pagination.get().pageIndex + 1}
               onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
             >
-              <ArkPagination.PrevTrigger>{pageGlyph("start")}</ArkPagination.PrevTrigger>
+              <ArkPagination.PrevTrigger>{pageIcon("start")}</ArkPagination.PrevTrigger>
               <ArkPagination.Context>
                 {(scope) => (
                   <For each={scope().pages}>
@@ -972,11 +939,11 @@ export function DataTable(props: DataTableProps) {
                   </For>
                 )}
               </ArkPagination.Context>
-              <ArkPagination.NextTrigger>{pageGlyph("end")}</ArkPagination.NextTrigger>
+              <ArkPagination.NextTrigger>{pageIcon("end")}</ArkPagination.NextTrigger>
             </ArkPagination.Root>
           </div>
         </div>
       ) : null}
     </div>
   );
-}
+});

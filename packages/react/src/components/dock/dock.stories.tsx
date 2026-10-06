@@ -5,7 +5,7 @@ import { Dock } from ".";
 const meta: Meta = { title: "Components/Actions/Dock" };
 export default meta;
 
-const GLYPHS = ["墨", "纸", "研", "印", "卷", "章"];
+const CHARS = ["墨", "纸", "研", "印", "卷", "章"];
 
 const itemStyle: React.CSSProperties = {
   display: "flex",
@@ -24,9 +24,9 @@ const itemStyle: React.CSSProperties = {
 export const Basic = {
   render: () => (
     <Dock style={{ padding: "0.75rem 1rem" }}>
-      {GLYPHS.map((glyph) => (
-        <Dock.Item key={glyph} style={itemStyle}>
-          {glyph}
+      {CHARS.map((char) => (
+        <Dock.Item key={char} style={itemStyle}>
+          {char}
         </Dock.Item>
       ))}
     </Dock>

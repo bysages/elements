@@ -7,6 +7,7 @@ import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Data/Data View" };
 export default meta;
+
 type Story = StoryObj<typeof DataView>;
 
 const RECORDS = Array.from({ length: 23 }, (_, index) => ({
@@ -14,6 +15,16 @@ const RECORDS = Array.from({ length: 23 }, (_, index) => ({
   title: `Ledger entry ${index + 1}`,
   detail: "Settled and sealed.",
 }));
+
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(
+      DataView,
+      { items: RECORDS, pageSize: 6 },
+      { item: ({ item }: any) => h("span", () => item.title) },
+    ),
+};
 
 /** The ledger layout, paged: rows separate by hairline, the pagination
  * family's own parts carry the foot. */
@@ -45,6 +56,11 @@ export const Ledger: Story = {
           },
         ),
     ),
+};
+
+/** The same ledger through the anatomy contract, kept as a named story. */
+export const Anatomy = {
+  render: Ledger.render,
 };
 
 /** The lattice layout: equal tiles that shrink with the container. */

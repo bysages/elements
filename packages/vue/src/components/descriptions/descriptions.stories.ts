@@ -5,11 +5,22 @@ import { Descriptions } from ".";
 
 const meta: Meta = { title: "Components/Data/Descriptions" };
 export default meta;
+
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(Descriptions, {
+      items: [
+        { term: "Paper", detail: "Warm ground" },
+        { term: "Ink", detail: "Content first" },
+      ],
+    }),
+};
 type Story = StoryObj<typeof Descriptions>;
 
 /** The horizontal ledger: terms down the leading column, details
  * trailing. */
-export const Basic: Story = {
+export const Anatomy: Story = {
   render: () => () =>
     h(Descriptions.Root as never, {}, () => [
       h(Descriptions.Item, () => [

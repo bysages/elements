@@ -8,6 +8,15 @@ import { Card } from "../card";
 const meta: Meta = { title: "Components/Elements/Config Provider" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <ConfigProvider density="compact" accent="qinghua">
+      Compact controls under the qinghua accent.
+    </ConfigProvider>
+  ),
+};
+
 /** The same furniture in every tier, so the density step and the
  * pigment read against each other. */
 function demo(label: string): ReactNode {
@@ -31,7 +40,7 @@ function demo(label: string): ReactNode {
 
 /** Compact controls under the qinghua pigment, set against the page's
  * own defaults — the provider carries both attributes at once. */
-export const Basic = {
+export const Anatomy = {
   render: () => (
     <div
       style={{
@@ -41,9 +50,9 @@ export const Basic = {
       }}
     >
       {demo("Outside — the page's own density and ink")}
-      <ConfigProvider density="compact" accent="qinghua">
+      <ConfigProvider.Root density="compact" accent="qinghua">
         {demo("Inside — compact controls under the qinghua accent")}
-      </ConfigProvider>
+      </ConfigProvider.Root>
     </div>
   ),
 };

@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { defineComponent, h, ref, Teleport } from "vue";
+import { defineComponent, h, ref } from "vue";
 
 import { createToaster, Toast, Toaster, type CreateToasterReturn } from ".";
 import { Button } from "../button";
@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Overlay/Toast" };
 export default meta;
 
-function closeGlyph() {
+function closeIcon() {
   return h(
     "svg",
     {
@@ -24,7 +24,7 @@ function closeGlyph() {
   );
 }
 
-function statusGlyph(type?: string | null) {
+function statusIcon(type?: string | null) {
   const paths: Record<string, string[]> = {
     info: ["M12 11v5", "M12 8h.01"],
     success: ["m8.5 12.5 2.5 2.5 5-5.5"],
@@ -72,7 +72,7 @@ function card(action = false) {
       h(Toast.Title, () => toast.title),
       h(Toast.Description, () => toast.description),
       ...(action && toast.action ? [h(Toast.ActionTrigger, () => toast.action?.label)] : []),
-      h(Toast.CloseTrigger, { "aria-label": "Close" }, () => closeGlyph()),
+      h(Toast.CloseTrigger, { "aria-label": "Close" }, () => closeIcon()),
     ]),
   ];
 }
@@ -96,9 +96,8 @@ function notifier(
       });
       return () => [
         h("div", { style: { display: "flex", flexWrap: "wrap", gap: "0.5rem" } }, buttons(toaster)),
-        h(Teleport, { to: "body" }, () => [
-          h(Toaster, { toaster }, { default: cardFor?.(toaster) ?? card() }),
-        ]),
+
+        h(Toaster, { toaster }, cardFor ? { default: cardFor(toaster) } : undefined),
       ];
     },
   });
@@ -112,8 +111,8 @@ const announce = (toaster: CreateToasterReturn) =>
     type: "info",
   });
 
-/** One notice rises from the bottom edge; the machine's translate
- * variables carry the slide. */
+/** One notice rises from the bottom edge; the callable toaster supplies
+ * the default card. */
 export const Basic = {
   args: {
     triggerLabel: "Schedule meeting",
@@ -126,6 +125,20 @@ export const Basic = {
         notifier("ToastBasic", {}, (toaster) => [
           h(Button, { size: "sm", onClick: () => announce(toaster) }, () => args.triggerLabel),
         ])(),
+    ),
+};
+
+/** The anatomy is the composition path: the same notice, assembled from
+ * Ark's parts when it needs an action or bespoke content. */
+export const Anatomy = {
+  render: () =>
+    notifier(
+      "ToastAnatomy",
+      {},
+      (toaster) => [
+        h(Button, { size: "sm", onClick: () => announce(toaster) }, () => "Schedule meeting"),
+      ],
+      () => card(),
     ),
 };
 
@@ -290,7 +303,7 @@ export const Update = {
       ],
       () => (toast: any) => [
         h(Toast.Root, { key: toast.id }, () => [
-          h(Toast.Title, () => [statusGlyph(toast.type)(), toast.title]),
+          h(Toast.Title, () => [statusIcon(toast.type)(), toast.title]),
           h(Toast.Description, () => toast.description),
         ]),
       ],
@@ -340,9 +353,9 @@ export const MaxToasts = {
       ],
       () => (toast: any) => [
         h(Toast.Root, { key: toast.id }, () => [
-          h(Toast.Title, () => [statusGlyph("info")(), toast.title]),
+          h(Toast.Title, () => [statusIcon("info")(), toast.title]),
           h(Toast.Description, () => toast.description),
-          h(Toast.CloseTrigger, { "aria-label": "Close" }, () => closeGlyph()),
+          h(Toast.CloseTrigger, { "aria-label": "Close" }, () => closeIcon()),
         ]),
       ],
     ),
@@ -388,7 +401,7 @@ export const PromiseToast = {
       ],
       () => (toast: any) => [
         h(Toast.Root, { key: toast.id }, () => [
-          h(Toast.Title, () => [statusGlyph(toast.type)(), toast.title]),
+          h(Toast.Title, () => [statusIcon(toast.type)(), toast.title]),
           h(Toast.Description, () => toast.description),
         ]),
       ],

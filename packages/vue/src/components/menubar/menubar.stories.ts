@@ -41,7 +41,7 @@ export const Basic = {
     withState(() => {
       const status = ref("Nothing chosen yet.");
       return () => [
-        h(Menubar, {
+        h(Menubar as never, {
           items: menus,
           onSelect: (value: string) => (status.value = `Chose ${value}`),
         }),
@@ -80,7 +80,7 @@ export const InContext = {
               },
               "Draft: The paper-and-ink system",
             ),
-            h(Menubar, {
+            h(Menubar as never, {
               items: menus,
               onSelect: (value: string) => (status.value = `Chose ${value}`),
             }),

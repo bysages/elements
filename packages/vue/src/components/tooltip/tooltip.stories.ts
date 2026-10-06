@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Overlay/Tooltip" };
 export default meta;
 
-function sealGlyph() {
+function sealIcon() {
   return h(
     "svg",
     {
@@ -24,7 +24,7 @@ function sealGlyph() {
   );
 }
 
-function glyph(path: string) {
+function icon(path: string) {
   return h(
     "svg",
     {
@@ -44,14 +44,27 @@ function glyph(path: string) {
  * paper. */
 export const Basic = {
   args: {
+    trigger: "Hover me",
+    content: "Ink answers only when asked.",
+    placement: "bottom-start",
+  },
+  render: (args: any) => withState(() => () => h(Tooltip, args)),
+};
+
+/** The anatomy is the composition path: the same label, assembled from
+ * Ark's parts when the caller needs a custom trigger. */
+export const Anatomy = {
+  args: {
+    trigger: "Hover me",
+    content: "Ink answers only when asked.",
     placement: "bottom-start",
   },
   render: (args: any) =>
     withState(
       () => () =>
         h(Tooltip.Root, { positioning: { placement: args.placement } }, () => [
-          h(Tooltip.Trigger, () => [sealGlyph(), h("span", () => "Hover me")]),
-          h(Tooltip.Positioner, () => h(Tooltip.Content, () => "Ink answers only when asked.")),
+          h(Tooltip.Trigger, () => [sealIcon(), h("span", () => args.trigger)]),
+          h(Tooltip.Positioner, () => h(Tooltip.Content, () => args.content)),
         ]),
     ),
 };
@@ -132,7 +145,7 @@ export const MultipleTriggers = {
             h("div", { style: { display: "flex", gap: "0.25rem" } }, () =>
               tools.map((tool) =>
                 h(Tooltip.Trigger, { key: tool.id, value: tool.id, "aria-label": tool.label }, () =>
-                  glyph(tool.path),
+                  icon(tool.path),
                 ),
               ),
             ),

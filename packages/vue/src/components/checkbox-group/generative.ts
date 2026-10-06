@@ -19,7 +19,7 @@ export default defineEntry({
       const [value, setValue] = useBound<string[]>(props.value, bindings?.value);
       return labelled(
         props.label,
-        h(CheckboxGroup, {
+        h(CheckboxGroup as never, {
           modelValue: value ?? [],
           options: props.options,
           layout: props.layout,

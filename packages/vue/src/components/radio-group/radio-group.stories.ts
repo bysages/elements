@@ -26,19 +26,40 @@ function paperGroup(extraProps: Record<string, any> = {}, label = "Paper") {
   ]);
 }
 
-/** A column of full-circle seals; the chosen one fills flat with ink. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    label: "Paper",
-    disabled: false,
+  render: () => {
+    const papers = [
+      { value: "xuan", label: "Xuan paper" },
+      { value: "silk", label: "Silk" },
+      { value: "bamboo", label: "Bamboo slips" },
+    ];
+    return h(RadioGroup, {
+      items: papers,
+      defaultValue: "xuan",
+      label: "Ground",
+    });
   },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h("div", { style: { maxWidth: "20rem" } }, [
-          paperGroup({ defaultValue: "Doushu", disabled: args.disabled }, args.label),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const papers = [
+      { value: "xuan", label: "Xuan paper" },
+      { value: "silk", label: "Silk" },
+    ];
+    return h(RadioGroup.Root, { defaultValue: "xuan" }, () => [
+      h(RadioGroup.Label, () => "Ground"),
+      ...papers.map((paper) =>
+        h(RadioGroup.Item, { key: paper.value, value: paper.value }, () => [
+          h(RadioGroup.ItemControl),
+          h(RadioGroup.ItemText, () => paper.label),
+          h(RadioGroup.ItemHiddenInput),
         ]),
-    ),
+      ),
+    ]);
+  },
 };
 
 /** Retired choices: the seals mute, no ink, no pointer. */

@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 
 export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
@@ -9,7 +10,7 @@ export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
-export function Spinner({ size = "md", children, ...rest }: SpinnerProps) {
+function SpinnerImpl({ size = "md", children, ...rest }: SpinnerProps) {
   injectComponentStyle("spinner");
   const messages = useComponentMessages();
   return (
@@ -34,3 +35,5 @@ export function Spinner({ size = "md", children, ...rest }: SpinnerProps) {
     </span>
   );
 }
+
+export const Spinner = withSelfRoot(SpinnerImpl);

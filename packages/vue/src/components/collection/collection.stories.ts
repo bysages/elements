@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/vue3-vite";
 import type { Component } from "vue";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { createListCollection } from ".";
 import { Select } from "../select";
@@ -51,9 +51,8 @@ export const Basic = {
           () => [
             h(Select.Label, () => "Accent pigment"),
             h(Select.Trigger, () => h(Select.ValueText, { placeholder: "Pick a pigment" })),
-            h(Teleport, { to: "body" }, () => [
-              h(Select.Positioner, () => [h(Select.Content, () => rows())]),
-            ]),
+
+            h(Select.Positioner, () => [h(Select.Content, () => rows())]),
           ],
         );
     }),

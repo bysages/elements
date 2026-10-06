@@ -5,7 +5,10 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, Show, createEffect, createSignal, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
+import { Dialog } from "../dialog";
 
 export interface CommandEntry {
   label: string;
@@ -17,6 +20,7 @@ export interface CommandEntry {
 }
 
 export interface CommandProps {
+  id?: string;
   /** The commands on offer, grouped as they arrive. */
   items?: CommandEntry[];
   placeholder?: string;
@@ -75,11 +79,12 @@ function Row(props: { entry: CommandEntry }) {
  * so the combobox renders no separate popup and the machine's content
  * grafts onto the sheet's list.
  */
-export function Command(props: CommandProps) {
+function CommandImpl(props: CommandProps) {
   injectComponentStyle("command");
   injectComponentStyle("dialog");
   const messages = useComponentMessages();
   const [own, rest] = splitProps(props, [
+    "id",
     "items",
     "placeholder",
     "open",
@@ -90,6 +95,7 @@ export function Command(props: CommandProps) {
     "onOpenChange",
     "onInputValueChange",
   ]);
+  const id = useElementId("command", () => props.id);
   const [internalOpen, setInternalOpen] = createSignal(false);
   // The list has no popup of its own, but the machine still opens and
   // closes its content (outside click on the sheet dims the list);
@@ -145,7 +151,12 @@ export function Command(props: CommandProps) {
   };
 
   return (
-    <ArkDialog.Root {...rest} open={open()} onOpenChange={(details) => setOpen(details.open)}>
+    <ArkDialog.Root
+      {...rest}
+      id={id()}
+      open={open()}
+      onOpenChange={(details) => setOpen(details.open)}
+    >
       <Portal>
         <ArkDialog.Backdrop />
         <ArkDialog.Positioner
@@ -160,6 +171,7 @@ export function Command(props: CommandProps) {
                     aria-label={messages().command.palette}
                   >
                     <ArkCombobox.Root
+                      id={`${id()}-palette`}
                       // The machine types its collection as
                       // ListCollection<unknown>; ours is ListCollection<string>
                       // and the two don't relate by variance.
@@ -251,3 +263,5 @@ export function Command(props: CommandProps) {
   );
 }
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
+
+export const Command = defineFamily(CommandImpl, Dialog) as typeof CommandImpl & typeof Dialog;

@@ -4,6 +4,10 @@ import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+import { Menu } from "../menu";
+
 export interface MenubarEntry {
   label: string;
   value: string;
@@ -35,15 +39,16 @@ export interface MenubarProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
  * arrow keys — cross-menu arrow traversal is out of scope for this
  * version. Inside an open menu the machine handles arrows and Escape.
  */
-export function Menubar(props: MenubarProps) {
+function MenubarImpl(props: MenubarProps) {
   injectComponentStyle("menubar");
   injectComponentStyle("menu");
-  const [own, rest] = splitProps(props, ["items", "onSelect"]);
+  const [own, rest] = splitProps(props, ["id", "items", "onSelect"]);
+  const id = useElementId("menubar", () => own.id);
   return (
     <div {...rest} data-scope="menubar" data-part="root" role="menubar">
       <For each={own.items ?? []}>
-        {(group) => (
-          <ArkMenu.Root positioning={{ placement: "bottom-start" }}>
+        {(group, index) => (
+          <ArkMenu.Root id={`${id()}-${index()}`} positioning={{ placement: "bottom-start" }}>
             <ArkMenu.Trigger
               asChild={(triggerProps) => (
                 <button
@@ -84,3 +89,5 @@ export function Menubar(props: MenubarProps) {
   );
 }
 // The popups keep the menu parts, so the menu stylesheet dresses them.
+
+export const Menubar = defineFamily(MenubarImpl, Menu) as typeof MenubarImpl & typeof Menu;

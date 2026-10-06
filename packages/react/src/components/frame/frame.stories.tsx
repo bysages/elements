@@ -20,7 +20,7 @@ const VESSEL = {
 
 const INNER = { padding: "1.5rem 2rem" } as const;
 
-/** Styles travel through the head slot; content teleports into the
+/** Styles travel through the head slot; content renders into the
  * frame's body and the vessel grows to fit it. */
 export const Basic = {
   render: () => (
@@ -35,7 +35,7 @@ export const Basic = {
     >
       <h1 style={{ ...INNER, margin: 0, fontSize: "1.25rem" }}>Hello from inside the frame!</h1>
       <p style={{ ...INNER, margin: 0, color: "var(--bs-color-text-secondary)" }}>
-        This content is rendered within the frame component using a Teleport.
+        This content is rendered within the frame component.
       </p>
     </Frame>
   ),

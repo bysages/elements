@@ -6,11 +6,16 @@
  */
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";
 
+import { defineFamily } from "../../internal/family";
+import PaginationFacade from "./Pagination.svelte";
 import PaginationRoot from "./PaginationRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Pagination: Omit<typeof ArkPagination, "Root"> & { Root: typeof PaginationRoot } = {
+export const Pagination: typeof PaginationFacade &
+  Omit<typeof ArkPagination, "Root"> & {
+    Root: typeof PaginationRoot;
+  } = defineFamily(PaginationFacade, {
   ...ArkPagination,
   Root: PaginationRoot,
-};
+});

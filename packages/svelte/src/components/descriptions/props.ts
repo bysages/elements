@@ -1,6 +1,13 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
+/** Simple term/detail records for the callable facade. */
+export interface DescriptionsItemData {
+  term: string;
+  detail: string;
+  span?: number;
+}
+
 export interface DescriptionsRootProps extends HTMLAttributes<HTMLDListElement> {
   /** The horizontal layout reads as a table of two columns; the
    * vertical one stacks each pair for narrow measures. */
@@ -10,6 +17,7 @@ export interface DescriptionsRootProps extends HTMLAttributes<HTMLDListElement> 
   bordered?: boolean;
   /** Pairs across the grid: one ledger per column. */
   column?: number;
+  items?: DescriptionsItemData[];
   children?: Snippet;
 }
 

@@ -3,18 +3,13 @@ import { useFilter, useLocaleContext } from "@ark-ui/solid/locale";
 import { injectComponentStyle } from "@bysages/core";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/solid";
-import {
-  For,
-  Show,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  mergeProps,
-  splitProps,
-} from "solid-js";
+import { For, Show, createMemo, createSignal, mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
 
@@ -26,51 +21,15 @@ export interface CascadeSelectNode {
 }
 
 function chevronDown() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
+  return iconNode("chevron-down");
 }
 
 function chevronRight() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
+  return iconNode("chevron-right");
 }
 
-function checkGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m5 12.5 5 5L19 7" />
-    </svg>
-  );
+function checkIcon() {
+  return iconNode("check");
 }
 
 export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -95,7 +54,7 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * swaps the corridor for a flat list of matching paths while a query
  * runs — each hit still reads as its full route.
  */
-export function CascadeSelect(props: CascadeSelectProps) {
+export const CascadeSelect = withSelfRoot(function CascadeSelect(props: CascadeSelectProps) {
   const messages = useComponentMessages();
   injectComponentStyle("cascade-select");
   const [own, rest] = splitProps(props, [
@@ -106,10 +65,11 @@ export function CascadeSelect(props: CascadeSelectProps) {
     "filterable",
     "multiple",
     "disabled",
+    "id",
     "size",
     "onValueChange",
   ]);
-  const id = createUniqueId();
+  const id = useElementId("cascade-select", () => own.id)();
   const locale = useLocaleContext();
   const env = useEnvironmentContext();
 
@@ -237,7 +197,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
                   </span>
                 </Show>
                 <span {...mergeProps(() => api().getItemIndicatorProps(itemProps))}>
-                  {checkGlyph()}
+                  {checkIcon()}
                 </span>
               </li>
             );
@@ -277,7 +237,7 @@ export function CascadeSelect(props: CascadeSelectProps) {
             },
           })}
         >
-          <span {...mergeProps(() => api().getValueTextProps(), { id: id + ":value-text" })}>
+          <span {...mergeProps(() => api().getValueTextProps(), { id: `${id}:value-text` })}>
             {display() ?? own.placeholder ?? "Select…"}
           </span>
           <span {...mergeProps(() => api().getIndicatorProps())}>{chevronDown()}</span>
@@ -337,4 +297,4 @@ export function CascadeSelect(props: CascadeSelectProps) {
       </Portal>
     </div>
   );
-}
+});

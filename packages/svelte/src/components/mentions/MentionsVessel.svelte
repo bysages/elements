@@ -35,15 +35,29 @@ the vessel still points at the right place. -->
     <ArkPopover.Positioner>
       <ArkPopover.Content>
         {#snippet asChild(contentProps)}
-          <div {...contentProps()} data-scope="mentions" data-part="popup" data-size={size}>
+          <div
+            {...contentProps()}
+            data-scope="mentions"
+            data-part="popup"
+            data-size={size}
+            role="listbox"
+          >
             {#each matches as entry, index (entry.value)}
               <div
                 data-scope="mentions"
                 data-part="option"
+                role="option"
+                aria-selected={index === active}
+                tabindex={-1}
                 data-active={index === active ? "" : undefined}
                 onmouseenter={() => onActiveChange?.(index)}
                 onmousedown={(event) => event.preventDefault()}
                 onclick={() => onInsert?.(entry)}
+                onkeydown={(event) => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  onInsert?.(entry);
+                }}
               >
                 {entry.label}
               </div>

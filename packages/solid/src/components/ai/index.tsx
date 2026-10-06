@@ -1,6 +1,7 @@
 import { injectComponentStyle, type ComponentMessages } from "@bysages/core";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
 import { PromptInput } from "../ai-prompt-input";
@@ -52,16 +53,18 @@ export const AiConversation = part("Conversation", (messages) => ({
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
-export const AiContent = part("Content");
+export const AiContent = withSelfRoot(part("Content"));
 
 /** The quiet row under a message — copy, retry, feedback. */
-export const AiActions = part("Actions");
+export const AiActions = withSelfRoot(part("Actions"));
 
 /** The while-it-works whisper for the in-flight turns. */
-export const AiLoader = part("Loader", (messages) => ({
-  role: "status",
-  "aria-label": messages.ai.loading,
-}));
+export const AiLoader = withSelfRoot(
+  part("Loader", (messages) => ({
+    role: "status",
+    "aria-label": messages.ai.loading,
+  })),
+);
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.MessageContent`, and the rest. */

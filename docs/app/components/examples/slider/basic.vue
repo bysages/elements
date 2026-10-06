@@ -1,20 +1,10 @@
 <script setup lang="ts">
 import { Slider } from "@bysages/vue";
+import { ref } from "vue";
+
+const volume = ref(40);
 </script>
 
 <template>
-  <Slider.Root :default-value="[40]" :min="0" :max="100" :step="1">
-    <div class="flex justify-between items-baseline">
-      <Slider.Label>Volume</Slider.Label>
-      <Slider.ValueText />
-    </div>
-    <Slider.Control>
-      <Slider.Track>
-        <Slider.Range />
-      </Slider.Track>
-      <Slider.Thumb :index="0">
-        <Slider.HiddenInput />
-      </Slider.Thumb>
-    </Slider.Control>
-  </Slider.Root>
+  <Slider v-model="volume" label="Volume" :min="0" :max="100" :step="1" />
 </template>

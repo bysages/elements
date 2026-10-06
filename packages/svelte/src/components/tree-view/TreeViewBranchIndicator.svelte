@@ -1,7 +1,8 @@
 <script lang="ts">
   import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
   import type { TreeViewBranchIndicatorProps } from "@ark-ui/svelte/tree-view";
-  import { chevron_right } from "@bysages/icons";
+
+  import InternalIcon from "../../internal/InternalIcon.svelte";
 
   let { children, ...rest }: TreeViewBranchIndicatorProps = $props();
 </script>
@@ -12,8 +13,6 @@ snippet to override, never a chore to remember. -->
   {#if children}
     {@render children()}
   {:else}
-    <svg viewBox="0 0 {chevron_right.width} {chevron_right.height}" aria-hidden="true">
-      {@html chevron_right.body}
-    </svg>
+    <InternalIcon name="chevron-right" />
   {/if}
 </ArkTreeView.BranchIndicator>

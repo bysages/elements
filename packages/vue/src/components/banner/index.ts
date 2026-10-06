@@ -1,9 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
-import { x } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 
 const Root = defineComponent({
@@ -74,7 +73,7 @@ const Close = defineComponent({
           "data-scope": "banner",
           "data-part": "close",
         },
-        [glyphNode(x)],
+        [iconNode("x")],
       );
   },
 });

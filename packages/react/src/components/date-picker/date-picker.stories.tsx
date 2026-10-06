@@ -325,9 +325,14 @@ const rangeInputControl = (
   </>
 );
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => <DatePicker label="Start date" placeholder="yyyy-mm-dd" />,
+};
+
 /** Day view with the full control row: type a date or pick one from the
  * grid; the title doubles as the zoom-out affordance. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Start date",
   },

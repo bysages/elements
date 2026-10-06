@@ -1,10 +1,11 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import CheckboxGroupComponent from "./CheckboxGroup.svelte";
 
 /** One question, many answers: a labelled stack (or row) of the
  * seal-cut checkboxes bound to a single array. */
-export const CheckboxGroup = CheckboxGroupComponent;
+export const CheckboxGroup = withSelfRoot(CheckboxGroupComponent);
 
 export type { CheckboxGroupProps, CheckboxOption } from "./props";
 

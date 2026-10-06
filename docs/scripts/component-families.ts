@@ -26,5 +26,11 @@ export const exampleNames = (family: string): string[] => {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f) => f.endsWith(".vue"))
-    .map((f) => f.replace(/\.vue$/, ""));
+    .map((f) => f.replace(/\.vue$/, ""))
+    .sort((a, b) => {
+      // The first demo is the component's front door: direct usage first,
+      // anatomy second, then feature demos in directory order.
+      const rank = (name: string) => (name === "basic" ? 0 : name === "anatomy" ? 1 : 2);
+      return rank(a) - rank(b) || a.localeCompare(b);
+    });
 };

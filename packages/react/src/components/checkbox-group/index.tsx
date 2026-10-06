@@ -1,7 +1,11 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
-import { type HTMLAttributes, useId } from "react";
+import type { HTMLAttributes } from "react";
+
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
+import { Checkbox } from "../checkbox";
 
 export interface CheckboxOption {
   label: string;
@@ -9,22 +13,11 @@ export interface CheckboxOption {
   disabled?: boolean;
 }
 
-const checkGlyph = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={3}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m5 12.5 5 5L19 7" />
-  </svg>
-);
+const checkIcon = iconNode("check");
 
 export interface CheckboxGroupProps extends HTMLAttributes<HTMLDivElement> {
   value?: string[];
+  defaultValue?: string[];
   options: CheckboxOption[];
   layout?: "vertical" | "horizontal";
   /** One register for every box: falls onto each root's data-size for
@@ -37,14 +30,14 @@ export interface CheckboxGroupProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * One question, many answers: a labelled stack (or row) of the seal-cut
- * checkboxes bound to a single array. Toggling a box adds or removes its
- * value; the group itself is semantics (`role="group"`), the boxes stay
- * the machine-driven originals. Inside a `Field.Root` the group picks up
- * the field context, so the invalid and disabled states a Form routes to
- * its name dress every box at once.
+ * checkboxes bound to a single array. Ark's group owns selection, form
+ * wiring, and limits; the facade maps an options list onto it. Inside a
+ * `Field.Root` the group picks up the field context, so invalid and
+ * disabled states dress every box at once.
  */
-export function CheckboxGroup({
-  value = [],
+function CheckboxGroupImpl({
+  value,
+  defaultValue,
   options,
   layout = "vertical",
   size = "md",
@@ -55,52 +48,60 @@ export function CheckboxGroup({
 }: CheckboxGroupProps) {
   injectComponentStyle("checkbox-group");
   injectComponentStyle("checkbox");
+
   const field = useFieldContext();
-  // A field context bends every box's hidden input onto the field's own
-  // id, so labels of a multi-box group would all activate the first box —
-  // each box claims its own ids instead.
-  const uid = useId();
-  const selected = new Set(value);
+  const uid = useElementId("checkbox-group", rest);
   const isInvalid = invalid || field?.invalid === true;
   const isDisabled = disabled || field?.disabled === true;
-  function toggle(option: string) {
-    const next = new Set(selected);
-    if (next.has(option)) next.delete(option);
-    else next.add(option);
-    onValueChange?.([...next]);
-  }
+
   return (
-    <div
-      {...rest}
-      role="group"
-      data-scope="checkbox-group"
-      data-part="root"
-      data-layout={layout}
-      data-invalid={isInvalid ? "" : undefined}
+    <ArkCheckbox.Group
+      asChild
+      {...(isInvalid ? { invalid: true } : {})}
+      {...(isDisabled ? { disabled: true } : {})}
+      {...(defaultValue === undefined ? {} : { defaultValue })}
+      {...(value === undefined ? {} : { value })}
+      onValueChange={onValueChange}
     >
-      {options.map((option) => (
-        <ArkCheckbox.Root
-          key={option.value}
-          ids={{
-            label: `${uid}:${option.value}:label`,
-            hiddenInput: `${uid}:${option.value}:input`,
-          }}
-          data-size={size}
-          checked={selected.has(option.value)}
-          invalid={isInvalid}
-          disabled={isDisabled || option.disabled === true}
-          onCheckedChange={() => toggle(option.value)}
-        >
-          <ArkCheckbox.Control>
-            <ArkCheckbox.Indicator>{checkGlyph}</ArkCheckbox.Indicator>
-          </ArkCheckbox.Control>
-          <ArkCheckbox.Label>{option.label}</ArkCheckbox.Label>
-          <ArkCheckbox.HiddenInput />
-        </ArkCheckbox.Root>
-      ))}
-    </div>
+      <div
+        {...rest}
+        id={uid}
+        data-scope="checkbox-group"
+        data-part="root"
+        data-layout={layout}
+        data-invalid={isInvalid ? "" : undefined}
+      >
+        {options.map((option) => {
+          const checkboxId = `${uid}:checkbox:${option.value}`;
+          return (
+            <ArkCheckbox.Root
+              key={option.value}
+              id={checkboxId}
+              value={option.value}
+              ids={{
+                label: `${checkboxId}:label`,
+                hiddenInput: `${checkboxId}:input`,
+              }}
+              data-size={size}
+              disabled={isDisabled || option.disabled === true}
+            >
+              <ArkCheckbox.Control>
+                <ArkCheckbox.Indicator>{checkIcon}</ArkCheckbox.Indicator>
+              </ArkCheckbox.Control>
+              <ArkCheckbox.Label>{option.label}</ArkCheckbox.Label>
+              <ArkCheckbox.HiddenInput />
+            </ArkCheckbox.Root>
+          );
+        })}
+      </div>
+    </ArkCheckbox.Group>
   );
 }
+
+export const CheckboxGroup = Object.assign(
+  CheckboxGroupImpl,
+  Checkbox,
+) as typeof CheckboxGroupImpl & typeof Checkbox;
 
 // The options are the checkbox family's own seals — the group stylesheet
 // only lays the row and column out around them.

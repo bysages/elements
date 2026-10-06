@@ -2,7 +2,7 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("virtual-list");
 
-import { createVirtualizer } from "@tanstack/svelte-virtual";
+import { untrack } from "svelte";
 import type { VirtualListProps } from "./props";
 
 let {
@@ -16,7 +16,7 @@ let {
 let viewport: HTMLDivElement | undefined = $state();
 
 const virtualizer = createVirtualizer({
-  count: items.length,
+  count: untrack(() => items.length),
   getScrollElement: () => viewport ?? null,
   estimateSize: () => itemHeight,
   overscan: 6,
@@ -30,6 +30,8 @@ const blockHeight = $derived(typeof height === "number" ? `${height}px` : height
 <!-- A ledger that only mounts the rows on stage: the viewport keeps
 its scroll length by a spacer sized from the row height — a
 ten-thousand-row list costs the DOM a window, not the ledger. -->
+<!-- The viewport is intentionally focusable so keyboard users can scroll the fixed-height list. -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
   bind:this={viewport}
   {...rest}

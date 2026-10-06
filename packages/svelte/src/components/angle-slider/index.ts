@@ -4,11 +4,16 @@
  * Marker, HiddenInput. */
 import { AngleSlider as ArkAngleSlider } from "@ark-ui/svelte/angle-slider";
 
+import { defineFamily } from "../../internal/family";
+import AngleSliderFacade from "./AngleSlider.svelte";
 import AngleSliderRoot from "./AngleSliderRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const AngleSlider: Omit<typeof ArkAngleSlider, "Root"> & { Root: typeof AngleSliderRoot } = {
+export const AngleSlider: typeof AngleSliderFacade &
+  Omit<typeof ArkAngleSlider, "Root"> & {
+    Root: typeof AngleSliderRoot;
+  } = defineFamily(AngleSliderFacade, {
   ...ArkAngleSlider,
   Root: AngleSliderRoot,
-};
+});

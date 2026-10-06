@@ -4,11 +4,16 @@
  * ValueText, IncrementTrigger, DecrementTrigger, Scrubber. */
 import { NumberInput as ArkNumberInput } from "@ark-ui/svelte/number-input";
 
+import { defineFamily } from "../../internal/family";
+import NumberInputFacade from "./NumberInput.svelte";
 import NumberInputRoot from "./NumberInputRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const NumberInput: Omit<typeof ArkNumberInput, "Root"> & { Root: typeof NumberInputRoot } = {
+export const NumberInput: typeof NumberInputFacade &
+  Omit<typeof ArkNumberInput, "Root"> & {
+    Root: typeof NumberInputRoot;
+  } = defineFamily(NumberInputFacade, {
   ...ArkNumberInput,
   Root: NumberInputRoot,
-};
+});

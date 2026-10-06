@@ -9,6 +9,11 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Pin Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => h(PinInput, { label: "Verification code", placeholder: "·", length: 4 }),
+};
+
 function pin(extraProps: Record<string, any> = {}, count = 4) {
   return h(PinInput.Root, { placeholder: "·", ...extraProps }, () => [
     h(PinInput.Label, () => "Verification code"),
@@ -21,7 +26,7 @@ function pin(extraProps: Record<string, any> = {}, count = 4) {
 
 /** A six-digit code: one character per seal, the caret hopping forward on
  * each keystroke. */
-export const Basic = {
+export const Anatomy = {
   args: {
     placeholder: "·",
     length: 6,

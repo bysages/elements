@@ -3,7 +3,10 @@ import { Combobox as ArkCombobox } from "@ark-ui/vue/combobox";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
-import { Teleport } from "vue";
+
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+import { Combobox } from "../combobox";
 
 /**
  * Free text with suggestions: the reader types anything, the list
@@ -13,7 +16,7 @@ import { Teleport } from "vue";
  * matching is a case-insensitive substring unless `filter` says
  * otherwise.
  */
-export const AutoComplete = defineComponent({
+const AutoCompleteFacade = defineComponent({
   name: "AutoComplete",
   props: {
     modelValue: { type: String, default: "" },
@@ -31,6 +34,8 @@ export const AutoComplete = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("combobox");
 
+    const hostId = useElementId("autocomplete", ctx.attrs);
+
     const { collection, filter } = useListCollection({
       initialItems: props.items,
       filter: (item: string, input: string) =>
@@ -44,6 +49,7 @@ export const AutoComplete = defineComponent({
       h(
         ArkCombobox.Root as never,
         {
+          id: `${hostId.value}:combobox`,
           collection: collection.value,
           inputValue: props.modelValue,
           allowCustomValue: true,
@@ -62,19 +68,20 @@ export const AutoComplete = defineComponent({
           h(ArkCombobox.Control as never, () =>
             h(ArkCombobox.Input as never, { placeholder: props.placeholder }),
           ),
-          h(Teleport as never, { to: "body" }, () => [
-            h(ArkCombobox.Positioner, () => [
-              h(ArkCombobox.Content, () => [
-                h(ArkCombobox.Empty, () => "No matches"),
-                ...collection.value.items.map((item: string) =>
-                  h(ArkCombobox.Item, { key: item, item }, () =>
-                    h(ArkCombobox.ItemText, () => item),
-                  ),
-                ),
-              ]),
+          h(ArkCombobox.Positioner, () => [
+            h(ArkCombobox.Content, () => [
+              h(ArkCombobox.Empty, () => "No matches"),
+              ...collection.value.items.map((item: string) =>
+                h(ArkCombobox.Item, { key: item, item }, () => h(ArkCombobox.ItemText, () => item)),
+              ),
             ]),
           ]),
         ],
       );
   },
 });
+
+export const AutoComplete = defineFamily(
+  AutoCompleteFacade,
+  Combobox,
+) as typeof AutoCompleteFacade & typeof Combobox;

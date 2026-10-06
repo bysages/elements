@@ -39,8 +39,23 @@ const pigments = createListCollection({
   ],
 });
 
-/** One choice from the ledger: the current row keeps the ink check. */
+/** The facade is the one-tag path for the common completion. */
 export const Basic = {
+  render: () => (
+    <Listbox
+      options={[
+        { label: "Qinghua cobalt", value: "qinghua" },
+        { label: "Celadon", value: "celadon" },
+        { label: "Zhusha cinnabar", value: "zhusha" },
+      ]}
+      defaultValue="qinghua"
+      label="Accent"
+    />
+  ),
+};
+
+/** One choice from the ledger: the current row keeps the ink check. */
+export const Anatomy = {
   args: {
     label: "Pigment",
     disabled: false,

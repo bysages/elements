@@ -2,9 +2,11 @@ import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, ref, type PropType, type Ref } from "vue";
-import { Teleport } from "vue";
 
+import { defineFamily, withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { Field } from "../field";
+import { Popover } from "../popover";
 import { useMentions } from "./use-mentions";
 
 export type { UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
@@ -36,37 +38,39 @@ export interface MentionsProps {
  * its own anatomy (the textarea rides where the host puts it) and the
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
-export const MentionsVessel = defineComponent({
-  name: "MentionsVessel",
-  props: {
-    open: { type: Boolean, default: false },
-    matches: { type: Array as PropType<MentionEntry[]>, default: () => [] },
-    active: { type: Number, default: 0 },
-    anchor: { type: Object as PropType<HTMLTextAreaElement | null>, default: null },
-    /** The host field's rung, so the rows keep the field's register. */
-    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
-  },
-  emits: {
-    insert: (_entry: MentionEntry) => true,
-    "update:active": (_index: number) => true,
-    "update:open": (_open: boolean) => true,
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("mentions");
+export const MentionsVessel = withSelfRoot(
+  defineComponent({
+    name: "MentionsVessel",
+    props: {
+      open: { type: Boolean, default: false },
+      matches: { type: Array as PropType<MentionEntry[]>, default: () => [] },
+      active: { type: Number, default: 0 },
+      anchor: { type: Object as PropType<HTMLTextAreaElement | null>, default: null },
+      /** The host field's rung, so the rows keep the field's register. */
+      size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    },
+    emits: {
+      insert: (_entry: MentionEntry) => true,
+      "update:active": (_index: number) => true,
+      "update:open": (_open: boolean) => true,
+    },
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("mentions");
+      const id = useElementId("mentions", ctx.attrs);
 
-    return () =>
-      h(
-        ArkPopover.Root,
-        {
-          open: props.open,
-          "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
-          positioning: {
-            placement: "bottom-start",
-            getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
+      return () =>
+        h(
+          ArkPopover.Root,
+          {
+            id: id.value,
+            open: props.open,
+            "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
+            positioning: {
+              placement: "bottom-start",
+              getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
+            },
           },
-        },
-        () => [
-          h(Teleport, { to: "body" }, [
+          () => [
             h(ArkPopover.Positioner, () =>
               h(ArkPopover.Content, { asChild: true }, () =>
                 h(
@@ -92,11 +96,11 @@ export const MentionsVessel = defineComponent({
                 ),
               ),
             ),
-          ]),
-        ],
-      );
-  },
-});
+          ],
+        );
+    },
+  }),
+);
 
 /**
  * @-mentions: a plain textarea that, when the text before the caret ends
@@ -114,7 +118,7 @@ export const MentionsVessel = defineComponent({
  * skip this shell and wire `useMentions` plus `MentionsVessel`
  * themselves.
  */
-export const Mentions = defineComponent({
+const MentionsFacade = defineComponent({
   name: "Mentions",
   props: {
     items: { type: Array as PropType<MentionEntry[]>, default: () => [] },
@@ -129,11 +133,13 @@ export const Mentions = defineComponent({
   emits: ["update:modelValue"],
   setup(props, ctx: SetupContext) {
     // Mirrors the controlled value when the caller does not pass one.
+    const hostId = useElementId("mentions", ctx.attrs);
     const internal = ref("");
-    // The field part is a component; its root element rides `$el`.
-    const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
+    // A ref on the field component is not the textarea itself, so capture a
+    // layout-neutral wrapper and resolve the real element from it.
+    const fieldWrapperRef = ref<HTMLElement | null>(null);
     const el = (): HTMLTextAreaElement | null =>
-      (fieldRef.value?.$el as HTMLTextAreaElement | undefined) ?? null;
+      fieldWrapperRef.value?.querySelector("textarea") ?? null;
 
     const value = () => props.modelValue ?? internal.value;
 
@@ -158,23 +164,32 @@ export const Mentions = defineComponent({
         "div",
         { ...ctx.attrs, "data-scope": "mentions", "data-part": "root", "data-size": props.size },
         [
-          h(Field.Textarea as never, {
-            ref: fieldRef as Ref,
-            autoresize: props.autoresize,
-            invalid: props.invalid,
-            rows: 3,
-            placeholder: props.placeholder,
-            modelValue: value(),
-            "onUpdate:modelValue": (next: string) => {
-              internal.value = next;
-              ctx.emit("update:modelValue", next);
+          h(
+            "div",
+            {
+              ref: fieldWrapperRef as Ref,
+              style: { display: "contents", width: "100%" },
             },
-            onInput,
-            onKeydown: mentions.onKeydown,
-            "data-scope": "mentions",
-            "data-part": "textarea",
-          }),
+            [
+              h(Field.Textarea as never, {
+                autoresize: props.autoresize,
+                invalid: props.invalid,
+                rows: 3,
+                placeholder: props.placeholder,
+                modelValue: value(),
+                "onUpdate:modelValue": (next: string) => {
+                  internal.value = next;
+                  ctx.emit("update:modelValue", next);
+                },
+                onInput,
+                onKeydown: mentions.onKeydown,
+                "data-scope": "mentions",
+                "data-part": "textarea",
+              }),
+            ],
+          ),
           h(MentionsVessel, {
+            id: `${hostId.value}:vessel`,
             open: mentions.open.value,
             matches: mentions.matches.value,
             active: mentions.active.value,
@@ -190,3 +205,6 @@ export const Mentions = defineComponent({
       );
   },
 });
+
+export const Mentions = defineFamily(MentionsFacade, Popover) as typeof MentionsFacade &
+  typeof Popover;

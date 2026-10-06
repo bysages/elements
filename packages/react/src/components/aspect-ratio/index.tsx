@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A frame that keeps its shape: the box holds the given ratio whatever
  * the width it is dealt, and the child fills the frame it is given. */
 export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
@@ -8,7 +10,7 @@ export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
   ratio?: string;
 }
 
-export function AspectRatio({ ratio = "1 / 1", ...rest }: AspectRatioProps) {
+function AspectRatioImpl({ ratio = "1 / 1", ...rest }: AspectRatioProps) {
   injectComponentStyle("aspect-ratio");
   return (
     <div
@@ -19,3 +21,5 @@ export function AspectRatio({ ratio = "1 / 1", ...rest }: AspectRatioProps) {
     />
   );
 }
+
+export const AspectRatio = withSelfRoot(AspectRatioImpl);

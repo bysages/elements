@@ -46,8 +46,24 @@ function alignItem(align: string) {
   );
 }
 
-/** The alignment bench: one seal pressed at rest, the others waiting. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <ToggleGroup
+      label="Text alignment"
+      defaultValue={["left"]}
+      items={[
+        { value: "left", label: "Align left", icon: "text-align-start" },
+        { value: "center", label: "Align center", icon: "text-align-center" },
+        { value: "right", label: "Align right", icon: "text-align-end" },
+        { value: "justify", label: "Align justified", icon: "text-align-justify" },
+      ]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     orientation: "horizontal",
     label: "Text alignment",

@@ -7,7 +7,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Data/Timer" };
 export default meta;
 
-function glyph(d: string) {
+function icon(d: string) {
   return h(
     "svg",
     {
@@ -23,9 +23,14 @@ function glyph(d: string) {
   );
 }
 
-const play = () => glyph("M7 4.5v15l12-7.5z");
-const pause = () => glyph("M8 5v14M16 5v14");
-const reset = () => glyph("M3 12a9 9 0 1 0 3-6.7M3 4v5h5");
+const play = () => icon("M7 4.5v15l12-7.5z");
+const pause = () => icon("M8 5v14M16 5v14");
+const reset = () => icon("M3 12a9 9 0 1 0 3-6.7M3 4v5h5");
+
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => h(Timer, { startMs: 18 * 60 * 1000 + 42 * 1000, label: "Session timer" }),
+};
 
 /** The shared face: digit area with labelled units, then start, pause,
  * and reset. */
@@ -61,7 +66,7 @@ function face(rootProps: any, units: Array<{ type: string; label: string }>, sep
 }
 
 /** A counting-up clock: monospaced digits riding the machine's tick. */
-export const Basic = {
+export const Anatomy = {
   render: () =>
     face({ startMs: 18 * 60 * 1000 + 42 * 1000 }, [
       { type: "minutes", label: "min" },

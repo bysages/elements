@@ -5,13 +5,16 @@
  * createListCollection. */
 import { Listbox as ArkListbox } from "@ark-ui/svelte/listbox";
 
+import { defineFamily } from "../../internal/family";
+import ListboxFacade from "./Listbox.svelte";
 import ListboxRoot from "./ListboxRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Listbox: Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRoot } = {
+export const Listbox: typeof ListboxFacade &
+  Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRoot } = defineFamily(ListboxFacade, {
   ...ArkListbox,
   Root: ListboxRoot,
-};
+});
 
 export type { ListboxRootProps } from "./props";

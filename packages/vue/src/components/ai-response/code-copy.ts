@@ -1,11 +1,9 @@
-import { check, copy } from "@bysages/icons";
-
-import { glyphHtml } from "../../internal/glyph";
+import { iconHtml } from "../../internal/icon";
 
 /** The two glyphs a copy affordance needs: the stamp and its
  * confirmation, drawn from the house icon set. */
-const COPY_CODE_ICON = glyphHtml(copy, { width: "14", height: "14" });
-const COPIED_CODE_ICON = glyphHtml(check, { width: "14", height: "14" });
+const COPY_CODE_ICON = iconHtml("copy", { width: "14", height: "14" });
+const COPIED_CODE_ICON = iconHtml("check", { width: "14", height: "14" });
 
 /** How long the confirmation stays before the stamp returns. */
 const REVERT_MS = 1500;

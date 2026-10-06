@@ -8,10 +8,67 @@ const meta: Meta = { title: "Components/Navigation/Tabs" };
 export default meta;
 
 const PANELS = [
-  { value: "account", label: "Account", body: "Manage your profile and contact details." },
-  { value: "security", label: "Security", body: "Change your password and two-step settings." },
-  { value: "billing", label: "Billing", body: "Review invoices and payment methods." },
+  {
+    value: "account",
+    label: "Account",
+    body: "Manage your profile and contact details.",
+  },
+  {
+    value: "security",
+    label: "Security",
+    body: "Change your password and two-step settings.",
+  },
+  {
+    value: "billing",
+    label: "Billing",
+    body: "Review invoices and payment methods.",
+  },
 ];
+
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
+export const Basic = {
+  render: () => {
+    const items = [
+      {
+        value: "ink",
+        label: "Ink",
+        content: "Content is ink — the marks that carry the words.",
+      },
+      {
+        value: "paper",
+        label: "Paper",
+        content: "The ground is warm paper, never pure white.",
+      },
+      {
+        value: "light",
+        label: "Light",
+        content: "Hierarchy is light — shadow answers to the source.",
+      },
+    ];
+    return h(Tabs, { items, defaultValue: "ink" });
+  },
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const items = [
+      { value: "ink", label: "Ink", content: "Content is ink." },
+      { value: "paper", label: "Paper", content: "The ground is warm paper." },
+    ];
+    return h(Tabs.Root, { defaultValue: "ink" }, () => [
+      h(Tabs.List, () => [
+        ...items.map((item) =>
+          h(Tabs.Trigger, { key: item.value, value: item.value }, () => item.label),
+        ),
+        h(Tabs.Indicator),
+      ]),
+      ...items.map((item) =>
+        h(Tabs.Content, { key: item.value, value: item.value }, () => item.content),
+      ),
+    ]);
+  },
+};
 
 /** The shared ledger: triggers on a rail, panels beneath, one ink
  * indicator gliding between rungs. */
@@ -32,27 +89,6 @@ function ledger(rootProps: any, opts: { indicator?: boolean; disabled?: string }
     ...PANELS.map((panel) => h(Tabs.Content, { value: panel.value }, () => panel.body)),
   ]);
 }
-
-/** Three ledgers, one showing: the current tab holds the ink and the
- * panel. */
-export const Basic = {
-  args: {
-    orientation: "horizontal",
-    activationMode: "auto",
-  },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        ledger(
-          {
-            defaultValue: "account",
-            orientation: args.orientation,
-            activationMode: args.activationMode,
-          } as any,
-          { indicator: true },
-        ),
-    ),
-};
 
 /** The open tab answers to the caller — the rail only mirrors. */
 export const Controlled = {

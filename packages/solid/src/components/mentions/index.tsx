@@ -4,6 +4,9 @@ import { For, createEffect, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily, withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+import { Popover } from "../popover";
 import { Textarea } from "../textarea";
 import { useMentions } from "./use-mentions";
 
@@ -34,10 +37,13 @@ export interface MentionsVesselProps {
  * its own anatomy (the textarea rides where the host puts it) and the
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
-export function MentionsVessel(props: MentionsVesselProps) {
+export const MentionsVessel = withSelfRoot(function MentionsVessel(props: MentionsVesselProps) {
   injectComponentStyle("mentions");
+  const id = useElementId("mentions-vessel");
+
   return (
     <ArkPopover.Root
+      id={id()}
       open={props.open ?? false}
       onOpenChange={(details) => props.onOpenChange?.(details.open)}
       positioning={{
@@ -78,7 +84,7 @@ export function MentionsVessel(props: MentionsVesselProps) {
       </Portal>
     </ArkPopover.Root>
   );
-}
+});
 
 export interface MentionsProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onInput"> {
   /** The candidates offered once the trigger character is typed. */
@@ -115,7 +121,7 @@ export interface MentionsProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
  * own field anatomy (the AI prompt input) skip this shell and wire
  * `useMentions` plus `MentionsVessel` themselves.
  */
-export function Mentions(props: MentionsProps) {
+function MentionsImpl(props: MentionsProps) {
   const [own, rest] = splitProps(props, [
     "items",
     "value",
@@ -192,3 +198,5 @@ export function Mentions(props: MentionsProps) {
     </div>
   );
 }
+
+export const Mentions = defineFamily(MentionsImpl, Popover) as typeof MentionsImpl & typeof Popover;

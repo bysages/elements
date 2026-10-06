@@ -11,7 +11,11 @@ export default meta;
 const star = () =>
   h(
     "svg",
-    { viewBox: "0 0 24 24", width: 16, height: 16, fill: "currentColor", "aria-hidden": "true" },
+    {
+      viewBox: "0 0 24 24",
+      fill: "currentColor",
+      "aria-hidden": "true",
+    },
     [
       h("path", {
         d: "M12 2.5l2.9 6.1 6.7.9-4.9 4.6 1.2 6.6-5.9-3.2-5.9 3.2 1.2-6.6L2.4 9.5l6.7-.9z",
@@ -36,17 +40,40 @@ function scale(rootProps: any, label: string) {
   ]);
 }
 
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    label: "Rating",
-    count: 5,
-    disabled: false,
-  },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        scale({ defaultValue: 3, count: args.count, disabled: args.disabled }, args.label),
-    ),
+  render: () => h(RatingGroup, { defaultValue: 3, count: 5, label: "Rate this entry" }),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h(RatingGroup.Root, { count: 5, defaultValue: 3 }, () => [
+      h(RatingGroup.Label, () => "Rate this entry"),
+      h(RatingGroup.Control, () => [
+        h(RatingGroup.Context, null, {
+          default: ({ items }: { items: number[] }) =>
+            items.map((item) =>
+              h(RatingGroup.Item, { key: item, index: item }, () =>
+                h(
+                  "svg",
+                  {
+                    viewBox: "0 0 24 24",
+                    fill: "currentColor",
+                    "aria-hidden": true,
+                  },
+                  [
+                    h("path", {
+                      d: "M12 2.5l2.9 6.1 6.7.9-4.9 4.6 1.2 6.6-5.9-3.2-5.9 3.2 1.2-6.6L2.4 9.5l6.7-.9z",
+                    }),
+                  ],
+                ),
+              ),
+            ),
+        }),
+        h(RatingGroup.HiddenInput),
+      ]),
+    ]),
 };
 
 /** Half measures count: the star under the pointer fills by its left

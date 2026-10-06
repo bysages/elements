@@ -1,22 +1,21 @@
 import { injectComponentStyle } from "@bysages/core";
-import { circle_check, circle_x, info, triangle_alert } from "@bysages/icons";
 import type { ComputedRef, InjectionKey, SetupContext } from "vue";
 import { computed, defineComponent, h, inject, provide } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 
 // The status rides the context as a computed so a live status prop
 // re-reads on every icon render instead of freezing at mount.
 const STATUS: InjectionKey<ComputedRef<string>> = Symbol("alert-status");
 
-function glyph(status: string) {
-  const byStatus: Record<string, typeof info> = {
-    info,
-    success: circle_check,
-    warning: triangle_alert,
-    danger: circle_x,
+function icon(status: string) {
+  const byStatus: Record<string, string> = {
+    info: "info",
+    success: "circle-check",
+    warning: "triangle-alert",
+    danger: "circle-x",
   };
-  return glyphNode(byStatus[status] ?? info, { width: 16, height: 16 });
+  return iconNode(byStatus[status] ?? "info", { width: 16, height: 16 });
 }
 
 const Root = defineComponent({
@@ -53,7 +52,7 @@ const Icon = defineComponent({
       STATUS,
       computed(() => "ink"),
     );
-    return () => h("span", { "data-scope": "alert", "data-part": "icon" }, glyph(status.value));
+    return () => h("span", { "data-scope": "alert", "data-part": "icon" }, icon(status.value));
   },
 });
 

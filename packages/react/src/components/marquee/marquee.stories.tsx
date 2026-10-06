@@ -17,6 +17,17 @@ function seal() {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => (
+    <Marquee
+      items={["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indigo"]}
+      spacing="1.5rem"
+      label="Pigments"
+    />
+  ),
+};
+
 /** One loop of the stream: a seal-cut chip per pigment. */
 function stream() {
   return (
@@ -49,7 +60,7 @@ function btn(label: string, onClick: () => void) {
 
 /** The ribbon of seal-cut chips: content duplicated so the loop never
  * shows its seam. */
-export const Basic = {
+export const Anatomy = {
   args: {
     spacing: "1.5rem",
     speed: undefined,

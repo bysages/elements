@@ -1,9 +1,23 @@
 import type { Meta } from "@storybook/react-vite";
 
 import { AvatarGroup } from ".";
+import { Avatar } from "../avatar";
 
 const meta: Meta = { title: "Components/Elements/Avatar Group" };
 export default meta;
+
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <AvatarGroup>
+      {["Q", "C", "Z", "T"].map((label) => (
+        <Avatar key={label}>
+          <Avatar.Fallback>{label}</Avatar.Fallback>
+        </Avatar>
+      ))}
+    </AvatarGroup>
+  ),
+};
 
 /** A demo avatar: sized in `em`, so the group's font-size sets the face. */
 function face(label: string, background: string) {
@@ -32,14 +46,14 @@ function face(label: string, background: string) {
 
 /** Avatars overlap one row, each rimmed in the ground so the pile stays
  * legible. */
-export const Basic = {
+export const Anatomy = {
   render: () => (
-    <AvatarGroup>
+    <AvatarGroup.Root>
       {face("Q", "var(--bs-color-info)")}
       {face("C", "var(--bs-color-success)")}
       {face("Z", "var(--bs-color-danger)")}
       {face("T", "var(--bs-color-warning)")}
-    </AvatarGroup>
+    </AvatarGroup.Root>
   ),
 };
 

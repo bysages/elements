@@ -7,6 +7,15 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Actions/Swap" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => h(Swap),
+};
+
+export const Anatomy = {
+  render: () => h(Swap.Root, () => h(Swap.Indicator, { type: "off" }, () => "Off")),
+};
+
 const ICON_ATTRS = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -17,11 +26,11 @@ const ICON_ATTRS = {
   "aria-hidden": true,
 } as const;
 
-function glyph(...paths: string[]) {
+function icon(...paths: string[]) {
   return h("svg", ICON_ATTRS, () => paths.map((d, i) => h("path", { key: i, d })));
 }
 
-const GLYPHS = {
+const ICONS = {
   check: "M4 12.5l5 5L20 6.5",
   x: "M6 6l12 12M18 6L6 18",
   play: "M8 5.5v13l11-6.5z",
@@ -61,8 +70,8 @@ function swapToggle(label: string, rootVars: Record<string, string>, indicators:
 export const Fade = {
   render: () =>
     swapToggle("Toggle check", {}, () => [
-      h(Swap.Indicator, { type: "on" }, () => glyph(GLYPHS.check)),
-      h(Swap.Indicator, { type: "off" }, () => glyph(GLYPHS.x)),
+      h(Swap.Indicator, { type: "on" }, () => icon(ICONS.check)),
+      h(Swap.Indicator, { type: "off" }, () => icon(ICONS.x)),
     ]),
 };
 
@@ -71,10 +80,14 @@ export const Flip = {
   render: () =>
     swapToggle(
       "Toggle playback",
-      { perspective: "12rem", "--bs-swap-in": "rotateY(0deg)", "--bs-swap-out": "rotateY(180deg)" },
+      {
+        perspective: "12rem",
+        "--bs-swap-in": "rotateY(0deg)",
+        "--bs-swap-out": "rotateY(180deg)",
+      },
       () => [
-        h(Swap.Indicator, { type: "on" }, () => glyph(GLYPHS.play)),
-        h(Swap.Indicator, { type: "off" }, () => glyph(GLYPHS.pause)),
+        h(Swap.Indicator, { type: "on" }, () => icon(ICONS.play)),
+        h(Swap.Indicator, { type: "off" }, () => icon(ICONS.pause)),
       ],
     ),
 };
@@ -84,10 +97,13 @@ export const Rotate = {
   render: () =>
     swapToggle(
       "Toggle theme",
-      { "--bs-swap-in": "rotate(0deg) scale(1)", "--bs-swap-out": "rotate(180deg) scale(0)" },
+      {
+        "--bs-swap-in": "rotate(0deg) scale(1)",
+        "--bs-swap-out": "rotate(180deg) scale(0)",
+      },
       () => [
-        h(Swap.Indicator, { type: "on" }, () => glyph(GLYPHS.sun)),
-        h(Swap.Indicator, { type: "off" }, () => glyph(GLYPHS.moon)),
+        h(Swap.Indicator, { type: "on" }, () => icon(ICONS.sun)),
+        h(Swap.Indicator, { type: "off" }, () => icon(ICONS.moon)),
       ],
     ),
 };
@@ -96,7 +112,7 @@ export const Rotate = {
 export const Scale = {
   render: () =>
     swapToggle("Toggle sound", { "--bs-swap-in": "scale(1)", "--bs-swap-out": "scale(0)" }, () => [
-      h(Swap.Indicator, { type: "on" }, () => glyph(GLYPHS.sound)),
-      h(Swap.Indicator, { type: "off" }, () => glyph(GLYPHS.mute)),
+      h(Swap.Indicator, { type: "on" }, () => icon(ICONS.sound)),
+      h(Swap.Indicator, { type: "off" }, () => icon(ICONS.mute)),
     ]),
 };

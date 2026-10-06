@@ -126,7 +126,6 @@
   "dependencies": {
     "@ark-ui/react": "5.39.2",
     "@bysages/core": "workspace:*",
-    "@bysages/icons": "workspace:*",
     "@tanstack/markdown": "1.0.0",
     "@tanstack/react-form": "1.33.5",
     "@tanstack/react-table": "9.2.4",

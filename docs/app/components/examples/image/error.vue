@@ -7,14 +7,14 @@ import { Image } from "@bysages/vue";
        have them, to the quiet glyph when they do not. -->
   <div class="grid grid-cols-2 gap-4 w-full">
     <Image
-      src="https://missing.invalid/absent.png"
+      src="data:image/png;base64,AAAAAAAAAAA"
       alt="A missing photograph"
       class="w-full aspect-[16/9]"
     >
       <span class="text-sm text-tertiary"> The negative could not be developed. </span>
     </Image>
     <Image
-      src="https://missing.invalid/absent.png"
+      src="data:image/png;base64,AAAAAAAAAAA"
       alt="A missing photograph"
       class="w-full aspect-[16/9]"
     />

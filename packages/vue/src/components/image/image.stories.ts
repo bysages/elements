@@ -73,7 +73,7 @@ export const Error: Story = {
             Image,
             {
               key: "slot",
-              src: "https://localhost/missing.png",
+              src: "data:image/png;base64,AAAAAAAAAAA",
               alt: "A missing photograph",
               style: { inlineSize: "100%", aspectRatio: "16 / 9" },
             },
@@ -91,7 +91,7 @@ export const Error: Story = {
           ),
           h(Image, {
             key: "glyph",
-            src: "https://localhost/missing.png",
+            src: "data:image/png;base64,AAAAAAAAAAA",
             alt: "A missing photograph",
             style: { inlineSize: "100%", aspectRatio: "16 / 9" },
           }),

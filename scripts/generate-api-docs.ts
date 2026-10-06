@@ -4,8 +4,9 @@
  *
  * Three facts feed each page, in order of authority:
  *  - the wrapper's own header comment (our dressing of the component)
- *  - the prop declarations (Ark's dist types for wrapped families, the
- *    local defineComponent for the native primitives)
+ *  - the prop declarations (the defineFamily facade, then Ark's dist
+ *    types for wrapped families; the local defineComponent for native
+ *    primitives)
  *  - the anatomy parts (Zag's machine contract) matched against the parts
  *    our core stylesheet actually covers */
 import { readFileSync, existsSync, readdirSync } from "node:fs";
@@ -202,6 +203,43 @@ function dressedProps(file: SourceFile): Record<string, PropDoc[]> {
   return out;
 }
 
+/** A variable initializer may be asserted to satisfy wrapper types; the
+ * component call is still the API source. */
+function initializerCall(node: Node | undefined) {
+  if (!node) return undefined;
+  // The direct call is the declaration's own factory; nested calls belong
+  // to the component setup and must never identify the declaration.
+  return Node.isCallExpression(node)
+    ? node
+    : node.getDescendantsOfKind(SyntaxKind.CallExpression)[0];
+}
+
+/** The family facade attached through defineFamily: its runtime component
+ * carries high-level props that no Ark part declares. */
+function familyFacade(file: SourceFile):
+  | {
+      name: string;
+      component: ObjectLiteralExpression;
+      componentStatement: Node;
+    }
+  | undefined {
+  for (const decl of file.getVariableDeclarations()) {
+    // Exported facades may carry a type assertion around defineFamily.
+    const call = initializerCall(decl.getInitializer());
+    if (call?.getExpression().getText() !== "defineFamily") continue;
+    const ref = call.getArguments()[0]?.asKind(SyntaxKind.Identifier);
+    if (!ref) continue;
+    const componentDecl = file.getVariableDeclaration(ref.getText());
+    if (!componentDecl) continue;
+    const componentCall = componentDecl.getInitializer()?.asKind(SyntaxKind.CallExpression);
+    if (componentCall?.getExpression().getText() !== "defineComponent") continue;
+    const component = componentCall.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
+    if (!component) continue;
+    const componentStatement = componentDecl.getVariableStatement() ?? componentDecl;
+    return { name: decl.getName(), component, componentStatement };
+  }
+}
+
 /** The family's own face reads first; the dist props fill in the rest,
  * minus any the wrapper re-declares (its default may differ). */
 function mergeProps(own: PropDoc[], ark: PropDoc[]): PropDoc[] {
@@ -315,15 +353,24 @@ function exportedStatement(statement: Node): boolean {
   return modifiers.some((m) => m.getKind() === SyntaxKind.ExportKeyword);
 }
 
+function isFamilyFacadeStatement(statement: Node): boolean {
+  return (
+    Node.isVariableStatement(statement) &&
+    statement
+      .getDeclarations()
+      .some(
+        (d) => initializerCall(d.getInitializer())?.getExpression().getText() === "defineFamily",
+      )
+  );
+}
+
 function isComponentStatement(statement: Node): boolean {
   return (
     Node.isVariableStatement(statement) &&
     statement
       .getDeclarations()
       .some(
-        (d) =>
-          d.getInitializer()?.asKind(SyntaxKind.CallExpression)?.getExpression().getText() ===
-          "defineComponent",
+        (d) => initializerCall(d.getInitializer())?.getExpression().getText() === "defineComponent",
       )
   );
 }
@@ -337,7 +384,7 @@ function wrapperHeaderComment(file: SourceFile): string {
   // never dresses anything.
   for (const statement of file.getStatements()) {
     if (!exportedStatement(statement)) continue;
-    if (isComponentStatement(statement)) continue;
+    if (isComponentStatement(statement) || isFamilyFacadeStatement(statement)) continue;
     const text = commentText(statement);
     if (
       Node.isVariableStatement(statement) &&
@@ -426,15 +473,37 @@ export function documentFamily(dir: string): FamilyDoc | null {
       .map((f) => f.match(new RegExp(`^${family}-([\\w-]+)\\.vue\\.d\\.ts$`))?.[1])
       .filter((p): p is string => !!p && p !== "root-provider" && p !== "context");
     const dressed = dressedProps(indexFile);
-    components = Object.fromEntries(
-      parts.map((part) => {
-        const key = pascal(part);
-        const own = dressed[key] ?? [];
-        const props = mergeProps(own, arkProps(family, part));
-        const emits = arkEmits(family, part);
-        return [key, { ...(props.length ? { props } : {}), ...(emits.length ? { emits } : {}) }];
-      }),
-    );
+    const facade = familyFacade(indexFile);
+    // The facade is the family's high-level face; Root is the wrapper the
+    // other parts mount under, so both precede Ark's own parts.
+    const orderedParts = facade ? ["root", ...parts.filter((part) => part !== "root")] : parts;
+    components = {
+      ...(facade
+        ? {
+            [facade.name]: {
+              description: commentText(facade.componentStatement),
+              props: nativeProps(facade.component),
+              emits: nativeEmits(facade.component),
+              slots: nativeSlots(facade.component),
+            },
+          }
+        : {}),
+      ...Object.fromEntries(
+        orderedParts.map((part) => {
+          const key = pascal(part);
+          const own = dressed[key] ?? [];
+          const props = mergeProps(own, arkProps(family, part));
+          const emits = arkEmits(family, part);
+          return [
+            key,
+            {
+              ...(props.length ? { props } : {}),
+              ...(emits.length ? { emits } : {}),
+            },
+          ];
+        }),
+      ),
+    };
     anatomy = zagParts(family);
   } else {
     source = "native";

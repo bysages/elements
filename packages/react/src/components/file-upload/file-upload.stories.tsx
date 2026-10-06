@@ -7,6 +7,13 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Forms/File Upload" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <FileUpload label="Attachments" placeholder="Drag files here or choose" maxFiles={5} />
+  ),
+};
+
 const fileGlyph = (
   <svg
     width={16}
@@ -86,7 +93,7 @@ function slips() {
 
 /** Drop files onto the dashed paper or pick them with the trigger; each
  * accepted file lands as a loose slip with a delete glyph. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Attachments",
     dropzoneText: "Drag files here or",

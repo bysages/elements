@@ -1,11 +1,12 @@
 import type { CellData, RowData, TableFeatures } from "@tanstack/svelte-table";
 
+import { withSelfRoot } from "../../internal/family";
 import DataTableComponent from "./DataTable.svelte";
 
 /** The control recipe as a one-stop data table: sorting, filtering,
  * pinning, merging, virtualization, and drag-to-reorder behind one
  * component. The API is TanStack's own — columns ride `ColumnDef`. */
-export const DataTable = DataTableComponent;
+export const DataTable = withSelfRoot(DataTableComponent);
 
 export type { DataTableProps } from "./props";
 export { FlexRender, createColumnHelper } from "@tanstack/svelte-table";

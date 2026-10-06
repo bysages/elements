@@ -3,18 +3,10 @@ import { Dialog } from "@bysages/vue";
 </script>
 
 <template>
-  <Dialog.Root>
-    <Dialog.Trigger>Delete item</Dialog.Trigger>
-    <Teleport to="body">
-      <Dialog.Backdrop />
-      <Dialog.Positioner>
-        <Dialog.Content>
-          <Dialog.Title>Delete item</Dialog.Title>
-          <Dialog.Description>This action cannot be undone.</Dialog.Description>
-          <p>Removed items stay recoverable for 30 days.</p>
-          <Dialog.CloseTrigger>×</Dialog.CloseTrigger>
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </Teleport>
-  </Dialog.Root>
+  <Dialog
+    trigger="Delete item"
+    label="Delete item"
+    description="This action cannot be undone."
+    content="Removed items stay recoverable for 30 days."
+  />
 </template>

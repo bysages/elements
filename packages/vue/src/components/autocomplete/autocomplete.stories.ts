@@ -30,7 +30,7 @@ export const Basic: Story = {
     withState(() => {
       const text = ref("");
       return () => [
-        h(AutoComplete, {
+        h(AutoComplete as never, {
           modelValue: text.value,
           "onUpdate:modelValue": (v: string) => (text.value = v),
           items: PROVINCES,
@@ -53,7 +53,7 @@ export const PrefixFilter: Story = {
     withState(() => {
       const text = ref("");
       return () =>
-        h(AutoComplete, {
+        h(AutoComplete as never, {
           modelValue: text.value,
           "onUpdate:modelValue": (v: string) => (text.value = v),
           items: PROVINCES,

@@ -5,11 +5,16 @@
  * Context. */
 import { TagsInput as ArkTagsInput } from "@ark-ui/svelte/tags-input";
 
+import { defineFamily } from "../../internal/family";
+import TagsInputFacade from "./TagsInput.svelte";
 import TagsInputRoot from "./TagsInputRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const TagsInput: Omit<typeof ArkTagsInput, "Root"> & { Root: typeof TagsInputRoot } = {
+export const TagsInput: typeof TagsInputFacade &
+  Omit<typeof ArkTagsInput, "Root"> & {
+    Root: typeof TagsInputRoot;
+  } = defineFamily(TagsInputFacade, {
   ...ArkTagsInput,
   Root: TagsInputRoot,
-};
+});

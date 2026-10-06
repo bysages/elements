@@ -4,11 +4,16 @@
  * Thumb, MarkerGroup, Marker, DraggingIndicator, HiddenInput. */
 import { Slider as ArkSlider } from "@ark-ui/svelte/slider";
 
+import { defineFamily } from "../../internal/family";
+import SliderFacade from "./Slider.svelte";
 import SliderRoot from "./SliderRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Slider: Omit<typeof ArkSlider, "Root"> & { Root: typeof SliderRoot } = {
+export const Slider: typeof SliderFacade &
+  Omit<typeof ArkSlider, "Root"> & {
+    Root: typeof SliderRoot;
+  } = defineFamily(SliderFacade, {
   ...ArkSlider,
   Root: SliderRoot,
-};
+});

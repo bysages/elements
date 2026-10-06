@@ -2,19 +2,23 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A waiting sheet of unset paper. Size it from the outside; the breath
  * is the component's own. */
-export const Skeleton = defineComponent({
-  name: "Skeleton",
-  props: {},
-  setup(_, ctx: SetupContext) {
-    injectComponentStyle("skeleton");
+export const Skeleton = withSelfRoot(
+  defineComponent({
+    name: "Skeleton",
+    props: {},
+    setup(_, ctx: SetupContext) {
+      injectComponentStyle("skeleton");
 
-    return () =>
-      h("div", {
-        ...ctx.attrs,
-        "data-scope": "skeleton",
-        "data-part": "root",
-      });
-  },
-});
+      return () =>
+        h("div", {
+          ...ctx.attrs,
+          "data-scope": "skeleton",
+          "data-part": "root",
+        });
+    },
+  }),
+);

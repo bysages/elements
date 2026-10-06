@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
@@ -61,10 +62,10 @@ function AiConversation({ children, ...rest }: HTMLAttributes<HTMLElement>) {
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
-export const AiContent = part("Content", "div");
+export const AiContent = withSelfRoot(part("Content", "div"));
 
 /** The quiet row under a message — copy, retry, feedback. */
-export const AiActions = part("Actions", "div");
+export const AiActions = withSelfRoot(part("Actions", "div"));
 
 /** The while-it-works whisper for the in-flight turns. */
 function AiLoader({ children, ...rest }: HTMLAttributes<HTMLElement>) {
@@ -86,6 +87,7 @@ function AiLoader({ children, ...rest }: HTMLAttributes<HTMLElement>) {
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.Message`, and the rest, exactly as before the split. */
 export const Ai = Object.assign(AiConversation, {
+  Root: AiConversation,
   Conversation: AiConversation,
   MessageContent: AiContent,
   Actions: AiActions,

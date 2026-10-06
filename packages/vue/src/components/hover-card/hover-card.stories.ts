@@ -60,12 +60,30 @@ function mention(handle = profile.handle) {
  * where the eye already is. */
 export const Basic = {
   args: {
-    triggerText: profile.handle,
+    trigger: profile.handle,
+    label: profile.name,
+    description: profile.handle,
+    content: profile.bio,
   },
   render: (args: any) =>
-    withState(() => () => h(HoverCard.Root, () => [mention(args.triggerText), card()])),
+    withState(
+      () => () =>
+        h(HoverCard, args, {
+          default: () => [
+            h("div", { style: { display: "flex", gap: "1rem" } }, [
+              stat(profile.following, "Following"),
+              stat(profile.followers, "Followers"),
+            ]),
+          ],
+        }),
+    ),
 };
 
+/** The anatomy is the composition path: the same card, assembled from
+ * Ark's parts when the preview is fully bespoke. */
+export const Anatomy = {
+  render: () => withState(() => () => h(HoverCard.Root, () => [mention(), card()])),
+};
 /** The card prefers the right: it rests beside the mention with a
  * custom gutter. */
 export const Positioning = {

@@ -2,6 +2,8 @@ import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The four density tiers the token layer's `[data-density]` selectors
  * name — whitespace and control heights compress, readability never
  * does. */
@@ -55,7 +57,7 @@ export interface ConfigProviderProps extends HTMLAttributes<HTMLDivElement> {
  * descendants through `useConfig`, so interactive behavior (formatting,
  * messages) and visual theming stay one decision.
  */
-export function ConfigProvider({
+function ConfigProviderImpl({
   density,
   scene,
   accent,
@@ -85,3 +87,5 @@ export function ConfigProvider({
     </ConfigContextImpl.Provider>
   );
 }
+
+export const ConfigProvider = withSelfRoot(ConfigProviderImpl);

@@ -2,6 +2,8 @@ import type { ComponentMessagesOverride, ThemeScene } from "@bysages/core";
 import { createContext, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The four density tiers the token layer's `[data-density]` selectors
  * name — whitespace and control heights compress, readability never
  * does. */
@@ -56,7 +58,7 @@ export interface ConfigProviderProps extends JSX.HTMLAttributes<HTMLDivElement> 
  * descendants through `useConfig`, so interactive behavior (formatting,
  * messages) and visual theming stay one decision.
  */
-export function ConfigProvider(props: ConfigProviderProps) {
+export const ConfigProvider = withSelfRoot(function ConfigProvider(props: ConfigProviderProps) {
   const [own, rest] = splitProps(props, [
     "density",
     "scene",
@@ -94,4 +96,4 @@ export function ConfigProvider(props: ConfigProviderProps) {
       </div>
     </ConfigContextKey.Provider>
   );
-}
+});

@@ -5,7 +5,9 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import { useEffect, useState } from "react";
 
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { Dialog } from "../dialog";
 
 export interface CommandEntry {
   label: string;
@@ -26,6 +28,7 @@ export interface CommandEntry {
  * grafts onto the sheet's list.
  */
 export interface CommandProps {
+  id?: string;
   /** The commands on offer, grouped as they arrive. */
   items?: CommandEntry[];
   placeholder?: string;
@@ -49,7 +52,7 @@ export interface CommandProps {
   onInputValueChange?: (value: string) => void;
 }
 
-export function Command({
+function CommandImpl({
   items = [],
   placeholder,
   open,
@@ -59,9 +62,11 @@ export function Command({
   onSelect,
   onOpenChange,
   onInputValueChange,
+  id,
 }: CommandProps) {
   injectComponentStyle("command");
   injectComponentStyle("dialog");
+  const hostId = useElementId("command", { id });
   const messages = useComponentMessages();
   const resolvedPlaceholder = placeholder ?? messages.command.search;
   const resolvedEmptyText = emptyText ?? messages.command.noMatches;
@@ -135,7 +140,11 @@ export function Command({
   );
 
   return (
-    <ArkDialog.Root open={currentOpen} onOpenChange={(details) => setOpen(details.open)}>
+    <ArkDialog.Root
+      id={`${hostId}:dialog`}
+      open={currentOpen}
+      onOpenChange={(details) => setOpen(details.open)}
+    >
       <Portal>
         <ArkDialog.Backdrop />
         <ArkDialog.Positioner asChild>
@@ -146,6 +155,7 @@ export function Command({
                   // The machine types its collection as
                   // ListCollection<unknown>; ours is ListCollection<string>
                   // and the two don't relate by variance.
+                  id={`${hostId}:combobox`}
                   collection={collection as ListCollection<unknown>}
                   inputValue={inputValue}
                   open={listOpen}
@@ -207,4 +217,6 @@ export function Command({
     </ArkDialog.Root>
   );
 }
+
+export const Command = Object.assign(CommandImpl, Dialog) as typeof CommandImpl & typeof Dialog;
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.

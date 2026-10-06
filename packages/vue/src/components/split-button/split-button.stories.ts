@@ -20,7 +20,7 @@ export const Basic = {
     withState(() => {
       const status = ref("Nothing chosen yet.");
       return () => [
-        h(SplitButton, {
+        h(SplitButton as never, {
           label: "Save",
           items,
           onClick: () => (status.value = "Saved."),
@@ -46,7 +46,7 @@ export const Outline = {
     withState(() => {
       const status = ref("Nothing chosen yet.");
       return () => [
-        h(SplitButton, {
+        h(SplitButton as never, {
           label: "Export",
           variant: "outline",
           size: "sm",

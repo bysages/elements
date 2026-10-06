@@ -6,11 +6,16 @@
  */
 import { Tabs as ArkTabs } from "@ark-ui/svelte/tabs";
 
+import { defineFamily } from "../../internal/family";
+import TabsFacade from "./Tabs.svelte";
 import TabsRoot from "./TabsRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Tabs: Omit<typeof ArkTabs, "Root"> & { Root: typeof TabsRoot } = {
+export const Tabs: typeof TabsFacade &
+  Omit<typeof ArkTabs, "Root"> & {
+    Root: typeof TabsRoot;
+  } = defineFamily(TabsFacade, {
   ...ArkTabs,
   Root: TabsRoot,
-};
+});

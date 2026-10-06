@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** One verdict on the bar. */
 export interface ProgressSegment {
   value: number;
@@ -21,7 +23,7 @@ export interface ProgressGroupProps extends HTMLAttributes<HTMLDivElement> {
   showLegend?: boolean;
 }
 
-export function ProgressGroup({ segments, max, showLegend = true, ...rest }: ProgressGroupProps) {
+function ProgressGroupImpl({ segments, max, showLegend = true, ...rest }: ProgressGroupProps) {
   injectComponentStyle("progress-group");
   // A zero whole must not divide — the bar simply stays empty.
   const total = max ?? segments.reduce((sum, segment) => sum + segment.value, 0);
@@ -70,3 +72,5 @@ export function ProgressGroup({ segments, max, showLegend = true, ...rest }: Pro
     </div>
   );
 }
+
+export const ProgressGroup = withSelfRoot(ProgressGroupImpl);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Avatar, DataView } from "@bysages/vue";
+import { DataView } from "@bysages/vue";
 
 const records = Array.from({ length: 23 }, (_, index) => ({
   id: index + 1,
@@ -10,12 +10,7 @@ const records = Array.from({ length: 23 }, (_, index) => ({
 <template>
   <DataView :items="records" :page-size="6" class="w-full">
     <template #item="{ item }">
-      <div class="flex items-center gap-3 py-2 text-sm">
-        <Avatar.Root size="sm">
-          <Avatar.Fallback>{{ item.id }}</Avatar.Fallback>
-        </Avatar.Root>
-        <span>{{ item.title }}</span>
-      </div>
+      <span>{{ item.title }}</span>
     </template>
   </DataView>
 </template>

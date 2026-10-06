@@ -1,10 +1,9 @@
-import { check } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { stringsFor } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { Listbox } from "./index";
 
 /** A standing list of options to pick one from. */
@@ -14,7 +13,7 @@ export default defineEntry({
     description: "A standing list of options to pick one from.",
     component: ({ props }) => {
       const collection = stringsFor(props.items);
-      const mark = () => glyphNode(check);
+      const mark = () => iconNode("check");
       return h(Listbox.Root as never, { collection, selectionMode: "single" }, () => [
         h(Listbox.Label, () => props.label ?? undefined),
         h(Listbox.Content, () =>

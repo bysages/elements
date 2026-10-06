@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The same named steps of the space ramp the stack uses — one
  * vocabulary of distance across the layout primitives. */
 const gapVars: Record<string, string> = {
@@ -22,7 +24,7 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
   minChildWidth?: string;
 }
 
-export function Grid({ columns = 12, gap = "md", minChildWidth, ...rest }: GridProps) {
+function GridImpl({ columns = 12, gap = "md", minChildWidth, ...rest }: GridProps) {
   injectComponentStyle("grid");
   const style = {
     ...rest.style,
@@ -41,3 +43,5 @@ export function Grid({ columns = 12, gap = "md", minChildWidth, ...rest }: GridP
     />
   );
 }
+
+export const Grid = withSelfRoot(GridImpl);

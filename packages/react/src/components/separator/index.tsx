@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The paper-ink hairline as a component: a named rule between sections.
  * Decorative separators drop the separator role, since the page reads
  * fine without them. */
@@ -9,7 +11,7 @@ export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
   decorative?: boolean;
 }
 
-export function Separator({
+function SeparatorImpl({
   orientation = "horizontal",
   decorative = false,
   ...rest
@@ -26,3 +28,5 @@ export function Separator({
     />
   );
 }
+
+export const Separator = withSelfRoot(SeparatorImpl);

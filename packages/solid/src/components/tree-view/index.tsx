@@ -2,9 +2,12 @@ import type { TreeNode } from "@ark-ui/solid/tree-view";
 import { TreeView as ArkTreeView } from "@ark-ui/solid/tree-view";
 import type { TreeViewRootProps as ArkTreeViewRootProps } from "@ark-ui/solid/tree-view";
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_right } from "@bysages/icons";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
+
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 
 /** Ark's TreeView, dressed in the paper-and-ink system: quiet rows where
  * selection is pure light on the paper, one hairline plumb line per depth,
@@ -26,7 +29,8 @@ const ArkRoot = ArkTreeView.Root as <T extends TreeNode>(props: ArkTreeViewRootP
 
 function TreeViewRoot<T extends TreeNode>(props: ArkTreeViewRootProps<T> & TreeViewOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkRoot {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("tree-view", () => rest.id);
+  return <ArkRoot {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /** The node checkbox rides inside the branch control; the branch
@@ -40,28 +44,19 @@ function TreeViewNodeCheckbox(props: ComponentProps<typeof ArkTreeView.NodeCheck
 function TreeViewBranchIndicator(props: ComponentProps<typeof ArkTreeView.BranchIndicator>) {
   return (
     <ArkTreeView.BranchIndicator {...props}>
-      {props.children ?? (
-        <svg
-          viewBox={`0 0 ${chevron_right.width} ${chevron_right.height}`}
-          aria-hidden="true"
-          innerHTML={chevron_right.body}
-        />
-      )}
+      {props.children ?? iconNode("chevron-right")}
     </ArkTreeView.BranchIndicator>
   );
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const TreeView: Omit<typeof ArkTreeView, "Root" | "NodeCheckbox" | "BranchIndicator"> & {
-  Root: typeof TreeViewRoot;
-  NodeCheckbox: typeof TreeViewNodeCheckbox;
-  BranchIndicator: typeof TreeViewBranchIndicator;
-} = {
+export const TreeView: typeof TreeViewRoot &
+  Omit<typeof ArkTreeView, "Root"> & { Root: typeof TreeViewRoot } = defineFamily(TreeViewRoot, {
   ...ArkTreeView,
   Root: TreeViewRoot,
   NodeCheckbox: TreeViewNodeCheckbox,
   BranchIndicator: TreeViewBranchIndicator,
-};
+});
 
 injectComponentStyle("tree-view");

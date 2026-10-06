@@ -144,7 +144,23 @@ function BasicStory() {
   );
 }
 
+function BasicFacadeStory() {
+  const pg = usePage(BASIC_SECTIONS);
+  return (
+    <div style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+      <div style={{ width: "12rem", flex: "none" }}>
+        <Toc items={BASIC_SECTIONS} scrollEl={pg.scrollEl} />
+      </div>
+      {article(BASIC_SECTIONS, pg)}
+    </div>
+  );
+}
+
 export const Basic = {
+  render: () => <BasicFacadeStory />,
+};
+
+export const Anatomy = {
   render: () => <BasicStory />,
 };
 

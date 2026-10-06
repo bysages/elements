@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Avatars overlapping one row, each rimmed in the ground so the pile
  * stays legible. */
 export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
@@ -9,7 +11,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg";
 }
 
-export function AvatarGroup({ size, children, ...rest }: AvatarGroupProps) {
+function AvatarGroupImpl({ size, children, ...rest }: AvatarGroupProps) {
   injectComponentStyle("avatar-group");
   return (
     <div {...rest} data-scope="avatar-group" data-part="root" data-size={size}>
@@ -17,3 +19,5 @@ export function AvatarGroup({ size, children, ...rest }: AvatarGroupProps) {
     </div>
   );
 }
+
+export const AvatarGroup = withSelfRoot(AvatarGroupImpl);

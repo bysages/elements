@@ -3,6 +3,9 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Avatar, dressed in the paper-and-ink system: a circular seal on
  * inset paper that holds initials until the image loads over them.
  * `size` picks a control-height rung for the seal — the core styles
@@ -22,11 +25,18 @@ export interface AvatarProps extends ComponentProps<typeof ArkAvatar.Root> {
 
 function AvatarRoot(props: AvatarProps) {
   const [own, rest] = splitProps(props, ["size", "shape"]);
-  return <ArkAvatar.Root {...rest} data-size={own.size} data-shape={own.shape ?? "circle"} />;
+  const id = useElementId("avatar", () => rest.id);
+  return (
+    <ArkAvatar.Root {...rest} id={id()} data-size={own.size} data-shape={own.shape ?? "circle"} />
+  );
 }
 
-/* Ark's namespace is frozen — Object.assign copies the members so Root
+/* Ark's namespace is frozen — spread copies the members so Root
  * can be the sized wrapper while the rest stay Ark's own parts. */
-export const Avatar = Object.assign({}, ArkAvatar, { Root: AvatarRoot });
+export const Avatar: typeof AvatarRoot &
+  Omit<typeof ArkAvatar, "Root"> & { Root: typeof AvatarRoot } = defineFamily(AvatarRoot, {
+  ...ArkAvatar,
+  Root: AvatarRoot,
+});
 
 injectComponentStyle("avatar");

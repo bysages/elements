@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { chevron } from "../ai/chevron";
 import { Collapsible } from "../collapsible";
 
@@ -25,7 +26,7 @@ export interface ToolProps extends JSX.HTMLAttributes<HTMLDivElement> {
 /** A tool call: the shared collapsible as the vessel — the name it was
  * reached by and the state it reached in on the trigger, its input and
  * output folded inside. */
-export function Tool(props: ToolProps) {
+export const Tool = withSelfRoot(function Tool(props: ToolProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["name", "label", "status", "input", "output"]);
   return (
@@ -61,5 +62,5 @@ export function Tool(props: ToolProps) {
       </Collapsible.Content>
     </Collapsible.Root>
   );
-}
+});
 export { Tool as AiTool };

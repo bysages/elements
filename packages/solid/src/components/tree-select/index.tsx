@@ -7,8 +7,12 @@ import { For, Show, createMemo, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Input } from "../input";
+import { Popover } from "../popover";
 
 export interface TreeSelectNode {
   label: string;
@@ -18,19 +22,7 @@ export interface TreeSelectNode {
 }
 
 function chevron() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
+  return iconNode("chevron-right");
 }
 
 export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -52,10 +44,11 @@ export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * `value`. `filterable` puts a filter line at the top of the vessel;
  * matches keep their ancestors and the branches fan open.
  */
-export function TreeSelect(props: TreeSelectProps) {
+function TreeSelectImpl(props: TreeSelectProps) {
   const messages = useComponentMessages();
   injectComponentStyle("tree-select");
   injectComponentStyle("tree-view");
+  const id = useElementId("tree-select", () => rest.id);
   const [own, rest] = splitProps(props, [
     "value",
     "data",
@@ -164,6 +157,7 @@ export function TreeSelect(props: TreeSelectProps) {
   return (
     <ArkPopover.Root
       {...rest}
+      id={id()}
       open={open()}
       onOpenChange={(details) => {
         setOpen(details.open);
@@ -218,6 +212,7 @@ export function TreeSelect(props: TreeSelectProps) {
                 }
               >
                 <ArkTreeView.Root
+                  id={`${id()}-tree`}
                   collection={visibleCollection()}
                   selectionMode="single"
                   selectedValue={own.value ? [own.value] : []}
@@ -243,3 +238,6 @@ export function TreeSelect(props: TreeSelectProps) {
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.
+
+export const TreeSelect = defineFamily(TreeSelectImpl, Popover) as typeof TreeSelectImpl &
+  typeof Popover;

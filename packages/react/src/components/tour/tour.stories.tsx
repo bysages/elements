@@ -36,7 +36,7 @@ const steps: TourStepDetails[] = [
   },
 ];
 
-export function Basic() {
+export function Anatomy() {
   const tour = useTour({ steps });
   return (
     <Tour.Root tour={tour}>
@@ -671,3 +671,55 @@ export function WaitForElement() {
     </Tour.Root>
   );
 }
+
+/** The common walk uses the facade: root chrome and standard card arrive
+ * together, while the caller supplies the anchored page. */
+function BasicTour() {
+  const tour = useTour({
+    steps: [
+      {
+        id: "welcome",
+        type: "dialog",
+        title: "Welcome",
+        description: "A short walk through the room before the ink settles.",
+        actions: [{ label: "Start", action: "next" }],
+      },
+      {
+        id: "first",
+        type: "tooltip",
+        title: "The first seal",
+        description: "Primary actions sit quiet until asked — then they answer.",
+        target: () => document.querySelector<HTMLElement>("#tour-basic-1"),
+        actions: [
+          { label: "Back", action: "prev" },
+          { label: "Next", action: "next" },
+        ],
+      },
+      {
+        id: "second",
+        type: "tooltip",
+        title: "The second seal",
+        description: "Everything stays on the paper; nothing leaves the page.",
+        target: () => document.querySelector<HTMLElement>("#tour-basic-2"),
+        actions: [
+          { label: "Back", action: "prev" },
+          { label: "Finish", action: "dismiss" },
+        ],
+      },
+      {
+        id: "complete",
+        type: "dialog",
+        title: "You're all set",
+        description: "The walk is over; the room is yours.",
+        actions: [{ label: "Done", action: "dismiss" }],
+      },
+    ] as TourStepDetails[],
+  });
+
+  return <Tour tour={tour}>{targets(["tour-basic-1", "tour-basic-2"], "Anchor")}</Tour>;
+}
+
+/** The same tour path, mirrored as the standard basic story. */
+export const Basic = {
+  render: () => <BasicTour />,
+};

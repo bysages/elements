@@ -1,36 +1,21 @@
 <script setup lang="ts">
-import { check } from "@bysages/icons";
-import { Checkbox, Icon } from "@bysages/vue";
+import { Checkbox } from "@bysages/vue";
+
+const tasks = [
+  { label: "Ship the register", checked: true, disabled: false },
+  { label: "Outline the story", checked: false, disabled: false },
+  { label: "Archived", checked: false, disabled: true },
+];
 </script>
 
 <template>
   <div class="grid gap-3 w-full">
-    <Checkbox.Root default-checked>
-      <Checkbox.Control>
-        <Checkbox.Indicator>
-          <Icon :glyph="check" />
-        </Checkbox.Indicator>
-      </Checkbox.Control>
-      <Checkbox.Label>Ship the register</Checkbox.Label>
-      <Checkbox.HiddenInput />
-    </Checkbox.Root>
-    <Checkbox.Root>
-      <Checkbox.Control>
-        <Checkbox.Indicator>
-          <Icon :glyph="check" />
-        </Checkbox.Indicator>
-      </Checkbox.Control>
-      <Checkbox.Label>Outline the story</Checkbox.Label>
-      <Checkbox.HiddenInput />
-    </Checkbox.Root>
-    <Checkbox.Root disabled>
-      <Checkbox.Control>
-        <Checkbox.Indicator>
-          <Icon :glyph="check" />
-        </Checkbox.Indicator>
-      </Checkbox.Control>
-      <Checkbox.Label>Archived</Checkbox.Label>
-      <Checkbox.HiddenInput />
-    </Checkbox.Root>
+    <Checkbox
+      v-for="task in tasks"
+      :key="task.label"
+      :label="task.label"
+      :default-value="task.checked"
+      :disabled="task.disabled"
+    />
   </div>
 </template>

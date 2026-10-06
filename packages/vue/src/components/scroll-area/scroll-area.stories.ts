@@ -32,9 +32,19 @@ function area(
   ]);
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () =>
+    h(ScrollArea, { class: "h-30" }, () =>
+      ["Ink rests on paper.", "Light decides hierarchy.", "Whitespace is breath."].map(
+        (text, index) => h("p", { key: index }, text),
+      ),
+    ),
+};
+
 /** The hairline vessel with ink lanes: scrollbars stay hidden until hover
  * or scroll summons them. */
-export const Basic = {
+export const Anatomy = {
   args: {
     orientation: "vertical",
   },

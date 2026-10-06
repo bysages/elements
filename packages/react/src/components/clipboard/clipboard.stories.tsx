@@ -44,9 +44,16 @@ function trigger() {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => (
+    <Clipboard defaultValue="pnpm add @bysages/vue" label="Install command" placeholder="Command" />
+  ),
+};
+
 /** Copy the link from the hairline field; the trigger's ink turns bamboo
  * for as long as the machine holds the copied state. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Copy this link",
   },

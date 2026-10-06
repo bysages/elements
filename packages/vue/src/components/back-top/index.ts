@@ -1,9 +1,9 @@
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_up } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { defineComponent, h, onBeforeUnmount, onMounted, ref } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 
 export interface BackTopProps {
@@ -32,83 +32,85 @@ export interface BackTopProps {
  * paper, hairline and halo are its; this family owns only the floating
  * and the entrance.
  */
-export const BackTop = defineComponent({
-  name: "BackTop",
-  props: {
-    threshold: { type: Number, default: 400 },
-    label: { type: String, default: "Back to top" },
-    scrollEl: { type: Function, default: undefined },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("back-top");
+export const BackTop = withSelfRoot(
+  defineComponent({
+    name: "BackTop",
+    props: {
+      threshold: { type: Number, default: 400 },
+      label: { type: String, default: "Back to top" },
+      scrollEl: { type: Function, default: undefined },
+    },
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("back-top");
 
-    const visible = ref(false);
+      const visible = ref(false);
 
-    const scroller = () => props.scrollEl?.() ?? null;
+      const scroller = () => props.scrollEl?.() ?? null;
 
-    const onScroll = () => {
-      const el = scroller();
-      visible.value = el ? el.scrollTop > props.threshold : window.scrollY > props.threshold;
-    };
+      const onScroll = () => {
+        const el = scroller();
+        visible.value = el ? el.scrollTop > props.threshold : window.scrollY > props.threshold;
+      };
 
-    // A moored control has no stylesheet contract for smooth scrolling,
-    // so the return trip asks the media query itself.
-    const toTop = () => {
-      const el = scroller();
-      if (!el) {
-        window.scrollTo({ top: 0 });
-        return;
-      }
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-    };
+      // A moored control has no stylesheet contract for smooth scrolling,
+      // so the return trip asks the media query itself.
+      const toTop = () => {
+        const el = scroller();
+        if (!el) {
+          window.scrollTo({ top: 0 });
+          return;
+        }
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        el.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      };
 
-    onMounted(() => {
-      if (typeof window === "undefined") return;
-      const el = scroller();
-      onScroll();
-      if (el) el.addEventListener("scroll", onScroll, { passive: true });
-      else window.addEventListener("scroll", onScroll, { passive: true });
-    });
+      onMounted(() => {
+        if (typeof window === "undefined") return;
+        const el = scroller();
+        onScroll();
+        if (el) el.addEventListener("scroll", onScroll, { passive: true });
+        else window.addEventListener("scroll", onScroll, { passive: true });
+      });
 
-    onBeforeUnmount(() => {
-      if (typeof window === "undefined") return;
-      const el = scroller();
-      if (el) el.removeEventListener("scroll", onScroll);
-      else window.removeEventListener("scroll", onScroll);
-    });
+      onBeforeUnmount(() => {
+        if (typeof window === "undefined") return;
+        const el = scroller();
+        if (el) el.removeEventListener("scroll", onScroll);
+        else window.removeEventListener("scroll", onScroll);
+      });
 
-    return () =>
-      h(
-        "div",
-        {
-          "data-scope": "back-top",
-          "data-part": "root",
-          "data-state": visible.value ? "shown" : "hidden",
-          ...(scroller() ? { "data-container": "" } : {}),
-        },
-        [
-          h(
-            Button,
-            {
-              ...ctx.attrs,
-              variant: "outline",
-              square: true,
-              size: "lg",
-              type: "button",
-              "aria-label": props.label,
-              "aria-hidden": visible.value ? undefined : "true",
-              tabindex: visible.value ? 0 : -1,
-              onClick: toTop,
-            },
-            () => ctx.slots.default?.() ?? [chevronUp()],
-          ),
-        ],
-      );
-  },
-});
+      return () =>
+        h(
+          "div",
+          {
+            "data-scope": "back-top",
+            "data-part": "root",
+            "data-state": visible.value ? "shown" : "hidden",
+            ...(scroller() ? { "data-container": "" } : {}),
+          },
+          [
+            h(
+              Button,
+              {
+                ...ctx.attrs,
+                variant: "outline",
+                square: true,
+                size: "lg",
+                type: "button",
+                "aria-label": props.label,
+                "aria-hidden": visible.value ? undefined : "true",
+                tabindex: visible.value ? 0 : -1,
+                onClick: toTop,
+              },
+              () => ctx.slots.default?.() ?? [chevronUp()],
+            ),
+          ],
+        );
+    },
+  }),
+);
 
 /** The single glyph a way-home control needs: one stroke pointing up. */
 function chevronUp() {
-  return glyphNode(chevron_up, { width: 16, height: 16 });
+  return iconNode("chevron-up", { width: 16, height: 16 });
 }

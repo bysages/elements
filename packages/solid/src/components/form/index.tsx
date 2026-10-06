@@ -3,6 +3,9 @@ import { injectComponentStyle } from "@bysages/core";
 import { createForm, createField } from "@tanstack/solid-form";
 import { createContext, useContext, splitProps, Show, type Component, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 export { createForm, createField };
 /** The other frameworks' hook names, so a form script crosses the
  * matrix without renaming the engine calls. */
@@ -39,7 +42,7 @@ export interface FormProps extends JSX.FormHTMLAttributes<HTMLFormElement> {
   form: AnyFormApi;
 }
 
-export function Form(props: FormProps) {
+export const Form = withSelfRoot(function Form(props: FormProps) {
   injectComponentStyle("form");
   injectComponentStyle("field");
   const [own, rest] = splitProps(props, ["form"]);
@@ -57,7 +60,7 @@ export function Form(props: FormProps) {
       />
     </FormContext.Provider>
   );
-}
+});
 
 /**
  * The named slot in the grid: label, control, hint — and the engine's
@@ -78,7 +81,7 @@ export interface FormFieldProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>,
   children?: JSX.Element | ((field: any) => JSX.Element);
 }
 
-export function FormField(props: FormFieldProps) {
+export const FormField = withSelfRoot(function FormField(props: FormFieldProps) {
   const injected = useContext(FormContext);
   const [own, rest] = splitProps(props, [
     "form",
@@ -90,6 +93,7 @@ export function FormField(props: FormFieldProps) {
     "disabled",
     "children",
   ]);
+  const id = useElementId("form-field");
   const form = () => own.form ?? injected;
 
   // The engine hands Solid an accessor; every read below stays reactive
@@ -108,6 +112,7 @@ export function FormField(props: FormFieldProps) {
     return (
       <div {...rest} data-form-field={own.name}>
         <ArkField.Root
+          id={id()}
           invalid={own.invalid || errors().length > 0}
           required={own.required}
           disabled={own.disabled}
@@ -132,7 +137,7 @@ export function FormField(props: FormFieldProps) {
       )}
     </Show>
   );
-}
+});
 
 // The fields inside are the field family's own recipe — the form
 // stylesheet only lays the grid and routes the errors.

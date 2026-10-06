@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Input } from "../input";
@@ -30,7 +32,7 @@ export interface DynamicInputProps extends HTMLAttributes<HTMLDivElement> {
  * grows past `max`, and the group always keeps one row: an entry list
  * that emptied itself would leave the reader no place to type.
  */
-export function DynamicInput({
+function DynamicInputImpl({
   value,
   min = 0,
   max,
@@ -87,7 +89,7 @@ export function DynamicInput({
             aria-label={messages.dynamicEntry.remove}
             onClick={() => remove(index)}
           >
-            {crossIcon()}
+            {crossIcon}
           </Button>
         </div>
       ))}
@@ -100,21 +102,6 @@ export function DynamicInput({
   );
 }
 
-/** The one glyph a remove seal needs: a single crossing stroke. */
-function crossIcon() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M18 6 6 18M6 6l12 12" />
-    </svg>
-  );
-}
+export const DynamicInput = withSelfRoot(DynamicInputImpl);
+
+const crossIcon = iconNode("x", { width: 16, height: 16 });

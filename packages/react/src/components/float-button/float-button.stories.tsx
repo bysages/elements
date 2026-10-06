@@ -8,7 +8,7 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Actions/Float Button" };
 export default meta;
 
-function glyph(d: string): ReactNode {
+function icon(d: string): ReactNode {
   return (
     <svg
       width={16}
@@ -45,15 +45,15 @@ export const Basic = {
     return (
       <>
         <FloatButton>
-          <FloatButton.Trigger label="Actions">{glyph(plus)}</FloatButton.Trigger>
+          <FloatButton.Trigger label="Actions">{icon(plus)}</FloatButton.Trigger>
           <FloatButton.Item label="Compose" onClick={() => setStatus("Compose")}>
-            {glyph(compose)}
+            {icon(compose)}
           </FloatButton.Item>
           <FloatButton.Item label="Share" onClick={() => setStatus("Share")}>
-            {glyph(share)}
+            {icon(share)}
           </FloatButton.Item>
           <FloatButton.Item label="Delete" onClick={() => setStatus("Delete")}>
-            {glyph(trash)}
+            {icon(trash)}
           </FloatButton.Item>
         </FloatButton>
         <p role="status" style={statusStyle}>
@@ -86,7 +86,7 @@ export const ControlledOpen = {
           {status}
         </p>
         <FloatButton open={open} onOpenChange={setOpen} placement="bottom-start">
-          <FloatButton.Trigger label="Actions">{glyph(plus)}</FloatButton.Trigger>
+          <FloatButton.Trigger label="Actions">{icon(plus)}</FloatButton.Trigger>
           <FloatButton.Item
             label="Compose"
             onClick={() => {
@@ -94,7 +94,7 @@ export const ControlledOpen = {
               setOpen(false);
             }}
           >
-            {glyph(compose)}
+            {icon(compose)}
           </FloatButton.Item>
         </FloatButton>
       </>

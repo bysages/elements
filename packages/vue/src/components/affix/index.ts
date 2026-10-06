@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface AffixProps {
   /** Where the content pins when it reaches the top of the scrolling
    * ancestor — the height of any fixed header it must clear. */
@@ -19,27 +21,29 @@ export interface AffixProps {
  * `overflow: hidden` clips the pin. Both offsets may be given: the
  * content then holds its place inside that band.
  */
-export const Affix = defineComponent({
-  name: "Affix",
-  props: {
-    offsetTop: { type: String, default: "0px" },
-    offsetBottom: { type: String, default: "0px" },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("affix");
+export const Affix = withSelfRoot(
+  defineComponent({
+    name: "Affix",
+    props: {
+      offsetTop: { type: String, default: "0px" },
+      offsetBottom: { type: String, default: "0px" },
+    },
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("affix");
 
-    return () => {
-      const { style, ...attrs } = ctx.attrs;
-      return h(
-        "div",
-        {
-          ...attrs,
-          style: [style as CSSProperties, { top: props.offsetTop, bottom: props.offsetBottom }],
-          "data-scope": "affix",
-          "data-part": "root",
-        },
-        ctx.slots.default?.(),
-      );
-    };
-  },
-});
+      return () => {
+        const { style, ...attrs } = ctx.attrs;
+        return h(
+          "div",
+          {
+            ...attrs,
+            style: [style as CSSProperties, { top: props.offsetTop, bottom: props.offsetBottom }],
+            "data-scope": "affix",
+            "data-part": "root",
+          },
+          ctx.slots.default?.(),
+        );
+      };
+    },
+  }),
+);

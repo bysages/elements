@@ -6,7 +6,7 @@ import { Toggle } from ".";
 const meta: Meta = { title: "Components/Actions/Toggle" };
 export default meta;
 
-function glyph(d: string, filled = false) {
+function icon(d: string, filled = false) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -27,11 +27,20 @@ const HEART =
   "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z";
 
 function boldGlyph() {
-  return glyph(BOLD);
+  return icon(BOLD);
 }
 
 /** A pressed seal: the glyph sinks into the ink and holds. */
 export const Basic = {
+  args: {
+    label: "Toggle bold",
+  },
+  render: (args: any) => <Toggle label={args.label}>{boldGlyph()}</Toggle>,
+};
+
+/** The same seal through its parts: the indicator names both faces
+ * explicitly. */
+export const Anatomy = {
   args: {
     label: "Toggle bold",
   },
@@ -78,7 +87,7 @@ export const Controlled = {
           onPressedChange={(value: boolean) => setPressed(value)}
           aria-label="Toggle favourite"
         >
-          <Toggle.Indicator fallback={glyph(HEART)}>{glyph(HEART, true)}</Toggle.Indicator>
+          <Toggle.Indicator fallback={icon(HEART)}>{icon(HEART, true)}</Toggle.Indicator>
         </Toggle.Root>
       </div>
     );
@@ -98,7 +107,7 @@ export const Disabled = {
 export const Indicator = {
   render: () => (
     <Toggle.Root aria-label="Toggle favourite">
-      <Toggle.Indicator fallback={glyph(HEART)}>{glyph(HEART, true)}</Toggle.Indicator>
+      <Toggle.Indicator fallback={icon(HEART)}>{icon(HEART, true)}</Toggle.Indicator>
     </Toggle.Root>
   ),
 };

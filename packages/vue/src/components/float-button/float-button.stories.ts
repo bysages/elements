@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Actions/Float Button" };
 export default meta;
 
-function glyph(d: string) {
+function icon(d: string) {
   return h(
     "svg",
     {
@@ -39,15 +39,15 @@ export const Basic = {
       const status = ref("Nothing chosen yet.");
       return () => [
         h(FloatButton, null, () => [
-          h(FloatButton.Trigger, { label: "Actions" }, () => glyph(plus)),
+          h(FloatButton.Trigger, { label: "Actions" }, () => icon(plus)),
           h(FloatButton.Item, { label: "Compose", onClick: () => (status.value = "Compose") }, () =>
-            glyph(compose),
+            icon(compose),
           ),
           h(FloatButton.Item, { label: "Share", onClick: () => (status.value = "Share") }, () =>
-            glyph(share),
+            icon(share),
           ),
           h(FloatButton.Item, { label: "Delete", onClick: () => (status.value = "Delete") }, () =>
-            glyph(trash),
+            icon(trash),
           ),
         ]),
         h(
@@ -91,7 +91,7 @@ export const ControlledOpen = {
             placement: "bottom-start",
           },
           () => [
-            h(FloatButton.Trigger, { label: "Actions" }, () => glyph(plus)),
+            h(FloatButton.Trigger, { label: "Actions" }, () => icon(plus)),
             h(
               FloatButton.Item,
               {
@@ -101,7 +101,7 @@ export const ControlledOpen = {
                   open.value = false;
                 },
               },
-              () => glyph(compose),
+              () => icon(compose),
             ),
           ],
         ),

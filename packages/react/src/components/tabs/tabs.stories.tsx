@@ -24,6 +24,49 @@ const PANELS = [
   },
 ];
 
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
+export const Basic = {
+  render: () => (
+    <Tabs
+      defaultValue="ink"
+      items={[
+        {
+          value: "ink",
+          label: "Ink",
+          content: "Content is ink — the marks that carry the words.",
+        },
+        {
+          value: "paper",
+          label: "Paper",
+          content: "The ground is warm paper, never pure white.",
+        },
+        {
+          value: "light",
+          label: "Light",
+          content: "Hierarchy is light — shadow answers to the source.",
+        },
+      ]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  args: {
+    orientation: "horizontal",
+    activationMode: "auto",
+  },
+  render: (args: any) =>
+    ledger(
+      {
+        defaultValue: "account",
+        orientation: args.orientation,
+        activationMode: args.activationMode,
+      },
+      { indicator: true },
+    ),
+};
+
 /** The shared ledger: triggers on a rail, panels beneath, one ink
  * indicator gliding between rungs. */
 function ledger(rootProps: any, opts: { indicator?: boolean; disabled?: string } = {}) {
@@ -49,24 +92,6 @@ function ledger(rootProps: any, opts: { indicator?: boolean; disabled?: string }
     </Tabs.Root>
   );
 }
-
-/** Three ledgers, one showing: the current tab holds the ink and the
- * panel. */
-export const Basic = {
-  args: {
-    orientation: "horizontal",
-    activationMode: "auto",
-  },
-  render: (args: any) =>
-    ledger(
-      {
-        defaultValue: "account",
-        orientation: args.orientation,
-        activationMode: args.activationMode,
-      },
-      { indicator: true },
-    ),
-};
 
 /** The open tab answers to the caller — the rail only mirrors. */
 export const Controlled = {
@@ -151,6 +176,23 @@ export const Vertical = {
           {panel.body}
         </Tabs.Content>
       ))}
+    </Tabs.Root>
+  ),
+};
+
+/** The card register: each tab its own chip, the selected one lifted —
+ * the ruled line retires and the cards carry the state. */
+export const Card = {
+  render: () => (
+    <Tabs.Root variant="card">
+      <Tabs.List>
+        <Tabs.Trigger value="brush">Brush</Tabs.Trigger>
+        <Tabs.Trigger value="ink">Ink</Tabs.Trigger>
+        <Tabs.Trigger value="paper">Paper</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="brush">The brush answers the hand.</Tabs.Content>
+      <Tabs.Content value="ink">The ink remembers the grinding.</Tabs.Content>
+      <Tabs.Content value="paper">The paper holds its breath.</Tabs.Content>
     </Tabs.Root>
   ),
 };

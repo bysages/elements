@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The same named steps of the space ramp the stack uses — one
  * vocabulary of distance across the layout primitives. */
 const gapVars: Record<string, string> = {
@@ -23,7 +25,7 @@ export interface GridProps extends JSX.HTMLAttributes<HTMLDivElement> {
   minChildWidth?: string;
 }
 
-export function Grid(props: GridProps) {
+export const Grid = withSelfRoot(function Grid(props: GridProps) {
   injectComponentStyle("grid");
   const [own, rest] = splitProps(props, ["columns", "gap", "minChildWidth"]);
   return (
@@ -40,4 +42,4 @@ export function Grid(props: GridProps) {
       data-autofill={own.minChildWidth != null ? "" : undefined}
     />
   );
-}
+});

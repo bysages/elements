@@ -6,6 +6,11 @@ import { JsonTreeView } from ".";
 const meta: Meta = { title: "Components/Data/Json Tree View" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <JsonTreeView data={{ title: "Paper & Ink", tags: ["paper", "ink"] }} />,
+};
+
 const data = {
   name: "John Doe",
   age: 30,
@@ -41,7 +46,7 @@ function tree(extraProps: Record<string, any> = {}) {
 
 /** The object as a ledger: branches fold, values read as tabular
  * types. */
-export const Basic = {
+export const Anatomy = {
   args: {
     defaultExpandedDepth: 1,
   },

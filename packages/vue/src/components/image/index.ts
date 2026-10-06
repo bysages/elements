@@ -2,9 +2,11 @@ import { injectComponentStyle } from "@bysages/core";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h, ref, watch } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The mark for a source that never arrived: a quiet mountain-and-sun,
  * drawn in the stylesheet's stroke and hidden from the reader. */
-function placeholderGlyph() {
+function placeholderIcon() {
   return [
     h("rect", { x: 3, y: 4, width: 18, height: 16, rx: 1.5 }),
     h("circle", { cx: 9, cy: 10, r: 1.5 }),
@@ -28,71 +30,73 @@ export interface ImageProps {
   height?: string | number;
 }
 
-export const Image = defineComponent({
-  name: "Image",
-  props: {
-    src: { type: String, required: true },
-    alt: { type: String, default: "" },
-    fit: {
-      type: String as PropType<ImageProps["fit"]>,
-      default: "cover",
+export const Image = withSelfRoot(
+  defineComponent({
+    name: "Image",
+    props: {
+      src: { type: String, required: true },
+      alt: { type: String, default: "" },
+      fit: {
+        type: String as PropType<ImageProps["fit"]>,
+        default: "cover",
+      },
+      loading: {
+        type: String as PropType<ImageProps["loading"]>,
+        default: "lazy",
+      },
+      width: {
+        type: [String, Number] as PropType<ImageProps["width"]>,
+        default: undefined,
+      },
+      height: {
+        type: [String, Number] as PropType<ImageProps["height"]>,
+        default: undefined,
+      },
     },
-    loading: {
-      type: String as PropType<ImageProps["loading"]>,
-      default: "lazy",
-    },
-    width: {
-      type: [String, Number] as PropType<ImageProps["width"]>,
-      default: undefined,
-    },
-    height: {
-      type: [String, Number] as PropType<ImageProps["height"]>,
-      default: undefined,
-    },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("image");
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("image");
 
-    const state = ref<"loading" | "loaded" | "error">("loading");
+      const state = ref<"loading" | "loaded" | "error">("loading");
 
-    // A new source starts the wait over — the last picture's state must
-    // not stand in for the next one's.
-    watch(
-      () => props.src,
-      () => (state.value = "loading"),
-    );
-
-    return () =>
-      h(
-        "figure",
-        {
-          ...ctx.attrs,
-          "data-scope": "image",
-          "data-part": "root",
-          "data-state": state.value,
-          "data-fit": props.fit,
-        },
-        [
-          h("img", {
-            "data-scope": "image",
-            "data-part": "img",
-            src: props.src,
-            alt: props.alt,
-            loading: props.loading,
-            width: props.width,
-            height: props.height,
-            decoding: "async",
-            onLoad: () => (state.value = "loaded"),
-            onError: () => (state.value = "error"),
-          }),
-          state.value === "error"
-            ? h(
-                "div",
-                { "data-scope": "image", "data-part": "fallback" },
-                ctx.slots.fallback ?? placeholderGlyph,
-              )
-            : null,
-        ],
+      // A new source starts the wait over — the last picture's state must
+      // not stand in for the next one's.
+      watch(
+        () => props.src,
+        () => (state.value = "loading"),
       );
-  },
-});
+
+      return () =>
+        h(
+          "figure",
+          {
+            ...ctx.attrs,
+            "data-scope": "image",
+            "data-part": "root",
+            "data-state": state.value,
+            "data-fit": props.fit,
+          },
+          [
+            h("img", {
+              "data-scope": "image",
+              "data-part": "img",
+              src: props.src,
+              alt: props.alt,
+              loading: props.loading,
+              width: props.width,
+              height: props.height,
+              decoding: "async",
+              onLoad: () => (state.value = "loaded"),
+              onError: () => (state.value = "error"),
+            }),
+            state.value === "error"
+              ? h(
+                  "div",
+                  { "data-scope": "image", "data-part": "fallback" },
+                  ctx.slots.fallback ?? placeholderIcon,
+                )
+              : null,
+          ],
+        );
+    },
+  }),
+);

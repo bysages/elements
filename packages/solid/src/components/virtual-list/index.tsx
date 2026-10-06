@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface VirtualListProps extends JSX.HTMLAttributes<HTMLDivElement> {
   items: unknown[];
   /** The height every row occupies — fixed rows keep it simple. */
@@ -16,7 +18,7 @@ export interface VirtualListProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * scroll length by a spacer sized from the row height, the rows
  * themselves are positioned against it — a ten-thousand-row list
  * costs the DOM a window, not the ledger. */
-export function VirtualList(props: VirtualListProps) {
+export const VirtualList = withSelfRoot(function VirtualList(props: VirtualListProps) {
   injectComponentStyle("virtual-list");
   const [own, rest] = splitProps(props, ["items", "itemHeight", "height", "renderItem", "style"]);
   const restStyle = own.style;
@@ -65,4 +67,4 @@ export function VirtualList(props: VirtualListProps) {
       </div>
     </div>
   );
-}
+});

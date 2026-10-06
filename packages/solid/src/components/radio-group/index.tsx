@@ -3,6 +3,9 @@ import type { RadioGroupRootProps as ArkRadioGroupRootProps } from "@ark-ui/soli
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Ark's RadioGroup, dressed in the paper-and-ink system: a column of
  * full-circle seals that fill flat with primary ink when chosen, the dot
  * punched through as paper. The API is Ark's own — Root, Label, Item,
@@ -15,14 +18,19 @@ type RadioGroupOwnProps = {
 
 function RadioGroupRoot(props: ArkRadioGroupRootProps & RadioGroupOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkRadioGroup.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("radio-group", () => rest.id);
+  return <ArkRadioGroup.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof RadioGroupRoot } = {
-  ...ArkRadioGroup,
-  Root: RadioGroupRoot,
-};
+export const RadioGroup: typeof RadioGroupRoot &
+  Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof RadioGroupRoot } = defineFamily(
+  RadioGroupRoot,
+  {
+    ...ArkRadioGroup,
+    Root: RadioGroupRoot,
+  },
+);
 
 injectComponentStyle("radio-group");

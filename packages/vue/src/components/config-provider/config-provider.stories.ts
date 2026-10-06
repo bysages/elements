@@ -9,11 +9,24 @@ const meta: Meta = {
   title: "Components/Elements/Config Provider",
   component: ConfigProvider,
   argTypes: {
-    density: { control: "radio", options: ["compact", "default", "comfortable", "spacious"] },
+    density: {
+      control: "radio",
+      options: ["compact", "default", "comfortable", "spacious"],
+    },
     accent: { control: "radio", options: ["qinghua", "celadon", "zhusha"] },
   },
 };
 export default meta;
+
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(
+      ConfigProvider,
+      { density: "compact", accent: "qinghua" },
+      () => "Compact controls under the qinghua accent.",
+    ),
+};
 type Story = StoryObj<typeof ConfigProvider>;
 
 /** The same furniture in every tier, so the density step and the
@@ -28,10 +41,13 @@ function demo(label: string) {
       ),
     ]),
     h(Card.Content, () =>
-      h("div", { style: { display: "flex", flexWrap: "wrap", gap: "var(--bs-gap-sm)" } }, () => [
-        h(Button, () => "Primary"),
-        h(Button, { variant: "ghost" }, () => "Secondary"),
-      ]),
+      h(
+        "div",
+        {
+          style: { display: "flex", flexWrap: "wrap", gap: "var(--bs-gap-sm)" },
+        },
+        () => [h(Button, () => "Primary"), h(Button, { variant: "ghost" }, () => "Secondary")],
+      ),
     ),
   ]);
 }
@@ -39,15 +55,23 @@ function demo(label: string) {
 /** Compact controls under the qinghua pigment, set against the page's
  * own defaults — the provider carries both attributes at once. The
  * controls panel retiers the inside live. */
-export const Basic: Story = {
+export const Anatomy: Story = {
   args: { density: "compact", accent: "qinghua" },
   render: (args) =>
     h(
       "div",
-      { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
+      {
+        style: {
+          display: "grid",
+          gap: "var(--bs-space-4)",
+          justifyItems: "start",
+        },
+      },
       () => [
         demo("Outside — the page's own density and ink"),
-        h(ConfigProvider, args, () => demo("Inside — compact controls under the qinghua accent")),
+        h(ConfigProvider.Root, args, () =>
+          demo("Inside — compact controls under the qinghua accent"),
+        ),
       ],
     ),
 };
@@ -60,7 +84,13 @@ export const Nested: Story = {
     h(ConfigProvider, { density: "comfortable" }, () =>
       h(
         "div",
-        { style: { display: "grid", gap: "var(--bs-space-4)", justifyItems: "start" } },
+        {
+          style: {
+            display: "grid",
+            gap: "var(--bs-space-4)",
+            justifyItems: "start",
+          },
+        },
         () => [
           demo("Comfortable — the outer provider's tier"),
           h(ConfigProvider, { density: "compact" }, () =>

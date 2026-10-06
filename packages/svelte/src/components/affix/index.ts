@@ -1,3 +1,4 @@
+import { withSelfRoot } from "../../internal/family";
 import AffixComponent from "./Affix.svelte";
 
 /** A nail: the wrapped content travels with the page until it reaches
@@ -7,6 +8,6 @@ import AffixComponent from "./Affix.svelte";
  * exactly as it does on the page itself, and a parent with
  * `overflow: hidden` clips the pin. Both offsets may be given: the
  * content then holds its place inside that band. */
-export const Affix = AffixComponent;
+export const Affix = withSelfRoot(AffixComponent);
 
 export type { AffixProps } from "./props";

@@ -20,6 +20,11 @@ function segments() {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => <DateInput label="Publication date" />,
+};
+
 /** The shared anatomy: labelled segmented field with its hidden form
  * input. */
 function field(rootProps: any, label: string, extra: ReactNode[] = []) {
@@ -37,7 +42,7 @@ function field(rootProps: any, label: string, extra: ReactNode[] = []) {
 
 /** Segmented typing — each part of the date is its own arrow-navigable
  * segment; the focused segment takes the ink. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Date of birth",
   },

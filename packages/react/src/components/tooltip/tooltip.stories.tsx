@@ -7,23 +7,7 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Overlay/Tooltip" };
 export default meta;
 
-function sealGlyph() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      aria-hidden="true"
-    >
-      <path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16" />
-    </svg>
-  );
-}
-
-function glyph(path: string) {
+function icon(path: string) {
   return (
     <svg
       width={14}
@@ -43,18 +27,12 @@ function glyph(path: string) {
  * paper. */
 export const Basic = {
   args: {
+    trigger: "Hover me",
+    content: "Ink answers only when asked.",
     placement: "bottom-start",
   },
   render: (args: any) => (
-    <Tooltip.Root positioning={{ placement: args.placement }}>
-      <Tooltip.Trigger>
-        {sealGlyph()}
-        <span>Hover me</span>
-      </Tooltip.Trigger>
-      <Tooltip.Positioner>
-        <Tooltip.Content>Ink answers only when asked.</Tooltip.Content>
-      </Tooltip.Positioner>
-    </Tooltip.Root>
+    <Tooltip trigger={args.trigger} content={args.content} placement={args.placement} />
   ),
 };
 
@@ -154,7 +132,7 @@ export const MultipleTriggers = {
         <div style={{ display: "flex", gap: "0.25rem" }}>
           {TOOLS.map((tool) => (
             <Tooltip.Trigger key={tool.id} value={tool.id} aria-label={tool.label}>
-              {glyph(tool.path)}
+              {icon(tool.path)}
             </Tooltip.Trigger>
           ))}
         </div>
@@ -237,3 +215,6 @@ export const WithinFixed = {
     </div>
   ),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

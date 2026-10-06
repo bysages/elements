@@ -1,11 +1,13 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/vue/date-picker";
 import type { DatePickerRootProps, UseDatePickerContext } from "@ark-ui/vue/date-picker";
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_left, chevron_right } from "@bysages/icons";
 import type { PropType, SetupContext, UnwrapRef } from "vue";
 import { defineComponent, h } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
+import { DatePicker } from "../date-picker";
 
 export type {
   DatePickerFocusChangeDetails,
@@ -16,7 +18,7 @@ export type {
 } from "@ark-ui/vue/date-picker";
 
 function chevron(dir: "left" | "right") {
-  return glyphNode(dir === "left" ? chevron_left : chevron_right, { width: 16, height: 16 });
+  return iconNode(dir === "left" ? "chevron-left" : "chevron-right", { width: 16, height: 16 });
 }
 
 /** The date-picker's month grid, standing on the page without its
@@ -24,7 +26,7 @@ function chevron(dir: "left" | "right") {
  * title zooms out through month and year grids; the grids themselves
  * are the date-picker's machinery — value, range selection, and focus
  * included. */
-export const Calendar = defineComponent({
+const CalendarFacade = defineComponent({
   name: "Calendar",
   props: {
     /** Selected date(s) — an array, as the machine speaks in ranges. */
@@ -41,6 +43,7 @@ export const Calendar = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("calendar");
     injectComponentStyle("date-picker");
+    const hostId = useElementId("calendar", ctx.attrs);
 
     /* zag's RangeText follows the visible day-page (startValue), which
        the month and year steps never move — it would freeze the title.
@@ -75,6 +78,7 @@ export const Calendar = defineComponent({
         h(
           ArkDatePicker.Root,
           {
+            id: `${hostId.value}:date-picker`,
             open: true,
             closeOnSelect: true,
             /* inline: the calendar stands on the page with no popup parts,
@@ -171,3 +175,6 @@ export const Calendar = defineComponent({
       );
   },
 });
+
+export const Calendar = defineFamily(CalendarFacade, DatePicker) as typeof CalendarFacade &
+  typeof DatePicker;

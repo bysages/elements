@@ -3,7 +3,7 @@ import { Breadcrumb } from "@bysages/vue";
 </script>
 
 <template>
-  <Breadcrumb.Root>
+  <Breadcrumb>
     <Breadcrumb.List>
       <Breadcrumb.Item>
         <Breadcrumb.Link href="#home">Home</Breadcrumb.Link>
@@ -17,5 +17,5 @@ import { Breadcrumb } from "@bysages/vue";
         <Breadcrumb.Current>Archives</Breadcrumb.Current>
       </Breadcrumb.Item>
     </Breadcrumb.List>
-  </Breadcrumb.Root>
+  </Breadcrumb>
 </template>

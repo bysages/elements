@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("back-top");
 
 import { Button } from "../button";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 
 import type { BackTopProps } from "./props";
 
@@ -70,21 +71,9 @@ never a pop. -->
     {#if children}
       {@render children()}
     {:else}
-      <!-- The single glyph a way-home control needs: one stroke
+      <!-- The single icon a way-home control needs: one stroke
       pointing up. -->
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.75"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m6 14 6-6 6 6" />
-      </svg>
+      <InternalIcon name="chevron-up" />
     {/if}
   </Button>
 </div>

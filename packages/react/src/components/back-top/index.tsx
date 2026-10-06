@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 import { useEffect, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 
 export interface BackTopProps extends HTMLAttributes<HTMLButtonElement> {
@@ -16,24 +18,10 @@ export interface BackTopProps extends HTMLAttributes<HTMLButtonElement> {
   scrollEl?: () => HTMLElement | null;
 }
 
-/** The single glyph a way-home control needs: one stroke pointing up. */
-function chevronUp() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 14 6-6 6 6" />
-    </svg>
-  );
-}
+const chevronUp = iconNode("chevron-up", { width: 16, height: 16 });
+
+/**
+ * A way
 
 /**
  * A way home: after the page has scrolled past `threshold`, a small
@@ -49,12 +37,7 @@ function chevronUp() {
  * paper, hairline and halo are its; this family owns only the floating
  * and the entrance.
  */
-export function BackTop({
-  threshold = 400,
-  label = "Back to top",
-  scrollEl,
-  ...rest
-}: BackTopProps) {
+function BackTopImpl({ threshold = 400, label = "Back to top", scrollEl, ...rest }: BackTopProps) {
   injectComponentStyle("back-top");
   const [visible, setVisible] = useState(false);
 
@@ -101,8 +84,10 @@ export function BackTop({
         tabIndex={visible ? 0 : -1}
         onClick={toTop}
       >
-        {rest.children ?? chevronUp()}
+        {rest.children ?? chevronUp}
       </Button>
     </div>
   );
 }
+
+export const BackTop = withSelfRoot(BackTopImpl);

@@ -18,13 +18,39 @@ const chevron = () =>
     }),
   ]);
 
-/** The paper folds away behind one trigger; the indicator turns as the
- * panel opens. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    label: "What is Ark UI?",
-  },
-  render: (args: any) => withState(() => () => panel(args.label)),
+  render: () =>
+    h(Collapsible, { label: "What is a design token?" }, () =>
+      h(
+        "p",
+        "A named visual decision — a color, a spacing step, a radius — compiled into a CSS custom property.",
+      ),
+    ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h(Collapsible.Root, {}, () => [
+      h(Collapsible.Trigger, () => [
+        "What is a design token?",
+        h(Collapsible.Indicator, () =>
+          h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": true }, [
+            h("path", {
+              d: "M6 4l4 4-4 4",
+              stroke: "currentColor",
+              "stroke-width": 1.5,
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+            }),
+          ]),
+        ),
+      ]),
+      h(Collapsible.Content, () =>
+        h("p", "A named visual decision compiled into a CSS custom property."),
+      ),
+    ]),
 };
 
 /** The panel starts open, resting its content on the page. */
@@ -48,7 +74,10 @@ export const Nested = {
   render: () =>
     h(
       Collapsible.Root,
-      { defaultOpen: true, style: { inlineSize: "100%", maxInlineSize: "46rem" } },
+      {
+        defaultOpen: true,
+        style: { inlineSize: "100%", maxInlineSize: "46rem" },
+      },
       () => [
         h(Collapsible.Trigger, () => ["Getting started", h(Collapsible.Indicator, chevron)]),
         h(Collapsible.Content, () => [

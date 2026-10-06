@@ -9,6 +9,15 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Elements/Avatar" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(Avatar, {}, () => [
+      h(Avatar.Fallback, () => "S"),
+      h(Avatar.Image, { src: PORTRAIT, alt: "Portrait of Sage" }),
+    ]),
+};
+
 /** A tiny inline portrait: loads instantly, keeps the story offline. */
 const PORTRAIT =
   "data:image/svg+xml;utf8," +
@@ -18,7 +27,7 @@ const PORTRAIT =
 
 /** Initials stand in until the image arrives; the image loads over the
  * fallback in the same circle. */
-export const Basic = {
+export const Anatomy = {
   args: {
     fallback: "S",
     initials: "BS",
@@ -66,10 +75,15 @@ export const Events = {
           ),
           h(
             Avatar.Root,
-            { onStatusChange: (e: { status: string }) => (state.status = e.status) } as any,
+            {
+              onStatusChange: (e: { status: string }) => (state.status = e.status),
+            } as any,
             () => [
               h(Avatar.Fallback, () => "PA"),
-              h(Avatar.Image, { src: "https://localhost/broken-portrait.png", alt: "Portrait" }),
+              h(Avatar.Image, {
+                src: "data:image/png;base64,AAAAAAAAAAA",
+                alt: "Portrait",
+              }),
             ],
           ),
         ]);
@@ -81,7 +95,10 @@ export const Fallback = {
   render: () =>
     h(Avatar.Root, () => [
       h(Avatar.Fallback, () => "PA"),
-      h(Avatar.Image, { src: "https://localhost/broken-portrait.png", alt: "Portrait" }),
+      h(Avatar.Image, {
+        src: "data:image/png;base64,AAAAAAAAAAA",
+        alt: "Portrait",
+      }),
     ]),
 };
 
@@ -95,16 +112,22 @@ export const RootProvider = {
         const avatar = useAvatar();
         const count = reactive({ value: 0 });
         return () =>
-          h("div", { style: { display: "grid", gap: "0.75rem", justifyItems: "start" } }, [
-            h(Button, { size: "sm", onClick: () => (count.value += 1) }, () => "Change Avatar"),
-            h(Avatar.RootProvider as any, { value: avatar.value }, () => [
-              h(Avatar.Fallback, () => "PA"),
-              h(Avatar.Image, {
-                src: `https://i.pravatar.cc/144?u=${count.value}`,
-                alt: "Portrait",
-              }),
-            ]),
-          ]);
+          h(
+            "div",
+            {
+              style: { display: "grid", gap: "0.75rem", justifyItems: "start" },
+            },
+            [
+              h(Button, { size: "sm", onClick: () => (count.value += 1) }, () => "Change Avatar"),
+              h(Avatar.RootProvider as any, { value: avatar.value }, () => [
+                h(Avatar.Fallback, () => "PA"),
+                h(Avatar.Image, {
+                  src: `https://i.pravatar.cc/144?u=${count.value}`,
+                  alt: "Portrait",
+                }),
+              ]),
+            ],
+          );
       },
     };
     return () => h(Driver);

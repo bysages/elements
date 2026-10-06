@@ -1,5 +1,7 @@
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
 
+import { defineFamily } from "../../internal/family";
+import MenuFacade from "./Menu.svelte";
 import MenuContent from "./MenuContent.svelte";
 import MenuRoot from "./MenuRoot.svelte";
 
@@ -10,11 +12,12 @@ import MenuRoot from "./MenuRoot.svelte";
  * TriggerItem, Separator, Arrow, ArrowTip. Ark's namespace is frozen —
  * spread copies the members so Root and Content can be the sized
  * wrappers while the rest stay Ark's own parts. */
-export const Menu: Omit<typeof ArkMenu, "Root" | "Content"> & {
-  Root: typeof MenuRoot;
-  Content: typeof MenuContent;
-} = {
+export const Menu: typeof MenuFacade &
+  Omit<typeof ArkMenu, "Root" | "Content"> & {
+    Root: typeof MenuRoot;
+    Content: typeof MenuContent;
+  } = defineFamily(MenuFacade, {
   ...ArkMenu,
   Root: MenuRoot,
   Content: MenuContent,
-};
+});

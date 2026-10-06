@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { Dialog } from ".";
 import { Input } from "../input";
@@ -9,7 +9,7 @@ const meta: Meta = { title: "Components/Overlay/Dialog" };
 export default meta;
 
 function vessel(title: string, description: string, ...extra: any[]) {
-  return h(Teleport, { to: "body" }, () => [
+  return [
     h(Dialog.Backdrop),
     h(Dialog.Positioner, () =>
       h(Dialog.Content, () => [
@@ -19,7 +19,7 @@ function vessel(title: string, description: string, ...extra: any[]) {
         h(Dialog.CloseTrigger, () => "×"),
       ]),
     ),
-  ]);
+  ];
 }
 
 function trigger(label: string) {
@@ -29,10 +29,26 @@ function trigger(label: string) {
 /** The paper vessel rests above a dimmed page and dissolves away. */
 export const Basic = {
   args: {
-    title: "Delete item",
+    trigger: "Delete item",
+    label: "Delete item",
     description: "This action cannot be undone.",
     closeOnEscape: true,
     closeOnInteractOutside: true,
+    content: "Removed items stay recoverable for 30 days.",
+  },
+  render: (args: any) => withState(() => () => h(Dialog, args)),
+};
+
+/** The anatomy is the composition path: the same vessel, assembled from
+ * Ark's parts when the caller needs full control. */
+export const Anatomy = {
+  args: {
+    trigger: "Delete item",
+    label: "Delete item",
+    description: "This action cannot be undone.",
+    closeOnEscape: true,
+    closeOnInteractOutside: true,
+    content: "Removed items stay recoverable for 30 days.",
   },
   render: (args: any) =>
     withState(
@@ -44,11 +60,11 @@ export const Basic = {
             closeOnInteractOutside: args.closeOnInteractOutside,
           },
           () => [
-            trigger(args.title),
+            trigger(args.trigger),
             vessel(
-              args.title,
+              args.label,
               args.description,
-              h("p", () => "Removed items stay recoverable for 30 days."),
+              h("p", () => args.content),
             ),
           ],
         ),
@@ -135,38 +151,36 @@ export const Nested = {
           },
           () => [
             trigger("Open parent"),
-            h(Teleport, { to: "body" }, () => [
-              h(Dialog.Backdrop),
-              h(Dialog.Positioner, () =>
-                h(Dialog.Content, () => [
-                  h(Dialog.Title, () => "Parent dialog"),
-                  h(Dialog.Description, () => "This vessel opens another above itself."),
-                  h(
-                    Dialog.Root,
-                    {
-                      open: state.child,
-                      onOpenChange: (e: { open: boolean }) => {
-                        state.child = e.open;
-                      },
+
+            h(Dialog.Backdrop),
+            h(Dialog.Positioner, () =>
+              h(Dialog.Content, () => [
+                h(Dialog.Title, () => "Parent dialog"),
+                h(Dialog.Description, () => "This vessel opens another above itself."),
+                h(
+                  Dialog.Root,
+                  {
+                    open: state.child,
+                    onOpenChange: (e: { open: boolean }) => {
+                      state.child = e.open;
                     },
-                    () => [
-                      h(Dialog.Trigger, () => "Open child"),
-                      h(Teleport, { to: "body" }, () => [
-                        h(Dialog.Backdrop),
-                        h(Dialog.Positioner, () =>
-                          h(Dialog.Content, () => [
-                            h(Dialog.Title, () => "Child dialog"),
-                            h(Dialog.Description, () => "The upper vessel."),
-                            h(Dialog.CloseTrigger, () => "×"),
-                          ]),
-                        ),
+                  },
+                  () => [
+                    h(Dialog.Trigger, () => "Open child"),
+
+                    h(Dialog.Backdrop),
+                    h(Dialog.Positioner, () =>
+                      h(Dialog.Content, () => [
+                        h(Dialog.Title, () => "Child dialog"),
+                        h(Dialog.Description, () => "The upper vessel."),
+                        h(Dialog.CloseTrigger, () => "×"),
                       ]),
-                    ],
-                  ),
-                  h(Dialog.CloseTrigger, () => "×"),
-                ]),
-              ),
-            ]),
+                    ),
+                  ],
+                ),
+                h(Dialog.CloseTrigger, () => "×"),
+              ]),
+            ),
           ],
         );
     }),

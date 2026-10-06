@@ -1,13 +1,14 @@
 import { Menu as ArkMenu } from "@ark-ui/vue/menu";
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_down } from "@bysages/icons";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
-import { Teleport } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
+import { Menu } from "../menu";
 
 export interface SplitButtonEntry {
   label: string;
@@ -25,7 +26,7 @@ export interface SplitButtonEntry {
  * machine keeps the element (positioning, focus, `data-state`), the
  * button recipe dresses it. The popup keeps the menu parts untouched.
  */
-export const SplitButton = defineComponent({
+const SplitButtonFacade = defineComponent({
   name: "SplitButton",
   props: {
     /** The main action's label. */
@@ -52,6 +53,7 @@ export const SplitButton = defineComponent({
     injectComponentStyle("split-button");
     injectComponentStyle("menu");
     const messages = useComponentMessages();
+    const hostId = useElementId("split-button", ctx.attrs);
 
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "split-button", "data-part": "root" }, () => [
@@ -66,22 +68,24 @@ export const SplitButton = defineComponent({
           },
           () => props.label,
         ),
-        h(ArkMenu.Root, { positioning: { placement: "bottom-end" } }, () => [
-          h(ArkMenu.Trigger, { asChild: true }, () =>
-            h(
-              Button,
-              {
-                variant: props.variant,
-                tone: props.tone,
-                square: true,
-                size: props.size,
-                disabled: props.disabled,
-                "aria-label": messages.value.more.actions,
-              },
-              chevronDown,
+        h(
+          ArkMenu.Root,
+          { id: `${hostId.value}:menu`, positioning: { placement: "bottom-end" } },
+          () => [
+            h(ArkMenu.Trigger, { asChild: true }, () =>
+              h(
+                Button,
+                {
+                  variant: props.variant,
+                  tone: props.tone,
+                  square: true,
+                  size: props.size,
+                  disabled: props.disabled,
+                  "aria-label": messages.value.more.actions,
+                },
+                chevronDown,
+              ),
             ),
-          ),
-          h(Teleport, { to: "body" }, () => [
             h(ArkMenu.Positioner, () =>
               h(ArkMenu.Content, {}, () =>
                 props.items.map((entry) =>
@@ -101,15 +105,18 @@ export const SplitButton = defineComponent({
                 ),
               ),
             ),
-          ]),
-        ]),
+          ],
+        ),
       ]);
   },
 });
 
 /** One stroke pointing down: all a fitted dropdown arrow needs. */
 function chevronDown() {
-  return glyphNode(chevron_down, { width: 16, height: 16 });
+  return iconNode("chevron-down", { width: 16, height: 16 });
 }
 
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
+
+export const SplitButton = defineFamily(SplitButtonFacade, Menu) as typeof SplitButtonFacade &
+  typeof Menu;

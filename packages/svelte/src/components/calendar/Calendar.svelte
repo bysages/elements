@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("calendar");
 
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import type { CalendarProps } from "./props";
 
 let { value, min, max, onValueChange, children, ...rest }: CalendarProps = $props();
@@ -28,17 +29,7 @@ let { value, min, max, onValueChange, children, ...rest }: CalendarProps = $prop
   <div data-scope="calendar" data-part="header">
     <ArkDatePicker.ViewControl>
       <ArkDatePicker.PrevTrigger>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m15 5-7 7 7 7" />
-        </svg>
+        <InternalIcon name="chevron-left" />
       </ArkDatePicker.PrevTrigger>
       <ArkDatePicker.ViewTrigger>
         <ArkDatePicker.Context>
@@ -48,17 +39,7 @@ let { value, min, max, onValueChange, children, ...rest }: CalendarProps = $prop
         </ArkDatePicker.Context>
       </ArkDatePicker.ViewTrigger>
       <ArkDatePicker.NextTrigger>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
-        >
-          <path d="m9 5 7 7-7 7" />
-        </svg>
+        <InternalIcon name="chevron-right" />
       </ArkDatePicker.NextTrigger>
     </ArkDatePicker.ViewControl>
   </div>

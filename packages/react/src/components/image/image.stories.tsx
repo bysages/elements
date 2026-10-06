@@ -65,7 +65,7 @@ export const Error = {
   render: () => (
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
       <Image
-        src="https://localhost/missing.png"
+        src="data:image/png;base64,AAAAAAAAAAA"
         alt="A missing photograph"
         style={{ inlineSize: "100%", aspectRatio: "16 / 9" }}
         fallback={
@@ -80,7 +80,7 @@ export const Error = {
         }
       />
       <Image
-        src="https://localhost/missing.png"
+        src="data:image/png;base64,AAAAAAAAAAA"
         alt="A missing photograph"
         style={{ inlineSize: "100%", aspectRatio: "16 / 9" }}
       />

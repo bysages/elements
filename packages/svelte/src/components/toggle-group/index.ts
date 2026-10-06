@@ -3,11 +3,16 @@
  * Ark's own — Root, Item. */
 import { ToggleGroup as ArkToggleGroup } from "@ark-ui/svelte/toggle-group";
 
+import { defineFamily } from "../../internal/family";
+import ToggleGroupFacade from "./ToggleGroup.svelte";
 import ToggleGroupRoot from "./ToggleGroupRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof ToggleGroupRoot } = {
+export const ToggleGroup: typeof ToggleGroupFacade &
+  Omit<typeof ArkToggleGroup, "Root"> & {
+    Root: typeof ToggleGroupRoot;
+  } = defineFamily(ToggleGroupFacade, {
   ...ArkToggleGroup,
   Root: ToggleGroupRoot,
-};
+});

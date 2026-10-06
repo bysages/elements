@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { createEffect, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Font-relative measures ride the root's own measure; absolute units
  * pass through untouched — the canvas needs a number, the prop may
  * speak in CSS. */
@@ -26,7 +28,7 @@ export interface WatermarkProps extends JSX.HTMLAttributes<HTMLDivElement> {
   fontSize?: string;
 }
 
-export function Watermark(props: WatermarkProps) {
+export const Watermark = withSelfRoot(function Watermark(props: WatermarkProps) {
   injectComponentStyle("watermark");
   const [own, rest] = splitProps(props, ["content", "opacity", "rotate", "fontSize"]);
   const [host, setHost] = createSignal<HTMLDivElement>();
@@ -95,4 +97,4 @@ export function Watermark(props: WatermarkProps) {
       />
     </div>
   );
-}
+});

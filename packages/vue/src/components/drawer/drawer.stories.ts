@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { Drawer } from ".";
 import { withState } from "../with-state.js";
@@ -7,7 +7,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Overlay/Drawer" };
 export default meta;
 
-function closeGlyph() {
+function closeIcon() {
   return h(
     "svg",
     {
@@ -27,17 +27,15 @@ function closeGlyph() {
  * grabber and close glyph. */
 function sheet(title: string, ...extra: any[]) {
   return [
-    h(Teleport, { to: "body" }, () => [
-      h(Drawer.Backdrop),
-      h(Drawer.Positioner, () =>
-        h(Drawer.Content, () => [
-          h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
-          h(Drawer.Title, () => title),
-          ...extra,
-          h(Drawer.CloseTrigger, () => closeGlyph()),
-        ]),
-      ),
-    ]),
+    h(Drawer.Backdrop),
+    h(Drawer.Positioner, () =>
+      h(Drawer.Content, () => [
+        h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
+        h(Drawer.Title, () => title),
+        ...extra,
+        h(Drawer.CloseTrigger, () => closeIcon()),
+      ]),
+    ),
   ];
 }
 
@@ -49,19 +47,32 @@ function trigger(label: string) {
  * behind it. */
 export const Basic = {
   args: {
-    triggerLabel: "Open drawer",
-    title: "Settings",
+    trigger: "Open drawer",
+    label: "Settings",
     description: "Preferences travel with the sheet — pull the grabber to put them away.",
+    content: "The rest of the sheet is yours to fill.",
+  },
+  render: (args: any) => withState(() => () => h(Drawer, args)),
+};
+
+/** The anatomy is the composition path: the same sheet, assembled from
+ * Ark's parts when the caller needs full control. */
+export const Anatomy = {
+  args: {
+    trigger: "Open drawer",
+    label: "Settings",
+    description: "Preferences travel with the sheet — pull the grabber to put them away.",
+    content: "The rest of the sheet is yours to fill.",
   },
   render: (args: any) =>
     withState(
       () => () =>
         h(Drawer.Root, () => [
-          trigger(args.triggerLabel),
+          trigger(args.trigger),
           ...sheet(
-            args.title,
+            args.label,
             h(Drawer.Description, () => args.description),
-            h("p", () => "The rest of the sheet is yours to fill."),
+            h("p", () => args.content),
           ),
         ]),
     ),
@@ -165,7 +176,7 @@ export const IndentBackground = {
                       h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
                       h(Drawer.Title, () => "Indented page"),
                       h("p", () => "The page behind indents rather than dims."),
-                      h(Drawer.CloseTrigger, () => closeGlyph()),
+                      h(Drawer.CloseTrigger, () => closeIcon()),
                     ]),
                   ),
                 ],
@@ -190,29 +201,27 @@ export const Nested = {
         },
         () => [
           trigger("Open first"),
-          h(Teleport, { to: "body" }, () => [
-            h(Drawer.Backdrop),
-            h(Drawer.Positioner, () =>
-              h(Drawer.Content, () => [
-                h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
-                h(Drawer.Title, () => "First sheet"),
-                h(Drawer.Root, () => [
-                  h(Drawer.Trigger, () => "Open second"),
-                  h(Teleport, { to: "body" }, () => [
-                    h(Drawer.Positioner, () =>
-                      h(Drawer.Content, () => [
-                        h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
-                        h(Drawer.Title, () => "Second sheet"),
-                        h("p", () => "The upper sheet."),
-                        h(Drawer.CloseTrigger, () => closeGlyph()),
-                      ]),
-                    ),
+
+          h(Drawer.Backdrop),
+          h(Drawer.Positioner, () =>
+            h(Drawer.Content, () => [
+              h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
+              h(Drawer.Title, () => "First sheet"),
+              h(Drawer.Root, () => [
+                h(Drawer.Trigger, () => "Open second"),
+
+                h(Drawer.Positioner, () =>
+                  h(Drawer.Content, () => [
+                    h(Drawer.Grabber, () => h(Drawer.GrabberIndicator)),
+                    h(Drawer.Title, () => "Second sheet"),
+                    h("p", () => "The upper sheet."),
+                    h(Drawer.CloseTrigger, () => closeIcon()),
                   ]),
-                ]),
-                h(Drawer.CloseTrigger, () => closeGlyph()),
+                ),
               ]),
-            ),
-          ]),
+              h(Drawer.CloseTrigger, () => closeIcon()),
+            ]),
+          ),
         ],
       );
   },
@@ -271,16 +280,15 @@ export const NonDraggable = {
   render: () =>
     h(Drawer.Root, () => [
       trigger("Open panel"),
-      h(Teleport, { to: "body" }, () => [
-        h(Drawer.Backdrop),
-        h(Drawer.Positioner, () =>
-          h(Drawer.Content, () => [
-            h(Drawer.Title, () => "Plain panel"),
-            h("p", () => "No grabber, no drag — just a quiet vessel."),
-            h(Drawer.CloseTrigger, () => closeGlyph()),
-          ]),
-        ),
-      ]),
+
+      h(Drawer.Backdrop),
+      h(Drawer.Positioner, () =>
+        h(Drawer.Content, () => [
+          h(Drawer.Title, () => "Plain panel"),
+          h("p", () => "No grabber, no drag — just a quiet vessel."),
+          h(Drawer.CloseTrigger, () => closeIcon()),
+        ]),
+      ),
     ]),
 };
 

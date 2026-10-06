@@ -2,7 +2,7 @@ import type { Meta } from "@storybook/react-vite";
 
 import { Watermark } from ".";
 
-const meta: Meta = { title: "Components/Feedback/Watermark" };
+const meta: Meta = { title: "Components/Media/Watermark" };
 export default meta;
 
 function draft() {

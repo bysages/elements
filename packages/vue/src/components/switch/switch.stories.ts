@@ -13,7 +13,7 @@ function control() {
   return h(Switch.Control, () => h(Switch.Thumb));
 }
 
-/** The track rests in the paper's shade and fills flat with ink when on. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
   args: {
     overlaysLabel: "Dissolve overlays",
@@ -21,26 +21,32 @@ export const Basic = {
     motionLabel: "Reduced motion",
   },
   render: (args: any) =>
-    withState(
-      () => () =>
-        h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "20rem" } }, [
-          h(Switch.Root, { defaultChecked: true }, () => [
-            control(),
-            h(Switch.Label, () => args.overlaysLabel),
-            h(Switch.HiddenInput),
-          ]),
-          h(Switch.Root, () => [
-            control(),
-            h(Switch.Label, () => args.hairlinesLabel),
-            h(Switch.HiddenInput),
-          ]),
-          h(Switch.Root, { defaultChecked: true, disabled: true }, () => [
-            control(),
-            h(Switch.Label, () => args.motionLabel),
-            h(Switch.HiddenInput),
-          ]),
-        ]),
-    ),
+    h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "20rem" } }, [
+      h(Switch, { defaultValue: true, label: args.overlaysLabel }),
+      h(Switch, { label: args.hairlinesLabel }),
+      h(Switch, {
+        defaultValue: true,
+        label: args.motionLabel,
+        disabled: true,
+      }),
+    ]),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h("div", { style: { display: "grid", gap: "0.75rem", maxWidth: "20rem" } }, [
+      h(Switch.Root, { defaultChecked: true }, () => [
+        control(),
+        h(Switch.Label, () => "Dissolve overlays"),
+        h(Switch.HiddenInput),
+      ]),
+      h(Switch.Root, () => [
+        control(),
+        h(Switch.Label, () => "Show hairlines"),
+        h(Switch.HiddenInput),
+      ]),
+    ]),
 };
 
 /** The caller owns the state — the track only mirrors it. */

@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** One verdict on the bar. */
 export interface ProgressSegment {
   value: number;
@@ -22,7 +24,7 @@ export interface ProgressGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   showLegend?: boolean;
 }
 
-export function ProgressGroup(props: ProgressGroupProps) {
+export const ProgressGroup = withSelfRoot(function ProgressGroup(props: ProgressGroupProps) {
   injectComponentStyle("progress-group");
   const [own, rest] = splitProps(props, ["segments", "max", "showLegend"]);
 
@@ -77,4 +79,4 @@ export function ProgressGroup(props: ProgressGroupProps) {
       </Show>
     </div>
   );
-}
+});

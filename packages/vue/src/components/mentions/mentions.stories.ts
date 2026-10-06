@@ -23,7 +23,7 @@ export const Basic = {
     withState(() => {
       const text = ref("");
       return () => [
-        h(Mentions, {
+        h(Mentions as never, {
           items: teammates,
           placeholder: "Describe the task and @who should read it…",
           modelValue: text.value,
@@ -49,7 +49,7 @@ export const CustomTrigger = {
     withState(() => {
       const text = ref("Review with #");
       return () => [
-        h(Mentions, {
+        h(Mentions as never, {
           items: [
             { label: "Design review", value: "design-review" },
             { label: "Editorial review", value: "editorial-review" },
@@ -74,7 +74,7 @@ export const WithField = {
       return () =>
         h(Field.Root, { invalid: true, style: { maxInlineSize: "28rem" } }, () => [
           h(Field.Label, () => "Describe the task"),
-          h(Mentions, {
+          h(Mentions as never, {
             items: teammates,
             placeholder: "Describe the task and @who should read it…",
             modelValue: text.value,

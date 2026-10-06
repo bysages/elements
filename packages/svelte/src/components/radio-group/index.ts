@@ -4,11 +4,16 @@
  * ItemText, ItemControl, Indicator, ItemHiddenInput. */
 import { RadioGroup as ArkRadioGroup } from "@ark-ui/svelte/radio-group";
 
+import { defineFamily } from "../../internal/family";
+import RadioGroupFacade from "./RadioGroup.svelte";
 import RadioGroupRoot from "./RadioGroupRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const RadioGroup: Omit<typeof ArkRadioGroup, "Root"> & { Root: typeof RadioGroupRoot } = {
+export const RadioGroup: typeof RadioGroupFacade &
+  Omit<typeof ArkRadioGroup, "Root"> & {
+    Root: typeof RadioGroupRoot;
+  } = defineFamily(RadioGroupFacade, {
   ...ArkRadioGroup,
   Root: RadioGroupRoot,
-};
+});

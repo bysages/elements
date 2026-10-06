@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Avatars overlapping one row, each rimmed in the ground so the pile
  * stays legible. */
 export interface AvatarGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -9,8 +11,8 @@ export interface AvatarGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg";
 }
 
-export function AvatarGroup(props: AvatarGroupProps) {
+export const AvatarGroup = withSelfRoot(function AvatarGroup(props: AvatarGroupProps) {
   injectComponentStyle("avatar-group");
   const [own, rest] = splitProps(props, ["size"]);
   return <div {...rest} data-scope="avatar-group" data-part="root" data-size={own.size} />;
-}
+});

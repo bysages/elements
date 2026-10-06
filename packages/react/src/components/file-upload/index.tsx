@@ -1,14 +1,20 @@
 import { FileUpload as ArkFileUpload } from "@ark-ui/react/file-upload";
 import { injectComponentStyle } from "@bysages/core";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
+
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 
 type FileUploadRootProps = ComponentProps<typeof ArkFileUpload.Root> & {
   /** One rung of the control-height ladder for the trigger. */
   size?: "sm" | "md" | "lg";
 };
 
-function FileUploadRoot({ size = "md", ...rest }: FileUploadRootProps) {
-  return <ArkFileUpload.Root {...rest} data-size={size} />;
+function FileUploadRoot(props: FileUploadRootProps) {
+  const id = useElementId("file-upload", props);
+  const { size = "md", ...rest } = props;
+
+  return <ArkFileUpload.Root {...rest} id={id} data-size={size} />;
 }
 
 /** The inner trigger repeats the click binding the dropzone already
@@ -27,21 +33,74 @@ function FileUploadTrigger(props: ComponentProps<typeof ArkFileUpload.Trigger>) 
   );
 }
 
-/** Ark's FileUpload, dressed in the paper-and-ink system: a dashed
- * dropzone that floods with subtle light on drag-over, and accepted files
- * as loose hairline slips. The API is Ark's own — Root, Label, Trigger,
- * Dropzone, HiddenInput, ItemGroup, Item, ItemName, ItemSizeText,
- * ItemPreview, ItemPreviewImage, ItemDeleteTrigger, ClearTrigger,
- * Context. */
+const fileIcon = iconNode("file", { width: 16, height: 16 });
+
+const uploadIcon = iconNode("upload", { width: 28, height: 28 });
+
+const closeIcon = iconNode("x", { width: 14, height: 14 });
+
+interface FileUploadFacadeProps {
+  label?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  invalid?: boolean;
+  required?: boolean;
+  maxFiles?: number;
+  size?: "sm" | "md" | "lg";
+  children?: ReactNode;
+}
+
+/** The one-tag path: a labelled dropzone and its accepted slips; MIME
+ * rules, directories, and controlled files stay on the anatomy. */
+function FileUploadFacade({
+  label,
+  placeholder,
+  disabled = false,
+  invalid = false,
+  required = false,
+  maxFiles,
+  size = "md",
+}: FileUploadFacadeProps) {
+  return (
+    <FileUploadRoot
+      size={size}
+      disabled={disabled}
+      invalid={invalid}
+      required={required}
+      maxFiles={maxFiles}
+    >
+      {label ? <ArkFileUpload.Label>{label}</ArkFileUpload.Label> : null}
+      <ArkFileUpload.Dropzone>
+        <FileUploadTrigger>
+          {uploadIcon}
+          {placeholder ?? "Choose files"}
+        </FileUploadTrigger>
+      </ArkFileUpload.Dropzone>
+      <ArkFileUpload.ItemGroup>
+        <ArkFileUpload.Context>
+          {(api: { acceptedFiles: File[] }) =>
+            api.acceptedFiles.map((file) => (
+              <ArkFileUpload.Item key={file.name} file={file}>
+                <ArkFileUpload.ItemPreview>{fileIcon}</ArkFileUpload.ItemPreview>
+                <ArkFileUpload.ItemName />
+                <ArkFileUpload.ItemSizeText />
+                <ArkFileUpload.ItemDeleteTrigger>{closeIcon}</ArkFileUpload.ItemDeleteTrigger>
+              </ArkFileUpload.Item>
+            ))
+          }
+        </ArkFileUpload.Context>
+      </ArkFileUpload.ItemGroup>
+      <ArkFileUpload.HiddenInput />
+    </FileUploadRoot>
+  );
+}
+
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const FileUpload: Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
-  Root: typeof FileUploadRoot;
-  Trigger: typeof FileUploadTrigger;
-} = {
+export const FileUpload = Object.assign(FileUploadFacade, {
   ...ArkFileUpload,
   Root: FileUploadRoot,
   Trigger: FileUploadTrigger,
-};
+});
 
 injectComponentStyle("file-upload");

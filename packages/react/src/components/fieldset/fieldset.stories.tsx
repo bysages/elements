@@ -10,6 +10,16 @@ import { Select } from "../select";
 const meta: Meta = { title: "Components/Forms/Fieldset" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <Fieldset label="Contact details" description="All fields are required.">
+      <Field label="Name" placeholder="John Doe" required />
+      <Field label="Email" placeholder="john@example.com" required />
+    </Fieldset>
+  ),
+};
+
 const checkGlyph = (
   <svg width={14} height={14} viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <path
@@ -23,7 +33,7 @@ const checkGlyph = (
 );
 
 /** A serif legend heading a column of fields — the grouped form unit. */
-export const Basic = {
+export const Anatomy = {
   args: {
     legend: "Contact details",
     nameLabel: "Name",

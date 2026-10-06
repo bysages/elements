@@ -3,6 +3,9 @@ import type { PaginationRootProps as ArkPaginationRootProps } from "@ark-ui/soli
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /**
  * Pagination — paged navigation.
  *
@@ -17,14 +20,19 @@ type PaginationOwnProps = {
 
 function PaginationRoot(props: ArkPaginationRootProps & PaginationOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkPagination.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("pagination", () => rest.id);
+  return <ArkPagination.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Pagination: Omit<typeof ArkPagination, "Root"> & { Root: typeof PaginationRoot } = {
-  ...ArkPagination,
-  Root: PaginationRoot,
-};
+export const Pagination: typeof PaginationRoot &
+  Omit<typeof ArkPagination, "Root"> & { Root: typeof PaginationRoot } = defineFamily(
+  PaginationRoot,
+  {
+    ...ArkPagination,
+    Root: PaginationRoot,
+  },
+);
 
 injectComponentStyle("pagination");

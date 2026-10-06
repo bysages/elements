@@ -96,7 +96,7 @@ function onKeyDown(event: KeyboardEvent) {
       data-scope="layout"
       data-part="sider-resize"
       data-dragging={dragging ? "" : undefined}
-      role="separator"
+      role="slider"
       aria-orientation="vertical"
       tabindex={0}
       aria-label={messages().sidebar.resize}

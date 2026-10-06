@@ -1,6 +1,5 @@
 import { createListCollection } from "@ark-ui/vue/select";
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_down, chevron_left, chevron_right } from "@bysages/icons";
 import type { SortingState } from "@tanstack/vue-table";
 import {
   FlexRender,
@@ -51,12 +50,14 @@ import {
   h,
   onScopeDispose,
   ref,
-  Teleport,
   type CSSProperties,
   type PropType,
+  type SetupContext,
 } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
@@ -65,10 +66,10 @@ export { FlexRender, createColumnHelper };
 export type { ColumnDef, SortingState };
 
 /** The pagination bar's arrows — thin chevrons for the row of seals. */
-function pageGlyph(direction: "start" | "end") {
+function pageIcon(direction: "start" | "end") {
   return direction === "start"
-    ? glyphNode(chevron_left, { width: 14, height: 14 })
-    : glyphNode(chevron_right, { width: 14, height: 14 });
+    ? iconNode("chevron-left", { width: 14, height: 14 })
+    : iconNode("chevron-right", { width: 14, height: 14 });
 }
 
 /** Column metadata understood by this table: mark columns whose values
@@ -214,13 +215,13 @@ function mark(el: HTMLElement, attr: string, on: boolean) {
   else el.removeAttribute(attr);
 }
 
-function chevronGlyph() {
-  return glyphNode(chevron_right);
+function chevronIcon() {
+  return iconNode("chevron-right");
 }
 
 /** The page-size select's pointing chevron. */
-function chevronDownGlyph() {
-  return glyphNode(chevron_down);
+function chevronDownIcon() {
+  return iconNode("chevron-down");
 }
 
 function selectBox(checked: boolean, indeterminate: boolean, onToggle: () => void, label: string) {
@@ -233,7 +234,7 @@ function selectBox(checked: boolean, indeterminate: boolean, onToggle: () => voi
   });
 }
 
-export const DataTable = defineComponent({
+const DataTableFacade = defineComponent({
   name: "SDataTable",
   emits: {
     rowReorder: (_rows: RowData[]) => true,
@@ -267,9 +268,10 @@ export const DataTable = defineComponent({
     externalDrops: Boolean,
     defaultExpanded: Boolean,
   },
-  setup(rawProps, { expose, emit }) {
+  setup(rawProps, { attrs, expose, emit }: SetupContext) {
     injectComponentStyle("table");
     const messages = useComponentMessages();
+    const id = useElementId("table", attrs);
 
     // Declared defaults keep these present at runtime.
     const props = rawProps as DataTableProps & Required<Pick<DataTableProps, "pageSizeOptions">>;
@@ -750,7 +752,7 @@ export const DataTable = defineComponent({
                   : messages.value.table.expandRow,
                 onClick: () => row.toggleExpanded(),
               },
-              chevronGlyph(),
+              chevronIcon(),
             ),
             h(FlexRender, { cell }),
           ],
@@ -978,6 +980,7 @@ export const DataTable = defineComponent({
             const pageSize = h(
               ArkSelect.Root as never,
               {
+                id: `${id.value}-page-size`,
                 collection: createListCollection({ items: sizeItems }),
                 modelValue: [String(pagination.pageSize)],
                 "onUpdate:modelValue": (values: string[]) => {
@@ -995,38 +998,37 @@ export const DataTable = defineComponent({
                     { "aria-label": messages.value.table.rowsPerPage },
                     () => [
                       h(ArkSelect.ValueText as never),
-                      h(ArkSelect.Indicator as never, () => chevronDownGlyph()),
+                      h(ArkSelect.Indicator as never, () => chevronDownIcon()),
                     ],
                   ),
                 ),
-                h(Teleport, { to: "body" }, [
-                  h(ArkSelect.Positioner as never, () =>
-                    h(ArkSelect.Content as never, () =>
-                      sizeItems.map((item) =>
-                        h(
-                          ArkSelect.Item as never,
-                          { key: item.value, item, value: item.value },
-                          () => [
-                            h(ArkSelect.ItemText as never, () => item.label),
-                            h(ArkSelect.ItemIndicator as never, () => "✓"),
-                          ],
-                        ),
+                h(ArkSelect.Positioner as never, () =>
+                  h(ArkSelect.Content as never, () =>
+                    sizeItems.map((item) =>
+                      h(
+                        ArkSelect.Item as never,
+                        { key: item.value, item, value: item.value },
+                        () => [
+                          h(ArkSelect.ItemText as never, () => item.label),
+                          h(ArkSelect.ItemIndicator as never, () => "✓"),
+                        ],
                       ),
                     ),
                   ),
-                ]),
+                ),
               ],
             );
             const pager = h(
               ArkPagination.Root,
               {
+                id: `${id.value}-pagination`,
                 count: rowCount,
                 pageSize: pagination.pageSize,
                 page: pagination.pageIndex + 1,
                 onPageChange: (details: { page: number }) => table.setPageIndex(details.page - 1),
               },
               () => [
-                h(ArkPagination.PrevTrigger, null, () => pageGlyph("start")),
+                h(ArkPagination.PrevTrigger, null, () => pageIcon("start")),
                 h(ArkPagination.Context, null, {
                   default: (scope: { pages: { type: string; value: number }[] }) =>
                     scope.pages.map((page, index) =>
@@ -1039,7 +1041,7 @@ export const DataTable = defineComponent({
                           ),
                     ),
                 }),
-                h(ArkPagination.NextTrigger, null, () => pageGlyph("end")),
+                h(ArkPagination.NextTrigger, null, () => pageIcon("end")),
               ],
             );
             return h("div", { "data-scope": "table", "data-part": "pagination" }, [
@@ -1071,6 +1073,7 @@ export const DataTable = defineComponent({
       return h(
         "div",
         {
+          id: id.value,
           "data-scope": "table",
           "data-part": "root",
           "data-reorderable": props.reorderable || undefined,
@@ -1105,3 +1108,5 @@ export const DataTable = defineComponent({
     };
   },
 });
+
+export const DataTable = withSelfRoot(DataTableFacade);

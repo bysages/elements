@@ -47,8 +47,19 @@ function box(checked: boolean | "indeterminate", label: string, disabled = false
   );
 }
 
-/** The three resting postures: checked, unchecked, and a disabled row. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
+      <Checkbox defaultValue label="Ship the register" />
+      <Checkbox label="Outline the story" />
+      <Checkbox label="Archived" disabled />
+    </div>
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   render: () => (
     <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
       {box(true, "Ship the register")}

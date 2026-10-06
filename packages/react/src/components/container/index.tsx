@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The reading frame: content held to a measure and centered on the
  * page. The sizes name typographic measures, not breakpoints — the page
  * owns its edges, the container only owns how long a line of ink runs. */
@@ -11,7 +13,7 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
   padding?: boolean;
 }
 
-export function Container({ size = "readable", padding = true, ...rest }: ContainerProps) {
+function ContainerImpl({ size = "readable", padding = true, ...rest }: ContainerProps) {
   injectComponentStyle("container");
   return (
     <div
@@ -23,3 +25,5 @@ export function Container({ size = "readable", padding = true, ...rest }: Contai
     />
   );
 }
+
+export const Container = withSelfRoot(ContainerImpl);

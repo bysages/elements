@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
-import { For, Show, createSignal, createUniqueId, splitProps, type JSX } from "solid-js";
+import { For, Show, createSignal, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Pagination } from "../pagination";
 
@@ -19,9 +20,8 @@ export interface DataViewProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * renderItem, the view lays the records out as a ledger or a lattice
  * and — when a page size is given — pages them with the pagination
  * family's own parts rather than a second implementation. */
-export function DataView(props: DataViewProps) {
+export const DataView = withSelfRoot(function DataView(props: DataViewProps) {
   injectComponentStyle("data-view");
-  const uid = createUniqueId();
   const [own, rest] = splitProps(props, ["items", "layout", "pageSize", "renderItem", "header"]);
   const messages = useComponentMessages();
   const [page, setPage] = createSignal(1);
@@ -30,7 +30,7 @@ export function DataView(props: DataViewProps) {
   const visible = () =>
     own.pageSize ? own.items.slice((page() - 1) * own.pageSize, page() * own.pageSize) : own.items;
   return (
-    <div {...rest} data-scope="data-view" data-part="root" data-uid={uid}>
+    <div {...rest} data-scope="data-view" data-part="root">
       {own.header}
       <div data-scope="data-view" data-part="content" data-layout={own.layout ?? "list"}>
         <For each={visible()}>
@@ -76,4 +76,4 @@ export function DataView(props: DataViewProps) {
       </Show>
     </div>
   );
-}
+});

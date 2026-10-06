@@ -4,11 +4,16 @@
  * HiddenInput. */
 import { DateInput as ArkDateInput } from "@ark-ui/svelte/date-input";
 
+import { defineFamily } from "../../internal/family";
+import DateInputFacade from "./DateInput.svelte";
 import DateInputRoot from "./DateInputRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const DateInput: Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateInputRoot } = {
+export const DateInput: typeof DateInputFacade &
+  Omit<typeof ArkDateInput, "Root"> & {
+    Root: typeof DateInputRoot;
+  } = defineFamily(DateInputFacade, {
   ...ArkDateInput,
   Root: DateInputRoot,
-};
+});

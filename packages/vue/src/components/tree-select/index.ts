@@ -2,14 +2,15 @@ import { useFilter } from "@ark-ui/vue/locale";
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/vue/tree-view";
 import { injectComponentStyle } from "@bysages/core";
-import { chevron_right } from "@bysages/icons";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
-import { Teleport } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
+import { Popover } from "../popover";
 
 export interface TreeSelectNode {
   label: string;
@@ -19,7 +20,7 @@ export interface TreeSelectNode {
 }
 
 function chevron() {
-  return glyphNode(chevron_right);
+  return iconNode("chevron-right");
 }
 
 function chevronDown() {
@@ -33,7 +34,7 @@ function chevronDown() {
  * `modelValue`. `filterable` puts a filter line at the top of the
  * vessel; matches keep their ancestors and the branches fan open.
  */
-export const TreeSelect = defineComponent({
+const TreeSelectFacade = defineComponent({
   name: "TreeSelect",
   /* The root is a popover fragment (trigger + portal), so the caller's
      class rides on the control itself. */
@@ -54,6 +55,7 @@ export const TreeSelect = defineComponent({
     injectComponentStyle("tree-select");
     injectComponentStyle("tree-view");
     const messages = useComponentMessages();
+    const hostId = useElementId("tree-select", ctx.attrs);
 
     const open = ref(false);
     const query = ref("");
@@ -162,6 +164,7 @@ export const TreeSelect = defineComponent({
       h(
         ArkPopover.Root,
         {
+          id: `${hostId.value}:popover`,
           open: open.value,
           "onUpdate:open": (value: boolean) => {
             open.value = value;
@@ -187,59 +190,58 @@ export const TreeSelect = defineComponent({
               [label.value ?? props.placeholder, chevronDown()],
             ),
           ),
-          h(Teleport, { to: "body" }, [
-            h(ArkPopover.Positioner, () => [
-              h(
-                ArkPopover.Content,
-                { "data-scope": "tree-select", "data-part": "content", "data-size": props.size },
-                () => [
-                  ...(props.filterable
+          h(ArkPopover.Positioner, () => [
+            h(
+              ArkPopover.Content,
+              { "data-scope": "tree-select", "data-part": "content", "data-size": props.size },
+              () => [
+                ...(props.filterable
+                  ? [
+                      h("div", { "data-scope": "tree-select", "data-part": "search" }, [
+                        h(Input, {
+                          size: "sm",
+                          modelValue: query.value,
+                          "onUpdate:modelValue": (value: string) => (query.value = value),
+                          placeholder: messages.value.command.filter,
+                          "aria-label": messages.value.select.filter,
+                        }),
+                      ]),
+                    ]
+                  : []),
+                h("div", { "data-scope": "tree-select", "data-part": "body" }, [
+                  (visibleCollection.value.rootNode.children ?? []).length === 0
                     ? [
-                        h("div", { "data-scope": "tree-select", "data-part": "search" }, [
-                          h(Input, {
-                            size: "sm",
-                            modelValue: query.value,
-                            "onUpdate:modelValue": (value: string) => (query.value = value),
-                            placeholder: messages.value.command.filter,
-                            "aria-label": messages.value.select.filter,
-                          }),
-                        ]),
+                        h(
+                          "p",
+                          { "data-scope": "tree-select", "data-part": "empty" },
+                          "Nothing matches",
+                        ),
                       ]
-                    : []),
-                  h("div", { "data-scope": "tree-select", "data-part": "body" }, [
-                    (visibleCollection.value.rootNode.children ?? []).length === 0
-                      ? [
-                          h(
-                            "p",
-                            { "data-scope": "tree-select", "data-part": "empty" },
-                            "Nothing matches",
-                          ),
-                        ]
-                      : [
-                          h(
-                            ArkTreeView.Root,
-                            {
-                              collection: visibleCollection.value,
-                              selectionMode: "single",
-                              selectedValue: props.modelValue ? [props.modelValue] : [],
-                              ...(filtering.value
-                                ? { expandedValue: expandedWhileFiltering.value }
-                                : { defaultExpandedValue: firstLevel.value }),
-                              onSelectionChange: pick,
-                            } as never,
-                            () => [
-                              h(ArkTreeView.Tree, () =>
-                                visibleCollection.value.rootNode.children?.map((node, index) =>
-                                  h(Row, { key: node.value, node, indexPath: [index] }),
-                                ),
+                    : [
+                        h(
+                          ArkTreeView.Root,
+                          {
+                            id: `${hostId.value}:tree`,
+                            collection: visibleCollection.value,
+                            selectionMode: "single",
+                            selectedValue: props.modelValue ? [props.modelValue] : [],
+                            ...(filtering.value
+                              ? { expandedValue: expandedWhileFiltering.value }
+                              : { defaultExpandedValue: firstLevel.value }),
+                            onSelectionChange: pick,
+                          } as never,
+                          () => [
+                            h(ArkTreeView.Tree, () =>
+                              visibleCollection.value.rootNode.children?.map((node, index) =>
+                                h(Row, { key: node.value, node, indexPath: [index] }),
                               ),
-                            ],
-                          ),
-                        ],
-                  ]),
-                ],
-              ),
-            ]),
+                            ),
+                          ],
+                        ),
+                      ],
+                ]),
+              ],
+            ),
           ]),
         ],
       );
@@ -248,3 +250,6 @@ export const TreeSelect = defineComponent({
 
 // The tree rows keep the TreeView family's stylesheet — the vessel and
 // positioner ride the tree-select scope above.
+
+export const TreeSelect = defineFamily(TreeSelectFacade, Popover) as typeof TreeSelectFacade &
+  typeof Popover;

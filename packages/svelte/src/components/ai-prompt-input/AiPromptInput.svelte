@@ -4,6 +4,7 @@ injectComponentStyle("ai");
 
 import { Button } from "../button";
 import { Field } from "../field";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import { MentionsVessel, useMentions } from "../mentions";
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -82,18 +83,7 @@ const hasFooter = $derived(footer != null);
       aria-label={messages().ai.send}
       disabled={disabled || !value.trim()}
     >
-      <svg
-        viewBox="0 0 16 16"
-        width="14"
-        height="14"
-        aria-hidden="true"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="square"
-      >
-        <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
-      </svg>
+      <InternalIcon name="arrow-up" size="sm" />
     </Button>
   {/if}
 {/snippet}

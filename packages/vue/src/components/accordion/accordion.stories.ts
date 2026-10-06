@@ -37,19 +37,64 @@ const items = [
   },
 ];
 
-/** One row may be open at a time; the open leaf keeps a lit edge while the
- * others rest. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    disabled: false,
+  render: () => {
+    const items = [
+      {
+        value: "paper",
+        title: "What is the paper-and-ink system?",
+        content:
+          "Interfaces are warm paper, content is ink, hierarchy is light — never pure white, never a hard pop.",
+      },
+      {
+        value: "tokens",
+        title: "Where do visual values come from?",
+        content:
+          "Every color, spacing, radius, elevation, and duration resolves from design tokens; a hardcoded pixel is a bug.",
+      },
+    ];
+    return h(Accordion, { items, defaultValue: ["paper"] });
   },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h(Accordion.Root, { defaultValue: ["paper"], disabled: args.disabled }, () =>
-          items.map((item) => leaf(item)),
-        ),
-    ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const items = [
+      {
+        value: "paper",
+        title: "What is the paper-and-ink system?",
+        content: "Warm paper, ink, and hierarchy made by light.",
+      },
+      {
+        value: "tokens",
+        title: "Where do visual values come from?",
+        content: "Every visual value resolves from a token.",
+      },
+    ];
+    return h(Accordion.Root, { defaultValue: ["paper"] }, () =>
+      items.map((item) =>
+        h(Accordion.Item, { key: item.value, value: item.value }, () => [
+          h(Accordion.ItemTrigger, () => [
+            item.title,
+            h(Accordion.ItemIndicator, () =>
+              h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": true }, [
+                h("path", {
+                  d: "M4 6l4 4 4-4",
+                  stroke: "currentColor",
+                  "stroke-width": 1.5,
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                }),
+              ]),
+            ),
+          ]),
+          h(Accordion.ItemContent, () => item.content),
+        ]),
+      ),
+    );
+  },
 };
 
 /** Collapsible: the open leaf may also be folded — at rest, all rows

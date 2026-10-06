@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface CommentProps extends JSX.HTMLAttributes<HTMLElement> {
   author?: string;
   datetime?: string;
@@ -16,7 +18,7 @@ export interface CommentProps extends JSX.HTMLAttributes<HTMLElement> {
  * the body carries the byline from `author` and `datetime`, the ink is
  * the children, and `actions` is the row of answers.
  */
-export function Comment(props: CommentProps) {
+export const Comment = withSelfRoot(function Comment(props: CommentProps) {
   injectComponentStyle("comment");
   const [own, rest] = splitProps(props, ["author", "datetime", "avatar", "actions", "children"]);
   return (
@@ -52,4 +54,4 @@ export function Comment(props: CommentProps) {
       </div>
     </article>
   );
-}
+});

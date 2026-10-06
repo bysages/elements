@@ -52,31 +52,16 @@ function positioner(children: React.ReactNode) {
  * light with a hairline between courses. */
 export const Basic = {
   args: {
-    label: "File",
+    trigger: "File",
+    items: [
+      { label: "New file", value: "new-file" },
+      { label: "Open…", value: "open", disabled: true },
+      { label: "Save", value: "save" },
+      { label: "Save as…", value: "save-as" },
+      { label: "Export", value: "export" },
+    ],
   },
-  render: (args: any) => (
-    <Menu.Root>
-      <Menu.Trigger>
-        <span>{args.label}</span>
-        <Menu.Indicator>{chevronDown()}</Menu.Indicator>
-      </Menu.Trigger>
-      {positioner(
-        <>
-          <Menu.Item value="new-file">New file</Menu.Item>
-          <Menu.Item value="open" disabled>
-            Open…
-          </Menu.Item>
-          <Menu.ItemGroup>
-            <Menu.ItemGroupLabel>Save</Menu.ItemGroupLabel>
-            <Menu.Item value="save">Save</Menu.Item>
-            <Menu.Item value="save-as">Save as…</Menu.Item>
-          </Menu.ItemGroup>
-          <Menu.Separator />
-          <Menu.Item value="export">Export</Menu.Item>
-        </>,
-      )}
-    </Menu.Root>
-  ),
+  render: (args: any) => <Menu trigger={args.trigger} items={args.items} />,
 };
 
 /** Toggle rows: each carries its own check, independent of the others. */
@@ -312,3 +297,6 @@ export const MultipleTriggers = {
     </div>
   ),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

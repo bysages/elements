@@ -16,7 +16,7 @@ function frame(value: string, extraProps: Record<string, any> = {}) {
   ]);
 }
 
-function sealGlyph() {
+function sealIcon() {
   return h(
     "svg",
     {
@@ -33,9 +33,14 @@ function sealGlyph() {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => h(QrCode, { defaultValue: "https://www.bysages.com/" }),
+};
+
 /** The code prints in ink; an overlaid paper badge carries a mark, and the
  * download control stays a quiet seal beneath it. */
-export const Basic = {
+export const Anatomy = {
   args: {
     value: "https://www.bysages.com/",
   },
@@ -44,7 +49,7 @@ export const Basic = {
       () => () =>
         h(QrCode.Root, { value: args.value }, () => [
           h(QrCode.Frame, () => h(QrCode.Pattern)),
-          h(QrCode.Overlay, () => sealGlyph()),
+          h(QrCode.Overlay, () => sealIcon()),
           h(
             QrCode.DownloadTrigger,
             { fileName: "qr-code.png", mimeType: "image/png" },
@@ -167,7 +172,7 @@ export const Overlay = {
   render: () =>
     h(QrCode.Root, { defaultValue: "https://www.bysages.com/", encoding: { ecc: "H" } }, () => [
       h(QrCode.Frame, () => h(QrCode.Pattern)),
-      h(QrCode.Overlay, () => sealGlyph()),
+      h(QrCode.Overlay, () => sealIcon()),
     ]),
 };
 

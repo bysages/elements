@@ -3,6 +3,9 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useElementId } from "../../internal/id";
+import { Menu } from "../menu";
+
 export interface MenubarEntry {
   label: string;
   value: string;
@@ -34,13 +37,18 @@ export interface MenubarProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSe
   onSelect?: (value: string) => void;
 }
 
-export function Menubar({ items, onSelect, children, ...rest }: MenubarProps) {
+function MenubarImpl({ items, onSelect, children, ...rest }: MenubarProps) {
   injectComponentStyle("menubar");
   injectComponentStyle("menu");
+  const hostId = useElementId("menubar", rest);
   return (
     <div {...rest} data-scope="menubar" data-part="root" role="menubar">
       {items.map((group) => (
-        <ArkMenu.Root key={group.label} positioning={{ placement: "bottom-start" }}>
+        <ArkMenu.Root
+          key={group.label}
+          id={`${hostId}:menu:${group.label}`}
+          positioning={{ placement: "bottom-start" }}
+        >
           <ArkMenu.Trigger asChild>
             <button type="button" role="menuitem" data-scope="menubar" data-part="trigger">
               {group.label}
@@ -71,4 +79,6 @@ export function Menubar({ items, onSelect, children, ...rest }: MenubarProps) {
     </div>
   );
 }
+
+export const Menubar = Object.assign(MenubarImpl, Menu) as typeof MenubarImpl & typeof Menu;
 // The popups keep the menu parts, so the menu stylesheet dresses them.

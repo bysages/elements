@@ -3,7 +3,7 @@ import { Button, Result } from "@bysages/vue";
 </script>
 
 <template>
-  <Result.Root status="success" class="w-full">
+  <Result status="success" class="w-full">
     <Result.Icon />
     <Result.Title>The archive holds your letter</Result.Title>
     <Result.Description>
@@ -13,5 +13,5 @@ import { Button, Result } from "@bysages/vue";
       <Button variant="solid" tone="ink" size="sm">Back to the shelf</Button>
       <Button variant="ghost" tone="ink" size="sm">Write another</Button>
     </Result.Extra>
-  </Result.Root>
+  </Result>
 </template>

@@ -4,6 +4,9 @@ import type { ListboxRootProps as ArkListboxRootProps } from "@ark-ui/solid/list
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Ark's Listbox, dressed in the paper-and-ink system: quiet rows of ink
  * where the checked row alone takes the flat primary fill. The API is
  * Ark's own — Root, Label, Input, Content, Empty, Item, ItemText,
@@ -22,14 +25,16 @@ const ArkRoot = ArkListbox.Root as <T extends CollectionItem>(props: ArkListboxR
 
 function ListboxRoot<T extends CollectionItem>(props: ArkListboxRootProps<T> & ListboxOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkRoot {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("listbox", () => rest.id);
+  return <ArkRoot {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Listbox: Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRoot } = {
+export const Listbox: typeof ListboxRoot &
+  Omit<typeof ArkListbox, "Root"> & { Root: typeof ListboxRoot } = defineFamily(ListboxRoot, {
   ...ArkListbox,
   Root: ListboxRoot,
-};
+});
 
 injectComponentStyle("listbox");

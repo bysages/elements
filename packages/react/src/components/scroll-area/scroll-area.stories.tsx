@@ -39,9 +39,22 @@ function area(
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => (
+    <div style={ROOT_STYLE}>
+      <ScrollArea style={{ height: "100%" }}>
+        <p>Ink rests on paper.</p>
+        <p>Light decides hierarchy.</p>
+        <p>Whitespace is breath.</p>
+      </ScrollArea>
+    </div>
+  ),
+};
+
 /** The hairline vessel with ink lanes: scrollbars stay hidden until hover
  * or scroll summons them. */
-export const Basic = {
+export const Anatomy = {
   args: {
     orientation: "vertical",
   },

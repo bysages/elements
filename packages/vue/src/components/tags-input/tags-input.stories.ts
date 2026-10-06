@@ -7,6 +7,16 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Tags Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(TagsInput, {
+      defaultValue: ["Qinghua", "Celadon"],
+      label: "Pigments",
+      placeholder: "Add pigment",
+    }),
+};
+
 const XIcon = () =>
   h("svg", { viewBox: "0 0 16 16", fill: "none" }, [
     h("path", {
@@ -55,7 +65,7 @@ function field(
 }
 
 /** Type and press enter; chips carry a delete whisker each. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Pigments",
     placeholder: "Add pigment",

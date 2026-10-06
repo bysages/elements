@@ -7,6 +7,7 @@ import { Portal } from "@ark-ui/svelte/portal";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/svelte/tree-view";
 
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import Input from "../input/Input.svelte";
 import { useComponentMessages } from "../config-provider/messages";
 import type { TreeSelectNode, TreeSelectProps } from "./props";
@@ -92,17 +93,7 @@ function pick(details: { selectedValue: string[] }) {
       <ArkTreeView.Branch>
         <ArkTreeView.BranchControl>
           <ArkTreeView.BranchIndicator>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <InternalIcon name="chevron-right" />
           </ArkTreeView.BranchIndicator>
           <ArkTreeView.BranchText>{node.label}</ArkTreeView.BranchText>
         </ArkTreeView.BranchControl>
@@ -149,17 +140,7 @@ matches keep their ancestors and the branches fan open. -->
       >
         {label ?? placeholder}
         <span data-part="chevron" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m9 18 6-6-6-6" />
-          </svg>
+          <InternalIcon name="chevron-right" />
         </span>
       </button>
     {/snippet}

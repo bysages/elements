@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Whitespace chosen by name: the named steps point at the space ramp so
  * siblings are held apart by one token, never by ad-hoc margins. */
 const gapVars: Record<string, string> = {
@@ -20,7 +22,7 @@ export interface StackProps extends HTMLAttributes<HTMLDivElement> {
   justify?: string;
 }
 
-export function Stack({
+function StackImpl({
   direction = "column",
   gap = "md",
   wrap = false,
@@ -41,3 +43,5 @@ export function Stack({
     <div {...rest} style={style} data-scope="stack" data-part="root" data-direction={direction} />
   );
 }
+
+export const Stack = withSelfRoot(StackImpl);

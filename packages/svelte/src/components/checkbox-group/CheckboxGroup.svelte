@@ -4,10 +4,11 @@ injectComponentStyle("checkbox-group");
 
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 import { useFieldContext } from "@ark-ui/svelte/field";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import type { CheckboxGroupProps } from "./props";
 
 let {
-  value = $bindable([]),
+  value = $bindable(),
   options,
   layout = "vertical",
   size = "md",
@@ -23,27 +24,20 @@ const field = useFieldContext();
 // each box claims its own ids instead.
 const uid = $props.id();
 
-const selected = $derived(new Set(value));
 const isInvalid = $derived(invalid || field?.()?.invalid === true);
 const isDisabled = $derived(disabled || field?.()?.disabled === true);
-
-function toggle(option: string) {
-  const next = new Set(selected);
-  if (next.has(option)) next.delete(option);
-  else next.add(option);
-  value = [...next];
-}
 </script>
 
 <!-- One question, many answers: a labelled stack (or row) of the
-seal-cut checkboxes bound to a single array. The group itself is
-semantics (`role="group"`), the boxes stay the machine-driven
-originals. Inside a Field.Root the group picks up the field context,
-so the invalid and disabled states a Form routes to its name dress
-every box at once. -->
-<div
+seal-cut checkboxes bound to a single array. Ark's group machine owns
+selection; each box joins it by value. Inside a Field.Root the group
+picks up the field context, so the invalid and disabled states a Form
+routes to its name dress every box at once. -->
+<ArkCheckbox.Group
+  bind:value
+  disabled={isDisabled}
+  invalid={isInvalid}
   {...rest}
-  role="group"
   data-scope="checkbox-group"
   data-part="root"
   data-layout={layout}
@@ -55,29 +49,17 @@ every box at once. -->
         label: `${uid}:${option.value}:label`,
         hiddenInput: `${uid}:${option.value}:input`,
       }}
-      checked={selected.has(option.value)}
-      invalid={isInvalid}
+      value={option.value}
       data-size={size}
-      disabled={isDisabled || option.disabled === true}
-      onCheckedChange={() => toggle(option.value)}
+      disabled={option.disabled === true}
     >
       <ArkCheckbox.Control>
         <ArkCheckbox.Indicator>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m5 12.5 5 5L19 7" />
-          </svg>
+          <InternalIcon name="check" />
         </ArkCheckbox.Indicator>
       </ArkCheckbox.Control>
       <ArkCheckbox.Label>{option.label}</ArkCheckbox.Label>
       <ArkCheckbox.HiddenInput />
     </ArkCheckbox.Root>
   {/each}
-</div>
+</ArkCheckbox.Group>

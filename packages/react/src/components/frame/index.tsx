@@ -1,4 +1,8 @@
-import { Frame as ArkFrame } from "@ark-ui/react/frame";
+import { Frame as ArkFrame, type FrameProps } from "@ark-ui/react/frame";
+import { forwardRef } from "react";
+
+import { withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 
 /** Ark's Frame, dressed in the paper-and-ink system: a sandboxed
  * iframe whose body teleports the children and whose `head` prop
@@ -7,4 +11,10 @@ import { Frame as ArkFrame } from "@ark-ui/react/frame";
  * fit; the vessel's border and paper belong to the consumer, since
  * an iframe carries no anatomy attributes for the core stylesheet
  * to hook. The API is Ark's own. */
-export const Frame = ArkFrame;
+const FrameRoot = forwardRef<HTMLIFrameElement, FrameProps>(function FrameRoot(props, ref) {
+  const id = useElementId("frame", props);
+
+  return <ArkFrame ref={ref} {...props} id={id} />;
+});
+
+export const Frame = withSelfRoot(FrameRoot as unknown as typeof ArkFrame);

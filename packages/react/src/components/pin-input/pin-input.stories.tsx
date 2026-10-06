@@ -7,6 +7,11 @@ import { Field } from "../field";
 const meta: Meta = { title: "Components/Forms/Pin Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <PinInput label="Verification code" placeholder="·" length={4} />,
+};
+
 function pin(extraProps: Record<string, any> = {}, count = 4) {
   return (
     <PinInput.Root placeholder="·" {...extraProps}>
@@ -23,7 +28,7 @@ function pin(extraProps: Record<string, any> = {}, count = 4) {
 
 /** A six-digit code: one character per seal, the caret hopping forward on
  * each keystroke. */
-export const Basic = {
+export const Anatomy = {
   args: {
     placeholder: "·",
     length: 6,

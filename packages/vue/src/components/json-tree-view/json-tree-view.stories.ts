@@ -8,6 +8,11 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Data/Json Tree View" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => h(JsonTreeView, { data: { title: "Paper & Ink", tags: ["paper", "ink"] } }),
+};
+
 const data = {
   name: "John Doe",
   age: 30,
@@ -43,7 +48,7 @@ function tree(extraProps: Record<string, any> = {}) {
 
 /** The object as a ledger: branches fold, values read as tabular
  * types. */
-export const Basic = {
+export const Anatomy = {
   args: {
     defaultExpandedDepth: 1,
   },
@@ -62,7 +67,11 @@ export const ArrayData = {
   render: () => {
     const testArray = [1, 2, 3, 4, 5];
     Object.defineProperties(testArray, {
-      customProperty: { value: "custom value", enumerable: false, writable: false },
+      customProperty: {
+        value: "custom value",
+        enumerable: false,
+        writable: false,
+      },
       anotherProperty: { value: 42, enumerable: false, writable: false },
     });
     const sparse = [] as any[];
@@ -158,7 +167,12 @@ export const RenderValue = {
       JsonTreeView.Root,
       {
         defaultExpandedDepth: 2,
-        data: { name: "John Doe", age: 30, email: "john.doe@example.com", NaN: Number.NaN },
+        data: {
+          name: "John Doe",
+          age: 30,
+          email: "john.doe@example.com",
+          NaN: Number.NaN,
+        },
       },
       () =>
         h(
@@ -172,7 +186,10 @@ export const RenderValue = {
                 if (isEmail(email)) {
                   return h(
                     "a",
-                    { href: `mailto:${email}`, style: { color: "var(--bs-color-primary)" } },
+                    {
+                      href: `mailto:${email}`,
+                      style: { color: "var(--bs-color-primary)" },
+                    },
                     () => email,
                   );
                 }

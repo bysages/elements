@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The same named steps of the space ramp the stack uses — one
  * vocabulary of distance across the layout primitives. */
 const gapVars: Record<string, string> = {
@@ -21,7 +23,7 @@ export interface MasonryProps extends JSX.HTMLAttributes<HTMLDivElement> {
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 }
 
-export function Masonry(props: MasonryProps) {
+export const Masonry = withSelfRoot(function Masonry(props: MasonryProps) {
   injectComponentStyle("masonry");
   const [own, rest] = splitProps(props, ["columns", "gap"]);
   return (
@@ -36,4 +38,4 @@ export function Masonry(props: MasonryProps) {
       data-part="root"
     />
   );
-}
+});

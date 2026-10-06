@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A counting coin: the numeric value, capped at `max` with an ellipsis
  * of the remainder ("99+"). */
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
@@ -10,7 +12,7 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: "solid" | "subtle" | "outline";
 }
 
-export function Chip({ value, max, tone = "ink", variant = "solid", ...rest }: ChipProps) {
+function ChipImpl({ value, max, tone = "ink", variant = "solid", ...rest }: ChipProps) {
   injectComponentStyle("chip");
   const text = max != null && value > max ? `${max}+` : String(value);
   return (
@@ -19,3 +21,5 @@ export function Chip({ value, max, tone = "ink", variant = "solid", ...rest }: C
     </span>
   );
 }
+
+export const Chip = withSelfRoot(ChipImpl);

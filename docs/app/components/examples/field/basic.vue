@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Field } from "@bysages/vue";
+import { ref } from "vue";
+
+const email = ref("");
 </script>
 
 <template>
-  <Field.Root required>
-    <Field.Label>
-      Display name
-      <Field.RequiredIndicator>*</Field.RequiredIndicator>
-    </Field.Label>
-    <Field.Input placeholder="How you sign your work" />
-    <Field.HelperText>Shown beside your published notes.</Field.HelperText>
-  </Field.Root>
+  <Field
+    v-model="email"
+    label="Email"
+    description="We only write about your orders."
+    placeholder="lin@example.com"
+    required
+  />
 </template>

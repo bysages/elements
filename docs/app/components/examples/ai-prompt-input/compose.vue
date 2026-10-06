@@ -85,14 +85,12 @@ const send = (value: string) => {
               <Icon :glyph="plus" />
             </Button>
           </Menu.Trigger>
-          <Teleport to="body">
-            <Menu.Positioner>
-              <Menu.Content>
-                <Menu.Item value="image" @select="picker?.click()">Upload image</Menu.Item>
-                <Menu.Item value="file" @select="picker?.click()">Upload file</Menu.Item>
-              </Menu.Content>
-            </Menu.Positioner>
-          </Teleport>
+          <Menu.Positioner>
+            <Menu.Content>
+              <Menu.Item value="image" @select="picker?.click()">Upload image</Menu.Item>
+              <Menu.Item value="file" @select="picker?.click()">Upload file</Menu.Item>
+            </Menu.Content>
+          </Menu.Positioner>
         </Menu.Root>
         <Toggle.Root v-model:pressed="webSearch" type="button">
           <Icon :glyph="globe" />
@@ -118,16 +116,14 @@ const send = (value: string) => {
               </svg>
             </Select.Indicator>
           </Select.Trigger>
-          <Teleport to="body">
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Item v-for="item in models.items" :key="item.value" :item="item">
-                  <Select.ItemText>{{ item.label }}</Select.ItemText>
-                  <Select.ItemIndicator>✓</Select.ItemIndicator>
-                </Select.Item>
-              </Select.Content>
-            </Select.Positioner>
-          </Teleport>
+          <Select.Positioner>
+            <Select.Content>
+              <Select.Item v-for="item in models.items" :key="item.value" :item="item">
+                <Select.ItemText>{{ item.label }}</Select.ItemText>
+                <Select.ItemIndicator>✓</Select.ItemIndicator>
+              </Select.Item>
+            </Select.Content>
+          </Select.Positioner>
         </Select.Root>
       </template>
     </AiPromptInput>

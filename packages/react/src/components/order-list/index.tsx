@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type DragEvent, type HTMLAttributes, useRef, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 
 export interface OrderOption {
@@ -8,31 +10,18 @@ export interface OrderOption {
   value: string;
 }
 
-const ARROWS: Record<string, string[]> = {
-  up: ["m18 15-6-6-6 6"],
-  down: ["m6 9 6 6 6-6"],
-  top: ["m18 15-6-6-6 6", "M5 4h14"],
-  bottom: ["m6 9 6 6 6-6", "M5 20h14"],
+type OrderDirection = "up" | "down" | "top" | "bottom";
+
+const ORDER_ICONS: Record<OrderDirection, { name: string; rail?: string }> = {
+  up: { name: "chevron-up" },
+  down: { name: "chevron-down" },
+  top: { name: "chevron-up", rail: `<path d="M5 4h14" />` },
+  bottom: { name: "chevron-down", rail: `<path d="M5 20h14" />` },
 };
 
-function arrowGlyph(paths: string[]) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={12}
-      height={12}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {paths.map((d) => (
-        <path key={d} d={d} />
-      ))}
-    </svg>
-  );
+function orderIcon(direction: OrderDirection) {
+  const icon = ORDER_ICONS[direction];
+  return iconNode(icon.name, { width: 12, height: 12 }, icon.rail ?? "");
 }
 
 export interface OrderListProps extends HTMLAttributes<HTMLDivElement> {
@@ -49,7 +38,7 @@ export interface OrderListProps extends HTMLAttributes<HTMLDivElement> {
  * the model is the order. Dragging rides the native drag events — a
  * hairline of primary ink marks the seam the row will land on — so
  * touch keeps the buttons as its route. */
-export function OrderList({ value, options, label, onValueChange, ...rest }: OrderListProps) {
+function OrderListImpl({ value, options, label, onValueChange, ...rest }: OrderListProps) {
   injectComponentStyle("order-list");
   const messages = useComponentMessages();
   const dragging = useRef<string | null>(null);
@@ -142,17 +131,17 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
               <span data-scope="order-list" data-part="controls">
                 {(
                   [
-                    [messages.orderList.toTop, ARROWS.top, -index, 0],
-                    [messages.orderList.moveUp, ARROWS.up, -1, 0],
-                    [messages.orderList.moveDown, ARROWS.down, 1, rows.length - 1],
+                    [messages.orderList.toTop, "top", -index, 0],
+                    [messages.orderList.moveUp, "up", -1, 0],
+                    [messages.orderList.moveDown, "down", 1, rows.length - 1],
                     [
                       messages.orderList.toBottom,
-                      ARROWS.bottom,
+                      "bottom",
                       rows.length - 1 - index,
                       rows.length - 1,
                     ],
                   ] as const
-                ).map(([aria, paths, offset, edge]) => (
+                ).map(([aria, direction, offset, edge]) => (
                   <button
                     key={aria}
                     type="button"
@@ -162,7 +151,7 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
                     disabled={index === edge}
                     onClick={() => move(option.value, offset)}
                   >
-                    {arrowGlyph([...paths])}
+                    {orderIcon(direction)}
                   </button>
                 ))}
               </span>
@@ -173,3 +162,5 @@ export function OrderList({ value, options, label, onValueChange, ...rest }: Ord
     </div>
   );
 }
+
+export const OrderList = withSelfRoot(OrderListImpl);

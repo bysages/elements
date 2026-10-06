@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { labelled, stringsFor, useBound } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { Icon } from "../icon";
+import { iconNode } from "../../internal/icon";
 import { Combobox } from "./index";
 
 /** A filterable field over a list; items are the choices. */
@@ -32,8 +32,8 @@ export default defineEntry({
           () => [
             h(Combobox.Control, () => [
               h(Combobox.Input as never, { placeholder: props.placeholder }),
-              h(Combobox.Trigger, () => [h(Icon, { name: "chevrons-up-down" })]),
-              h(Combobox.ClearTrigger, () => [h(Icon, { name: "x" })]),
+              h(Combobox.Trigger, () => [iconNode("chevrons-up-down", { width: 14, height: 14 })]),
+              h(Combobox.ClearTrigger, () => [iconNode("x", { width: 14, height: 14 })]),
             ]),
             h(Combobox.Positioner, () =>
               h(Combobox.Content, () =>
@@ -44,7 +44,9 @@ export default defineEntry({
                       { key: option.value, item: option, value: option.value },
                       () => [
                         h(Combobox.ItemText, () => [option.label]),
-                        h(Combobox.ItemIndicator, () => [h(Icon, { name: "check" })]),
+                        h(Combobox.ItemIndicator, () => [
+                          iconNode("check", { width: 14, height: 14 }),
+                        ]),
                       ],
                     ),
                   ),

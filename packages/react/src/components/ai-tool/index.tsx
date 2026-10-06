@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { chevron } from "../ai/chevron";
 import { Collapsible } from "../collapsible";
 
@@ -22,7 +23,7 @@ export interface ToolProps extends HTMLAttributes<HTMLDivElement> {
   output?: ReactNode;
 }
 
-export function Tool({ name, label, status, input, output, ...rest }: ToolProps) {
+function ToolImpl({ name, label, status, input, output, ...rest }: ToolProps) {
   injectComponentStyle("ai");
   return (
     <Collapsible.Root {...rest} data-ai="tool" data-status={status}>
@@ -58,4 +59,6 @@ export function Tool({ name, label, status, input, output, ...rest }: ToolProps)
     </Collapsible.Root>
   );
 }
+
+export const Tool = withSelfRoot(ToolImpl);
 export { Tool as AiTool };

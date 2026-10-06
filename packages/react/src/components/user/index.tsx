@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { Avatar, type AvatarSize } from "../avatar";
 
 export interface UserProps extends HTMLAttributes<HTMLDivElement> {
@@ -28,7 +29,7 @@ function initialsOf(name: string) {
  * quiet echo beneath. The mark is the Avatar itself — one component
  * renders it here, so every size and shape the Avatar knows the user
  * inherits; this row only lays the words out beside it. */
-export function User({
+function UserImpl({
   name,
   description,
   size,
@@ -58,3 +59,5 @@ export function User({
     </div>
   );
 }
+
+export const User = withSelfRoot(UserImpl);

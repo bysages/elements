@@ -4,8 +4,12 @@ import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
+import { Menu } from "../menu";
 
 export interface SplitButtonEntry {
   label: string;
@@ -44,7 +48,7 @@ export interface SplitButtonProps extends Omit<
  * button stylesheet's trigger register dresses it. The popup keeps the
  * menu parts untouched.
  */
-export function SplitButton(props: SplitButtonProps) {
+function SplitButtonImpl(props: SplitButtonProps) {
   injectComponentStyle("split-button");
   injectComponentStyle("menu");
   const [own, rest] = splitProps(props, [
@@ -61,6 +65,7 @@ export function SplitButton(props: SplitButtonProps) {
   const variant = () => own.variant ?? "solid";
   const tone = () => own.tone ?? "ink";
   const size = () => own.size ?? "md";
+  const id = useElementId("split-button-menu");
   const messages = useComponentMessages();
   return (
     <div {...rest} data-scope="split-button" data-part="root">
@@ -73,7 +78,7 @@ export function SplitButton(props: SplitButtonProps) {
       >
         {own.label}
       </Button>
-      <ArkMenu.Root positioning={{ placement: "bottom-end" }}>
+      <ArkMenu.Root id={id()} positioning={{ placement: "bottom-end" }}>
         <ArkMenu.Trigger
           // The machine's trigger anatomy stays on the element
           // (data-scope="menu", data-part="trigger") and the button
@@ -121,20 +126,9 @@ export function SplitButton(props: SplitButtonProps) {
 
 /** One stroke pointing down: all a fitted dropdown arrow needs. */
 function chevronDown() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.75}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
+  return iconNode("chevron-down", { width: "16", height: "16" });
 }
 // The popup keeps the menu parts, so the menu stylesheet dresses them.
+
+export const SplitButton = defineFamily(SplitButtonImpl, Menu) as typeof SplitButtonImpl &
+  typeof Menu;

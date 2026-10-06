@@ -2,7 +2,7 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("form");
 
-  import { Field as ArkField } from "@ark-ui/svelte/field";
+  import { untrack } from "svelte";
 
   import type { FormFieldProps } from "./props";
   import { useForm } from "./context";
@@ -19,7 +19,8 @@ injectComponentStyle("form");
     ...rest
   }: FormFieldProps = $props();
 
-  const engine = formProp ?? useForm();
+  const injectedForm = untrack(() => useForm());
+  const engine = $derived(formProp ?? injectedForm);
 
   /** A validator's complaint is a string or a Standard Schema issue;
    * both reduce to the sentence the field shows. */

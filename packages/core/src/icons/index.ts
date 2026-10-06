@@ -21,6 +21,11 @@ import {
   star,
   pencil,
   inbox,
+  maximize_2,
+  minus,
+  pause,
+  plus,
+  undo,
   calendar,
   square,
   zoom_in,
@@ -28,6 +33,10 @@ import {
   rotate_cw,
   droplet,
   x,
+  text_align_start,
+  text_align_center,
+  text_align_end,
+  text_align_justify,
 } from "@bysages/icons";
 import type { IconifyIcon } from "@bysages/icons";
 
@@ -35,8 +44,8 @@ export type { IconifyIcon };
 
 // The wrappers' registry — the few glyphs the component families draw
 // themselves. It is code, not config: the whitelist is this import list,
-// and a typo here fails the build. Anything beyond it is imported
-// straight from @bysages/icons by whoever names the glyph.
+// and a typo here fails the build. Anything beyond it is passed explicitly
+// from @bysages/icons through Icon's glyph prop.
 const registry: Record<string, IconifyIcon> = {
   check,
   chevron_down,
@@ -60,6 +69,11 @@ const registry: Record<string, IconifyIcon> = {
   star,
   pencil,
   inbox,
+  maximize_2,
+  minus,
+  pause,
+  plus,
+  undo,
   calendar,
   square,
   zoom_in,
@@ -67,6 +81,10 @@ const registry: Record<string, IconifyIcon> = {
   rotate_cw,
   droplet,
   x,
+  text_align_start,
+  text_align_center,
+  text_align_end,
+  text_align_justify,
 };
 
 export function getIcon(name: string): IconifyIcon | undefined {

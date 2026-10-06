@@ -3,7 +3,8 @@
   import { getBoundProp } from "@json-render/svelte";
   import type { BaseComponentProps } from "@json-render/svelte";
 
-  import { Icon, Select, Stack, Typography } from "../index";
+  import InternalIcon from "../../../internal/InternalIcon.svelte";
+  import { Select, Stack, Typography } from "../index";
 
   let { props, bindings }: BaseComponentProps<any> = $props();
 
@@ -29,7 +30,7 @@
         <Select.Trigger>
           <Select.ValueText placeholder={props.placeholder} />
         </Select.Trigger>
-        <Select.Indicator><Icon name="chevrons-up-down" /></Select.Indicator>
+        <Select.Indicator><InternalIcon name="chevrons-up-down" /></Select.Indicator>
       </Select.Control>
       <Select.Positioner>
         <Select.Content>
@@ -37,7 +38,7 @@
             {#each props.options as option (option.value)}
               <Select.Item item={option}>
                 <Select.ItemText>{option.label}</Select.ItemText>
-                <Select.ItemIndicator><Icon name="check" /></Select.ItemIndicator>
+                <Select.ItemIndicator><InternalIcon name="check" /></Select.ItemIndicator>
               </Select.Item>
             {/each}
           </Select.ItemGroup>
@@ -52,7 +53,7 @@
       <Select.Trigger>
         <Select.ValueText placeholder={props.placeholder} />
       </Select.Trigger>
-      <Select.Indicator><Icon name="chevrons-up-down" /></Select.Indicator>
+      <Select.Indicator><InternalIcon name="chevrons-up-down" /></Select.Indicator>
     </Select.Control>
     <Select.Positioner>
       <Select.Content>
@@ -60,7 +61,7 @@
           {#each props.options as option (option.value)}
             <Select.Item item={option}>
               <Select.ItemText>{option.label}</Select.ItemText>
-              <Select.ItemIndicator><Icon name="check" /></Select.ItemIndicator>
+              <Select.ItemIndicator><InternalIcon name="check" /></Select.ItemIndicator>
             </Select.Item>
           {/each}
         </Select.ItemGroup>

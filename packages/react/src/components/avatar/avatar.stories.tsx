@@ -8,6 +8,16 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Elements/Avatar" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <Avatar>
+      <Avatar.Fallback>S</Avatar.Fallback>
+      <Avatar.Image src={PORTRAIT} alt="Portrait of Sage" />
+    </Avatar>
+  ),
+};
+
 /** A tiny inline portrait: loads instantly, keeps the story offline. */
 const PORTRAIT =
   "data:image/svg+xml;utf8," +
@@ -17,7 +27,7 @@ const PORTRAIT =
 
 /** Initials stand in until the image arrives; the image loads over the
  * fallback in the same circle. */
-export const Basic = {
+export const Anatomy = {
   args: {
     fallback: "S",
     initials: "BS",
@@ -63,7 +73,7 @@ export const Events = {
         </output>
         <Avatar.Root onStatusChange={(e: { status: any }) => setStatus(e.status)}>
           <Avatar.Fallback>PA</Avatar.Fallback>
-          <Avatar.Image src="https://localhost/broken-portrait.png" alt="Portrait" />
+          <Avatar.Image src="data:image/png;base64,AAAAAAAAAAA" alt="Portrait" />
         </Avatar.Root>
       </div>
     );
@@ -75,7 +85,7 @@ export const Fallback = {
   render: () => (
     <Avatar.Root>
       <Avatar.Fallback>PA</Avatar.Fallback>
-      <Avatar.Image src="https://localhost/broken-portrait.png" alt="Portrait" />
+      <Avatar.Image src="data:image/png;base64,AAAAAAAAAAA" alt="Portrait" />
     </Avatar.Root>
   ),
 };
@@ -100,4 +110,14 @@ function RootProviderDriver() {
 
 export const RootProvider = {
   render: () => <RootProviderDriver />,
+};
+
+/** The square-cut seal: the same square frame, the corner left sharp. */
+export const Shape = {
+  render: () => (
+    <div style={{ display: "flex", gap: "0.75rem" }}>
+      <Avatar.Root shape="circle">墨</Avatar.Root>
+      <Avatar.Root shape="square">印</Avatar.Root>
+    </div>
+  ),
 };

@@ -1,10 +1,9 @@
-import { star } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { RatingGroup } from "./index";
 
 /** Stars out of a maximum; the value is the filled count. */
@@ -17,7 +16,7 @@ export default defineEntry({
     }),
     description: "Stars out of a maximum; the value is the filled count.",
     component: ({ props }) => {
-      const starGlyph = () => glyphNode(star, { width: 16, height: 16 });
+      const starIcon = () => iconNode("star");
       return labelled(
         props.label,
         h(
@@ -28,7 +27,7 @@ export default defineEntry({
               h(RatingGroup.Context, null, {
                 default: ({ items }: { items: number[] }) =>
                   items.map((item) =>
-                    h(RatingGroup.Item, { key: item, index: item }, { default: () => starGlyph() }),
+                    h(RatingGroup.Item, { key: item, index: item }, { default: () => starIcon() }),
                   ),
               }),
               h(RatingGroup.HiddenInput as never),

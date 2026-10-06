@@ -3,6 +3,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 function accepts(slot: string, ch: string) {
   if (slot === "9") return /\d/.test(ch);
   if (slot === "a") return /[a-zA-Z]/.test(ch);
@@ -46,37 +48,39 @@ function applyMask(raw: string, mask: string) {
  * the label id, the described-by wiring and the invalid state for free,
  * which is also the seam the Form validation layer will drive. Disabled
  * rides the native attribute. */
-export const Input = defineComponent({
-  name: "Input",
-  props: {
-    modelValue: { type: [String, Number] as PropType<string | number>, default: undefined },
-    /** One rung of the control-height ladder for the field. */
-    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
-    invalid: { type: Boolean, default: false },
-    /** Entry mask — `9` digit, `a` letter, `*` either, anything else is
-     * literal. e.g. `"999-99-9999"`, `"(999) 999-9999"`. */
-    mask: { type: String, default: undefined },
-  },
-  emits: ["update:modelValue"],
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("input");
+export const Input = withSelfRoot(
+  defineComponent({
+    name: "Input",
+    props: {
+      modelValue: { type: [String, Number] as PropType<string | number>, default: undefined },
+      /** One rung of the control-height ladder for the field. */
+      size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+      invalid: { type: Boolean, default: false },
+      /** Entry mask — `9` digit, `a` letter, `*` either, anything else is
+       * literal. e.g. `"999-99-9999"`, `"(999) 999-9999"`. */
+      mask: { type: String, default: undefined },
+    },
+    emits: ["update:modelValue"],
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("input");
 
-    const field = useFieldContext();
-    return () => {
-      const fieldProps = field?.value?.getInputProps() ?? {};
-      return h("input", {
-        ...fieldProps,
-        ...ctx.attrs,
-        ...(props.modelValue !== undefined ? { value: props.modelValue } : null),
-        "data-scope": "input",
-        "data-part": "root",
-        "data-size": props.size,
-        "data-invalid": props.invalid || fieldProps["data-invalid"] != null ? "" : undefined,
-        onInput: (event: InputEvent) => {
-          const value = (event.target as HTMLInputElement).value;
-          ctx.emit("update:modelValue", props.mask ? applyMask(value, props.mask) : value);
-        },
-      });
-    };
-  },
-});
+      const field = useFieldContext();
+      return () => {
+        const fieldProps = field?.value?.getInputProps() ?? {};
+        return h("input", {
+          ...fieldProps,
+          ...ctx.attrs,
+          ...(props.modelValue !== undefined ? { value: props.modelValue } : null),
+          "data-scope": "input",
+          "data-part": "root",
+          "data-size": props.size,
+          "data-invalid": props.invalid || fieldProps["data-invalid"] != null ? "" : undefined,
+          onInput: (event: InputEvent) => {
+            const value = (event.target as HTMLInputElement).value;
+            ctx.emit("update:modelValue", props.mask ? applyMask(value, props.mask) : value);
+          },
+        });
+      };
+    },
+  }),
+);

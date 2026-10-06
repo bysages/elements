@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A counting coin: the numeric value, capped at `max` with an ellipsis
  * of the remainder ("99+"). */
 export interface ChipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
@@ -11,7 +13,7 @@ export interface ChipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   variant?: "solid" | "subtle" | "outline";
 }
 
-export function Chip(props: ChipProps) {
+export const Chip = withSelfRoot(function Chip(props: ChipProps) {
   injectComponentStyle("chip");
   const [own, rest] = splitProps(props, ["value", "max", "tone", "variant"]);
   return (
@@ -25,4 +27,4 @@ export function Chip(props: ChipProps) {
       {own.max != null && own.value > own.max ? `${own.max}+` : String(own.value)}
     </span>
   );
-}
+});

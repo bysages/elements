@@ -263,9 +263,6 @@ importers:
       '@bysages/core':
         specifier: workspace:*
         version: link:../core
-      '@bysages/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@tanstack/markdown':
         specifier: 1.0.0
         version: 1.0.0(react@19.3.0)
@@ -327,9 +324,6 @@ importers:
       '@bysages/core':
         specifier: workspace:*
         version: link:../core
-      '@bysages/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@tanstack/markdown':
         specifier: 1.0.0
         version: 1.0.0(react@19.3.0)
@@ -376,9 +370,6 @@ importers:
       '@bysages/core':
         specifier: workspace:*
         version: link:../core
-      '@bysages/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@tanstack/markdown':
         specifier: 1.0.0
         version: 1.0.0(react@19.3.0)
@@ -437,9 +428,6 @@ importers:
       '@bysages/core':
         specifier: workspace:*
         version: link:../core
-      '@bysages/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@tanstack/markdown':
         specifier: 1.0.0
         version: 1.0.0(react@19.3.0)

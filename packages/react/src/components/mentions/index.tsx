@@ -4,7 +4,10 @@ import { injectComponentStyle } from "@bysages/core";
 import type { ChangeEvent, HTMLAttributes } from "react";
 import { useRef, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { Field } from "../field";
+import { Popover } from "../popover";
 import { useMentions } from "./use-mentions";
 
 export type { UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
@@ -16,6 +19,7 @@ export interface MentionEntry {
 }
 
 export interface MentionsVesselProps {
+  id?: string;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
   /** Whether the candidates are up. */
@@ -39,7 +43,7 @@ export interface MentionsVesselProps {
  * its own anatomy (the textarea rides where the host puts it) and the
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
-export function MentionsVessel({
+function MentionsVesselImpl({
   size = "md",
   open = false,
   matches = [],
@@ -48,10 +52,13 @@ export function MentionsVessel({
   onInsert,
   onActiveChange,
   onOpenChange,
+  id,
 }: MentionsVesselProps) {
   injectComponentStyle("mentions");
+  const hostId = useElementId("mentions", { id });
   return (
     <ArkPopover.Root
+      id={`${hostId}:vessel`}
       open={open}
       onOpenChange={(details) => onOpenChange?.(details.open)}
       positioning={{
@@ -85,6 +92,8 @@ export function MentionsVessel({
     </ArkPopover.Root>
   );
 }
+
+export const MentionsVessel = withSelfRoot(MentionsVesselImpl);
 
 /**
  * @-mentions: a plain textarea that, when the text before the caret ends
@@ -122,7 +131,7 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   onValueChange?: (value: string) => void;
 }
 
-export function Mentions({
+function MentionsImpl({
   items = [],
   value,
   trigger = "@",
@@ -134,6 +143,7 @@ export function Mentions({
   children,
   ...rest
 }: MentionsProps) {
+  const hostId = useElementId("mentions", rest);
   // Mirrors the controlled value when the caller does not pass one.
   const [internal, setInternal] = useState("");
   // The field part renders the textarea itself; its element rides the
@@ -174,6 +184,7 @@ export function Mentions({
         data-part="textarea"
       />
       <MentionsVessel
+        id={`${hostId}:vessel`}
         size={size}
         open={mentions.open}
         matches={mentions.matches}
@@ -189,3 +200,6 @@ export function Mentions({
     </div>
   );
 }
+
+export const Mentions = Object.assign(MentionsImpl, Popover) as typeof MentionsImpl &
+  typeof Popover;

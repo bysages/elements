@@ -1,10 +1,11 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import TreeSelectComponent from "./TreeSelect.svelte";
 
 /** A tree behind a field: the control reads like an input, the vessel
  * below walks the hierarchy, and one leaf click closes the deal. */
-export const TreeSelect = TreeSelectComponent;
+export const TreeSelect = withSelfRoot(TreeSelectComponent);
 
 export type { TreeSelectNode, TreeSelectProps } from "./props";
 

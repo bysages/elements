@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import MenubarComponent from "./Menubar.svelte";
 
 /** A desktop-style menu bar: a row of quiet ghost triggers, each
@@ -9,7 +10,7 @@ import MenubarComponent from "./Menubar.svelte";
  * focus restore, `data-state`) while the element wears the menubar
  * scope. The popups keep the menu parts untouched, so the menu
  * stylesheet dresses them. */
-export const Menubar = MenubarComponent;
+export const Menubar = withSelfRoot(MenubarComponent);
 
 export type { MenubarEntry, MenubarGroup, MenubarProps } from "./props";
 // The popups keep the menu parts, so the menu stylesheet dresses them.

@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
 import { Children, cloneElement, isValidElement } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The control recipe as a standalone button: the variant chooses how it
  * rests, the tone chooses the pigment. Ink is the solemn default; any
  * action can carry the primary weight. */
@@ -18,7 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-export function Button({
+function ButtonImpl({
   variant = "solid",
   tone = "ink",
   size = "md",
@@ -56,3 +58,5 @@ export function Button({
     </button>
   );
 }
+
+export const Button = withSelfRoot(ButtonImpl);

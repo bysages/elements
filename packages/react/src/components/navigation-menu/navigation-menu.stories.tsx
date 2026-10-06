@@ -148,22 +148,13 @@ const viewport = () => (
  * trigger. */
 export const Basic = {
   args: {
-    guidesLink: "Guides",
+    items: [
+      { label: "Quick start", href: "#quick-start" },
+      { label: "Styling", href: "#styling" },
+      { label: "Guides", href: "#guides", current: true },
+    ],
   },
-  render: (args: any) => (
-    <NavigationMenu.Root>
-      <NavigationMenu.List>
-        {menuPanel("overview", columns)}
-        <NavigationMenu.Item value="guides">
-          <NavigationMenu.Link href="#guides" current>
-            {args.guidesLink}
-          </NavigationMenu.Link>
-        </NavigationMenu.Item>
-        {menuPanel("resources", columns.slice().reverse())}
-      </NavigationMenu.List>
-      {viewport()}
-    </NavigationMenu.Root>
-  ),
+  render: (args: any) => <NavigationMenu items={args.items} />,
 };
 
 /** The bar reads its own state: the context reports which trigger holds
@@ -285,4 +276,65 @@ export const Viewport = {
       {viewport()}
     </NavigationMenu.Root>
   ),
+};
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;
+
+/** The mega panel: one trigger opens a wide vessel whose content is the
+ * caller's own grid — columns, features, whatever the page needs. The
+ * viewport keeps every panel the same width while the ink travels. */
+export const Mega = {
+  render: () => {
+    const features = [
+      { title: "Tokens", copy: "Palettes and tiers on one ramp" },
+      { title: "Lighting", copy: "Elevation computed from the source" },
+      { title: "Motion", copy: "Ink bleeds, puppets keep strings" },
+      { title: "Density", copy: "Whitespace scales, type holds" },
+    ];
+
+    return (
+      <NavigationMenu.Root>
+        <NavigationMenu.List>
+          <NavigationMenu.Item value="platform">
+            <NavigationMenu.Trigger>Platform</NavigationMenu.Trigger>
+            <NavigationMenu.Content>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "var(--bs-gap-sm)",
+                  padding: "var(--bs-padding-md)",
+                }}
+              >
+                {features.map((feature) => (
+                  <div
+                    key={feature.title}
+                    style={{
+                      padding: "var(--bs-padding-sm)",
+                      borderRadius: "var(--bs-radius-sm)",
+                    }}
+                  >
+                    <strong style={{ display: "block", marginBottom: "var(--bs-space-1)" }}>
+                      {feature.title}
+                    </strong>
+                    <span
+                      style={{
+                        color: "var(--bs-color-text-secondary)",
+                        fontSize: "var(--bs-font-size-sm)",
+                      }}
+                    >
+                      {feature.copy}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </NavigationMenu.Content>
+          </NavigationMenu.Item>
+          {flatLink("Docs")}
+        </NavigationMenu.List>
+        {viewport()}
+      </NavigationMenu.Root>
+    );
+  },
 };

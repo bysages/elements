@@ -2,28 +2,17 @@ import { injectComponentStyle } from "@bysages/core";
 import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Field } from "../field";
 
-function arrowUpGlyph() {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      width="14"
-      height="14"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="square"
-    >
-      <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
-    </svg>
-  );
+function arrowUpIcon() {
+  return iconNode("arrow-up", { width: "14", height: "14" });
 }
 
-function stopGlyph() {
+function stopIcon() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
       <rect x="4.5" y="4.5" width="7" height="7" fill="currentColor" />
@@ -75,7 +64,7 @@ export interface PromptInputProps extends Omit<
  * and take the text on `onSubmit`. Enter sends; Shift+Enter breaks the
  * line. While `busy` the seal becomes a stop seal and Enter holds its
  * breath. */
-export function PromptInput(props: PromptInputProps) {
+export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, [
     "value",
@@ -121,7 +110,7 @@ export function PromptInput(props: PromptInputProps) {
         disabled={own.disabled}
         onClick={() => own.onStop?.()}
       >
-        {stopGlyph()}
+        {stopIcon()}
       </Button>
     ) : (
       <Button
@@ -132,7 +121,7 @@ export function PromptInput(props: PromptInputProps) {
         aria-label={messages().ai.send}
         disabled={own.disabled || !(own.value ?? "").trim()}
       >
-        {arrowUpGlyph()}
+        {arrowUpIcon()}
       </Button>
     );
 
@@ -183,5 +172,5 @@ export function PromptInput(props: PromptInputProps) {
       </Show>
     </form>
   );
-}
+});
 export { PromptInput as AiPromptInput };

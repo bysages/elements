@@ -1,8 +1,10 @@
-/** The two glyphs a copy affordance needs: the stamp and its
- * confirmation. Inline SVG keeps the enhancement framework-agnostic —
- * it lives beside the renderer's generated code HTML. */
-const COPY_CODE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
-const COPIED_CODE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`;
+import { iconHtml } from "../../internal/icon";
+
+/** The two icons a copy affordance needs: the stamp and its confirmation,
+ * drawn from the house icon set. Inline SVG keeps the enhancement
+ * framework-agnostic — it lives beside the renderer's generated code HTML. */
+const COPY_CODE_ICON = iconHtml("copy", { width: "14", height: "14" });
+const COPIED_CODE_ICON = iconHtml("check", { width: "14", height: "14" });
 
 /** How long the confirmation stays before the stamp returns. */
 const REVERT_MS = 1500;

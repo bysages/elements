@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { Menu } from ".";
 import { withState } from "../with-state.js";
@@ -23,7 +23,7 @@ function chevronDown() {
   );
 }
 
-function checkGlyph() {
+function checkIcon() {
   return h(
     "svg",
     {
@@ -42,23 +42,44 @@ function checkGlyph() {
 }
 
 function positioner(children: any) {
-  return h(Teleport, { to: "body" }, () => [
-    h(Menu.Positioner, () => h(Menu.Content, () => children)),
-  ]);
+  return h(Menu.Positioner, () => h(Menu.Content, () => children));
 }
 
 /** A file menu: one trigger, one vessel dissolving in, items as rows of
  * light with a hairline between courses. */
 export const Basic = {
   args: {
-    label: "File",
+    trigger: "File",
+    items: [
+      { label: "New file", value: "new-file" },
+      { label: "Open…", value: "open", disabled: true },
+      { label: "Save", value: "save" },
+      { label: "Save as…", value: "save-as" },
+      { label: "Export", value: "export" },
+    ],
+  },
+  render: (args: any) => withState(() => () => h(Menu, args)),
+};
+
+/** The anatomy is the composition path: the same vessel, assembled from
+ * Ark's parts for groups, separators, and richer rows. */
+export const Anatomy = {
+  args: {
+    trigger: "File",
+    items: [
+      { label: "New file", value: "new-file" },
+      { label: "Open…", value: "open", disabled: true },
+      { label: "Save", value: "save" },
+      { label: "Save as…", value: "save-as" },
+      { label: "Export", value: "export" },
+    ],
   },
   render: (args: any) =>
     withState(
       () => () =>
         h(Menu.Root, () => [
           h(Menu.Trigger, () => [
-            h("span", () => args.label),
+            h("span", () => args.trigger),
             h(Menu.Indicator, () => chevronDown()),
           ]),
           positioner([
@@ -75,7 +96,6 @@ export const Basic = {
         ]),
     ),
 };
-
 /** Toggle rows: each carries its own check, independent of the others. */
 /** Toggles hold independently: the vue adapter's checkbox items are
  * stateless, so the story owns each checked flag. */
@@ -91,7 +111,7 @@ export const CheckboxItems = {
             checked: state.checked[key],
             "onUpdate:checked": (checked: boolean) => (state.checked[key] = checked),
           } as any,
-          () => [h(Menu.ItemIndicator, () => checkGlyph()), label],
+          () => [h(Menu.ItemIndicator, () => checkIcon()), label],
         );
       return () =>
         h(Menu.Root, () => [
@@ -118,15 +138,15 @@ export const RadioItems = {
               } as any,
               () => [
                 h(Menu.RadioItem, { value: "qinghua" }, () => [
-                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  h(Menu.ItemIndicator, () => checkIcon()),
                   "Qinghua cobalt",
                 ]),
                 h(Menu.RadioItem, { value: "celadon" }, () => [
-                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  h(Menu.ItemIndicator, () => checkIcon()),
                   "Celadon",
                 ]),
                 h(Menu.RadioItem, { value: "zhusha" }, () => [
-                  h(Menu.ItemIndicator, () => checkGlyph()),
+                  h(Menu.ItemIndicator, () => checkIcon()),
                   "Zhusha cinnabar",
                 ]),
               ],

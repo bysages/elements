@@ -33,22 +33,17 @@ export default meta;
 export const Basic = {
   args: {
     trigger: "Delete item",
-    title: "Delete item",
+    label: "Delete item",
     description: "This action cannot be undone.",
+    content: "Removed items stay recoverable for 30 days.",
   },
   render: (args: any) => (
-    <Dialog.Root>
-      <Dialog.Trigger>{args.trigger}</Dialog.Trigger>
-      <Dialog.Backdrop />
-      <Dialog.Positioner>
-        <Dialog.Content>
-          <Dialog.Title>{args.title}</Dialog.Title>
-          <Dialog.Description>{args.description}</Dialog.Description>
-          <p>Removed items stay recoverable for 30 days.</p>
-          <Dialog.CloseTrigger>×</Dialog.CloseTrigger>
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </Dialog.Root>
+    <Dialog
+      trigger={args.trigger}
+      label={args.label}
+      description={args.description}
+      content={args.content}
+    />
   ),
 };
 
@@ -156,3 +151,6 @@ export const InitialFocus = {
     </Dialog.Root>
   ),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

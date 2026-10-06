@@ -1,11 +1,12 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import SplitButtonComponent from "./SplitButton.svelte";
 
 /** A primary action with its alternatives one seam away: the main
  * button fires, the fitted arrow opens a paper vessel whose entries
  * hand back their value. */
-export const SplitButton = SplitButtonComponent;
+export const SplitButton = withSelfRoot(SplitButtonComponent);
 
 export type { SplitButtonEntry, SplitButtonProps } from "./props";
 // The popup keeps the menu parts, so the menu stylesheet dresses them.

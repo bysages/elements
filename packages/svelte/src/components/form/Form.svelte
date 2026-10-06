@@ -3,11 +3,11 @@ import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("form");
 
   import type { FormProps } from "./props";
-  import { provideForm } from "./context";
+  import { untrack } from "svelte";
 
   let { form, children, ...rest }: FormProps = $props();
 
-  provideForm(form);
+  provideForm(untrack(() => form));
 </script>
 
 <!-- The form element itself: native submit interception handing the

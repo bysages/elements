@@ -2,28 +2,17 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useRef } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
 import type { MentionEntry } from "../mentions";
 import { MentionsVessel, useMentions } from "../mentions";
 
-const arrowUpGlyph = (
-  <svg
-    viewBox="0 0 16 16"
-    width={14}
-    height={14}
-    aria-hidden="true"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    strokeLinecap="square"
-  >
-    <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" />
-  </svg>
-);
+const arrowUpIcon = iconNode("arrow-up", { width: 14, height: 14 });
 
-const stopGlyph = (
+const stopIcon = (
   <svg viewBox="0 0 16 16" width={14} height={14} aria-hidden="true">
     <rect x={4.5} y={4.5} width={7} height={7} fill="currentColor" />
   </svg>
@@ -79,7 +68,7 @@ export interface PromptInputProps extends Omit<HTMLAttributes<HTMLFormElement>, 
   footerEnd?: ReactNode;
 }
 
-export function PromptInput({
+function PromptInputImpl({
   value,
   onValueChange,
   onSubmit,
@@ -130,7 +119,7 @@ export function PromptInput({
       disabled={disabled}
       onClick={() => onStop?.()}
     >
-      {stopGlyph}
+      {stopIcon}
     </Button>
   ) : (
     <Button
@@ -141,7 +130,7 @@ export function PromptInput({
       aria-label={messages.ai.send}
       disabled={disabled || !value.trim()}
     >
-      {arrowUpGlyph}
+      {arrowUpIcon}
     </Button>
   );
 
@@ -222,4 +211,6 @@ export function PromptInput({
     </form>
   );
 }
+
+export const PromptInput = withSelfRoot(PromptInputImpl);
 export { PromptInput as AiPromptInput };

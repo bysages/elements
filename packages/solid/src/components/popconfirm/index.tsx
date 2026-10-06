@@ -4,7 +4,10 @@ import { createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
+import { Popover } from "../popover";
 
 export interface PopconfirmProps extends JSX.HTMLAttributes<HTMLButtonElement> {
   /** The question the reader is answering. */
@@ -20,7 +23,7 @@ export interface PopconfirmProps extends JSX.HTMLAttributes<HTMLButtonElement> {
  * and cancellation are the caller's to act on — the panel closes
  * either way. The children are the trigger's content, riding the
  * machine-driven trigger button. */
-export function Popconfirm(props: PopconfirmProps) {
+function PopconfirmImpl(props: PopconfirmProps) {
   injectComponentStyle("popconfirm");
   const [own, rest] = splitProps(props, [
     "message",
@@ -30,6 +33,7 @@ export function Popconfirm(props: PopconfirmProps) {
     "onCancel",
     "children",
   ]);
+  const id = useElementId("popconfirm");
   const [open, setOpen] = createSignal(false);
   function settle(confirmed: boolean) {
     setOpen(false);
@@ -37,6 +41,8 @@ export function Popconfirm(props: PopconfirmProps) {
   }
   return (
     <ArkPopover.Root
+      {...rest}
+      id={id()}
       open={open()}
       onOpenChange={(details) => setOpen(details.open)}
       positioning={{ placement: "top" }}
@@ -66,3 +72,6 @@ export function Popconfirm(props: PopconfirmProps) {
     </ArkPopover.Root>
   );
 }
+
+export const Popconfirm = defineFamily(PopconfirmImpl, Popover) as typeof PopconfirmImpl &
+  typeof Popover;

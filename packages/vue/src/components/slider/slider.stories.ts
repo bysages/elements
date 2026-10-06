@@ -7,6 +7,24 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Slider" };
 export default meta;
 
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
+export const Basic = {
+  render: () => h(Slider, { defaultValue: 40, label: "Volume", min: 0, max: 100, step: 1 }),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h(Slider.Root, { defaultValue: [40], min: 0, max: 100, step: 1 }, () => [
+      h(Slider.Label, () => "Volume"),
+      h(Slider.ValueText),
+      h(Slider.Control, () => [
+        h(Slider.Track, () => h(Slider.Range)),
+        h(Slider.Thumb, { index: 0 }, () => [h(Slider.HiddenInput)]),
+      ]),
+    ]),
+};
+
 /** One slider anatomy: the labeled heading row, the recessed track with
  * its ink range, one thumb per value. */
 function slider(rootProps: any, label: string, values: number[], markers?: number[]) {
@@ -32,34 +50,6 @@ function slider(rootProps: any, label: string, values: number[], markers?: numbe
 
 const row = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 
-/** One thumb, one track, the ink filling left of the seal. */
-export const Basic = {
-  args: {
-    label: "Volume",
-    min: 0,
-    max: 100,
-    step: 1,
-    disabled: false,
-  },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h("div", { style: row }, [
-          slider(
-            {
-              defaultValue: [40],
-              min: args.min,
-              max: args.max,
-              step: args.step,
-              disabled: args.disabled,
-            },
-            args.label,
-            [40],
-          ),
-        ]),
-    ),
-};
-
 /** Two thumbs share the track: the ink runs between them. */
 export const Range = {
   render: () => h("div", { style: row }, [slider({ defaultValue: [30, 60] }, "Band", [30, 60])]),
@@ -70,7 +60,14 @@ export const Vertical = {
   render: () =>
     h(
       "div",
-      { style: { display: "flex", gap: "3rem", height: "10rem", alignItems: "flex-start" } },
+      {
+        style: {
+          display: "flex",
+          gap: "3rem",
+          height: "10rem",
+          alignItems: "flex-start",
+        },
+      },
       () => [
         h(Slider.Root, { orientation: "vertical" } as any, () => [
           h(Slider.Label, () => "Depth"),

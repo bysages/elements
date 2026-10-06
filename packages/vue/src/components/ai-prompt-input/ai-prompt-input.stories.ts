@@ -1,6 +1,6 @@
 import { createListCollection } from "@ark-ui/vue/collection";
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { AiPromptInput } from ".";
 import { AiAttachment, AiAttachments } from "../ai-attachments";
@@ -55,7 +55,7 @@ export const Basic = {
     }),
 };
 
-const plusGlyph = () =>
+const plusIcon = () =>
   h(
     "svg",
     {
@@ -71,7 +71,7 @@ const plusGlyph = () =>
     [h("path", { d: "M8 3.5v9M3.5 8h9" })],
   );
 
-const globeGlyph = () =>
+const globeIcon = () =>
   h(
     "svg",
     {
@@ -92,7 +92,7 @@ const globeGlyph = () =>
     ],
   );
 
-const chevronGlyph = () =>
+const chevronIcon = () =>
   h(
     "svg",
     {
@@ -197,28 +197,27 @@ export const Compose = {
                   h(Menu.Root, () => [
                     h(Menu.Trigger, { asChild: true }, () =>
                       h(Button, { variant: "ghost", square: true, "aria-label": "Attach" }, () =>
-                        plusGlyph(),
+                        plusIcon(),
                       ),
                     ),
-                    h(Teleport, { to: "body" }, () => [
-                      h(Menu.Positioner, () =>
-                        h(Menu.Content, () => [
-                          h(
-                            Menu.Item,
-                            {
-                              value: "image",
-                              onSelect: () => attach(`image-${++attachCount}.png`),
-                            },
-                            () => h(Menu.ItemText, () => "Upload image"),
-                          ),
-                          h(
-                            Menu.Item,
-                            { value: "file", onSelect: () => attach(`notes-${++attachCount}.md`) },
-                            () => h(Menu.ItemText, () => "Upload file"),
-                          ),
-                        ]),
-                      ),
-                    ]),
+
+                    h(Menu.Positioner, () =>
+                      h(Menu.Content, () => [
+                        h(
+                          Menu.Item,
+                          {
+                            value: "image",
+                            onSelect: () => attach(`image-${++attachCount}.png`),
+                          },
+                          () => h(Menu.ItemText, () => "Upload image"),
+                        ),
+                        h(
+                          Menu.Item,
+                          { value: "file", onSelect: () => attach(`notes-${++attachCount}.md`) },
+                          () => h(Menu.ItemText, () => "Upload file"),
+                        ),
+                      ]),
+                    ),
                   ]),
                   h(
                     Toggle.Root,
@@ -229,7 +228,7 @@ export const Compose = {
                         state.webSearch = pressed;
                       },
                     },
-                    () => [globeGlyph(), h("span", "Web search")],
+                    () => [globeIcon(), h("span", "Web search")],
                   ),
                 ],
                 footerEnd: () => [
@@ -246,21 +245,20 @@ export const Compose = {
                       h(Select.Control, () =>
                         h(Select.Trigger, { type: "button", "aria-label": "Model" }, () => [
                           h(Select.ValueText, { placeholder: "Model" }),
-                          h(Select.Indicator, () => chevronGlyph()),
+                          h(Select.Indicator, () => chevronIcon()),
                         ]),
                       ),
-                      h(Teleport, { to: "body" }, () => [
-                        h(Select.Positioner, () =>
-                          h(Select.Content, () =>
-                            models.items.map((item) =>
-                              h(Select.Item, { key: item.value, item }, () => [
-                                h(Select.ItemText, () => item.label),
-                                h(Select.ItemIndicator, () => "✓"),
-                              ]),
-                            ),
+
+                      h(Select.Positioner, () =>
+                        h(Select.Content, () =>
+                          models.items.map((item) =>
+                            h(Select.Item, { key: item.value, item }, () => [
+                              h(Select.ItemText, () => item.label),
+                              h(Select.ItemIndicator, () => "✓"),
+                            ]),
                           ),
                         ),
-                      ]),
+                      ),
                     ],
                   ),
                 ],

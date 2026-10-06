@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import type { HTMLAttributes, MouseEvent } from "react";
 import { useEffect, useRef } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 import { wrapResponseTables } from "./tables";
@@ -27,7 +28,7 @@ export interface ResponseProps extends HTMLAttributes<HTMLDivElement> {
   copiedLabel?: string;
 }
 
-export function Response({ content, highlighter, copyLabel, copiedLabel, ...rest }: ResponseProps) {
+function ResponseImpl({ content, highlighter, copyLabel, copiedLabel, ...rest }: ResponseProps) {
   injectComponentStyle("ai");
   const messages = useComponentMessages();
   const resolvedCopyLabel = copyLabel ?? messages.ai.copyCode;
@@ -60,4 +61,6 @@ export function Response({ content, highlighter, copyLabel, copiedLabel, ...rest
     />
   );
 }
+
+export const Response = withSelfRoot(ResponseImpl);
 export { Response as AiResponse };

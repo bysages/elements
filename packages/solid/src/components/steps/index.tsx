@@ -4,6 +4,9 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /**
  * Steps — linear progress through a sequence.
  *
@@ -19,7 +22,8 @@ type StepsOwnProps = {
 
 function StepsRoot(props: ArkStepsRootProps & StepsOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkSteps.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("steps", () => rest.id);
+  return <ArkSteps.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /** The machine wraps each tab in an item div; presentation keeps the
@@ -30,13 +34,11 @@ function StepsItem(props: ComponentProps<typeof ArkSteps.Item>) {
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Steps: Omit<typeof ArkSteps, "Root" | "Item"> & {
-  Root: typeof StepsRoot;
-  Item: typeof StepsItem;
-} = {
-  ...ArkSteps,
-  Root: StepsRoot,
-  Item: StepsItem,
-};
+export const Steps: typeof StepsRoot & Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot } =
+  defineFamily(StepsRoot, {
+    ...ArkSteps,
+    Root: StepsRoot,
+    Item: StepsItem,
+  });
 
 injectComponentStyle("steps");

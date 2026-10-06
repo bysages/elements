@@ -6,11 +6,23 @@ import { Field } from ".";
 const meta: Meta = { title: "Components/Forms/Field" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <Field
+      label="Email"
+      description="We only write about your orders."
+      placeholder="lin@example.com"
+      required
+    />
+  ),
+};
+
 const column = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 
 /** Label, control, help, error — the whole field column in its resting
  * register. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Label",
     placeholder: "Placeholder",

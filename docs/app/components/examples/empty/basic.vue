@@ -3,7 +3,7 @@ import { Button, Empty } from "@bysages/vue";
 </script>
 
 <template>
-  <Empty.Root>
+  <Empty>
     <Empty.Visual>
       <svg
         width="56"
@@ -30,5 +30,5 @@ import { Button, Empty } from "@bysages/vue";
       <Button variant="solid" tone="ink" size="sm">Write a letter</Button>
       <Button variant="ghost" tone="ink" size="sm">Learn more</Button>
     </Empty.Actions>
-  </Empty.Root>
+  </Empty>
 </template>

@@ -1,6 +1,6 @@
 import { createListCollection } from "@ark-ui/vue/select";
 import type { Meta } from "@storybook/vue3-vite";
-import { computed, defineComponent, h, Teleport, reactive } from "vue";
+import { computed, defineComponent, h, reactive } from "vue";
 
 import { Select } from ".";
 import { Button } from "../button";
@@ -18,6 +18,8 @@ const frameworks = createListCollection({
     { label: "Svelte", value: "svelte" },
   ],
 });
+
+const facadeOptions = [...frameworks.items];
 
 const cities = createListCollection({
   items: [
@@ -45,7 +47,7 @@ function chevronsUpDown() {
   );
 }
 
-function checkGlyph() {
+function checkIcon() {
   return h(
     "svg",
     {
@@ -61,7 +63,7 @@ function checkGlyph() {
   );
 }
 
-function xGlyph() {
+function xIcon() {
   return h(
     "svg",
     {
@@ -81,7 +83,7 @@ function rows(collection: { items: readonly { label: string; value: string }[] }
   return collection.items.map((item) =>
     h(Select.Item, { key: item.value, item }, () => [
       h(Select.ItemText, () => item.label),
-      h(Select.ItemIndicator, () => checkGlyph()),
+      h(Select.ItemIndicator, () => checkIcon()),
     ]),
   );
 }
@@ -94,7 +96,7 @@ function grouped(collection: any) {
         ...items.map((item) =>
           h(Select.Item, { key: item.value, item }, () => [
             h(Select.ItemText, () => item.label),
-            h(Select.ItemIndicator, () => checkGlyph()),
+            h(Select.ItemIndicator, () => checkIcon()),
           ]),
         ),
       ]),
@@ -106,21 +108,16 @@ function shell(rootProps: any, collection: any, content: any, placeholder = "Sel
     h(Select.Label, () => "Framework"),
     h(Select.Control, () => [
       h(Select.Trigger, () => h(Select.ValueText, { placeholder })),
-      h(Select.ClearTrigger, () => xGlyph()),
+      h(Select.ClearTrigger, () => xIcon()),
       h(Select.Indicator, () => chevronsUpDown()),
     ]),
-    h(Teleport, { to: "body" }, () => [
-      h(Select.Positioner, () => h(Select.Content, () => content)),
-    ]),
+    h(Select.Positioner, () => h(Select.Content, () => content)),
     h(Select.HiddenSelect),
   ]);
 }
 
-/** The trigger is the whole control; the chosen row carries the flat ink
- * fill inside the vessel. The args proxy must be read inside the host's
- * render — Storybook's vue renderer only mutates that proxy on a Controls
- * edit, so a render reading it outside a reactive effect would freeze on
- * the first value. */
+/** The facade is the one-tag path; the args proxy must be read inside the
+ * host's render so Controls edits stay live. */
 export const Basic = {
   args: {
     placeholder: "Select",
@@ -128,18 +125,25 @@ export const Basic = {
   render: (args: any) =>
     withState(
       () => () =>
-        shell(
-          {},
-          frameworks,
-          [
-            h(Select.ItemGroup, () => [
-              h(Select.ItemGroupLabel, () => "Frameworks"),
-              ...rows(frameworks),
-            ]),
-          ],
-          args.placeholder,
-        ),
+        h(Select, {
+          options: facadeOptions,
+          label: "Framework",
+          groupLabel: "Frameworks",
+          placeholder: args.placeholder,
+        }),
     ),
+};
+
+/** The anatomy is the composition path: the same vessel, assembled from
+ * Ark's parts when the caller needs full control. */
+export const Anatomy = {
+  render: () =>
+    shell({}, frameworks, [
+      h(Select.ItemGroup, () => [
+        h(Select.ItemGroupLabel, () => "Frameworks"),
+        ...rows(frameworks),
+      ]),
+    ]),
 };
 
 /** The selection answers to state — the trigger mirrors the caller. */
@@ -198,12 +202,10 @@ export const Grouping = {
       h(Select.Label, () => "City"),
       h(Select.Control, () => [
         h(Select.Trigger, () => h(Select.ValueText, { placeholder: "Select" })),
-        h(Select.ClearTrigger, () => xGlyph()),
+        h(Select.ClearTrigger, () => xIcon()),
         h(Select.Indicator, () => chevronsUpDown()),
       ]),
-      h(Teleport, { to: "body" }, () => [
-        h(Select.Positioner, () => h(Select.Content, () => grouped(cities))),
-      ]),
+      h(Select.Positioner, () => h(Select.Content, () => grouped(cities))),
       h(Select.HiddenSelect),
     ]),
 };
@@ -215,16 +217,14 @@ export const Overflow = {
       h(Select.Label, () => "City"),
       h(Select.Control, () => [
         h(Select.Trigger, () => h(Select.ValueText, { placeholder: "Select" })),
-        h(Select.ClearTrigger, () => xGlyph()),
+        h(Select.ClearTrigger, () => xIcon()),
         h(Select.Indicator, () => chevronsUpDown()),
       ]),
-      h(Teleport, { to: "body" }, () => [
-        h(Select.Positioner, () =>
-          h(Select.Content, { style: { maxBlockHeight: "8rem", overflowY: "auto" } } as any, () =>
-            rows(cities),
-          ),
+      h(Select.Positioner, () =>
+        h(Select.Content, { style: { maxBlockHeight: "8rem", overflowY: "auto" } } as any, () =>
+          rows(cities),
         ),
-      ]),
+      ),
       h(Select.HiddenSelect),
     ]),
 };
@@ -308,5 +308,36 @@ export const Native = {
       },
     });
     return h(NativeHost);
+  },
+};
+
+/** The facade is the one-tag path: scalar and list models are translated
+ * at the boundary while the same anatomy underneath does the work. */
+export const Facade = {
+  render: () => {
+    const state = reactive({ value: "vue", values: ["react"] });
+    const options = [
+      { label: "React", value: "react" },
+      { label: "Solid", value: "solid" },
+      { label: "Vue", value: "vue" },
+      { label: "Svelte", value: "svelte" },
+    ];
+    return () =>
+      h("div", { style: { display: "grid", gap: "0.75rem", "max-width": "20rem" } }, [
+        h(Select, {
+          options,
+          modelValue: state.value,
+          label: "Framework",
+          "onUpdate:modelValue": (next: string) => (state.value = next),
+        }),
+        h(Select, {
+          options,
+          modelValue: state.values,
+          multiple: true,
+          placeholder: "Frameworks",
+          size: "sm",
+          "onUpdate:modelValue": (next: string[]) => (state.values = next),
+        }),
+      ]);
   },
 };

@@ -44,15 +44,18 @@ function vessel(title: string, ...extra: React.ReactNode[]) {
 export const Basic = {
   args: {
     trigger: "Notes",
-    title: "Reading notes",
+    label: "Reading notes",
     description:
       "Marginalia stay on the paper: this vessel pins to its trigger and dissolves in on elevation.",
+    placement: "bottom-start",
   },
   render: (args: any) => (
-    <Popover.Root>
-      <Popover.Trigger>{args.trigger}</Popover.Trigger>
-      {vessel(args.title, <Popover.Description>{args.description}</Popover.Description>)}
-    </Popover.Root>
+    <Popover
+      trigger={args.trigger}
+      label={args.label}
+      description={args.description}
+      placement={args.placement}
+    />
   ),
 };
 
@@ -365,3 +368,6 @@ export const WithDialog = {
     </Dialog.Root>
   ),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

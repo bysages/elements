@@ -16,7 +16,7 @@ export const Basic: Story = {
       const status = ref("Idle");
       return () => [
         h(
-          Popconfirm,
+          Popconfirm as never,
           {
             message: "Delete this entry? The action cannot be undone.",
             confirmText: "Delete",
@@ -42,7 +42,7 @@ export const Basic: Story = {
 /** Default answer labels when the caller has nothing local to say. */
 export const DefaultLabels: Story = {
   render: () => () =>
-    h(Popconfirm, { message: "Publish this change for review?" }, () =>
+    h(Popconfirm as never, { message: "Publish this change for review?" }, () =>
       h(Button, { variant: "outline" }, () => "Publish"),
     ),
 };

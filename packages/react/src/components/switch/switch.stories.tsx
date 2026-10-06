@@ -16,8 +16,24 @@ function control() {
   );
 }
 
-/** The track rests in the paper's shade and fills flat with ink when on. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  args: {
+    overlaysLabel: "Dissolve overlays",
+    hairlinesLabel: "Show hairlines",
+    motionLabel: "Reduced motion",
+  },
+  render: (args: any) => (
+    <div style={{ display: "grid", gap: "0.75rem", maxWidth: "20rem" }}>
+      <Switch defaultValue label={args.overlaysLabel} />
+      <Switch label={args.hairlinesLabel} />
+      <Switch defaultValue label={args.motionLabel} disabled />
+    </div>
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     overlaysLabel: "Dissolve overlays",
     hairlinesLabel: "Show hairlines",

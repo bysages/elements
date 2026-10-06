@@ -11,7 +11,18 @@ const ITEMS = [
   { title: "Complete payment", description: "Choose how to pay" },
 ];
 
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <Steps
+      items={[{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }]}
+      defaultStep={0}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     backLabel: "Back",
     nextLabel: "Next",
@@ -53,6 +64,26 @@ export const Progress = {
           </Steps.Progress>
         )}
       </Steps.Context>
+    </Steps.Root>
+  ),
+};
+
+/** The vertical climb: the list turns, each step standing on its own
+ * row for narrow measures. */
+export const Vertical = {
+  render: () => (
+    <Steps.Root count={ITEMS.length} orientation="vertical">
+      <Steps.List>
+        {ITEMS.map((item, index) => (
+          <Steps.Item key={item.title} index={index}>
+            <Steps.Trigger>
+              <Steps.Indicator>{String(index + 1)}</Steps.Indicator>
+              <span>{item.title}</span>
+            </Steps.Trigger>
+            <Steps.Separator />
+          </Steps.Item>
+        ))}
+      </Steps.List>
     </Steps.Root>
   ),
 };

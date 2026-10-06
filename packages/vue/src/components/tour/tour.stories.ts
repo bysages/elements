@@ -1,6 +1,6 @@
 import { waitForElement, waitForEvent } from "@ark-ui/vue/tour";
 import type { Meta } from "@storybook/vue3-vite";
-import { defineComponent, h, reactive, Teleport } from "vue";
+import { defineComponent, h, reactive } from "vue";
 
 import { Tour, useTour, type TourStepDetails } from ".";
 import { Button } from "../button";
@@ -70,7 +70,7 @@ function stage(
               h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
             ],
           ),
-          h(Teleport, { to: "body" }, () => card()),
+          card(),
         ]);
     },
   });
@@ -84,16 +84,76 @@ const targets = (ids: string[], prefix: string) =>
     ids.map((id, index) => h("div", { id, style: targetStyle }, () => `${prefix} ${index + 1}`)),
   );
 
-/** A dimmed page where the spotlight alone keeps focus; the card walks
- * from anchor to anchor, dialogs bookending the walk. */
+/** The common path: the machine owns the walk; the facade owns the page
+ * chrome and card. */
 export const Basic = {
+  args: {
+    trigger: "Start tour",
+  },
+  render: (args: any) =>
+    withState(() => {
+      const basicSteps: TourStepDetails[] = [
+        {
+          id: "welcome",
+          type: "dialog",
+          title: "Welcome",
+          description: "A short walk through the room before the ink settles.",
+          actions: [{ label: "Start", action: "next" }],
+        },
+        {
+          id: "first",
+          type: "tooltip",
+          title: "The first seal",
+          description: "Primary actions sit quiet until asked — then they answer.",
+          target: () => document.querySelector<HTMLElement>("#tour-basic-1"),
+          actions: [
+            { label: "Back", action: "prev" },
+            { label: "Next", action: "next" },
+          ],
+        },
+        {
+          id: "second",
+          type: "tooltip",
+          title: "The second seal",
+          description: "Everything stays on the paper; nothing leaves the page.",
+          target: () => document.querySelector<HTMLElement>("#tour-basic-2"),
+          actions: [
+            { label: "Back", action: "prev" },
+            { label: "Finish", action: "dismiss" },
+          ],
+        },
+        {
+          id: "complete",
+          type: "dialog",
+          title: "You're all set",
+          description: "The walk is over; the room is yours.",
+          actions: [{ label: "Done", action: "dismiss" }],
+        },
+      ];
+      const Host = defineComponent({
+        name: "TourFacadeBasic",
+        setup() {
+          const tour = useTour({ steps: basicSteps });
+          return () =>
+            h(Tour as never, { tour: tour.value, trigger: args.trigger }, () =>
+              targets(["tour-basic-1", "tour-basic-2"], "Anchor"),
+            );
+        },
+      });
+      return () => h(Host);
+    }),
+};
+
+/** The anatomy is the composition path: the same walk, assembled from
+ * Ark's parts when card content or sequencing needs custom control. */
+export const Anatomy = {
   args: {
     startLabel: "Start tour",
   },
   render: (args: any) =>
     withState(() =>
       stage(
-        "TourBasic",
+        "TourBasicAnatomy",
         {},
         [
           {
@@ -140,7 +200,6 @@ export const Basic = {
       ),
     ),
 };
-
 /** Dialog, tooltip, floating: three step kinds in one walk — the
  * floating card needs no anchor at all. */
 export const MixedTypes = {
@@ -460,7 +519,7 @@ export const Events = {
               },
               logs.entries.join("\n"),
             ),
-            h(Teleport, { to: "body" }, () => card()),
+            card(),
           ]);
       },
     });
@@ -548,7 +607,7 @@ export const ProgressBar = {
               h(Button, { size: "sm", onClick: () => tour.value.start() }, () => "Start tour"),
               targets(["tour-progress-1", "tour-progress-2"], "Step"),
             ]),
-            h(Teleport, { to: "body" }, () =>
+            h({ to: "body" }, () =>
               card(
                 h(
                   "div",
@@ -720,7 +779,7 @@ export const WaitForElement = {
                 ),
               ),
             ),
-            h(Teleport, { to: "body" }, () => card()),
+            card(),
           ]);
       },
     });

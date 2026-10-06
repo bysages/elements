@@ -3,6 +3,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface TextareaProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement> {
   value?: string;
   onValueChange?: (value: string) => void;
@@ -14,7 +16,7 @@ export interface TextareaProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaEl
  * itself from the `invalid` prop; inside a `Field.Root` it consumes the
  * field context, picking up the label id, the described-by wiring and
  * the invalid state for free. Disabled rides the native attribute. */
-export function Textarea(props: TextareaProps) {
+export const Textarea = withSelfRoot(function Textarea(props: TextareaProps) {
   injectComponentStyle("textarea");
   const field = useFieldContext();
   const [own, rest] = splitProps(props, ["value", "invalid", "onValueChange"]);
@@ -36,4 +38,4 @@ export function Textarea(props: TextareaProps) {
       })}
     />
   );
-}
+});

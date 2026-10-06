@@ -3,8 +3,11 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useState } from "react";
 
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
+import { Checkbox } from "../checkbox";
 import { Input } from "../input";
 
 export interface TransferItem {
@@ -13,34 +16,10 @@ export interface TransferItem {
   disabled?: boolean;
 }
 
-const checkGlyph = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={3}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="m5 12.5 5 5L19 7" />
-  </svg>
-);
+const checkIcon = iconNode("check");
 
-function arrowGlyph(direction: "right" | "left") {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={direction === "right" ? "M5 12h14m-6-6 6 6-6 6" : "M19 12H5m6-6-6 6 6 6"} />
-    </svg>
-  );
+function arrowIcon(direction: "right" | "left") {
+  return iconNode(direction === "right" ? "arrow-right" : "arrow-left");
 }
 
 export interface TransferProps extends HTMLAttributes<HTMLDivElement> {
@@ -58,7 +37,7 @@ export interface TransferProps extends HTMLAttributes<HTMLDivElement> {
  * `value` is the target column's value list; everything else in `data`
  * stays on the left. `searchable` adds a filter line to each panel.
  */
-export function Transfer({
+function TransferImpl({
   value = [],
   data,
   titles = ["Source", "Target"],
@@ -69,6 +48,7 @@ export function Transfer({
 }: TransferProps) {
   injectComponentStyle("transfer");
   injectComponentStyle("checkbox");
+  const id = useElementId("transfer", rest);
   const messages = useComponentMessages();
   const [checkedSource, setCheckedSource] = useState<Set<string>>(() => new Set());
   const [checkedTarget, setCheckedTarget] = useState<Set<string>>(() => new Set());
@@ -145,13 +125,14 @@ export function Transfer({
               const locked = disabled || item.disabled === true;
               return (
                 <ArkCheckbox.Root
+                  id={`${id}-${side}-${item.value}`}
                   key={item.value}
                   checked={checked.has(item.value)}
                   disabled={locked}
                   onCheckedChange={() => toggle(side, item.value)}
                 >
                   <ArkCheckbox.Control>
-                    <ArkCheckbox.Indicator>{checkGlyph}</ArkCheckbox.Indicator>
+                    <ArkCheckbox.Indicator>{checkIcon}</ArkCheckbox.Indicator>
                   </ArkCheckbox.Control>
                   <ArkCheckbox.Label data-part="label">{item.label}</ArkCheckbox.Label>
                   <ArkCheckbox.HiddenInput />
@@ -179,7 +160,7 @@ export function Transfer({
           aria-label={messages.transfer.moveRight}
           onClick={() => move(true)}
         >
-          {arrowGlyph("right")}
+          {arrowIcon("right")}
         </Button>
         <Button
           variant="outline"
@@ -189,13 +170,16 @@ export function Transfer({
           aria-label={messages.transfer.moveLeft}
           onClick={() => move(false)}
         >
-          {arrowGlyph("left")}
+          {arrowIcon("left")}
         </Button>
       </div>
       {panel("target", titles[1], targetQuery, setTargetQuery, checkedTarget, targetItems)}
     </div>
   );
 }
+
+export const Transfer = Object.assign(TransferImpl, Checkbox) as typeof TransferImpl &
+  typeof Checkbox;
 
 // The rows are the checkbox family's own seals — the transfer stylesheet
 // only dresses the ledgers around them.

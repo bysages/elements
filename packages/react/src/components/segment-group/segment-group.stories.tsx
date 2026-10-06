@@ -25,8 +25,22 @@ function group(extraProps: Record<string, any> = {}, values = FRAMEWORKS) {
   );
 }
 
-/** One ink stroke slides beneath the chosen segment. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <SegmentGroup
+      defaultValue="week"
+      items={[
+        { value: "day", label: "Day" },
+        { value: "week", label: "Week" },
+        { value: "month", label: "Month" },
+      ]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     orientation: "horizontal",
   },

@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { chevron } from "../ai/chevron";
 import { Collapsible } from "../collapsible";
 
@@ -14,7 +15,7 @@ export interface ReasoningProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** The model's thought, folded by the shared collapsible in its quiet
  * register: bare ink for a trigger, the thought on one hairline. */
-export function Reasoning(props: ReasoningProps) {
+export const Reasoning = withSelfRoot(function Reasoning(props: ReasoningProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["label", "children"]);
   return (
@@ -30,5 +31,5 @@ export function Reasoning(props: ReasoningProps) {
       </Collapsible.Content>
     </Collapsible.Root>
   );
-}
+});
 export { Reasoning as AiReasoning };

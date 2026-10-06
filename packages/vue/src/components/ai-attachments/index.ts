@@ -1,16 +1,16 @@
 import { injectComponentStyle } from "@bysages/core";
-import { file, image, x } from "@bysages/icons";
 import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 
-const imageGlyph = () => glyphNode(image);
+const imageIcon = () => iconNode("image");
 
-const fileGlyph = () => glyphNode(file);
+const fileIcon = () => iconNode("file");
 
-const removeGlyph = () => glyphNode(x, { width: 12, height: 12 });
+const removeIcon = () => iconNode("x", { width: 12, height: 12 });
 
 const IMAGE_EXTS = ["png", "jpg", "jpeg", "gif", "webp", "svg", "avif", "bmp", "ico"];
 
@@ -31,61 +31,65 @@ const humanSize = (bytes: number): string => {
 /** One file riding the prompt: its glyph by extension, its name and
  * human size, and a quiet way to take it back off. Uploading reads as
  * a dashed ghost, error as danger ink. */
-export const Attachment = defineComponent({
-  name: "AiAttachment",
-  props: {
-    /** The file's name — it picks the glyph by extension. */
-    name: { type: String, required: true },
-    /** The file's size in bytes, when known — rendered human. */
-    size: { type: Number, default: undefined },
-    /** The upload's state on the wire. */
-    status: {
-      type: String as PropType<"uploading" | "ready" | "error">,
-      default: "ready",
+export const Attachment = withSelfRoot(
+  defineComponent({
+    name: "AiAttachment",
+    props: {
+      /** The file's name — it picks the glyph by extension. */
+      name: { type: String, required: true },
+      /** The file's size in bytes, when known — rendered human. */
+      size: { type: Number, default: undefined },
+      /** The upload's state on the wire. */
+      status: {
+        type: String as PropType<"uploading" | "ready" | "error">,
+        default: "ready",
+      },
     },
-  },
-  emits: { remove: () => true },
-  setup(props, { emit, attrs }: SetupContext) {
-    injectComponentStyle("ai");
-    const messages = useComponentMessages();
-    const { "aria-label": consumerLabel, ...rootAttrs } = attrs;
+    emits: { remove: () => true },
+    setup(props, { emit, attrs }: SetupContext) {
+      injectComponentStyle("ai");
+      const messages = useComponentMessages();
+      const { "aria-label": consumerLabel, ...rootAttrs } = attrs;
 
-    return () =>
-      h(
-        "span",
-        {
-          ...rootAttrs,
-          "data-scope": "ai",
-          "data-part": "attachment",
-          "data-status": props.status,
-        },
-        [
-          isImage(props.name) ? imageGlyph() : fileGlyph(),
-          h("span", props.name),
-          props.size !== undefined ? h("span", humanSize(props.size)) : null,
-          h(
-            "button",
-            {
-              type: "button",
-              "data-remove": "",
-              "aria-label":
-                consumerLabel ??
-                formatMessage(messages.value.ai.removeAttachment, { name: props.name }),
-              onClick: () => emit("remove"),
-            },
-            removeGlyph(),
-          ),
-        ],
-      );
-  },
-});
+      return () =>
+        h(
+          "span",
+          {
+            ...rootAttrs,
+            "data-scope": "ai",
+            "data-part": "attachment",
+            "data-status": props.status,
+          },
+          [
+            isImage(props.name) ? imageIcon() : fileIcon(),
+            h("span", props.name),
+            props.size !== undefined ? h("span", humanSize(props.size)) : null,
+            h(
+              "button",
+              {
+                type: "button",
+                "data-remove": "",
+                "aria-label":
+                  consumerLabel ??
+                  formatMessage(messages.value.ai.removeAttachment, { name: props.name }),
+                onClick: () => emit("remove"),
+              },
+              removeIcon(),
+            ),
+          ],
+        );
+    },
+  }),
+);
 
 /** The row the files ride in — a wrapping line of chips. */
-export const Attachments = defineComponent({
-  name: "AiAttachments",
-  setup(_props, { attrs, slots }: SetupContext) {
-    return () =>
-      h("span", { ...attrs, "data-scope": "ai", "data-part": "attachments" }, slots.default?.());
-  },
-});
+export const Attachments = withSelfRoot(
+  defineComponent({
+    name: "AiAttachments",
+    setup(_props, { attrs, slots }: SetupContext) {
+      return () =>
+        h("span", { ...attrs, "data-scope": "ai", "data-part": "attachments" }, slots.default?.());
+    },
+  }),
+);
 export { Attachment as AiAttachment, Attachments as AiAttachments };

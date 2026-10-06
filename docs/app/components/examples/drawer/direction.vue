@@ -14,25 +14,23 @@ const directions = [
   <div class="flex flex-wrap gap-3">
     <Drawer.Root v-for="d in directions" :key="d.value" :swipe-direction="d.value">
       <Drawer.Trigger>From the {{ d.edge }}</Drawer.Trigger>
-      <Teleport to="body">
-        <Drawer.Backdrop />
-        <Drawer.Positioner>
-          <Drawer.Content>
-            <Drawer.Grabber><Drawer.GrabberIndicator /></Drawer.Grabber>
-            <Drawer.Title>The {{ d.edge }} sheet</Drawer.Title>
-            <Drawer.Description>
-              The sheet rises from the {{ d.edge }} edge; drag it back where it came from.
-            </Drawer.Description>
-            <p>
-              The same anatomy serves every edge — the positioner seats it, the corners turn toward
-              the page, and the grabber rides the leading edge on the side sheets.
-            </p>
-            <Drawer.CloseTrigger>
-              <Icon :glyph="x" />
-            </Drawer.CloseTrigger>
-          </Drawer.Content>
-        </Drawer.Positioner>
-      </Teleport>
+      <Drawer.Backdrop />
+      <Drawer.Positioner>
+        <Drawer.Content>
+          <Drawer.Grabber><Drawer.GrabberIndicator /></Drawer.Grabber>
+          <Drawer.Title>The {{ d.edge }} sheet</Drawer.Title>
+          <Drawer.Description>
+            The sheet rises from the {{ d.edge }} edge; drag it back where it came from.
+          </Drawer.Description>
+          <p>
+            The same anatomy serves every edge — the positioner seats it, the corners turn toward
+            the page, and the grabber rides the leading edge on the side sheets.
+          </p>
+          <Drawer.CloseTrigger>
+            <Icon :glyph="x" />
+          </Drawer.CloseTrigger>
+        </Drawer.Content>
+      </Drawer.Positioner>
     </Drawer.Root>
   </div>
 </template>

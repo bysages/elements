@@ -6,16 +6,19 @@
  * Context. */
 import { FileUpload as ArkFileUpload } from "@ark-ui/svelte/file-upload";
 
+import { defineFamily } from "../../internal/family";
+import FileUploadFacade from "./FileUpload.svelte";
 import FileUploadRoot from "./FileUploadRoot.svelte";
 import FileUploadTrigger from "./FileUploadTrigger.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const FileUpload: Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
-  Root: typeof FileUploadRoot;
-  Trigger: typeof FileUploadTrigger;
-} = {
+export const FileUpload: typeof FileUploadFacade &
+  Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
+    Root: typeof FileUploadRoot;
+    Trigger: typeof FileUploadTrigger;
+  } = defineFamily(FileUploadFacade, {
   ...ArkFileUpload,
   Root: FileUploadRoot,
   Trigger: FileUploadTrigger,
-};
+});

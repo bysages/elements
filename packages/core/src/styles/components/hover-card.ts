@@ -34,6 +34,28 @@ export const hoverCardCss =
   line-height: var(--bs-line-height-relaxed);
 }
 
+/* The facade's prose carries no data parts of its own; the title rides
+   the serif, the first paragraph is the secondary summary, and any body
+   paragraph after it returns to the ink. */
+[data-scope="hover-card"][data-part="content"] > h3 {
+  margin: 0 0 var(--bs-margin-xs);
+  font-family: var(--bs-font-serif);
+}
+
+[data-scope="hover-card"][data-part="content"] > p {
+  margin: 0;
+}
+
+[data-scope="hover-card"][data-part="content"] > h3 + p {
+  margin-block-end: var(--bs-margin-sm);
+  color: var(--bs-color-text-secondary);
+}
+
+[data-scope="hover-card"][data-part="content"] > h3 + p + p {
+  margin-block-end: var(--bs-margin-md);
+  color: var(--bs-color-text-primary);
+}
+
 [data-scope="hover-card"][data-part="arrow"] {
   --arrow-size: 10px;
   --arrow-background: var(--bs-color-surface-2);

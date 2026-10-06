@@ -8,7 +8,17 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/File Upload" };
 export default meta;
 
-function fileGlyph() {
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(FileUpload, {
+      label: "Attachments",
+      placeholder: "Drag files here or choose",
+      maxFiles: 5,
+    }),
+};
+
+function fileIcon() {
   return h(
     "svg",
     {
@@ -20,11 +30,15 @@ function fileGlyph() {
       "stroke-width": 1.75,
       "aria-hidden": true,
     },
-    [h("path", { d: "M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7l-4-4Zm0 0v4h4" })],
+    [
+      h("path", {
+        d: "M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7l-4-4Zm0 0v4h4",
+      }),
+    ],
   );
 }
 
-function uploadGlyph() {
+function uploadIcon() {
   return h(
     "svg",
     {
@@ -40,7 +54,7 @@ function uploadGlyph() {
   );
 }
 
-function closeGlyph() {
+function closeIcon() {
   return h(
     "svg",
     {
@@ -56,7 +70,7 @@ function closeGlyph() {
   );
 }
 
-function clipGlyph() {
+function clipIcon() {
   return h(
     "svg",
     {
@@ -84,10 +98,10 @@ function slips() {
       default: (api: any) =>
         api.acceptedFiles.map((file: File) =>
           h(FileUpload.Item, { key: file.name, file }, () => [
-            h(FileUpload.ItemPreview, () => fileGlyph()),
+            h(FileUpload.ItemPreview, () => fileIcon()),
             h(FileUpload.ItemName),
             h(FileUpload.ItemSizeText),
-            h(FileUpload.ItemDeleteTrigger, () => closeGlyph()),
+            h(FileUpload.ItemDeleteTrigger, () => closeIcon()),
           ]),
         ),
     }),
@@ -96,7 +110,7 @@ function slips() {
 
 /** Drop files onto the dashed paper or pick them with the trigger; each
  * accepted file lands as a loose slip with a delete glyph. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Attachments",
     dropzoneText: "Drag files here or",
@@ -108,7 +122,7 @@ export const Basic = {
         h(FileUpload.Root, { maxFiles: 5 }, () => [
           h(FileUpload.Label, () => args.label),
           h(FileUpload.Dropzone, () => [
-            uploadGlyph(),
+            uploadIcon(),
             h("span", () => args.dropzoneText),
             h(FileUpload.Trigger, () => args.triggerText),
           ]),
@@ -125,7 +139,7 @@ export const ClearTrigger = {
     h(FileUpload.Root, { maxFiles: 5, accept: "image/png,image/jpeg" }, () => [
       h(FileUpload.Label, () => "Upload"),
       h("div", { style: { display: "flex", gap: "0.5rem", alignItems: "center" } }, () => [
-        h(FileUpload.Trigger, () => [clipGlyph(), "Choose file(s)"]),
+        h(FileUpload.Trigger, () => [clipIcon(), "Choose file(s)"]),
         h(FileUpload.ClearTrigger, () => "Clear files"),
       ]),
       slips(),
@@ -140,7 +154,7 @@ export const AcceptedFileTypes = {
     h(FileUpload.Root, { accept: "image/png,image/jpeg" }, () => [
       h(FileUpload.Label, () => "Photograph"),
       h(FileUpload.Dropzone, () => [
-        uploadGlyph(),
+        uploadIcon(),
         h("span", () => "PNG or JPEG only"),
         h(FileUpload.Trigger, () => "Choose image"),
       ]),
@@ -155,7 +169,7 @@ export const DirectoryUpload = {
     h(FileUpload.Root, { directory: true } as any, () => [
       h(FileUpload.Label, () => "Archive"),
       h(FileUpload.Dropzone, () => [
-        uploadGlyph(),
+        uploadIcon(),
         h("span", () => "Drop a folder here"),
         h(FileUpload.Trigger, () => "Choose folder"),
       ]),
@@ -202,7 +216,7 @@ export const RejectedFiles = {
               () => [
                 h(FileUpload.Label, () => "Small images"),
                 h(FileUpload.Dropzone, () => [
-                  uploadGlyph(),
+                  uploadIcon(),
                   h("span", () => "Two files, no more"),
                   h(FileUpload.Trigger, () => "Choose files"),
                 ]),
@@ -246,7 +260,7 @@ export const ErrorHandling = {
       () => [
         h(FileUpload.Label, () => "Records"),
         h(FileUpload.Dropzone, () => [
-          uploadGlyph(),
+          uploadIcon(),
           h("span", () => "Images or PDFs · 1 KB – 1 MB · up to 3"),
           h(FileUpload.Trigger, () => "Choose files"),
         ]),
@@ -269,7 +283,7 @@ export const FormUsage = {
         h(FileUpload.Root, { maxFiles: 5, name: "files" }, () => [
           h(FileUpload.Label, () => "Enclosures"),
           h(FileUpload.Dropzone, () => [
-            uploadGlyph(),
+            uploadIcon(),
             h("span", () => "They submit with the form"),
             h(FileUpload.Trigger, () => "Choose files"),
           ]),

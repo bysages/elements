@@ -2,6 +2,10 @@ import { Editable as ArkEditable, useEditableContext } from "@ark-ui/vue/editabl
 import { injectComponentStyle } from "@bysages/core";
 import { defineComponent, h, unref, type PropType, type SetupContext } from "vue";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
+
 /* zag hands the preview its text as an innerHTML prop (the Vue
    normalization turns its `children` into markup), while Ark's own
    preview still renders a slot — Vue warns of the clash on every
@@ -35,20 +39,71 @@ const EditableRoot = defineComponent({
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   setup(props, { attrs, slots }) {
-    return () => h(ArkEditable.Root, { ...attrs, "data-size": props.size }, slots);
+    const id = useElementId("editable", attrs);
+    return () => h(ArkEditable.Root, { ...attrs, id: id.value, "data-size": props.size }, slots);
   },
 });
 
-/** Editable, dressed in the paper-and-ink system: bare ink while
- * reading, the full field recipe while editing. The parts —
- * Root, Area, Label, Preview, Input, EditTrigger, SubmitTrigger,
- * CancelTrigger, Control. Preview renders the machine's value as
- * text (the asChild escape hatch stays with the Ark primitives). */
-export const Editable: Omit<typeof ArkEditable, "Root" | "Preview"> & {
+/** The one-tag path: a named value with the house edit controls. Modes,
+ * custom triggers, and alternate editors stay on the anatomy. */
+const EditableFacade = defineComponent({
+  name: "SEditable",
+  props: {
+    modelValue: { type: String, default: undefined },
+    defaultValue: { type: String, default: undefined },
+    label: { type: String, default: undefined },
+    placeholder: { type: String, default: undefined },
+    disabled: { type: Boolean, default: false },
+    invalid: { type: Boolean, default: false },
+    required: { type: Boolean, default: false },
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+  },
+  emits: ["update:modelValue"],
+  setup(props, { attrs, emit }) {
+    return () =>
+      h(
+        EditableRoot,
+        {
+          ...attrs,
+          size: props.size,
+          disabled: props.disabled,
+          invalid: props.invalid,
+          required: props.required,
+          placeholder: props.placeholder,
+          defaultValue: props.defaultValue,
+          ...(props.modelValue === undefined
+            ? {}
+            : {
+                modelValue: props.modelValue,
+                "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
+              }),
+        },
+        () => [
+          ...(props.label ? [h(ArkEditable.Label, () => props.label)] : []),
+          h(ArkEditable.Area, () => [h(Preview), h(ArkEditable.Input)]),
+          h(ArkEditable.Control, () => [
+            h(ArkEditable.EditTrigger, { "aria-label": "Edit" }, () =>
+              iconNode("pencil", { width: 14, height: 14 }),
+            ),
+            h(ArkEditable.SubmitTrigger, { "aria-label": "Submit" }, () =>
+              iconNode("check", { width: 14, height: 14 }),
+            ),
+            h(ArkEditable.CancelTrigger, { "aria-label": "Cancel" }, () =>
+              iconNode("x", { width: 14, height: 14 }),
+            ),
+          ]),
+        ],
+      );
+  },
+});
+
+type EditableParts = Omit<typeof ArkEditable, "Root" | "Preview"> & {
   Root: typeof EditableRoot;
   Preview: typeof Preview;
-} = {
+};
+
+export const Editable = defineFamily(EditableFacade, {
   ...ArkEditable,
   Root: EditableRoot,
   Preview,
-};
+}) as unknown as typeof EditableFacade & EditableParts;

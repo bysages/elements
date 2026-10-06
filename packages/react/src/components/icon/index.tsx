@@ -3,11 +3,13 @@ import { getIcon } from "@bysages/core/icons";
 import type { IconifyIcon } from "@bysages/core/icons";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The inkwell: a standard box that keeps any inline svg at its optical
  * measure and in the text's own ink — the icon carries no pigment and no
- * size of its own. Bring a glyph through `glyph` (a direct registry
- * import), through `name` from the whitelisted registry, or bring your
- * own; the well renders either. */
+ * size of its own. Bring an `@bysages/icons` export or any other
+ * IconifyIcon through `glyph`, a built-in core-registry name through
+ * `name`, or your own svg; the well renders either. */
 export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** Size steps follow the surrounding font size; `inherit` is the
    * default — one em of the text the icon sits in. */
@@ -15,20 +17,19 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** The accessible name. Without it the icon is presentation-only and
    * hidden from the accessibility tree. */
   label?: string;
-  /** A glyph from the registry, imported directly. Ignored when children
+  /** An `@bysages/icons` export or any IconifyIcon. Ignored when children
    * are given — an explicit glyph always wins. */
   glyph?: IconifyIcon;
-  /** A registry name — only the whitelisted set the wrappers draw
-   * themselves. Ignored when `glyph` or children are given. */
+  /** A built-in name from the curated core registry. Ignored when `glyph` or children are given. */
   name?: string;
 }
 
-export function Icon({ size = "inherit", label, glyph, name, children, ...rest }: IconProps) {
+function IconImpl({ size = "inherit", label, glyph, name, children, ...rest }: IconProps) {
   injectComponentStyle("icon");
   const resolved = glyph ?? (name && children == null ? getIcon(name) : undefined);
   if (name && children == null && glyph == null && !resolved) {
     console.error(
-      `[icons] unknown icon name "${name}" — not in the wrappers' whitelist; import the glyph from @bysages/icons and pass it as glyph`,
+      `[icons] unknown icon name "${name}" — not in the core default registry; pass it explicitly as glyph`,
     );
   }
   return (
@@ -53,3 +54,5 @@ export function Icon({ size = "inherit", label, glyph, name, children, ...rest }
     </span>
   );
 }
+
+export const Icon = withSelfRoot(IconImpl);

@@ -2,6 +2,8 @@ import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
 import type { TextareaHTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The bare multi-line input: the field recipe on a `<textarea>`, sized
  * by rows and resizable in the block direction. Standing alone it styles
  * itself from the `invalid` prop; inside a `Field.Root` it consumes the
@@ -13,7 +15,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   onValueChange?: (value: string) => void;
 }
 
-export function Textarea({ value, invalid = false, onValueChange, ...rest }: TextareaProps) {
+function TextareaImpl({ value, invalid = false, onValueChange, ...rest }: TextareaProps) {
   injectComponentStyle("textarea");
   const field = useFieldContext();
   const fieldProps = field?.getTextareaProps() ?? {};
@@ -29,3 +31,5 @@ export function Textarea({ value, invalid = false, onValueChange, ...rest }: Tex
     />
   );
 }
+
+export const Textarea = withSelfRoot(TextareaImpl);

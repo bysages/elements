@@ -35,9 +35,20 @@ function panel(label: string, rootProps: any = {}) {
   );
 }
 
-/** The paper folds away behind one trigger; the indicator turns as the
- * panel opens. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <Collapsible label="What is a design token?">
+      <p>
+        A named visual decision — a color, a spacing step, a radius — compiled into a CSS custom
+        property.
+      </p>
+    </Collapsible>
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     label: "What is Ark UI?",
   },

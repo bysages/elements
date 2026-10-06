@@ -34,9 +34,14 @@ function sealGlyph() {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => <QrCode defaultValue="https://www.bysages.com/" />,
+};
+
 /** The code prints in ink; an overlaid paper badge carries a mark, and the
  * download control stays a quiet seal beneath it. */
-export const Basic = {
+export const Anatomy = {
   args: {
     value: "https://www.bysages.com/",
   },

@@ -1,10 +1,9 @@
-import { x } from "@bysages/icons";
 import { h } from "vue";
 import { z } from "zod";
 
 import { labelled, useBound } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 import { TagsInput } from "./index";
 
 /** A field that turns entries into removable tags. */
@@ -18,7 +17,7 @@ export default defineEntry({
     description: "A field that turns entries into removable tags.",
     component: ({ props, bindings }) => {
       const [value, setValue] = useBound<string[]>(props.value, bindings?.value);
-      const cross = () => glyphNode(x);
+      const cross = () => iconNode("x");
       return labelled(
         props.label,
         h(

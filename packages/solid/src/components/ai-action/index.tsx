@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { Button } from "../button";
 
 export interface ActionProps extends JSX.HTMLAttributes<HTMLButtonElement> {
@@ -13,7 +14,7 @@ export interface ActionProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 /** A quiet icon button — copy, retry, thumbs. The label names it to
  * assistive tech and as the hover title. The control itself is the
  * shared Button in its ghost register. */
-export function Action(props: ActionProps) {
+export const Action = withSelfRoot(function Action(props: ActionProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["label", "children"]);
   return (
@@ -21,5 +22,5 @@ export function Action(props: ActionProps) {
       {own.children}
     </Button>
   );
-}
+});
 export { Action as AiAction };

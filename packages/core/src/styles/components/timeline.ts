@@ -32,7 +32,7 @@ export const timelineCss = /* css */ `
   position: absolute;
   inset-inline-start: calc(var(--bs-part-size-sm) / 4 - 0.5px);
   inset-block-start: calc(var(--bs-part-size-sm) / 2 + var(--bs-space-2));
-  inset-block-end: 0;
+  inset-block-end: calc(var(--bs-margin-sm) * -1);
   inline-size: 1px;
   background: var(--bs-color-border);
 }
@@ -77,8 +77,8 @@ export const timelineCss = /* css */ `
 [data-scope="timeline"][data-orientation="horizontal"] [data-part="item"]:not(:last-child)::before {
   inset-block-start: calc(var(--bs-part-size-sm) / 4);
   inset-block-end: auto;
-  inset-inline-start: calc(var(--bs-part-size-sm) / 2 + var(--bs-gap-xs));
-  inset-inline-end: 0;
+  inset-inline-start: calc(var(--bs-part-size-sm) / 4);
+  inset-inline-end: calc(var(--bs-part-size-sm) / 4 * -1);
   inline-size: auto;
   block-size: 1px;
 }

@@ -9,7 +9,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Date Picker" };
 export default meta;
 
-function calendarGlyph() {
+function calendarIcon() {
   return h(
     "svg",
     {
@@ -185,8 +185,13 @@ function field(control: any[], label = "Start date") {
   return [h(DatePicker.Label, () => label), h(DatePicker.Control, () => control)];
 }
 
-/** The standard picker: type a date or pick one from the grid. */
+/** The facade is the one-tag path for the common completion. */
 export const Basic = {
+  render: () => h(DatePicker, { label: "Start date", placeholder: "yyyy-mm-dd" }),
+};
+
+/** The standard picker: type a date or pick one from the grid. */
+export const Anatomy = {
   args: {
     label: "Start date",
   },
@@ -194,7 +199,7 @@ export const Basic = {
     withState(
       () => () =>
         h(DatePicker.Root, () => [
-          ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())], args.label),
+          ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())], args.label),
           popup(dayView(), monthView(), yearView()),
         ]),
     ),
@@ -206,7 +211,7 @@ export const DefaultValue = {
     h(DatePicker.Root, { defaultValue: [parseDate("2026-01-15")] }, () => [
       ...field([
         h(DatePicker.Input),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
         h(DatePicker.ClearTrigger, () => "Clear"),
       ]),
       popup(dayView(), monthView(), yearView()),
@@ -229,7 +234,7 @@ export const Controlled = {
             },
           } as any,
           () => [
-            ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+            ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
             popup(dayView(), monthView(), yearView()),
           ],
         );
@@ -244,7 +249,7 @@ export const RangeSelection = {
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
         h(DatePicker.ClearTrigger, () => "Clear"),
       ]),
       h(DatePicker.PresetTrigger, { value: "last7Days" }, () => "Last 7 days"),
@@ -257,7 +262,7 @@ export const RangeSelection = {
 export const MultipleSelection = {
   render: () =>
     h(DatePicker.Root, { selectionMode: "multiple" }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -266,7 +271,7 @@ export const MultipleSelection = {
 export const MinMax = {
   render: () =>
     h(DatePicker.Root, { min: parseDate("2026-01-01"), max: parseDate("2026-03-31") }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -275,7 +280,7 @@ export const MinMax = {
 export const FixedWeeks = {
   render: () =>
     h(DatePicker.Root, { fixedWeeks: true }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -284,7 +289,7 @@ export const FixedWeeks = {
 export const WeekNumbers = {
   render: () =>
     h(DatePicker.Root, { showWeekNumbers: true }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayViewWithWeekNumbers(), monthView(), yearView()),
     ]),
 };
@@ -296,7 +301,7 @@ export const MultipleMonths = {
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
       ]),
       popup(dayView(), monthView(), yearView()),
     ]),
@@ -306,7 +311,7 @@ export const MultipleMonths = {
 export const Locale = {
   render: () =>
     h(DatePicker.Root, { locale: "de-DE", startOfWeek: 1 }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -315,7 +320,7 @@ export const Locale = {
 export const OpenOnClick = {
   render: () =>
     h(DatePicker.Root, { openOnClick: true }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -324,7 +329,7 @@ export const OpenOnClick = {
 export const Unavailable = {
   render: () =>
     h(DatePicker.Root, { isDateUnavailable: (d: any) => d.day === 0 || d.day === 6 }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView(), monthView(), yearView()),
     ]),
 };
@@ -333,7 +338,7 @@ export const Unavailable = {
 export const MaxSelectedDates = {
   render: () =>
     h(DatePicker.Root, { selectionMode: "multiple", maxSelectedDates: 3 }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(dayView()),
     ]),
 };
@@ -342,7 +347,7 @@ export const MaxSelectedDates = {
 export const SelectToday = {
   render: () =>
     h(DatePicker.Root, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       h(DatePicker.Positioner, () =>
         h(DatePicker.Content, () =>
           h(DatePicker.View, { view: "day" }, () =>
@@ -393,7 +398,7 @@ export const TriggerValue = {
         h(
           DatePicker.Trigger,
           { style: { inlineSize: "100%", justifyContent: "space-between" } },
-          () => [h(DatePicker.ValueText, { placeholder: "Select date" }), calendarGlyph()],
+          () => [h(DatePicker.ValueText, { placeholder: "Select date" }), calendarIcon()],
         ),
       ]),
       popup(dayView(), monthView(), yearView()),
@@ -420,7 +425,7 @@ export const FormatParse = {
         },
       },
       () => [
-        ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+        ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
         popup(dayView(), monthView(), yearView()),
       ],
     );
@@ -432,7 +437,7 @@ export const FormatParse = {
 export const MonthYearSelect = {
   render: () =>
     h(DatePicker.Root, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       h(DatePicker.Positioner, () =>
         h(DatePicker.Content, () =>
           h(DatePicker.View, { view: "day" }, () =>
@@ -475,7 +480,7 @@ export const MonthYearSelect = {
 export const DefaultView = {
   render: () =>
     h(DatePicker.Root, { defaultView: "month" }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(monthView(), yearView()),
     ]),
 };
@@ -485,7 +490,7 @@ export const DefaultView = {
 export const MonthPicker = {
   render: () =>
     h(DatePicker.Root, { defaultView: "month", minView: "month" }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(monthView()),
     ]),
 };
@@ -494,7 +499,7 @@ export const MonthPicker = {
 export const YearPicker = {
   render: () =>
     h(DatePicker.Root, { defaultView: "year", minView: "year" }, () => [
-      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+      ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
       popup(yearView()),
     ]),
 };
@@ -506,7 +511,7 @@ export const MonthPickerRange = {
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
       ]),
       popup(monthView(), yearView()),
     ]),
@@ -519,7 +524,7 @@ export const YearPickerRange = {
       ...field([
         h(DatePicker.Input as any, { index: 0 }),
         h(DatePicker.Input as any, { index: 1 }),
-        h(DatePicker.Trigger, () => calendarGlyph()),
+        h(DatePicker.Trigger, () => calendarIcon()),
       ]),
       popup(yearView()),
     ]),
@@ -550,7 +555,7 @@ export const FormUsage = {
           DatePicker.Root,
           { name: "date", isDateUnavailable: (d: any) => d.day === 0 || d.day === 6 },
           () => [
-            ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarGlyph())]),
+            ...field([h(DatePicker.Input), h(DatePicker.Trigger, () => calendarIcon())]),
             popup(dayView(), monthView(), yearView()),
           ],
         ),

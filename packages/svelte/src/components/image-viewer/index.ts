@@ -1,3 +1,4 @@
+import { withSelfRoot } from "../../internal/family";
 import ImageViewerComponent from "./ImageViewer.svelte";
 
 /** A lightbox: the picture over a dimmed page, with a small toolbar
@@ -6,6 +7,6 @@ import ImageViewerComponent from "./ImageViewer.svelte";
  * close — the dialog machine carries the modal part. `open` may stay
  * with the caller (`bind:open`); left alone the viewer keeps it to
  * itself. */
-export const ImageViewer = ImageViewerComponent;
+export const ImageViewer = withSelfRoot(ImageViewerComponent);
 
 export type { ImageViewerProps } from "./props";

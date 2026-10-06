@@ -52,7 +52,7 @@ export const mentionsCss = /* css */ `
    elevation 3 — riding the popover positioner's shared ladder. */
 [data-scope="mentions"][data-part="popup"] {
   box-sizing: border-box;
-  min-inline-size: 10rem;
+  inline-size: var(--reference-width, 10rem);
   max-block-size: 14rem;
   display: flex;
   flex-direction: column;

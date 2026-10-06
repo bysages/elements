@@ -8,6 +8,17 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Password Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(PasswordInput, {
+      label: "Password",
+      placeholder: "Enter a password",
+      autoComplete: "new-password",
+      required: true,
+    }),
+};
+
 function eye(open: boolean) {
   return h(
     "svg",
@@ -51,7 +62,7 @@ const meterStyle = { display: "flex", gap: "0.25rem", marginTop: "0.375rem" };
 
 /** The masked field with its reveal eye — the indicator swaps eye for
  * eye-off in the same seat. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Password",
     placeholder: "Enter a password",
@@ -196,7 +207,12 @@ export const WithValidation = {
           state.password.length > 0 && !isValid()
             ? h(
                 "p",
-                { style: { fontSize: "var(--bs-font-size-xs)", color: "var(--bs-color-danger)" } },
+                {
+                  style: {
+                    fontSize: "var(--bs-font-size-xs)",
+                    color: "var(--bs-color-danger)",
+                  },
+                },
                 "Password must be at least 8 characters",
               )
             : null,

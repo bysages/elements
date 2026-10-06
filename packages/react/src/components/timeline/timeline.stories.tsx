@@ -68,3 +68,36 @@ export const Compact = {
     </Timeline.Root>
   ),
 };
+
+/** The horizontal thread: moments in a row, the line running through
+ * the markers from left to right. */
+export const Horizontal = {
+  render: () => (
+    <Timeline.Root orientation="horizontal">
+      {(
+        [
+          ["Ground", "The stone is squared"],
+          ["Ink", "The pigment meets the water"],
+          ["Stroke", "The hand commits"],
+          ["Seal", "The name closes the work"],
+        ] as const
+      ).map(([title, note]) => (
+        <Timeline.Item key={title}>
+          <Timeline.Marker />
+          <Timeline.Content>
+            <div style={{ fontSize: "0.875rem", fontWeight: 500 }}>{title}</div>
+            <div
+              style={{
+                marginTop: "0.25rem",
+                fontSize: "0.75rem",
+                color: "var(--bs-color-text-tertiary)",
+              }}
+            >
+              {note}
+            </div>
+          </Timeline.Content>
+        </Timeline.Item>
+      ))}
+    </Timeline.Root>
+  ),
+};

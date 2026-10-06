@@ -11,6 +11,6 @@ export interface BackTopProps extends HTMLButtonAttributes {
    * control moors inside that element's corner and watches its
    * scrollTop. The host supplies the positioning context. */
   scrollEl?: () => HTMLElement | null;
-  /** The control's own content — the up-stroke glyph by default. */
+  /** The control's own content — the up-stroke icon by default. */
   children?: Snippet;
 }

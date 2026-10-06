@@ -1,3 +1,4 @@
+import { withSelfRoot } from "../../internal/family";
 import MentionsComponent from "./Mentions.svelte";
 import MentionsVesselComponent from "./MentionsVessel.svelte";
 
@@ -6,12 +7,12 @@ import MentionsVesselComponent from "./MentionsVessel.svelte";
  * matching candidates in a small anchored vessel; choosing one replaces
  * the token with `trigger + label` and hands the whole text back
  * through `bind:value`. Arrows move, Enter inserts, Escape dismisses. */
-export const Mentions = MentionsComponent;
+export const Mentions = withSelfRoot(MentionsComponent);
 
 /** The vessel: the candidates themselves as a floating card. Composers
  * that keep their own field anatomy wire it up with `useMentions`
  * directly. */
-export const MentionsVessel = MentionsVesselComponent;
+export const MentionsVessel = withSelfRoot(MentionsVesselComponent);
 
 export { useMentions } from "./use-mentions.svelte";
 

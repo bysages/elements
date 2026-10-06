@@ -4,21 +4,16 @@ import { injectComponentStyle } from "@bysages/core";
 import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
+import { DatePicker } from "../date-picker";
+
 function chevron(dir: "left" | "right") {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.75}
-      aria-hidden="true"
-      style={dir === "left" ? { transform: "rotate(180deg)" } : undefined}
-    >
-      <path d="m9 5 7 7-7 7" />
-    </svg>
-  );
+  return iconNode(dir === "left" ? "chevron-left" : "chevron-right", {
+    width: "16",
+    height: "16",
+  });
 }
 
 export interface CalendarProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -34,10 +29,11 @@ export interface CalendarProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * title zooms out through month and year grids; the grids themselves
  * are the shared machinery — value, range selection, and focus ride
  * Ark's own contract. */
-export function Calendar(props: CalendarProps) {
+function CalendarImpl(props: CalendarProps) {
   injectComponentStyle("calendar");
   injectComponentStyle("date-picker");
-  const [own, rest] = splitProps(props, ["value", "min", "max", "onValueChange"]);
+  const [own, rest] = splitProps(props, ["id", "value", "min", "max", "onValueChange"]);
+  const id = useElementId("calendar", () => own.id);
   /* zag's RangeText follows the visible day-page (startValue), which
      the month and year steps never move — it would freeze the title.
      Formatting the focused value keeps it in step with the arrows. */
@@ -71,6 +67,7 @@ export function Calendar(props: CalendarProps) {
           so the machine must skip its dismissable layer — without it
           it hunts for a content node that never renders. */}
       <ArkDatePicker.Root
+        id={id()}
         open
         closeOnSelect
         inline
@@ -180,3 +177,6 @@ export function Calendar(props: CalendarProps) {
     </div>
   );
 }
+
+export const Calendar = defineFamily(CalendarImpl, DatePicker) as typeof CalendarImpl &
+  typeof DatePicker;

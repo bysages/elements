@@ -4,6 +4,9 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** The inner trigger repeats the click binding the dropzone already
  * owns: keyboard users enter through the dropzone, so the button
  * leaves the tab order and the semantic tree entirely. */
@@ -25,18 +28,20 @@ type FileUploadOwnProps = {
 
 function FileUploadRoot(props: ArkFileUploadRootProps & FileUploadOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkFileUpload.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("file-upload", () => rest.id);
+  return <ArkFileUpload.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const FileUpload: Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
-  Root: typeof FileUploadRoot;
-  Trigger: typeof FileUploadTrigger;
-} = {
-  ...ArkFileUpload,
-  Root: FileUploadRoot,
-  Trigger: FileUploadTrigger,
-};
+export const FileUpload: typeof FileUploadRoot &
+  Omit<typeof ArkFileUpload, "Root"> & { Root: typeof FileUploadRoot } = defineFamily(
+  FileUploadRoot,
+  {
+    ...ArkFileUpload,
+    Root: FileUploadRoot,
+    Trigger: FileUploadTrigger,
+  },
+);
 
 injectComponentStyle("file-upload");

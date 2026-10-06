@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { applyMask } from "./mask";
 
 export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
@@ -21,7 +22,7 @@ export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
  * the label id, the described-by wiring and the invalid state for free,
  * which is also the seam the Form validation layer will drive. Disabled
  * rides the native attribute. */
-export function Input(props: InputProps) {
+export const Input = withSelfRoot(function Input(props: InputProps) {
   injectComponentStyle("input");
   const field = useFieldContext();
   const [own, rest] = splitProps(props, ["value", "size", "invalid", "mask", "onValueChange"]);
@@ -46,4 +47,4 @@ export function Input(props: InputProps) {
       })}
     />
   );
-}
+});

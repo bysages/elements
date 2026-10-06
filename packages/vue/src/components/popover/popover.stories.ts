@@ -1,6 +1,6 @@
 import { Dialog } from "@ark-ui/vue/dialog";
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, ref, Teleport } from "vue";
+import { h, reactive, ref } from "vue";
 
 import { Popover } from ".";
 import { Input } from "../input";
@@ -9,7 +9,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Overlay/Popover" };
 export default meta;
 
-function closeGlyph() {
+function closeIcon() {
   return h(
     "svg",
     {
@@ -30,7 +30,7 @@ function closeGlyph() {
 function vessel(title: string, ...extra: any[]) {
   return h(Popover.Positioner, () =>
     h(Popover.Content, () => [
-      h(Popover.CloseTrigger, () => closeGlyph()),
+      h(Popover.CloseTrigger, () => closeIcon()),
       h(Popover.Title, () => title),
       ...extra,
     ]),
@@ -40,17 +40,30 @@ function vessel(title: string, ...extra: any[]) {
 export const Basic = {
   args: {
     trigger: "Notes",
-    title: "Reading notes",
+    label: "Reading notes",
+    description:
+      "Marginalia stay on the paper: this vessel pins to its trigger and dissolves in on elevation.",
+    placement: "bottom-start",
+  },
+  render: (args: any) => withState(() => () => h(Popover, args)),
+};
+
+/** The anatomy is the composition path: the same vessel, assembled from
+ * Ark's parts when the caller needs full control. */
+export const Anatomy = {
+  args: {
+    trigger: "Notes",
+    label: "Reading notes",
     description:
       "Marginalia stay on the paper: this vessel pins to its trigger and dissolves in on elevation.",
   },
   render: (args: any) =>
     withState(
       () => () =>
-        h(Popover.Root, () => [
+        h(Popover.Root, { positioning: { placement: args.placement } }, () => [
           h(Popover.Trigger, () => args.trigger),
           vessel(
-            args.title,
+            args.label,
             h(Popover.Description, () => args.description),
           ),
         ]),
@@ -122,7 +135,7 @@ export const Anchor = {
       ]),
       h(Popover.Positioner, () =>
         h(Popover.Content, () => [
-          h(Popover.CloseTrigger, () => closeGlyph()),
+          h(Popover.CloseTrigger, () => closeIcon()),
           h(Popover.Title, () => "Anchored"),
           h(Popover.Description, () => "The panel pins to the input, not the button."),
         ]),
@@ -254,7 +267,7 @@ export const InitialFocusEl = {
         h(Popover.Trigger, () => "Update profile"),
         h(Popover.Positioner, () =>
           h(Popover.Content, () => [
-            h(Popover.CloseTrigger, () => closeGlyph()),
+            h(Popover.CloseTrigger, () => closeIcon()),
             h(Popover.Title, () => "Enter your name"),
             h(Popover.Description, () => "Make changes to your profile here."),
             h("div", { style: { display: "grid", gap: "0.5rem", marginTop: "0.5rem" } }, () => [
@@ -288,7 +301,7 @@ export const Context = {
       h(Popover.Trigger, () => "Click me"),
       h(Popover.Positioner, () =>
         h(Popover.Content, () => [
-          h(Popover.CloseTrigger, () => closeGlyph()),
+          h(Popover.CloseTrigger, () => closeIcon()),
           h(Popover.Title, () => "Status"),
           h(Popover.Description, () =>
             h(Popover.Context as any, null, {
@@ -307,26 +320,25 @@ export const WithDialog = {
   render: () =>
     h(Dialog.Root, () => [
       h(Dialog.Trigger, () => "Open dialog"),
-      h(Teleport, { to: "body" }, () => [
-        h(Dialog.Backdrop),
-        h(Dialog.Positioner, () =>
-          h(Dialog.Content, () => [
-            h(Dialog.CloseTrigger, () => closeGlyph()),
-            h(Dialog.Title, () => "Edit profile"),
-            h(Dialog.Description, () => "Update your profile information below."),
-            h(Popover.Root, { lazyMount: true, unmountOnExit: true } as any, () => [
-              h(Popover.Trigger, () => "More options"),
-              h(Popover.Positioner, () =>
-                h(Popover.Content, () => [
-                  h(Popover.Arrow, () => h(Popover.ArrowTip)),
-                  h(Popover.CloseTrigger, () => closeGlyph()),
-                  h(Popover.Title, () => "Additional settings"),
-                  h(Popover.Description, () => "This popover renders correctly above the dialog."),
-                ]),
-              ),
-            ]),
+
+      h(Dialog.Backdrop),
+      h(Dialog.Positioner, () =>
+        h(Dialog.Content, () => [
+          h(Dialog.CloseTrigger, () => closeIcon()),
+          h(Dialog.Title, () => "Edit profile"),
+          h(Dialog.Description, () => "Update your profile information below."),
+          h(Popover.Root, { lazyMount: true, unmountOnExit: true } as any, () => [
+            h(Popover.Trigger, () => "More options"),
+            h(Popover.Positioner, () =>
+              h(Popover.Content, () => [
+                h(Popover.Arrow, () => h(Popover.ArrowTip)),
+                h(Popover.CloseTrigger, () => closeIcon()),
+                h(Popover.Title, () => "Additional settings"),
+                h(Popover.Description, () => "This popover renders correctly above the dialog."),
+              ]),
+            ),
           ]),
-        ),
-      ]),
+        ]),
+      ),
     ]),
 };

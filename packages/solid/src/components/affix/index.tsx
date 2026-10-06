@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface AffixProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** Where the content pins when it reaches the top of the scrolling
    * ancestor — the height of any fixed header it must clear. */
@@ -19,7 +21,7 @@ export interface AffixProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * `overflow: hidden` clips the pin. Both offsets may be given: the
  * content then holds its place inside that band.
  */
-export function Affix(props: AffixProps) {
+export const Affix = withSelfRoot(function Affix(props: AffixProps) {
   injectComponentStyle("affix");
   const [own, rest] = splitProps(props, ["offsetTop", "offsetBottom"]);
   return (
@@ -34,4 +36,4 @@ export function Affix(props: AffixProps) {
       data-part="root"
     />
   );
-}
+});

@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import { createEffect, createMemo, onMount, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 import { wrapResponseTables } from "./tables";
@@ -23,7 +24,7 @@ export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
 /** Markdown set on the paper. Rendering goes through
  * `@tanstack/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. */
-export function Response(props: ResponseProps) {
+export const Response = withSelfRoot(function Response(props: ResponseProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["content", "highlighter", "copyLabel", "copiedLabel"]);
   const messages = useComponentMessages();
@@ -61,5 +62,5 @@ export function Response(props: ResponseProps) {
       innerHTML={html()}
     />
   );
-}
+});
 export { Response as AiResponse };

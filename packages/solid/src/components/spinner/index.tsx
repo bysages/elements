@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export interface SpinnerProps extends JSX.HTMLAttributes<HTMLElement> {
@@ -9,7 +10,7 @@ export interface SpinnerProps extends JSX.HTMLAttributes<HTMLElement> {
 
 /** A wheel of waiting: one arc of ink turning about its center. Quiet by
  * default — it reports progress without claiming attention. */
-export function Spinner(props: SpinnerProps) {
+export const Spinner = withSelfRoot(function Spinner(props: SpinnerProps) {
   injectComponentStyle("spinner");
   const [own, rest] = splitProps(props, ["size"]);
   const messages = useComponentMessages();
@@ -40,4 +41,4 @@ export function Spinner(props: SpinnerProps) {
       </svg>
     </span>
   );
-}
+});

@@ -3,21 +3,17 @@ import { createEffect, createSignal, on, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Show } from "solid-js";
 
-/** The mark for a source that never arrived: a quiet mountain-and-sun,
- * drawn in the stylesheet's stroke and hidden from the reader. */
-function placeholderGlyph() {
-  return (
-    <>
-      <rect x={3} y={4} width={18} height={16} rx={1.5} />
-      <circle cx={9} cy={10} r={1.5} />
-      <path d="m5.5 17.5 4.5-5 3 3.5 2.5-3 3 4.5" />
-    </>
-  );
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+
+/** The registry icon for a source that never arrived, hidden from the reader. */
+function placeholderIcon() {
+  return iconNode("image");
 }
 
 /** A framed picture: while the source loads, the frame keeps the
  * skeleton's breath; the picture dissolves in when it lands; a broken
- * source leaves the `fallback` prop — or the placeholder glyph when the
+ * source leaves the `fallback` prop — or the placeholder icon when the
  * caller has nothing local to say. The frame's size is the consumer's
  * to give. */
 export interface ImageProps extends JSX.HTMLAttributes<HTMLElement> {
@@ -33,7 +29,7 @@ export interface ImageProps extends JSX.HTMLAttributes<HTMLElement> {
   fallback?: JSX.Element;
 }
 
-export function Image(props: ImageProps) {
+export const Image = withSelfRoot(function Image(props: ImageProps) {
   injectComponentStyle("image");
   const [own, rest] = splitProps(props, [
     "src",
@@ -77,9 +73,9 @@ export function Image(props: ImageProps) {
       />
       <Show when={state() === "error"}>
         <div data-scope="image" data-part="fallback">
-          {own.fallback ?? placeholderGlyph()}
+          {own.fallback ?? placeholderIcon()}
         </div>
       </Show>
     </figure>
   );
-}
+});

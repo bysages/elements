@@ -9,19 +9,12 @@ const PORTRAIT =
 </script>
 
 <template>
-  <div class="grid justify-start gap-4">
-    <div class="flex items-center gap-3">
-      <Avatar.Root>
-        <Avatar.Fallback>S</Avatar.Fallback>
-        <Avatar.Image :src="PORTRAIT" alt="Portrait of Sage" />
-      </Avatar.Root>
-      <Avatar.Root>
-        <Avatar.Fallback>BS</Avatar.Fallback>
-      </Avatar.Root>
-    </div>
-    <div class="flex items-center gap-3">
-      <Avatar.Root>墨</Avatar.Root>
-      <Avatar.Root shape="square">印</Avatar.Root>
-    </div>
+  <div class="flex items-center gap-3">
+    <Avatar>
+      <Avatar.Fallback>S</Avatar.Fallback>
+      <Avatar.Image :src="PORTRAIT" alt="Portrait of Sage" />
+    </Avatar>
+    <Avatar>墨</Avatar>
+    <Avatar shape="square">印</Avatar>
   </div>
 </template>

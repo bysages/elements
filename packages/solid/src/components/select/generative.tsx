@@ -3,7 +3,7 @@ import { For, createComponent, type JSX } from "solid-js";
 import { faces } from "../../generative/faces.generated";
 import { labelled, collectionFor, useBound } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { Icon } from "../icon";
+import { iconNode } from "../../internal/icon";
 import { Select } from "./index";
 
 /** A choice field that opens a ruled list; options carry label and value. */
@@ -37,7 +37,7 @@ export default defineEntry({
                     }),
                     createComponent(Select.Indicator, {
                       get children() {
-                        return createComponent(Icon, { name: "chevrons-up-down" });
+                        return iconNode("chevrons-up-down");
                       },
                     }),
                   ] as JSX.Element;
@@ -65,7 +65,7 @@ export default defineEntry({
                                       }),
                                       createComponent(Select.ItemIndicator, {
                                         get children() {
-                                          return createComponent(Icon, { name: "check" });
+                                          return iconNode("check");
                                         },
                                       }),
                                     ] as JSX.Element;

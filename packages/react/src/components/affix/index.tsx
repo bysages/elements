@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /**
  * A nail: the wrapped content travels with the page until it reaches its
  * offset, then stays put while the page moves on. The semantics are
@@ -18,7 +20,7 @@ export interface AffixProps extends HTMLAttributes<HTMLDivElement> {
   offsetBottom?: string;
 }
 
-export function Affix({ offsetTop = "0px", offsetBottom = "0px", ...rest }: AffixProps) {
+function AffixImpl({ offsetTop = "0px", offsetBottom = "0px", ...rest }: AffixProps) {
   injectComponentStyle("affix");
   return (
     <div
@@ -29,3 +31,5 @@ export function Affix({ offsetTop = "0px", offsetBottom = "0px", ...rest }: Affi
     />
   );
 }
+
+export const Affix = withSelfRoot(AffixImpl);

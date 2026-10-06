@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "svelte/elements";
 export type AttachmentStatus = "uploading" | "ready" | "error";
 
 export interface AttachmentProps extends HTMLAttributes<HTMLSpanElement> {
-  /** The file's name — it picks the glyph by extension. */
+  /** The file's name — it picks the icon by extension. */
   name: string;
   /** The file's size in bytes, when known — rendered human. */
   size?: number;

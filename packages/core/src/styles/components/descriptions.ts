@@ -4,6 +4,7 @@ export const descriptionsCss = /* css */ `
    columns do. */
 [data-scope="descriptions"][data-part="root"] {
   margin: 0;
+  inline-size: 100%;
   display: grid;
   grid-template-columns: repeat(
     var(--bs-desc-columns, 1),

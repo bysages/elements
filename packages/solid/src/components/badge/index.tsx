@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A small seal of state. Ink is the neutral tone; the four semantic
  * pigments are fixed. Subtle and outline re-register the same pigment. */
 export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
@@ -9,7 +11,7 @@ export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   variant?: "solid" | "subtle" | "outline";
 }
 
-export function Badge(props: BadgeProps) {
+export const Badge = withSelfRoot(function Badge(props: BadgeProps) {
   injectComponentStyle("badge");
   const [own, rest] = splitProps(props, ["tone", "variant"]);
   return (
@@ -21,4 +23,4 @@ export function Badge(props: BadgeProps) {
       data-variant={own.variant ?? "solid"}
     />
   );
-}
+});

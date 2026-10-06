@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export type BannerStatus = "ink" | "info" | "success" | "warning" | "danger";
@@ -54,14 +55,7 @@ function Close(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
       data-scope="banner"
       data-part="close"
     >
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path
-          d="M4 4l8 8M12 4l-8 8"
-          stroke="currentColor"
-          stroke-width={1.5}
-          stroke-linecap="round"
-        />
-      </svg>
+      {iconNode("x")}
     </button>
   );
 }

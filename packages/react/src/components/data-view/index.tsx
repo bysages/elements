@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type HTMLAttributes, type ReactNode, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 import { Pagination } from "../pagination";
 
@@ -19,7 +20,7 @@ export interface DataViewProps extends HTMLAttributes<HTMLDivElement> {
  * renderItem, the view lays the records out as a ledger or a lattice
  * and — when a page size is given — pages them with the pagination
  * family's own parts rather than a second implementation. */
-export function DataView({
+function DataViewImpl({
   items,
   layout = "list",
   pageSize,
@@ -76,3 +77,5 @@ export function DataView({
     </div>
   );
 }
+
+export const DataView = withSelfRoot(DataViewImpl);

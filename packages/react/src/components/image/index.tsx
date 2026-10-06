@@ -2,21 +2,14 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-/** The mark for a source that never arrived: a quiet mountain-and-sun,
- * drawn in the stylesheet's stroke and hidden from the reader. */
-function placeholderGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-      <rect x={3} y={4} width={18} height={16} rx={1.5} />
-      <circle cx={9} cy={10} r={1.5} />
-      <path d="m5.5 17.5 4.5-5 3 3.5 2.5-3 3 4.5" />
-    </svg>
-  );
-}
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+
+const placeholderIcon = iconNode("image");
 
 /** A framed picture: while the source loads, the frame keeps the
  * skeleton's breath; the picture dissolves in when it lands; a broken
- * source leaves the `fallback` — or the placeholder glyph when the
+ * source leaves the `fallback` — or the placeholder icon when the
  * caller has nothing local to say. The frame's size is the consumer's
  * to give. */
 export interface ImageProps extends Omit<HTMLAttributes<HTMLElement>, "onError" | "onLoad"> {
@@ -34,7 +27,7 @@ export interface ImageProps extends Omit<HTMLAttributes<HTMLElement>, "onError" 
   fallback?: ReactNode;
 }
 
-export function Image({
+function ImageImpl({
   src,
   alt = "",
   fit = "cover",
@@ -67,9 +60,11 @@ export function Image({
       />
       {state === "error" ? (
         <div data-scope="image" data-part="fallback">
-          {fallback ?? placeholderGlyph()}
+          {fallback ?? placeholderIcon}
         </div>
       ) : null}
     </figure>
   );
 }
+
+export const Image = withSelfRoot(ImageImpl);

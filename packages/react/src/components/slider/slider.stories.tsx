@@ -6,48 +6,13 @@ import { Slider } from ".";
 const meta: Meta = { title: "Components/Forms/Slider" };
 export default meta;
 
-/** One slider anatomy: the labeled heading row, the recessed track with
- * its ink range, one thumb per value. */
-function slider(rootProps: any, label: string, values: number[], markers?: number[]) {
-  return (
-    <Slider.Root {...rootProps}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-        }}
-      >
-        <Slider.Label>{label}</Slider.Label>
-        <Slider.ValueText />
-      </div>
-      <Slider.Control>
-        <Slider.Track>
-          <Slider.Range />
-        </Slider.Track>
-        {values.map((_, index) => (
-          <Slider.Thumb key={index} index={index}>
-            <Slider.HiddenInput />
-          </Slider.Thumb>
-        ))}
-      </Slider.Control>
-      {markers ? (
-        <Slider.MarkerGroup>
-          {markers.map((value) => (
-            <Slider.Marker key={value} value={value}>
-              {String(value)}
-            </Slider.Marker>
-          ))}
-        </Slider.MarkerGroup>
-      ) : null}
-    </Slider.Root>
-  );
-}
-
-const ROW = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
-
-/** One thumb, one track, the ink filling left of the seal. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => <Slider defaultValue={40} min={0} max={100} step={1} label="Volume" />,
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     label: "Volume",
     min: 0,
@@ -71,6 +36,38 @@ export const Basic = {
     </div>
   ),
 };
+
+/** One slider anatomy: the labeled heading row, the recessed track with
+ * its ink range, one thumb per value. */
+function slider(rootProps: any, label: string, values: number[], markers?: number[]) {
+  return (
+    <Slider.Root {...rootProps}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+        <Slider.Label>{label}</Slider.Label>
+        <Slider.ValueText />
+      </div>
+      <Slider.Control>
+        <Slider.Track>
+          <Slider.Range />
+        </Slider.Track>
+        {values.map((_, index) => (
+          <Slider.Thumb key={index} index={index}>
+            <Slider.HiddenInput />
+          </Slider.Thumb>
+        ))}
+      </Slider.Control>
+      {markers ? (
+        <Slider.MarkerGroup>
+          {markers.map((value) => (
+            <Slider.Marker key={value} value={value} />
+          ))}
+        </Slider.MarkerGroup>
+      ) : null}
+    </Slider.Root>
+  );
+}
+
+const ROW = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 
 /** Two thumbs share the track: the ink runs between them. */
 export const Range = {

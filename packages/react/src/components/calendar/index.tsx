@@ -3,21 +3,12 @@ import { DatePicker as ArkDatePicker } from "@ark-ui/react/date-picker";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
+import { DatePicker } from "../date-picker";
+
 function chevron(dir: "left" | "right") {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      aria-hidden
-      style={dir === "left" ? { transform: "rotate(180deg)" } : undefined}
-    >
-      <path d="m9 5 7 7-7 7" />
-    </svg>
-  );
+  return iconNode(dir === "left" ? "chevron-left" : "chevron-right", { width: 16, height: 16 });
 }
 
 export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
@@ -33,9 +24,10 @@ export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
  * title zooms out through month and year grids; the grids themselves
  * are the shared machinery — value, range selection, and focus ride
  * Ark's own contract. */
-export function Calendar({ value, min, max, onValueChange, children, ...rest }: CalendarProps) {
+function CalendarImpl({ value, min, max, onValueChange, children, ...rest }: CalendarProps) {
   injectComponentStyle("calendar");
   injectComponentStyle("date-picker");
+  const hostId = useElementId("calendar", rest);
   /* zag's RangeText follows the visible day-page (startValue), which
      the month and year steps never move — it would freeze the title.
      Formatting the focused value keeps it in step with the arrows. */
@@ -67,6 +59,7 @@ export function Calendar({ value, min, max, onValueChange, children, ...rest }: 
           so the machine must skip its dismissable layer — without it
           it hunts for a content node that never renders. */}
       <ArkDatePicker.Root
+        id={`${hostId}:date-picker`}
         open
         closeOnSelect
         inline
@@ -160,3 +153,6 @@ export function Calendar({ value, min, max, onValueChange, children, ...rest }: 
     </div>
   );
 }
+
+export const Calendar = Object.assign(CalendarImpl, DatePicker) as typeof CalendarImpl &
+  typeof DatePicker;

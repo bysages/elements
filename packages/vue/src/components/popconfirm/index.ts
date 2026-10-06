@@ -2,9 +2,11 @@ import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, ref } from "vue";
-import { Teleport } from "vue";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
+import { Popover } from "../popover";
 
 /**
  * A question at the point of no return: the trigger opens a small
@@ -13,7 +15,7 @@ import { Button } from "../button";
  * either way. The default slot is the trigger; give it a single
  * element (wrap a group in a span otherwise).
  */
-export const Popconfirm = defineComponent({
+const PopconfirmFacade = defineComponent({
   name: "Popconfirm",
   props: {
     /** The question the reader is answering. */
@@ -28,6 +30,7 @@ export const Popconfirm = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("popconfirm");
 
+    const hostId = useElementId("popconfirm", ctx.attrs);
     const open = ref(false);
     function settle(confirmed: boolean) {
       open.value = false;
@@ -37,24 +40,23 @@ export const Popconfirm = defineComponent({
       h(
         ArkPopover.Root,
         {
+          id: `${hostId.value}:popover`,
           open: open.value,
           "onUpdate:open": (value: boolean) => (open.value = value),
           positioning: { placement: "top" },
         },
         () => [
           h(ArkPopover.Trigger, { asChild: true }, ctx.slots.default),
-          h(Teleport, { to: "body" }, [
-            h(ArkPopover.Positioner, () => [
-              h(ArkPopover.Content, { class: "bs-popconfirm" }, () => [
-                h("p", { "data-part": "message" }, () => props.message),
-                h("div", { "data-part": "actions" }, () => [
-                  h(
-                    Button,
-                    { variant: "ghost", size: "sm", onClick: () => settle(false) },
-                    () => props.cancelText,
-                  ),
-                  h(Button, { size: "sm", onClick: () => settle(true) }, () => props.confirmText),
-                ]),
+          h(ArkPopover.Positioner, () => [
+            h(ArkPopover.Content, { class: "bs-popconfirm" }, () => [
+              h("p", { "data-part": "message" }, () => props.message),
+              h("div", { "data-part": "actions" }, () => [
+                h(
+                  Button,
+                  { variant: "ghost", size: "sm", onClick: () => settle(false) },
+                  () => props.cancelText,
+                ),
+                h(Button, { size: "sm", onClick: () => settle(true) }, () => props.confirmText),
               ]),
             ]),
           ]),
@@ -62,3 +64,6 @@ export const Popconfirm = defineComponent({
       );
   },
 });
+
+export const Popconfirm = defineFamily(PopconfirmFacade, Popover) as typeof PopconfirmFacade &
+  typeof Popover;

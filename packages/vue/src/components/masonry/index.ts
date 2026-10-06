@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The same named steps of the space ramp the stack uses — one
  * vocabulary of distance across the layout primitives. */
 const gapVars: Record<string, string> = {
@@ -24,35 +26,37 @@ export interface MasonryProps {
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 }
 
-export const Masonry = defineComponent({
-  name: "Masonry",
-  props: {
-    columns: { type: Number, default: 3 },
-    minColumn: { type: String, default: undefined },
-    gap: { type: String, default: "md" },
-  },
-  setup(props, ctx: SetupContext) {
-    injectComponentStyle("masonry");
+export const Masonry = withSelfRoot(
+  defineComponent({
+    name: "Masonry",
+    props: {
+      columns: { type: Number, default: 3 },
+      minColumn: { type: String, default: undefined },
+      gap: { type: String, default: "md" },
+    },
+    setup(props, ctx: SetupContext) {
+      injectComponentStyle("masonry");
 
-    return () => {
-      const { style, ...attrs } = ctx.attrs;
-      return h(
-        "div",
-        {
-          ...attrs,
-          style: [
-            style as CSSProperties,
-            {
-              "--bs-masonry-columns": String(props.columns),
-              "--bs-masonry-column-min": props.minColumn,
-              "--bs-masonry-gap": gapVars[props.gap] ?? gapVars.md,
-            },
-          ],
-          "data-scope": "masonry",
-          "data-part": "root",
-        },
-        ctx.slots.default?.(),
-      );
-    };
-  },
-});
+      return () => {
+        const { style, ...attrs } = ctx.attrs;
+        return h(
+          "div",
+          {
+            ...attrs,
+            style: [
+              style as CSSProperties,
+              {
+                "--bs-masonry-columns": String(props.columns),
+                "--bs-masonry-column-min": props.minColumn,
+                "--bs-masonry-gap": gapVars[props.gap] ?? gapVars.md,
+              },
+            ],
+            "data-scope": "masonry",
+            "data-part": "root",
+          },
+          ctx.slots.default?.(),
+        );
+      };
+    },
+  }),
+);

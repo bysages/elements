@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Whose stroke this is — the user's words sit in a recessed bubble,
  * the assistant speaks flat on the paper. */
 export interface MessageProps extends HTMLAttributes<HTMLElement> {
@@ -8,7 +10,7 @@ export interface MessageProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
 }
 
-export function Message({ role = "assistant", children, ...rest }: MessageProps) {
+function MessageImpl({ role = "assistant", children, ...rest }: MessageProps) {
   injectComponentStyle("ai");
   return (
     <article {...rest} data-scope="ai" data-part="message" data-role={role}>
@@ -16,4 +18,6 @@ export function Message({ role = "assistant", children, ...rest }: MessageProps)
     </article>
   );
 }
+
+export const Message = withSelfRoot(MessageImpl);
 export { Message as AiMessage };

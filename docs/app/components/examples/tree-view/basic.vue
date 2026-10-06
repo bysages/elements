@@ -1,67 +1,23 @@
 <script setup lang="ts">
-import { createTreeCollection } from "@ark-ui/vue/tree-view";
-import { chevron_right } from "@bysages/icons";
-import { Icon, TreeView } from "@bysages/vue";
+import { TreeView } from "@bysages/vue";
 
-interface Node {
-  id: string;
-  name: string;
-  children?: Node[];
-}
-
-const branches: Node[] = [
+const options = [
   {
-    id: "ink",
-    name: "ink",
+    label: "ink",
+    value: "ink",
     children: [
-      { id: "ink/brush", name: "brush.md" },
-      { id: "ink/stone", name: "stone.md" },
+      { label: "brush.md", value: "ink/brush" },
+      { label: "stone.md", value: "ink/stone" },
     ],
   },
   {
-    id: "paper",
-    name: "paper",
-    children: [{ id: "paper/xuan", name: "xuan.md" }],
+    label: "paper",
+    value: "paper",
+    children: [{ label: "xuan.md", value: "paper/xuan" }],
   },
 ];
-
-const collection = createTreeCollection<Node>({
-  nodeToValue: (node) => node.id,
-  nodeToString: (node) => node.name,
-  rootNode: { id: "ROOT", name: "", children: branches },
-});
 </script>
 
 <template>
-  <TreeView.Root :collection="collection" :default-expanded-value="['ink']" aria-label="Library">
-    <TreeView.Tree>
-      <TreeView.NodeProvider
-        v-for="(node, i) in branches"
-        :key="node.id"
-        :node="node"
-        :index-path="[i]"
-      >
-        <TreeView.Branch>
-          <TreeView.BranchControl>
-            <TreeView.BranchIndicator>
-              <Icon :glyph="chevron_right" />
-            </TreeView.BranchIndicator>
-            <TreeView.BranchText>{{ node.name }}</TreeView.BranchText>
-          </TreeView.BranchControl>
-          <TreeView.BranchContent>
-            <TreeView.NodeProvider
-              v-for="(child, j) in node.children"
-              :key="child.id"
-              :node="child"
-              :index-path="[i, j]"
-            >
-              <TreeView.Item>
-                <TreeView.ItemText>{{ child.name }}</TreeView.ItemText>
-              </TreeView.Item>
-            </TreeView.NodeProvider>
-          </TreeView.BranchContent>
-        </TreeView.Branch>
-      </TreeView.NodeProvider>
-    </TreeView.Tree>
-  </TreeView.Root>
+  <TreeView :options="options" :default-value="['ink/brush']" label="Library" />
 </template>

@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The same named steps of the space ramp the stack uses — one
  * vocabulary of distance across the layout primitives. */
 const gapVars: Record<string, string> = {
@@ -20,7 +22,7 @@ export interface MasonryProps extends HTMLAttributes<HTMLDivElement> {
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 }
 
-export function Masonry({ columns = 3, gap = "md", ...rest }: MasonryProps) {
+function MasonryImpl({ columns = 3, gap = "md", ...rest }: MasonryProps) {
   injectComponentStyle("masonry");
   const style = {
     ...rest.style,
@@ -30,3 +32,5 @@ export function Masonry({ columns = 3, gap = "md", ...rest }: MasonryProps) {
 
   return <div {...rest} style={style} data-scope="masonry" data-part="root" />;
 }
+
+export const Masonry = withSelfRoot(MasonryImpl);

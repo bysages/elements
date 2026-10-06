@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { h, reactive, Teleport } from "vue";
+import { h, reactive } from "vue";
 
 import { FloatingPanel } from ".";
 import { Button } from "../button";
@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Overlay/Floating Panel" };
 export default meta;
 
-function glyph(d: string) {
+function icon(d: string) {
   return h(
     "svg",
     {
@@ -32,32 +32,28 @@ function stage(
   body = "A sheet of paper you can move: drag the header, pull the rim.",
   title = "Notes",
 ) {
-  return h(Teleport, { to: "body" }, () => [
-    h(FloatingPanel.Positioner, () =>
-      h(FloatingPanel.Content, () => [
-        h(FloatingPanel.DragTrigger, () =>
-          h(FloatingPanel.Header, () => [
-            h(FloatingPanel.Title, () => [
-              glyph("M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01"),
-              title,
-            ]),
-            h(FloatingPanel.Control, () => [
-              h(FloatingPanel.StageTrigger, { stage: "minimized" }, () => glyph("M5 12h14")),
-              h(FloatingPanel.StageTrigger, { stage: "maximized" }, () =>
-                glyph("M4 9V4h5M20 15v5h-5"),
-              ),
-              h(FloatingPanel.StageTrigger, { stage: "default" }, () =>
-                glyph("M15 15l-6-6M15 9v6H9"),
-              ),
-              h(FloatingPanel.CloseTrigger, () => glyph("M6 6l12 12M18 6L6 18")),
-            ]),
+  return h(FloatingPanel.Positioner, () =>
+    h(FloatingPanel.Content, () => [
+      h(FloatingPanel.DragTrigger, () =>
+        h(FloatingPanel.Header, () => [
+          h(FloatingPanel.Title, () => [
+            icon("M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01"),
+            title,
           ]),
-        ),
-        h(FloatingPanel.Body, () => h("p", () => body)),
-        ...AXES.map((axis) => h(FloatingPanel.ResizeTrigger, { key: axis, axis })),
-      ]),
-    ),
-  ]);
+          h(FloatingPanel.Control, () => [
+            h(FloatingPanel.StageTrigger, { stage: "minimized" }, () => icon("M5 12h14")),
+            h(FloatingPanel.StageTrigger, { stage: "maximized" }, () =>
+              icon("M4 9V4h5M20 15v5h-5"),
+            ),
+            h(FloatingPanel.StageTrigger, { stage: "default" }, () => icon("M15 15l-6-6M15 9v6H9")),
+            h(FloatingPanel.CloseTrigger, () => icon("M6 6l12 12M18 6L6 18")),
+          ]),
+        ]),
+      ),
+      h(FloatingPanel.Body, () => h("p", () => body)),
+      ...AXES.map((axis) => h(FloatingPanel.ResizeTrigger, { key: axis, axis })),
+    ]),
+  );
 }
 
 function panel(
@@ -97,6 +93,17 @@ function outsideButton(label: string, onClick: () => void) {
  * stage it small, large or home from the control seals. */
 export const Basic = {
   args: {
+    trigger: "Open panel",
+    label: "Notes",
+    content: "A sheet of paper you can move: drag the header, pull the rim.",
+  },
+  render: (args: any) => withState(() => () => h(FloatingPanel, args)),
+};
+
+/** The anatomy is the composition path: the same sheet, assembled from
+ * Ark's parts when its stage and resize behavior needs custom control. */
+export const Anatomy = {
+  args: {
     triggerText: "Open panel",
     title: "Notes",
     body: "A sheet of paper you can move: drag the header, pull the rim.",
@@ -104,7 +111,6 @@ export const Basic = {
   render: (args: any) =>
     withState(() => panel({}, { trigger: args.triggerText, title: args.title, body: args.body })),
 };
-
 /** The bar reads its own state: the paragraph names the panel open or
  * closed. */
 export const Context = {

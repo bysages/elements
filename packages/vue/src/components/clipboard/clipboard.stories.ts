@@ -8,7 +8,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Actions/Clipboard" };
 export default meta;
 
-function copyGlyph() {
+function copyIcon() {
   return h(
     "svg",
     {
@@ -29,7 +29,7 @@ function copyGlyph() {
   );
 }
 
-function checkGlyph() {
+function checkIcon() {
   return h(
     "svg",
     {
@@ -48,15 +48,25 @@ function checkGlyph() {
 function trigger() {
   return h(Clipboard.Trigger, () =>
     h(Clipboard.Indicator, null, {
-      default: () => copyGlyph(),
-      copied: () => checkGlyph(),
+      default: () => copyIcon(),
+      copied: () => checkIcon(),
     }),
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () =>
+    h(Clipboard, {
+      defaultValue: "pnpm add @bysages/vue",
+      label: "Install command",
+      placeholder: "Command",
+    }),
+};
+
 /** Copy the link from the hairline field; the trigger's ink turns bamboo
  * for as long as the machine holds the copied state. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Copy this link",
   },
@@ -88,7 +98,7 @@ export const Context = {
       h(Clipboard.Context as any, null, {
         default: (clipboard: { copy: () => void; copied: boolean }) =>
           h(Button, { size: "sm", onClick: () => clipboard.copy() }, () => [
-            clipboard.copied ? checkGlyph() : copyGlyph(),
+            clipboard.copied ? checkIcon() : copyIcon(),
             clipboard.copied ? "Copied!" : "Copy",
           ]),
       }),
@@ -144,8 +154,8 @@ export const CopyStatus = {
               h(Clipboard.Input),
               h(Clipboard.Trigger, () =>
                 h(Clipboard.Indicator, null, {
-                  default: () => copyGlyph(),
-                  copied: () => checkGlyph(),
+                  default: () => copyIcon(),
+                  copied: () => checkIcon(),
                 }),
               ),
             ]),

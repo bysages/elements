@@ -3,7 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { Empty } from ".";
 import { Button } from "../button";
 
-const meta: Meta = { title: "Components/Layout/Empty" };
+const meta: Meta = { title: "Components/Feedback/Empty" };
 export default meta;
 
 const tray = (

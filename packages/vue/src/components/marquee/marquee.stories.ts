@@ -11,9 +11,19 @@ export default meta;
 
 const entries = ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indigo"];
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () =>
+    h(Marquee, {
+      items: ["Qinghua", "Celadon", "Zhusha", "Ultramarine", "Gamboge", "Indigo"],
+      spacing: "1.5rem",
+      label: "Pigments",
+    }),
+};
+
 /** The ribbon of seal-cut chips: content duplicated so the loop never
  * shows its seam. */
-export const Basic = {
+export const Anatomy = {
   args: {
     spacing: "1.5rem",
     speed: undefined,

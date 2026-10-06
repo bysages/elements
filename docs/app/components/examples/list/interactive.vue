@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { List } from "@bysages/vue";
+import { List, Stack } from "@bysages/vue";
 import { ref } from "vue";
 
 const opened = ref("");
@@ -16,7 +16,7 @@ const open = (title: string) => {
 </script>
 
 <template>
-  <div class="w-full">
+  <Stack gap="md" class="w-full">
     <List.Root bordered hoverable class="w-full">
       <List.Item
         v-for="row in ledger"
@@ -33,8 +33,8 @@ const open = (title: string) => {
         </List.Content>
       </List.Item>
     </List.Root>
-    <p role="status" class="mt-4 text-sm text-tertiary">
+    <p role="status" class="text-sm text-tertiary">
       {{ opened ? `Opened “${opened}”.` : "Nothing opened yet." }}
     </p>
-  </div>
+  </Stack>
 </template>

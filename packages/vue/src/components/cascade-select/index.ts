@@ -1,14 +1,14 @@
 import { DEFAULT_ENVIRONMENT, useEnvironmentContext } from "@ark-ui/vue/environment";
 import { DEFAULT_LOCALE, useLocaleContext, useFilter } from "@ark-ui/vue/locale";
 import { injectComponentStyle } from "@bysages/core";
-import { check, chevron_down, chevron_right } from "@bysages/icons";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/vue";
 import type { SetupContext, VNodeArrayChildren } from "vue";
-import { computed, defineComponent, h, useId, ref, watch, type PropType } from "vue";
-import { Teleport } from "vue";
+import { computed, defineComponent, h, ref, watch, type PropType } from "vue";
 
-import { glyphNode } from "../../internal/glyph";
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Input } from "../input";
 
@@ -20,15 +20,15 @@ export interface CascadeSelectNode {
 }
 
 function chevronDown() {
-  return glyphNode(chevron_down);
+  return iconNode("chevron-down");
 }
 
 function chevronRight() {
-  return glyphNode(chevron_right);
+  return iconNode("chevron-right");
 }
 
-function checkGlyph() {
-  return glyphNode(check);
+function checkIcon() {
+  return iconNode("check");
 }
 
 /**
@@ -40,7 +40,7 @@ function checkGlyph() {
  * swaps the corridor for a flat list of matching paths while a query
  * runs — each hit still reads as its full route.
  */
-export const CascadeSelect = defineComponent({
+const CascadeSelectFacade = defineComponent({
   name: "CascadeSelect",
   props: {
     modelValue: { type: Array as PropType<string[][]>, default: undefined },
@@ -59,7 +59,7 @@ export const CascadeSelect = defineComponent({
     injectComponentStyle("cascade-select");
     const messages = useComponentMessages();
 
-    const id = useId();
+    const id = useElementId("cascade-select", ctx.attrs);
     const locale = useLocaleContext(DEFAULT_LOCALE);
     const env = useEnvironmentContext(DEFAULT_ENVIRONMENT);
 
@@ -75,7 +75,7 @@ export const CascadeSelect = defineComponent({
     const service = useMachine(
       cascade.machine,
       computed(() => ({
-        id,
+        id: id.value,
         collection: collection.value,
         dir: locale.value.dir,
         getRootNode: env.value.getRootNode.bind(env.value),
@@ -203,7 +203,7 @@ export const CascadeSelect = defineComponent({
                   chevronRight(),
                 )
               : null,
-            h("span", api.value.getItemIndicatorProps(itemProps), checkGlyph()),
+            h("span", api.value.getItemIndicatorProps(itemProps), checkIcon()),
           ]);
         }),
       );
@@ -219,84 +219,95 @@ export const CascadeSelect = defineComponent({
       return [list, child];
     }
 
+    const rootProps = {
+      ...ctx.attrs,
+      id: id.value,
+      ...api.value.getRootProps(),
+      "data-size": props.size,
+    };
+
     return () =>
-      h("div", { ...ctx.attrs, ...api.value.getRootProps(), "data-size": props.size }, [
+      h("div", rootProps, [
         h("div", api.value.getControlProps(), [
           h(
             "button",
             {
               ...api.value.getTriggerProps(),
-              "aria-labelledby": id + ":value-text",
+              "aria-labelledby": id.value + ":value-text",
               "data-invalid": props.invalid ? "" : undefined,
               disabled: props.disabled || undefined,
             },
             [
               h(
                 "span",
-                { ...api.value.getValueTextProps(), id: id + ":value-text" },
+                { ...api.value.getValueTextProps(), id: id.value + ":value-text" },
                 display.value ?? props.placeholder,
               ),
               h("span", api.value.getIndicatorProps(), chevronDown()),
             ],
           ),
         ]),
-        h(Teleport, { to: "body" }, () => [
-          h("div", api.value.getPositionerProps(), [
-            h(
-              "div",
-              { ...api.value.getContentProps(), "data-size": props.size },
-              [
-                ...(props.filterable
-                  ? [
-                      h("div", { "data-scope": "cascade-select", "data-part": "search" }, [
-                        h(Input, {
-                          size: "sm",
-                          modelValue: query.value,
-                          "onUpdate:modelValue": (value: string) => (query.value = value),
-                          placeholder: messages.value.command.filter,
-                          "aria-label": messages.value.select.filter,
-                        }),
-                      ]),
-                    ]
-                  : []),
+        ...(api.value.open
+          ? [
+              h("div", api.value.getPositionerProps(), [
                 h(
                   "div",
-                  {
-                    "data-scope": "cascade-select",
-                    "data-part": "corridor",
-                    "data-flow": filtering.value ? "flat" : "columns",
-                  },
+                  { ...api.value.getContentProps(), "data-size": props.size },
                   [
-                    filtering.value
-                      ? matchPaths.value.length === 0
-                        ? [
-                            h(
-                              "p",
-                              { "data-scope": "cascade-select", "data-part": "empty" },
-                              "Nothing matches",
-                            ),
-                          ]
-                        : matchPaths.value.map((hit) =>
-                            h(
-                              "button",
-                              {
-                                key: hit.path.join("/"),
-                                type: "button",
-                                "data-scope": "cascade-select",
-                                "data-part": "match",
-                                "data-selected": isSelected(hit.path) || undefined,
-                                onClick: () => pickMatch(hit.path),
-                              },
-                              hit.labels.join(" / "),
-                            ),
-                          )
-                      : renderColumn(collection.value.rootNode, [], []),
+                    ...(props.filterable
+                      ? [
+                          h("div", { "data-scope": "cascade-select", "data-part": "search" }, [
+                            h(Input, {
+                              size: "sm",
+                              modelValue: query.value,
+                              "onUpdate:modelValue": (value: string) => (query.value = value),
+                              placeholder: messages.value.command.filter,
+                              "aria-label": messages.value.select.filter,
+                            }),
+                          ]),
+                        ]
+                      : []),
+                    h(
+                      "div",
+                      {
+                        "data-scope": "cascade-select",
+                        "data-part": "corridor",
+                        "data-flow": filtering.value ? "flat" : "columns",
+                      },
+                      [
+                        filtering.value
+                          ? matchPaths.value.length === 0
+                            ? [
+                                h(
+                                  "p",
+                                  { "data-scope": "cascade-select", "data-part": "empty" },
+                                  "Nothing matches",
+                                ),
+                              ]
+                            : matchPaths.value.map((hit) =>
+                                h(
+                                  "button",
+                                  {
+                                    key: hit.path.join("/"),
+                                    type: "button",
+                                    "data-scope": "cascade-select",
+                                    "data-part": "match",
+                                    "data-selected": isSelected(hit.path) || undefined,
+                                    onClick: () => pickMatch(hit.path),
+                                  },
+                                  hit.labels.join(" / "),
+                                ),
+                              )
+                          : renderColumn(collection.value.rootNode, [], []),
+                      ].flat(),
+                    ),
                   ].flat(),
                 ),
-              ].flat(),
-            ),
-          ]),
-        ]),
+              ]),
+            ]
+          : []),
       ]);
   },
 });
+
+export const CascadeSelect = withSelfRoot(CascadeSelectFacade);

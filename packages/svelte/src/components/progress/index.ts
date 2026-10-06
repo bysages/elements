@@ -4,11 +4,16 @@
  * CircleTrack, CircleRange. */
 import { Progress as ArkProgress } from "@ark-ui/svelte/progress";
 
+import { defineFamily } from "../../internal/family";
+import ProgressFacade from "./Progress.svelte";
 import ProgressRoot from "./ProgressRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Progress: Omit<typeof ArkProgress, "Root"> & { Root: typeof ProgressRoot } = {
+export const Progress: typeof ProgressFacade &
+  Omit<typeof ArkProgress, "Root"> & {
+    Root: typeof ProgressRoot;
+  } = defineFamily(ProgressFacade, {
   ...ArkProgress,
   Root: ProgressRoot,
-};
+});

@@ -1,7 +1,10 @@
 import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/solid/segment-group";
 import type { SegmentGroupRootProps as ArkSegmentGroupRootProps } from "@ark-ui/solid/segment-group";
 import { injectComponentStyle } from "@bysages/core";
-import { createComponent, splitProps } from "solid-js";
+import { createComponent, mergeProps, splitProps } from "solid-js";
+
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 
 type SegmentGroupOwnProps = {
   /** One rung of the control-height ladder for the segments. The
@@ -13,12 +16,19 @@ type SegmentGroupOwnProps = {
 
 function SegmentGroupRoot(props: ArkSegmentGroupRootProps & SegmentGroupOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return createComponent(ArkSegmentGroup.Root, {
-    get "data-size"() {
-      return own.size ?? "md";
-    },
-    ...rest,
-  });
+  const id = useElementId("segment-group", () => rest.id);
+
+  return createComponent(
+    ArkSegmentGroup.Root,
+    mergeProps(rest, {
+      get "data-size"() {
+        return own.size ?? "md";
+      },
+      get id() {
+        return id();
+      },
+    }),
+  );
 }
 
 /** SegmentGroup, dressed in the paper-and-ink system: a hairline tray
@@ -26,11 +36,13 @@ function SegmentGroupRoot(props: ArkSegmentGroupRootProps & SegmentGroupOwnProps
  * ItemHiddenInput. */
 /* Ark's namespace is frozen - spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const SegmentGroup: Omit<typeof ArkSegmentGroup, "Root"> & {
-  Root: typeof SegmentGroupRoot;
-} = {
-  ...ArkSegmentGroup,
-  Root: SegmentGroupRoot,
-};
+export const SegmentGroup: typeof SegmentGroupRoot &
+  Omit<typeof ArkSegmentGroup, "Root"> & { Root: typeof SegmentGroupRoot } = defineFamily(
+  SegmentGroupRoot,
+  {
+    ...ArkSegmentGroup,
+    Root: SegmentGroupRoot,
+  },
+);
 
 injectComponentStyle("segment-group");

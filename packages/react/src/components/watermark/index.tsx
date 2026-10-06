@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 import { useEffect, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** Font-relative measures ride the root's own measure; absolute units
  * pass through untouched — the canvas needs a number, the prop may
  * speak in CSS. */
@@ -25,7 +27,7 @@ export interface WatermarkProps extends HTMLAttributes<HTMLDivElement> {
  * density) and the marks layer repeats it over the children. The seal
  * redraws itself when a prop turns — and it never takes a pointer.
  */
-export function Watermark({
+function WatermarkImpl({
   content,
   opacity = 0.06,
   rotate = -20,
@@ -98,3 +100,5 @@ export function Watermark({
     </div>
   );
 }
+
+export const Watermark = withSelfRoot(WatermarkImpl);

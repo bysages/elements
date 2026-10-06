@@ -20,7 +20,13 @@ function dial(label: string) {
   return [
     h(
       "div",
-      { style: { display: "flex", justifyContent: "space-between", inlineSize: "100%" } },
+      {
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          inlineSize: "100%",
+        },
+      },
       () => [h(AngleSlider.Label, () => label), h(AngleSlider.ValueText)],
     ),
     h(AngleSlider.Control, () => [
@@ -30,14 +36,24 @@ function dial(label: string) {
   ];
 }
 
-/** The dial: eight marks of the compass rose, the thumb dragged around the
- * circle. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    label: "Rotation",
-  },
-  render: (args: any) =>
-    withState(() => () => h(AngleSlider.Root, { defaultValue: 45 }, () => dial(args.label))),
+  render: () => h(AngleSlider, { defaultValue: 45, label: "Light angle" }),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h(AngleSlider.Root, { defaultValue: 45 }, () => [
+      h(AngleSlider.Label, () => "Light angle"),
+      h(AngleSlider.ValueText),
+      h(AngleSlider.Control, () => [
+        h(AngleSlider.MarkerGroup, () =>
+          [0, 90, 180, 270].map((degree) => h(AngleSlider.Marker, { key: degree, value: degree })),
+        ),
+        h(AngleSlider.Thumb, () => [h(AngleSlider.HiddenInput)]),
+      ]),
+    ]),
 };
 
 /** The dial reads its own state: the label names the current bearing. */

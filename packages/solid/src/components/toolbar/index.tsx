@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { Show, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface ToolbarProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** Accessible name when more than one toolbar shares a page. */
   label?: string;
@@ -15,7 +17,7 @@ export interface ToolbarProps extends JSX.HTMLAttributes<HTMLDivElement> {
 /** A workbench rail: the start tools at the leading edge, the end tools
  * at the trailing, the rail itself carrying the toolbar role so
  * assistive tech reads it as one group of commands. */
-export function Toolbar(props: ToolbarProps) {
+export const Toolbar = withSelfRoot(function Toolbar(props: ToolbarProps) {
   injectComponentStyle("toolbar");
   const [own, rest] = splitProps(props, ["label", "start", "end", "children"]);
   return (
@@ -30,4 +32,4 @@ export function Toolbar(props: ToolbarProps) {
       </Show>
     </div>
   );
-}
+});

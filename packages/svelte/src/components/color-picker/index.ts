@@ -8,11 +8,16 @@
  * FormatSelect, HiddenInput, Context. */
 import { ColorPicker as ArkColorPicker } from "@ark-ui/svelte/color-picker";
 
+import { defineFamily } from "../../internal/family";
+import ColorPickerFacade from "./ColorPicker.svelte";
 import ColorPickerRoot from "./ColorPickerRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const ColorPicker: Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot } = {
+export const ColorPicker: typeof ColorPickerFacade &
+  Omit<typeof ArkColorPicker, "Root"> & {
+    Root: typeof ColorPickerRoot;
+  } = defineFamily(ColorPickerFacade, {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
-};
+});

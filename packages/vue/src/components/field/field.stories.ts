@@ -7,11 +7,22 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Field" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(Field, {
+      label: "Email",
+      description: "We only write about your orders.",
+      placeholder: "lin@example.com",
+      required: true,
+    }),
+};
+
 const column = { display: "grid", gap: "1.5rem", maxWidth: "20rem" };
 
 /** Label, control, help, error — the whole field column in its resting
  * register. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Label",
     placeholder: "Placeholder",
@@ -50,7 +61,10 @@ export const TextareaAutoresize = {
   render: () =>
     h(Field.Root, null, () => [
       h(Field.Label, () => "Remarks"),
-      h(Field.Textarea as any, { autoresize: true, placeholder: "Type past one line…" }),
+      h(Field.Textarea as any, {
+        autoresize: true,
+        placeholder: "Type past one line…",
+      }),
       h(Field.HelperText, () => "The field grows as you type"),
     ]),
 };

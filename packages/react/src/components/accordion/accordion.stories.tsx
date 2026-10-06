@@ -51,9 +51,31 @@ function leaf(item: (typeof items)[number], itemProps: any = {}) {
   );
 }
 
-/** One row may be open at a time; the open leaf keeps a lit edge while the
- * others rest. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <Accordion
+      defaultValue={["paper"]}
+      items={[
+        {
+          value: "paper",
+          title: "What is the paper-and-ink system?",
+          content:
+            "Interfaces are warm paper, content is ink, hierarchy is light — never pure white, never a hard pop.",
+        },
+        {
+          value: "tokens",
+          title: "Where do visual values come from?",
+          content:
+            "Every color, spacing, radius, elevation, and duration resolves from design tokens; a hardcoded pixel is a bug.",
+        },
+      ]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     disabled: false,
   },

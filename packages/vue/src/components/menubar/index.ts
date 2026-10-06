@@ -2,7 +2,10 @@ import { Menu as ArkMenu } from "@ark-ui/vue/menu";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
-import { Teleport } from "vue";
+
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+import { Menu } from "../menu";
 
 export interface MenubarEntry {
   label: string;
@@ -35,7 +38,7 @@ export interface MenubarProps {
  * arrow keys — cross-menu arrow traversal is out of scope for this
  * version. Inside an open menu the machine handles arrows and Escape.
  */
-export const Menubar = defineComponent({
+const MenubarFacade = defineComponent({
   name: "Menubar",
   props: {
     items: { type: Array as PropType<MenubarGroup[]>, default: () => [] },
@@ -44,6 +47,7 @@ export const Menubar = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("menubar");
     injectComponentStyle("menu");
+    const hostId = useElementId("menubar", ctx.attrs);
 
     return () =>
       h(
@@ -53,7 +57,11 @@ export const Menubar = defineComponent({
           props.items.map((group) =>
             h(
               ArkMenu.Root,
-              { key: group.label, positioning: { placement: "bottom-start" } },
+              {
+                key: group.label,
+                id: `${hostId.value}:menu:${group.label}`,
+                positioning: { placement: "bottom-start" },
+              },
               () => [
                 h(ArkMenu.Trigger, { asChild: true }, () =>
                   h(
@@ -67,27 +75,25 @@ export const Menubar = defineComponent({
                     () => group.label,
                   ),
                 ),
-                h(Teleport, { to: "body" }, () => [
-                  h(ArkMenu.Positioner, () =>
-                    h(ArkMenu.Content, {}, () =>
-                      group.items.map((entry) =>
-                        h(
-                          ArkMenu.Item,
-                          {
-                            key: entry.value,
-                            value: entry.value,
-                            disabled: entry.disabled,
-                            // Danger rides a data flag of our own — the
-                            // menubar stylesheet tints the row.
-                            "data-danger": entry.danger ? "" : undefined,
-                            onSelect: () => props.onSelect?.(entry.value),
-                          },
-                          () => h(ArkMenu.ItemText, () => entry.label),
-                        ),
+                h(ArkMenu.Positioner, () =>
+                  h(ArkMenu.Content, {}, () =>
+                    group.items.map((entry) =>
+                      h(
+                        ArkMenu.Item,
+                        {
+                          key: entry.value,
+                          value: entry.value,
+                          disabled: entry.disabled,
+                          // Danger rides a data flag of our own — the
+                          // menubar stylesheet tints the row.
+                          "data-danger": entry.danger ? "" : undefined,
+                          onSelect: () => props.onSelect?.(entry.value),
+                        },
+                        () => h(ArkMenu.ItemText, () => entry.label),
                       ),
                     ),
                   ),
-                ]),
+                ),
               ],
             ),
           ),
@@ -96,3 +102,5 @@ export const Menubar = defineComponent({
 });
 
 // The popups keep the menu parts, so the menu stylesheet dresses them.
+
+export const Menubar = defineFamily(MenubarFacade, Menu) as typeof MenubarFacade & typeof Menu;

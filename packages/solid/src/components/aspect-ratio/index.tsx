@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** A frame that keeps its shape: the box holds the given ratio whatever
  * the width it is dealt, and the child fills the frame it is given. */
 export interface AspectRatioProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -9,7 +11,7 @@ export interface AspectRatioProps extends JSX.HTMLAttributes<HTMLDivElement> {
   ratio?: string;
 }
 
-export function AspectRatio(props: AspectRatioProps) {
+export const AspectRatio = withSelfRoot(function AspectRatio(props: AspectRatioProps) {
   injectComponentStyle("aspect-ratio");
   const [own, rest] = splitProps(props, ["ratio"]);
   return (
@@ -23,4 +25,4 @@ export function AspectRatio(props: AspectRatioProps) {
       data-part="root"
     />
   );
-}
+});

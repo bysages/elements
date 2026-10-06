@@ -125,7 +125,6 @@
   "dependencies": {
     "@ark-ui/solid": "5.39.2",
     "@bysages/core": "workspace:*",
-    "@bysages/icons": "workspace:*",
     "@tanstack/markdown": "1.0.0",
     "@tanstack/solid-form": "1.33.5",
     "@tanstack/solid-table": "9.2.4",

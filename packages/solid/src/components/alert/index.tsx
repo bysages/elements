@@ -2,35 +2,23 @@ import { injectComponentStyle } from "@bysages/core";
 import { createContext, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { iconNode } from "../../internal/icon";
+
 export type AlertStatus = "ink" | "info" | "success" | "warning" | "danger";
 
 // The status rides the context as an accessor so a live status prop
 // re-reads on every icon render instead of freezing at mount.
 const StatusContext = createContext<() => AlertStatus>((): AlertStatus => "ink");
 
-function glyph(status: AlertStatus) {
-  const paths: Record<AlertStatus, string> = {
-    info: "M12 8v5m0 3v.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z",
-    success: "m4 12.5 5 5L20 6.5",
-    warning: "M12 4 2.5 20h19L12 4Zm0 6v4m0 3v.01",
-    danger: "M6 6l12 12M18 6 6 18",
-    ink: "M12 8v5m0 3v.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z",
+function statusIcon(status: AlertStatus) {
+  const names: Record<AlertStatus, string> = {
+    ink: "info",
+    info: "info",
+    success: "circle-check",
+    warning: "triangle-alert",
+    danger: "circle-x",
   };
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width={1.75}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d={paths[status]} />
-    </svg>
-  );
+  return iconNode(names[status], { width: "16", height: "16" });
 }
 
 /** A notice drawn on the page: a wash of the status pigment, one heavier
@@ -60,7 +48,7 @@ function Icon() {
   const status = useContext(StatusContext);
   return (
     <span data-scope="alert" data-part="icon">
-      {glyph(status())}
+      {statusIcon(status())}
     </span>
   );
 }

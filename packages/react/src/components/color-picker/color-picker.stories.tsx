@@ -59,6 +59,11 @@ function channelRow(channels: string[]) {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => <ColorPicker defaultValue="#3d5a80" label="Ink color" />,
+};
+
 /** The formats ride our own segment group through the picker's context —
  * the native select would dress the closed control but never its list. */
 function formatSwitch() {
@@ -85,7 +90,7 @@ function formatSwitch() {
  * the picking area, the hue and alpha tracks beside the eyedropper, the
  * saved swatches, one channel-input row per format, and the format
  * segment group. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Ink color",
   },

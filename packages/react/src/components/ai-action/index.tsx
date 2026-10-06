@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { Button } from "../button";
 
 /** A quiet icon button — copy, retry, thumbs. The label names it to
@@ -13,7 +14,7 @@ export interface ActionProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-export function Action({ label, children, ...rest }: ActionProps) {
+function ActionImpl({ label, children, ...rest }: ActionProps) {
   injectComponentStyle("ai");
   return (
     <Button variant="ghost" size="sm" square aria-label={label} title={label} {...rest}>
@@ -21,4 +22,6 @@ export function Action({ label, children, ...rest }: ActionProps) {
     </Button>
   );
 }
+
+export const Action = withSelfRoot(ActionImpl);
 export { Action as AiAction };

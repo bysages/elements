@@ -2,6 +2,8 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+
 /** The control recipe as a standalone button: the variant chooses how it
  * rests, the tone chooses the pigment. Ink is the solemn default; any
  * action can carry the primary weight. The react package's asChild has
@@ -14,7 +16,7 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
   square?: boolean;
 }
 
-export function Button(props: ButtonProps) {
+export const Button = withSelfRoot(function Button(props: ButtonProps) {
   injectComponentStyle("button");
   const [own, rest] = splitProps(props, ["variant", "tone", "size", "square", "type", "disabled"]);
   return (
@@ -33,4 +35,4 @@ export function Button(props: ButtonProps) {
       data-motion="ink-ripple lit"
     />
   );
-}
+});

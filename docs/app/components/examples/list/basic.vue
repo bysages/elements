@@ -21,12 +21,10 @@ const rows = [
 </script>
 
 <template>
-  <List.Root class="w-full">
+  <List class="w-full">
     <List.Item v-for="row in rows" :key="row.title">
       <List.Leading>
-        <Avatar.Root>
-          <Avatar.Fallback>{{ row.initials }}</Avatar.Fallback>
-        </Avatar.Root>
+        <Avatar>{{ row.initials }}</Avatar>
       </List.Leading>
       <List.Content>
         <template #title>{{ row.title }}</template>
@@ -36,5 +34,5 @@ const rows = [
         <Button variant="ghost" size="sm">Open</Button>
       </List.Actions>
     </List.Item>
-  </List.Root>
+  </List>
 </template>

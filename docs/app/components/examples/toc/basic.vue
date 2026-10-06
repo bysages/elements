@@ -15,16 +15,7 @@ const scrollEl = () => scroller.value;
 <template>
   <div class="flex w-full justify-start gap-6">
     <div class="w-48 flex-none">
-      <Toc.Root :items="items" :scroll-el="scrollEl">
-        <Toc.Nav>
-          <Toc.Title>On this page</Toc.Title>
-          <Toc.List>
-            <Toc.Item v-for="item in items" :key="item.value" :item="item">
-              <Toc.Link :href="`#${item.value}`">{{ item.label }}</Toc.Link>
-            </Toc.Item>
-          </Toc.List>
-        </Toc.Nav>
-      </Toc.Root>
+      <Toc :items="items" :scroll-el="scrollEl" />
     </div>
     <div ref="scroller" class="h-64 flex-1 overflow-y-auto pe-4">
       <section v-for="item in items" :id="item.value" :key="item.value">

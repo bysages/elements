@@ -2,6 +2,7 @@ import { useFieldContext } from "@ark-ui/react/field";
 import { injectComponentStyle } from "@bysages/core";
 import { forwardRef, type InputHTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { applyMask } from "./mask";
 
 /** The bare text input: the field recipe — border, surface, focus halo —
@@ -20,7 +21,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   onValueChange?: (value: string) => void;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+const InputImpl = forwardRef<HTMLInputElement, InputProps>(function Input(
   { value, size = "md", invalid = false, mask, onValueChange, ...rest }: InputProps,
   ref,
 ) {
@@ -43,3 +44,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     />
   );
 });
+
+export const Input = withSelfRoot(InputImpl);

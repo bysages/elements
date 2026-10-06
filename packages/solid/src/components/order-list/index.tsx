@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
-import { For, createSignal, createUniqueId, splitProps, type JSX } from "solid-js";
+import { For, createSignal, splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
 export interface OrderOption {
@@ -8,29 +10,15 @@ export interface OrderOption {
   value: string;
 }
 
-const ARROWS: Record<string, string[]> = {
-  up: ["m18 15-6-6-6 6"],
-  down: ["m6 9 6 6 6-6"],
-  top: ["m18 15-6-6-6 6", "M5 4h14"],
-  bottom: ["m6 9 6 6 6-6", "M5 20h14"],
+const ARROWS = {
+  up: { name: "chevron-up", rail: "" },
+  down: { name: "chevron-down", rail: "" },
+  top: { name: "chevron-up", rail: '<path d="M5 4h14"/>' },
+  bottom: { name: "chevron-down", rail: '<path d="M5 20h14"/>' },
 };
 
-function arrowGlyph(paths: string[]) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="12"
-      height="12"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <For each={paths}>{(d) => <path d={d} />}</For>
-    </svg>
-  );
+function arrowIcon(arrow: (typeof ARROWS)[keyof typeof ARROWS]) {
+  return iconNode(arrow.name, { width: "12", height: "12" }, arrow.rail);
 }
 
 export interface OrderListProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -47,10 +35,9 @@ export interface OrderListProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * the model is the order. Dragging rides the native drag events — a
  * hairline of primary ink marks the seam the row will land on — so
  * touch keeps the buttons as its route. */
-export function OrderList(props: OrderListProps) {
+export const OrderList = withSelfRoot(function OrderList(props: OrderListProps) {
   const messages = useComponentMessages();
   injectComponentStyle("order-list");
-  const uid = createUniqueId();
   const [own, rest] = splitProps(props, ["value", "options", "label", "onValueChange"]);
   const [dragging, setDragging] = createSignal<string | null>(null);
   const [dropLine, setDropLine] = createSignal<{ index: number; before: boolean } | null>(null);
@@ -90,7 +77,7 @@ export function OrderList(props: OrderListProps) {
       {...rest}
       data-scope="order-list"
       data-part="root"
-      data-uid={uid}
+
       onDragLeave={(event) => {
         const host = event.currentTarget as HTMLElement;
         if (!event.relatedTarget || !host.contains(event.relatedTarget as Node)) setDropLine(null);
@@ -150,7 +137,7 @@ export function OrderList(props: OrderListProps) {
                     disabled={index() === 0}
                     onClick={() => move(option.value, -index())}
                   >
-                    {arrowGlyph(ARROWS.top)}
+                    {arrowIcon(ARROWS.top)}
                   </button>
                   <button
                     type="button"
@@ -160,7 +147,7 @@ export function OrderList(props: OrderListProps) {
                     disabled={index() === 0}
                     onClick={() => move(option.value, -1)}
                   >
-                    {arrowGlyph(ARROWS.up)}
+                    {arrowIcon(ARROWS.up)}
                   </button>
                   <button
                     type="button"
@@ -170,7 +157,7 @@ export function OrderList(props: OrderListProps) {
                     disabled={index() === rows().length - 1}
                     onClick={() => move(option.value, 1)}
                   >
-                    {arrowGlyph(ARROWS.down)}
+                    {arrowIcon(ARROWS.down)}
                   </button>
                   <button
                     type="button"
@@ -180,7 +167,7 @@ export function OrderList(props: OrderListProps) {
                     disabled={index() === rows().length - 1}
                     onClick={() => move(option.value, rows().length - 1 - index())}
                   >
-                    {arrowGlyph(ARROWS.bottom)}
+                    {arrowIcon(ARROWS.bottom)}
                   </button>
                 </span>
               </li>
@@ -190,4 +177,4 @@ export function OrderList(props: OrderListProps) {
       </ol>
     </div>
   );
-}
+});

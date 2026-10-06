@@ -4,6 +4,7 @@ injectComponentStyle("dynamic-input");
 
 import { Button } from "../button";
 import { Input } from "../input";
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import { useComponentMessages } from "../config-provider/messages";
 import type { DynamicInputProps } from "./props";
 
@@ -65,19 +66,7 @@ truth. -->
         aria-label={messages().dynamicEntry.remove}
         onclick={() => remove(index)}
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M18 6 6 18M6 6l12 12" />
-        </svg>
+        <InternalIcon name="x" />
       </Button>
     </div>
   {/each}

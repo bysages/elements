@@ -1,21 +1,9 @@
 <script setup lang="ts">
 import { Steps } from "@bysages/vue";
+
+const items = [{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }];
 </script>
 
 <template>
-  <Steps.Root :count="3">
-    <Steps.List>
-      <Steps.Item
-        v-for="(title, index) in ['Account', 'Profile', 'Confirm']"
-        :key="title"
-        :index="index"
-      >
-        <Steps.Trigger>
-          <Steps.Indicator>{{ index + 1 }}</Steps.Indicator>
-          <span>{{ title }}</span>
-        </Steps.Trigger>
-        <Steps.Separator />
-      </Steps.Item>
-    </Steps.List>
-  </Steps.Root>
+  <Steps :items="items" :default-step="0" />
 </template>

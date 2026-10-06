@@ -24,7 +24,7 @@ export const Basic: Story = {
     withState(() => {
       const picked = ref(["ink"]);
       return () => [
-        h(Transfer, {
+        h(Transfer as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string[]) => (picked.value = v),
           data: LIBRARY,
@@ -45,7 +45,7 @@ export const Searchable: Story = {
     withState(() => {
       const picked = ref<string[]>([]);
       return () =>
-        h(Transfer, {
+        h(Transfer as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string[]) => (picked.value = v),
           data: LIBRARY,

@@ -6,6 +6,13 @@ import { TagsInput } from ".";
 const meta: Meta = { title: "Components/Forms/Tags Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => (
+    <TagsInput defaultValue={["Qinghua", "Celadon"]} label="Pigments" placeholder="Add pigment" />
+  ),
+};
+
 function XIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none">
@@ -53,7 +60,7 @@ function field(rootProps: Record<string, any>, label = "Pigments", placeholder =
 }
 
 /** Type and press enter; chips carry a delete whisker each. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Pigments",
     placeholder: "Add pigment",

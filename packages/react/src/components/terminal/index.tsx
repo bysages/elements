@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type HTMLAttributes, type KeyboardEvent, useEffect, useRef, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 
 export interface TerminalProps extends HTMLAttributes<HTMLDivElement> {
@@ -17,7 +18,7 @@ export interface TerminalProps extends HTMLAttributes<HTMLDivElement> {
  * component owns only the reading and the caret — each entered line
  * leaves as an event, and the caller answers through the lines prop,
  * so history stays theirs to shape. */
-export function Terminal({
+function TerminalImpl({
   lines = [],
   prompt = "$",
   placeholder,
@@ -72,3 +73,5 @@ export function Terminal({
     </div>
   );
 }
+
+export const Terminal = withSelfRoot(TerminalImpl);

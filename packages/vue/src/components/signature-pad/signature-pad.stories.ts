@@ -10,7 +10,12 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Signature Pad" };
 export default meta;
 
-function undoGlyph() {
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => h(SignaturePad, { label: "Sign below" }),
+};
+
+function undoIcon() {
   return h(
     "svg",
     {
@@ -31,7 +36,7 @@ function pad(extraRootProps: Record<string, any> = {}, label = "Sign below") {
     h(SignaturePad.Label, () => label),
     h(SignaturePad.Control, () => [
       h(SignaturePad.Segment),
-      h(SignaturePad.ClearTrigger, () => undoGlyph()),
+      h(SignaturePad.ClearTrigger, () => undoIcon()),
       h(SignaturePad.Guide),
     ]),
     h(SignaturePad.HiddenInput),
@@ -40,7 +45,7 @@ function pad(extraRootProps: Record<string, any> = {}, label = "Sign below") {
 
 /** Sign below the guide hairline; the clear trigger wipes the paper without
  * leaving the field. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Sign below",
     disabled: false,

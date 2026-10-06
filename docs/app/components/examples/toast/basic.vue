@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, createToaster, Toast, Toaster } from "@bysages/vue";
+import { Button, createToaster, Toaster } from "@bysages/vue";
 
 const toaster = createToaster({
   placement: "bottom-end",
@@ -17,11 +17,5 @@ function announce() {
 
 <template>
   <Button @click="announce">Show notice</Button>
-  <Toaster :toaster="toaster" v-slot="toast">
-    <Toast.Root>
-      <Toast.Title>{{ toast.title }}</Toast.Title>
-      <Toast.Description>{{ toast.description }}</Toast.Description>
-      <Toast.CloseTrigger aria-label="Close">×</Toast.CloseTrigger>
-    </Toast.Root>
-  </Toaster>
+  <Toaster :toaster="toaster" />
 </template>

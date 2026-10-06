@@ -1,12 +1,13 @@
 import { injectComponentStyle } from "@bysages/core";
 
+import { withSelfRoot } from "../../internal/family";
 import FormComponent from "./Form.svelte";
 import FormFieldComponent from "./FormField.svelte";
 
 /** The engine owns the values and the validation; these two are the
  * assembly — one grid, one error routing. */
-export const Form = FormComponent;
-export const FormField = FormFieldComponent;
+export const Form = withSelfRoot(FormComponent);
+export const FormField = withSelfRoot(FormFieldComponent);
 
 export { createForm, createField } from "@tanstack/svelte-form";
 /** The other frameworks' hook names, so a form script crosses the

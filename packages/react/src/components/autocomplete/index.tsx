@@ -4,7 +4,9 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { Combobox } from "../combobox";
 
 /**
  * Free text with suggestions: the reader types anything, the list
@@ -27,7 +29,7 @@ export interface AutoCompleteProps extends Omit<
   onValueChange?: (value: string) => void;
 }
 
-export function AutoComplete({
+function AutoCompleteImpl({
   value = "",
   items = [],
   placeholder,
@@ -38,6 +40,7 @@ export function AutoComplete({
 }: AutoCompleteProps) {
   injectComponentStyle("combobox");
   const messages = useComponentMessages();
+  const hostId = useElementId("autocomplete", rest);
   const { collection, filter: filterItems } = useListCollection({
     initialItems: items,
     filter: (item: string, input: string) =>
@@ -47,6 +50,7 @@ export function AutoComplete({
   return (
     <ArkCombobox.Root
       {...rest}
+      id={`${hostId}:combobox`}
       collection={collection}
       inputValue={value}
       allowCustomValue
@@ -79,3 +83,6 @@ export function AutoComplete({
     </ArkCombobox.Root>
   );
 }
+
+export const AutoComplete = Object.assign(AutoCompleteImpl, Combobox) as typeof AutoCompleteImpl &
+  typeof Combobox;

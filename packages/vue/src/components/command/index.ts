@@ -4,9 +4,11 @@ import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, ref, watch, type PropType } from "vue";
-import { Teleport } from "vue";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { Dialog } from "../dialog";
 
 export interface CommandEntry {
   label: string;
@@ -33,8 +35,6 @@ export interface CommandProps {
   inputValue?: string;
   /** What the list whispers when nothing matches. */
   emptyText?: string;
-  /** Called with the chosen entry's `value`; the palette closes after. */
-  onSelect?: (value: string) => void;
 }
 
 /**
@@ -49,8 +49,9 @@ export interface CommandProps {
  * The input part carries one `as never`: its prop union outgrows what
  * h() can resolve (TS2590).
  */
-export const Command = defineComponent({
+const CommandFacade = defineComponent({
   name: "Command",
+  inheritAttrs: false,
   props: {
     items: { type: Array as PropType<CommandEntry[]>, default: () => [] },
     placeholder: { type: String, default: undefined },
@@ -58,15 +59,15 @@ export const Command = defineComponent({
     autoFilter: { type: Boolean, default: true },
     inputValue: { type: String, default: undefined },
     emptyText: { type: String, default: undefined },
-    onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },
   },
-  emits: ["update:open", "update:inputValue"],
+  emits: ["update:open", "update:inputValue", "select"],
   setup(props, ctx: SetupContext) {
     injectComponentStyle("command");
     const messages = useComponentMessages();
     const consumerLabel = ctx.attrs["aria-label"] as string | undefined;
     injectComponentStyle("dialog");
 
+    const hostId = useElementId("command", ctx.attrs);
     const internalOpen = ref(false);
     // The list has no popup of its own, but the machine still opens and
     // closes its content (outside click on the sheet dims the list);
@@ -168,72 +169,69 @@ export const Command = defineComponent({
       return h(
         ArkDialog.Root,
         {
+          ...ctx.attrs,
+          id: `${hostId.value}:dialog`,
           open: props.open ?? internalOpen.value,
           "onUpdate:open": (value: boolean) => setOpen(value),
         },
         () => [
-          h(Teleport, { to: "body" }, () => [
-            h(ArkDialog.Backdrop),
-            h(ArkDialog.Positioner, { asChild: true }, () =>
-              h("div", { "data-scope": "command", "data-part": "positioner" }, [
-                h(ArkDialog.Content, { asChild: true }, () =>
+          h(ArkDialog.Backdrop),
+          h(ArkDialog.Positioner, { asChild: true }, () =>
+            h("div", { "data-scope": "command", "data-part": "positioner" }, [
+              h(ArkDialog.Content, { asChild: true }, () =>
+                h(
+                  "div",
+                  {
+                    "data-scope": "command",
+                    "data-part": "content",
+                    "aria-label": consumerLabel ?? messages.value.command.palette,
+                  },
                   h(
-                    "div",
+                    ArkCombobox.Root,
                     {
-                      "data-scope": "command",
-                      "data-part": "content",
-                      "aria-label": consumerLabel ?? messages.value.command.palette,
-                    },
-                    h(
-                      ArkCombobox.Root,
-                      {
-                        // The machine types its collection as
-                        // ListCollection<unknown>; ours is ListCollection<string>
-                        // and the two don't relate by variance.
-                        collection: collection.value as ListCollection<unknown>,
-                        inputValue: props.inputValue,
-                        open: listOpen.value,
-                        "onUpdate:open": (value: boolean) => (listOpen.value = value),
-                        autoHighlight: true,
-                        loopFocus: true,
-                        onInputValueChange: (details: { inputValue: string }) => {
-                          fieldText.value = details.inputValue;
-                          if (props.autoFilter) filter(details.inputValue);
-                          ctx.emit("update:inputValue", details.inputValue);
-                        },
-                        onValueChange: (details: { value: string[] }) => {
-                          const [first] = details.value;
-                          if (first == null) return;
-                          props.onSelect?.(first);
-                          setOpen(false);
-                        },
+                      id: `${hostId.value}:combobox`,
+                      // The machine types its collection as
+                      // ListCollection<unknown>; ours is ListCollection<string>
+                      // and the two don't relate by variance.
+                      collection: collection.value as ListCollection<unknown>,
+                      inputValue: props.inputValue,
+                      open: listOpen.value,
+                      "onUpdate:open": (value: boolean) => (listOpen.value = value),
+                      autoHighlight: true,
+                      loopFocus: true,
+                      onInputValueChange: (details: { inputValue: string }) => {
+                        fieldText.value = details.inputValue;
+                        if (props.autoFilter) filter(details.inputValue);
+                        ctx.emit("update:inputValue", details.inputValue);
                       },
-                      () => [
-                        // `as never` sidesteps TS2590 — the input part's
-                        // prop union outgrows what h() can resolve.
-                        h(ArkCombobox.Input as never, { asChild: true }, () =>
-                          h("input", {
-                            type: "text",
-                            placeholder: props.placeholder ?? messages.value.command.search,
-                            "aria-label": messages.value.command.search,
-                            "data-scope": "command",
-                            "data-part": "input",
-                          }),
-                        ),
-                        h(ArkCombobox.Content, { asChild: true }, () =>
-                          h(
-                            "div",
-                            { "data-scope": "command", "data-part": "list" },
-                            renderGroups(),
-                          ),
-                        ),
-                      ],
-                    ),
+                      onValueChange: (details: { value: string[] }) => {
+                        const [first] = details.value;
+                        if (first == null) return;
+                        ctx.emit("select", first);
+                        setOpen(false);
+                      },
+                    },
+                    () => [
+                      // `as never` sidesteps TS2590 — the input part's
+                      // prop union outgrows what h() can resolve.
+                      h(ArkCombobox.Input as never, { asChild: true }, () =>
+                        h("input", {
+                          type: "text",
+                          placeholder: props.placeholder ?? messages.value.command.search,
+                          "aria-label": messages.value.command.search,
+                          "data-scope": "command",
+                          "data-part": "input",
+                        }),
+                      ),
+                      h(ArkCombobox.Content, { asChild: true }, () =>
+                        h("div", { "data-scope": "command", "data-part": "list" }, renderGroups()),
+                      ),
+                    ],
                   ),
                 ),
-              ]),
-            ),
-          ]),
+              ),
+            ]),
+          ),
         ],
       );
     };
@@ -241,3 +239,5 @@ export const Command = defineComponent({
 });
 
 // The scrim is the dialog machinery's backdrop — borrow its stylesheet.
+
+export const Command = defineFamily(CommandFacade, Dialog) as typeof CommandFacade & typeof Dialog;

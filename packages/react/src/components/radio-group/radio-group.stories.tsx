@@ -29,8 +29,23 @@ function paperGroup(extraProps: Record<string, any> = {}, label = "Paper") {
   );
 }
 
-/** A column of full-circle seals; the chosen one fills flat with ink. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => (
+    <RadioGroup
+      label="Ground"
+      defaultValue="xuan"
+      items={[
+        { value: "xuan", label: "Xuan paper" },
+        { value: "silk", label: "Silk" },
+        { value: "bamboo", label: "Bamboo slips" },
+      ]}
+    />
+  ),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     label: "Paper",
     disabled: false,

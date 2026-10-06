@@ -35,6 +35,7 @@ export type {
 export { AiConversation, AiContent, AiActions, AiLoader };
 
 export const Ai = Object.assign(AiConversation, {
+  Root: AiConversation,
   Conversation: AiConversation,
   MessageContent: AiContent,
   Message,

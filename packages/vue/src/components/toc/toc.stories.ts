@@ -136,7 +136,25 @@ const TocStory = defineComponent({
   },
 });
 
+const BasicFacadeStory = defineComponent({
+  name: "TocBasicFacadeStory",
+  setup() {
+    const pg = page(BASIC_SECTIONS);
+    return () =>
+      h("div", { style: { display: "flex", gap: "1.5rem", alignItems: "flex-start" } }, [
+        h("div", { style: { width: "12rem", flex: "none" } }, () =>
+          h(Toc, { items: BASIC_SECTIONS, scrollEl: pg.scrollEl }),
+        ),
+        article(BASIC_SECTIONS, pg),
+      ]);
+  },
+});
+
 export const Basic = {
+  render: () => h(BasicFacadeStory),
+};
+
+export const Anatomy = {
   render: () => h(TocStory),
 };
 

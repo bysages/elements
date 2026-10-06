@@ -66,13 +66,23 @@ function mention(handle = profile.handle) {
  * where the eye already is. */
 export const Basic = {
   args: {
-    triggerText: profile.handle,
+    trigger: profile.handle,
+    label: profile.name,
+    description: profile.handle,
+    content: profile.bio,
   },
   render: (args: any) => (
-    <HoverCard.Root>
-      {mention(args.triggerText)}
-      {card()}
-    </HoverCard.Root>
+    <HoverCard
+      trigger={args.trigger}
+      label={args.label}
+      description={args.description}
+      content={args.content}
+    >
+      <div style={{ display: "flex", gap: "1rem" }}>
+        {stat(profile.following, "Following")}
+        {stat(profile.followers, "Followers")}
+      </div>
+    </HoverCard>
   ),
 };
 
@@ -198,3 +208,6 @@ export const Context = {
     </HoverCard.Root>
   ),
 };
+
+/** The anatomy path mirrored from the React composition story. */
+export const Anatomy = Basic;

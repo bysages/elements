@@ -9,12 +9,5 @@ const papers = [
 </script>
 
 <template>
-  <RadioGroup.Root default-value="xuan">
-    <RadioGroup.Label>Ground</RadioGroup.Label>
-    <RadioGroup.Item v-for="p in papers" :key="p.value" :value="p.value">
-      <RadioGroup.ItemControl />
-      <RadioGroup.ItemText>{{ p.label }}</RadioGroup.ItemText>
-      <RadioGroup.ItemHiddenInput />
-    </RadioGroup.Item>
-  </RadioGroup.Root>
+  <RadioGroup label="Ground" :items="papers" default-value="xuan" />
 </template>

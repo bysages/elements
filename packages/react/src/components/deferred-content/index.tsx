@@ -1,6 +1,8 @@
 import { injectComponentStyle } from "@bysages/core";
 import { type HTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+
 export interface DeferredContentProps extends HTMLAttributes<HTMLDivElement> {
   /** How much of the placeholder must be visible before the content
    * mounts, from 0 (any pixel) to 1 (the whole box). */
@@ -14,7 +16,7 @@ export interface DeferredContentProps extends HTMLAttributes<HTMLDivElement> {
  * tree until the placeholder scrolls near the viewport, then mounts
  * once and stays. The placeholder is drawn by the caller, so the late
  * arrival costs no layout shift it cannot predict. */
-export function DeferredContent({
+function DeferredContentImpl({
   threshold = 0.2,
   placeholder,
   children,
@@ -44,3 +46,5 @@ export function DeferredContent({
     </div>
   );
 }
+
+export const DeferredContent = withSelfRoot(DeferredContentImpl);

@@ -2,6 +2,8 @@ import { useFieldContext } from "@ark-ui/solid/field";
 import { injectComponentStyle } from "@bysages/core";
 import { For, Show, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
 
+import { iconNode } from "../../internal/icon";
+
 /** One row of the platform's own list. */
 export interface NativeSelectOption {
   label: string;
@@ -87,16 +89,10 @@ export function NativeSelect(props: NativeSelectProps) {
           )}
         </For>
       </select>
-      <svg data-scope="select" data-part="native-icon" viewBox="0 0 16 16" aria-hidden="true">
-        <path
-          d="M4 6l4 4 4-4"
-          fill="none"
-          stroke="currentColor"
-          stroke-width={1.5}
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      {iconNode("chevron-down", {
+        "data-scope": "select",
+        "data-part": "native-icon",
+      })}
     </span>
   );
 }

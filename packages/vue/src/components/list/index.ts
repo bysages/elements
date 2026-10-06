@@ -48,17 +48,8 @@ const Item = defineComponent({
   setup(_, ctx: SetupContext) {
     injectComponentStyle("list");
 
-    return () => {
-      // A row the caller wires to the pointer stays a list item — a
-      // button role inside the list breaks the list contract. Focus
-      // and the keyboard handlers still ride the row itself.
-      const { role: _role, ...attrs } = ctx.attrs;
-      return h(
-        "li",
-        { ...attrs, "data-scope": "list", "data-part": "item" },
-        ctx.slots.default?.(),
-      );
-    };
+    return () =>
+      h("li", { ...ctx.attrs, "data-scope": "list", "data-part": "item" }, ctx.slots.default?.());
   },
 });
 const Leading = part("Leading", "div");

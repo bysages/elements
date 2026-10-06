@@ -62,6 +62,22 @@ function itemRows(items: readonly Item[], showNew = false) {
   ));
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => (
+    <Combobox
+      options={[
+        { label: "Apple", value: "apple" },
+        { label: "Banana", value: "banana" },
+        { label: "Cherry", value: "cherry" },
+      ]}
+      defaultValue="apple"
+      label="Fruit"
+      placeholder="e.g. Apple"
+    />
+  ),
+};
+
 /** Story scaffolding: one fruit combobox whose collection, root props, and
  * item rows vary per story. */
 function ComboboxStory({
@@ -131,7 +147,7 @@ function ComboboxStory({
 
 /** Type to filter; the matching strokes take the primary ink while the
  * checked row holds the flat fill. */
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Fruit",
   },

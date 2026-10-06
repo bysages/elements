@@ -42,9 +42,13 @@ function dial(label: string): ReactNode[] {
   ];
 }
 
-/** The dial: eight marks of the compass rose, the thumb dragged around the
- * circle. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
+  render: () => <AngleSlider defaultValue={45} label="Light angle" />,
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
   args: {
     label: "Rotation",
   },

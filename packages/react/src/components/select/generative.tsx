@@ -1,7 +1,7 @@
 import { faces } from "../../generative/faces.generated";
 import { labelled, collectionFor, useBound } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
-import { Icon } from "../icon";
+import { iconNode } from "../../internal/icon";
 import { Select } from "./index";
 
 /** A choice field that opens a ruled list; options carry label and value. */
@@ -23,7 +23,7 @@ export default defineEntry({
               <Select.ValueText placeholder={props.placeholder} />
             </Select.Trigger>
             <Select.Indicator>
-              <Icon name="chevrons-up-down" />
+              {iconNode("chevrons-up-down", { width: 14, height: 14 })}
             </Select.Indicator>
           </Select.Control>
           <Select.Positioner>
@@ -33,7 +33,7 @@ export default defineEntry({
                   <Select.Item key={option.value} item={option}>
                     <Select.ItemText>{option.label}</Select.ItemText>
                     <Select.ItemIndicator>
-                      <Icon name="check" />
+                      {iconNode("check", { width: 14, height: 14 })}
                     </Select.ItemIndicator>
                   </Select.Item>
                 ))}

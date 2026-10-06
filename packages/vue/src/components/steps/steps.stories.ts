@@ -13,43 +13,30 @@ const items = [
   { title: "Complete payment", description: "Choose how to pay" },
 ];
 
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    backLabel: "Back",
-    nextLabel: "Next",
-  },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h(Steps.Root, { count: items.length }, () => [
-          h(Steps.List, () =>
-            items.map((item, index) =>
-              h(Steps.Item, { key: item.title, index }, () => [
-                h(Steps.Trigger, () => [
-                  h(Steps.Indicator, () => String(index + 1)),
-                  h("span", item.title),
-                ]),
-                h(Steps.Separator),
-                h(Steps.Content, () =>
-                  h("p", { style: { paddingInlineStart: "2rem" } }, item.title),
-                ),
-              ]),
-            ),
-          ),
-          ...items.map((item, index) =>
-            h(
-              Steps.Content,
-              { key: item.title, index },
-              () => `${item.title} — ${item.description}`,
-            ),
-          ),
-          h(Steps.CompletedContent, () => "All steps completed."),
-          h("div", { style: { display: "flex", gap: "0.75rem", marginTop: "1rem" } }, [
-            h(Steps.PrevTrigger, () => args.backLabel),
-            h(Steps.NextTrigger, () => args.nextLabel),
+  render: () =>
+    h(Steps, {
+      items: [{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }],
+      defaultStep: 0,
+    }),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () => {
+    const items = [{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }];
+    return h(Steps.Root, { count: items.length }, () =>
+      h(Steps.List, () =>
+        items.map((item, index) =>
+          h(Steps.Item, { key: item.title, index }, () => [
+            h(Steps.Trigger, () => [h(Steps.Indicator, () => String(index + 1)), item.title]),
+            h(Steps.Separator),
           ]),
-        ]),
-    ),
+        ),
+      ),
+    );
+  },
 };
 
 export const Progress = {

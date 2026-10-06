@@ -3,6 +3,9 @@ import type { DateInputRootProps as ArkDateInputRootProps } from "@ark-ui/solid/
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Ark's DateInput, dressed in the paper-and-ink system: a segmented
  * field where the focused segment takes the flat ink fill. The API is
  * Ark's own — Root, Label, Control, SegmentGroup, Segment, SegmentContext,
@@ -15,14 +18,16 @@ type DateInputOwnProps = {
 
 function DateInputRoot(props: ArkDateInputRootProps & DateInputOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkDateInput.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("date-input", () => rest.id);
+  return <ArkDateInput.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const DateInput: Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateInputRoot } = {
+export const DateInput: typeof DateInputRoot &
+  Omit<typeof ArkDateInput, "Root"> & { Root: typeof DateInputRoot } = defineFamily(DateInputRoot, {
   ...ArkDateInput,
   Root: DateInputRoot,
-};
+});
 
 injectComponentStyle("date-input");

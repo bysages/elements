@@ -1,6 +1,7 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { withSelfRoot } from "../../internal/family";
 import { Button } from "../button";
 
 /** A seal-cut button proposing the next stroke; selection hands back
@@ -12,7 +13,7 @@ export interface SuggestionProps extends Omit<HTMLAttributes<HTMLButtonElement>,
   onSelect?: (prompt: string) => void;
 }
 
-export function Suggestion({ prompt, onSelect, ...rest }: SuggestionProps) {
+function SuggestionImpl({ prompt, onSelect, ...rest }: SuggestionProps) {
   injectComponentStyle("ai");
   return (
     <Button variant="outline" size="sm" {...rest} onClick={() => onSelect?.(prompt)}>
@@ -20,4 +21,6 @@ export function Suggestion({ prompt, onSelect, ...rest }: SuggestionProps) {
     </Button>
   );
 }
+
+export const Suggestion = withSelfRoot(SuggestionImpl);
 export { Suggestion as AiSuggestion };

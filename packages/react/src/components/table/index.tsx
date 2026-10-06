@@ -46,50 +46,24 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from "react";
 
+import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 
-/** The pagination bar's arrows — thin chevrons for the row of seals. */
-function pageGlyph(direction: "start" | "end") {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={14}
-      height={14}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={direction === "start" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
-    </svg>
-  );
+function pageIcon(direction: "start" | "end") {
+  return iconNode(direction === "start" ? "chevron-left" : "chevron-right", {
+    width: 14,
+    height: 14,
+  });
 }
 
 export type { ColumnDef, SortingState };
 export { createColumnHelper, FlexRender };
 
-/** The page-size select's pointing chevron. */
-function chevronDownGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={14}
-      height={14}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
+const chevronDownIcon = iconNode("chevron-down", { width: 14, height: 14 });
+
 /** Column metadata understood by this table: mark columns whose values
  * read right-aligned in tabular figures. The type parameters mirror the
  * library's own declaration — augmentation merging demands an identical
@@ -224,21 +198,7 @@ function mark(el: HTMLElement, attr: string, on: boolean) {
   else el.removeAttribute(attr);
 }
 
-function ChevronGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="m9 6 6 6-6 6" />
-    </svg>
-  );
-}
+const chevronIcon = iconNode("chevron-right");
 
 /** React keeps `indeterminate` off the JSX types; the DOM property is the
  * only channel, so the checkbox owns its ref. */
@@ -263,7 +223,7 @@ function SelectBox(props: {
   );
 }
 
-export function DataTable(rawProps: DataTableProps) {
+function DataTableImpl(rawProps: DataTableProps) {
   injectComponentStyle("table");
   const props = rawProps;
   const {
@@ -721,7 +681,7 @@ export function DataTable(rawProps: DataTableProps) {
             aria-label={row.getIsExpanded() ? messages.table.collapseRow : messages.table.expandRow}
             onClick={() => row.toggleExpanded()}
           >
-            <ChevronGlyph />
+            {chevronIcon}
           </button>
           <FlexRender cell={cell} />
         </div>
@@ -923,7 +883,7 @@ export function DataTable(rawProps: DataTableProps) {
             <ArkSelect.Control>
               <ArkSelect.Trigger aria-label={messages.table.rowsPerPage}>
                 <ArkSelect.ValueText />
-                <ArkSelect.Indicator>{chevronDownGlyph()}</ArkSelect.Indicator>
+                <ArkSelect.Indicator>{chevronDownIcon}</ArkSelect.Indicator>
               </ArkSelect.Trigger>
             </ArkSelect.Control>
             <ArkSelect.Positioner>
@@ -945,7 +905,7 @@ export function DataTable(rawProps: DataTableProps) {
             page={pagination.pageIndex + 1}
             onPageChange={(details: { page: number }) => table.setPageIndex(details.page - 1)}
           >
-            <ArkPagination.PrevTrigger>{pageGlyph("start")}</ArkPagination.PrevTrigger>
+            <ArkPagination.PrevTrigger>{pageIcon("start")}</ArkPagination.PrevTrigger>
             <ArkPagination.Context>
               {(scope) =>
                 scope.pages.map((page, index) =>
@@ -959,7 +919,7 @@ export function DataTable(rawProps: DataTableProps) {
                 )
               }
             </ArkPagination.Context>
-            <ArkPagination.NextTrigger>{pageGlyph("end")}</ArkPagination.NextTrigger>
+            <ArkPagination.NextTrigger>{pageIcon("end")}</ArkPagination.NextTrigger>
           </ArkPagination.Root>
         );
         return (
@@ -1020,3 +980,5 @@ export function DataTable(rawProps: DataTableProps) {
     </div>
   );
 }
+
+export const DataTable = withSelfRoot(DataTableImpl);

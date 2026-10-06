@@ -41,7 +41,7 @@ export const Basic: Story = {
     withState(() => {
       const picked = ref("");
       return () => [
-        h(TreeSelect, {
+        h(TreeSelect as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string) => (picked.value = v),
           data: REGIONS,
@@ -61,7 +61,7 @@ export const Basic: Story = {
    shut. */
 export const Disabled: Story = {
   render: () => () =>
-    h(TreeSelect, {
+    h(TreeSelect as never, {
       modelValue: "hangzhou",
       data: REGIONS,
       disabled: true,
@@ -77,7 +77,7 @@ export const Filterable: Story = {
     withState(() => {
       const picked = ref("");
       return () => [
-        h(TreeSelect, {
+        h(TreeSelect as never, {
           modelValue: picked.value,
           "onUpdate:modelValue": (v: string) => (picked.value = v),
           data: REGIONS,

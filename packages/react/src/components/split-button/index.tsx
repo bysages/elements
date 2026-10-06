@@ -3,8 +3,11 @@ import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes } from "react";
 
+import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
+import { Menu } from "../menu";
 
 export interface SplitButtonEntry {
   label: string;
@@ -40,7 +43,7 @@ export interface SplitButtonProps extends Omit<HTMLAttributes<HTMLDivElement>, "
  * button stylesheet's trigger register dresses it. The popup keeps the
  * menu parts untouched.
  */
-export function SplitButton({
+function SplitButtonImpl({
   label,
   items = [],
   variant = "solid",
@@ -53,13 +56,14 @@ export function SplitButton({
 }: SplitButtonProps) {
   injectComponentStyle("split-button");
   injectComponentStyle("menu");
+  const hostId = useElementId("split-button", rest);
   const messages = useComponentMessages();
   return (
     <div {...rest} data-scope="split-button" data-part="root">
       <Button variant={variant} tone={tone} size={size} disabled={disabled} onClick={onClick}>
         {label}
       </Button>
-      <ArkMenu.Root positioning={{ placement: "bottom-end" }}>
+      <ArkMenu.Root id={`${hostId}:menu`} positioning={{ placement: "bottom-end" }}>
         <ArkMenu.Trigger asChild>
           {/* The arrow gives the machine the element and keeps only the
              recipe's seals — the anatomy (data-scope, data-part) stays
@@ -74,7 +78,7 @@ export function SplitButton({
             data-motion="ink-ripple lit"
             aria-label={messages.more.actions}
           >
-            {chevronDown()}
+            {chevronDown}
           </button>
         </ArkMenu.Trigger>
         <Portal>
@@ -101,22 +105,9 @@ export function SplitButton({
   );
 }
 
-/** One stroke pointing down: all a fitted dropdown arrow needs. */
-function chevronDown() {
-  return (
-    <svg
-      width={16}
-      height={16}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
+export const SplitButton = Object.assign(SplitButtonImpl, Menu) as typeof SplitButtonImpl &
+  typeof Menu;
+
+const chevronDown = iconNode("chevron-down", { width: 16, height: 16 });
+
 // The popup keeps the menu parts, so the menu stylesheet dresses them.

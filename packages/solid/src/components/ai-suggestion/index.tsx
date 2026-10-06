@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
 import { Button } from "../button";
 
 export interface SuggestionProps extends Omit<JSX.HTMLAttributes<HTMLButtonElement>, "onSelect"> {
@@ -13,7 +14,7 @@ export interface SuggestionProps extends Omit<JSX.HTMLAttributes<HTMLButtonEleme
 
 /** A seal-cut button proposing the next stroke; selection hands back
  * the prompt. The shared Button in its outline register. */
-export function Suggestion(props: SuggestionProps) {
+export const Suggestion = withSelfRoot(function Suggestion(props: SuggestionProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, ["prompt", "onSelect"]);
   return (
@@ -21,5 +22,5 @@ export function Suggestion(props: SuggestionProps) {
       {own.prompt}
     </Button>
   );
-}
+});
 export { Suggestion as AiSuggestion };

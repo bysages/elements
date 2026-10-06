@@ -3,6 +3,7 @@ import { renderHtml } from "@tanstack/markdown/html";
 import type { PropType } from "vue";
 import { computed, defineComponent, h, ref, watchPostEffect } from "vue";
 
+import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 
@@ -53,56 +54,61 @@ function wrapResponseTables(root: HTMLElement): void {
  * links inert — streaming-safe by construction. An optional
  * highlighter re-inks fenced code; the component stays agnostic about
  * which engine provides it. */
-export const Response = defineComponent({
-  name: "AiResponse",
-  props: {
-    /** The markdown text to set on the paper — streamed in freely; raw
-     * HTML and executable links stay inert. */
-    content: { type: String, required: true },
-    /** Optional code-highlighting function re-inking fenced blocks; the
-     * component stays agnostic about which engine provides it. */
-    highlighter: {
-      type: Function as PropType<(code: string, lang?: string) => string>,
-      default: undefined,
+export const Response = withSelfRoot(
+  defineComponent({
+    name: "AiResponse",
+    props: {
+      /** The markdown text to set on the paper — streamed in freely; raw
+       * HTML and executable links stay inert. */
+      content: { type: String, required: true },
+      /** Optional code-highlighting function re-inking fenced blocks; the
+       * component stays agnostic about which engine provides it. */
+      highlighter: {
+        type: Function as PropType<(code: string, lang?: string) => string>,
+        default: undefined,
+      },
+      /** The copy stamp's accessible name before the copy lands. */
+      copyLabel: { type: String, default: undefined },
+      /** The copy stamp's accessible name once the text has landed. */
+      copiedLabel: { type: String, default: undefined },
     },
-    /** The copy stamp's accessible name before the copy lands. */
-    copyLabel: { type: String, default: undefined },
-    /** The copy stamp's accessible name once the text has landed. */
-    copiedLabel: { type: String, default: undefined },
-  },
-  setup(props) {
-    injectComponentStyle("ai");
-    const messages = useComponentMessages();
-    const copyLabel = computed(() => props.copyLabel ?? messages.value.ai.copyCode);
-    const copiedLabel = computed(() => props.copiedLabel ?? messages.value.ai.copied);
+    setup(props) {
+      injectComponentStyle("ai");
+      const messages = useComponentMessages();
+      const copyLabel = computed(() => props.copyLabel ?? messages.value.ai.copyCode);
+      const copiedLabel = computed(() => props.copiedLabel ?? messages.value.ai.copied);
 
-    const html = computed(() =>
-      renderHtml(props.content, props.highlighter ? { highlighter: props.highlighter } : undefined),
-    );
-    const root = ref<HTMLElement | null>(null);
+      const html = computed(() =>
+        renderHtml(
+          props.content,
+          props.highlighter ? { highlighter: props.highlighter } : undefined,
+        ),
+      );
+      const root = ref<HTMLElement | null>(null);
 
-    // The markdown is one innerHTML string, rebuilt on every stream
-    // tick — the stamps go back on right after each patch, and a
-    // single delegated click serves them all.
-    watchPostEffect(() => {
-      void html.value;
-      void copyLabel.value;
-      if (root.value) decorateCodeCopy(root.value, copyLabel.value);
-      if (root.value) wrapResponseTables(root.value);
-    });
-
-    const onClick = (event: MouseEvent) => {
-      void clickCodeCopy(event, copyLabel.value, copiedLabel.value);
-    };
-
-    return () =>
-      h("div", {
-        ref: root,
-        "data-scope": "ai",
-        "data-part": "response",
-        innerHTML: html.value,
-        onClick,
+      // The markdown is one innerHTML string, rebuilt on every stream
+      // tick — the stamps go back on right after each patch, and a
+      // single delegated click serves them all.
+      watchPostEffect(() => {
+        void html.value;
+        void copyLabel.value;
+        if (root.value) decorateCodeCopy(root.value, copyLabel.value);
+        if (root.value) wrapResponseTables(root.value);
       });
-  },
-});
+
+      const onClick = (event: MouseEvent) => {
+        void clickCodeCopy(event, copyLabel.value, copiedLabel.value);
+      };
+
+      return () =>
+        h("div", {
+          ref: root,
+          "data-scope": "ai",
+          "data-part": "response",
+          innerHTML: html.value,
+          onClick,
+        });
+    },
+  }),
+);
 export { Response as AiResponse };

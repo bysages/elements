@@ -2,6 +2,9 @@ import { Avatar as ArkAvatar } from "@ark-ui/solid/avatar";
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps, type JSX } from "solid-js";
 
+import { withSelfRoot } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 export interface UserProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The person's name — the loud line. */
   name: string;
@@ -18,8 +21,9 @@ export interface UserProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * quiet echo beneath. The mark is the Avatar itself — one component
  * renders it here, so every size and shape the Avatar knows the user
  * inherits; this row only lays the words out beside it. */
-export function User(props: UserProps) {
+export const User = withSelfRoot(function User(props: UserProps) {
   injectComponentStyle("user");
+  const id = useElementId("user-avatar");
   const [own, rest] = splitProps(props, [
     "name",
     "description",
@@ -37,7 +41,7 @@ export function User(props: UserProps) {
       .join("");
   return (
     <div {...rest} data-scope="user" data-part="root">
-      <ArkAvatar.Root data-size={own.size} data-shape={own.shape ?? "circle"}>
+      <ArkAvatar.Root id={id()} data-size={own.size} data-shape={own.shape ?? "circle"}>
         <ArkAvatar.Fallback>{initials()}</ArkAvatar.Fallback>
       </ArkAvatar.Root>
       <div data-scope="user" data-part="meta">
@@ -53,4 +57,4 @@ export function User(props: UserProps) {
       </div>
     </div>
   );
-}
+});

@@ -7,6 +7,11 @@ import { Field } from "../field";
 const meta: Meta = { title: "Components/Forms/Number Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <NumberInput label="Quantity" placeholder="1" min={1} max={12} step={1} />,
+};
+
 function chevron(dir: "up" | "down") {
   return (
     <svg
@@ -60,7 +65,7 @@ function control(rootProps: any, label: string, extra: React.ReactNode[] = []) {
   );
 }
 
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Quantity",
     min: 0,

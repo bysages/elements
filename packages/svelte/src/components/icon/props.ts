@@ -9,11 +9,10 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   /** The accessible name. Without it the icon is presentation-only and
    * hidden from the accessibility tree. */
   label?: string;
-  /** A glyph from the registry, imported directly. Ignored when children
-   * are given — an explicit glyph always wins. */
+  /** An `@bysages/icons` export or any IconifyIcon. Ignored when children are given — a
+   * glyph always wins over a name. */
   glyph?: IconifyIcon;
-  /** A registry name — only the whitelisted set the wrappers draw
-   * themselves. Ignored when `glyph` or children are given. */
+  /** A built-in name from the curated core registry. Ignored when `glyph` or children are given. */
   name?: string;
   children?: Snippet;
 }

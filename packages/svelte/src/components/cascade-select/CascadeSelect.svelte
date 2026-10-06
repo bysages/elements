@@ -8,6 +8,7 @@ import { Portal } from "@ark-ui/svelte/portal";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/svelte";
 
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import Input from "../input/Input.svelte";
 import { useComponentMessages } from "../config-provider/messages";
 import type { CascadeSelectNode, CascadeSelectProps } from "./props";
@@ -138,31 +139,11 @@ const display = $derived.by(() => {
         <span {...api.getItemTextProps(itemProps)}>{item.label}</span>
         {#if itemState.hasChildren}
           <span data-scope="cascade-select" data-part="branch-indicator" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <InternalIcon name="chevron-right" />
           </span>
         {/if}
         <span {...api.getItemIndicatorProps(itemProps)}>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m5 12.5 5 5L19 7" />
-          </svg>
+          <InternalIcon name="check" />
         </span>
       </li>
     {/each}
@@ -195,17 +176,7 @@ its full route. -->
     >
       <span {...api.getValueTextProps()} id={id + ":value-text"}>{display ?? placeholder}</span>
       <span {...api.getIndicatorProps()}>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <InternalIcon name="chevron-down" />
       </span>
     </button>
   </div>

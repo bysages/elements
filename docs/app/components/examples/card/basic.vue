@@ -3,7 +3,7 @@ import { Card } from "@bysages/vue";
 </script>
 
 <template>
-  <Card.Root class="w-104">
+  <Card class="w-104">
     <Card.Header>
       <Card.Title>The four treasures</Card.Title>
       <Card.Description>Brush, ink, paper, and the inkstone.</Card.Description>
@@ -15,5 +15,5 @@ import { Card } from "@bysages/vue";
       </p>
     </Card.Content>
     <Card.Footer class="flex gap-2 justify-end"> Updated this morning </Card.Footer>
-  </Card.Root>
+  </Card>
 </template>

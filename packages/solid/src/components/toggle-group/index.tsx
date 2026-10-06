@@ -3,6 +3,9 @@ import type { ToggleGroupRootProps as ArkToggleGroupRootProps } from "@ark-ui/so
 import { injectComponentStyle } from "@bysages/core";
 import { splitProps } from "solid-js";
 
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
+
 /** Ark's ToggleGroup, dressed in the paper-and-ink system: a hairline tray
  * of quiet seals where the pressed item takes the flat ink fill. The API is
  * Ark's own — Root, Item. */
@@ -14,14 +17,19 @@ type ToggleGroupOwnProps = {
 
 function ToggleGroupRoot(props: ArkToggleGroupRootProps & ToggleGroupOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
-  return <ArkToggleGroup.Root {...rest} data-size={own.size ?? "md"} />;
+  const id = useElementId("toggle-group", () => rest.id);
+  return <ArkToggleGroup.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const ToggleGroup: Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof ToggleGroupRoot } = {
-  ...ArkToggleGroup,
-  Root: ToggleGroupRoot,
-};
+export const ToggleGroup: typeof ToggleGroupRoot &
+  Omit<typeof ArkToggleGroup, "Root"> & { Root: typeof ToggleGroupRoot } = defineFamily(
+  ToggleGroupRoot,
+  {
+    ...ArkToggleGroup,
+    Root: ToggleGroupRoot,
+  },
+);
 
 injectComponentStyle("toggle-group");

@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
 import { defineComponent, h, onMounted, onUnmounted, ref } from "vue";
 
+import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
 import { Action } from "../ai-action";
 import { Message } from "../ai-message";
@@ -110,37 +111,40 @@ export const AiConversation = defineComponent({
 
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
-export const AiContent = part("Content", "div");
+export const AiContent = withSelfRoot(part("Content", "div"));
 
 /** The quiet row under a message — copy, retry, feedback. */
-export const AiActions = part("Actions", "div");
+export const AiActions = withSelfRoot(part("Actions", "div"));
 
 /** The while-it-works whisper for the in-flight turns. */
-export const AiLoader = defineComponent({
-  name: "AiLoader",
-  setup(_, ctx: SetupContext) {
-    injectComponentStyle("ai");
-    const messages = useComponentMessages();
+export const AiLoader = withSelfRoot(
+  defineComponent({
+    name: "AiLoader",
+    setup(_, ctx: SetupContext) {
+      injectComponentStyle("ai");
+      const messages = useComponentMessages();
 
-    return () =>
-      h(
-        "span",
-        {
-          ...ctx.attrs,
-          role: "status",
-          "aria-label":
-            (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.ai.loading,
-          "data-scope": "ai",
-          "data-part": "loader",
-        },
-        ctx.slots.default?.(),
-      );
-  },
-});
+      return () =>
+        h(
+          "span",
+          {
+            ...ctx.attrs,
+            role: "status",
+            "aria-label":
+              (ctx.attrs["aria-label"] as string | undefined) ?? messages.value.ai.loading,
+            "data-scope": "ai",
+            "data-part": "loader",
+          },
+          ctx.slots.default?.(),
+        );
+    },
+  }),
+);
 
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.Message`, and the rest, exactly as before the split. */
-export const Ai = Object.assign(AiConversation, {
+export const Ai = defineFamily(AiConversation, {
+  Root: AiConversation,
   Conversation: AiConversation,
   MessageContent: AiContent,
   Actions: AiActions,

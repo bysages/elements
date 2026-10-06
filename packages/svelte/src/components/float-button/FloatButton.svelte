@@ -8,20 +8,30 @@ import { FLOAT_BUTTON_KEY } from "./context";
 import type { FloatButtonProps } from "./props";
 
 let {
-  open = $bindable(false),
+  open = $bindable(),
   placement = "bottom-end",
   size = "lg",
   children,
   ...rest
 }: FloatButtonProps = $props();
 
+let localOpen = $state(false);
+const isOpen = $derived(open ?? localOpen);
+
+function setOpen(value: boolean) {
+  if (open !== undefined) open = value;
+  else localOpen = value;
+}
+
 setContext(FLOAT_BUTTON_KEY, {
   get open() {
-    return open;
+    return isOpen;
   },
-  size,
-  toggle: () => (open = !open),
-  close: () => (open = false),
+  get size() {
+    return size;
+  },
+  toggle: () => setOpen(!isOpen),
+  close: () => setOpen(false),
 });
 </script>
 
@@ -36,7 +46,7 @@ mooring, the fan and the fold. -->
   data-scope="float-button"
   data-part="root"
   data-placement={placement}
-  data-state={open ? "open" : "closed"}
+  data-state={isOpen ? "open" : "closed"}
 >
   {@render children?.()}
 </div>

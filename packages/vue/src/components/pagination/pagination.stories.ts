@@ -32,6 +32,18 @@ function chevron(direction: "left" | "right" | "first" | "last") {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () =>
+    h(Pagination, {
+      defaultValue: 3,
+      count: 5000,
+      pageSize: 10,
+      siblingCount: 2,
+      label: "Archive pages",
+    }),
+};
+
 /** The page marks render from the machine: numbers, gaps as ellipses,
  * the current page in ink. */
 function pages() {
@@ -59,7 +71,7 @@ function bar(rootProps: any, edges = false) {
 
 /** Five hundred entries, ten to a page: the ladder of numbers with
  * ellipses where the rung count folds. */
-export const Basic = {
+export const Anatomy = {
   args: {
     count: 5000,
     pageSize: 10,

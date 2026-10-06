@@ -2,6 +2,8 @@ import { Avatar as ArkAvatar } from "@ark-ui/react/avatar";
 import { injectComponentStyle } from "@bysages/core";
 import type { ComponentProps } from "react";
 
+import { useElementId } from "../../internal/id";
+
 /** Avatar, dressed in the paper-and-ink system: a circular seal on
  * inset paper that holds initials until the image loads over them.
  * `size` picks a control-height rung for the seal — the core styles
@@ -19,12 +21,18 @@ export interface AvatarProps extends ComponentProps<typeof ArkAvatar.Root> {
   shape?: "circle" | "square";
 }
 
-function AvatarRoot({ size, shape = "circle", ...rest }: AvatarProps) {
-  return <ArkAvatar.Root {...rest} data-size={size} data-shape={shape} />;
+function AvatarRoot(props: AvatarProps) {
+  const id = useElementId("avatar", props);
+  const { size, shape = "circle", ...rest } = props;
+
+  return <ArkAvatar.Root {...rest} id={id} data-size={size} data-shape={shape} />;
 }
 
 /* Ark's namespace is frozen — Object.assign copies the members so Root
  * can be the sized wrapper while the rest stay Ark's own parts. */
-export const Avatar = Object.assign({}, ArkAvatar, { Root: AvatarRoot });
+export const Avatar = Object.assign(AvatarRoot, {
+  ...ArkAvatar,
+  Root: AvatarRoot,
+}) as typeof AvatarRoot & typeof ArkAvatar & { Root: typeof AvatarRoot };
 
 injectComponentStyle("avatar");

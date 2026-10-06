@@ -8,6 +8,18 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Number Input" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () =>
+    h(NumberInput, {
+      label: "Quantity",
+      placeholder: "1",
+      min: 1,
+      max: 12,
+      step: 1,
+    }),
+};
+
 function chevron(dir: "up" | "down") {
   return h(
     "svg",
@@ -24,7 +36,7 @@ function chevron(dir: "up" | "down") {
   );
 }
 
-function gripGlyph() {
+function gripIcon() {
   return h(
     "svg",
     {
@@ -47,7 +59,7 @@ function control(rootProps: any, label: string, extra: any[] = []) {
     h(NumberInput.Label, () => label),
     h(NumberInput.Control, () => [
       h(NumberInput.Input as any),
-      h(NumberInput.Scrubber, () => gripGlyph()),
+      h(NumberInput.Scrubber, () => gripIcon()),
       h(NumberInput.IncrementTrigger, { "aria-label": "Increment" }, () => chevron("up")),
       h(NumberInput.DecrementTrigger, { "aria-label": "Decrement" }, () => chevron("down")),
       ...extra,
@@ -55,7 +67,7 @@ function control(rootProps: any, label: string, extra: any[] = []) {
   ]);
 }
 
-export const Basic = {
+export const Anatomy = {
   args: {
     label: "Quantity",
     min: 0,
@@ -66,7 +78,12 @@ export const Basic = {
     withState(
       () => () =>
         control(
-          { defaultValue: "42", min: args.min, max: args.max, disabled: args.disabled },
+          {
+            defaultValue: "42",
+            min: args.min,
+            max: args.max,
+            disabled: args.disabled,
+          },
           args.label,
         ),
     ),
@@ -76,7 +93,10 @@ export const Basic = {
 export const Formatting = {
   render: () =>
     control(
-      { defaultValue: "25", formatOptions: { style: "currency", currency: "USD" } } as any,
+      {
+        defaultValue: "25",
+        formatOptions: { style: "currency", currency: "USD" },
+      } as any,
       "Price",
     ),
 };
@@ -112,7 +132,7 @@ export const Scrubber = {
     h(NumberInput.Root, { defaultValue: "32" }, () => [
       h(NumberInput.Label, () => "Drag me"),
       h(NumberInput.Control, () => [
-        h(NumberInput.Scrubber, null, () => gripGlyph()),
+        h(NumberInput.Scrubber, null, () => gripIcon()),
         h(NumberInput.Input as any),
         h(NumberInput.IncrementTrigger, { "aria-label": "Increment" }, () => chevron("up")),
         h(NumberInput.DecrementTrigger, { "aria-label": "Decrement" }, () => chevron("down")),
@@ -126,7 +146,10 @@ export const ValueText = {
   render: () =>
     control({ defaultValue: "8" }, "Pickles", [
       h(NumberInput.ValueText, {
-        style: { fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-secondary)" },
+        style: {
+          fontSize: "var(--bs-font-size-sm)",
+          color: "var(--bs-color-text-secondary)",
+        },
       }),
     ]),
 };

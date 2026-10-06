@@ -4,11 +4,16 @@
  * Control, Thumb, HiddenInput. */
 import { Switch as ArkSwitch } from "@ark-ui/svelte/switch";
 
+import { defineFamily } from "../../internal/family";
+import SwitchFacade from "./Switch.svelte";
 import SwitchRoot from "./SwitchRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Switch: Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot } = {
+export const Switch: typeof SwitchFacade &
+  Omit<typeof ArkSwitch, "Root"> & {
+    Root: typeof SwitchRoot;
+  } = defineFamily(SwitchFacade, {
   ...ArkSwitch,
   Root: SwitchRoot,
-};
+});

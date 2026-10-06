@@ -4,7 +4,6 @@ import { defineComponent, h } from "vue";
 
 import { Splitter } from ".";
 import { Button } from "../button";
-import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Layout/Splitter" };
 export default meta;
@@ -27,20 +26,34 @@ function room(id: string) {
   return h(Splitter.Panel, { id, style: panelStyle }, () => id.toUpperCase());
 }
 
-/** Two rooms, one divide: drag the seal thumb to re-partition the
- * paper. */
+/** The facade is the one-tag path; complex composition stays on the anatomy. */
 export const Basic = {
-  args: {
-    disabled: false,
-  },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h(Splitter.Root, { panels: [{ id: "a" }, { id: "b" }], disabled: args.disabled }, () => [
-          room("a"),
-          divider("a:b"),
-          room("b"),
-        ]),
+  render: () =>
+    h(Splitter, {
+      items: [
+        { id: "draft", label: "Draft" },
+        { id: "notes", label: "Notes" },
+      ],
+      defaultValue: [40, 60],
+    } as any),
+};
+
+/** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
+export const Anatomy = {
+  render: () =>
+    h(
+      Splitter.Root,
+      {
+        panels: [{ id: "draft" }, { id: "notes" }],
+        defaultSize: [40, 60],
+      } as any,
+      () => [
+        h(Splitter.Panel, { id: "draft" }, () => "Draft"),
+        h(Splitter.ResizeTrigger, { id: "draft:notes", "aria-label": "Resize panels" } as any, () =>
+          h(Splitter.ResizeTriggerIndicator),
+        ),
+        h(Splitter.Panel, { id: "notes" }, () => "Notes"),
+      ],
     ),
 };
 
@@ -53,7 +66,13 @@ export const Collapsible = {
       {
         defaultSize: [15, 20] as any,
         panels: [
-          { id: "a", collapsible: true, collapsedSize: 5, minSize: 10, maxSize: 20 },
+          {
+            id: "a",
+            collapsible: true,
+            collapsedSize: 5,
+            minSize: 10,
+            maxSize: 20,
+          },
           { id: "b", minSize: 50 },
         ],
       } as any,
@@ -100,7 +119,10 @@ export const Nested = {
         h(Splitter.Panel, { id: "center" }, () =>
           h(
             Splitter.Root,
-            { orientation: "vertical", panels: [{ id: "top" }, { id: "bottom" }] } as any,
+            {
+              orientation: "vertical",
+              panels: [{ id: "top" }, { id: "bottom" }],
+            } as any,
             () => [
               h(Splitter.Panel, { id: "top", style: panelStyle }, () => "Top"),
               divider("top:bottom"),

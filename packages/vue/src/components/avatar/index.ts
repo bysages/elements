@@ -1,6 +1,9 @@
 import { Avatar as ArkAvatar } from "@ark-ui/vue/avatar";
 import { injectComponentStyle } from "@bysages/core";
-import { defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, type Component, type PropType } from "vue";
+
+import { defineFamily } from "../../internal/family";
+import { useElementId } from "../../internal/id";
 
 /** Avatar, dressed in the paper-and-ink system: a circular seal on
  * inset paper that holds initials until the image loads over them.
@@ -22,16 +25,28 @@ const AvatarRoot = defineComponent({
   },
   setup(props, { attrs, slots }) {
     injectComponentStyle("avatar");
+    const id = useElementId("avatar", attrs);
 
     return () =>
-      h(ArkAvatar.Root, { ...attrs, "data-size": props.size, "data-shape": props.shape }, slots);
+      h(
+        ArkAvatar.Root,
+        {
+          ...attrs,
+          id: id.value,
+          "data-size": props.size,
+          "data-shape": props.shape,
+        },
+        slots,
+      );
   },
 });
 
 /* Ark's namespace is frozen — spread copies the members as data
  * properties so Root can be the sized wrapper while the rest stay
  * Ark's own parts. */
-export const Avatar = { ...ArkAvatar, Root: AvatarRoot };
+export const Avatar = defineFamily(AvatarRoot, { ...ArkAvatar, Root: AvatarRoot } as unknown as {
+  Root: Component;
+} & Record<string, Component>) as typeof AvatarRoot & typeof ArkAvatar;
 
 export type AvatarProps = {
   /** Seal diameter: the small, medium, or large control rung. The

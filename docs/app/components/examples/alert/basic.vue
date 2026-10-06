@@ -23,12 +23,12 @@ const notices = [
 
 <template>
   <div class="grid gap-4">
-    <Alert.Root v-for="n in notices" :key="n.status" :status="n.status" class="w-120">
+    <Alert v-for="n in notices" :key="n.status" :status="n.status" class="w-120">
       <Alert.Icon />
       <Alert.Body>
         <Alert.Title>{{ n.title }}</Alert.Title>
         <Alert.Description>{{ n.description }}</Alert.Description>
       </Alert.Body>
-    </Alert.Root>
+    </Alert>
   </div>
 </template>

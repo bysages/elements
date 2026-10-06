@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { chevron_right } from "@bysages/icons";
-import { Icon, JsonTreeView } from "@bysages/vue";
+import { JsonTreeView } from "@bysages/vue";
 
 const data = {
   title: "Paper & Ink",
@@ -12,11 +11,5 @@ const data = {
 </script>
 
 <template>
-  <JsonTreeView.Root :data="data" :default-expanded-depth="1">
-    <JsonTreeView.Tree>
-      <template #arrow>
-        <Icon :glyph="chevron_right" />
-      </template>
-    </JsonTreeView.Tree>
-  </JsonTreeView.Root>
+  <JsonTreeView :data="data" :default-expanded-depth="1" />
 </template>

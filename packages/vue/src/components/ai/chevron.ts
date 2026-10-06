@@ -1,6 +1,4 @@
-import { chevron_right } from "@bysages/icons";
-
-import { glyphNode } from "../../internal/glyph";
+import { iconNode } from "../../internal/icon";
 
 /** The folding chevron the shared indicator turns. */
-export const chevron = () => glyphNode(chevron_right);
+export const chevron = () => iconNode("chevron-right");

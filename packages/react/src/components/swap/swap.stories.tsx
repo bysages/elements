@@ -8,6 +8,19 @@ import { Button } from "../button";
 const meta: Meta = { title: "Components/Actions/Swap" };
 export default meta;
 
+/** The facade is the one-tag path. */
+export const Basic = {
+  render: () => <Swap />,
+};
+
+export const Anatomy = {
+  render: () => (
+    <Swap.Root>
+      <Swap.Indicator type="off">Off</Swap.Indicator>
+    </Swap.Root>
+  ),
+};
+
 const ICON_ATTRS = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -18,7 +31,7 @@ const ICON_ATTRS = {
   "aria-hidden": true,
 } as const;
 
-function glyph(...paths: string[]) {
+function icon(...paths: string[]) {
   return (
     <svg {...ICON_ATTRS}>
       {paths.map((d, i) => (
@@ -28,7 +41,7 @@ function glyph(...paths: string[]) {
   );
 }
 
-const GLYPHS = {
+const ICONS = {
   check: "M4 12.5l5 5L20 6.5",
   x: "M6 6l12 12M18 6L6 18",
   play: "M8 5.5v13l11-6.5z",
@@ -73,8 +86,8 @@ export const Fade = {
       rootVars={{}}
       indicators={
         <>
-          <Swap.Indicator type="on">{glyph(GLYPHS.check)}</Swap.Indicator>
-          <Swap.Indicator type="off">{glyph(GLYPHS.x)}</Swap.Indicator>
+          <Swap.Indicator type="on">{icon(ICONS.check)}</Swap.Indicator>
+          <Swap.Indicator type="off">{icon(ICONS.x)}</Swap.Indicator>
         </>
       }
     />
@@ -93,8 +106,8 @@ export const Flip = {
       }}
       indicators={
         <>
-          <Swap.Indicator type="on">{glyph(GLYPHS.play)}</Swap.Indicator>
-          <Swap.Indicator type="off">{glyph(GLYPHS.pause)}</Swap.Indicator>
+          <Swap.Indicator type="on">{icon(ICONS.play)}</Swap.Indicator>
+          <Swap.Indicator type="off">{icon(ICONS.pause)}</Swap.Indicator>
         </>
       }
     />
@@ -112,8 +125,8 @@ export const Rotate = {
       }}
       indicators={
         <>
-          <Swap.Indicator type="on">{glyph(GLYPHS.sun)}</Swap.Indicator>
-          <Swap.Indicator type="off">{glyph(GLYPHS.moon)}</Swap.Indicator>
+          <Swap.Indicator type="on">{icon(ICONS.sun)}</Swap.Indicator>
+          <Swap.Indicator type="off">{icon(ICONS.moon)}</Swap.Indicator>
         </>
       }
     />
@@ -128,8 +141,8 @@ export const Scale = {
       rootVars={{ "--bs-swap-in": "scale(1)", "--bs-swap-out": "scale(0)" }}
       indicators={
         <>
-          <Swap.Indicator type="on">{glyph(GLYPHS.sound)}</Swap.Indicator>
-          <Swap.Indicator type="off">{glyph(GLYPHS.mute)}</Swap.Indicator>
+          <Swap.Indicator type="on">{icon(ICONS.sound)}</Swap.Indicator>
+          <Swap.Indicator type="off">{icon(ICONS.mute)}</Swap.Indicator>
         </>
       }
     />

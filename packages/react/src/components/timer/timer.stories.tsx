@@ -6,7 +6,7 @@ import { Timer } from ".";
 const meta: Meta = { title: "Components/Data/Timer" };
 export default meta;
 
-function Glyph({ d }: { d: string }) {
+function Icon({ d }: { d: string }) {
   return (
     <svg
       width="14"
@@ -22,8 +22,13 @@ function Glyph({ d }: { d: string }) {
   );
 }
 
+/** The facade is the one-tag path for the common completion. */
+export const Basic = {
+  render: () => <Timer startMs={18 * 60 * 1000 + 42 * 1000} label="Session timer" />,
+};
+
 /** A counting-up clock: monospaced digits, one quiet start control. */
-export function Basic() {
+export function Anatomy() {
   return (
     <Timer.Root startMs={18 * 60 * 1000 + 42 * 1000}>
       <Timer.Area>
@@ -35,10 +40,10 @@ export function Basic() {
       </Timer.Area>
       <Timer.Control>
         <Timer.ActionTrigger action="start">
-          <Glyph d="M7 4.5v15l12-7.5z" /> Start
+          <Icon d="M7 4.5v15l12-7.5z" /> Start
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="pause">
-          <Glyph d="M8 5v14M16 5v14" /> Pause
+          <Icon d="M8 5v14M16 5v14" /> Pause
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="resume">Resume</Timer.ActionTrigger>
       </Timer.Control>
@@ -58,10 +63,10 @@ export function Countdown() {
       </Timer.Area>
       <Timer.Control>
         <Timer.ActionTrigger action="start">
-          <Glyph d="M7 4.5v15l12-7.5z" /> Start
+          <Icon d="M7 4.5v15l12-7.5z" /> Start
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="pause">
-          <Glyph d="M8 5v14M16 5v14" /> Pause
+          <Icon d="M8 5v14M16 5v14" /> Pause
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="resume">Resume</Timer.ActionTrigger>
       </Timer.Control>
@@ -108,14 +113,14 @@ function Face({
       </Timer.Area>
       <Timer.Control>
         <Timer.ActionTrigger action="start">
-          <Glyph d="M7 4.5v15l12-7.5z" /> Start
+          <Icon d="M7 4.5v15l12-7.5z" /> Start
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="pause">
-          <Glyph d="M8 5v14M16 5v14" /> Pause
+          <Icon d="M8 5v14M16 5v14" /> Pause
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="resume">Resume</Timer.ActionTrigger>
         <Timer.ActionTrigger action="reset">
-          <Glyph d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" /> Reset
+          <Icon d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" /> Reset
         </Timer.ActionTrigger>
       </Timer.Control>
     </Timer.Root>
@@ -189,13 +194,13 @@ export function Pomodoro() {
       </Timer.Area>
       <Timer.Control>
         <Timer.ActionTrigger action="start">
-          <Glyph d="M7 4.5v15l12-7.5z" /> Start
+          <Icon d="M7 4.5v15l12-7.5z" /> Start
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="pause">
-          <Glyph d="M8 5v14M16 5v14" /> Pause
+          <Icon d="M8 5v14M16 5v14" /> Pause
         </Timer.ActionTrigger>
         <Timer.ActionTrigger action="reset">
-          <Glyph d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" /> Reset
+          <Icon d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" /> Reset
         </Timer.ActionTrigger>
       </Timer.Control>
       <output style={{ fontSize: "var(--bs-font-size-sm)" }}>

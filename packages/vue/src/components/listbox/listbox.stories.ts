@@ -14,7 +14,7 @@ import { withState } from "../with-state.js";
 const meta: Meta = { title: "Components/Forms/Listbox" };
 export default meta;
 
-const checkGlyph = () =>
+const checkIcon = () =>
   h("svg", { viewBox: "0 0 16 16", fill: "none", "aria-hidden": true }, [
     h("path", {
       d: "M4 8.5l2.5 2.5L12 5.5",
@@ -29,7 +29,7 @@ function rows(collection: { items: any[] }) {
   return collection.items.map((item: any) =>
     h(Listbox.Item, { key: item.value, item }, () => [
       h(Listbox.ItemText, () => item.label),
-      h(Listbox.ItemIndicator, () => checkGlyph()),
+      h(Listbox.ItemIndicator, () => checkIcon()),
     ]),
   );
 }
@@ -44,8 +44,22 @@ const pigments = createListCollection({
   ],
 });
 
-/** One choice from the ledger: the current row keeps the ink check. */
+/** The facade is the one-tag path for the common completion. */
 export const Basic = {
+  render: () =>
+    h(Listbox, {
+      options: [
+        { label: "Qinghua cobalt", value: "qinghua" },
+        { label: "Celadon", value: "celadon" },
+        { label: "Zhusha cinnabar", value: "zhusha" },
+      ],
+      defaultValue: "qinghua",
+      label: "Accent",
+    }),
+};
+
+/** One choice from the ledger: the current row keeps the ink check. */
+export const Anatomy = {
   args: {
     label: "Pigment",
     disabled: false,
@@ -205,7 +219,7 @@ export const Group = {
               ...items.map((item) =>
                 h(Listbox.Item, { key: item.value, item }, () => [
                   h(Listbox.ItemText, () => item.label),
-                  h(Listbox.ItemIndicator, () => checkGlyph()),
+                  h(Listbox.ItemIndicator, () => checkIcon()),
                 ]),
               ),
             ]),
@@ -337,7 +351,7 @@ export const Horizontal = {
                   },
                   () => item.artist,
                 ),
-                h(Listbox.ItemIndicator, () => checkGlyph()),
+                h(Listbox.ItemIndicator, () => checkIcon()),
               ],
             ),
           ),

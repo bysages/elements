@@ -66,10 +66,10 @@ function part(name: string, tag: "h3" | "p" | "div") {
 /** A verdict drawn after the deed: the mark washes in the fixed
  * pigment, the title rides the serif, and the extra carries the way
  * onward. Any subset composes. */
-export const Result = {
+export const Result = Object.assign(ResultRoot, {
   Root: ResultRoot,
   Icon: ResultIcon,
   Title: part("title", "h3"),
   Description: part("description", "p"),
   Extra: part("extra", "div"),
-};
+});
