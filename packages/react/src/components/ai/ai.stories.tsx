@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Ai } from ".";
 
-const meta: Meta = { title: "Components/AI/AI" };
+const meta: Meta = { title: "Components/AI/AI Conversation" };
 export default meta;
 
 const icon = (d: string) => (

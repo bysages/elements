@@ -2,6 +2,7 @@ import { readdirSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { componentFamilies, examplesRoot, exampleNames } from "./component-families.ts";
+import { displayTitle } from "./display-title.ts";
 
 /** Map every docs demo to its Storybook story id, by matching the built
  * workbench's own index (storybook-static/index.json) against the demo
@@ -78,7 +79,7 @@ for (const family of uniqueFamilies) {
   // click away even where the demo predates the stories. Story titles
   // are held to the docs' own rule — the family slug through
   // displayTitle — so the flattened lookup needs no per-family cases.
-  const stories = storiesOfFamily.get(flat(family));
+  const stories = storiesOfFamily.get(flat(displayTitle(family)));
   for (const demo of examples) {
     const hit = stories?.find((s) => s.demo === demo) ?? stories?.[0];
     if (hit) links[`${family}/${demo}`] = hit.id;
@@ -90,7 +91,9 @@ for (const family of uniqueFamilies) {
 // parts) legitimately has no link; a family that does have stories but
 // leaves a demo unlinked means the titles or demo names drifted — a
 // bug, and the run fails on it.
-const orphaned = unlinked.filter((key) => storiesOfFamily.has(flat(key.split("/")[0])));
+const orphaned = unlinked.filter((key) =>
+  storiesOfFamily.has(flat(displayTitle(key.split("/")[0]))),
+);
 if (orphaned.length) {
   console.error(
     `demos whose family has stories but no link — title or demo-name drift: ${orphaned.join(", ")}`,

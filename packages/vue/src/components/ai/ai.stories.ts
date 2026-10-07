@@ -4,7 +4,7 @@ import { h, reactive } from "vue";
 import { Ai } from ".";
 import { withState } from "../with-state.js";
 
-const meta: Meta = { title: "Components/AI/AI" };
+const meta: Meta = { title: "Components/AI/AI Conversation" };
 export default meta;
 
 const icon = (d: string) =>
