@@ -68,8 +68,8 @@ const sourceUrl = [
       class="mb-7"
     />
 
-    <ExampleCanvas class="mx-auto max-w-3xl p-6">
-      <Workbench />
+    <ExampleCanvas class="mx-auto h-[min(82dvh,56rem)] p-0">
+      <Workbench :key="locale" />
     </ExampleCanvas>
   </div>
 </template>
