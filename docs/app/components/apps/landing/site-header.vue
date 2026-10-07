@@ -30,7 +30,7 @@ const menuOpen = ref(false);
         <span class="text-sm font-semibold">{{ copy.brand }}</span>
       </a>
       <nav
-        class="hidden flex-1 items-center gap-(--bs-gap-lg) text-sm text-secondary sm:flex"
+        class="hidden flex-1 items-center gap-(--bs-gap-lg) text-sm text-secondary @min-[48rem]:flex"
         :aria-label="copy.navLabel"
       >
         <a
@@ -43,7 +43,13 @@ const menuOpen = ref(false);
       </nav>
       <Popover.Root v-model:open="menuOpen">
         <Popover.Trigger as-child>
-          <Button class="sm:hidden" variant="ghost" size="sm" square :aria-label="copy.navLabel">
+          <Button
+            class="@min-[48rem]:hidden!"
+            variant="ghost"
+            size="sm"
+            square
+            :aria-label="copy.navLabel"
+          >
             <Icon name="i-lucide-menu" class="size-4" />
           </Button>
         </Popover.Trigger>
@@ -62,9 +68,13 @@ const menuOpen = ref(false);
           </Popover.Content>
         </Popover.Positioner>
       </Popover.Root>
-      <Button class="ml-auto! sm:ml-0!" size="sm" variant="outline" @click="goTo('#contact')">{{
-        copy.cta
-      }}</Button>
+      <Button
+        class="ml-auto! @min-[48rem]:ml-0!"
+        size="sm"
+        variant="outline"
+        @click="goTo('#contact')"
+        >{{ copy.cta }}</Button
+      >
     </div>
   </header>
 </template>
