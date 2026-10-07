@@ -91,7 +91,7 @@ function setScene(scene: ThemeScene) {
       </Button>
     </Popover.Trigger>
     <Popover.Positioner>
-      <Popover.Content class="bs-docs-theme-panel">
+      <Popover.Content class="bs-docs-theme-panel" data-density="compact">
         <section>
           <h3>{{ t("docs.theme.scene") }}</h3>
           <RadioGroup.Root
@@ -153,11 +153,12 @@ function setScene(scene: ThemeScene) {
           <h3>{{ t("docs.theme.density") }}</h3>
           <SegmentGroup.Root
             orientation="horizontal"
+            size="sm"
             :model-value="theme.density"
             @update:model-value="(v) => set({ density: v as ThemeDensity })"
           >
             <SegmentGroup.Indicator />
-            <SegmentGroup.Item v-for="d in densities" :key="d.value" :value="d.value">
+            <SegmentGroup.Item v-for="d in densities" :key="d" :value="d">
               <SegmentGroup.ItemHiddenInput />
               <SegmentGroup.ItemControl />
               <SegmentGroup.ItemText>{{ densityLabel(d) }}</SegmentGroup.ItemText>

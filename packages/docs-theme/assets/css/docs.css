@@ -1014,9 +1014,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-md);
-  /* Wide enough for the three-tile scene row; fixed, so the density
-     segment's hug can't stretch the sheet past the trigger. */
-  inline-size: 20rem;
+  /* Wide enough for the three-tile scene row and the density row; fixed,
+     so the segment's hug can't stretch the sheet past the trigger. */
+  inline-size: 22rem;
 }
 
 .bs-docs-theme-panel section {
@@ -1034,17 +1034,16 @@ body {
   color: var(--bs-color-text-tertiary);
 }
 
-/* Four density labels cannot share one row once the reader's own
-   density choice widens the paddings — the tray wraps to two rows and
-   each seal takes its half. */
+/* Density reads as one horizontal toggle row; equal seals keep the
+   tray stable while the reader's density choice rescales the gutters. */
 .bs-docs-theme-panel [data-scope="segment-group"][data-part="root"] {
-  display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   inline-size: 100%;
 }
 
 .bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {
-  flex: 1 1 40%;
+  flex: 1 1 0;
+  min-inline-size: 0;
   justify-content: center;
 }
 
@@ -1196,25 +1195,15 @@ body {
   box-shadow: none;
 }
 
-/* The four density names are the panel's longest words; the segment
-   steps down to the compact register so the row fits its tray — a half
-   space of side padding keeps the labels off the ink plate without
-   overflowing the 20rem sheet. The tray also gives up its field height:
-   two wrapped rows must grow the plate, not spill past its border. */
-.bs-docs-theme-panel [data-scope="segment-group"][data-part="root"] {
-  gap: var(--bs-gap-xs);
-  inline-size: 100%;
-  /* Unlock the field height the tray locks itself to, then hold the
-     scene's own rung as the floor — one row sits level with the selects
-     beside it, and two wrapped rows grow the plate. */
-  block-size: auto;
-  min-block-size: var(--bs-control-height-md);
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {
+  padding: 0 var(--bs-padding-xs);
+  font-size: var(--bs-font-size-xs);
 }
 
-.bs-docs-theme-panel [data-scope="segment-group"][data-part="item"] {
-  padding: 0 var(--bs-padding-sm);
-  font-size: var(--bs-font-size-xs);
+.bs-docs-theme-panel [data-scope="segment-group"][data-part="item-text"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* The workbench pairs its hex field with the md register the selects
