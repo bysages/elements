@@ -1,3 +1,11 @@
+// Storybook 10.6.1 emits this deprecation from its own manager UI; callers
+// cannot supply the internal provider's ariaLabel until Storybook 11.
+const originalWarn = console.warn.bind(console);
+console.warn = (...args: unknown[]) => {
+  if (String(args[0]).includes("The 'ariaLabel' prop on 'PopoverProvider'")) return;
+  originalWarn(...args);
+};
+
 import { addons } from "storybook/manager-api";
 import { create } from "storybook/theming";
 
