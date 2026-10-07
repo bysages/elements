@@ -236,6 +236,7 @@
   "toolbar/basic": "components-actions-toolbar--basic",
   "tooltip/basic": "components-overlay-tooltip--basic",
   "tooltip/anatomy": "components-overlay-tooltip--anatomy",
+  "tooltip/placement": "components-overlay-tooltip--basic",
   "tour/basic": "components-overlay-tour--basic",
   "tour/anatomy": "components-overlay-tour--anatomy",
   "transfer/basic": "components-data-transfer--basic",
