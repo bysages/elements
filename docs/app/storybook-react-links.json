@@ -262,5 +262,5 @@
   "chart/sparkline": "components-data-chart--area",
   "chart/waffle": "components-data-chart--waffle",
   "workflow/basic": "components-data-workflow--basic",
-  "workflow/mindmap": "components-data-workflow--mindmap"
+  "workflow/mindmap": "components-data-workflow--basic"
 }

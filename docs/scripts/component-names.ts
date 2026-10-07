@@ -86,6 +86,7 @@ export const componentNames: Record<string, string> = {
   list: "列表",
   listbox: "列表框",
   marquee: "滚动横幅",
+  "media-player": "媒体播放器",
   masonry: "瀑布流",
   menu: "菜单",
   mentions: "提及",

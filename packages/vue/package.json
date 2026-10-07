@@ -46,6 +46,7 @@
     "./dist/components/image-cropper/index.mjs",
     "./dist/components/json-tree-view/index.mjs",
     "./dist/components/marquee/index.mjs",
+    "./dist/components/media-player/index.mjs",
     "./dist/components/popover/index.mjs",
     "./dist/components/qr-code/index.mjs",
     "./dist/components/scroll-area/index.mjs",

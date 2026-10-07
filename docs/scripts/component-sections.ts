@@ -162,6 +162,7 @@ export const componentSections: Array<{
       "image-viewer",
       "image",
       "marquee",
+      "media-player",
       "qr-code",
       "watermark",
     ],

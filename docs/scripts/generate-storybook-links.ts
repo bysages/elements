@@ -14,8 +14,10 @@ import { displayTitle } from "./display-title.ts";
  * of whether the workbench happens to be built on a given machine. */
 
 const docsRoot = path.resolve(import.meta.dirname, "..");
-const workbenchIndex = path.resolve(docsRoot, "public/storybook/index.json");
-const outFile = path.resolve(docsRoot, "app/storybook-links.json");
+const vueWorkbenchIndex = path.resolve(docsRoot, "public/storybook/index.json");
+const reactWorkbenchIndex = path.resolve(docsRoot, "public/storybook/react/index.json");
+const vueLinksFile = path.resolve(docsRoot, "app/storybook-links.json");
+const reactLinksFile = path.resolve(docsRoot, "app/storybook-react-links.json");
 
 /** Slugs compare without their dashes — "auto-complete" and
  * "autocomplete" are the same family under two spellings. */
@@ -35,74 +37,79 @@ const uniqueFamilies = [
   ]),
 ];
 
-if (!existsSync(workbenchIndex)) {
-  console.error(
-    `no workbench index at ${workbenchIndex} — run "pnpm --filter @bysages/vue build:workbench" first`,
-  );
-  process.exit(1);
+for (const [index, command] of [
+  [vueWorkbenchIndex, "pnpm --filter @bysages/vue build:workbench"],
+  [reactWorkbenchIndex, "pnpm --filter @bysages/react build:workbench"],
+] as const) {
+  if (!existsSync(index)) {
+    console.error(`no workbench index at ${index} — run "${command}" first`);
+    process.exit(1);
+  }
 }
 
 type WorkbenchEntry = { type: string; title?: string; id: string };
 type Story = { id: string; demo: string; rank: number; name: string };
 
-const entries: Record<string, WorkbenchEntry> = JSON.parse(
-  readFileSync(workbenchIndex, "utf8"),
-).entries;
-
-// Per family (flattened title key): the stories, with a same-named one
-// first and the rest alphabetical, so a demo without its own story
-// still lands on the family's most representative one.
-const storiesOfFamily = new Map<string, Story[]>();
-for (const entry of Object.values(entries)) {
-  if (entry.type !== "story" || !entry.title?.startsWith("Components/")) continue;
-  const [, , familyTitle] = entry.title.split("/");
-  const [familyKey, storyKey] = [flat(familyTitle), kebab(entry.id.split("--")[1])];
-  const stories = storiesOfFamily.get(familyKey) ?? [];
-  stories.push({
-    id: entry.id,
-    demo: storyKey,
-    rank: storyKey === "basic" ? 0 : 1,
-    name: storyKey,
-  });
-  storiesOfFamily.set(familyKey, stories);
-}
-for (const stories of storiesOfFamily.values()) {
-  stories.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name));
-}
-
-const links: Record<string, string> = {};
-const unlinked: string[] = [];
-for (const family of uniqueFamilies) {
-  const examples = exampleNames(family);
-  // A demo deep-links to its same-named story when there is one, and
-  // otherwise to the family's first story: the workbench stays one
-  // click away even where the demo predates the stories. Story titles
-  // are held to the docs' own rule — the family slug through
-  // displayTitle — so the flattened lookup needs no per-family cases.
-  const stories = storiesOfFamily.get(flat(displayTitle(family)));
-  for (const demo of examples) {
-    const hit = stories?.find((s) => s.demo === demo) ?? stories?.[0];
-    if (hit) links[`${family}/${demo}`] = hit.id;
-    else unlinked.push(`${family}/${demo}`);
+function readStories(index: string) {
+  const entries: Record<string, WorkbenchEntry> = JSON.parse(readFileSync(index, "utf8")).entries;
+  const storiesOfFamily = new Map<string, Story[]>();
+  for (const entry of Object.values(entries)) {
+    if (entry.type !== "story" || !entry.title?.startsWith("Components/")) continue;
+    const [, , familyTitle] = entry.title.split("/");
+    const [familyKey, storyKey] = [flat(familyTitle), kebab(entry.id.split("--")[1])];
+    const stories = storiesOfFamily.get(familyKey) ?? [];
+    stories.push({
+      id: entry.id,
+      demo: storyKey,
+      rank: storyKey === "basic" ? 0 : 1,
+      name: storyKey,
+    });
+    storiesOfFamily.set(familyKey, stories);
   }
+  for (const stories of storiesOfFamily.values()) {
+    stories.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name));
+  }
+  return storiesOfFamily;
 }
 
-// A family the workbench never built stories for (the headless logic
-// parts) legitimately has no link; a family that does have stories but
-// leaves a demo unlinked means the titles or demo names drifted — a
-// bug, and the run fails on it.
-const orphaned = unlinked.filter((key) =>
-  storiesOfFamily.has(flat(displayTitle(key.split("/")[0]))),
-);
-if (orphaned.length) {
-  console.error(
-    `demos whose family has stories but no link — title or demo-name drift: ${orphaned.join(", ")}`,
+function writeLinks(storiesOfFamily: Map<string, Story[]>, outFile: string) {
+  const links: Record<string, string> = {};
+  const unlinked: string[] = [];
+  for (const family of uniqueFamilies) {
+    const examples = exampleNames(family);
+    // A demo deep-links to its same-named story when there is one, and
+    // otherwise to the family's first story: the workbench stays one
+    // click away even where the demo predates the stories. Story titles
+    // are held to the docs' own rule — the family slug through
+    // displayTitle — so the flattened lookup needs no per-family cases.
+    const stories = storiesOfFamily.get(flat(displayTitle(family)));
+    for (const demo of examples) {
+      const hit = stories?.find((s) => s.demo === demo) ?? stories?.[0];
+      if (hit) links[`${family}/${demo}`] = hit.id;
+      else unlinked.push(`${family}/${demo}`);
+    }
+  }
+
+  // A family the workbench never built stories for (the headless logic
+  // parts, or a wrapper that has not adopted the family yet)
+  // legitimately has no link; a family that does have stories but
+  // leaves a demo unlinked means the titles or demo names drifted — a
+  // bug, and the run fails on it.
+  const orphaned = unlinked.filter((key) =>
+    storiesOfFamily.has(flat(displayTitle(key.split("/")[0]))),
   );
-  process.exit(1);
+  if (orphaned.length) {
+    console.error(
+      `demos whose family has stories but no link — title or demo-name drift: ${orphaned.join(", ")}`,
+    );
+    process.exit(1);
+  }
+
+  const linked = Object.keys(links).length;
+  writeFileSync(outFile, JSON.stringify(links, null, 2) + "\n");
+  console.log(`storybook links: ${linked} demos → ${outFile}`);
+  if (unlinked.length) console.log(`  ${unlinked.length} demos without a story family — no link`);
 }
 
-const linked = Object.keys(links).length;
-writeFileSync(outFile, JSON.stringify(links, null, 2) + "\n");
-console.log(`storybook links: ${linked} demos → ${outFile}`);
-if (unlinked.length) console.log(`  ${unlinked.length} demos without a story family — no link`);
-if (linked === 0) process.exit(1);
+writeLinks(readStories(vueWorkbenchIndex), vueLinksFile);
+writeLinks(readStories(reactWorkbenchIndex), reactLinksFile);

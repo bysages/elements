@@ -63,6 +63,7 @@ import { listCss } from "./list";
 import { listboxCss } from "./listbox";
 import { marqueeCss } from "./marquee";
 import { masonryCss } from "./masonry";
+import { mediaPlayerCss } from "./media-player";
 import { mentionsCss } from "./mentions";
 import { menuCss } from "./menu";
 import { menubarCss } from "./menubar";
@@ -173,6 +174,7 @@ export const componentStyles: Record<string, string> = {
   link: linkCss,
   listbox: listboxCss,
   marquee: marqueeCss,
+  "media-player": mediaPlayerCss,
   menu: menuCss,
   meter: meterCss,
   "navigation-menu": navigationMenuCss,
@@ -307,6 +309,7 @@ export {
   linkCss,
   listboxCss,
   marqueeCss,
+  mediaPlayerCss,
   menuCss,
   meterCss,
   navigationMenuCss,

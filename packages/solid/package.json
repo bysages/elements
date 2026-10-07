@@ -68,6 +68,7 @@
     "./dist/components/list/index.mjs",
     "./dist/components/listbox/index.mjs",
     "./dist/components/marquee/index.mjs",
+    "./dist/components/media-player/index.mjs",
     "./dist/components/menu/index.mjs",
     "./dist/components/meter/index.mjs",
     "./dist/components/navigation-menu/index.mjs",

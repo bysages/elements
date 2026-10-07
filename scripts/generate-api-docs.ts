@@ -311,19 +311,32 @@ function nativeSlots(component: ObjectLiteralExpression): { name: string }[] {
   return [...found].sort().map((name) => ({ name }));
 }
 
-/** Props of a native primitive: the runtime declaration inside its
- * defineComponent, with constructor types and defaults. */
-function nativeProps(component: ObjectLiteralExpression): PropDoc[] {
-  const propsEntry = component
-    .getProperties()
-    .find(
-      (p): p is PropertyAssignment =>
-        p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "props",
-    );
-  if (!propsEntry) return [];
-  const literal = propsEntry.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
-  if (!literal) return [];
+/** Resolve a local object-literal identifier so shared prop objects stay
+ * the runtime source while the generator still sees every entry. */
+function objectLiteral(
+  expression: Node | undefined,
+  sourceFile: SourceFile,
+  seen = new Set<string>(),
+): ObjectLiteralExpression | undefined {
+  if (!expression) return undefined;
+  if (Node.isObjectLiteralExpression(expression)) return expression;
+  if (!Node.isIdentifier(expression)) return undefined;
+  const name = expression.getText();
+  if (seen.has(name)) return undefined;
+  seen.add(name);
+  const declaration = sourceFile.getVariableDeclaration(name);
+  return objectLiteral(declaration?.getInitializer(), sourceFile, seen);
+}
+
+/** Prop entries from a runtime object, expanding local shared objects
+ * in source order. */
+function propsFromLiteral(literal: ObjectLiteralExpression, sourceFile: SourceFile): PropDoc[] {
   return literal.getProperties().flatMap((entry: ObjectLiteralElementLike) => {
+    if (Node.isSpreadAssignment(entry)) {
+      const shared = objectLiteral(entry.getExpression(), sourceFile);
+      return shared ? propsFromLiteral(shared, sourceFile) : [];
+    }
+
     if (!entry.isKind(SyntaxKind.PropertyAssignment)) return [];
     const name = entry.getName().replace(/^["']|["']$/g, "");
     const body = entry.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
@@ -341,6 +354,20 @@ function nativeProps(component: ObjectLiteralExpression): PropDoc[] {
     const def = pick("default");
     return [{ ...doc, ...(def ? { default: def } : {}) }];
   });
+}
+
+/** Props of a native primitive: the runtime declaration inside its
+ * defineComponent, with constructor types and defaults. Shared objects
+ * and their spreads resolve in source order. */
+function nativeProps(component: ObjectLiteralExpression): PropDoc[] {
+  const propsEntry = component
+    .getProperties()
+    .find(
+      (p): p is PropertyAssignment =>
+        p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "props",
+    );
+  const literal = objectLiteral(propsEntry?.getInitializer(), component.getSourceFile());
+  return literal ? propsFromLiteral(literal, component.getSourceFile()) : [];
 }
 
 /** A statement the family dressing note may sit above: an export

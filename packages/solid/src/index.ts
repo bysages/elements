@@ -144,3 +144,4 @@ export * from "./components/dock";
 export * from "./components/browser";
 export * from "./components/bento";
 export * from "./components/result";
+export * from "./components/media-player";

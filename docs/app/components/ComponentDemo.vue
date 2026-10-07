@@ -3,6 +3,7 @@ import { Button, Tabs } from "@bysages/vue";
 import { computed, ref } from "vue";
 
 import workbenchLinks from "~/storybook-links.json";
+import reactWorkbenchLinks from "~/storybook-react-links.json";
 
 // A live example: the canvas renders the real example component from
 // app/components/examples, the code tab shows its source verbatim. The
@@ -29,11 +30,12 @@ const code = ref((await sourceLoaders[path.value]?.().catch(() => "")) ?? "");
 // links file is generated from the workbench's own build index, so a
 // demo deep-links to the exact story that renders it.
 const storyId = (workbenchLinks as Record<string, string>)[props.name];
+const reactStoryId = (reactWorkbenchLinks as Record<string, string>)[props.name];
 // The two workbenches mirror story titles one-to-one, so the same id
 // deep-links into either — the door only chooses the prefix.
 const workbenchHref = computed(() => (storyId ? `/storybook/?path=/story/${storyId}` : undefined));
 const reactWorkbenchHref = computed(() =>
-  storyId ? `/storybook/react/?path=/story/${storyId}` : undefined,
+  reactStoryId ? `/storybook/react/?path=/story/${reactStoryId}` : undefined,
 );
 
 const copied = ref(false);

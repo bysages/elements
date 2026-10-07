@@ -144,3 +144,4 @@ export * from "./components/typography";
 export * from "./components/user";
 export * from "./components/virtual-list";
 export * from "./components/watermark";
+export * from "./components/media-player";

@@ -84,6 +84,7 @@ export * from "./components/list";
 export * from "./components/listbox";
 export * from "./components/marquee";
 export * from "./components/masonry";
+export * from "./components/media-player";
 export * from "./components/menu";
 export * from "./components/menubar";
 export * from "./components/mentions";
