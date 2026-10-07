@@ -15,9 +15,9 @@ import {
   type ThemeScene,
 } from "@bysages/vue";
 
-// The whole control reads the theme engine on mount, so it must never
-// render on the server.
-const theme = reactive(getTheme());
+// Header and drawer controls share one state; the engine stays the source
+// of truth for persisted values and resolved theme attributes.
+const theme = useState("docs-theme", () => reactive(getTheme())).value;
 
 // dot: the pigment a scene pairs with (the engine's own pairing table),
 // shown as a small swatch — "ink" renders as the text ink (the accent's
@@ -113,8 +113,8 @@ function setScene(scene: ThemeScene) {
               <RadioGroup.ItemHiddenInput />
               <RadioGroup.ItemControl />
               <RadioGroup.ItemText>
-                <span class="bs-docs-theme-scene-name">{{ s.en }}</span>
-                <span class="bs-docs-theme-scene-glyph">{{ s.zh }}</span>
+                <span class="bs-docs-theme-scene-name">{{ s.zh }}</span>
+                <span class="bs-docs-theme-scene-glyph">{{ s.en }}</span>
               </RadioGroup.ItemText>
               <span
                 v-if="s.dot"

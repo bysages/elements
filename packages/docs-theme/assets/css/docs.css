@@ -151,10 +151,9 @@ body {
   scrollbar-width: thin;
 }
 
-/* The mobile toggle opens the drawer that carries the whole tree; it only
-   exists while the sidebar is folded away. The part attribute keeps the
-   rule above the button's own display. */
-.bs-docs-header-menu[data-scope="button"][data-part="root"] {
+/* The wrapper owns visibility so trigger anatomy can be preserved by the
+   drawer without fighting the button recipe's own display. */
+.bs-docs-header-menu {
   display: none;
 }
 
@@ -217,7 +216,7 @@ body {
 }
 
 @container (max-width: 1023.98px) {
-  .bs-docs-header-menu[data-scope="button"][data-part="root"] {
+  .bs-docs-header-menu {
     display: inline-flex;
   }
 

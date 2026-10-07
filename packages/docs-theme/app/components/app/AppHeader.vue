@@ -76,9 +76,11 @@ const searchOpen = useDocsSearch();
         </template>
       </ClientOnly>
 
-      <Trigger as-child>
-        <IconMenuToggle class="bs-docs-header-menu" />
-      </Trigger>
+      <div class="bs-docs-header-menu">
+        <Trigger as-child>
+          <IconMenuToggle />
+        </Trigger>
+      </div>
     </div>
 
     <AppHeaderBottom v-if="subNavigationMode === 'header'" />
