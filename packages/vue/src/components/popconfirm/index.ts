@@ -5,6 +5,7 @@ import { defineComponent, h, ref } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 import { Popover } from "../popover";
 
@@ -38,13 +39,13 @@ const PopconfirmFacade = defineComponent({
     }
     return () =>
       h(
-        ArkPopover.Root,
-        {
+        withPresenceRoot(ArkPopover.Root as never),
+        withPresenceEnter({
           id: `${hostId.value}:popover`,
           open: open.value,
           "onUpdate:open": (value: boolean) => (open.value = value),
           positioning: { placement: "top" },
-        },
+        }),
         () => [
           h(ArkPopover.Trigger, { asChild: true }, ctx.slots.default),
           h(ArkPopover.Positioner, () => [

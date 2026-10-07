@@ -4,6 +4,7 @@ import { defineComponent, h, type Component, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/vue/dialog";
 
@@ -17,7 +18,8 @@ const DialogRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("dialog", attrs);
 
-    return () => h(ArkDialog.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkDialog.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkDialog.Root;
 

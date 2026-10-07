@@ -13,6 +13,7 @@ import {
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** Combobox, dressed in the paper-and-ink system: the field carries
  * the control recipe and its matches dissolve open as a paper vessel, the
@@ -29,7 +30,12 @@ const ComboboxRoot = defineComponent({
     const id = useElementId("combobox", attrs);
     injectComponentStyle("combobox");
 
-    return () => h(ArkCombobox.Root, { ...attrs, id: id.value, "data-size": props.size }, slots);
+    return () =>
+      h(
+        withPresenceRoot(ArkCombobox.Root),
+        withPresenceEnter({ ...attrs, id: id.value, "data-size": props.size }),
+        slots,
+      );
   },
 });
 

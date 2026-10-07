@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** The parsed color representation accepted by the picker. */
 type Color = ReturnType<typeof parseColor>;
@@ -26,7 +27,12 @@ const ColorPickerRoot = defineComponent({
     const id = useElementId("color-picker", attrs);
     injectComponentStyle("color-picker");
 
-    return () => h(ArkColorPicker.Root, { ...attrs, id: id.value, "data-size": props.size }, slots);
+    return () =>
+      h(
+        withPresenceRoot(ArkColorPicker.Root),
+        withPresenceEnter({ ...attrs, id: id.value, "data-size": props.size }),
+        slots,
+      );
   },
 });
 

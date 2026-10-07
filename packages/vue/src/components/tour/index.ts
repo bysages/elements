@@ -10,6 +10,7 @@ import type { Component, PropType, SetupContext } from "vue";
 import { computed, defineComponent, h, useId } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 
 export type {
@@ -28,7 +29,7 @@ const TourRoot = defineComponent({
   name: "STourRoot",
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
-    return () => h(ArkTour.Root as never, attrs, slots);
+    return () => h(withPresenceRoot(ArkTour.Root as never), withPresenceEnter(attrs), slots);
   },
 }) as unknown as typeof ArkTour.Root;
 

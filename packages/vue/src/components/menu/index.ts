@@ -16,6 +16,7 @@ import {
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** The row rung rides the context because Ark's Root renders no DOM of
  * its own — the vessel (Content) is the element the rung can land on,
@@ -39,7 +40,8 @@ const MenuRoot = defineComponent({
       MenuSizeKey,
       computed(() => props.size),
     );
-    return () => h(ArkMenu.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkMenu.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 });
 

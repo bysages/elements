@@ -5,6 +5,7 @@ import { defineComponent, h, type Component, type SetupContext } from "vue";
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** FloatingPanel, dressed in the paper-and-ink system: the shared
  * popup vessel let loose — a draggable, resizable sheet whose header is the
@@ -16,7 +17,12 @@ const FloatingPanelRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("floating-panel", attrs);
 
-    return () => h(ArkFloatingPanel.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(
+        withPresenceRoot(ArkFloatingPanel.Root),
+        withPresenceEnter({ ...attrs, id: id.value }),
+        slots,
+      );
   },
 });
 

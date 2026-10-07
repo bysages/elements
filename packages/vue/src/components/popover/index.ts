@@ -5,6 +5,7 @@ import { defineComponent, h, type Component, type PropType, type SetupContext } 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** Popover, dressed in the paper-and-ink system: a paper vessel that
  * dissolves in on elevation, anchored to its trigger by a whisker arrow. The parts — Root, Trigger, Anchor, Indicator, Positioner, Content,
@@ -15,7 +16,8 @@ const PopoverRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("popover", attrs);
 
-    return () => h(ArkPopover.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkPopover.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkPopover.Root;
 

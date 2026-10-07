@@ -5,6 +5,7 @@ import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Menu } from "../menu";
 
 export interface MenubarEntry {
@@ -56,12 +57,12 @@ const MenubarFacade = defineComponent({
         () =>
           props.items.map((group) =>
             h(
-              ArkMenu.Root,
-              {
+              withPresenceRoot(ArkMenu.Root as never),
+              withPresenceEnter({
                 key: group.label,
                 id: `${hostId.value}:menu:${group.label}`,
                 positioning: { placement: "bottom-start" },
-              },
+              }),
               () => [
                 h(ArkMenu.Trigger, { asChild: true }, () =>
                   h(

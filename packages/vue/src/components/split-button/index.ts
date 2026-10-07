@@ -7,6 +7,7 @@ import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 import { Menu } from "../menu";
 
@@ -69,8 +70,11 @@ const SplitButtonFacade = defineComponent({
           () => props.label,
         ),
         h(
-          ArkMenu.Root,
-          { id: `${hostId.value}:menu`, positioning: { placement: "bottom-end" } },
+          withPresenceRoot(ArkMenu.Root as never),
+          withPresenceEnter({
+            id: `${hostId.value}:menu`,
+            positioning: { placement: "bottom-end" },
+          }),
           () => [
             h(ArkMenu.Trigger, { asChild: true }, () =>
               h(

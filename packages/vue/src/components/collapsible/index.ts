@@ -5,6 +5,7 @@ import { defineComponent, h, type Component, type SetupContext } from "vue";
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** Collapsible, dressed in the paper-and-ink system: one control on
  * the paper, its panel dissolving open to the machine's measured height.
@@ -14,7 +15,12 @@ const CollapsibleRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("collapsible", attrs);
 
-    return () => h(ArkCollapsible.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(
+        withPresenceRoot(ArkCollapsible.Root),
+        withPresenceEnter({ ...attrs, id: id.value }),
+        slots,
+      );
   },
 });
 

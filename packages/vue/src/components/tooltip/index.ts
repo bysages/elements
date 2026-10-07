@@ -4,6 +4,7 @@ import { defineComponent, h, type Component, type PropType, type SetupContext } 
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 /** Tooltip, dressed in the paper-and-ink system: the smallest
  * vessel — a tight chip of ink that dissolves in over its anchor. The parts — Root, Trigger, Positioner, Content, Arrow, ArrowTip. */
 const TooltipRoot = defineComponent({
@@ -12,7 +13,8 @@ const TooltipRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("tooltip", attrs);
 
-    return () => h(ArkTooltip.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkTooltip.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkTooltip.Root;
 

@@ -6,6 +6,7 @@ import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Combobox } from "../combobox";
 
 /**
@@ -47,8 +48,8 @@ const AutoCompleteFacade = defineComponent({
     // whichever overload fits, any/unknown would swallow real mistakes.
     return () =>
       h(
-        ArkCombobox.Root as never,
-        {
+        withPresenceRoot(ArkCombobox.Root as never),
+        withPresenceEnter({
           id: `${hostId.value}:combobox`,
           collection: collection.value,
           inputValue: props.modelValue,
@@ -63,7 +64,7 @@ const AutoCompleteFacade = defineComponent({
             ctx.emit("update:modelValue", details.inputValue);
           },
           positioning: { sameWidth: true },
-        },
+        }),
         () => [
           h(ArkCombobox.Control as never, () =>
             h(ArkCombobox.Input as never, { placeholder: props.placeholder }),

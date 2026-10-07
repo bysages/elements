@@ -8,6 +8,7 @@ import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { Dialog } from "../dialog";
@@ -119,8 +120,8 @@ const ImageViewerFacade = defineComponent({
 
     return () =>
       h(
-        ArkDialog.Root,
-        {
+        withPresenceRoot(ArkDialog.Root),
+        withPresenceEnter({
           id: `${hostId.value}:dialog`,
           // The picture is heavy: nothing of the lightbox rests in the
           // page while it is closed.
@@ -128,7 +129,7 @@ const ImageViewerFacade = defineComponent({
           "onUpdate:open": setOpen,
           lazyMount: true,
           unmountOnExit: true,
-        },
+        }),
         () => [
           h(ArkDialog.Backdrop, { class: "bs-image-viewer-backdrop" }),
           h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>

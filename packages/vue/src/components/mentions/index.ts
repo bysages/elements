@@ -5,6 +5,7 @@ import { defineComponent, h, ref, type PropType, type Ref } from "vue";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Field } from "../field";
 import { Popover } from "../popover";
 import { useMentions } from "./use-mentions";
@@ -60,8 +61,8 @@ export const MentionsVessel = withSelfRoot(
 
       return () =>
         h(
-          ArkPopover.Root,
-          {
+          withPresenceRoot(ArkPopover.Root as never),
+          withPresenceEnter({
             id: id.value,
             open: props.open,
             "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
@@ -69,7 +70,7 @@ export const MentionsVessel = withSelfRoot(
               placement: "bottom-start",
               getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
             },
-          },
+          }),
           () => [
             h(ArkPopover.Positioner, () =>
               h(ArkPopover.Content, { asChild: true }, () =>

@@ -5,6 +5,7 @@ import { defineComponent, h, type Component, type PropType, type SetupContext } 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 export type {
   DatePickerFocusChangeDetails,
@@ -30,7 +31,12 @@ const DatePickerRoot = defineComponent({
     const id = useElementId("date-picker", attrs);
     injectComponentStyle("date-picker");
 
-    return () => h(ArkDatePicker.Root, { ...attrs, id: id.value, "data-size": props.size }, slots);
+    return () =>
+      h(
+        withPresenceRoot(ArkDatePicker.Root),
+        withPresenceEnter({ ...attrs, id: id.value, "data-size": props.size }),
+        slots,
+      );
   },
 });
 

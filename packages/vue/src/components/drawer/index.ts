@@ -5,6 +5,7 @@ import { defineComponent, h, type Component, type SetupContext } from "vue";
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** Drawer, dressed in the paper-and-ink system: a full-height sheet
  * cut flush to the edge it rises from, sliding on the machine's translate
@@ -17,7 +18,8 @@ const DrawerRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("drawer", attrs);
 
-    return () => h(ArkDrawer.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkDrawer.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkDrawer.Root;
 

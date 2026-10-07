@@ -7,6 +7,7 @@ import { defineComponent, h } from "vue";
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { DatePicker } from "../date-picker";
 
 export type {
@@ -76,8 +77,8 @@ const CalendarFacade = defineComponent({
         "div",
         { ...ctx.attrs, "data-scope": "calendar", "data-part": "root" },
         h(
-          ArkDatePicker.Root,
-          {
+          withPresenceRoot(ArkDatePicker.Root),
+          withPresenceEnter({
             id: `${hostId.value}:date-picker`,
             open: true,
             closeOnSelect: true,
@@ -89,7 +90,7 @@ const CalendarFacade = defineComponent({
             ...(props.min !== undefined ? { min: props.min } : {}),
             ...(props.max !== undefined ? { max: props.max } : {}),
             "onUpdate:modelValue": (value: unknown) => ctx.emit("update:modelValue", value),
-          },
+          }),
           () => [
             /* Three views ride the machine; only the one matching the
                current view shows. Month and year are hand-laid grids of

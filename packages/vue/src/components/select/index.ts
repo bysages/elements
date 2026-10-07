@@ -12,6 +12,7 @@ import {
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import type { NativeSelectOption } from "./native";
 
 /** Select, dressed in the paper-and-ink system: the trigger is the
@@ -26,7 +27,6 @@ const SelectRoot = defineComponent({
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["enterComplete", "exitComplete"],
   setup(props, { attrs, slots }) {
     const id = useElementId("select", attrs);
 
@@ -35,7 +35,11 @@ const SelectRoot = defineComponent({
     // `as never` sidesteps the h() overload the collection prop's generic
     // cannot unroll — see the autocomplete preset for the same turn.
     return () =>
-      h(ArkSelect.Root as never, { ...attrs, id: id.value, "data-size": props.size }, slots);
+      h(
+        withPresenceRoot(ArkSelect.Root as never),
+        withPresenceEnter({ ...attrs, id: id.value, "data-size": props.size }),
+        slots,
+      );
   },
 });
 

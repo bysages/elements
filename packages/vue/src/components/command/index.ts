@@ -8,6 +8,7 @@ import { defineComponent, h, ref, watch, type PropType } from "vue";
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Dialog } from "../dialog";
 
 export interface CommandEntry {
@@ -167,13 +168,13 @@ const CommandFacade = defineComponent({
       };
 
       return h(
-        ArkDialog.Root,
-        {
+        withPresenceRoot(ArkDialog.Root),
+        withPresenceEnter({
           ...ctx.attrs,
           id: `${hostId.value}:dialog`,
           open: props.open ?? internalOpen.value,
           "onUpdate:open": (value: boolean) => setOpen(value),
-        },
+        }),
         () => [
           h(ArkDialog.Backdrop),
           h(ArkDialog.Positioner, { asChild: true }, () =>
@@ -188,7 +189,7 @@ const CommandFacade = defineComponent({
                   },
                   h(
                     ArkCombobox.Root,
-                    {
+                    withPresenceEnter({
                       id: `${hostId.value}:combobox`,
                       // The machine types its collection as
                       // ListCollection<unknown>; ours is ListCollection<string>
@@ -210,7 +211,7 @@ const CommandFacade = defineComponent({
                         ctx.emit("select", first);
                         setOpen(false);
                       },
-                    },
+                    }),
                     () => [
                       // `as never` sidesteps TS2590 — the input part's
                       // prop union outgrows what h() can resolve.

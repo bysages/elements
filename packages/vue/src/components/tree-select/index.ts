@@ -9,6 +9,7 @@ import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Input } from "../input";
 import { Popover } from "../popover";
 
@@ -162,8 +163,8 @@ const TreeSelectFacade = defineComponent({
 
     return () =>
       h(
-        ArkPopover.Root,
-        {
+        withPresenceRoot(ArkPopover.Root as never),
+        withPresenceEnter({
           id: `${hostId.value}:popover`,
           open: open.value,
           "onUpdate:open": (value: boolean) => {
@@ -171,7 +172,7 @@ const TreeSelectFacade = defineComponent({
             if (!value) query.value = "";
           },
           positioning: { sameWidth: true, placement: "bottom-start" },
-        },
+        }),
         () => [
           h(ArkPopover.Trigger, { asChild: true, disabled: props.disabled }, () =>
             h(

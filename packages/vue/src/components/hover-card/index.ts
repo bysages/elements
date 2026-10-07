@@ -4,6 +4,7 @@ import { defineComponent, h, type Component, type PropType, type SetupContext } 
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** HoverCard, dressed in the paper-and-ink system: a preview card
  * that dissolves in over a quiet inline link, never stealing focus. The parts — Root, Trigger, Positioner, Content, Arrow, ArrowTip. */
@@ -13,7 +14,8 @@ const HoverCardRoot = defineComponent({
   setup(_, { attrs, slots }) {
     const id = useElementId("hover-card", attrs);
 
-    return () => h(ArkHoverCard.Root, { ...attrs, id: id.value }, slots);
+    return () =>
+      h(withPresenceRoot(ArkHoverCard.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkHoverCard.Root;
 
