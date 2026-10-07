@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { Button } from "@bysages/vue";
 
-defineEmits<{ click: [] }>();
-
 const { t } = useDocsI18n();
 </script>
 
 <template>
-  <Button variant="ghost" size="sm" square :aria-label="t('docs.menu')" @click="$emit('click')">
+  <Button variant="ghost" size="sm" square :aria-label="t('docs.menu')">
     <svg
       viewBox="0 0 16 16"
       width="14"

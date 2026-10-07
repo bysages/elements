@@ -38,6 +38,55 @@ export interface MentionsVesselProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+/** The candidates themselves as a floating card. Rendered inside the
+ * popover's Content via `asChild`, so the machine's content wiring
+ * lands on this card; `rest` stays first so the machine can layer
+ * state on top without covering the anatomy names. */
+interface MentionsPopupProps extends HTMLAttributes<HTMLDivElement> {
+  size: "sm" | "md" | "lg";
+  matches: MentionEntry[];
+  active: number;
+  onInsert?: (entry: MentionEntry) => void;
+  onActiveChange?: (index: number) => void;
+}
+
+function MentionsPopup({
+  size,
+  matches,
+  active,
+  onInsert,
+  onActiveChange,
+  ...rest
+}: MentionsPopupProps) {
+  return (
+    <div {...rest} data-scope="mentions" data-part="popup" data-size={size} role="listbox">
+      {matches.map((entry, index) => (
+        <div
+          key={entry.value}
+          role="option"
+          aria-selected={index === active}
+          tabIndex={-1}
+          data-scope="mentions"
+          data-part="option"
+          data-active={index === active ? "" : undefined}
+          onMouseEnter={() => onActiveChange?.(index)}
+          // The pointer confirms without moving the keyboard's
+          // active row out from under it.
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => onInsert?.(entry)}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            onInsert?.(entry);
+          }}
+        >
+          {entry.label}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /** The vessel: the candidates themselves as a floating card. The anchor
  * is virtual — a live rectangle off the host's field — so a host keeps
  * its own anatomy (the textarea rides where the host puts it) and the
@@ -69,23 +118,13 @@ function MentionsVesselImpl({
       <Portal>
         <ArkPopover.Positioner>
           <ArkPopover.Content asChild>
-            <div data-scope="mentions" data-part="popup" data-size={size}>
-              {matches.map((entry, index) => (
-                <div
-                  key={entry.value}
-                  data-scope="mentions"
-                  data-part="option"
-                  data-active={index === active ? "" : undefined}
-                  onMouseEnter={() => onActiveChange?.(index)}
-                  // The pointer confirms without moving the keyboard's
-                  // active row out from under it.
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => onInsert?.(entry)}
-                >
-                  {entry.label}
-                </div>
-              ))}
-            </div>
+            <MentionsPopup
+              size={size}
+              matches={matches}
+              active={active}
+              onInsert={onInsert}
+              onActiveChange={onActiveChange}
+            />
           </ArkPopover.Content>
         </ArkPopover.Positioner>
       </Portal>
@@ -104,11 +143,10 @@ export const MentionsVessel = withSelfRoot(MentionsVesselImpl);
  *
  * The field is the shared `Field.Textarea` — field wiring (label ids,
  * the invalid state, autoresize) rides on it for free — and the vessel
- * anchors to the field as a whole (popover machinery), not to the caret
- * coordinates; caret-precise positioning would need a second
- * positioning system for no practical gain at typical field sizes.
- * Composers that keep their own field anatomy (the AI prompt input)
- * skip this shell and wire `useMentions` plus `MentionsVessel`
+ * anchors through the popover's own `Anchor` part wrapped around the
+ * field, so the machine, not a local rectangle, points the popup at the
+ * input. Composers that keep their own field anatomy (the AI prompt
+ * input) skip this shell and wire `useMentions` plus `MentionsVessel`
  * themselves.
  */
 export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
@@ -171,31 +209,40 @@ function MentionsImpl({
 
   return (
     <div {...rest} data-scope="mentions" data-part="root" data-size={size}>
-      <Field.Textarea
-        ref={fieldRef}
-        autoresize={autoresize}
-        rows={3}
-        placeholder={placeholder}
-        value={current}
-        onChange={handleChange}
-        onKeyDown={(event) => mentions.onKeydown(event)}
-        data-invalid={invalid || undefined}
-        data-scope="mentions"
-        data-part="textarea"
-      />
-      <MentionsVessel
+      <ArkPopover.Root
         id={`${hostId}:vessel`}
-        size={size}
         open={mentions.open}
-        matches={mentions.matches}
-        active={mentions.active}
-        anchor={el()}
-        onInsert={mentions.insert}
-        onActiveChange={mentions.setActive}
-        onOpenChange={(open) => {
-          if (!open) mentions.close();
+        onOpenChange={(details) => {
+          if (!details.open) mentions.close();
         }}
-      />
+        positioning={{ placement: "bottom-start" }}
+      >
+        <ArkPopover.Anchor asChild>
+          <Field.Textarea
+            ref={fieldRef}
+            autoresize={autoresize}
+            rows={3}
+            placeholder={placeholder}
+            value={current}
+            onChange={handleChange}
+            onKeyDown={(event) => mentions.onKeydown(event)}
+            data-invalid={invalid || undefined}
+            data-scope="mentions"
+            data-part="textarea"
+          />
+        </ArkPopover.Anchor>
+        <ArkPopover.Positioner>
+          <ArkPopover.Content asChild>
+            <MentionsPopup
+              size={size}
+              matches={mentions.matches}
+              active={mentions.active}
+              onInsert={mentions.insert}
+              onActiveChange={mentions.setActive}
+            />
+          </ArkPopover.Content>
+        </ArkPopover.Positioner>
+      </ArkPopover.Root>
       {children}
     </div>
   );

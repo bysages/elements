@@ -9,6 +9,7 @@ export const checkboxCss =
   gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
+  cursor: pointer;
 }
 
 /* A group of checkboxes is one field: the rows stack, and the invalid
@@ -120,6 +121,7 @@ export const checkboxCss =
 
 [data-scope="checkbox"][data-part="root"]:has([data-disabled]) {
   color: var(--bs-color-text-disabled);
+  cursor: not-allowed;
 }
 
 [data-scope="checkbox"][data-part="root"]:has([data-disabled]) [data-part="control"] {

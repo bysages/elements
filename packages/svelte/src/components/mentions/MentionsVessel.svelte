@@ -13,24 +13,35 @@ let {
   active = 0,
   anchor = null,
   size = "md",
+  children,
   onInsert,
   onActiveChange,
   onOpenChange,
 }: MentionsVesselProps = $props();
 </script>
 
-<!-- The vessel: the candidates themselves as a floating card. The
-anchor is virtual — a live rectangle off the host's field — so a host
-keeps its own anatomy (the textarea rides where the host puts it) and
-the vessel still points at the right place. -->
+<!-- The vessel: the candidates themselves as a floating card. A host
+can render its field through the Anchor; the rectangle fallback keeps
+the textarea in the host's own anatomy. -->
 <ArkPopover.Root
   {open}
-  positioning={{
-    placement: "bottom-start",
-    getAnchorRect: () => anchor?.getBoundingClientRect() ?? null,
-  }}
+  positioning={
+    children
+      ? { placement: "bottom-start" }
+      : {
+          placement: "bottom-start",
+          getAnchorRect: () => anchor?.getBoundingClientRect() ?? null,
+        }
+  }
   onOpenChange={(details) => onOpenChange?.(details.open)}
 >
+  {#if children}
+    <ArkPopover.Anchor>
+      {#snippet asChild(anchorProps)}
+        {@render children(anchorProps)}
+      {/snippet}
+    </ArkPopover.Anchor>
+  {/if}
   <Portal>
     <ArkPopover.Positioner>
       <ArkPopover.Content>

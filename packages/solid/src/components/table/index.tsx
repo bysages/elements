@@ -725,14 +725,22 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
         draggable={canDrag || undefined}
         aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
         {...pinAttrs(column)}
-        onclick={canSort ? () => column.toggleSorting() : undefined}
         ondragstart={canDrag ? onColDragStart : undefined}
         ondragover={canDrag ? (e: DragEvent) => onColDragOver(column, e) : undefined}
         ondragleave={canDrag ? onColDragLeave : undefined}
         ondrop={canDrag ? (e: DragEvent) => onColDrop(column, e) : undefined}
         ondragend={canDrag ? onColDragEnd : undefined}
       >
-        {header.isPlaceholder || header.column.columnDef.header === "" ? null : (
+        {header.isPlaceholder || header.column.columnDef.header === "" ? null : canSort ? (
+          <button
+            type="button"
+            data-scope="table"
+            data-part="header-sort"
+            onclick={() => column.toggleSorting()}
+          >
+            <FlexRender header={header} />
+          </button>
+        ) : (
           <FlexRender header={header} />
         )}
         {canFilter ? (
@@ -746,7 +754,6 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
             value={(column.getFilterValue() as string) ?? ""}
             placeholder={messages().command.filter}
             draggable={false}
-            onclick={(e: MouseEvent) => e.stopPropagation()}
             // Text selection owns a drag from inside the filter box.
             ondragstart={(e: Event) => e.stopPropagation()}
             oninput={(e: Event) => column.setFilterValue((e.target as HTMLInputElement).value)}

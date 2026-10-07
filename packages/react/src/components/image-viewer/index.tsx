@@ -96,6 +96,18 @@ function ImageViewerImpl({
     );
   }
 
+  // The close rung is the dialog machine's own: the CloseTrigger
+  // folds the lightbox, no local handler.
+  function closeToolButton(label: string, icon: string) {
+    return (
+      <ArkDialog.CloseTrigger asChild>
+        <Button variant="ghost" square size="lg" aria-label={label}>
+          {iconNode(icon)}
+        </Button>
+      </ArkDialog.CloseTrigger>
+    );
+  }
+
   return (
     <ArkDialog.Root
       id={`${hostId}:dialog`}
@@ -147,7 +159,7 @@ function ImageViewerImpl({
                     ]
                   : null}
                 {toolButton(messages.imageViewer.rotate, TOOL_ICONS.rotate, rotate)}
-                {toolButton(messages.imageViewer.close, TOOL_ICONS.close, () => setOpen(false))}
+                {closeToolButton(messages.imageViewer.close, TOOL_ICONS.close)}
               </ButtonGroup>
             </div>
           </ArkDialog.Content>

@@ -14,11 +14,9 @@ const props = defineProps<{
   page?: { body?: { toc?: { links?: TocLink[] } } } | null;
 }>();
 
-const open = ref(false);
-
 const { t } = useDocsI18n();
 
-const { Root, Backdrop, Positioner, Content, Title } = Drawer;
+const { Root, Trigger, Backdrop, Positioner, Content, Title } = Drawer;
 
 const links = computed(() => props.page?.body?.toc?.links ?? []);
 </script>
@@ -26,24 +24,26 @@ const links = computed(() => props.page?.body?.toc?.links ?? []);
 <template>
   <!-- Below the wide-container breakpoint the outline lane is folded
        away; the bar carries its entry instead. -->
+  <Root>
   <div v-if="links.length" class="bs-docs-mobile-bar">
-    <Button variant="ghost" size="sm" @click="open = true">
-      <Icon name="i-lucide-list-tree" class="size-4" />
-      {{ t("docs.toc") }}
-    </Button>
+    <Trigger as-child>
+      <Button variant="ghost" size="sm">
+        <Icon name="i-lucide-list-tree" class="size-4" />
+        {{ t("docs.toc") }}
+      </Button>
+    </Trigger>
   </div>
 
   <ClientOnly>
     <!-- The outline rises from the bottom edge too — one gesture
          vocabulary for every sheet on the phone. -->
-    <Root :open="open" @update:open="open = $event">
-      <Backdrop />
+    <Backdrop />
       <Positioner>
         <Content :aria-label="t('docs.toc')">
           <Title>{{ t("docs.toc") }}</Title>
           <DocsAsideRight :page="page" />
         </Content>
       </Positioner>
-    </Root>
   </ClientOnly>
+  </Root>
 </template>

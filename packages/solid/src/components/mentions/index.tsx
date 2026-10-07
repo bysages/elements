@@ -1,4 +1,4 @@
-import { Popover as ArkPopover } from "@ark-ui/solid/popover";
+import { Popover as ArkPopover, type PopoverAnchorProps } from "@ark-ui/solid/popover";
 import { injectComponentStyle } from "@bysages/core";
 import { For, createEffect, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
@@ -9,6 +9,10 @@ import { useElementId } from "../../internal/id";
 import { Popover } from "../popover";
 import { Textarea } from "../textarea";
 import { useMentions } from "./use-mentions";
+
+/** The Anchor's polymorphic wiring is div-typed at the API boundary; the
+ * textarea host supplies the concrete element type. */
+type MentionsAnchorProps = JSX.HTMLAttributes<HTMLTextAreaElement>;
 
 export type { UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
 export { useMentions } from "./use-mentions";
@@ -30,13 +34,15 @@ export interface MentionsVesselProps {
   onInsert?: (entry: MentionEntry) => void;
   onActiveChange?: (index: number) => void;
   onOpenChange?: (open: boolean) => void;
+  /** The host's field, rendered with the popover Anchor's wiring. When
+   * absent, the vessel falls back to the `anchor` rectangle. */
+  children?: JSX.Element | ((anchorProps: MentionsAnchorProps) => JSX.Element);
 }
 
-/** The vessel: the candidates themselves as a floating card. The anchor
- * is virtual — a live rectangle off the host's field — so a host keeps
- * its own anatomy (the textarea rides where the host puts it) and the
- * vessel still points at the right place. Shares the detection state
- * with the host through `useMentions`. */
+/** The vessel: the candidates themselves as a floating card. A host can
+ * render its field through the Anchor; the rectangle fallback keeps the
+ * textarea in the host's own anatomy. Shares the detection state with
+ * the host through `useMentions`. */
 export const MentionsVessel = withSelfRoot(function MentionsVessel(props: MentionsVesselProps) {
   injectComponentStyle("mentions");
   const id = useElementId("mentions-vessel");
@@ -46,17 +52,31 @@ export const MentionsVessel = withSelfRoot(function MentionsVessel(props: Mentio
       id={id()}
       open={props.open ?? false}
       onOpenChange={(details) => props.onOpenChange?.(details.open)}
-      positioning={{
-        placement: "bottom-start",
-        getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
-      }}
+      positioning={
+        props.children
+          ? { placement: "bottom-start" }
+          : {
+              placement: "bottom-start",
+              getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
+            }
+      }
     >
+      {props.children ? (
+        <ArkPopover.Anchor
+          asChild={(anchorProps) =>
+            typeof props.children === "function"
+              ? props.children(anchorProps() as MentionsAnchorProps)
+              : props.children
+          }
+        />
+      ) : null}
       <Portal>
         <ArkPopover.Positioner>
           <ArkPopover.Content
             asChild={(contentProps) => (
               <div
                 {...contentProps()}
+                role="listbox"
                 data-scope="mentions"
                 data-part="popup"
                 data-size={props.size ?? "md"}
@@ -64,6 +84,9 @@ export const MentionsVessel = withSelfRoot(function MentionsVessel(props: Mentio
                 <For each={props.matches ?? []}>
                   {(entry, index) => (
                     <div
+                      role="option"
+                      aria-selected={index() === (props.active ?? 0)}
+                      tabindex={-1}
                       data-scope="mentions"
                       data-part="option"
                       data-active={index() === (props.active ?? 0) ? "" : undefined}
@@ -72,6 +95,11 @@ export const MentionsVessel = withSelfRoot(function MentionsVessel(props: Mentio
                       // keyboard's active row out from under it.
                       onMouseDown={(event: MouseEvent) => event.preventDefault()}
                       onClick={() => props.onInsert?.(entry)}
+                      onKeyDown={(event: KeyboardEvent) => {
+                        if (event.key !== "Enter" && event.key !== " ") return;
+                        event.preventDefault();
+                        props.onInsert?.(entry);
+                      }}
                     >
                       {entry.label}
                     </div>
@@ -164,37 +192,42 @@ function MentionsImpl(props: MentionsProps) {
     mentions.onInput();
   };
 
+  const field = (anchorProps: MentionsAnchorProps) => (
+    <Textarea
+      {...anchorProps}
+      ref={(node) => setFieldEl(node)}
+      invalid={own.invalid}
+      rows={3}
+      placeholder={own.placeholder}
+      value={value()}
+      onValueChange={(next) => {
+        setInternal(next);
+        own.onValueChange?.(next);
+      }}
+      onInput={onInput}
+      onKeyDown={(event: KeyboardEvent) => {
+        mentions.onKeydown(event);
+      }}
+      data-scope="mentions"
+      data-part="textarea"
+    />
+  );
+
   return (
     <div {...rest} data-scope="mentions" data-part="root" data-size={own.size ?? "md"}>
-      <Textarea
-        ref={(node) => setFieldEl(node)}
-        invalid={own.invalid}
-        rows={3}
-        placeholder={own.placeholder}
-        value={value()}
-        onValueChange={(next) => {
-          setInternal(next);
-          own.onValueChange?.(next);
-        }}
-        onInput={onInput}
-        onKeyDown={(event: KeyboardEvent) => {
-          mentions.onKeydown(event);
-        }}
-        data-scope="mentions"
-        data-part="textarea"
-      />
       <MentionsVessel
         open={mentions.open()}
         matches={mentions.matches()}
         active={mentions.active()}
         size={own.size ?? "md"}
-        anchor={fieldEl()}
         onInsert={mentions.insert}
         onActiveChange={mentions.setActive}
         onOpenChange={(open) => {
           if (!open) mentions.close();
         }}
-      />
+        children={field}
+      >
+      </MentionsVessel>
     </div>
   );
 }

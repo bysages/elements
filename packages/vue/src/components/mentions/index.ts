@@ -34,6 +34,63 @@ export interface MentionsProps {
   invalid?: boolean;
 }
 
+/** The candidates themselves as a floating card. Rendered inside the
+ * popover's Content via `asChild`, so the machine's content wiring
+ * lands on this card; `attrs` stay first so the machine can layer
+ * state on top without covering the anatomy names. */
+const MentionsPopup = defineComponent({
+  name: "MentionsPopup",
+  inheritAttrs: false,
+  props: {
+    /** The host field's rung, so the rows keep the field's register. */
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    matches: { type: Array as PropType<MentionEntry[]>, default: () => [] },
+    active: { type: Number, default: 0 },
+  },
+  emits: {
+    insert: (_entry: MentionEntry) => true,
+    "update:active": (_index: number) => true,
+  },
+  setup(props, ctx) {
+    return () =>
+      h(
+        "div",
+        {
+          ...ctx.attrs,
+          "data-scope": "mentions",
+          "data-part": "popup",
+          "data-size": props.size,
+          role: "listbox",
+        },
+        props.matches.map((entry, index) =>
+          h(
+            "div",
+            {
+              key: entry.value,
+              role: "option",
+              "aria-selected": index === props.active,
+              tabindex: -1,
+              "data-scope": "mentions",
+              "data-part": "option",
+              "data-active": index === props.active ? "" : undefined,
+              onMouseEnter: () => ctx.emit("update:active", index),
+              // The pointer confirms without moving the
+              // keyboard's active row out from under it.
+              onMouseDown: (event: MouseEvent) => event.preventDefault(),
+              onClick: () => ctx.emit("insert", entry),
+              onKeyDown: (event: KeyboardEvent) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                ctx.emit("insert", entry);
+              },
+            },
+            () => entry.label,
+          ),
+        ),
+      );
+  },
+});
+
 /** The vessel: the candidates themselves as a floating card. The anchor
  * is virtual — a live rectangle off the host's field — so a host keeps
  * its own anatomy (the textarea rides where the host puts it) and the
@@ -74,27 +131,13 @@ export const MentionsVessel = withSelfRoot(
           () => [
             h(ArkPopover.Positioner, () =>
               h(ArkPopover.Content, { asChild: true }, () =>
-                h(
-                  "div",
-                  { "data-scope": "mentions", "data-part": "popup", "data-size": props.size },
-                  props.matches.map((entry, index) =>
-                    h(
-                      "div",
-                      {
-                        key: entry.value,
-                        "data-scope": "mentions",
-                        "data-part": "option",
-                        "data-active": index === props.active ? "" : undefined,
-                        onMouseEnter: () => ctx.emit("update:active", index),
-                        // The pointer confirms without moving the
-                        // keyboard's active row out from under it.
-                        onMouseDown: (event: MouseEvent) => event.preventDefault(),
-                        onClick: () => ctx.emit("insert", entry),
-                      },
-                      () => entry.label,
-                    ),
-                  ),
-                ),
+                h(MentionsPopup, {
+                  size: props.size,
+                  matches: props.matches,
+                  active: props.active,
+                  onInsert: (entry: MentionEntry) => ctx.emit("insert", entry),
+                  "onUpdate:active": (index: number) => ctx.emit("update:active", index),
+                }),
               ),
             ),
           ],
@@ -112,11 +155,10 @@ export const MentionsVessel = withSelfRoot(
  *
  * The field is the shared `Field.Textarea` — field wiring (label ids,
  * the invalid state, autoresize) rides on it for free — and the vessel
- * anchors to the field as a whole (popover machinery), not to the caret
- * coordinates; caret-precise positioning would need a second
- * positioning system for no practical gain at typical field sizes.
- * Composers that keep their own field anatomy (the AI prompt input)
- * skip this shell and wire `useMentions` plus `MentionsVessel`
+ * anchors through the popover's own `Anchor` part wrapped around the
+ * field, so the machine, not a local rectangle, points the popup at the
+ * input. Composers that keep their own field anatomy (the AI prompt
+ * input) skip this shell and wire `useMentions` plus `MentionsVessel`
  * themselves.
  */
 const MentionsFacade = defineComponent({
@@ -166,42 +208,55 @@ const MentionsFacade = defineComponent({
         { ...ctx.attrs, "data-scope": "mentions", "data-part": "root", "data-size": props.size },
         [
           h(
-            "div",
-            {
-              ref: fieldWrapperRef as Ref,
-              style: { display: "contents", width: "100%" },
-            },
-            [
-              h(Field.Textarea as never, {
-                autoresize: props.autoresize,
-                invalid: props.invalid,
-                rows: 3,
-                placeholder: props.placeholder,
-                modelValue: value(),
-                "onUpdate:modelValue": (next: string) => {
-                  internal.value = next;
-                  ctx.emit("update:modelValue", next);
-                },
-                onInput,
-                onKeydown: mentions.onKeydown,
-                "data-scope": "mentions",
-                "data-part": "textarea",
-              }),
+            withPresenceRoot(ArkPopover.Root as never),
+            withPresenceEnter({
+              id: `${hostId.value}:vessel`,
+              open: mentions.open.value,
+              "onUpdate:open": (open: boolean) => {
+                if (!open) mentions.close();
+              },
+              positioning: { placement: "bottom-start" },
+            }),
+            () => [
+              h(
+                "div",
+                { ref: fieldWrapperRef as Ref, style: { display: "contents", width: "100%" } },
+                [
+                  h(
+                    ArkPopover.Anchor,
+                    { asChild: true },
+                    () =>
+                      h(Field.Textarea as never, {
+                        autoresize: props.autoresize,
+                        invalid: props.invalid,
+                        rows: 3,
+                        placeholder: props.placeholder,
+                        modelValue: value(),
+                        "onUpdate:modelValue": (next: string) => {
+                          internal.value = next;
+                          ctx.emit("update:modelValue", next);
+                        },
+                        onInput,
+                        onKeydown: mentions.onKeydown,
+                        "data-scope": "mentions",
+                        "data-part": "textarea",
+                      }),
+                  ),
+                ],
+              ),
+              h(ArkPopover.Positioner, () =>
+                h(ArkPopover.Content, { asChild: true }, () =>
+                  h(MentionsPopup, {
+                    size: props.size,
+                    matches: mentions.matches.value,
+                    active: mentions.active.value,
+                    onInsert: mentions.insert,
+                    "onUpdate:active": (index: number) => (mentions.active.value = index),
+                  }),
+                ),
+              ),
             ],
           ),
-          h(MentionsVessel, {
-            id: `${hostId.value}:vessel`,
-            open: mentions.open.value,
-            matches: mentions.matches.value,
-            active: mentions.active.value,
-            anchor: el(),
-            size: props.size,
-            onInsert: mentions.insert,
-            "onUpdate:active": (index: number) => (mentions.active.value = index),
-            "onUpdate:open": (open: boolean) => {
-              if (!open) mentions.close();
-            },
-          }),
         ],
       );
   },

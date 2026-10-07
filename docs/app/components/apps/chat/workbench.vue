@@ -267,6 +267,7 @@ onBeforeUnmount(scriptAbort);
 </script>
 
 <template>
+  <Drawer.Root v-model:open="navOpen" swipe-direction="left">
   <Layout.Root sider="start" class="ai-workbench @container h-full min-h-0!">
     <Layout.Sider
       v-model:collapsed="railCollapsed"
@@ -362,16 +363,17 @@ onBeforeUnmount(scriptAbort);
     </Layout.Sider>
 
     <Layout.Header>
-      <Button
-        variant="ghost"
-        size="sm"
-        square
-        class="hidden! @max-[60rem]:flex!"
-        :aria-label="text.openHistory"
-        @click="navOpen = true"
-      >
-        <Icon :glyph="menu" />
-      </Button>
+      <Drawer.Trigger as-child>
+        <Button
+          variant="ghost"
+          size="sm"
+          square
+          class="hidden! @max-[60rem]:flex!"
+          :aria-label="text.openHistory"
+        >
+          <Icon :glyph="menu" />
+        </Button>
+      </Drawer.Trigger>
       <h2 class="m-0 min-w-0 flex-1 truncate text-base font-semibold">
         {{ activeThread.title }}
       </h2>
@@ -454,23 +456,18 @@ onBeforeUnmount(scriptAbort);
     </Layout.Content>
   </Layout.Root>
 
-  <Drawer.Root :open="navOpen" swipe-direction="left" @update:open="navOpen = $event">
-    <Teleport to="body">
+  <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
         <Drawer.Content :aria-label="text.history" class="ai-sheet">
           <Drawer.Title class="sr-only">{{ text.history }}</Drawer.Title>
           <div class="flex items-center justify-between gap-(--bs-gap-md)">
             <span class="text-base font-semibold">{{ text.workspace }}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              square
-              :aria-label="text.closeHistory"
-              @click="navOpen = false"
-            >
-              <Icon :glyph="x" />
-            </Button>
+            <Drawer.CloseTrigger as-child>
+              <Button variant="ghost" size="sm" square :aria-label="text.closeHistory">
+                <Icon :glyph="x" />
+              </Button>
+            </Drawer.CloseTrigger>
           </div>
           <Button class="w-full!" @click="newConversation">
             <Icon :glyph="plus" />

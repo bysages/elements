@@ -9,6 +9,11 @@ export const switchCss =
   gap: var(--bs-gap-sm);
   color: var(--bs-color-text-primary);
   font-size: var(--bs-font-size-sm);
+  cursor: pointer;
+}
+
+[data-scope="switch"][data-part="root"]:has([data-disabled]) {
+  cursor: not-allowed;
 }
 
 /* The track geometry: thumb travel is derived here so the knob lands

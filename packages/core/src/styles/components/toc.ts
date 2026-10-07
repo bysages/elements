@@ -47,6 +47,10 @@ export const tocCss = /* css */ `
     color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
+[data-scope="toc"][data-part="link"][href] {
+  cursor: pointer;
+}
+
 [data-scope="toc"][data-part="link"]:hover:not([data-active]) {
   background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);

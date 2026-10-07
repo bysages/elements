@@ -111,7 +111,19 @@ the viewer. -->
               {@render tool(messages().imageViewer.zoomOut, () => zoom(-SCALE_STEP), "zoom-out")}
             {/if}
             {@render tool(messages().imageViewer.rotate, turn, "rotate-cw")}
-            {@render tool(messages().imageViewer.close, () => setOpen(false), "x")}
+            <ArkDialog.CloseTrigger>
+              {#snippet asChild(closeProps)}
+                <Button
+                  {...closeProps()}
+                  variant="ghost"
+                  square
+                  size="lg"
+                  aria-label={messages().imageViewer.close}
+                >
+                  <InternalIcon name="x" />
+                </Button>
+              {/snippet}
+            </ArkDialog.CloseTrigger>
           </ButtonGroup>
         </div>
       </ArkDialog.Content>

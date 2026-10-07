@@ -12,6 +12,10 @@ export const linkCss = /* css */ `
     text-decoration-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
+[data-scope="link"][data-part="root"][href] {
+  cursor: pointer;
+}
+
 [data-scope="link"][data-part="root"][data-underline="always"] {
   text-decoration-line: underline;
   text-decoration-color: color-mix(in oklab, var(--bs-color-primary) 40%, transparent);

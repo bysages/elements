@@ -147,7 +147,19 @@ function ImageViewerImpl(props: ImageViewerProps) {
                   )}
                 </Show>
                 {toolButton(messages().imageViewer.rotate, TOOL_ICONS.rotate, rotate)}
-                {toolButton(messages().imageViewer.close, TOOL_ICONS.close, () => setOpen(false))}
+                <ArkDialog.CloseTrigger
+                  asChild={(closeProps) => (
+                    <Button
+                      {...closeProps()}
+                      variant="ghost"
+                      square
+                      size="lg"
+                      aria-label={messages().imageViewer.close}
+                    >
+                      {TOOL_ICONS.close()}
+                    </Button>
+                  )}
+                />
               </ButtonGroup>
             </div>
           </ArkDialog.Content>

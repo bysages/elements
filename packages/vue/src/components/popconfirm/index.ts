@@ -1,7 +1,7 @@
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { injectComponentStyle } from "@bysages/core";
 import type { SetupContext } from "vue";
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -11,10 +11,11 @@ import { Popover } from "../popover";
 
 /**
  * A question at the point of no return: the trigger opens a small
- * anchored vessel carrying the message and two answers. Confirmation
- * and cancellation are the caller's to act on — the panel closes
- * either way. The default slot is the trigger; give it a single
- * element (wrap a group in a span otherwise).
+ * anchored vessel carrying the message and two answers. Each answer is
+ * a close trigger: the answer reports through its own handler and the
+ * popover machine folds the panel either way. The default slot is the
+ * trigger; give it a single element (wrap a group in a span
+ * otherwise).
  */
 const PopconfirmFacade = defineComponent({
   name: "Popconfirm",
@@ -32,18 +33,11 @@ const PopconfirmFacade = defineComponent({
     injectComponentStyle("popconfirm");
 
     const hostId = useElementId("popconfirm", ctx.attrs);
-    const open = ref(false);
-    function settle(confirmed: boolean) {
-      open.value = false;
-      ctx.emit(confirmed ? "confirm" : "cancel");
-    }
     return () =>
       h(
         withPresenceRoot(ArkPopover.Root as never),
         withPresenceEnter({
           id: `${hostId.value}:popover`,
-          open: open.value,
-          "onUpdate:open": (value: boolean) => (open.value = value),
           positioning: { placement: "top" },
         }),
         () => [
@@ -52,12 +46,38 @@ const PopconfirmFacade = defineComponent({
             h(ArkPopover.Content, { class: "bs-popconfirm" }, () => [
               h("p", { "data-part": "message" }, () => props.message),
               h("div", { "data-part": "actions" }, () => [
-                h(
-                  Button,
-                  { variant: "ghost", size: "sm", onClick: () => settle(false) },
-                  () => props.cancelText,
+                h(ArkPopover.CloseTrigger, { asChild: true }, () =>
+                  h(
+                    Button,
+                    {
+                      variant: "ghost",
+                      size: "sm",
+                      // The close trigger injects its own "Close"
+                      // label; the answer's name is the accessible
+                      // one. The recipe names ride along too, so the
+                      // button keeps its own anatomy under the merged
+                      // trigger props.
+                      "aria-label": props.cancelText,
+                      onClick: () => ctx.emit("cancel"),
+                      "data-scope": "button",
+                      "data-part": "root",
+                    },
+                    () => props.cancelText,
+                  ),
                 ),
-                h(Button, { size: "sm", onClick: () => settle(true) }, () => props.confirmText),
+                h(ArkPopover.CloseTrigger, { asChild: true }, () =>
+                  h(
+                    Button,
+                    {
+                      size: "sm",
+                      "aria-label": props.confirmText,
+                      onClick: () => ctx.emit("confirm"),
+                      "data-scope": "button",
+                      "data-part": "root",
+                    },
+                    () => props.confirmText,
+                  ),
+                ),
               ]),
             ]),
           ]),

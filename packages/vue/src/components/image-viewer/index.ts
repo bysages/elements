@@ -97,23 +97,51 @@ const ImageViewerFacade = defineComponent({
       rotation.value = (rotation.value + 90) % 360;
     }
 
+    function toolIcon(icon: () => VNode) {
+      return h(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          "stroke-width": 1.5,
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round",
+          "aria-hidden": true,
+        },
+        icon(),
+      );
+    }
+
     function toolButton(label: string, icon: () => VNode, onClick: () => void) {
       return h(
         Button,
         { variant: "ghost", square: true, size: "lg", "aria-label": label, onClick },
+        () => toolIcon(icon),
+      );
+    }
+
+    // The close rung is the dialog machine's own: the CloseTrigger
+    // folds the lightbox, no local handler.
+    function closeToolButton(label: string, icon: () => VNode) {
+      return h(
+        ArkDialog.CloseTrigger,
+        { asChild: true },
         () =>
           h(
-            "svg",
+            Button,
             {
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              "stroke-width": 1.5,
-              "stroke-linecap": "round",
-              "stroke-linejoin": "round",
-              "aria-hidden": true,
+              variant: "ghost",
+              square: true,
+              size: "lg",
+              "aria-label": label,
+              // Restate the recipe names: the close trigger's props
+              // ride the same vnode, and the button must keep its own
+              // anatomy for the styles.
+              "data-scope": "button",
+              "data-part": "root",
             },
-            icon(),
+            () => toolIcon(icon),
           ),
       );
     }
@@ -187,9 +215,7 @@ const ImageViewerFacade = defineComponent({
                         ]
                       : []),
                     toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, rotate),
-                    toolButton(messages.value.imageViewer.close, TOOL_ICONS.close, () =>
-                      setOpen(false),
-                    ),
+                    closeToolButton(messages.value.imageViewer.close, TOOL_ICONS.close),
                   ]),
                 ]),
               ],

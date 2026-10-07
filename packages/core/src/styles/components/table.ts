@@ -406,4 +406,10 @@ export const tableCss = /* css */ `
   [data-part="header-cell"][data-draggable] {
   cursor: grab;
 }
+
+[data-scope="table"][data-part="root"][data-reorderable] [data-part="row"][data-dragging],
+[data-scope="table"][data-part="root"][data-reorderable]
+  [data-part="header-cell"][data-dragging] {
+  cursor: grabbing;
+}
 `;

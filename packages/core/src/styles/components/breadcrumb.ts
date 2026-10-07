@@ -25,6 +25,10 @@ export const breadcrumbCss = /* css */ `
   transition: color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
+[data-scope="breadcrumb"][data-part="link"][href] {
+  cursor: pointer;
+}
+
 [data-scope="breadcrumb"][data-part="link"]:hover {
   color: var(--bs-color-text-primary);
   text-decoration: underline;

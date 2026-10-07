@@ -41,6 +41,7 @@ export const workflowCss = /* css */ `
   font-family: var(--bs-font-sans);
   font-size: var(--bs-font-size-sm);
   color: var(--bs-color-text-primary);
+  cursor: move;
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     box-shadow var(--bs-duration-base) var(--bs-ease-out);

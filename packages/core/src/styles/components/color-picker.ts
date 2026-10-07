@@ -123,6 +123,7 @@ export const colorPickerCss =
   border-radius: var(--bs-radius-sm);
   overflow: hidden;
   touch-action: none;
+  cursor: crosshair;
 }
 
 [data-scope="color-picker"][data-part="area-background"] {
@@ -155,6 +156,7 @@ export const colorPickerCss =
   block-size: var(--bs-color-picker-track);
   border-radius: var(--bs-radius-sm);
   touch-action: none;
+  cursor: pointer;
 }
 
 [data-scope="color-picker"][data-part="channel-slider-track"] {

@@ -59,12 +59,20 @@ function PopconfirmImpl(props: PopconfirmProps) {
           <ArkPopover.Content class="bs-popconfirm">
             <p data-part="message">{own.message}</p>
             <div data-part="actions">
-              <Button variant="ghost" size="sm" onClick={() => settle(false)}>
-                {own.cancelText ?? "Cancel"}
-              </Button>
-              <Button size="sm" onClick={() => settle(true)}>
-                {own.confirmText ?? "Confirm"}
-              </Button>
+              <ArkPopover.CloseTrigger
+                asChild={(closeProps) => (
+                  <Button {...closeProps()} variant="ghost" size="sm" onClick={() => settle(false)}>
+                    {own.cancelText ?? "Cancel"}
+                  </Button>
+                )}
+              />
+              <ArkPopover.CloseTrigger
+                asChild={(closeProps) => (
+                  <Button {...closeProps()} size="sm" onClick={() => settle(true)}>
+                    {own.confirmText ?? "Confirm"}
+                  </Button>
+                )}
+              />
             </div>
           </ArkPopover.Content>
         </ArkPopover.Positioner>

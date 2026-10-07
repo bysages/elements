@@ -17,7 +17,7 @@ watch(
   },
 );
 
-const { Root, Backdrop, Positioner, Content, Title } = Drawer;
+const { Root, Trigger, Backdrop, Positioner, Content, Title } = Drawer;
 
 const { t } = useDocsI18n();
 
@@ -27,6 +27,7 @@ const searchOpen = useDocsSearch();
 </script>
 
 <template>
+  <Root v-model:open="menuOpen">
   <header
     class="bs-docs-header"
     :class="{ 'bs-docs-header-stacked': subNavigationMode === 'header' }"
@@ -75,7 +76,9 @@ const searchOpen = useDocsSearch();
         </template>
       </ClientOnly>
 
-      <IconMenuToggle class="bs-docs-header-menu" @click="menuOpen = true" />
+      <Trigger as-child>
+        <IconMenuToggle class="bs-docs-header-menu" />
+      </Trigger>
     </div>
 
     <AppHeaderBottom v-if="subNavigationMode === 'header'" />
@@ -86,8 +89,7 @@ const searchOpen = useDocsSearch();
        The sheet rises from the bottom edge — centered by nature, its
        rounded corners meeting the reader's thumb, no side seams. -->
   <ClientOnly>
-    <Root :open="menuOpen" @update:open="menuOpen = $event">
-      <Backdrop />
+    <Backdrop />
       <Positioner>
         <Content :aria-label="t('docs.navigation')" class="bs-docs-header-drawer">
           <Title>{{ t("docs.menu") }}</Title>
@@ -109,6 +111,6 @@ const searchOpen = useDocsSearch();
           <DocsAsideLeftBody full />
         </Content>
       </Positioner>
-    </Root>
   </ClientOnly>
+  </Root>
 </template>

@@ -61,6 +61,7 @@ export const imageViewerCss = /* css */ `
   position: relative;
   display: block;
   max-inline-size: fit-content;
+  cursor: pointer;
 }
 
 /* Without custom content the doorway is the icon itself: a compact,
@@ -79,7 +80,6 @@ export const imageViewerCss = /* css */ `
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   box-shadow: var(--bs-shadow-xs);
-  cursor: pointer;
   transition: box-shadow var(--bs-duration-base) var(--bs-ease-out),
     border-color var(--bs-duration-base) var(--bs-ease-out);
 }

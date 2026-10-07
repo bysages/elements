@@ -1,4 +1,7 @@
 import type { HTMLAttributes } from "svelte/elements";
+import type { Snippet } from "svelte";
+
+import type { PopoverAnchorProps } from "@ark-ui/svelte/popover";
 
 export interface MentionEntry {
   label: string;
@@ -54,4 +57,7 @@ export interface MentionsVesselProps {
   onActiveChange?: (index: number) => void;
   /** The vessel's open state turned. */
   onOpenChange?: (open: boolean) => void;
+  /** The host's field, rendered with the popover Anchor's wiring. When
+   * absent, the vessel falls back to the `anchor` rectangle. */
+  children?: Snippet<[() => PopoverAnchorProps]>;
 }

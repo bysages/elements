@@ -93,6 +93,10 @@ export const aiCss = /* css */ `
   text-underline-offset: 3px;
 }
 
+[data-scope="ai"][data-part="response"] a[href] {
+  cursor: pointer;
+}
+
 [data-scope="ai"][data-part="response"] a:hover {
   color: var(--bs-color-primary-subtle-text);
   text-decoration-color: var(--bs-color-primary-subtle-text);
@@ -336,6 +340,10 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="source"] a {
   color: var(--bs-color-text-secondary);
   text-decoration: none;
+}
+
+[data-scope="ai"][data-part="source"] a[href] {
+  cursor: pointer;
 }
 
 [data-scope="ai"][data-part="source"] a:hover {

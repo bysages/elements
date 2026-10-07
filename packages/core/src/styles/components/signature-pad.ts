@@ -27,6 +27,7 @@ export const signaturePadCss =
   border: 1px solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
+  cursor: crosshair;
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 

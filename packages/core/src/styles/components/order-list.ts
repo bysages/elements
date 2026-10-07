@@ -31,6 +31,7 @@ export const orderListCss = /* css */ `
 
 [data-scope="order-list"][data-part="item"][data-dragging] {
   opacity: 0.4;
+  cursor: grabbing;
 }
 
 /* The landing seam: one line of primary ink on the edge the pointer
@@ -106,7 +107,7 @@ export const orderListCss = /* css */ `
 
 [data-scope="order-list"][data-part="move"]:disabled {
   opacity: 0.35;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 [data-scope="order-list"][data-part="move"]:focus-visible {

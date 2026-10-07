@@ -55,28 +55,31 @@ system for no practical gain at typical field sizes. Composers that
 keep their own field anatomy (the AI prompt input) skip this shell and
 wire `useMentions` plus `MentionsVessel` themselves. -->
 <div {...rest} data-scope="mentions" data-part="root" data-size={size}>
-  <Field.Textarea
-    bind:ref={textareaEl}
-    bind:value
-    autoresize={autoresize}
-    rows={3}
-    {placeholder}
-    aria-invalid={invalid ? "true" : undefined}
-    data-scope="mentions"
-    data-part="textarea"
-    oninput={onInput}
-    onkeydown={mentions.onKeydown}
-  />
   <MentionsVessel
     open={mentions.open}
     matches={mentions.matches}
     active={mentions.active}
-    anchor={textareaEl}
     size={size}
     onInsert={mentions.insert}
     onActiveChange={(index) => (mentions.active = index)}
     onOpenChange={(open) => {
       if (!open) mentions.close();
     }}
-  />
+  >
+    {#snippet children(anchorProps)}
+      <Field.Textarea
+        {...anchorProps()}
+        bind:ref={textareaEl}
+        bind:value
+        autoresize={autoresize}
+        rows={3}
+        {placeholder}
+        aria-invalid={invalid ? "true" : undefined}
+        data-scope="mentions"
+        data-part="textarea"
+        oninput={onInput}
+        onkeydown={mentions.onKeydown}
+      />
+    {/snippet}
+  </MentionsVessel>
 </div>

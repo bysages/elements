@@ -550,7 +550,6 @@ function cellStyle(column: TColumn, span: number) {
                 {@const canSort = column.getCanSort()}
                 {@const canFilter = filterable && column.getCanFilter()}
                 {@const canDrag = !!reorderable && column.id !== SELECT_COL_ID && !column.getIsPinned()}
-                <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
                 <div
                   role="columnheader"
                   data-scope="table"
@@ -564,7 +563,6 @@ function cellStyle(column: TColumn, span: number) {
                   aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
                   {...pinAttrs(column)}
                   style:--pin-offset={pinOffset(column)}
-                  onclick={canSort ? () => column.toggleSorting() : undefined}
                   ondragstart={canDrag ? onColDragStart : undefined}
                   ondragover={canDrag ? (e) => onColDragOver(column, e) : undefined}
                   ondragleave={canDrag ? onColDragLeave : undefined}
@@ -572,7 +570,18 @@ function cellStyle(column: TColumn, span: number) {
                   ondragend={canDrag ? onColDragEnd : undefined}
                 >
                   {#if !header.isPlaceholder && header.column.columnDef.header !== ""}
-                    <FlexRender header={header} />
+                    {#if canSort}
+                      <button
+                        type="button"
+                        data-scope="table"
+                        data-part="header-sort"
+                        onclick={() => column.toggleSorting()}
+                      >
+                        <FlexRender header={header} />
+                      </button>
+                    {:else}
+                      <FlexRender header={header} />
+                    {/if}
                   {/if}
                   {#if canFilter}
                     <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -584,7 +593,6 @@ function cellStyle(column: TColumn, span: number) {
                       value={(column.getFilterValue() as string) ?? ""}
                       placeholder={messages().command.filter}
                       draggable={false}
-                      onclick={(e) => e.stopPropagation()}
                       ondragstart={(e) => e.stopPropagation()}
                       oninput={(e) => column.setFilterValue((e.currentTarget as HTMLInputElement).value)}
                     />

@@ -46,12 +46,20 @@ cancellation are the caller's to act on — the panel closes either way. -->
       <ArkPopover.Content class="bs-popconfirm">
         <p data-part="message">{message}</p>
         <div data-part="actions">
-          <Button variant="ghost" size="sm" onclick={() => settle(false)}>
-            {cancelText}
-          </Button>
-          <Button size="sm" onclick={() => settle(true)}>
-            {confirmText}
-          </Button>
+          <ArkPopover.CloseTrigger>
+            {#snippet asChild(closeProps)}
+              <Button {...closeProps()} variant="ghost" size="sm" onclick={() => settle(false)}>
+                {cancelText}
+              </Button>
+            {/snippet}
+          </ArkPopover.CloseTrigger>
+          <ArkPopover.CloseTrigger>
+            {#snippet asChild(closeProps)}
+              <Button {...closeProps()} size="sm" onclick={() => settle(true)}>
+                {confirmText}
+              </Button>
+            {/snippet}
+          </ArkPopover.CloseTrigger>
         </div>
       </ArkPopover.Content>
     </ArkPopover.Positioner>

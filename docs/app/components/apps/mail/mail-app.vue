@@ -359,18 +359,16 @@ function send() {
           <NavigationMenu.Root orientation="vertical" class="w-full!">
             <NavigationMenu.List>
               <NavigationMenu.Item v-for="f in folderList" :key="f.key">
-                <NavigationMenu.Link
-                  href="#"
-                  :current="folder === f.key"
-                  @click.prevent="onFolder(f.key)"
-                >
-                  <Icon :name="f.icon" />
+                <NavigationMenu.Link as-child :current="folder === f.key">
+                  <button type="button" class="border-0 bg-transparent" @click="onFolder(f.key)">
+                    <Icon :name="f.icon" />
                   {{ text.folders[f.key] }}
-                  <span
-                    v-if="unreadCount(f.key)"
-                    class="ml-auto text-xs tabular-nums text-tertiary"
-                    >{{ unreadCount(f.key) }}</span
-                  >
+                    <span
+                      v-if="unreadCount(f.key)"
+                      class="ml-auto text-xs tabular-nums text-tertiary"
+                      >{{ unreadCount(f.key) }}</span
+                    >
+                  </button>
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
             </NavigationMenu.List>
@@ -404,6 +402,7 @@ function send() {
               "
               @click="pick(mail)"
               @keydown.enter.prevent="pick(mail)"
+              @keydown.space.prevent="pick(mail)"
             >
               <span class="flex items-center gap-(--bs-gap-sm)">
                 <span v-if="mail.unread" class="size-1.5 shrink-0 rounded-full bg-primary" />

@@ -60,6 +60,7 @@ const heading = computed(
 </script>
 
 <template>
+  <Drawer.Root v-model:open="navOpen" swipe-direction="left">
   <!-- The library's Layout has no automatic responsive behavior — the
        shell owns it. @container makes this root the containment context
        the sider folds against, and the arbitrary variant strips the
@@ -97,26 +98,27 @@ const heading = computed(
           <path d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        square
-        class="hidden! @max-[60rem]:flex!"
-        :aria-label="text.openNavigation"
-        @click="navOpen = true"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.75"
-          aria-hidden="true"
+      <Drawer.Trigger as-child>
+        <Button
+          variant="ghost"
+          size="sm"
+          square
+          class="hidden! @max-[60rem]:flex!"
+          :aria-label="text.openNavigation"
         >
-          <path d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </Button>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            aria-hidden="true"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </Button>
+      </Drawer.Trigger>
       <Typography.Heading>{{ heading }}</Typography.Heading>
       <Badge tone="info" variant="subtle">Q3</Badge>
       <span class="flex-1" />
@@ -128,8 +130,7 @@ const heading = computed(
   </Layout.Root>
 
   <!-- The same rail, raised as a sheet on a narrow container. -->
-  <Drawer.Root :open="navOpen" swipe-direction="left" @update:open="navOpen = $event">
-    <Teleport to="body">
+  <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
         <Drawer.Content :aria-label="text.drawer" class="flex flex-col">
