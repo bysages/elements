@@ -52,7 +52,6 @@ provide("phone-toast", (title: string) =>
 <template>
   <div
     data-phone
-    data-scene="missive"
     class="relative flex h-[40rem] w-[24.375rem] min-w-0 max-w-full flex-col overflow-hidden rounded-xl border border-border bg-surface-0"
   >
     <header
