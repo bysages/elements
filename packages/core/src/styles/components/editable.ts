@@ -68,7 +68,7 @@ export const editableCss =
 
 [data-scope="editable"][data-part="preview"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="editable"][data-part="preview"][data-placeholder] {
@@ -135,7 +135,7 @@ export const editableCss =
 [data-scope="editable"][data-part="submit-trigger"]:hover:not([data-disabled]):not(:focus-visible),
 [data-scope="editable"][data-part="cancel-trigger"]:hover:not([data-disabled]):not(:focus-visible) {
   border-color: var(--bs-color-border-strong);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

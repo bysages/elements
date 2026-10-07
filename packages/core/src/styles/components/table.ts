@@ -177,7 +177,7 @@ export const tableCss = /* css */ `
 /* Rows answer the cursor one step of shade at a time; a selected row
    holds the primary wash and hover never repaints it. */
 [data-scope="table"][data-part="row"]:hover:not([data-selected]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="table"][data-part="row"][data-selected] {
@@ -200,14 +200,14 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="body"][data-merge]
   [data-part="row"]:has(> [data-part="cell"]:not([data-spanned]):hover):not([data-selected])
   > [data-part="cell"]:not([data-spanned]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 /* A cell that spans rows reads as its own column of ink: it takes the
    wash only when the cursor is on it, never from its logical row. */
 [data-scope="table"][data-part="body"][data-merge]
   [data-part="cell"][data-spanned]:hover:not([data-pinned]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="table"][data-part="body"][data-merge] [data-part="row"][data-selected]
@@ -280,7 +280,7 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="expander"]:hover {
   color: var(--bs-color-text-primary);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="table"][data-part="expander"][data-expanded] {

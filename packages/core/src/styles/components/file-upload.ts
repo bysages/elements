@@ -236,7 +236,7 @@ export const fileUploadCss =
 }
 
 [data-scope="file-upload"][data-part="item-delete-trigger"]:hover:not([data-disabled]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-danger);
 }
 

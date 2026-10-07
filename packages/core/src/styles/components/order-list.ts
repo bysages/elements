@@ -26,7 +26,7 @@ export const orderListCss = /* css */ `
 }
 
 [data-scope="order-list"][data-part="item"]:hover {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="order-list"][data-part="item"][data-dragging] {

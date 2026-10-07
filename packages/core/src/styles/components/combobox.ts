@@ -157,7 +157,7 @@ export const comboboxCss =
 
 [data-scope="combobox"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
 [data-scope="combobox"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="combobox"][data-part="item"]:focus-visible {

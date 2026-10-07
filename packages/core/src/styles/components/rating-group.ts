@@ -48,7 +48,7 @@ export const ratingGroupCss =
     [data-disabled],
     [data-readonly]
   ) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="rating-group"][data-part="item"]:focus-visible {

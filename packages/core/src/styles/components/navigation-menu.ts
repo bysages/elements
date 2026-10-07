@@ -56,7 +56,7 @@ export const navigationMenuCss =
 
 [data-scope="navigation-menu"][data-part="trigger"]:hover:not([data-disabled]),
 [data-scope="navigation-menu"][data-part="trigger"][data-state="open"] {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="navigation-menu"][data-part="trigger"]:focus-visible {
@@ -91,7 +91,7 @@ export const navigationMenuCss =
 }
 
 [data-scope="navigation-menu"][data-part="link"]:hover:not([data-disabled], [data-current]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 /* A vertical bar stands straight on the page, which already wears the
    wash's own ladder step — the hover carries its own measured ink, as

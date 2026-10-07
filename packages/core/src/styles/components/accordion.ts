@@ -45,7 +45,7 @@ export const accordionCss =
 }
 
 [data-scope="accordion"][data-part="item-trigger"]:hover:not([data-disabled]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="accordion"][data-part="item-trigger"]:focus-visible {

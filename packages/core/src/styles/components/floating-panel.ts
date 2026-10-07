@@ -146,7 +146,7 @@ export const floatingPanelCss =
 [data-scope="floating-panel"][data-part="stage-trigger"]:hover:not([data-disabled]),
 [data-scope="floating-panel"][data-part="close-trigger"]:hover:not([data-disabled]) {
   border-color: var(--bs-color-border-strong);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

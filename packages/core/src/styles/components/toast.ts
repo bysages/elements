@@ -112,7 +112,7 @@ export const toastCss =
 
 [data-scope="toast"][data-part="action-trigger"]:hover {
   border-color: var(--bs-color-border-strong);
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

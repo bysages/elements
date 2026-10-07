@@ -116,7 +116,7 @@ export const datePickerCss =
 }
 
 [data-scope="date-picker"][data-part="clear-trigger"]:hover:not([data-disabled]):not(:focus-visible):not([data-state="open"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 
@@ -187,7 +187,7 @@ export const datePickerCss =
 
 [data-scope="date-picker"][data-part="prev-trigger"]:hover:not([data-disabled]),
 [data-scope="date-picker"][data-part="next-trigger"]:hover:not([data-disabled]):not(:focus-visible):not([data-state="open"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 
@@ -226,7 +226,7 @@ export const datePickerCss =
 }
 
 [data-scope="date-picker"][data-part="view-trigger"]:hover {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="date-picker"][data-part="view-trigger"]:focus-visible {
@@ -318,7 +318,7 @@ export const datePickerCss =
     [data-range-end],
     [data-disabled]
   ) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="date-picker"][data-part="table-cell-trigger"]:focus-visible,

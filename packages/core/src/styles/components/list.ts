@@ -37,7 +37,7 @@ export const listCss = /* css */ `
 
 [data-scope="list"][data-part="root"][data-hoverable] [data-scope="list"][data-part="item"]:hover,
 [data-scope="list"][data-part="item"][role="button"]:hover {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 /* Pressing sinks the row one step deeper than the hover wash — the page

@@ -35,7 +35,7 @@ export const paginationCss = /* css */ `
 [data-scope="pagination"][data-part="prev-trigger"]:hover:not([data-disabled]),
 [data-scope="pagination"][data-part="next-trigger"]:hover:not([data-disabled]),
 [data-scope="pagination"][data-part="last-trigger"]:hover:not([data-disabled]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

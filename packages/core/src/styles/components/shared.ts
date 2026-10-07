@@ -104,7 +104,7 @@ export function closeTriggerCss(
     color var(--bs-duration-fast) var(--bs-ease-out);
 }
 [data-scope="${scope}"][data-part="close-trigger"]:hover {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 [data-scope="${scope}"][data-part="close-trigger"]:focus-visible {

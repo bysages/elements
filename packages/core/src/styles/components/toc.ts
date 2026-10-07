@@ -48,7 +48,7 @@ export const tocCss = /* css */ `
 }
 
 [data-scope="toc"][data-part="link"]:hover:not([data-active]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

@@ -150,7 +150,7 @@ export const cascadeSelectCss =
 }
 
 [data-scope="cascade-select"][data-part="match"]:hover {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="cascade-select"][data-part="match"][data-selected] {
@@ -195,7 +195,7 @@ export const cascadeSelectCss =
 
 [data-scope="cascade-select"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
 [data-scope="cascade-select"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="cascade-select"][data-part="item"]:focus-visible {

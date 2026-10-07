@@ -204,7 +204,7 @@ export const selectCss =
 
 [data-scope="select"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
 [data-scope="select"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="select"][data-part="item"]:focus-visible {

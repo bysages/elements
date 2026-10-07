@@ -160,9 +160,9 @@ export const buttonCss = /* css */ `
   --_edge: var(--bs-color-border);
 }
 
-/* Ghost: bare ink that borrows the subtle surface under the cursor. */
+/* Ghost: bare ink; hover adds a quiet wash of that ink. */
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="ghost"] {
-  --_fill-hover: var(--bs-color-surface-0);
+  --_fill-hover: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   box-shadow: none;
 }
 
