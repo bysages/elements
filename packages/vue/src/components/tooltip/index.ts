@@ -37,11 +37,17 @@ const TooltipFacade = defineComponent({
   name: "STooltip",
   inheritAttrs: false,
   props: {
+    /** The controlled visibility state. */
     open: { type: Boolean, default: undefined },
+    /** The initial visibility state for uncontrolled use. */
     defaultOpen: { type: Boolean, default: undefined },
+    /** The trigger text; a custom trigger uses the trigger slot. */
     trigger: { type: String, default: undefined },
+    /** The tooltip text; custom content uses the content slot. */
     content: { type: String, default: undefined },
+    /** Whether interaction is suppressed. */
     disabled: { type: Boolean, default: false },
+    /** Where the tooltip sits relative to its trigger. */
     placement: { type: String as PropType<TooltipPlacement>, default: undefined },
   },
   emits: ["update:open"],

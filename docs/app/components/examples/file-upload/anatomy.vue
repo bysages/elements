@@ -21,5 +21,6 @@ import { FileUpload, Icon } from "@bysages/vue";
         </FileUpload.Item>
       </FileUpload.Context>
     </FileUpload.ItemGroup>
+    <FileUpload.HiddenInput />
   </FileUpload.Root>
 </template>

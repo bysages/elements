@@ -392,6 +392,7 @@ export const colorPickerCss =
 
 [data-scope="color-picker"][data-part="format-select"] {
   box-sizing: border-box;
+  inline-size: 100%;
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);

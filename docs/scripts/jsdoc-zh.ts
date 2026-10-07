@@ -599,8 +599,23 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   "color-picker": {
     description:
-      "ColorPicker：颜色选择器。控件大小的色块显示当前颜色，展开后提供取色区域和通道滑块。部件：Root、Label、Control、Trigger、Positioner、Content、Area、AreaThumb、AreaBackground、ValueText、ValueSwatch、ChannelSlider、ChannelSliderLabel、ChannelSliderTrack、ChannelSliderThumb、ChannelSliderValueText、ChannelInput、TransparencyGrid、SwatchGroup、SwatchTrigger、SwatchIndicator、Swatch、EyeDropperTrigger、FormatTrigger、FormatSelect、HiddenInput、Context。",
+      "ColorPicker：颜色选择器。控件大小的色块显示当前颜色，展开后提供取色区域、吸管、色相和透明度滑块、rgba/hsla 通道输入与格式切换；`swatches` 提供可选的保存色样行。部件：Root、Label、Control、Trigger、Positioner、Content、Area、AreaThumb、AreaBackground、ValueText、ValueSwatch、ChannelSlider、ChannelSliderLabel、ChannelSliderTrack、ChannelSliderThumb、ChannelSliderValueText、ChannelInput、TransparencyGrid、SwatchGroup、SwatchTrigger、SwatchIndicator、Swatch、EyeDropperTrigger、FormatTrigger、FormatSelect、HiddenInput、Context。",
     parts: {
+      ColorPicker: {
+        description:
+          "颜色选择器的完整外观：色块触发器展开取色区域、吸管、色相和透明度滑块、rgba/hsla 通道输入与格式切换；传入 `swatches` 时显示保存色样行。",
+        props: {
+          modelValue: "取色器的 v-model 值",
+          defaultValue: "初始颜色值；无需控制取色器颜色值时使用",
+          disabled: "取色器是否禁用",
+          invalid: "取色器是否无效",
+          required: "取色器是否必填",
+          label: "取色器标签文本",
+          swatches: "保存色样行的颜色值列表",
+          defaultFormat: "初始通道格式，可为 `rgba` 或 `hsla`",
+          size: "色样按钮的高度，可为 `sm`、`md` 或 `lg`",
+        },
+      },
       Root: {
         props: {
           size: "色样按钮的高度，可为 `sm`、`md` 或 `lg`",
@@ -1058,7 +1073,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   "file-upload": {
     description:
-      "FileUpload：文件上传。虚线拖放区在拖过时出现浅色光感，已接受的文件显示为松散的发丝线条目。部件：Root、Label、Trigger、Dropzone、HiddenInput、ItemGroup、Item、ItemName、ItemSizeText、ItemPreview、ItemPreviewImage、ItemDeleteTrigger、ClearTrigger、Context。",
+      "FileUpload：文件上传。提供拖放区域和文件选择入口，已接受的文件以列表项展示，可逐项移除。部件：Root、Label、Trigger、Dropzone、HiddenInput、ItemGroup、Item、ItemName、ItemSizeText、ItemPreview、ItemPreviewImage、ItemDeleteTrigger、ClearTrigger、Context。",
     parts: {
       Dropzone: {
         props: {
@@ -2374,6 +2389,18 @@ export const jsdocZh: Record<string, FamilyZh> = {
     description:
       "Tooltip：工具提示。它是最小的浮层：一小块紧凑的墨色内容在锚点上方淡入。部件：Root、Trigger、Positioner、Content、Arrow、ArrowTip。",
     parts: {
+      Tooltip: {
+        description:
+          "Tooltip 的完整外观：一个触发器和一句提示，可通过 placement 配置上、右、下、左等方位。",
+        props: {
+          open: "tooltip 的受控打开状态",
+          defaultOpen: "tooltip 的初始打开状态；不需要控制打开状态时使用",
+          trigger: "触发器文本；自定义触发器改用 #trigger 插槽",
+          content: "提示文本；自定义内容改用 #content 插槽",
+          disabled: "tooltip 是否禁用",
+          placement: "提示相对触发器的位置，可为上、右、下、左及其 start/end 变体",
+        },
+      },
       Root: {
         props: {
           "aria-label": "tooltip 的自定义标签",

@@ -70,6 +70,11 @@ const FloatingPanelFacade = defineComponent({
                     h(ArkFloatingPanel.StageTrigger, { stage: "maximized" }, () =>
                       iconNode("maximize-2"),
                     ),
+                    h(
+                      ArkFloatingPanel.StageTrigger,
+                      { stage: "default", "aria-label": "Restore" },
+                      () => iconNode("minimize-2"),
+                    ),
                     h(ArkFloatingPanel.CloseTrigger, { "aria-label": "Close" }, () =>
                       iconNode("x"),
                     ),

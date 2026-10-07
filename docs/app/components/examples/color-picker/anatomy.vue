@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { parseColor } from "@ark-ui/vue/color-picker";
 import { check } from "@bysages/icons";
-import { ColorPicker, Icon, SegmentGroup } from "@bysages/vue";
+import { ColorPicker, Icon } from "@bysages/vue";
+import { ref } from "vue";
 
+const format = ref<"rgba" | "hsla">("rgba");
 const savedColors = ["#eb5e41", "#3d5a80", "#61892f", "#d9a648", "#7048a8"];
-
-function setFormat(api: { setFormat: (f: string) => void }, e: { value: string }) {
-  api.setFormat(e.value);
-}
 </script>
 
 <template>
-  <ColorPicker.Root :default-value="parseColor('#3d5a80')" default-format="rgba">
+  <ColorPicker.Root :default-value="parseColor('#3d5a80')" v-model:format="format">
     <ColorPicker.Label>Ink color</ColorPicker.Label>
     <ColorPicker.Control>
       <ColorPicker.ChannelInput channel="hex" />
@@ -77,21 +75,15 @@ function setFormat(api: { setFormat: (f: string) => void }, e: { value: string }
             <ColorPicker.ChannelInput channel="alpha" />
           </div>
         </ColorPicker.View>
-        <ColorPicker.Context v-slot="api">
-          <SegmentGroup.Root :value="api.format" @update:value="(e) => setFormat(api, e)">
-            <SegmentGroup.Indicator />
-            <SegmentGroup.Item value="rgba">
-              <SegmentGroup.ItemText>rgba</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-            <SegmentGroup.Item value="hsla">
-              <SegmentGroup.ItemText>hsla</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-          </SegmentGroup.Root>
-        </ColorPicker.Context>
+        <select
+          v-model="format"
+          data-scope="color-picker"
+          data-part="format-select"
+          aria-label="Color format"
+        >
+          <option value="rgba">rgba</option>
+          <option value="hsla">hsla</option>
+        </select>
       </ColorPicker.Content>
     </ColorPicker.Positioner>
     <ColorPicker.HiddenInput />

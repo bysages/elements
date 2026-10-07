@@ -1,9 +1,8 @@
 import { parseColor } from "@ark-ui/vue/color-picker";
 import type { Meta } from "@storybook/vue3-vite";
-import { h } from "vue";
+import { h, ref, type Ref } from "vue";
 
 import { ColorPicker } from ".";
-import { SegmentGroup } from "../segment-group/index.js";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Forms/Color Picker" };
@@ -71,94 +70,107 @@ function channelRow(channels: string[]) {
 
 /** The facade is the one-tag path for the common completion. */
 export const Basic = {
-  render: () => h(ColorPicker, { defaultValue: "#3d5a80", label: "Ink color" }),
+  render: () =>
+    h(ColorPicker, {
+      defaultValue: "#3d5a80",
+      label: "Ink color",
+      swatches: savedColors,
+    }),
 };
 
-/** The formats ride our own segment group through the picker's context —
- * the native select would dress the closed control but never its list. */
-function formatSwitch() {
-  return h(ColorPicker.Context as any, null, {
-    default: (api: any) =>
-      h(
-        SegmentGroup.Root,
-        {
-          value: api.format,
-          onValueChange: (e: { value: string }) => api.setFormat(e.value),
-        },
-        () => [
-          h(SegmentGroup.Indicator),
-          ...["rgba", "hsla"].map((format) =>
-            h(SegmentGroup.Item, { key: format, value: format }, () => [
-              h(SegmentGroup.ItemText, () => format),
-              h(SegmentGroup.ItemControl),
-              h(SegmentGroup.ItemHiddenInput),
-            ]),
-          ),
-        ],
-      ),
-  });
+/** The native format select uses the full row without a half-filled strip. */
+function formatSwitch(format: Ref<"rgba" | "hsla">) {
+  return h(
+    "select",
+    {
+      "data-scope": "color-picker",
+      "data-part": "format-select",
+      "aria-label": "Color format",
+      value: format.value,
+      onChange: (event: Event) => {
+        const value = (event.target as HTMLSelectElement).value;
+        if (value === "rgba" || value === "hsla") format.value = value;
+      },
+    },
+    ["rgba", "hsla"].map((itemFormat) =>
+      h("option", { key: itemFormat, value: itemFormat }, itemFormat),
+    ),
+  );
 }
 
 /** One hex input beside the seal trigger — alpha lives in the popup where
  * the slider and its channel input already speak for it. The popup opens
  * the picking area, the hue and alpha tracks beside the eyedropper, the
- * saved swatches, one channel-input row per format, and the format
- * segment group. */
+ * saved swatches, one channel-input row per format, and the native
+ * format select. */
 export const Anatomy = {
   args: {
     label: "Ink color",
   },
-  render: (args: any) =>
-    withState(
-      () => () =>
-        h(ColorPicker.Root, { defaultValue: parseColor("#3d5a80"), defaultFormat: "rgba" }, () => [
-          h(ColorPicker.Label, () => args.label),
-          h(ColorPicker.Control, () => [
-            h(ColorPicker.ChannelInput as any, { channel: "hex" }),
-            h(ColorPicker.Trigger, () => [
-              h(ColorPicker.TransparencyGrid),
-              h(ColorPicker.ValueSwatch),
-            ]),
-          ]),
 
-          h(ColorPicker.Positioner, () =>
-            h(ColorPicker.Content, () => [
-              h(ColorPicker.Area, () => [h(ColorPicker.AreaBackground), h(ColorPicker.AreaThumb)]),
-              h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
-                h(ColorPicker.EyeDropperTrigger, () => eyedropperIcon()),
-                h(
-                  "div",
-                  {
-                    style: {
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.5rem",
-                      flex: 1,
-                      minWidth: 0,
-                    },
-                  },
-                  [channelSlider("hue"), channelSlider("alpha")],
-                ),
+  render: (args: any) =>
+    withState(() => {
+      const format = ref<"rgba" | "hsla">("rgba");
+      return () =>
+        h(
+          ColorPicker.Root,
+          {
+            defaultValue: parseColor("#3d5a80"),
+            format: format.value,
+            "onUpdate:format": (value: "rgba" | "hsla") => (format.value = value),
+          },
+          () => [
+            h(ColorPicker.Label, () => args.label),
+            h(ColorPicker.Control, () => [
+              h(ColorPicker.ChannelInput as any, { channel: "hex" }),
+              h(ColorPicker.Trigger, () => [
+                h(ColorPicker.TransparencyGrid),
+                h(ColorPicker.ValueSwatch),
               ]),
-              h(ColorPicker.SwatchGroup, () =>
-                savedColors.map((color) =>
-                  h(ColorPicker.SwatchTrigger, { key: color, value: color }, () => [
-                    h(ColorPicker.Swatch as any, { value: color }, () => [
-                      h(ColorPicker.SwatchIndicator, () => checkIcon()),
-                    ]),
-                  ]),
-                ),
-              ),
-              h(ColorPicker.View as any, { format: "rgba" }, () =>
-                channelRow(["red", "green", "blue", "alpha"]),
-              ),
-              h(ColorPicker.View as any, { format: "hsla" }, () =>
-                channelRow(["hue", "saturation", "lightness", "alpha"]),
-              ),
-              formatSwitch(),
             ]),
-          ),
-          h(ColorPicker.HiddenInput),
-        ]),
-    ),
+
+            h(ColorPicker.Positioner, () =>
+              h(ColorPicker.Content, () => [
+                h(ColorPicker.Area, () => [
+                  h(ColorPicker.AreaBackground),
+                  h(ColorPicker.AreaThumb),
+                ]),
+                h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
+                  h(ColorPicker.EyeDropperTrigger, () => eyedropperIcon()),
+                  h(
+                    "div",
+                    {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
+                        flex: 1,
+                        minWidth: 0,
+                      },
+                    },
+                    [channelSlider("hue"), channelSlider("alpha")],
+                  ),
+                ]),
+                h(ColorPicker.SwatchGroup, () =>
+                  savedColors.map((color) =>
+                    h(ColorPicker.SwatchTrigger, { key: color, value: color }, () => [
+                      h(ColorPicker.Swatch as any, { value: color }, () => [
+                        h(ColorPicker.SwatchIndicator, () => checkIcon()),
+                      ]),
+                    ]),
+                  ),
+                ),
+                h(ColorPicker.View as any, { format: "rgba" }, () =>
+                  channelRow(["red", "green", "blue", "alpha"]),
+                ),
+                h(ColorPicker.View as any, { format: "hsla" }, () =>
+                  channelRow(["hue", "saturation", "lightness", "alpha"]),
+                ),
+                formatSwitch(format),
+              ]),
+            ),
+            h(ColorPicker.HiddenInput),
+          ],
+        );
+    }),
 };

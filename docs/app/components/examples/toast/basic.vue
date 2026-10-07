@@ -3,6 +3,8 @@ import { Button, createToaster, Toaster } from "@bysages/vue";
 
 const toaster = createToaster({
   placement: "bottom-end",
+  overlap: true,
+  gap: 24,
   max: 3,
 });
 

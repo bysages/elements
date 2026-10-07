@@ -142,6 +142,13 @@ export const numberInputCss =
   touch-action: none;
 }
 
+[data-scope="number-input"][data-part="scrubber"] svg,
+[data-scope="number-input"][data-part="increment-trigger"] svg,
+[data-scope="number-input"][data-part="decrement-trigger"] svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
 [data-scope="number-input"][data-part="scrubber"]:hover {
   color: var(--bs-color-text-primary);
 }

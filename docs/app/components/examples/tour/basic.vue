@@ -15,7 +15,7 @@ const tour = useTour({
       type: "tooltip",
       title: "The worktable",
       description: "Everything stays on the paper; nothing leaves the page.",
-      target: () => document.getElementById("tour-anchor"),
+      target: () => document.getElementById("tour-basic-anchor"),
       actions: [{ label: "Finish", action: "dismiss" }],
     },
   ],
@@ -24,6 +24,6 @@ const tour = useTour({
 
 <template>
   <Tour :tour="tour" trigger="Start tour">
-    <div id="tour-anchor" class="p-4 border border-dashed border-border">Anchor element</div>
+    <div id="tour-basic-anchor" class="p-4 border border-dashed border-border">Anchor element</div>
   </Tour>
 </template>

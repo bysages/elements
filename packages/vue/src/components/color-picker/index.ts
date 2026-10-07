@@ -1,8 +1,17 @@
 import { ColorPicker as ArkColorPicker, parseColor } from "@ark-ui/vue/color-picker";
 import { injectComponentStyle } from "@bysages/core";
-import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
+import {
+  defineComponent,
+  h,
+  ref,
+  type Component,
+  type PropType,
+  type Ref,
+  type SetupContext,
+} from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** The parsed color representation accepted by the picker. */
@@ -10,8 +19,8 @@ type Color = ReturnType<typeof parseColor>;
 import { useElementId } from "../../internal/id";
 
 /** ColorPicker, dressed in the paper-and-ink system: a seal-sized swatch
- * on the paper, opening into an area and channel sliders where pigment is
- * picked. The parts — Root, Label, Control, Trigger, Positioner,
+ * on the paper, opening into an area, channel sliders, format inputs, and
+ * an optional saved-color row. The parts — Root, Label, Control, Trigger, Positioner,
  * Content, Area, AreaThumb, AreaBackground, ValueText, ValueSwatch,
  * ChannelSlider, ChannelSliderLabel, ChannelSliderTrack, ChannelSliderThumb,
  * ChannelSliderValueText, ChannelInput, TransparencyGrid, SwatchGroup,
@@ -36,9 +45,52 @@ const ColorPickerRoot = defineComponent({
   },
 });
 
+const eyedropperIcon = () => iconNode("pipette", { width: 14, height: 14 });
+
+const checkIcon = () => iconNode("check", { width: 12, height: 12 });
+
+function channelSlider(channel: "hue" | "alpha") {
+  return h(ArkColorPicker.ChannelSlider, { channel }, () =>
+    channel === "alpha"
+      ? [
+          h(ArkColorPicker.TransparencyGrid),
+          h(ArkColorPicker.ChannelSliderTrack),
+          h(ArkColorPicker.ChannelSliderThumb),
+        ]
+      : [h(ArkColorPicker.ChannelSliderTrack), h(ArkColorPicker.ChannelSliderThumb)],
+  );
+}
+
+function channelInputs(channels: string[]) {
+  return h(
+    "div",
+    { style: { display: "flex", gap: "0.5rem" } },
+    channels.map((channel) => h(ArkColorPicker.ChannelInput as never, { channel })),
+  );
+}
+
+function formatSwitch(format: Ref<"rgba" | "hsla">) {
+  return h(
+    "select",
+    {
+      "data-scope": "color-picker",
+      "data-part": "format-select",
+      "aria-label": "Color format",
+      value: format.value,
+      onChange: (event: Event) => {
+        const value = (event.target as HTMLSelectElement).value;
+        if (value === "rgba" || value === "hsla") format.value = value;
+      },
+    },
+    ["rgba", "hsla"].map((itemFormat) =>
+      h("option", { key: itemFormat, value: itemFormat }, itemFormat),
+    ),
+  );
+}
+
 /** The complete picker behind one color: a swatch trigger opens the area,
- * hue and alpha tracks, and a hex field. Saved swatches and format switches
- * remain anatomy work. */
+ * eyedropper, hue and alpha tracks, per-format channel inputs, and the
+ * native format select. Optional swatches ride the same saved-color row. */
 const ColorPickerFacade = defineComponent({
   name: "SColorPicker",
   props: {
@@ -48,10 +100,16 @@ const ColorPickerFacade = defineComponent({
     invalid: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
     label: { type: String, default: undefined },
+    /** Colors shown as the saved-color row. */
+    swatches: { type: Array as PropType<string[]>, default: () => [] },
+    /** Initial channel format shown by the built-in format switch. */
+    defaultFormat: { type: String as PropType<"rgba" | "hsla">, default: "rgba" },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, { attrs, emit }: SetupContext) {
+    const format = ref(props.defaultFormat);
+
     return () =>
       h(
         ColorPickerRoot,
@@ -66,6 +124,10 @@ const ColorPickerFacade = defineComponent({
           disabled: props.disabled,
           invalid: props.invalid,
           required: props.required,
+          format: format.value,
+          "onUpdate:format": (value: "rgba" | "hsla") => {
+            format.value = value;
+          },
           "onUpdate:modelValue": (value: unknown) => emit("update:modelValue", value),
         },
         () => [
@@ -83,15 +145,42 @@ const ColorPickerFacade = defineComponent({
                 h(ArkColorPicker.AreaBackground),
                 h(ArkColorPicker.AreaThumb),
               ]),
-              h(ArkColorPicker.ChannelSlider, { channel: "hue" }, () => [
-                h(ArkColorPicker.ChannelSliderTrack),
-                h(ArkColorPicker.ChannelSliderThumb),
+              h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
+                h(ArkColorPicker.EyeDropperTrigger, () => eyedropperIcon()),
+                h(
+                  "div",
+                  {
+                    style: {
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.5rem",
+                      flex: 1,
+                      minWidth: 0,
+                    },
+                  },
+                  [channelSlider("hue"), channelSlider("alpha")],
+                ),
               ]),
-              h(ArkColorPicker.ChannelSlider, { channel: "alpha" }, () => [
-                h(ArkColorPicker.TransparencyGrid),
-                h(ArkColorPicker.ChannelSliderTrack),
-                h(ArkColorPicker.ChannelSliderThumb),
-              ]),
+              ...(props.swatches.length
+                ? [
+                    h(ArkColorPicker.SwatchGroup, () =>
+                      props.swatches.map((color) =>
+                        h(ArkColorPicker.SwatchTrigger, { key: color, value: color }, () => [
+                          h(ArkColorPicker.Swatch as never, { value: color }, () => [
+                            h(ArkColorPicker.SwatchIndicator, () => checkIcon()),
+                          ]),
+                        ]),
+                      ),
+                    ),
+                  ]
+                : []),
+              h(ArkColorPicker.View as never, { format: "rgba" }, () =>
+                channelInputs(["red", "green", "blue", "alpha"]),
+              ),
+              h(ArkColorPicker.View as never, { format: "hsla" }, () =>
+                channelInputs(["hue", "saturation", "lightness", "alpha"]),
+              ),
+              formatSwitch(format),
             ]),
           ),
           h(ArkColorPicker.HiddenInput),
