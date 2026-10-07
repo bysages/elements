@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { HTMLAttributes, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -39,14 +39,20 @@ function ImageImpl({
 }: ImageProps) {
   injectComponentStyle("image");
   const [state, setState] = useState<"loading" | "loaded" | "error">("loading");
+  const imageRef = useRef<HTMLImageElement | null>(null);
 
-  // A new source starts the wait over — the last picture's state must
-  // not stand in for the next one's.
-  useEffect(() => setState("loading"), [src]);
+  // A new source starts the wait over; cached sources may already be
+  // complete, so their settled state is read after the element mounts.
+  useEffect(() => {
+    setState("loading");
+    const image = imageRef.current;
+    if (image?.complete) setState(image.naturalWidth > 0 ? "loaded" : "error");
+  }, [src]);
 
   return (
     <figure {...rest} data-scope="image" data-part="root" data-state={state} data-fit={fit}>
       <img
+        ref={imageRef}
         data-scope="image"
         data-part="img"
         src={src}

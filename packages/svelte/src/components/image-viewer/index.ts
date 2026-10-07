@@ -1,12 +1,22 @@
-import { withSelfRoot } from "../../internal/family";
+import { defineFamily } from "../../internal/family";
+import { Dialog } from "../dialog";
+import ImagePreview from "./ImagePreview.svelte";
 import ImageViewerComponent from "./ImageViewer.svelte";
 
-/** A lightbox: the picture over a dimmed page, with a small toolbar
- * beneath it. Zoom is the reader's hand (half to three times,
- * clamped), a quarter turn at a time rotates, Escape and the scrim
- * close — the dialog machine carries the modal part. `open` may stay
- * with the caller (`bind:open`); left alone the viewer keeps it to
- * itself. */
-export const ImageViewer = withSelfRoot(ImageViewerComponent);
+/** The viewer opens from any wrapped doorway; Dialog anatomy remains
+ * available, and `Preview` adds the shared image door with its icon. */
+const viewerParts = {
+  ...(Dialog as unknown as Record<string, unknown>),
+  Preview: ImagePreview,
+} as unknown as Parameters<typeof defineFamily>[1];
 
-export type { ImageViewerProps } from "./props";
+export const ImageViewer = defineFamily(
+  ImageViewerComponent,
+  viewerParts,
+) as unknown as typeof ImageViewerComponent &
+  Omit<typeof Dialog, "Root"> & {
+    Root: (typeof Dialog)["Root"];
+    Preview: typeof ImagePreview;
+  };
+
+export type { ImageViewerProps, ImageViewerPreviewProps } from "./props";

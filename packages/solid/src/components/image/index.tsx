@@ -41,13 +41,17 @@ export const Image = withSelfRoot(function Image(props: ImageProps) {
     "fallback",
   ]);
   const [state, setState] = createSignal<"loading" | "loaded" | "error">("loading");
+  let image: HTMLImageElement | undefined;
 
-  // A new source starts the wait over — the last picture's state must
-  // not stand in for the next one's.
+  // A new source starts the wait over; cached sources may already be
+  // complete, so their settled state is read after the element mounts.
   createEffect(
     on(
       () => own.src,
-      () => setState("loading"),
+      () => {
+        setState("loading");
+        if (image?.complete) setState(image.naturalWidth > 0 ? "loaded" : "error");
+      },
     ),
   );
 
@@ -60,6 +64,7 @@ export const Image = withSelfRoot(function Image(props: ImageProps) {
       data-fit={own.fit ?? "cover"}
     >
       <img
+        ref={(element) => (image = element)}
         data-scope="image"
         data-part="img"
         src={own.src}

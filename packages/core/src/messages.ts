@@ -35,7 +35,7 @@ export type ComponentMessages = {
   command: { palette: string; search: string; filter: string; noMatches: string };
   spinner: { loading: string };
   floatButton: { actions: string };
-  imageViewer: { zoomIn: string; zoomOut: string; rotate: string; close: string };
+  imageViewer: { preview: string; zoomIn: string; zoomOut: string; rotate: string; close: string };
   transfer: { filter: string; moveRight: string; moveLeft: string };
   orderList: { toTop: string; moveUp: string; moveDown: string; toBottom: string };
   dynamicEntry: { remove: string };
@@ -87,6 +87,7 @@ const ENGLISH_MESSAGES: ComponentMessages = {
   spinner: { loading: "Loading" },
   floatButton: { actions: "Floating actions" },
   imageViewer: {
+    preview: "Preview",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     rotate: "Rotate 90 degrees",
@@ -134,7 +135,13 @@ const CHINESE_MESSAGES: ComponentMessages = {
   command: { palette: "命令面板", search: "搜索", filter: "筛选", noMatches: "未找到匹配项" },
   spinner: { loading: "加载中" },
   floatButton: { actions: "浮动操作" },
-  imageViewer: { zoomIn: "放大", zoomOut: "缩小", rotate: "旋转 90 度", close: "关闭" },
+  imageViewer: {
+    preview: "预览",
+    zoomIn: "放大",
+    zoomOut: "缩小",
+    rotate: "旋转 90 度",
+    close: "关闭",
+  },
   transfer: { filter: "筛选 {name}", moveRight: "向右移动", moveLeft: "向左移动" },
   orderList: { toTop: "移到顶部", moveUp: "上移", moveDown: "下移", toBottom: "移到底部" },
   dynamicEntry: { remove: "移除" },

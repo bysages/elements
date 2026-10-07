@@ -12,6 +12,7 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { Dialog } from "../dialog";
+import { ImageViewerPreview } from "./preview";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -26,25 +27,24 @@ const TOOL_ICONS = {
 };
 
 /**
- * A lightbox: the picture over a dimmed page, with a small toolbar
- * beneath it. Zoom is the reader's hand (half to three times, clamped),
- * a quarter turn at a time rotates, Escape and the scrim close — the
- * dialog machine carries the modal part. `open` may stay with the
- * caller; left undefined the viewer keeps it to itself.
+ * Opens the full lightbox from a curated icon by default, or from any
+ * wrapped button, image or other doorway. Zoom, rotation, Escape and the scrim
+ * stay in the viewer. Anatomy remains available on `ImageViewer.Root`.
  */
 export interface ImageViewerProps {
   src: string;
   alt?: string;
   open?: boolean;
   zoomable?: boolean;
-  /** Intrinsic size, handed to the image itself to reserve its box. */
+  /** The large image handed to the lightbox. */
   width?: string | number;
-  /** Intrinsic size, handed to the image itself to reserve its box. */
+  /** The large image handed to the lightbox. */
   height?: string | number;
 }
 
 const ImageViewerFacade = defineComponent({
   name: "ImageViewer",
+  inheritAttrs: false,
   props: {
     src: { type: String, required: true },
     alt: { type: String, default: "" },
@@ -118,6 +118,8 @@ const ImageViewerFacade = defineComponent({
       );
     }
 
+    const triggerContent = ctx.slots.default;
+
     return () =>
       h(
         withPresenceRoot(ArkDialog.Root),
@@ -131,6 +133,15 @@ const ImageViewerFacade = defineComponent({
           unmountOnExit: true,
         }),
         () => [
+          h(
+            ArkDialog.Trigger,
+            {
+              asChild: true,
+              "data-scope": "image-viewer",
+              "data-part": "trigger",
+            },
+            triggerContent ?? (() => [h(ImageViewerPreview)]),
+          ),
           h(ArkDialog.Backdrop, { class: "bs-image-viewer-backdrop" }),
           h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>
             h(
@@ -189,5 +200,12 @@ const ImageViewerFacade = defineComponent({
   },
 });
 
-export const ImageViewer = defineFamily(ImageViewerFacade, Dialog) as typeof ImageViewerFacade &
-  typeof Dialog;
+const viewerParts = {
+  ...(Dialog as unknown as Record<string, unknown>),
+  Preview: ImageViewerPreview,
+} as unknown as Parameters<typeof defineFamily>[1];
+
+export const ImageViewer = defineFamily(
+  ImageViewerFacade,
+  viewerParts,
+) as typeof ImageViewerFacade & (typeof Dialog & { Preview: typeof ImageViewerPreview });

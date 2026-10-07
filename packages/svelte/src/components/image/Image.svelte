@@ -19,12 +19,14 @@ let {
 type ImageState = "loading" | "loaded" | "error";
 
 let state = $state<ImageState>("loading");
+let image = $state<HTMLImageElement | undefined>();
 
-// A new source starts the wait over — the last picture's state must
-// not stand in for the next one's.
+// A new source starts the wait over; cached sources may already be
+// complete, so their settled state is read after the element mounts.
 $effect(() => {
   void src;
   state = "loading";
+  if (image?.complete) state = image.naturalWidth > 0 ? "loaded" : "error";
 });
 </script>
 
@@ -35,6 +37,7 @@ caller has nothing local to say. The frame's size is the consumer's to
 give. -->
 <figure {...rest} data-scope="image" data-part="root" data-state={state} data-fit={fit}>
   <img
+    bind:this={image}
     data-scope="image"
     data-part="img"
     {src}

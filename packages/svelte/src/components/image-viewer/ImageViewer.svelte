@@ -2,6 +2,7 @@
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("image-viewer");
 
+import { Dialog } from "../dialog";
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
 import { Portal } from "@ark-ui/svelte/portal";
 
@@ -9,6 +10,7 @@ import { Button } from "../button";
 import InternalIcon from "../../internal/InternalIcon.svelte";
 import { ButtonGroup } from "../button-group";
 import { useComponentMessages } from "../config-provider/messages";
+import ImagePreview from "./ImagePreview.svelte";
 import type { ImageViewerProps } from "./props";
 
 const MIN_SCALE = 0.5;
@@ -20,6 +22,7 @@ let {
   alt = "",
   width,
   height,
+  children,
   open = $bindable(false),
   zoomable = true,
   onOpenChange,
@@ -59,17 +62,24 @@ function turn() {
   </Button>
 {/snippet}
 
-<!-- A lightbox: the picture over a dimmed page, with a small toolbar
-beneath it. Zoom is the reader's hand (half to three times, clamped),
-a quarter turn at a time rotates, Escape and the scrim close — the
-dialog machine carries the modal part. The picture is heavy: nothing
-of the lightbox rests in the page while it is closed. -->
-<ArkDialog.Root
+<!-- The viewer opens from the curated icon by default, or from any
+wrapped button, image or other doorway. Zoom, rotation, Escape and the scrim stay in
+the viewer. -->
+<Dialog.Root
   {open}
   onOpenChange={(details) => setOpen(details.open)}
   lazyMount
   unmountOnExit
 >
+  <ArkDialog.Trigger data-scope="image-viewer" data-part="trigger">
+    {#snippet asChild(triggerProps)}
+      {#if children}
+        {@render children(triggerProps())}
+      {:else}
+        <ImagePreview {...triggerProps()} />
+      {/if}
+    {/snippet}
+  </ArkDialog.Trigger>
   <Portal>
     <ArkDialog.Backdrop class="bs-image-viewer-backdrop" />
     <ArkDialog.Positioner class="bs-image-viewer-positioner">
@@ -107,4 +117,4 @@ of the lightbox rests in the page while it is closed. -->
       </ArkDialog.Content>
     </ArkDialog.Positioner>
   </Portal>
-</ArkDialog.Root>
+</Dialog.Root>

@@ -126,6 +126,7 @@
   "image-cropper/basic": "components-media-image-cropper--basic",
   "image-cropper/anatomy": "components-media-image-cropper--anatomy",
   "image-viewer/basic": "components-media-image-viewer--basic",
+  "image-viewer/button": "components-media-image-viewer--button",
   "image-viewer/not-zoomable": "components-media-image-viewer--not-zoomable",
   "input/basic": "components-forms-input--basic",
   "input/mask": "components-forms-input--basic",

@@ -54,6 +54,89 @@ export const imageViewerCss = /* css */ `
   animation: bs-ink-in var(--bs-duration-slow) var(--bs-ease-out);
 }
 
+/* The Preview part is a visual doorway, not a second control: the
+   wrapped image remains the accessible trigger while hover and focus
+   reveal a curated glyph over the picture. */
+[data-scope="image-viewer"][data-part~="preview"] {
+  position: relative;
+  display: block;
+  max-inline-size: fit-content;
+}
+
+/* Without custom content the doorway is the icon itself: a compact,
+   quiet control so the reader sees both the affordance and the target. */
+[data-scope="image-viewer"][data-part~="preview"][data-empty="true"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* The shared Preview caps custom doors at their own content; the fixed icon must opt out. */
+  max-inline-size: none;
+  inline-size: var(--bs-control-height-md);
+  block-size: var(--bs-control-height-md);
+  color: var(--bs-color-text);
+  background: var(--bs-color-surface-2);
+  border: 1px solid var(--bs-color-border);
+  border-radius: var(--bs-radius-sm);
+  box-shadow: var(--bs-shadow-xs);
+  cursor: pointer;
+  transition: box-shadow var(--bs-duration-base) var(--bs-ease-out),
+    border-color var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scope="image-viewer"][data-part~="preview"][data-empty="true"]:hover {
+  border-color: var(--bs-color-border-strong);
+}
+
+[data-scope="image-viewer"][data-part~="preview"][data-empty="true"]:focus-visible {
+  border-color: var(--bs-color-primary);
+  box-shadow: var(--bs-focus-ring);
+  outline: none;
+}
+
+[data-scope="image-viewer"][data-part~="preview"][data-empty="true"] svg {
+  inline-size: var(--bs-space-5);
+  block-size: var(--bs-space-5);
+}
+
+[data-scope="image-viewer"][data-part~="preview"] [data-scope="image"][data-part="root"] {
+  transition: box-shadow var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scope="image-viewer"][data-part~="preview"]:hover [data-scope="image"][data-part="root"],
+[data-scope="image-viewer"][data-part~="preview"]:focus-visible [data-scope="image"][data-part="root"] {
+  box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="image-viewer"][data-part="preview-overlay"] {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bs-gap-xs);
+  border-radius: var(--bs-radius-sm);
+  color: var(--bs-color-text-on-scrim);
+  background: color-mix(in oklab, var(--bs-color-scrim) 38%, transparent);
+  opacity: 0;
+  transition: opacity var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scope="image-viewer"][data-part~="preview"]:hover [data-part="preview-overlay"],
+[data-scope="image-viewer"][data-part~="preview"]:focus-visible [data-part="preview-overlay"] {
+  opacity: 1;
+}
+
+[data-scope="image-viewer"][data-part="preview-overlay"] svg {
+  inline-size: var(--bs-space-6);
+  block-size: var(--bs-space-6);
+}
+
+[data-scope="image-viewer"][data-part="preview-label"] {
+  color: var(--bs-color-text-on-scrim);
+  font-size: var(--bs-font-size-sm);
+  letter-spacing: var(--bs-tracking-label);
+}
 /* The picture takes the row the toolbar leaves and keeps its shape
    inside it — contain centers whatever the frame cannot hold. The
    minimum height must be let go of explicitly, or the picture's own

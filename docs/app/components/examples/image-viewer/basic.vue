@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { Button, ImageViewer } from "@bysages/vue";
-import { ref } from "vue";
+import { ImageViewer } from "@bysages/vue";
 
-const SAMPLE = "https://picsum.photos/seed/elements-viewer/1600/1000";
-const open = ref(false);
+const FULL = "https://picsum.photos/seed/elements-viewer/1600/1000";
 </script>
 
 <template>
-  <div class="w-full">
-    <Button @click="open = true">Open viewer</Button>
-    <ImageViewer v-model:open="open" :src="SAMPLE" alt="A photograph from the archive" />
-  </div>
+  <ImageViewer :src="FULL" alt="A photograph from the archive" />
 </template>

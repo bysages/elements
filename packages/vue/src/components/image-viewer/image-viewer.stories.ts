@@ -1,52 +1,57 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { h, reactive } from "vue";
+import { h } from "vue";
 
 import { ImageViewer } from ".";
-import { Button } from "../button";
-import { withState } from "../with-state.js";
+import { Button as ButtonControl } from "../button";
+import { Image } from "../image";
 
 const meta: Meta = { title: "Components/Media/Image Viewer" };
 export default meta;
 type Story = StoryObj<typeof ImageViewer>;
 
-const SAMPLE = "https://picsum.photos/seed/elements-viewer/1600/1000";
+const FULL = "https://picsum.photos/seed/elements-viewer/1600/1000";
+const THUMBNAIL = "https://picsum.photos/seed/elements-viewer/480/320";
 
-/** Open, zoom, quarter-turn, Escape — the machine carries the modal
- * part, the toolbar keeps its own small register under the picture. */
+/** The default trigger is the house preview icon. */
 export const Basic: Story = {
   render: () =>
-    withState(() => {
-      const state = reactive({ open: false });
-      return () => [
-        h(Button, { onClick: () => (state.open = true) }, () => "Open viewer"),
-        h(ImageViewer, {
-          src: SAMPLE,
-          alt: "A photograph from the archive",
-          open: state.open,
-          "onUpdate:open": (value: boolean) => (state.open = value),
-        }),
-      ];
+    h(ImageViewer, {
+      src: FULL,
+      alt: "A photograph from the archive",
     }),
+};
+
+/** A headless trigger can dress as any control. */
+export const Button: Story = {
+  render: () =>
+    h(
+      ImageViewer,
+      {
+        src: FULL,
+        alt: "A photograph from the archive",
+      },
+      () => h(ButtonControl, () => "Open viewer"),
+    ),
 };
 
 /** Without zoom the toolbar keeps only the turn and the close. */
 export const NotZoomable: Story = {
   render: () =>
-    withState(() => {
-      const state = reactive({ open: false });
-      return () => [
-        h(
-          Button,
-          { variant: "outline", onClick: () => (state.open = true) },
-          () => "Open (no zoom)",
+    h(
+      ImageViewer,
+      {
+        src: FULL,
+        alt: "A photograph from the archive",
+        zoomable: false,
+      },
+      () =>
+        h(ImageViewer.Preview, () =>
+          h(Image, {
+            src: THUMBNAIL,
+            alt: "A photograph from the archive",
+            width: 288,
+            height: 192,
+          }),
         ),
-        h(ImageViewer, {
-          src: SAMPLE,
-          alt: "A photograph from the archive",
-          zoomable: false,
-          open: state.open,
-          "onUpdate:open": (value: boolean) => (state.open = value),
-        }),
-      ];
-    }),
+    ),
 };

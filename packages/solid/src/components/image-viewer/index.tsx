@@ -11,6 +11,7 @@ import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Dialog } from "../dialog";
+import { ImageViewerPreview } from "./preview";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -25,19 +26,18 @@ const TOOL_ICONS = {
 };
 
 /**
- * A lightbox: the picture over a dimmed page, with a small toolbar
- * beneath it. Zoom is the reader's hand (half to three times, clamped),
- * a quarter turn at a time rotates, Escape and the scrim close — the
- * dialog machine carries the modal part. `open` may stay with the
- * caller; left undefined the viewer keeps it to itself.
+ * Opens the full lightbox from a curated icon by default, or from any
+ * wrapped button, image or other doorway. Zoom, rotation, Escape and the scrim
+ * stay in the viewer. Anatomy remains available on `ImageViewer.Root`.
  */
 export interface ImageViewerProps {
   src: string;
   alt?: string;
-  /** Intrinsic dimensions for the image element, reserving the layout
-   * box before bytes arrive. */
+  /** The large image handed to the lightbox. */
   width?: number | string;
   height?: number | string;
+  /** The wrapped content that opens the lightbox. */
+  children?: JSX.Element;
   open?: boolean;
   zoomable?: boolean;
   /** The openness changed — from the scrim, Escape or the toolbar. */
@@ -54,6 +54,7 @@ function ImageViewerImpl(props: ImageViewerProps) {
     "open",
     "zoomable",
     "onOpenChange",
+    "children",
   ]);
   const id = useElementId("image-viewer");
   const messages = useComponentMessages();
@@ -105,6 +106,11 @@ function ImageViewerImpl(props: ImageViewerProps) {
       lazyMount
       unmountOnExit
     >
+      <ArkDialog.Trigger
+        asChild={() => own.children ?? <ImageViewerPreview />}
+        data-scope="image-viewer"
+        data-part="trigger"
+      />
       <Portal>
         <ArkDialog.Backdrop class="bs-image-viewer-backdrop" />
         <ArkDialog.Positioner class="bs-image-viewer-positioner">
@@ -151,5 +157,10 @@ function ImageViewerImpl(props: ImageViewerProps) {
   );
 }
 
-export const ImageViewer = defineFamily(ImageViewerImpl, Dialog) as typeof ImageViewerImpl &
-  typeof Dialog;
+const viewerParts = {
+  ...(Dialog as unknown as Record<string, unknown>),
+  Preview: ImageViewerPreview,
+} as unknown as Parameters<typeof defineFamily>[1];
+
+export const ImageViewer = defineFamily(ImageViewerImpl, viewerParts) as typeof ImageViewerImpl &
+  (typeof Dialog & { Preview: typeof ImageViewerPreview });

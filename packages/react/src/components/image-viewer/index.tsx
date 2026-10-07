@@ -1,6 +1,7 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { iconNode } from "../../internal/icon";
@@ -9,6 +10,7 @@ import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { ButtonGroup } from "../button-group";
 import { Dialog } from "../dialog";
+import { ImageViewerPreview } from "./preview";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
@@ -22,11 +24,9 @@ const TOOL_ICONS = {
 } as const;
 
 /**
- * A lightbox: the picture over a dimmed page, with a small toolbar
- * beneath it. Zoom is the reader's hand (half to three times, clamped),
- * a quarter turn at a time rotates, Escape and the scrim close — the
- * dialog machine carries the modal part. `open` may stay with the
- * caller; left undefined the viewer keeps it to itself.
+ * Opens the full lightbox from a curated icon by default, or from any
+ * wrapped button, image or other doorway. Zoom, rotation, Escape and the scrim
+ * stay in the viewer. Anatomy remains available on `ImageViewer.Root`.
  */
 export interface ImageViewerProps {
   id?: string;
@@ -34,12 +34,12 @@ export interface ImageViewerProps {
   alt?: string;
   open?: boolean;
   zoomable?: boolean;
-  /** Intrinsic rendered width, reserved on the image to avoid layout
-   * shift while the source loads. */
+  /** The large image handed to the lightbox. */
   width?: number | string;
-  /** Intrinsic rendered height, reserved on the image to avoid layout
-   * shift while the source loads. */
+  /** The large image handed to the lightbox. */
   height?: number | string;
+  /** The wrapped content that opens the lightbox. */
+  children?: ReactNode;
   /** Reports the viewer's next state. */
   onOpenChange?: (open: boolean) => void;
 }
@@ -51,6 +51,7 @@ function ImageViewerImpl({
   zoomable = true,
   width,
   height,
+  children,
   onOpenChange,
   id,
 }: ImageViewerProps) {
@@ -105,6 +106,9 @@ function ImageViewerImpl({
       lazyMount
       unmountOnExit
     >
+      <ArkDialog.Trigger asChild data-scope="image-viewer" data-part="trigger">
+        {children ?? <ImageViewerPreview />}
+      </ArkDialog.Trigger>
       <Portal>
         <ArkDialog.Backdrop className="bs-image-viewer-backdrop" />
         <ArkDialog.Positioner className="bs-image-viewer-positioner">
@@ -153,5 +157,7 @@ function ImageViewerImpl({
   );
 }
 
-export const ImageViewer = Object.assign(ImageViewerImpl, Dialog) as typeof ImageViewerImpl &
-  typeof Dialog;
+export const ImageViewer = Object.assign(ImageViewerImpl, {
+  ...Dialog,
+  Preview: ImageViewerPreview,
+}) as typeof ImageViewerImpl & typeof Dialog & { Preview: typeof ImageViewerPreview };

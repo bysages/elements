@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { Button, ImageViewer } from "@bysages/vue";
-import { ref } from "vue";
+import { Image, ImageViewer } from "@bysages/vue";
 
-const SAMPLE = "https://picsum.photos/seed/elements-viewer/1600/1000";
-const open = ref(false);
+const FULL = "https://picsum.photos/seed/elements-viewer/1600/1000";
+const THUMBNAIL = "https://picsum.photos/seed/elements-viewer/480/320";
 </script>
 
 <template>
-  <div class="w-full">
-    <Button variant="outline" @click="open = true">Open (no zoom)</Button>
-    <ImageViewer
-      v-model:open="open"
-      :src="SAMPLE"
-      alt="A photograph from the archive"
-      :zoomable="false"
-    />
-  </div>
+  <ImageViewer :src="FULL" alt="A photograph from the archive" :zoomable="false">
+    <ImageViewer.Preview>
+      <Image :src="THUMBNAIL" alt="A photograph from the archive" :width="288" :height="192" />
+    </ImageViewer.Preview>
+  </ImageViewer>
 </template>

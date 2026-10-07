@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core";
 import type { PropType, SetupContext } from "vue";
-import { defineComponent, h, ref, watch } from "vue";
+import { defineComponent, h, nextTick, onMounted, ref, watch } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
 
@@ -57,13 +57,26 @@ export const Image = withSelfRoot(
       injectComponentStyle("image");
 
       const state = ref<"loading" | "loaded" | "error">("loading");
+      const image = ref<HTMLImageElement | null>(null);
+
+      // Cached sources are complete before this component mounts, so the
+      // load event never arrives and the frame must read the current truth.
+      function syncCompleteState() {
+        if (!image.value?.complete) return;
+        state.value = image.value.naturalWidth > 0 ? "loaded" : "error";
+      }
 
       // A new source starts the wait over — the last picture's state must
       // not stand in for the next one's.
       watch(
         () => props.src,
-        () => (state.value = "loading"),
+        async () => {
+          state.value = "loading";
+          await nextTick();
+          syncCompleteState();
+        },
       );
+      onMounted(syncCompleteState);
 
       return () =>
         h(
@@ -77,6 +90,7 @@ export const Image = withSelfRoot(
           },
           [
             h("img", {
+              ref: image,
               "data-scope": "image",
               "data-part": "img",
               src: props.src,
