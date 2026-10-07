@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import {
   Button,
   Card,
@@ -108,20 +107,18 @@ const orders = ref(true);
 const letters = ref(true);
 const weekly = ref(false);
 
-const frequencyCollection = computed(() =>
-  createListCollection({
-    items: (["daily", "weekly", "monthly"] as const).map((value) => ({
-      value,
-      label: text.value.notify[value === "weekly" ? "weeklyLabel" : value],
-    })),
-  }),
+const frequencyOptions = computed(() =>
+  (["daily", "weekly", "monthly"] as const).map((value) => ({
+    value,
+    label: text.value.notify[value === "weekly" ? "weeklyLabel" : value],
+  })),
 );
-const frequency = ref<string[]>(["weekly"]);
+const frequency = ref("weekly");
 </script>
 
 <template>
   <div class="grid gap-(--bs-gap-xl) lg:grid-cols-2">
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.profile.title }}</Card.Title>
         <Card.Description>{{ text.profile.lede }}</Card.Description>
@@ -169,9 +166,9 @@ const frequency = ref<string[]>(["weekly"]);
           {{ profileStatus }}
         </p>
       </Card.Content>
-    </Card.Root>
+    </Card>
 
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.notify.title }}</Card.Title>
         <Card.Description>{{ text.notify.lede }}</Card.Description>
@@ -181,62 +178,24 @@ const frequency = ref<string[]>(["weekly"]);
           class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
         >
           <span class="text-sm">{{ text.notify.orders }}</span>
-          <Switch.Root v-model:checked="orders">
-            <Switch.HiddenInput />
-            <Switch.Control>
-              <Switch.Thumb />
-            </Switch.Control>
-          </Switch.Root>
+          <Switch v-model="orders" />
         </label>
         <label
           class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
         >
           <span class="text-sm">{{ text.notify.letters }}</span>
-          <Switch.Root v-model:checked="letters">
-            <Switch.HiddenInput />
-            <Switch.Control>
-              <Switch.Thumb />
-            </Switch.Control>
-          </Switch.Root>
+          <Switch v-model="letters" />
         </label>
         <label
           class="flex items-center justify-between gap-(--bs-gap-lg) border-b border-border py-(--bs-padding-md)"
         >
           <span class="text-sm">{{ text.notify.weekly }}</span>
-          <Switch.Root v-model:checked="weekly">
-            <Switch.HiddenInput />
-            <Switch.Control>
-              <Switch.Thumb />
-            </Switch.Control>
-          </Switch.Root>
+          <Switch v-model="weekly" />
         </label>
 
         <Field.Root class="mt-(--bs-margin-lg)">
           <Field.Label>{{ text.notify.frequency }}</Field.Label>
-          <Select.Root :collection="frequencyCollection" v-model="frequency">
-            <Select.Control>
-              <Select.Trigger>
-                <Select.ValueText />
-              </Select.Trigger>
-              <Select.Indicator>
-                <Icon name="i-lucide-chevron-down" />
-              </Select.Indicator>
-            </Select.Control>
-            <Teleport to="body">
-              <Select.Positioner>
-                <Select.Content>
-                  <Select.Item
-                    v-for="item in frequencyCollection.items"
-                    :key="item.value"
-                    :item="item"
-                  >
-                    <Select.ItemText>{{ item.label }}</Select.ItemText>
-                  </Select.Item>
-                </Select.Content>
-              </Select.Positioner>
-            </Teleport>
-            <Select.HiddenSelect />
-          </Select.Root>
+          <Select v-model="frequency" :options="frequencyOptions" :clearable="false" />
         </Field.Root>
 
         <div class="mt-(--bs-margin-lg)">
@@ -246,6 +205,6 @@ const frequency = ref<string[]>(["weekly"]);
           {{ notifyStatus }}
         </p>
       </Card.Content>
-    </Card.Root>
+    </Card>
   </div>
 </template>

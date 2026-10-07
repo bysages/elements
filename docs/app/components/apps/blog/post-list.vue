@@ -99,7 +99,7 @@ function toggleTag(tag: string) {
       />
     </div>
 
-    <Empty.Root v-else class="py-16">
+    <Empty v-else class="py-16">
       <Empty.Title>{{ text.emptyTitle }}</Empty.Title>
       <Empty.Description>{{ text.emptyBody }}</Empty.Description>
       <Empty.Actions>
@@ -107,7 +107,7 @@ function toggleTag(tag: string) {
           text.clear
         }}</Button>
       </Empty.Actions>
-    </Empty.Root>
+    </Empty>
 
     <div v-if="pageCount > 1" class="flex justify-center">
       <Pagination.Root

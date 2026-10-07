@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import { globe, plus } from "@bysages/icons";
 import {
   AiAttachment,
@@ -27,13 +26,11 @@ const files = ref([
   { name: "notes.md", size: 1024, status: "uploading" as "ready" | "uploading" | "error" },
 ]);
 
-const models = createListCollection({
-  items: [
-    { label: "Hunyuan", value: "hunyuan" },
-    { label: "Qinghua", value: "qinghua" },
-    { label: "Celadon", value: "celadon" },
-  ],
-});
+const models = [
+  { label: "Hunyuan", value: "hunyuan" },
+  { label: "Qinghua", value: "qinghua" },
+  { label: "Celadon", value: "celadon" },
+];
 
 const picker = ref<HTMLInputElement>();
 
@@ -92,39 +89,13 @@ const send = (value: string) => {
             </Menu.Content>
           </Menu.Positioner>
         </Menu.Root>
-        <Toggle.Root v-model:pressed="webSearch" type="button">
+        <Toggle v-model:pressed="webSearch" type="button">
           <Icon :glyph="globe" />
           <span>Web search</span>
-        </Toggle.Root>
+        </Toggle>
       </template>
       <template #footerEnd>
-        <Select.Root :collection="models" default-value="hunyuan">
-          <Select.Trigger type="button" aria-label="Model">
-            <Select.ValueText placeholder="Model" />
-            <Select.Indicator>
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="square"
-                aria-hidden="true"
-              >
-                <path d="m4 6 4 4 4-4" />
-              </svg>
-            </Select.Indicator>
-          </Select.Trigger>
-          <Select.Positioner>
-            <Select.Content>
-              <Select.Item v-for="item in models.items" :key="item.value" :item="item">
-                <Select.ItemText>{{ item.label }}</Select.ItemText>
-                <Select.ItemIndicator>✓</Select.ItemIndicator>
-              </Select.Item>
-            </Select.Content>
-          </Select.Positioner>
-        </Select.Root>
+        <Select default-value="hunyuan" :options="models" placeholder="Model" :clearable="false" />
       </template>
     </AiPromptInput>
     <p class="m-0 text-tertiary text-sm">

@@ -235,17 +235,17 @@ const apps: Array<{ name: ExampleName; components: string[] }> = [
 
 <template>
   <div class="mx-auto w-full max-w-[90rem] px-6 pb-12 pt-8">
-    <PageHeader.Root class="mb-8">
+    <PageHeader class="mb-8">
       <PageHeader.Heading>
         <div class="min-w-0">
           <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
           <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
         </div>
       </PageHeader.Heading>
-    </PageHeader.Root>
+    </PageHeader>
 
     <div class="grid grid-cols-[repeat(auto-fill,minmax(min(20rem,100%),1fr))] gap-5">
-      <Card.Root v-for="app in apps" :key="app.name">
+      <Card v-for="app in apps" :key="app.name">
         <Card.Header>
           <Card.Title>
             <NuxtLink
@@ -282,7 +282,7 @@ const apps: Array<{ name: ExampleName; components: string[] }> = [
             {{ text.source }}
           </a>
         </Card.Footer>
-      </Card.Root>
+      </Card>
     </div>
   </div>
 </template>

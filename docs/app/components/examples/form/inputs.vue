@@ -75,17 +75,12 @@ const form = useForm({
     </FormField>
     <FormField name="consent">
       <template #default="{ field }">
-        <Switch.Root
-          :checked="field.state.value"
-          @update:checked="field.handleChange"
+        <Switch
+          :model-value="field.state.value"
+          label="I accept the terms"
+          @update:model-value="field.handleChange"
           @blur="field.handleBlur"
-        >
-          <Switch.Control>
-            <Switch.Thumb />
-          </Switch.Control>
-          <Switch.Label>I accept the terms</Switch.Label>
-          <Switch.HiddenInput />
-        </Switch.Root>
+        />
       </template>
     </FormField>
     <Button type="submit">Submit</Button>

@@ -503,18 +503,18 @@ function importJson() {
 
 <template>
   <div class="grid content-start gap-(--bs-gap-xl)">
-    <PageHeader.Root>
+    <PageHeader>
       <PageHeader.Heading>
         <div class="min-w-0">
           <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
           <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
         </div>
       </PageHeader.Heading>
-    </PageHeader.Root>
+    </PageHeader>
 
     <div class="grid items-start gap-(--bs-gap-lg) xl:grid-cols-[20rem_minmax(0,1fr)_24rem]">
       <div class="grid min-w-0 content-start gap-(--bs-gap-lg)">
-        <Card.Root>
+        <Card>
           <Card.Header>
             <Card.Title as-child
               ><h2>{{ text.palette.title }}</h2></Card.Title
@@ -549,9 +549,9 @@ function importJson() {
               </section>
             </div>
           </Card.Content>
-        </Card.Root>
+        </Card>
 
-        <Card.Root>
+        <Card>
           <Card.Header>
             <Card.Title as-child
               ><h2>{{ text.tree.title }}</h2></Card.Title
@@ -578,10 +578,10 @@ function importJson() {
               />
             </div>
           </Card.Content>
-        </Card.Root>
+        </Card>
       </div>
 
-      <Card.Root class="min-w-0">
+      <Card class="min-w-0">
         <Card.Header>
           <Card.Title as-child
             ><h2>{{ text.preview }}</h2></Card.Title
@@ -613,7 +613,7 @@ function importJson() {
             </StateProvider>
           </div>
         </Card.Content>
-      </Card.Root>
+      </Card>
 
       <Tabs.Root default-value="inspector" class="grid min-w-0 content-start">
         <Tabs.List>
@@ -621,7 +621,7 @@ function importJson() {
           <Tabs.Trigger value="design">{{ text.design }}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="inspector">
-          <Card.Root class="min-w-0">
+          <Card class="min-w-0">
             <Card.Header>
               <Card.Title as-child>
                 <h2 class="flex items-center justify-between gap-(--bs-gap-sm)">
@@ -685,7 +685,7 @@ function importJson() {
                 </Button>
               </div>
             </Card.Content>
-          </Card.Root>
+          </Card>
         </Tabs.Content>
         <Tabs.Content value="design">
           <ClientOnly>

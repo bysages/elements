@@ -22,11 +22,11 @@ const status = computed(() => STATUS[props.type.toLowerCase()] ?? "info");
 </script>
 
 <template>
-  <Alert.Root :status="status" class="bs-docs-callout">
+  <Alert :status="status" class="bs-docs-callout">
     <Alert.Icon />
     <Alert.Body>
       <Alert.Title>{{ type.charAt(0).toUpperCase() + type.slice(1) }}</Alert.Title>
       <Alert.Description><slot /></Alert.Description>
     </Alert.Body>
-  </Alert.Root>
+  </Alert>
 </template>

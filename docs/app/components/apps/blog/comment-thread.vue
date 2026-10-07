@@ -64,9 +64,9 @@ function submitReply() {
       <div v-for="comment in comments" :key="comment.id">
         <Comment :author="comment.author" :datetime="comment.datetime[locale]">
           <template #avatar>
-            <Avatar.Root>
+            <Avatar>
               <Avatar.Fallback>{{ comment.initials }}</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
           </template>
           {{ comment.body }}
         </Comment>
@@ -77,9 +77,9 @@ function submitReply() {
         >
           <Comment :author="reply.author" :datetime="reply.datetime[locale]">
             <template #avatar>
-              <Avatar.Root>
+              <Avatar>
                 <Avatar.Fallback>{{ reply.initials }}</Avatar.Fallback>
-              </Avatar.Root>
+              </Avatar>
             </template>
             {{ reply.body }}
           </Comment>
@@ -89,9 +89,9 @@ function submitReply() {
       <div v-for="reply in replies" :key="reply.id">
         <Comment :author="reply.author" :datetime="reply.datetime[locale]">
           <template #avatar>
-            <Avatar.Root>
+            <Avatar>
               <Avatar.Fallback>{{ reply.initials }}</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
           </template>
           {{ reply.body }}
         </Comment>

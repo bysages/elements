@@ -6,10 +6,10 @@ import LoginForm from "./login-form.vue";
 
 <template>
   <div class="grid min-h-[34rem] place-items-center p-(--bs-padding-xl) sm:p-10">
-    <Card.Root class="w-full max-w-sm">
+    <Card class="w-full max-w-sm">
       <Card.Content class="p-(--bs-padding-xl)!">
         <LoginForm />
       </Card.Content>
-    </Card.Root>
+    </Card>
   </div>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import { Button, createColumnHelper, DataTable, Input, Select, type ColumnDef } from "@bysages/vue";
 import { computed, Fragment, h, ref } from "vue";
 
@@ -151,16 +150,14 @@ const columns = computed<ColumnDef<OrderRow, any, any>[]>(() => [
   }),
 ]);
 
-const statusCollection = computed(() =>
-  createListCollection({
-    items: Object.entries(text.value.statuses).map(([value, label]) => ({
-      value,
-      label,
-    })),
-  }),
+const statusOptions = computed(() =>
+  Object.entries(text.value.statuses).map(([value, label]) => ({
+    value,
+    label,
+  })),
 );
 
-const statusFilter = ref<string | null>("all");
+const statusFilter = ref("all");
 
 /** The status select pre-filters the data array — sorting, pagination
  * and the global search then run on the narrowed set inside DataTable. */
@@ -206,29 +203,13 @@ function archiveSelected() {
       <!-- w-auto! outranks the unlayered field baseline that makes select
            roots fill their container — a toolbar slot is a layout
            decision, and this flex line decides the width. -->
-      <Select.Root
+      <Select
+        v-model="statusFilter"
         class="w-auto!"
-        :collection="statusCollection"
-        :model-value="statusFilter ? [statusFilter] : []"
-        @update:model-value="(values: string[]) => (statusFilter = values[0] ?? null)"
-      >
-        <Select.Control>
-          <Select.Trigger class="w-44">
-            <Select.ValueText :placeholder="text.statuses.all" />
-          </Select.Trigger>
-        </Select.Control>
-        <Teleport to="body">
-          <Select.Positioner>
-            <Select.Content>
-              <Select.Item v-for="item in statusCollection.items" :key="item.value" :item="item">
-                <Select.ItemText>{{ item.label }}</Select.ItemText>
-                <Select.ItemIndicator>✓</Select.ItemIndicator>
-              </Select.Item>
-            </Select.Content>
-          </Select.Positioner>
-        </Teleport>
-        <Select.HiddenSelect />
-      </Select.Root>
+        :options="statusOptions"
+        :placeholder="text.statuses.all"
+        :clearable="false"
+      />
 
       <p
         v-if="selectedRows.length"

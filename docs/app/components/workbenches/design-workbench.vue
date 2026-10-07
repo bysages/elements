@@ -47,21 +47,21 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
 
 <template>
   <div class="grid content-start gap-(--bs-gap-xl)">
-    <PageHeader.Root>
+    <PageHeader>
       <PageHeader.Heading>
         <div class="min-w-0">
           <PageHeader.Title>{{ text.heading }}</PageHeader.Title>
           <PageHeader.Description>{{ text.lede }}</PageHeader.Description>
         </div>
       </PageHeader.Heading>
-    </PageHeader.Root>
+    </PageHeader>
 
     <div class="grid items-start gap-(--bs-gap-lg) xl:grid-cols-[20rem_minmax(0,1fr)_24rem]">
       <ClientOnly>
         <DesignPanel preview-id="workbench-design-preview" />
       </ClientOnly>
 
-      <Card.Root class="overflow-hidden xl:col-start-2 xl:row-start-1">
+      <Card class="overflow-hidden xl:col-start-2 xl:row-start-1">
         <Card.Header>
           <Card.Title as-child
             ><h2>{{ text.preview }}</h2></Card.Title
@@ -85,13 +85,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
                 {{ text.sample.label }}
                 <Input v-model="email" :placeholder="text.sample.placeholder" type="email" />
               </label>
-              <Switch.Root v-model:checked="digest">
-                <Switch.Control>
-                  <Switch.Thumb />
-                </Switch.Control>
-                <Switch.Label>{{ text.sample.digest }}</Switch.Label>
-                <Switch.HiddenInput />
-              </Switch.Root>
+              <Switch v-model="digest" :label="text.sample.digest" />
             </div>
             <div class="flex flex-wrap items-center gap-(--bs-gap-sm)">
               <Button>{{ text.sample.action }}</Button>
@@ -102,7 +96,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
             </p>
           </div>
         </Card.Content>
-      </Card.Root>
+      </Card>
     </div>
   </div>
 </template>

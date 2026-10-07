@@ -85,13 +85,13 @@ function pick(value: unknown) {
       :aria-label="t('docs.language')"
       :title="t('docs.language')"
     >
-      <span class="bs-docs-language-flag">{{ flagOf(locale) }}</span>
+      <span class="text-lg leading-none">{{ flagOf(locale) }}</span>
     </Select.Trigger>
-    <Select.Positioner class="bs-docs-language-positioner">
-      <Select.Content class="bs-docs-language-menu">
+    <Select.Positioner class="min-w-[10rem]">
+      <Select.Content class="min-w-[10rem]">
         <Select.Item v-for="l in locales" :key="l.code" :item="l.code">
           <Select.ItemText>{{ nameOf(l.code) }}</Select.ItemText>
-          <span class="bs-docs-language-flag">{{ flagOf(l.code) }}</span>
+          <span class="text-lg leading-none">{{ flagOf(l.code) }}</span>
         </Select.Item>
       </Select.Content>
     </Select.Positioner>

@@ -16,7 +16,7 @@ const emit = defineEmits<{ open: [] }>();
 </script>
 
 <template>
-  <Card.Root>
+  <Card>
     <Card.Header>
       <Card.Title>{{ post.title[locale] }}</Card.Title>
       <Card.Description>{{ post.excerpt[locale] }}</Card.Description>
@@ -32,9 +32,9 @@ const emit = defineEmits<{ open: [] }>();
          only the space-between is ours, and no core rule competes for it. -->
     <Card.Footer class="justify-between">
       <span class="flex items-center gap-(--bs-gap-sm) text-sm text-tertiary">
-        <Avatar.Root size="sm">
+        <Avatar size="sm">
           <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
-        </Avatar.Root>
+        </Avatar>
         <span>{{ post.author }}</span>
         <span aria-hidden="true">·</span>
         <span>{{ post.readingTime[locale] }}</span>
@@ -43,5 +43,5 @@ const emit = defineEmits<{ open: [] }>();
         copy[locale as "en" | "zh"].read
       }}</Button>
     </Card.Footer>
-  </Card.Root>
+  </Card>
 </template>

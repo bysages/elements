@@ -67,7 +67,7 @@ const definition = computed(
 </script>
 
 <template>
-  <Card.Root class="chart-card">
+  <Card class="chart-card">
     <Card.Header>
       <Card.Title>{{ text.title }}</Card.Title>
       <Card.Description>{{ text.description }}</Card.Description>
@@ -75,5 +75,5 @@ const definition = computed(
     <Card.Content>
       <Chart :definition="definition" :aria-label="text.aria" />
     </Card.Content>
-  </Card.Root>
+  </Card>
 </template>

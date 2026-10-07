@@ -24,11 +24,7 @@ function goTo(hash: string) {
     </header>
 
     <div class="grid items-stretch gap-(--bs-gap-lg) lg:grid-cols-3">
-      <Card.Root
-        v-for="plan in copy.plans"
-        :key="plan.name"
-        :class="plan.featured && 'border-primary'"
-      >
+      <Card v-for="plan in copy.plans" :key="plan.name" :class="plan.featured && 'border-primary'">
         <Card.Header>
           <div class="flex items-center justify-between gap-(--bs-gap-sm)">
             <Card.Title>{{ plan.name }}</Card.Title>
@@ -73,7 +69,7 @@ function goTo(hash: string) {
             {{ plan.cta }}
           </Button>
         </Card.Footer>
-      </Card.Root>
+      </Card>
     </div>
   </section>
 </template>

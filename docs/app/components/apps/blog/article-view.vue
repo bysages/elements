@@ -102,9 +102,9 @@ watchPostEffect(() => {
         <p
           class="m-0 mb-(--bs-margin-xl) mt-(--bs-margin-md) flex items-center gap-(--bs-gap-sm) text-sm text-tertiary"
         >
-          <Avatar.Root>
+          <Avatar>
             <Avatar.Fallback>{{ post.initials }}</Avatar.Fallback>
-          </Avatar.Root>
+          </Avatar>
           <span>{{ post.author }}</span>
           <span aria-hidden="true">·</span>
           <span>{{ post.date[locale] }}</span>

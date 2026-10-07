@@ -57,9 +57,9 @@ const initial = computed(() => (email.value || "s").slice(0, 1).toUpperCase());
   <div class="grid w-full gap-(--bs-gap-lg)">
     <Transition name="bs-fade" mode="out-in">
       <div v-if="signedIn" class="grid place-items-center gap-(--bs-gap-lg) text-center">
-        <Avatar.Root class="size-12">
+        <Avatar class="size-12">
           <Avatar.Fallback>{{ initial }}</Avatar.Fallback>
-        </Avatar.Root>
+        </Avatar>
         <p class="m-0 text-sm text-secondary">
           {{ text.signedAs }}
           <span class="font-medium text-primary">{{ email }}</span>

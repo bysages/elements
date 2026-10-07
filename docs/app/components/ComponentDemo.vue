@@ -91,9 +91,11 @@ const { data: highlighted } = await useAsyncData(
       <Tabs.Indicator />
     </Tabs.List>
     <Tabs.Content value="preview">
-      <div class="bs-docs-demo-canvas">
+      <div
+        class="flex flex-wrap items-center gap-(--bs-gap-md) my-(--bs-padding-sm) mx-(--bs-padding-md) py-(--bs-padding-xl) px-(--bs-padding-lg)"
+      >
         <component :is="demo" v-if="demo" />
-        <p v-else class="bs-docs-demo-missing">No example yet.</p>
+        <p v-else class="m-0 text-sm text-tertiary">No example yet.</p>
       </div>
     </Tabs.Content>
     <Tabs.Content v-if="code" value="code">
@@ -113,8 +115,15 @@ const { data: highlighted } = await useAsyncData(
             {{ copied ? t("docs.copy.copied") : t("docs.copy.code") }}
           </Button>
         </div>
-        <div v-if="highlighted" class="bs-docs-demo-code" v-html="highlighted"></div>
-        <pre v-else class="bs-docs-demo-code"><code>{{ code }}</code></pre>
+        <div
+          v-if="highlighted"
+          class="m-0 p-(--bs-padding-md) rounded-none bg-transparent overflow-x-auto font-mono text-sm leading-relaxed text-foreground [tab-size:2]"
+          v-html="highlighted"
+        ></div>
+        <pre
+          v-else
+          class="m-0 p-(--bs-padding-md) rounded-none bg-transparent overflow-x-auto font-mono text-sm leading-relaxed text-foreground [tab-size:2]"
+        ><code>{{ code }}</code></pre>
       </div>
     </Tabs.Content>
   </Tabs.Root>

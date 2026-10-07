@@ -38,7 +38,7 @@ function goTo(hash: string) {
 
     <!-- A type specimen plate: the glyph is the product, the swatch dots
          read their pigment from the accent each one declares. -->
-    <Card.Root class="w-full max-w-[24rem] justify-self-center">
+    <Card class="w-full max-w-[24rem] justify-self-center">
       <Card.Header>
         <Card.Description>{{ copy.specimen.title }}</Card.Description>
       </Card.Header>
@@ -61,6 +61,6 @@ function goTo(hash: string) {
       <Card.Footer class="justify-between! text-xs text-tertiary">
         <span v-for="note in copy.specimen.notes" :key="note">{{ note }}</span>
       </Card.Footer>
-    </Card.Root>
+    </Card>
   </section>
 </template>

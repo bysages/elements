@@ -405,10 +405,10 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
          actions, and the meta rail GitHub carries — local clock, mail,
          site, and the org seals. -->
     <aside class="flex flex-col gap-(--bs-gap-md)">
-      <Avatar.Root class="size-36!">
+      <Avatar class="size-36!">
         <Avatar.Image :src="user.avatar" :alt="user.username" />
         <Avatar.Fallback>{{ user.username[0] }}</Avatar.Fallback>
-      </Avatar.Root>
+      </Avatar>
       <div>
         <h1 class="m-0 font-serif text-2xl leading-tight">
           {{ user.username }}
@@ -472,10 +472,10 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             :title="`@${org.username}`"
             class="flex items-center gap-(--bs-gap-xs) text-sm font-semibold text-primary no-underline hover:underline hover:underline-offset-[0.2em]"
           >
-            <Avatar.Root size="sm">
+            <Avatar size="sm">
               <Avatar.Image :src="org.avatar" :alt="org.username" />
               <Avatar.Fallback>{{ org.username[0] }}</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
             @{{ org.username }}
           </a>
         </div>
@@ -493,14 +493,14 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
         </Tabs.List>
 
         <Tabs.Content value="overview" class="flex flex-col gap-(--bs-gap-xl)">
-          <Card.Root>
+          <Card>
             <Card.Header>
               <Card.Title>{{ text.contributions(contributionTotal) }}</Card.Title>
             </Card.Header>
             <Card.Content>
               <ContributionWall :days="contributionDays" />
             </Card.Content>
-          </Card.Root>
+          </Card>
 
           <section class="flex flex-col gap-(--bs-gap-md)">
             <h2 class="m-0 font-serif text-lg leading-tight">
@@ -509,7 +509,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             <div
               class="grid gap-(--bs-gap-lg) [grid-template-columns:repeat(auto-fill,minmax(min(16rem,100%),1fr))]"
             >
-              <Card.Root v-for="r in popular" :key="r.id">
+              <Card v-for="r in popular" :key="r.id">
                 <Card.Content class="grid content-start gap-(--bs-gap-sm)!">
                   <a
                     :href="`https://github.com/${r.repo}`"
@@ -527,7 +527,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
                     <span>★ {{ r.stars }}</span>
                   </span>
                 </Card.Content>
-              </Card.Root>
+              </Card>
             </div>
           </section>
         </Tabs.Content>
@@ -539,7 +539,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
             :aria-label="text.findLabel"
             class="max-w-80!"
           />
-          <Card.Root v-for="r in paged" :key="r.id">
+          <Card v-for="r in paged" :key="r.id">
             <Card.Content class="grid content-start gap-(--bs-gap-sm)!">
               <div class="flex items-center gap-(--bs-gap-md)">
                 <a
@@ -566,7 +566,7 @@ const fmtDate = (iso: string) => day.value.format(new Date(iso));
                 <span>{{ text.updated }} {{ fmtDate(r.pushedAt) }}</span>
               </span>
             </Card.Content>
-          </Card.Root>
+          </Card>
           <p v-if="filtered.length === 0" class="m-0 text-sm text-tertiary" role="status">
             {{ text.noMatch(query) }}
           </p>

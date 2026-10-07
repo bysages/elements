@@ -60,6 +60,10 @@ const densities: ThemeDensity[] = ["compact", "default", "comfortable", "spaciou
 const accentLabel = (v: ThemeAccent) => t(`docs.theme.accents.${v}`);
 const densityLabel = (v: ThemeDensity) => t(`docs.theme.densities.${v}`);
 
+const densityItems = computed(() =>
+  densities.map((value) => ({ value, label: densityLabel(value) })),
+);
+
 function set(partial: Partial<typeof theme>) {
   // applyTheme answers with the full theme (auto accents re-pair with the
   // scene), so the local mirror stays honest.
@@ -151,19 +155,13 @@ function setScene(scene: ThemeScene) {
         </section>
         <section>
           <h3>{{ t("docs.theme.density") }}</h3>
-          <SegmentGroup.Root
+          <SegmentGroup
             orientation="horizontal"
             size="sm"
+            :items="densityItems"
             :model-value="theme.density"
             @update:model-value="(v) => set({ density: v as ThemeDensity })"
-          >
-            <SegmentGroup.Indicator />
-            <SegmentGroup.Item v-for="d in densities" :key="d" :value="d">
-              <SegmentGroup.ItemHiddenInput />
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemText>{{ densityLabel(d) }}</SegmentGroup.ItemText>
-            </SegmentGroup.Item>
-          </SegmentGroup.Root>
+          />
         </section>
       </Popover.Content>
     </Popover.Positioner>

@@ -28,7 +28,7 @@ const links = computed(() => props.page?.body?.toc?.links ?? []);
        away; the bar carries its entry instead. -->
   <div v-if="links.length" class="bs-docs-mobile-bar">
     <Button variant="ghost" size="sm" @click="open = true">
-      <Icon name="i-lucide-list-tree" class="bs-docs-rail-icon" />
+      <Icon name="i-lucide-list-tree" class="size-4" />
       {{ t("docs.toc") }}
     </Button>
   </div>

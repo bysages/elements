@@ -35,15 +35,17 @@ const emit = defineEmits<{
       >
         <List.Content>
           <template #title>
-            <span class="thread-title">{{ thread.title }}</span>
+            <span class="block truncate" :class="compact ? 'font-normal' : undefined">{{
+              thread.title
+            }}</span>
           </template>
           <template v-if="!compact" #description>
-            <span class="thread-preview">{{ thread.preview }}</span>
+            <span class="block truncate">{{ thread.preview }}</span>
           </template>
         </List.Content>
       </List.Item>
     </List.Root>
-    <p v-if="threads.length === 0" class="thread-empty">{{ emptyText }}</p>
+    <p v-if="threads.length === 0" class="m-0 text-sm text-tertiary">{{ emptyText }}</p>
   </div>
 </template>
 
@@ -62,25 +64,7 @@ const emit = defineEmits<{
   background: var(--bs-color-surface-inset);
 }
 
-.thread-title,
-.thread-preview {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .thread-list-compact :deep([data-scope="list"][data-part="item"]) {
   padding: var(--bs-padding-xs) var(--bs-padding-sm);
-}
-
-.thread-list-compact .thread-title {
-  font-weight: var(--bs-font-weight-regular);
-}
-
-.thread-empty {
-  margin: 0;
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
 }
 </style>

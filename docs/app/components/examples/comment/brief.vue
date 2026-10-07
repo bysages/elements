@@ -5,9 +5,9 @@ import { Avatar, Comment } from "@bysages/vue";
 <template>
   <Comment author="Archive keeper" datetime="2026-09-15" class="w-full">
     <template #avatar>
-      <Avatar.Root>
+      <Avatar>
         <Avatar.Fallback>AK</Avatar.Fallback>
-      </Avatar.Root>
+      </Avatar>
     </template>
     Filed. Shelved in the eastern cabinet, fourth row.
   </Comment>

@@ -14,6 +14,6 @@ const { t } = useDocsI18n();
     :title="t('docs.assistant')"
     @click="open()"
   >
-    <Icon name="i-lucide-sparkles" class="bs-docs-rail-icon" />
+    <Icon name="i-lucide-sparkles" class="size-4" />
   </Button>
 </template>

@@ -278,9 +278,9 @@ onBeforeUnmount(scriptAbort);
       <template #default="{ collapsed }">
         <div class="ai-rail-body">
           <div class="ai-brand">
-            <Avatar.Root size="sm" aria-hidden="true">
+            <Avatar size="sm" aria-hidden="true">
               <Avatar.Fallback>AI</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
             <span v-if="!collapsed" class="min-w-0 flex-1 truncate">{{ text.workspace }}</span>
             <Button
               variant="ghost"
@@ -349,9 +349,9 @@ onBeforeUnmount(scriptAbort);
           <div v-else class="flex-1" />
 
           <div class="ai-account">
-            <Avatar.Root size="sm">
+            <Avatar size="sm">
               <Avatar.Fallback>BS</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
             <div v-if="!collapsed" class="min-w-0">
               <p class="m-0 truncate text-sm">{{ text.account }}</p>
               <p class="m-0 text-xs text-tertiary">{{ text.plan }}</p>

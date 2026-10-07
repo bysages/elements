@@ -8,7 +8,6 @@ import {
   SCENE_DEFAULT_CONTRAST,
   Select,
   Textarea,
-  createListCollection,
   parseColor,
   type ThemeAccent,
   type ThemeContrast,
@@ -160,14 +159,10 @@ const availableTokens = ref<string[]>([]);
 const copied = ref(false);
 
 const options = <T extends string>(values: readonly T[], labels: Record<string, string>) =>
-  createListCollection({
-    items: values.map((value) => ({ value, label: labels[value]! })),
-    itemToValue: (item) => item.value,
-    itemToString: (item) => item.label,
-  });
+  values.map((value) => ({ value, label: labels[value]! }));
 
-const modeCollection = options(["light", "dark", "system"] as const, text.value.modes);
-const sceneCollection = options(
+const modeOptions = options(["light", "dark", "system"] as const, text.value.modes);
+const sceneOptions = options(
   ["auto", ...Object.keys(SCENE_DEFAULT_ACCENT)] as const,
   text.value.scenes,
 );
@@ -293,8 +288,8 @@ function onAccentPick(details: string | { valueAsString?: string }) {
   }
 }
 
-const contrastCollection = options(["normal", "high"] as const, text.value.contrasts);
-const densityCollection = options(
+const contrastOptions = options(["normal", "high"] as const, text.value.contrasts);
+const densityOptions = options(
   ["compact", "default", "comfortable", "spacious"] as const,
   text.value.densities,
 );
@@ -521,7 +516,7 @@ defineExpose({ applyToHost });
 
 <template>
   <div :class="compact ? 'grid min-w-0 content-start gap-(--bs-gap-lg)' : 'contents'">
-    <Card.Root :class="compact ? 'min-w-0' : 'xl:col-start-1 xl:row-start-1'">
+    <Card :class="compact ? 'min-w-0' : 'xl:col-start-1 xl:row-start-1'">
       <Card.Header>
         <Card.Title as-child
           ><h2>{{ text.panel }}</h2></Card.Title
@@ -534,25 +529,25 @@ defineExpose({ applyToHost });
           v-for="row in [
             {
               label: text.controls.mode,
-              collection: modeCollection,
+              options: modeOptions,
               value: config.mode,
               set: (v: string) => (config.mode = v as DesignMode),
             },
             {
               label: text.controls.scene,
-              collection: sceneCollection,
+              options: sceneOptions,
               value: config.scene,
               set: (v: string) => (config.scene = v as ThemeScene),
             },
             {
               label: text.controls.contrast,
-              collection: contrastCollection,
+              options: contrastOptions,
               value: config.contrast,
               set: (v: string) => (config.contrast = v as ThemeContrast),
             },
             {
               label: text.controls.density,
-              collection: densityCollection,
+              options: densityOptions,
               value: config.density,
               set: (v: string) => (config.density = v as ThemeDensity),
             },
@@ -561,39 +556,12 @@ defineExpose({ applyToHost });
           class="grid content-start gap-(--bs-gap-xs)"
         >
           <span class="text-sm font-medium">{{ row.label }}</span>
-          <Select.Root
-            :collection="row.collection"
-            :model-value="[row.value]"
-            @update:model-value="(values: string[]) => row.set(values[0] ?? '')"
-          >
-            <Select.Control>
-              <Select.Trigger>
-                <Select.ValueText />
-                <Select.Indicator>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path
-                      d="M4 6l4 4 4-4"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </Select.Indicator>
-              </Select.Trigger>
-            </Select.Control>
-            <Teleport to="body">
-              <Select.Positioner>
-                <Select.Content>
-                  <Select.Item v-for="item in row.collection.items" :key="item.value" :item="item">
-                    <Select.ItemText>{{ item.label }}</Select.ItemText>
-                    <Select.ItemIndicator>✓</Select.ItemIndicator>
-                  </Select.Item>
-                </Select.Content>
-              </Select.Positioner>
-            </Teleport>
-            <Select.HiddenSelect />
-          </Select.Root>
+          <Select
+            :model-value="row.value"
+            :options="row.options"
+            :clearable="false"
+            @update:model-value="(value: string) => row.set(value)"
+          />
         </label>
 
         <div class="grid content-start gap-(--bs-gap-xs)">
@@ -664,9 +632,9 @@ defineExpose({ applyToHost });
           </div>
         </div>
       </Card.Content>
-    </Card.Root>
+    </Card>
 
-    <Card.Root :class="compact ? 'min-w-0' : 'xl:col-start-3 xl:row-start-1'">
+    <Card :class="compact ? 'min-w-0' : 'xl:col-start-3 xl:row-start-1'">
       <Card.Header>
         <Card.Title as-child
           ><h2>{{ text.tokens.title }}</h2></Card.Title
@@ -752,6 +720,6 @@ defineExpose({ applyToHost });
           {{ text.systemNote }}
         </p>
       </Card.Footer>
-    </Card.Root>
+    </Card>
   </div>
 </template>

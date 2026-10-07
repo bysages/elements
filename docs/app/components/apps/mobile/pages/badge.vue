@@ -37,9 +37,9 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
       class="flex items-center justify-around bg-surface-2 px-(--bs-padding-lg) py-(--bs-padding-xl)"
     >
       <span class="relative">
-        <Avatar.Root size="lg">
+        <Avatar size="lg">
           <Avatar.Fallback>{{ text.seal }}</Avatar.Fallback>
-        </Avatar.Root>
+        </Avatar>
         <Badge
           tone="danger"
           class="absolute -top-1 -right-1.5 min-w-4 rounded-full px-(--bs-padding-xs) text-center text-xs"

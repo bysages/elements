@@ -131,7 +131,7 @@ const definition = computed(
 <template>
   <div class="grid content-start gap-(--bs-gap-lg)">
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(22rem,100%),1fr))] gap-(--bs-gap-lg)">
-      <Card.Root>
+      <Card>
         <Card.Header>
           <Card.Title>{{ text.cash.title }}</Card.Title>
           <Card.Description>{{ text.cash.description }}</Card.Description>
@@ -139,9 +139,9 @@ const definition = computed(
         <Card.Content>
           <Chart :definition="definition" :aria-label="text.cash.aria" />
         </Card.Content>
-      </Card.Root>
+      </Card>
 
-      <Card.Root>
+      <Card>
         <Card.Header>
           <Card.Title>{{ text.sources.title }}</Card.Title>
           <Card.Description>{{ text.sources.description }}</Card.Description>
@@ -155,10 +155,10 @@ const definition = computed(
             </Progress.Track>
           </Progress.Root>
         </Card.Content>
-      </Card.Root>
+      </Card>
     </div>
 
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.pack.title }}</Card.Title>
         <Card.Description>{{ text.pack.description }}</Card.Description>
@@ -188,6 +188,6 @@ const definition = computed(
           {{ text.pack.schedule }}
         </Button>
       </Card.Footer>
-    </Card.Root>
+    </Card>
   </div>
 </template>

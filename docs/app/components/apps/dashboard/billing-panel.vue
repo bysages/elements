@@ -110,6 +110,13 @@ const statusTone = {
 
 const statusFilter = ref("all");
 
+const invoiceFilters = computed(() =>
+  (["all", "paid", "refunded", "overdue"] as const).map((value) => ({
+    value,
+    label: text.value.statuses[value],
+  })),
+);
+
 const planDescription = computed(
   () => `${text.value.plan.current} · ${formatDate(currentPlan.renewal, locale.value as Locale)}`,
 );
@@ -153,7 +160,7 @@ const filteredInvoices = computed(() =>
 <template>
   <div class="grid content-start gap-(--bs-gap-lg)">
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(18rem,100%),1fr))] gap-(--bs-gap-lg)">
-      <Card.Root>
+      <Card>
         <Card.Header>
           <Card.Title>{{ text.plan.name }}</Card.Title>
           <Card.Description>{{ planDescription }}</Card.Description>
@@ -183,9 +190,9 @@ const filteredInvoices = computed(() =>
             {{ text.plan.change }}
           </Button>
         </Card.Footer>
-      </Card.Root>
+      </Card>
 
-      <Card.Root>
+      <Card>
         <Card.Header>
           <Card.Title>{{ text.payment.title }}</Card.Title>
           <Card.Description>{{ paymentDescription }}</Card.Description>
@@ -208,10 +215,10 @@ const filteredInvoices = computed(() =>
             {{ text.payment.update }}
           </Button>
         </Card.Footer>
-      </Card.Root>
+      </Card>
     </div>
 
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.invoices.title }}</Card.Title>
         <Card.Description>{{ text.invoices.description }}</Card.Description>
@@ -220,29 +227,11 @@ const filteredInvoices = computed(() =>
         <div
           class="flex flex-wrap items-center gap-x-(--bs-gap-xl) gap-y-(--bs-gap-md) px-(--bs-padding-lg) py-(--bs-padding-md)"
         >
-          <SegmentGroup.Root v-model="statusFilter" :aria-label="text.invoices.filter">
-            <SegmentGroup.Indicator />
-            <SegmentGroup.Item value="all">
-              <SegmentGroup.ItemText>{{ text.statuses.all }}</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-            <SegmentGroup.Item value="paid">
-              <SegmentGroup.ItemText>{{ text.statuses.paid }}</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-            <SegmentGroup.Item value="refunded">
-              <SegmentGroup.ItemText>{{ text.statuses.refunded }}</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-            <SegmentGroup.Item value="overdue">
-              <SegmentGroup.ItemText>{{ text.statuses.overdue }}</SegmentGroup.ItemText>
-              <SegmentGroup.ItemControl />
-              <SegmentGroup.ItemHiddenInput />
-            </SegmentGroup.Item>
-          </SegmentGroup.Root>
+          <SegmentGroup
+            v-model="statusFilter"
+            :items="invoiceFilters"
+            :aria-label="text.invoices.filter"
+          />
           <DatePicker.Root
             v-model="range"
             selection-mode="range"
@@ -432,6 +421,6 @@ const filteredInvoices = computed(() =>
           </table>
         </div>
       </Card.Content>
-    </Card.Root>
+    </Card>
   </div>
 </template>

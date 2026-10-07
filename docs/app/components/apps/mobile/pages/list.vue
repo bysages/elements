@@ -66,9 +66,9 @@ function open(name: string) {
         type="button"
         @click="open(chat.name[locale])"
       >
-        <Avatar.Root size="md">
+        <Avatar size="md">
           <Avatar.Fallback>{{ chat.initials[locale] }}</Avatar.Fallback>
-        </Avatar.Root>
+        </Avatar>
         <span class="min-w-0 flex-1">
           <span class="block truncate text-md text-foreground">{{ chat.name[locale] }}</span>
           <span class="block truncate text-xs text-tertiary">{{ chat.desc[locale] }}</span>

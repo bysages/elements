@@ -18,7 +18,7 @@ const FrameHead = () =>
 <template>
   <!-- The vessel's dress is the consumer's (the wrapper carries no
        anatomy); the class also resets the UA's fossil 2px inset border. -->
-  <Frame class="bs-docs-frame">
+  <Frame class="border rounded-lg bg-surface-2">
     <template #head>
       <FrameHead />
     </template>

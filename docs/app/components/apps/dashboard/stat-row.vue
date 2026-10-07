@@ -71,11 +71,11 @@ const figures = computed(() =>
 
 <template>
   <div class="grid grid-cols-[repeat(auto-fit,minmax(min(13rem,100%),1fr))] gap-(--bs-gap-lg)">
-    <Stat.Root v-for="figure in figures" :key="figure.label">
+    <Stat v-for="figure in figures" :key="figure.label">
       <Stat.Label>{{ figure.label }}</Stat.Label>
       <Stat.Value>{{ figure.value }}</Stat.Value>
       <Stat.Delta :direction="figure.direction">{{ figure.delta }}</Stat.Delta>
       <Stat.Description>{{ figure.description }}</Stat.Description>
-    </Stat.Root>
+    </Stat>
   </div>
 </template>

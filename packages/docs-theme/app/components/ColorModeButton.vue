@@ -80,6 +80,6 @@ onMounted(() => {
     :title="t(`docs.colorMode.mode.${mode}`)"
     @click="toggle"
   >
-    <Icon :name="mode === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'" class="bs-docs-rail-icon" />
+    <Icon :name="mode === 'dark' ? 'i-lucide-moon' : 'i-lucide-sun'" class="size-4" />
   </Button>
 </template>

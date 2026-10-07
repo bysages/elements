@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import { Button, Card, FormField, Input, Select, Switch } from "@bysages/vue";
 import { computed, reactive } from "vue";
 
@@ -69,13 +68,11 @@ const copy = {
 
 const text = computed(() => copy[locale.value as Locale]);
 
-const timezones = computed(() =>
-  createListCollection({
-    items: ["GMT+8", "GMT+0", "GMT-5", "GMT+9"].map((value) => ({
-      value,
-      label: text.value.workspace.zones[value as keyof typeof text.value.workspace.zones],
-    })),
-  }),
+const timezoneOptions = computed(() =>
+  ["GMT+8", "GMT+0", "GMT-5", "GMT+9"].map((value) => ({
+    value,
+    label: text.value.workspace.zones[value as keyof typeof text.value.workspace.zones],
+  })),
 );
 
 const form = reactive({ ...consoleSettings });
@@ -91,7 +88,7 @@ function save() {
 
 <template>
   <div class="grid content-start gap-(--bs-gap-lg) lg:grid-cols-2">
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.workspace.title }}</Card.Title>
         <Card.Description>{{ text.workspace.description }}</Card.Description>
@@ -104,65 +101,27 @@ function save() {
           <Input v-model="form.email" type="email" :placeholder="text.workspace.emailPlaceholder" />
         </FormField>
         <FormField name="timezone" :label="text.workspace.timezone">
-          <Select.Root
-            :collection="timezones"
-            :model-value="[form.timezone]"
-            @update:model-value="(values: string[]) => (form.timezone = values[0] ?? 'GMT+8')"
-          >
-            <Select.Control>
-              <Select.Trigger>
-                <Select.ValueText :placeholder="text.workspace.timezonePlaceholder" />
-              </Select.Trigger>
-              <Select.Indicator>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path
-                    d="M4 6l4 4 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </Select.Indicator>
-            </Select.Control>
-            <Teleport to="body">
-              <Select.Positioner>
-                <Select.Content>
-                  <Select.Item v-for="item in timezones.items" :key="item.value" :item="item">
-                    <Select.ItemText>{{ item.label }}</Select.ItemText>
-                  </Select.Item>
-                </Select.Content>
-              </Select.Positioner>
-            </Teleport>
-            <Select.HiddenSelect />
-          </Select.Root>
+          <Select
+            v-model="form.timezone"
+            :options="timezoneOptions"
+            :placeholder="text.workspace.timezonePlaceholder"
+            :clearable="false"
+          />
         </FormField>
       </Card.Content>
-    </Card.Root>
+    </Card>
 
-    <Card.Root>
+    <Card>
       <Card.Header>
         <Card.Title>{{ text.notifications.title }}</Card.Title>
         <Card.Description>{{ text.notifications.description }}</Card.Description>
       </Card.Header>
       <Card.Content class="grid content-start gap-(--bs-gap-md)">
-        <Switch.Root v-model:checked="form.digest">
-          <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>{{ text.notifications.dailyDigest }}</Switch.Label>
-          <Switch.HiddenInput />
-        </Switch.Root>
-        <Switch.Root v-model:checked="form.anomalyAlerts">
-          <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>{{ text.notifications.anomalyAlerts }}</Switch.Label>
-          <Switch.HiddenInput />
-        </Switch.Root>
-        <Switch.Root v-model:checked="form.weeklyReport">
-          <Switch.Control><Switch.Thumb /></Switch.Control>
-          <Switch.Label>{{ text.notifications.weeklyReport }}</Switch.Label>
-          <Switch.HiddenInput />
-        </Switch.Root>
+        <Switch v-model="form.digest" :label="text.notifications.dailyDigest" />
+        <Switch v-model="form.anomalyAlerts" :label="text.notifications.anomalyAlerts" />
+        <Switch v-model="form.weeklyReport" :label="text.notifications.weeklyReport" />
       </Card.Content>
-    </Card.Root>
+    </Card>
 
     <!-- The save belongs to the whole form, not to either card — an
          empty vessel just to host a button would be a fake object. -->

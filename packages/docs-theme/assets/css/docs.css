@@ -481,21 +481,6 @@ body {
   letter-spacing: var(--bs-tracking-label);
 }
 
-/* The section eyebrow, lifted from the navigation tree. */
-.bs-docs-page-headline {
-  margin: 0 0 var(--bs-margin-sm);
-  font-size: var(--bs-font-size-sm);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  color: var(--bs-color-text-tertiary);
-}
-
-.bs-docs-page-description {
-  margin: 0 0 var(--bs-margin-2xl);
-  font-size: var(--bs-font-size-lg);
-  color: var(--bs-color-text-secondary);
-}
-
 /* ---------------------------------------------------------------- */
 /* Prose                                                             */
 /* ---------------------------------------------------------------- */
@@ -512,9 +497,7 @@ body {
 
   .bs-docs-prose h2,
   .bs-docs-prose h3,
-  .bs-docs-prose h4,
-  .bs-docs-api h2,
-  .bs-docs-api h3 {
+  .bs-docs-prose h4 {
     scroll-margin-block-start: calc(
       var(--bs-control-height-md) + var(--bs-padding-sm) * 2 + var(--bs-space-2)
     );
@@ -524,8 +507,7 @@ body {
     color: var(--bs-color-text-primary);
   }
 
-  .bs-docs-prose h2,
-  .bs-docs-api h2 {
+  .bs-docs-prose h2 {
     /* Section spacing is typographic rhythm, not page composition — it
        rides the semantic tier (like the h3 below it), where the raw
        space-12 this once borrowed read three-odd body lines tall. */
@@ -536,8 +518,7 @@ body {
     font-weight: var(--bs-font-weight-semibold);
   }
 
-  .bs-docs-prose h3,
-  .bs-docs-api h3 {
+  .bs-docs-prose h3 {
     margin: var(--bs-margin-2xl) 0 var(--bs-margin-md);
     font-size: var(--bs-font-size-lg);
     font-weight: var(--bs-font-weight-semibold);
@@ -882,45 +863,9 @@ body {
    than the vessel, hairlined, never elevated. The component rises from
    the start of the flow, where it would stand on a real page — centering
    is a demo's own explicit choice, not the canvas's default. */
-.bs-docs-demo-canvas {
-  /* No content-visibility here: its paint containment would clip every
-     floating panel the demo opens over the canvas edge. */
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--bs-gap-md);
-  margin: var(--bs-padding-sm) var(--bs-padding-md);
-  padding: var(--bs-padding-xl) var(--bs-padding-lg);
-}
-
-.bs-docs-demo-missing {
-  margin: 0;
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-sm);
-}
-
 /* The frame's vessel dress belongs to the consumer — the wrapper carries
    no anatomy for the core stylesheet to hook — and the UA's fossil 2px
    inset border on iframes must go first. */
-.bs-docs-frame {
-  border: 1px solid var(--bs-color-border);
-  border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-2);
-}
-
-.bs-docs-demo-code {
-  margin: 0;
-  padding: var(--bs-padding-md);
-  border-radius: 0;
-  background: transparent;
-  overflow-x: auto;
-  font-family: var(--bs-font-mono);
-  font-size: var(--bs-font-size-sm);
-  line-height: var(--bs-line-height-relaxed);
-  color: var(--bs-color-text-primary);
-  tab-size: 2;
-}
-
 /* The demo's code pane reuses the printed-block vessel; nested inside
    the tabs panel it contributes no margin or radius of its own. */
 .bs-docs-demo-code-panel {
@@ -946,19 +891,6 @@ body {
 /* ---------------------------------------------------------------- */
 /* Surround — the shared Button carrying the reader onward           */
 /* ---------------------------------------------------------------- */
-
-.bs-docs-surround {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--bs-gap-md);
-  margin-block-start: var(--bs-space-16);
-}
-
-.bs-docs-surround-direction {
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-xs);
-  letter-spacing: var(--bs-tracking-label);
-}
 
 /* The "edit this page" trail under the article body. */
 .bs-docs-page-edit {
@@ -1213,12 +1145,6 @@ body {
   block-size: var(--bs-control-height-md);
 }
 
-/* The header rail's ghost icons — mode, assistant — share one register. */
-.bs-docs-rail-icon {
-  inline-size: 1rem;
-  block-size: 1rem;
-}
-
 /* The language switcher poses as a bare emoji flag in the header rail —
    the trigger sheds the stock select chrome at header specificity. */
 .bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger {
@@ -1236,21 +1162,6 @@ body {
 
 .bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger:hover {
   background: transparent;
-}
-
-.bs-docs-language-flag {
-  font-size: var(--bs-font-size-lg);
-  /* A flag glyph centers on its own em square; the four line-height
-     ladders are for text, not pictographs. */
-  line-height: 1;
-}
-
-.bs-docs-language-positioner {
-  min-inline-size: 10rem;
-}
-
-.bs-docs-language-menu {
-  min-inline-size: 10rem;
 }
 
 /* Docus's rows: the name carries the weight, the flag trails at the end. */
@@ -1412,45 +1323,8 @@ body {
 }
 
 /* ---------------------------------------------------------------- */
-/* API reference pages                                               */
-/* ---------------------------------------------------------------- */
-
-.bs-docs-api .bs-docs-page-header h1 {
-  font-size: var(--bs-font-size-2xl);
-}
-
-.bs-docs-api-anatomy {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--bs-gap-sm);
-  margin: 0 0 var(--bs-margin-2xl);
-}
-
-.bs-docs-api-anatomy-label {
-  font-size: var(--bs-font-size-xs);
-  font-weight: var(--bs-font-weight-semibold);
-  letter-spacing: var(--bs-tracking-label);
-  text-transform: uppercase;
-  color: var(--bs-color-text-tertiary);
-}
-
-.bs-docs-api-section {
-  margin-block-end: var(--bs-space-12);
-}
-
-.bs-docs-api-empty {
-  font-size: var(--bs-font-size-sm);
-  color: var(--bs-color-text-tertiary);
-}
-
-/* ---------------------------------------------------------------- */
 /* Landing and error pages                                           */
 /* ---------------------------------------------------------------- */
-
-.bs-docs-landing {
-  padding-block: 0;
-}
 
 .bs-docs-hero {
   max-inline-size: 50rem;

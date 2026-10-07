@@ -136,7 +136,7 @@ watch(albumIndex, () => {
 </script>
 
 <template>
-  <Card.Root>
+  <Card>
     <Card.Content
       class="grid gap-(--bs-gap-xl) p-(--bs-padding-xl)! lg:grid-cols-[13rem_1fr_20rem]"
     >
@@ -291,5 +291,5 @@ watch(albumIndex, () => {
         </div>
       </div>
     </Card.Content>
-  </Card.Root>
+  </Card>
 </template>

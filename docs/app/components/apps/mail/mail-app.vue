@@ -308,7 +308,7 @@ function send() {
 </script>
 
 <template>
-  <Card.Root>
+  <Card>
     <Card.Content class="p-0!">
       <div class="grid h-[38rem] md:grid-cols-[11rem_17rem_1fr]">
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
@@ -472,9 +472,9 @@ function send() {
                 </div>
               </div>
               <div class="mb-(--bs-margin-lg) flex items-center gap-(--bs-gap-md)">
-                <Avatar.Root class="size-9">
+                <Avatar class="size-9">
                   <Avatar.Fallback>{{ selected.from.name.slice(0, 1) }}</Avatar.Fallback>
-                </Avatar.Root>
+                </Avatar>
                 <div class="min-w-0">
                   <p class="m-0 truncate text-sm font-medium">
                     {{ selected.from.name }}
@@ -507,5 +507,5 @@ function send() {
         </div>
       </div>
     </Card.Content>
-  </Card.Root>
+  </Card>
 </template>

@@ -19,7 +19,7 @@ const copy = computed(() => resolveLandingCopy(locale.value).features);
     </header>
 
     <div class="grid gap-(--bs-gap-lg) sm:grid-cols-2 lg:grid-cols-4">
-      <Card.Root v-for="feature in copy.items" :key="feature.title">
+      <Card v-for="feature in copy.items" :key="feature.title">
         <Card.Content class="grid content-start gap-(--bs-gap-md)">
           <span
             class="grid size-9 place-items-center rounded-sm border border-border bg-surface-2 text-secondary"
@@ -43,7 +43,7 @@ const copy = computed(() => resolveLandingCopy(locale.value).features);
             {{ feature.body }}
           </p>
         </Card.Content>
-      </Card.Root>
+      </Card>
     </div>
   </section>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import { Button, Dialog, Form, FormField, Input, Select, useForm } from "@bysages/vue";
 import { computed, watch } from "vue";
 import { z } from "zod";
@@ -110,13 +109,11 @@ watch(
   },
 );
 
-const statusCollection = computed(() =>
-  createListCollection({
-    items: (Object.keys(text.value.statuses) as OrderStatus[]).map((value) => ({
-      value,
-      label: text.value.statuses[value],
-    })),
-  }),
+const statusOptions = computed(() =>
+  (Object.keys(text.value.statuses) as OrderStatus[]).map((value) => ({
+    value,
+    label: text.value.statuses[value],
+  })),
 );
 </script>
 
@@ -156,34 +153,13 @@ const statusCollection = computed(() =>
 
             <FormField name="status" :label="text.status">
               <template #default="{ field }">
-                <Select.Root
-                  :collection="statusCollection"
-                  :model-value="[field.state.value]"
-                  @update:model-value="
-                    (values: string[]) => field.handleChange(values[0] as OrderStatus)
-                  "
-                >
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText :placeholder="text.status" />
-                    </Select.Trigger>
-                  </Select.Control>
-                  <Teleport to="body">
-                    <Select.Positioner>
-                      <Select.Content>
-                        <Select.Item
-                          v-for="item in statusCollection.items"
-                          :key="item.value"
-                          :item="item"
-                        >
-                          <Select.ItemText>{{ item.label }}</Select.ItemText>
-                          <Select.ItemIndicator>✓</Select.ItemIndicator>
-                        </Select.Item>
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Teleport>
-                  <Select.HiddenSelect />
-                </Select.Root>
+                <Select
+                  :model-value="field.state.value"
+                  :options="statusOptions"
+                  :placeholder="text.status"
+                  :clearable="false"
+                  @update:model-value="(value: string) => field.handleChange(value as OrderStatus)"
+                />
               </template>
             </FormField>
 

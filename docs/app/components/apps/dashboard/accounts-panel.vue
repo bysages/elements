@@ -30,7 +30,7 @@ defineEmits<{
 </script>
 
 <template>
-  <Card.Root>
+  <Card>
     <Card.Header>
       <Card.Title>{{ text.title }}</Card.Title>
       <Card.Description>{{ text.description }}</Card.Description>
@@ -43,5 +43,5 @@ defineEmits<{
         @archive="$emit('archive', $event)"
       />
     </Card.Content>
-  </Card.Root>
+  </Card>
 </template>

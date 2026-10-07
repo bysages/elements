@@ -46,7 +46,7 @@ const searchOpen = useDocsSearch();
         class="bs-docs-header-search"
         @click="searchOpen = true"
       >
-        <Icon name="i-lucide-search" class="bs-docs-rail-icon" />
+        <Icon name="i-lucide-search" class="size-4" />
       </Button>
 
       <Button

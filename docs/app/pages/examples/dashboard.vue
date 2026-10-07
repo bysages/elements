@@ -169,7 +169,7 @@ function archiveSelected(selected: OrderRow[]) {
             <RevenueChart />
             <TrendChart />
           </div>
-          <Card.Root>
+          <Card>
             <Card.Header>
               <Card.Title>{{ text.newest.title }}</Card.Title>
               <Card.Description>{{ text.newest.description }}</Card.Description>
@@ -188,7 +188,7 @@ function archiveSelected(selected: OrderRow[]) {
                 </li>
               </ul>
             </Card.Content>
-          </Card.Root>
+          </Card>
         </div>
 
         <AccountsPanel

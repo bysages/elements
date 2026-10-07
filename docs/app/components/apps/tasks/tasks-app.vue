@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { createListCollection } from "@ark-ui/vue/select";
 import {
   Avatar,
   Badge,
@@ -130,7 +129,14 @@ const tasks = reactive<Task[]>([
 ]);
 
 const statusFilter = ref<Status | "all">("all");
-const priorityFilter = ref<string[]>(["any"]);
+const priorityFilter = ref<string>("any");
+
+const statusFilters = computed(() =>
+  (["all", "todo", "doing", "done"] as const).map((value) => ({
+    value,
+    label: text.value.filters[value],
+  })),
+);
 
 // Priority speaks in ink weight, not pigment: the semantic colors stay
 // reserved for state, so a high-priority task is simply the heaviest seal.
@@ -156,25 +162,23 @@ const visible = computed(() =>
   tasks.filter(
     (t) =>
       (statusFilter.value === "all" || t.status === statusFilter.value) &&
-      (priorityFilter.value[0] === "any" || t.priority === priorityFilter.value[0]),
+      (priorityFilter.value === "any" || t.priority === priorityFilter.value),
   ),
 );
 
 const openCount = computed(() => tasks.filter((t) => t.status !== "done").length);
 
-const priorityCollection = computed(() =>
-  createListCollection({
-    items: (["any", "high", "med", "low"] as const).map((value) => ({
-      value,
-      label: text.value.priorities[value],
-    })),
-  }),
+const priorityOptions = computed(() =>
+  (["any", "high", "med", "low"] as const).map((value) => ({
+    value,
+    label: text.value.priorities[value],
+  })),
 );
 
 // The new-task door: a title, a priority, a date — the ledger does
 // the rest.
 const composing = ref(false);
-const draft = reactive({ title: "", priority: ["med"] as string[], due: "" });
+const draft = reactive({ title: "", priority: "med", due: "" });
 
 // The box is the workflow: an open box is waiting, the dash means
 // hands are on it, the check settles it.
@@ -188,19 +192,19 @@ function add() {
     id: `t-${crypto.randomUUID().slice(0, 6)}`,
     title: { en: draft.title, zh: draft.title },
     status: "todo",
-    priority: (draft.priority[0] ?? "med") as Priority,
+    priority: draft.priority as Priority,
     due: { en: draft.due || "—", zh: draft.due || "—" },
     who: "SW",
   });
   composing.value = false;
   draft.title = "";
-  draft.priority = ["med"];
+  draft.priority = "med";
   draft.due = "";
 }
 </script>
 
 <template>
-  <Card.Root>
+  <Card>
     <Card.Header class="flex! flex-row! items-center! justify-between!">
       <div>
         <Card.Title>{{ locale === "zh" ? "印坊清单" : "Press ledger" }}</Card.Title>
@@ -228,32 +232,12 @@ function add() {
                 </Field.Root>
                 <Field.Root>
                   <Field.Label>{{ text.priority }}</Field.Label>
-                  <Select.Root :collection="priorityCollection" v-model="draft.priority">
-                    <Select.Control>
-                      <Select.Trigger>
-                        <Select.ValueText :placeholder="text.priorities.med" />
-                      </Select.Trigger>
-                      <Select.Indicator>
-                        <Icon name="i-lucide-chevron-down" />
-                      </Select.Indicator>
-                    </Select.Control>
-                    <Teleport to="body">
-                      <Select.Positioner>
-                        <Select.Content>
-                          <Select.Item
-                            v-for="item in priorityCollection.items"
-                            :key="item.value"
-                            :item="item"
-                          >
-                            <Select.ItemText>{{
-                              text.priorities[item.value as Priority]
-                            }}</Select.ItemText>
-                          </Select.Item>
-                        </Select.Content>
-                      </Select.Positioner>
-                    </Teleport>
-                    <Select.HiddenSelect />
-                  </Select.Root>
+                  <Select
+                    v-model="draft.priority"
+                    :options="priorityOptions"
+                    :placeholder="text.priorities.med"
+                    :clearable="false"
+                  />
                 </Field.Root>
                 <Field.Root>
                   <Field.Label>{{ text.due }}</Field.Label>
@@ -273,58 +257,20 @@ function add() {
       <div
         class="mb-(--bs-margin-lg) flex flex-wrap items-center justify-between gap-(--bs-gap-md)"
       >
-        <SegmentGroup.Root
+        <SegmentGroup
           size="sm"
           :model-value="statusFilter"
+          :items="statusFilters"
           @update:model-value="statusFilter = $event as Status | 'all'"
-        >
-          <SegmentGroup.Indicator />
-          <SegmentGroup.Item value="all">
-            <SegmentGroup.ItemHiddenInput />
-            <SegmentGroup.ItemControl />
-            <SegmentGroup.ItemText>{{ text.filters.all }}</SegmentGroup.ItemText>
-          </SegmentGroup.Item>
-          <SegmentGroup.Item value="todo">
-            <SegmentGroup.ItemHiddenInput />
-            <SegmentGroup.ItemControl />
-            <SegmentGroup.ItemText>{{ text.filters.todo }}</SegmentGroup.ItemText>
-          </SegmentGroup.Item>
-          <SegmentGroup.Item value="doing">
-            <SegmentGroup.ItemHiddenInput />
-            <SegmentGroup.ItemControl />
-            <SegmentGroup.ItemText>{{ text.filters.doing }}</SegmentGroup.ItemText>
-          </SegmentGroup.Item>
-          <SegmentGroup.Item value="done">
-            <SegmentGroup.ItemHiddenInput />
-            <SegmentGroup.ItemControl />
-            <SegmentGroup.ItemText>{{ text.filters.done }}</SegmentGroup.ItemText>
-          </SegmentGroup.Item>
-        </SegmentGroup.Root>
+        />
 
-        <Select.Root :collection="priorityCollection" v-model="priorityFilter" class="w-40!">
-          <Select.Control>
-            <Select.Trigger>
-              <Select.ValueText :placeholder="text.priorities.any" />
-            </Select.Trigger>
-            <Select.Indicator>
-              <Icon name="i-lucide-chevron-down" />
-            </Select.Indicator>
-          </Select.Control>
-          <Teleport to="body">
-            <Select.Positioner>
-              <Select.Content>
-                <Select.Item
-                  v-for="item in priorityCollection.items"
-                  :key="item.value"
-                  :item="item"
-                >
-                  <Select.ItemText>{{ text.priorities[item.value as Priority] }}</Select.ItemText>
-                </Select.Item>
-              </Select.Content>
-            </Select.Positioner>
-          </Teleport>
-          <Select.HiddenSelect />
-        </Select.Root>
+        <Select
+          v-model="priorityFilter"
+          class="w-40!"
+          :options="priorityOptions"
+          :placeholder="text.priorities.any"
+          :clearable="false"
+        />
       </div>
 
       <ul class="m-0 list-none p-0">
@@ -364,14 +310,14 @@ function add() {
           <span class="hidden w-20 shrink-0 text-xs tabular-nums text-tertiary sm:block">{{
             task.due[locale]
           }}</span>
-          <Avatar.Root class="size-6 shrink-0">
+          <Avatar class="size-6 shrink-0">
             <Avatar.Fallback>{{ task.who }}</Avatar.Fallback>
-          </Avatar.Root>
+          </Avatar>
         </li>
       </ul>
       <p v-if="!visible.length" class="m-0 py-(--bs-padding-2xl) text-center text-sm text-tertiary">
         {{ text.empty }}
       </p>
     </Card.Content>
-  </Card.Root>
+  </Card>
 </template>

@@ -19,7 +19,7 @@ const copy = computed(() => resolveLandingCopy(locale.value).voices);
     </header>
 
     <div class="grid gap-(--bs-gap-lg) lg:grid-cols-3">
-      <Card.Root v-for="voice in copy.items" :key="voice.author">
+      <Card v-for="voice in copy.items" :key="voice.author">
         <Card.Content>
           <blockquote class="m-0 font-serif text-lg italic leading-snug">
             &ldquo;{{ voice.quote }}&rdquo;
@@ -29,16 +29,16 @@ const copy = computed(() => resolveLandingCopy(locale.value).voices);
             of unequal length still line their bylines up at the base. -->
         <Card.Footer>
           <figure class="m-0 flex items-center gap-(--bs-gap-md)">
-            <Avatar.Root size="sm">
+            <Avatar size="sm">
               <Avatar.Fallback>{{ voice.initials }}</Avatar.Fallback>
-            </Avatar.Root>
+            </Avatar>
             <figcaption class="flex flex-col">
               <span class="text-sm font-medium">{{ voice.author }}</span>
               <span class="text-xs text-tertiary">{{ voice.role }}</span>
             </figcaption>
           </figure>
         </Card.Footer>
-      </Card.Root>
+      </Card>
     </div>
   </section>
 </template>
