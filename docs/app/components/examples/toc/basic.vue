@@ -3,9 +3,9 @@ import { Toc } from "@bysages/vue";
 import { ref } from "vue";
 
 const items = [
-  { value: "materials", depth: 2, label: "Materials" },
-  { value: "brushwork", depth: 2, label: "Brushwork" },
-  { value: "mounting", depth: 2, label: "Mounting" },
+  { value: "basic-materials", depth: 2, label: "Materials" },
+  { value: "basic-brushwork", depth: 2, label: "Brushwork" },
+  { value: "basic-mounting", depth: 2, label: "Mounting" },
 ];
 
 const scroller = ref<HTMLElement | null>(null);

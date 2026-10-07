@@ -1,9 +1,11 @@
 import { Toc as ArkToc } from "@ark-ui/vue/toc";
 import { injectComponentStyle } from "@bysages/core";
-import { defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, onMounted, ref, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
+
+type TocItem = { value: string; label: string; depth?: number };
 
 /** Toc, dressed in the paper-and-ink system: a quiet rail of links
  * beside the scroll, one stroke of primary ink marking where the reader
@@ -11,10 +13,32 @@ import { useElementId } from "../../internal/id";
 
 const TocRoot = defineComponent({
   name: "STocRoot",
-  setup(_, { attrs, slots }) {
+  props: {
+    items: { type: Array as PropType<TocItem[]>, default: undefined },
+    scrollEl: { type: Function as PropType<() => HTMLElement | null>, default: undefined },
+    "scroll-el": { type: Function as PropType<() => HTMLElement | null>, default: undefined },
+  },
+  setup(props, { attrs, slots }) {
+    const scrollEl = props.scrollEl ?? props["scroll-el"];
     const id = useElementId("toc", attrs);
+    const isMounted = ref(false);
 
-    return () => h(ArkToc.Root as never, { ...attrs, id: id.value }, slots);
+    onMounted(() => {
+      isMounted.value = true;
+    });
+
+    return () =>
+      h(
+        ArkToc.Root as never,
+        {
+          key: isMounted.value ? "ready" : "initial",
+          ...attrs,
+          id: id.value,
+          ...(props.items ? { items: props.items } : {}),
+          ...(scrollEl ? { scrollEl } : {}),
+        },
+        slots,
+      );
   },
 });
 
@@ -38,14 +62,12 @@ const TocContent = defineComponent({
   },
 });
 
-type TocFacadeItem = { value: string; label: string; depth?: number };
-
 /** The complete rail behind one page: items become anchor rows, the
  * title names the list, and the active stroke follows the scroller. */
 const TocFacade = defineComponent({
   name: "SToc",
   props: {
-    items: { type: Array as PropType<TocFacadeItem[]>, required: true },
+    items: { type: Array as PropType<TocItem[]>, required: true },
     scrollEl: { type: Function as PropType<() => HTMLElement | null>, default: undefined },
     title: { type: String, default: "On this page" },
   },
