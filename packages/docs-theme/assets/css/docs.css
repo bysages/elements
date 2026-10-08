@@ -1227,7 +1227,7 @@ body {
   position: fixed;
   inset-block-end: var(--bs-space-5);
   inset-inline: 0;
-  z-index: calc(var(--bs-z-overlay) - 10);
+  z-index: var(--bs-z-floating);
   inline-size: min(26rem, calc(100vw - var(--bs-space-8)));
   margin-inline: auto;
   box-shadow: var(--bs-elevation-2);
