@@ -29,7 +29,7 @@ export const commandCss =
   padding: var(--bs-padding-md);
   border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
-  background: var(--bs-color-surface-2);
+  background: var(--bs-color-surface-4);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-elevation-4);
   transition:
@@ -122,8 +122,8 @@ export const commandCss =
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="command"][data-part="item"][data-highlighted] {
-  background: var(--bs-color-surface-0);
+[data-scope="command"][data-part="item"][data-highlighted]:not([data-disabled]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 [data-scope="command"][data-part="item"][data-disabled] {

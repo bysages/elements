@@ -61,7 +61,7 @@ export const tourCss =
 
 [data-scope="tour"][data-part="arrow"] {
   --arrow-size: var(--bs-space-2);
-  --arrow-background: var(--bs-color-surface-2);
+  --arrow-background: var(--bs-color-surface-3);
 }
 
 [data-scope="tour"][data-part="arrow-tip"] {

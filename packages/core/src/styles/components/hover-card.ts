@@ -58,7 +58,7 @@ export const hoverCardCss =
 
 [data-scope="hover-card"][data-part="arrow"] {
   --arrow-size: var(--bs-space-2);
-  --arrow-background: var(--bs-color-surface-2);
+  --arrow-background: var(--bs-color-surface-3);
 }
 
 [data-scope="hover-card"][data-part="arrow-tip"] {

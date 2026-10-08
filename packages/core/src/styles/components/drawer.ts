@@ -58,7 +58,7 @@ export const drawerCss =
   padding-block-end: max(var(--bs-padding-xl), var(--bs-safe-area-inset-bottom));
   border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg) var(--bs-radius-lg) 0 0;
-  background: var(--bs-color-surface-2);
+  background: var(--bs-color-surface-4);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-elevation-4);
   outline: none;

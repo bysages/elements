@@ -9,7 +9,7 @@ let {
   step = $bindable(),
   defaultStep = 0,
   items,
-  linear = true,
+  linear = false,
   orientation = "horizontal",
   children,
   ...rest

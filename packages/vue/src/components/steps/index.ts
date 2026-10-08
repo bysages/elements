@@ -26,6 +26,16 @@ const StepsRoot = defineComponent({
   },
 });
 
+/** The machine wraps each tab in an item div; presentation keeps the
+ * tablist owned children legal while the tab itself keeps its role. */
+const StepsItem = defineComponent({
+  name: "SStepsItem",
+  props: { index: { type: Number, required: true } },
+  setup(props, { attrs, slots }) {
+    return () => h(ArkSteps.Item, { ...attrs, index: props.index, role: "presentation" }, slots);
+  },
+});
+
 export type StepsItem = {
   title: string;
 };
@@ -38,7 +48,7 @@ const StepsFacade = defineComponent({
     items: { type: Array as PropType<StepsItem[]>, required: true },
     step: { type: Number, default: undefined },
     defaultStep: { type: Number, default: 0 },
-    linear: { type: Boolean, default: true },
+    linear: { type: Boolean, default: false },
     orientation: {
       type: String as PropType<"horizontal" | "vertical">,
       default: "horizontal",
@@ -65,7 +75,7 @@ const StepsFacade = defineComponent({
         () =>
           h(ArkSteps.List, () =>
             props.items.map((item, index) =>
-              h(ArkSteps.Item, { key: item.title, index }, () => [
+              h(StepsItem, { key: item.title, index }, () => [
                 h(ArkSteps.Trigger, () => [
                   h(ArkSteps.Indicator, () => String(index + 1)),
                   item.title,
@@ -78,7 +88,10 @@ const StepsFacade = defineComponent({
   },
 });
 
-type StepsParts = Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot };
+type StepsParts = Omit<typeof ArkSteps, "Root" | "Item"> & {
+  Root: typeof StepsRoot;
+  Item: typeof StepsItem;
+};
 
 /* Ark's namespace is frozen — spread copies the members as data
  * properties so Root can be the sized wrapper while the rest stay
@@ -86,4 +99,8 @@ type StepsParts = Omit<typeof ArkSteps, "Root"> & { Root: typeof StepsRoot };
 export const Steps = defineFamily(StepsFacade, {
   ...ArkSteps,
   Root: StepsRoot,
-} as unknown as { Root: Component } & Record<string, Component>) as typeof StepsFacade & StepsParts;
+  Item: StepsItem,
+} as unknown as { Root: Component; Item: Component } & Record<
+  string,
+  Component
+>) as typeof StepsFacade & StepsParts;

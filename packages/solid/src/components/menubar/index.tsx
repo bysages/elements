@@ -42,10 +42,10 @@ export interface MenubarProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
 function MenubarImpl(props: MenubarProps) {
   injectComponentStyle("menubar");
   injectComponentStyle("menu");
-  const [own, rest] = splitProps(props, ["id", "items", "onSelect"]);
+  const [own, rest] = splitProps(props, ["id", "items", "onSelect", "children"]);
   const id = useElementId("menubar", () => own.id);
   return (
-    <div {...rest} data-scope="menubar" data-part="root" role="menubar">
+    <div {...rest} id={own.id} data-scope="menubar" data-part="root" role="menubar">
       <For each={own.items ?? []}>
         {(group, index) => (
           <ArkMenu.Root id={`${id()}-${index()}`} positioning={{ placement: "bottom-start" }}>
@@ -85,6 +85,7 @@ function MenubarImpl(props: MenubarProps) {
           </ArkMenu.Root>
         )}
       </For>
+      {own.children}
     </div>
   );
 }

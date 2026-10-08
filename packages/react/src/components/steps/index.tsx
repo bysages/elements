@@ -36,7 +36,7 @@ function StepsFacade({
   items,
   step,
   defaultStep = 0,
-  linear = true,
+  linear = false,
   orientation = "horizontal",
   size = "md",
   className,

@@ -16,7 +16,7 @@ export const popoverCss =
 /* The arrow is a whisker of the same paper, tucked behind the vessel so
    only its tip and hairline show. */
 [data-scope="popover"][data-part="arrow"] {
-  --arrow-background: var(--bs-color-surface-2);
+  --arrow-background: var(--bs-color-surface-3);
   --arrow-size: var(--bs-space-2);
   z-index: -1;
 }

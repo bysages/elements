@@ -35,20 +35,18 @@ export const menubarCss = /* css */ `
   color: var(--bs-color-text-primary);
 }
 
-/* The halo is the keyboard's cursor; open keeps the raised face and the
-   deepened edge alone — the open menu itself is the pointer's focus,
-   and after an Escape returns focus as a keyboard focus,
-   :focus-visible shows. */
+/* The halo is the keyboard's cursor; open and focus share the ghost
+   wash — the open menu itself is the pointer's focus. After Escape
+   returns focus as a keyboard focus, :focus-visible shows. */
 [data-scope="menubar"][data-part="trigger"]:focus-visible {
   outline: none;
-  background: var(--bs-color-surface-0);
   color: var(--bs-color-text-primary);
   box-shadow: var(--bs-focus-ring);
 }
 
 [data-scope="menubar"][data-part="trigger"][data-state="open"] {
   outline: none;
-  background: var(--bs-color-surface-0);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
   color: var(--bs-color-text-primary);
 }
 

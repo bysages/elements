@@ -1,6 +1,7 @@
 <script lang="ts">
 import { injectComponentStyle } from "@bysages/core";
 injectComponentStyle("menubar");
+injectComponentStyle("menu");
 
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
 import { Portal } from "@ark-ui/svelte/portal";

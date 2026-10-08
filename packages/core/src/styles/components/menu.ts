@@ -16,7 +16,7 @@ export const menuCss =
 /* A menu arrow is a whisker of the same paper, tucked behind the vessel so
    only its tip and hairline show. */
 [data-scope="menu"][data-part="arrow"] {
-  --arrow-background: var(--bs-color-surface-2);
+  --arrow-background: var(--bs-color-surface-3);
   --arrow-size: var(--bs-space-2);
   z-index: -1;
 }
@@ -143,9 +143,9 @@ export const menuCss =
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="menu"][data-part="item"][data-highlighted]:not([data-state="checked"]),
-[data-scope="menu"][data-part="trigger-item"][data-highlighted] {
-  background: var(--bs-color-surface-0);
+[data-scope="menu"][data-part="item"][data-highlighted]:not([data-state="checked"], [data-disabled]),
+[data-scope="menu"][data-part="trigger-item"][data-highlighted]:not([data-disabled]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 
 /* Radio and checkbox choices render as plain items carrying

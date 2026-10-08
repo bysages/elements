@@ -177,7 +177,8 @@ ${bodyCss(buttonBody)}
   --_edge: var(--bs-color-border-strong);
 }
 
-[data-scope="button"][data-part="root"]:hover:not(:disabled, [data-disabled]) {
+[data-scope="button"][data-part="root"]:hover:not(:disabled, [data-disabled]),
+[data-scope][data-part="trigger"][data-variant]:hover:not(:disabled, [data-disabled]) {
   background: var(--_fill-hover);
 }
 

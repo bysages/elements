@@ -155,7 +155,7 @@ ${
 }
 
 [data-scope="${scope}"][data-part="item"][data-state="checked"] {
-  background: var(--bs-color-primary);
+  background: var(--bs-color-primary-fill);
   color: var(--bs-color-primary-text);
   font-weight: var(--bs-font-weight-medium);
 }
@@ -266,14 +266,14 @@ export function primaryTriggerCss(
   /* A colored surface casts in its own color. Composite elevation tokens
      resolve their vars at :root, so the tint enters here where the shadow
      is declared, mixed from the lighting parts. */
-  --bs-shadow-color: color-mix(in oklab, var(--bs-color-primary) 20%, transparent);
+  --bs-shadow-color: color-mix(in oklab, var(--bs-color-primary-fill) 20%, transparent);
   display: inline-grid;
   place-items: center;
   block-size: ${controlHeight};
   padding: 0 var(--bs-padding-md);
   border: none;
   border-radius: var(--bs-radius-sm);
-  background: var(--bs-color-primary);
+  background: var(--bs-color-primary-fill);
   color: var(--bs-color-primary-text);
   font: inherit;
   font-size: ${fontSize};
@@ -289,14 +289,14 @@ export function primaryTriggerCss(
 
 /* Hover lets the ink bleed — the shadow spreads while the fill deepens;
    the shadow trails the color by design (light needs time). */
-[data-scope="${scope}"][data-part="${part}"]:hover {
-  background: var(--bs-color-primary-hover);
+[data-scope="${scope}"][data-part="${part}"]:hover:not(:disabled, [data-disabled]) {
+  background: var(--bs-color-primary-fill-hover);
   box-shadow: var(--bs-light-x) calc(2px * var(--bs-light-reach)) calc(6px * var(--bs-light-reach))
     calc(-1px * var(--bs-light-reach)) var(--bs-shadow-color);
 }
 
 /* Pressing settles the button into the page: the shadow lets go. */
-[data-scope="${scope}"][data-part="${part}"]:active {
+[data-scope="${scope}"][data-part="${part}"]:active:not(:disabled, [data-disabled]) {
   background: var(--bs-color-primary-active);
   box-shadow: none;
 }
@@ -304,6 +304,15 @@ export function primaryTriggerCss(
 [data-scope="${scope}"][data-part="${part}"]:focus-visible {
   outline: none;
   box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="${scope}"][data-part="${part}"]:disabled,
+[data-scope="${scope}"][data-part="${part}"][data-disabled] {
+  border: none;
+  background: var(--bs-color-surface-inset);
+  color: var(--bs-color-text-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
 }
 `;
 }
