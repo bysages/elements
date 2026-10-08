@@ -8,6 +8,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { defineComponent, h, type DefineComponent, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 
 export type { CreateToasterReturn } from "@ark-ui/vue/toast";
 export { createToaster };
@@ -40,7 +41,9 @@ const ToasterFacade = defineComponent({
           h(ArkToast.Root, { key: toast.id }, () => [
             h(ArkToast.Title, () => toast.title),
             toast.description ? h(ArkToast.Description, () => toast.description) : null,
-            h(ArkToast.CloseTrigger, { "aria-label": "Close" }, () => "×"),
+            h(ArkToast.CloseTrigger, { "aria-label": "Close" }, () =>
+              iconNode("x", { width: 14, height: 14 }),
+            ),
           ]));
 
       return h(ArkToaster as never, { ...ctx.attrs, toaster: props.toaster }, defaultSlot as never);

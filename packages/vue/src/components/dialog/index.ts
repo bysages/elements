@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { defineComponent, h, type Component, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
@@ -64,7 +65,9 @@ const DialogFacade = defineComponent({
               props.description ? h(ArkDialog.Description, () => props.description) : null,
               props.content ? h("p", () => props.content) : null,
               ctx.slots.default?.(),
-              h(ArkDialog.CloseTrigger, { "aria-label": "Close" }, () => "×"),
+              h(ArkDialog.CloseTrigger, { "aria-label": "Close" }, () =>
+                iconNode("x", { width: 14, height: 14 }),
+              ),
             ]),
           ),
         ],

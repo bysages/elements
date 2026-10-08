@@ -1181,7 +1181,9 @@ const DataTableFacade = defineComponent({
                         { key: item.value, item, value: item.value },
                         () => [
                           h(ArkSelect.ItemText as never, () => item.label),
-                          h(ArkSelect.ItemIndicator as never, () => "✓"),
+                          h(ArkSelect.ItemIndicator as never, () =>
+                            iconNode("check", { width: 14, height: 14 }),
+                          ),
                         ],
                       ),
                     ),

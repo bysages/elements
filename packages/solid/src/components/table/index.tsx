@@ -914,7 +914,9 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
                     {(item) => (
                       <ArkSelect.Item item={item}>
                         <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                        <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
+                        <ArkSelect.ItemIndicator>
+                          {iconNode("check", { width: 14, height: 14 })}
+                        </ArkSelect.ItemIndicator>
                       </ArkSelect.Item>
                     )}
                   </For>

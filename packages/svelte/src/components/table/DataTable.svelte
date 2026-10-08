@@ -45,6 +45,7 @@ import { createVirtualizer } from "@tanstack/svelte-virtual";
 import { createListCollection } from "@ark-ui/svelte/select";
 import { untrack } from "svelte";
 
+import { iconHtml } from "../../internal/icon";
 import InternalIcon from "../../internal/InternalIcon.svelte";
 import { formatMessage, useComponentMessages } from "../config-provider/messages";
 import { Pagination as ArkPagination } from "../pagination";
@@ -681,7 +682,7 @@ function cellStyle(column: TColumn, span: number) {
               {#each sizeItems.items as item (item.value)}
                 <ArkSelect.Item item={item} value={item.value}>
                   <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                  <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
+                  <ArkSelect.ItemIndicator>{@html iconHtml("check", { width: "14", height: "14" })}</ArkSelect.ItemIndicator>
                 </ArkSelect.Item>
               {/each}
             </ArkSelect.Content>

@@ -2,6 +2,7 @@ import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { injectComponentStyle } from "@bysages/core";
 import type { ComponentProps, ReactNode } from "react";
 
+import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/react/dialog";
@@ -55,7 +56,9 @@ function DialogFacade({
           {description ? <ArkDialog.Description>{description}</ArkDialog.Description> : null}
           {content ? <p>{content}</p> : null}
           {children}
-          <ArkDialog.CloseTrigger aria-label="Close">×</ArkDialog.CloseTrigger>
+          <ArkDialog.CloseTrigger aria-label="Close">
+            {iconNode("x", { width: 14, height: 14 })}
+          </ArkDialog.CloseTrigger>
         </ArkDialog.Content>
       </ArkDialog.Positioner>
     </DialogRoot>

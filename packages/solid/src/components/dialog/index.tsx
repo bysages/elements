@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core";
 import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/solid/dialog";
@@ -58,7 +59,9 @@ function DialogFacade(props: DialogFacadeProps) {
             <p>{props.content}</p>
           </Show>
           {props.children}
-          <ArkDialog.CloseTrigger aria-label="Close">×</ArkDialog.CloseTrigger>
+          <ArkDialog.CloseTrigger aria-label="Close">
+            {iconNode("x", { width: 14, height: 14 })}
+          </ArkDialog.CloseTrigger>
         </ArkDialog.Content>
       </ArkDialog.Positioner>
     </DialogRoot>

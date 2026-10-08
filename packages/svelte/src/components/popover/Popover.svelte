@@ -3,6 +3,7 @@ import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { Portal } from "@ark-ui/svelte/portal";
 
 import PopoverRoot from "./PopoverRoot.svelte";
+  import { iconHtml } from "../../internal/icon";
 
 let {
   open = $bindable(),
@@ -41,7 +42,7 @@ let {
         {#if label}<ArkPopover.Title>{label}</ArkPopover.Title>{/if}
         {#if description}<ArkPopover.Description>{description}</ArkPopover.Description>{/if}
         {@render children?.()}
-        <ArkPopover.CloseTrigger aria-label="Close">×</ArkPopover.CloseTrigger>
+        <ArkPopover.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkPopover.CloseTrigger>
       </ArkPopover.Content>
     </ArkPopover.Positioner>
   </Portal>

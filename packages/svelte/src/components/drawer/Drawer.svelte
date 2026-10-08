@@ -3,6 +3,7 @@ import { Drawer as ArkDrawer } from "@ark-ui/svelte/drawer";
 import { Portal } from "@ark-ui/svelte/portal";
 
 import DrawerRoot from "./DrawerRoot.svelte";
+  import { iconHtml } from "../../internal/icon";
 
 let {
   open = $bindable(),
@@ -31,7 +32,7 @@ let {
         <ArkDrawer.Title>{label ?? trigger}</ArkDrawer.Title>
         {#if description}<ArkDrawer.Description>{description}</ArkDrawer.Description>{/if}
         {@render children?.()}
-        <ArkDrawer.CloseTrigger aria-label="Close">×</ArkDrawer.CloseTrigger>
+        <ArkDrawer.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkDrawer.CloseTrigger>
       </ArkDrawer.Content>
     </ArkDrawer.Positioner>
   </Portal>

@@ -1,6 +1,8 @@
 <script lang="ts">
 import { Toast as ArkToast } from "@ark-ui/svelte/toast";
 
+import { iconHtml } from "../../internal/icon";
+
 import ToastRoot from "./ToastRoot.svelte";
 
 let { title, description, closable = true, children, ...rest }: {
@@ -14,6 +16,6 @@ let { title, description, closable = true, children, ...rest }: {
 <ToastRoot {...rest}>
   <ArkToast.Title>{title}</ArkToast.Title>
   {#if description}<ArkToast.Description>{description}</ArkToast.Description>{/if}
-  {#if closable}<ArkToast.CloseTrigger aria-label="Close">×</ArkToast.CloseTrigger>{/if}
+  {#if closable}<ArkToast.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkToast.CloseTrigger>{/if}
   {@render children?.()}
 </ToastRoot>

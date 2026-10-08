@@ -2,6 +2,7 @@
 import { TagsInput as ArkTagsInput } from "@ark-ui/svelte/tags-input";
 
 import TagsInputRoot from "./TagsInputRoot.svelte";
+  import { iconHtml } from "../../internal/icon";
 
 let {
   value = $bindable(),
@@ -37,7 +38,7 @@ let {
           <ArkTagsInput.Item index={index} value={tag}>
             <ArkTagsInput.ItemPreview>
               <ArkTagsInput.ItemText>{tag}</ArkTagsInput.ItemText>
-              <ArkTagsInput.ItemDeleteTrigger aria-label="Remove">×</ArkTagsInput.ItemDeleteTrigger>
+              <ArkTagsInput.ItemDeleteTrigger aria-label="Remove">{@html iconHtml("x")}</ArkTagsInput.ItemDeleteTrigger>
             </ArkTagsInput.ItemPreview>
             <ArkTagsInput.ItemInput />
           </ArkTagsInput.Item>
@@ -45,7 +46,7 @@ let {
       {/snippet}
     </ArkTagsInput.Context>
     <ArkTagsInput.Input {placeholder} />
-    {#if clearable}<ArkTagsInput.ClearTrigger aria-label="Clear">×</ArkTagsInput.ClearTrigger>{/if}
+    {#if clearable}<ArkTagsInput.ClearTrigger aria-label="Clear">{@html iconHtml("x")}</ArkTagsInput.ClearTrigger>{/if}
   </ArkTagsInput.Control>
   <ArkTagsInput.HiddenInput />
   {@render children?.()}
