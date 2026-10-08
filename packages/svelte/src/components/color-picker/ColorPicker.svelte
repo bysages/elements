@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ColorPicker as ArkColorPicker, parseColor, type Color } from "@ark-ui/svelte/color-picker";
 
+import InternalIcon from "../../internal/InternalIcon.svelte";
 import ColorPickerRoot from "./ColorPickerRoot.svelte";
 
 let {
@@ -40,15 +41,22 @@ const toColor = (color: string | Color | undefined) => (typeof color === "string
         <ArkColorPicker.AreaBackground />
         <ArkColorPicker.AreaThumb />
       </ArkColorPicker.Area>
-      <ArkColorPicker.ChannelSlider channel="hue">
-        <ArkColorPicker.ChannelSliderTrack />
-        <ArkColorPicker.ChannelSliderThumb />
-      </ArkColorPicker.ChannelSlider>
-      <ArkColorPicker.ChannelSlider channel="alpha">
-        <ArkColorPicker.TransparencyGrid />
-        <ArkColorPicker.ChannelSliderTrack />
-        <ArkColorPicker.ChannelSliderThumb />
-      </ArkColorPicker.ChannelSlider>
+      <div data-scope="color-picker" data-part="channel-controls">
+        <ArkColorPicker.EyeDropperTrigger>
+          <InternalIcon name="pipette" />
+        </ArkColorPicker.EyeDropperTrigger>
+        <div data-scope="color-picker" data-part="channel-sliders">
+          <ArkColorPicker.ChannelSlider channel="hue">
+            <ArkColorPicker.ChannelSliderTrack />
+            <ArkColorPicker.ChannelSliderThumb />
+          </ArkColorPicker.ChannelSlider>
+          <ArkColorPicker.ChannelSlider channel="alpha">
+            <ArkColorPicker.TransparencyGrid />
+            <ArkColorPicker.ChannelSliderTrack />
+            <ArkColorPicker.ChannelSliderThumb />
+          </ArkColorPicker.ChannelSlider>
+        </div>
+      </div>
       <ArkColorPicker.ChannelInput channel="hex" />
     </ArkColorPicker.Content>
   </ArkColorPicker.Positioner>

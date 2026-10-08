@@ -4,6 +4,7 @@ import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 
+import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
 type ColorPickerRootProps = ComponentProps<typeof ArkColorPicker.Root> & {
@@ -86,15 +87,22 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
             <ArkColorPicker.AreaBackground />
             <ArkColorPicker.AreaThumb />
           </ArkColorPicker.Area>
-          <ArkColorPicker.ChannelSlider channel="hue">
-            <ArkColorPicker.ChannelSliderTrack />
-            <ArkColorPicker.ChannelSliderThumb />
-          </ArkColorPicker.ChannelSlider>
-          <ArkColorPicker.ChannelSlider channel="alpha">
-            <ArkColorPicker.TransparencyGrid />
-            <ArkColorPicker.ChannelSliderTrack />
-            <ArkColorPicker.ChannelSliderThumb />
-          </ArkColorPicker.ChannelSlider>
+          <div data-scope="color-picker" data-part="channel-controls">
+            <ArkColorPicker.EyeDropperTrigger>
+              {iconNode("pipette", { width: 14, height: 14 })}
+            </ArkColorPicker.EyeDropperTrigger>
+            <div data-scope="color-picker" data-part="channel-sliders">
+              <ArkColorPicker.ChannelSlider channel="hue">
+                <ArkColorPicker.ChannelSliderTrack />
+                <ArkColorPicker.ChannelSliderThumb />
+              </ArkColorPicker.ChannelSlider>
+              <ArkColorPicker.ChannelSlider channel="alpha">
+                <ArkColorPicker.TransparencyGrid />
+                <ArkColorPicker.ChannelSliderTrack />
+                <ArkColorPicker.ChannelSliderThumb />
+              </ArkColorPicker.ChannelSlider>
+            </div>
+          </div>
         </ArkColorPicker.Content>
       </ArkColorPicker.Positioner>
       <ArkColorPicker.HiddenInput />
