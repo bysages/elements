@@ -24,7 +24,7 @@ export const toastCss =
      outright and let the viewport be the only cap. */
   inline-size: min(22rem, calc(100vw - 2 * var(--bs-space-4)));
   padding: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-5);
   color: var(--bs-color-text-primary);
@@ -95,7 +95,7 @@ export const toastCss =
   justify-content: center;
   margin-block-start: var(--bs-margin-sm);
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);

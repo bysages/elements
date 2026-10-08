@@ -8,7 +8,7 @@ export const orderListCss = /* css */ `
   margin: 0;
   padding: var(--bs-padding-xs);
   list-style: none;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-1);
 }

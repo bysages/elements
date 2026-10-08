@@ -6,7 +6,7 @@ export const splitterCss = /* css */ `
   display: flex;
   inline-size: 100%;
   min-block-size: 20rem;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -96,7 +96,7 @@ export const splitterCss = /* css */ `
 [data-scope="splitter"][data-part="resize-trigger-indicator"] {
   position: relative;
   z-index: 1;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-tertiary);

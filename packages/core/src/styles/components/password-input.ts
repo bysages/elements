@@ -26,7 +26,7 @@ export const passwordInputCss =
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md)
     calc(var(--bs-space-6) + var(--bs-space-1));
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

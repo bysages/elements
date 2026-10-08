@@ -79,7 +79,7 @@ export const sliderCss =
   justify-content: center;
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
-  border: 1px solid var(--bs-color-primary);
+  border: var(--bs-hairline) solid var(--bs-color-primary);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
   outline: none;
@@ -107,7 +107,7 @@ export const sliderCss =
   top: calc(-1 * var(--bs-space-7));
   z-index: 1;
   padding: var(--bs-padding-xs) var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

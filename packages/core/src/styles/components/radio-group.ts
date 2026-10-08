@@ -37,7 +37,7 @@ export const radioGroupCss =
   flex-shrink: 0;
   inline-size: var(--bs-radio-dial);
   block-size: var(--bs-radio-dial);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
   transition:

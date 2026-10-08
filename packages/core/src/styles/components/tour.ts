@@ -65,8 +65,8 @@ export const tourCss =
 }
 
 [data-scope="tour"][data-part="arrow-tip"] {
-  border-block-start: 1px solid var(--bs-color-border);
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="tour"][data-part="title"] {

@@ -39,7 +39,7 @@ export const layoutCss = /* css */ `
   gap: var(--bs-gap-md);
   grid-area: header;
   padding: var(--bs-padding-md) var(--bs-padding-xl);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="layout"][data-part="footer"] {
@@ -48,7 +48,7 @@ export const layoutCss = /* css */ `
   gap: var(--bs-gap-md);
   grid-area: footer;
   padding: var(--bs-padding-md) var(--bs-padding-xl);
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* The rail: its own quiet slot. Navigation is a tool the eye visits,
@@ -70,7 +70,7 @@ export const layoutCss = /* css */ `
   );
   overflow: hidden;
   background: color-mix(in oklab, var(--bs-color-surface-0) 60%, var(--bs-color-surface-inset));
-  border-inline-end: 1px solid var(--bs-color-border);
+  border-inline-end: var(--bs-hairline) solid var(--bs-color-border);
   transition: inline-size var(--bs-duration-slow) var(--bs-ease-out);
 }
 
@@ -151,7 +151,7 @@ export const layoutCss = /* css */ `
 [data-scope="layout"][data-part="root"][data-sider="end"]
   [data-scope="layout"][data-part="sider"] {
   border-inline-end: none;
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* An expanded resizable rail retires its own border: the Ark separator

@@ -15,7 +15,7 @@ export const treeSelectCss =
   inline-size: 100%;
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   box-shadow: var(--bs-shadow-xs);

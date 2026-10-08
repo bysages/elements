@@ -32,12 +32,12 @@ export const buttonGroupCss = /* css */ `
 /* The seam: each member after the first slides one pixel over its
    predecessor's trailing hairline, so two borders read as one. */
 [data-scope="button-group"][data-part="root"] > [data-scope="button"][data-part="root"] + [data-scope="button"][data-part="root"] {
-  margin-inline-start: -1px;
+  margin-inline-start: calc(-1 * var(--bs-hairline));
 }
 
 [data-scope="button-group"][data-part="root"][data-orientation="vertical"] > [data-scope="button"][data-part="root"] + [data-scope="button"][data-part="root"] {
   margin-inline-start: 0;
-  margin-block-start: -1px;
+  margin-block-start: calc(-1 * var(--bs-hairline));
 }
 
 /* 方寸为章, trimmed where the seals meet: interior corners square off,

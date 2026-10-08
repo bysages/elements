@@ -19,7 +19,7 @@ export const fileUploadCss =
   gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -67,7 +67,7 @@ export const fileUploadCss =
   gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid transparent;
+  border: var(--bs-hairline) solid transparent;
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);
@@ -115,7 +115,7 @@ export const fileUploadCss =
   align-items: center;
   gap: var(--bs-gap-md);
   padding: var(--bs-padding-lg);
-  border: 1px dashed var(--bs-color-border-strong);
+  border: var(--bs-hairline) dashed var(--bs-color-border-strong);
   border-radius: var(--bs-radius-lg);
   background: transparent;
   color: var(--bs-color-text-secondary);
@@ -175,7 +175,7 @@ export const fileUploadCss =
   align-items: center;
   column-gap: var(--bs-gap-md);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
 }

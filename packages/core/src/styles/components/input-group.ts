@@ -6,7 +6,7 @@ export const inputGroupCss = /* css */ `
   position: relative;
   display: inline-flex;
   align-items: stretch;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   /* The attachments are square-cut cells; the seal's rounding clips
@@ -104,11 +104,11 @@ export const inputGroupCss = /* css */ `
 }
 
 [data-scope="input-group"][data-part="addon"]:not(:first-child) {
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="input-group"][data-part="addon"]:not(:last-child) {
-  border-inline-end: 1px solid var(--bs-color-border);
+  border-inline-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* Hover deepens the group's hairline as a whole — a divider that kept

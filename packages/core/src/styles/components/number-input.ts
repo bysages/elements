@@ -27,7 +27,7 @@ export const numberInputCss =
   min-width: 0;
   block-size: var(--bs-control-height-md);
   padding-inline: var(--bs-padding-md) calc(var(--bs-space-6) + var(--bs-space-1));
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -95,7 +95,7 @@ export const numberInputCss =
   inset-block-start: 1px;
   inset-block-end: 50%;
   border-start-end-radius: var(--bs-radius-sm);
-  border-bottom: 1px solid var(--bs-color-border);
+  border-bottom: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="number-input"][data-part="decrement-trigger"] {

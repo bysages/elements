@@ -7,7 +7,7 @@ export const cardCss = /* css */ `
   inline-size: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   box-shadow: var(--bs-elevation-1);

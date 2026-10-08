@@ -56,7 +56,7 @@ export const drawerCss =
   /* Vessel padding — 24px, room for the sheet's full measure. */
   padding: var(--bs-padding-xl);
   padding-block-end: max(var(--bs-padding-xl), var(--bs-safe-area-inset-bottom));
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg) var(--bs-radius-lg) 0 0;
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -172,7 +172,7 @@ export const drawerCss =
   justify-content: center;
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

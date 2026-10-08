@@ -9,7 +9,7 @@ export const dockCss = /* css */ `
   padding-block-start: calc(var(--bs-padding-sm) + (var(--bs-dock-max-scale, 1) - 1) * var(--bs-dock-item-size, 2.75rem));
   padding-block-end: var(--bs-padding-sm);
   padding-inline: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   box-shadow: var(--bs-elevation-2);

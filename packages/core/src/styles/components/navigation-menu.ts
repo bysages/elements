@@ -231,7 +231,7 @@ export const navigationMenuCss =
 }
 
 [data-scope="navigation-menu"][data-part="arrow-tip"] {
-  border-top: 1px solid var(--bs-color-border);
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-top: var(--bs-hairline) solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 `;

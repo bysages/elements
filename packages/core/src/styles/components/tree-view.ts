@@ -169,7 +169,7 @@ export const treeViewCss =
   block-size: 1rem;
   appearance: none;
   margin: 0;
-  border: 1px solid var(--bs-color-border-strong);
+  border: var(--bs-hairline) solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-xs);
   background: var(--bs-color-surface-2);
   cursor: pointer;
@@ -201,7 +201,7 @@ export const treeViewCss =
   box-sizing: border-box;
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-primary);
+  border: var(--bs-hairline) solid var(--bs-color-primary);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

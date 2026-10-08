@@ -77,7 +77,7 @@ export const imageViewerCss = /* css */ `
   block-size: var(--bs-control-height-md);
   color: var(--bs-color-text);
   background: var(--bs-color-surface-2);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   box-shadow: var(--bs-shadow-xs);
   transition: box-shadow var(--bs-duration-base) var(--bs-ease-out),

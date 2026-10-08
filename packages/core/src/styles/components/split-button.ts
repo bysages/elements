@@ -20,8 +20,8 @@ export const splitButtonCss = /* css */ `
 [data-scope="split-button"][data-part="root"] > [data-scope="menu"][data-part="trigger"][data-variant] {
   border-start-start-radius: 0;
   border-end-start-radius: 0;
-  margin-inline-start: -1px;
-  border-inline-start: 1px solid var(--bs-color-border);
+  margin-inline-start: calc(-1 * var(--bs-hairline));
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* Focus fuses like the border: a raised member keeps its halo and its

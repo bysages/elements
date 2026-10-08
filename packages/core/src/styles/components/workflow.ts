@@ -35,7 +35,7 @@ export const workflowCss = /* css */ `
   gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
   background: var(--bs-color-surface-2);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   box-shadow: var(--bs-shadow-xs);
   font-family: var(--bs-font-sans);
@@ -147,25 +147,25 @@ export const workflowCss = /* css */ `
 /* X6's selection widgets rest inside the canvas — retint them from the
  * hard-coded defaults to the paper-and-ink pigments. */
 [data-scope="workflow"] .x6-widget-selection-box {
-  border: 1px dashed var(--bs-color-primary);
+  border: var(--bs-hairline) dashed var(--bs-color-primary);
   box-shadow: none;
 }
 
 [data-scope="workflow"] .x6-widget-selection-rubberband {
   background-color: var(--bs-color-primary-subtle);
-  border: 1px solid var(--bs-color-primary);
+  border: var(--bs-hairline) solid var(--bs-color-primary);
 }
 
 /* The minimap lives outside the canvas container (the host hands us its
  * box), so it carries its own part on the container. */
 [data-scope="workflow"][data-part="minimap"] .x6-widget-minimap {
   background-color: var(--bs-color-surface-1);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
 }
 
 [data-scope="workflow"][data-part="minimap"] .x6-widget-minimap-viewport {
-  border: 1px solid var(--bs-color-primary);
+  border: var(--bs-hairline) solid var(--bs-color-primary);
   background-color: color-mix(in oklab, var(--bs-color-primary) 12%, transparent);
 }
 

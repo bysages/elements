@@ -27,7 +27,7 @@ export const commandCss =
   display: flex;
   flex-direction: column;
   padding: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -50,7 +50,7 @@ export const commandCss =
   block-size: var(--bs-control-height-lg);
   padding: 0 var(--bs-padding-md);
   border: none;
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: 0;
   background: transparent;
   color: var(--bs-color-text-primary);
@@ -138,7 +138,7 @@ export const commandCss =
   align-items: center;
   min-inline-size: 1.75em;
   padding: 0.125em 0.375em;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   box-shadow: 0 1px 0 var(--bs-color-border);

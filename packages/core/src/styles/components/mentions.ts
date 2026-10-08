@@ -15,7 +15,7 @@ export const mentionsCss = /* css */ `
   min-inline-size: 0;
   min-block-size: calc(var(--bs-control-height-md) + var(--bs-space-4));
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -57,7 +57,7 @@ export const mentionsCss = /* css */ `
   display: flex;
   flex-direction: column;
   padding: var(--bs-padding-xs);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

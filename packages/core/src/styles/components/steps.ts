@@ -120,7 +120,7 @@ export const stepsCss = /* css */ `
 
 [data-scope="steps"][data-part="content"] {
   padding: var(--bs-padding-lg);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
 }

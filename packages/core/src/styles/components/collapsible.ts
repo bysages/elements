@@ -1,5 +1,4 @@
-export const collapsibleCss =
-  /* css */ `
+export const collapsibleCss = /* css */ `
 [data-scope="collapsible"][data-part="root"] {
   box-sizing: border-box;
   display: flex;
@@ -21,7 +20,7 @@ export const collapsibleCss =
   inline-size: 100%;
   min-block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: inherit;

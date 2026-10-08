@@ -23,7 +23,7 @@ export const tagsInputCss =
      already spends a step of the budget, and the field's own height must
      survive it. */
   padding: calc(var(--bs-space-1) / 2) var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -122,7 +122,7 @@ export const tagsInputCss =
   min-block-size: calc(var(--bs-control-height-sm) - var(--bs-space-1));
   padding: 0 var(--bs-padding-sm);
   line-height: var(--bs-line-height-normal);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

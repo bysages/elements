@@ -29,7 +29,7 @@ export const selectCss =
   inline-size: 100%;
   block-size: var(--bs-control-height-md);
   padding-inline-start: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   transition:
@@ -191,7 +191,7 @@ export const selectCss =
   align-items: center;
   inline-size: 100%;
   min-inline-size: 0;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   transition:

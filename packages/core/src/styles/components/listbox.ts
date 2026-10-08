@@ -1,10 +1,5 @@
 import { inputStateCss } from "./shared";
-import {
-  labelCss,
-  optionListCss,
-  popupContentCss,
-  shrinkingTextCss,
-} from "./shared";
+import { labelCss, optionListCss, popupContentCss, shrinkingTextCss } from "./shared";
 
 export const listboxCss =
   labelCss("listbox") +
@@ -26,7 +21,7 @@ export const listboxCss =
   box-sizing: border-box;
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);

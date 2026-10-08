@@ -45,7 +45,7 @@ export const editableCss =
   min-inline-size: 0;
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid transparent;
+  border: var(--bs-hairline) solid transparent;
   border-radius: var(--bs-radius-sm);
   font: inherit;
   font-size: var(--bs-font-size-md);
@@ -117,7 +117,7 @@ export const editableCss =
   block-size: var(--bs-control-height-sm);
   min-inline-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-secondary);

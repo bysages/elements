@@ -29,7 +29,7 @@ export const angleSliderCss =
   place-items: center;
   inline-size: calc(var(--bs-space-24) * 2);
   block-size: calc(var(--bs-space-24) * 2);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
   cursor: grab;
@@ -91,7 +91,7 @@ export const angleSliderCss =
   box-sizing: border-box;
   inline-size: var(--bs-space-3);
   block-size: var(--bs-space-3);
-  border: 1px solid var(--bs-color-surface-2);
+  border: var(--bs-hairline) solid var(--bs-color-surface-2);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   box-shadow: var(--bs-shadow-xs);

@@ -3,7 +3,7 @@ export const browserCss = /* css */ `
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-elevation-2);
@@ -15,7 +15,7 @@ export const browserCss = /* css */ `
   gap: var(--bs-gap-md);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
   background: var(--bs-color-surface-2);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* The three lamps are the fixed pigments — cinnabar, ochre, bamboo —
@@ -56,7 +56,7 @@ export const browserCss = /* css */ `
   place-items: center;
   min-block-size: var(--bs-control-height-sm);
   padding-inline: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-tertiary);

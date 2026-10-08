@@ -44,7 +44,7 @@ export const terminalCss = /* css */ `
   align-items: center;
   gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-start: 1px solid color-mix(in oklab, var(--bs-color-gray-100) 16%, transparent);
+  border-block-start: var(--bs-hairline) solid color-mix(in oklab, var(--bs-color-gray-100) 16%, transparent);
 }
 
 [data-scope="terminal"][data-part="sigil"] {

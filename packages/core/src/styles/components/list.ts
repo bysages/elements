@@ -24,7 +24,7 @@ export const listCss = /* css */ `
 [data-scope="list"][data-part="root"][data-bordered]
   [data-scope="list"][data-part="item"]
   + [data-scope="list"][data-part="item"] {
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* A row the caller made clickable (role="button") owns the pointer and

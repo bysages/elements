@@ -15,7 +15,7 @@ export const transferCss =
   display: flex;
   flex-direction: column;
   inline-size: 14rem;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-1);
 }
@@ -26,7 +26,7 @@ export const transferCss =
   justify-content: space-between;
   gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="transfer"][data-part="title"] {
@@ -50,7 +50,7 @@ export const transferCss =
 
 [data-scope="transfer"][data-part="search"] {
   padding: var(--bs-padding-sm);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="transfer"][data-part="list"] {

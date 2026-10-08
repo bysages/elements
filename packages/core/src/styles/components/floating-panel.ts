@@ -41,7 +41,7 @@ export const floatingPanelCss =
   gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -88,7 +88,7 @@ export const floatingPanelCss =
   justify-content: space-between;
   gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
   background: var(--bs-color-surface-0);
   cursor: grab;
   user-select: none;
@@ -125,7 +125,7 @@ export const floatingPanelCss =
   inline-size: var(--bs-part-size-lg);
   block-size: var(--bs-part-size-lg);
   padding: 0;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);

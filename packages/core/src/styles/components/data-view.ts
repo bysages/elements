@@ -18,7 +18,7 @@ export const dataViewCss = /* css */ `
 }
 
 [data-scope="data-view"][data-part="content"][data-layout="list"] > [data-scope="data-view"][data-part="cell"] + [data-scope="data-view"][data-part="cell"] {
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="data-view"][data-part="pager"] {

@@ -8,7 +8,7 @@ export const toolbarCss = /* css */ `
   justify-content: space-between;
   gap: var(--bs-gap-md);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-1);
 }

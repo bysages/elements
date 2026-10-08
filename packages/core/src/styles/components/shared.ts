@@ -24,7 +24,7 @@ export function popupContentCss(scope: string, minInlineSize = "17rem"): string 
 [data-scope="${scope}"][data-part="content"] {
   box-sizing: border-box;
   min-inline-size: ${minInlineSize};
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-3);
   color: var(--bs-color-text-primary);
@@ -84,13 +84,17 @@ export function optionListCss(
   { list = true, mark = false }: { list?: boolean; mark?: boolean } = {},
 ): string {
   return /* css */ `
-${list ? `[data-scope="${scope}"][data-part="list"] {
+${
+  list
+    ? `[data-scope="${scope}"][data-part="list"] {
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-xs);
 }
 
-` : ""}[data-scope="${scope}"][data-part="item-group"] {
+`
+    : ""
+}[data-scope="${scope}"][data-part="item-group"] {
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-xs);
@@ -129,13 +133,17 @@ ${list ? `[data-scope="${scope}"][data-part="list"] {
   outline: none;
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
-${mark ? `
+${
+  mark
+    ? `
 [data-scope="${scope}"][data-part="item"] mark {
   background: transparent;
   color: var(--bs-color-primary);
   font-weight: var(--bs-font-weight-medium);
 }
-` : ""}
+`
+    : ""
+}
 [data-scope="${scope}"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
 [data-scope="${scope}"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
   background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);

@@ -43,7 +43,7 @@ export const timelineCss = /* css */ `
   inline-size: calc(var(--bs-part-size-sm) / 2);
   block-size: calc(var(--bs-part-size-sm) / 2);
   margin-block-start: var(--bs-margin-sm);
-  border: 1px solid var(--bs-color-border-strong);
+  border: var(--bs-hairline) solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
 }

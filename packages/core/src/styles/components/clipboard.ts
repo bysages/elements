@@ -26,7 +26,7 @@ export const clipboardCss =
   min-width: 0;
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -45,7 +45,7 @@ export const clipboardCss =
   min-inline-size: var(--bs-control-height-md);
   block-size: var(--bs-control-height-md);
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);

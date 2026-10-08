@@ -6,7 +6,7 @@ export const virtualListCss = /* css */ `
   overflow-y: auto;
   overscroll-behavior: contain;
   block-size: var(--bs-virtual-list-height, 320px);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-1);
 }

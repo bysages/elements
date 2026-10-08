@@ -55,7 +55,7 @@ export const dialogCss =
   overscroll-behavior: contain;
   /* Vessel padding — 24px; a 512px sheet reads cramped on 16. */
   padding: var(--bs-padding-xl);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-4);
   color: var(--bs-color-text-primary);

@@ -20,7 +20,7 @@ export const descriptionsCss = /* css */ `
   display: grid;
   grid-template-columns: subgrid;
   padding-block: var(--bs-padding-sm);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="descriptions"][data-part="item"]:last-child {
@@ -54,7 +54,7 @@ export const descriptionsCss = /* css */ `
    paper inside its cell. */
 [data-scope="descriptions"][data-bordered] {
   gap: 1px;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-border);
   overflow: hidden;
@@ -73,7 +73,7 @@ export const descriptionsCss = /* css */ `
   align-items: center;
   padding: var(--bs-padding-sm) var(--bs-padding-md);
   background: var(--bs-color-surface-inset);
-  border-inline-end: 1px solid var(--bs-color-border);
+  border-inline-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="descriptions"][data-bordered] [data-part="detail"] {

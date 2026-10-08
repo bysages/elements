@@ -18,7 +18,7 @@ ${selector} {
      silhouette, and 12px on a 32px body pinches the label (mainstream
      systems use 15-16px at this height, 24px at large). */
   padding: 0 var(--bs-padding-lg);
-  border: 1px solid var(--_edge);
+  border: var(--bs-hairline) solid var(--_edge);
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: var(--_fill);
   color: var(--_ink);

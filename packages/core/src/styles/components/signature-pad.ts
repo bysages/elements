@@ -24,7 +24,7 @@ export const signaturePadCss =
   flex-direction: column;
   min-inline-size: 0;
   min-block-size: var(--bs-signature-block);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   cursor: crosshair;
@@ -65,7 +65,7 @@ export const signaturePadCss =
   position: absolute;
   inset-inline: var(--bs-padding-lg);
   inset-block-end: var(--bs-space-6);
-  border-block-end: 1px dashed var(--bs-color-border-strong);
+  border-block-end: var(--bs-hairline) dashed var(--bs-color-border-strong);
   pointer-events: none;
 }
 

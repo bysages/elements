@@ -82,7 +82,7 @@ export const floatButtonCss = /* css */ `
 
 [data-scope="float-button"][data-part="item-label"] {
   padding: var(--bs-padding-xs) var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);

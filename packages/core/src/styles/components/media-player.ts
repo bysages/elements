@@ -6,7 +6,7 @@ export const mediaPlayerCss = /* css */ `
   max-inline-size: 100%;
   min-inline-size: 0;
   overflow: clip;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-shadow-xs);
@@ -46,7 +46,7 @@ export const mediaPlayerCss = /* css */ `
   gap: var(--bs-gap-sm);
   min-inline-size: 0;
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
   background: var(--bs-color-surface-1);
 }
 
@@ -125,7 +125,7 @@ export const mediaPlayerCss = /* css */ `
   appearance: none;
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
-  border: 1px solid var(--bs-color-border-strong);
+  border: var(--bs-hairline) solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-full, 999px);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-shadow-xs);
@@ -135,7 +135,7 @@ export const mediaPlayerCss = /* css */ `
 [data-scope="media-player"][data-part="volume"]::-moz-range-thumb {
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
-  border: 1px solid var(--bs-color-border-strong);
+  border: var(--bs-hairline) solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-full, 999px);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-shadow-xs);

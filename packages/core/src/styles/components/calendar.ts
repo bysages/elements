@@ -12,7 +12,7 @@ export const calendarCss = /* css */ `
      and the month/year grids divide it into roomy cells. */
   inline-size: 17rem;
   padding: var(--bs-padding-lg);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-elevation-1);

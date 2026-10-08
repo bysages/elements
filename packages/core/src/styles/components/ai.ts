@@ -27,7 +27,7 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="message"][data-role="user"] [data-part="content"] {
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
   inline-size: fit-content;
@@ -116,7 +116,7 @@ export const aiCss = /* css */ `
   margin: var(--bs-margin-md) 0;
   padding: var(--bs-padding-md);
   overflow-x: auto;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-inset);
   font-family: var(--bs-font-mono);
@@ -149,7 +149,7 @@ export const aiCss = /* css */ `
   inline-size: 1.75rem;
   block-size: 1.75rem;
   padding: 0;
-  border: 1px solid transparent;
+  border: var(--bs-hairline) solid transparent;
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   background: transparent;
   color: var(--bs-color-text-tertiary);
@@ -200,20 +200,20 @@ export const aiCss = /* css */ `
 
 [data-scope="ai"][data-part="response"] th {
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border-strong);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border-strong);
   text-align: start;
   font-weight: var(--bs-font-weight-semibold);
 }
 
 [data-scope="ai"][data-part="response"] td {
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="ai"][data-part="response"] hr {
   margin: var(--bs-margin-lg) 0;
   border: none;
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* Reasoning: the shared collapsible in its quiet register — a bare
@@ -245,7 +245,7 @@ export const aiCss = /* css */ `
 
 [data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="reasoning-content"] {
   padding: 0 0 0 var(--bs-padding-md);
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
@@ -255,7 +255,7 @@ export const aiCss = /* css */ `
    component's, the trigger bleeds to the edges. The status dot pairs
    color with nothing else — the name carries the meaning. */
 [data-scope="collapsible"][data-part="root"][data-ai="tool"] {
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-1);
 }
@@ -284,7 +284,7 @@ export const aiCss = /* css */ `
   content: "";
   inline-size: calc(var(--bs-part-size-sm) / 2);
   block-size: calc(var(--bs-part-size-sm) / 2);
-  border: 1px solid var(--bs-color-border-strong);
+  border: var(--bs-hairline) solid var(--bs-color-border-strong);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-2);
 }
@@ -320,7 +320,7 @@ export const aiCss = /* css */ `
   margin: 0;
   padding: var(--bs-padding-sm);
   overflow-x: auto;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-inset);
   font-family: var(--bs-font-mono);
@@ -368,7 +368,7 @@ export const aiCss = /* css */ `
   max-inline-size: 100%;
   padding-block: calc(var(--bs-padding-xs) / 2);
   padding-inline: var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface);
   color: var(--bs-color-text-secondary);
@@ -448,7 +448,7 @@ export const aiCss = /* css */ `
   align-items: stretch;
   gap: var(--bs-gap-sm);
   padding: var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   transition:

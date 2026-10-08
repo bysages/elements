@@ -1,5 +1,4 @@
-export const accordionCss =
-  /* css */ `
+export const accordionCss = /* css */ `
 [data-scope="accordion"][data-part="root"] {
   display: flex;
   flex-direction: column;
@@ -12,7 +11,7 @@ export const accordionCss =
 /* The accordion reads as a ruled sheet: items are divided by hairlines,
    not cards — one document, quietly folded. */
 [data-scope="accordion"][data-part="item"] {
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="accordion"][data-part="item"]:last-child {

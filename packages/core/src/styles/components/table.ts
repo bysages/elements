@@ -10,7 +10,7 @@ export const tableCss = /* css */ `
   --bs-table-indent: calc(1.25rem * var(--bs-density-scale, 1));
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   overflow: clip;
@@ -29,7 +29,7 @@ export const tableCss = /* css */ `
 /* The filter toolbar rests above the scroll, one hairline down. */
 [data-scope="table"][data-part="toolbar"] {
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="table"][data-part="global-filter"] {
@@ -38,7 +38,7 @@ export const tableCss = /* css */ `
   max-inline-size: 20rem;
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-primary);
@@ -153,7 +153,7 @@ export const tableCss = /* css */ `
   inline-size: min(100%, 12rem);
   block-size: 1.5rem;
   padding: 0 var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-primary);
@@ -413,7 +413,7 @@ export const tableCss = /* css */ `
   align-items: center;
   gap: var(--bs-gap-md);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border-block-start: 1px solid var(--bs-color-border);
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);

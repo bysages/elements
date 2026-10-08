@@ -5,7 +5,7 @@ export const menubarCss = /* css */ `
   align-items: center;
   gap: var(--bs-gap-xs);
   padding: var(--bs-padding-xs) 0;
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 /* The triggers are ghost buttons — terrain, not controls: no fill, no

@@ -12,7 +12,7 @@ export const tabsCss = /* css */ `
   display: flex;
   align-items: center;
   gap: var(--bs-gap-sm);
-  border-block-end: 1px solid var(--bs-color-border);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="tabs"][data-part="trigger"] {
@@ -20,7 +20,7 @@ export const tabsCss = /* css */ `
   align-items: center;
   gap: var(--bs-gap-sm);
   block-size: var(--bs-control-height-md);
-  margin-block-end: -1px;
+  margin-block-end: calc(-1 * var(--bs-hairline));
   padding: 0 var(--bs-padding-md);
   border: none;
   background: transparent;
@@ -62,7 +62,7 @@ export const tabsCss = /* css */ `
    CSS must consume it or the bar renders zero-wide. */
 [data-scope="tabs"][data-part="indicator"] {
   position: absolute;
-  inset-block-end: -1px;
+  inset-block-end: calc(-1 * var(--bs-hairline));
   inline-size: var(--width, 0);
   block-size: 2px;
   background: var(--bs-color-primary);
@@ -101,14 +101,14 @@ export const tabsCss = /* css */ `
   flex-direction: column;
   align-items: stretch;
   border-block-end: none;
-  border-inline-start: 1px solid var(--bs-color-border);
+  border-inline-start: var(--bs-hairline) solid var(--bs-color-border);
 }
 
 [data-scope="tabs"][data-orientation="vertical"] [data-part="trigger"] {
   justify-content: flex-start;
   text-align: start;
   margin-block-end: 0;
-  margin-inline-start: -1px;
+  margin-inline-start: calc(-1 * var(--bs-hairline));
   padding-inline: var(--bs-padding-md);
 }
 
@@ -129,7 +129,7 @@ export const tabsCss = /* css */ `
  * onto the rail the way end pins it under the strip. */
 [data-scope="tabs"][data-orientation="vertical"] [data-part="indicator"] {
   inset-block-end: auto;
-  inset-inline-start: -1px;
+  inset-inline-start: calc(-1 * var(--bs-hairline));
   inline-size: 2px;
   block-size: var(--height, 0);
   transition:
@@ -146,8 +146,8 @@ export const tabsCss = /* css */ `
 
 [data-scope="tabs"][data-variant="card"] [data-part="trigger"] {
   position: relative;
-  margin-block-end: -1px;
-  border: 1px solid transparent;
+  margin-block-end: calc(-1 * var(--bs-hairline));
+  border: var(--bs-hairline) solid transparent;
   border-block-end: none;
   border-radius: var(--bs-radius-sm) var(--bs-radius-sm) 0 0;
   background: transparent;
@@ -164,13 +164,13 @@ export const tabsCss = /* css */ `
    pane's paper, so the hairline seems to part for it. */
 [data-scope="tabs"][data-variant="card"] [data-part="trigger"][data-selected] {
   border-color: var(--bs-color-border);
-  border-block-end: 1px solid var(--bs-color-surface-1);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-surface-1);
   background: var(--bs-color-surface-1);
 }
 
 [data-scope="tabs"][data-variant="card"] [data-part="content"] {
   padding: var(--bs-padding-lg);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-block-start: none;
   border-radius: 0 var(--bs-radius-md) var(--bs-radius-md);
   background: var(--bs-color-surface-1);
