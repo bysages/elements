@@ -91,7 +91,7 @@ export const mediaPlayerCss = /* css */ `
   block-size: var(--bs-part-size-xs, 0.25rem);
   margin-block: 0;
   border: 0;
-  border-radius: var(--bs-radius-full, 999px);
+  border-radius: var(--bs-radius-full);
   background: linear-gradient(
     to right,
     var(--bs-color-primary) var(--bs-media-progress, 0%),
@@ -126,7 +126,7 @@ export const mediaPlayerCss = /* css */ `
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
   border: var(--bs-hairline) solid var(--bs-color-border-strong);
-  border-radius: var(--bs-radius-full, 999px);
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-shadow-xs);
 }
@@ -136,7 +136,7 @@ export const mediaPlayerCss = /* css */ `
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
   border: var(--bs-hairline) solid var(--bs-color-border-strong);
-  border-radius: var(--bs-radius-full, 999px);
+  border-radius: var(--bs-radius-full);
   background: var(--bs-color-surface-1);
   box-shadow: var(--bs-shadow-xs);
 }

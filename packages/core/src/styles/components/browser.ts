@@ -32,7 +32,7 @@ export const browserCss = /* css */ `
   display: block;
   inline-size: calc(var(--bs-part-size-sm) * 0.75);
   block-size: calc(var(--bs-part-size-sm) * 0.75);
-  border-radius: var(--bs-radius-full, 999px);
+  border-radius: var(--bs-radius-full);
 }
 
 [data-scope="browser"][data-part="dot"][data-tone="danger"] {

@@ -60,7 +60,7 @@ export const tourCss =
 }
 
 [data-scope="tour"][data-part="arrow"] {
-  --arrow-size: 10px;
+  --arrow-size: var(--bs-space-2);
   --arrow-background: var(--bs-color-surface-2);
 }
 

@@ -36,7 +36,7 @@ export const resultCss = /* css */ `
   justify-content: center;
   inline-size: calc(var(--bs-part-size-lg) * 2);
   block-size: calc(var(--bs-part-size-lg) * 2);
-  border-radius: var(--bs-radius-full, 999px);
+  border-radius: var(--bs-radius-full);
   background: color-mix(in oklab, var(--_pigment) 12%, var(--bs-color-surface-1));
   color: var(--_pigment);
 }
