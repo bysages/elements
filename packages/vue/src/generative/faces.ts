@@ -74,8 +74,8 @@ export const faces = defineFace({
   Badge: {
     props: z.object({
       text: z.string(),
-      tone: z.string().optional(),
-      variant: z.string().optional(),
+      tone: z.enum(["ink", "primary", "success", "warning", "danger", "info"]).optional(),
+      variant: z.enum(["solid", "subtle", "outline"]).optional(),
     }),
     description: "A small status seal beside content; reads at a glance.",
   },
@@ -83,7 +83,7 @@ export const faces = defineFace({
     props: z.object({
       label: z.string(),
       variant: z.enum(["solid", "outline", "ghost", "subtle"]).optional(),
-      tone: z.string().optional(),
+      tone: z.enum(["ink", "success", "warning", "danger", "info"]).optional(),
       size: z.enum(["sm", "md", "lg"]).optional(),
     }),
     description:
@@ -152,8 +152,8 @@ export const faces = defineFace({
     props: z.object({
       direction: z.enum(["column", "row"]).optional(),
       gap: z.enum(["none", "xs", "sm", "md", "lg", "xl"]).optional(),
-      align: z.string().optional(),
-      justify: z.string().optional(),
+      align: z.enum(["start", "center", "end", "stretch", "baseline"]).optional(),
+      justify: z.enum(["start", "center", "end", "space-between", "space-around"]).optional(),
       wrap: z.boolean().optional(),
     }),
     slots: ["default"],
