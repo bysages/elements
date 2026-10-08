@@ -6,6 +6,9 @@ export interface StudioNode {
   type: string;
   props: Record<string, unknown>;
   children: string[];
+  /** Named regions beyond the children, each holding node ids — the
+   * same shape the composition spec carries. */
+  slots?: Record<string, string[]>;
 }
 
 export type StudioNodes = Record<string, StudioNode>;

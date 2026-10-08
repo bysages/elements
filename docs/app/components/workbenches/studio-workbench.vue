@@ -223,7 +223,11 @@ function allNodes(): StudioNode[] {
 }
 
 function parentOf(id: string): StudioNode | undefined {
-  return allNodes().find((node) => node.children.includes(id));
+  return allNodes().find(
+    (node) =>
+      node.children.includes(id) ||
+      Object.values(node.slots ?? {}).some((list) => list.includes(id)),
+  );
 }
 
 /** The nearest ancestor that can take children — a drop on a leaf climbs
@@ -267,6 +271,9 @@ function removeNode(id: string) {
     const node = nodes.value[nodeId];
     if (!node) return;
     for (const child of node.children) removeTree(child);
+    for (const list of Object.values(node.slots ?? {})) {
+      for (const child of list) removeTree(child);
+    }
     delete nodes.value[nodeId];
   };
   removeTree(id);
@@ -279,16 +286,24 @@ interface CompositionRow {
   id: string;
   type: string;
   childCount: number;
+  /** The named region this row answers to, when it is not plain children. */
+  slot?: string;
   subRows?: CompositionRow[];
 }
 
 const compositionRows = computed<CompositionRow[]>(() => {
-  const toRow = (id: string): CompositionRow => {
+  const toRow = (id: string, slot?: string): CompositionRow => {
     const node = nodes.value[id]!;
-    const children = node.children.map(toRow);
+    const children = [
+      ...node.children.map((child) => toRow(child)),
+      ...Object.entries(node.slots ?? {}).flatMap(([name, list]) =>
+        list.map((child) => toRow(child, name)),
+      ),
+    ];
     return {
       id,
       type: node.type,
+      slot,
       childCount: children.length,
       subRows: children.length ? children : undefined,
     };
@@ -298,7 +313,7 @@ const compositionRows = computed<CompositionRow[]>(() => {
       id: ROOT_ID,
       type: text.value.tree.root,
       childCount: rootNode.value.children.length,
-      subRows: rootNode.value.children.map(toRow),
+      subRows: rootNode.value.children.map((child) => toRow(child)),
     },
   ];
 });
@@ -343,7 +358,10 @@ const compositionColumns = col.columns([
                 selectedId.value = item.id;
               },
             },
-            () => item.type,
+            () =>
+              item.slot
+                ? [h("span", { class: "text-tertiary" }, `${item.slot} · `), item.type]
+                : item.type,
           ),
           edge,
         ],
@@ -357,12 +375,21 @@ function syncComposition(rows: CompositionRow[]) {
   // container components keep children, so a drop on a leaf climbs back
   // to the nearest ancestor that can hold it.
   const children: Record<string, string[]> = { [ROOT_ID]: [] };
+  const slots: Record<string, Record<string, string[]>> = {};
 
   const place = (row: CompositionRow, fallbacks: string[]) => {
     children[row.id] = [];
     const node = nodes.value[row.id];
     const hosts = !!node && accepts(node.type);
-    children[fallbacks[0] ?? ROOT_ID]!.push(row.id);
+    const host = fallbacks[0] ?? ROOT_ID;
+    // A row lifted out of a named region keeps its place; dragged to the
+    // page level it becomes plain children, losing the region it had.
+    if (row.slot && host !== ROOT_ID) {
+      (slots[host] ??= {})[row.slot] ??= [];
+      slots[host]![row.slot]!.push(row.id);
+    } else {
+      children[host]!.push(row.id);
+    }
     const below = hosts ? [row.id, ...fallbacks] : fallbacks;
     (row.subRows ?? []).forEach((child) => place(child, below));
   };
@@ -372,6 +399,10 @@ function syncComposition(rows: CompositionRow[]) {
   rootNode.value.children = children[ROOT_ID]!;
   for (const [id, list] of Object.entries(children)) {
     if (id !== ROOT_ID) nodes.value[id]!.children = list;
+  }
+  for (const [id, regions] of Object.entries(slots)) {
+    const node = nodes.value[id];
+    if (node) node.slots = regions;
   }
 }
 
@@ -530,7 +561,12 @@ function toCandidate() {
   return {
     root: rootNode.value.id,
     elements: Object.fromEntries(
-      allNodes().map(({ id, type, props, children }) => [id, { type, props, children }]),
+      allNodes().map(({ id, type, props, children, slots }) => [
+        id,
+        slots && Object.keys(slots).length > 0
+          ? { type, props, children, slots }
+          : { type, props, children },
+      ]),
     ),
     state: {},
   };
@@ -573,7 +609,12 @@ function importJson() {
       root?: string;
       elements?: Record<
         string,
-        { type?: string; props?: Record<string, unknown>; children?: string[] }
+        {
+          type?: string;
+          props?: Record<string, unknown>;
+          children?: string[];
+          slots?: Record<string, string[]>;
+        }
       >;
     };
     const source = parsed.elements ?? {};
@@ -593,6 +634,14 @@ function importJson() {
           children: (element.children ?? [])
             .map(resolve)
             .filter((child) => child !== resolve(id) && known.has(child)),
+          slots: Object.fromEntries(
+            Object.entries(element.slots ?? {})
+              .map(([slot, list]) => [
+                slot,
+                list.map(resolve).filter((cid) => cid !== resolve(id) && known.has(cid)),
+              ])
+              .filter(([, list]) => list.length > 0),
+          ),
         },
       ]),
     );
@@ -606,6 +655,7 @@ function importJson() {
       type: rootElement.type,
       props: { ...(rootElement.props as Record<string, unknown>) },
       children: [...rootElement.children],
+      slots: { ...rootElement.slots },
     };
     nodes.value = Object.fromEntries(
       Object.entries(elements)
@@ -617,6 +667,7 @@ function importJson() {
             type: element.type,
             props: { ...(element.props as Record<string, unknown>) },
             children: [...element.children],
+            slots: Object.keys(element.slots).length > 0 ? { ...element.slots } : undefined,
           },
         ]),
     );
