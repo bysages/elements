@@ -1,13 +1,13 @@
-import { Popover as ArkPopover, type PopoverAnchorProps } from "@ark-ui/solid/popover";
+import { Field as ArkField } from "@ark-ui/solid/field";
+import { Popover as ArkPopover } from "@ark-ui/solid/popover";
 import { injectComponentStyle } from "@bysages/core";
-import { For, createEffect, createSignal, splitProps } from "solid-js";
+import { For, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 import { Popover } from "../popover";
-import { Textarea } from "../textarea";
 import { useMentions } from "./use-mentions";
 
 /** The Anchor's polymorphic wiring is div-typed at the API boundary; the
@@ -174,16 +174,6 @@ function MentionsImpl(props: MentionsProps) {
     },
   });
 
-  // The field grows with its text — the vue field's `autoresize` prop
-  // has no solid counterpart, so the growth rides this small effect.
-  createEffect(() => {
-    value();
-    const node = fieldEl();
-    if (!node || !(own.autoresize ?? false)) return;
-    node.style.height = "auto";
-    node.style.height = `${node.scrollHeight}px`;
-  });
-
   const onInput = () => {
     const node = fieldEl();
     if (!node) return;
@@ -193,17 +183,14 @@ function MentionsImpl(props: MentionsProps) {
   };
 
   const field = (anchorProps: MentionsAnchorProps) => (
-    <Textarea
+    <ArkField.Textarea
       {...anchorProps}
       ref={(node) => setFieldEl(node)}
-      invalid={own.invalid}
+      autoresize={own.autoresize ?? false}
+      aria-invalid={own.invalid ? "true" : undefined}
       rows={3}
       placeholder={own.placeholder}
       value={value()}
-      onValueChange={(next) => {
-        setInternal(next);
-        own.onValueChange?.(next);
-      }}
       onInput={onInput}
       onKeyDown={(event: KeyboardEvent) => {
         mentions.onKeydown(event);
@@ -226,8 +213,7 @@ function MentionsImpl(props: MentionsProps) {
           if (!open) mentions.close();
         }}
         children={field}
-      >
-      </MentionsVessel>
+      ></MentionsVessel>
     </div>
   );
 }

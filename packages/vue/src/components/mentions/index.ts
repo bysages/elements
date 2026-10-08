@@ -178,11 +178,13 @@ const MentionsFacade = defineComponent({
     // Mirrors the controlled value when the caller does not pass one.
     const hostId = useElementId("mentions", ctx.attrs);
     const internal = ref("");
-    // A ref on the field component is not the textarea itself, so capture a
-    // layout-neutral wrapper and resolve the real element from it.
-    const fieldWrapperRef = ref<HTMLElement | null>(null);
+    // The shared root owns element lookup, so no layout shell is needed
+    // just to reach the field's real textarea.
+    const rootRef = ref<HTMLElement | null>(null);
     const el = (): HTMLTextAreaElement | null =>
-      fieldWrapperRef.value?.querySelector("textarea") ?? null;
+      rootRef.value?.querySelector<HTMLTextAreaElement>(
+        'textarea[data-scope="mentions"][data-part="textarea"]',
+      ) ?? null;
 
     const value = () => props.modelValue ?? internal.value;
 
@@ -205,7 +207,13 @@ const MentionsFacade = defineComponent({
     return () =>
       h(
         "div",
-        { ...ctx.attrs, "data-scope": "mentions", "data-part": "root", "data-size": props.size },
+        {
+          ...ctx.attrs,
+          ref: rootRef as Ref,
+          "data-scope": "mentions",
+          "data-part": "root",
+          "data-size": props.size,
+        },
         [
           h(
             withPresenceRoot(ArkPopover.Root as never),
@@ -218,31 +226,22 @@ const MentionsFacade = defineComponent({
               positioning: { placement: "bottom-start" },
             }),
             () => [
-              h(
-                "div",
-                { ref: fieldWrapperRef as Ref, style: { display: "contents", width: "100%" } },
-                [
-                  h(
-                    ArkPopover.Anchor,
-                    { asChild: true },
-                    () =>
-                      h(Field.Textarea as never, {
-                        autoresize: props.autoresize,
-                        invalid: props.invalid,
-                        rows: 3,
-                        placeholder: props.placeholder,
-                        modelValue: value(),
-                        "onUpdate:modelValue": (next: string) => {
-                          internal.value = next;
-                          ctx.emit("update:modelValue", next);
-                        },
-                        onInput,
-                        onKeydown: mentions.onKeydown,
-                        "data-scope": "mentions",
-                        "data-part": "textarea",
-                      }),
-                  ),
-                ],
+              h(ArkPopover.Anchor, { asChild: true }, () =>
+                h(Field.Textarea as never, {
+                  autoresize: props.autoresize,
+                  invalid: props.invalid,
+                  rows: 3,
+                  placeholder: props.placeholder,
+                  modelValue: value(),
+                  "onUpdate:modelValue": (next: string) => {
+                    internal.value = next;
+                    ctx.emit("update:modelValue", next);
+                  },
+                  onInput,
+                  onKeydown: mentions.onKeydown,
+                  "data-scope": "mentions",
+                  "data-part": "textarea",
+                }),
               ),
               h(ArkPopover.Positioner, () =>
                 h(ArkPopover.Content, { asChild: true }, () =>
