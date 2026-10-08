@@ -209,6 +209,22 @@ export const tableCss = /* css */ `
   background: color-mix(in oklab, var(--bs-color-primary) 8%, transparent);
 }
 
+/* Virtual mode keeps an absolute staging area: the wrapper supplies
+   measured offsets and sizes; core owns the layout grammar. */
+[data-scope="table"][data-part="body"][data-virtual]:not([data-merge]) {
+  position: relative;
+  block-size: var(--bs-table-virtual-total, 0px);
+}
+
+[data-scope="table"][data-part="body"][data-virtual]:not([data-merge])
+  [data-part="row"] {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  transform: translateY(var(--bs-table-virtual-row-start, 0px));
+  block-size: var(--bs-table-virtual-row-size, var(--bs-table-row-height));
+}
+
 /* Merged-cell mode: the body is one grid and rows are contents, so a
    cell may span rows (grid-row: span n). With no row box left, the
    hover and selection washes land on the cells themselves. */
@@ -220,6 +236,12 @@ export const tableCss = /* css */ `
 
 [data-scope="table"][data-part="body"][data-merge] [data-part="row"] {
   display: contents;
+}
+
+/* TanStack reports the span; core owns its grid placement. */
+[data-scope="table"][data-part="body"][data-merge]
+  [data-part="cell"][data-spanned] {
+  grid-row: span var(--bs-table-row-span, 2);
 }
 
 [data-scope="table"][data-part="body"][data-merge]

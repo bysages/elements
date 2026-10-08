@@ -860,7 +860,7 @@ const DataTableFacade = defineComponent({
       delete pin.style;
       const rowSpan = cell.getRowSpan();
       if (rowSpan > 1) {
-        style.gridRow = `span ${rowSpan}`;
+        style["--bs-table-row-span"] = String(rowSpan);
       }
       const attrs: Record<string, unknown> = rowSpan > 1 ? { "data-spanned": "" } : {};
 
@@ -1001,11 +1001,8 @@ const DataTableFacade = defineComponent({
       const style: CSSProperties = {};
       if (virtual.value) {
         const item = virtualRows.value[index]!;
-        style.position = "absolute";
-        style.insetInlineStart = "0";
-        style.inlineSize = "100%";
-        style.transform = `translateY(${item.start}px)`;
-        style.blockSize = `${item.size}px`;
+        style["--bs-table-virtual-row-start"] = `${item.start}px`;
+        style["--bs-table-virtual-row-size"] = `${item.size}px`;
       }
       const draggable = rowDraggable.value;
       return h(
@@ -1079,9 +1076,8 @@ const DataTableFacade = defineComponent({
           "data-scope": "table",
           "data-part": "body",
           "data-merge": mergeMode.value || undefined,
-          style: virtual.value
-            ? { position: "relative", blockSize: `${totalSize.value}px` }
-            : undefined,
+          "data-virtual": virtual.value || undefined,
+          style: virtual.value ? { "--bs-table-virtual-total": `${totalSize.value}px` } : undefined,
         },
         [
           ...(virtual.value

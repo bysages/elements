@@ -620,7 +620,7 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
     const rowSpan = cell.getRowSpan();
     const style: JSX.CSSProperties = {
       ...pinStyle,
-      ...(rowSpan > 1 ? { "grid-row": `span ${rowSpan}` } : {}),
+      ...(rowSpan > 1 ? { "--bs-table-row-span": String(rowSpan) } : {}),
     };
 
     let content: JSX.Element;
@@ -679,11 +679,8 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
   function renderRow(row: TRow, virtualItem?: { start: number; size: number }): JSX.Element {
     const style: JSX.CSSProperties = virtualItem
       ? {
-          position: "absolute",
-          "inset-inline-start": "0",
-          "inline-size": "100%",
-          transform: `translateY(${virtualItem.start}px)`,
-          "block-size": `${virtualItem.size}px`,
+          "--bs-table-virtual-row-start": `${virtualItem.start}px`,
+          "--bs-table-virtual-row-size": `${virtualItem.size}px`,
         }
       : {};
     const draggable = rowDraggable();
@@ -828,9 +825,10 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
             data-scope="table"
             data-part="body"
             data-merge={mergeMode() || undefined}
+            data-virtual={virtual() || undefined}
             style={
               virtual()
-                ? { position: "relative", "block-size": `${virtualizer.getTotalSize()}px` }
+                ? { "--bs-table-virtual-total": `${virtualizer.getTotalSize()}px` }
                 : undefined
             }
           >

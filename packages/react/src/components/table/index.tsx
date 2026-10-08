@@ -647,11 +647,11 @@ function DataTableImpl(rawProps: DataTableProps) {
 
     const isExpandHost = column.id === expandHostId;
     const pin = pinAttrs(column);
-    const style = { ...(pin.style as CSSProperties) };
+    const style = { ...(pin.style as CSSProperties & Record<string, string | number>) };
     delete pin.style;
     const rowSpan = cell.getRowSpan();
     if (rowSpan > 1) {
-      style.gridRow = `span ${rowSpan}`;
+      style["--bs-table-row-span"] = String(rowSpan);
     }
     const spanned = rowSpan > 1 ? { "data-spanned": "" } : {};
 
@@ -755,14 +755,11 @@ function DataTableImpl(rawProps: DataTableProps) {
   }
 
   function renderRow(row: TRow, virtualIndex: number) {
-    const style: CSSProperties = {};
+    const style: CSSProperties & Record<string, string | number> = {};
     if (virtual) {
       const item = virtualRows[virtualIndex]!;
-      style.position = "absolute";
-      style.insetInlineStart = "0";
-      style.inlineSize = "100%";
-      style.transform = `translateY(${item.start}px)`;
-      style.blockSize = `${item.size}px`;
+      style["--bs-table-virtual-row-start"] = `${item.start}px`;
+      style["--bs-table-virtual-row-size"] = `${item.size}px`;
     }
     return (
       <div
@@ -822,7 +819,10 @@ function DataTableImpl(rawProps: DataTableProps) {
       data-scope="table"
       data-part="body"
       data-merge={mergeMode || undefined}
-      style={virtual ? { position: "relative", blockSize: `${totalSize}px` } : undefined}
+      data-virtual={virtual || undefined}
+      style={
+        virtual ? ({ "--bs-table-virtual-total": `${totalSize}px` } as CSSProperties) : undefined
+      }
     >
       {virtual
         ? virtualRows.map((_, index) => renderRow(rows[index]!, index))

@@ -488,7 +488,7 @@ const hasFooters = $derived(
 function cellStyle(column: TColumn, span: number) {
   return {
     ...(pinOffset(column) ? { "--pin-offset": pinOffset(column) } : {}),
-    ...(span > 1 ? { "grid-row": `span ${span}` } : {}),
+    ...(span > 1 ? { "--bs-table-row-span": String(span) } : {}),
   };
 }
 </script>
@@ -608,8 +608,9 @@ function cellStyle(column: TColumn, span: number) {
         data-scope="table"
         data-part="body"
         data-merge={mergeMode || undefined}
+        data-virtual={virtualMode || undefined}
         style={virtualMode
-          ? { position: "relative", "block-size": `${$virtualizer.getTotalSize()}px` }
+          ? { "--bs-table-virtual-total": `${$virtualizer.getTotalSize()}px` }
           : undefined}
       >
         {#if virtualMode}
@@ -729,11 +730,8 @@ function cellStyle(column: TColumn, span: number) {
     ondragend={onRowDragEnd}
     style={item
       ? {
-          position: "absolute",
-          "inset-inline-start": "0",
-          "inline-size": "100%",
-          transform: `translateY(${item.start}px)`,
-          "block-size": `${item.size}px`,
+          "--bs-table-virtual-row-start": `${item.start}px`,
+          "--bs-table-virtual-row-size": `${item.size}px`,
         }
       : undefined}
   >
