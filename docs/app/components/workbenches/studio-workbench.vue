@@ -8,7 +8,10 @@ import {
   DataTable,
   Input,
   JsonTreeView,
+  NumberInput,
   PageHeader,
+  Select,
+  Switch,
   Tabs,
   Textarea,
   Typography,
@@ -50,6 +53,11 @@ const copy = {
       title: "Inspector",
       empty: "Select a row in the composition to edit its props.",
       props: "Props",
+      optional: "optional",
+      noFields: "This component declares no schema fields.",
+      listHint: "Comma-separated values",
+      jsonFieldInvalid: "Must be valid JSON.",
+      advanced: "Advanced (JSON)",
       apply: "Apply",
       invalid: "Props must be a JSON object.",
     },
@@ -87,6 +95,11 @@ const copy = {
       title: "检查器",
       empty: "在组合里选中一行，编辑它的属性。",
       props: "属性",
+      optional: "可选",
+      noFields: "该组件没有规格字段。",
+      listHint: "逗号分隔多个值",
+      jsonFieldInvalid: "必须是合法 JSON。",
+      advanced: "高级（JSON）",
       apply: "应用",
       invalid: "属性必须是 JSON 对象。",
     },
@@ -113,6 +126,7 @@ type ZodField = {
   def?: {
     type?: string;
     innerType?: ZodField;
+    element?: ZodField;
     entries?: Record<string, unknown>;
   };
 };
@@ -133,6 +147,7 @@ function defaultProps(name: string): Record<string, unknown> {
       if (first) props[key] = first;
     } else if (field.def?.type === "boolean") props[key] = false;
     else if (field.def?.type === "number") props[key] = 0;
+    else if (field.def?.type === "array") props[key] = [];
     else if (field.def?.type === "string") props[key] = `${name} ${key}`;
   }
   return props;
@@ -382,8 +397,103 @@ const selectedLabel = computed(() =>
   selectedId.value === ROOT_ID ? text.value.tree.root : (selectedNode.value?.type ?? ""),
 );
 
+/* --- Schema-driven inspector -------------------------------------------- */
+
+type SchemaKind = "enum" | "string" | "number" | "boolean" | "stringList" | "json";
+
+interface SchemaField {
+  key: string;
+  kind: SchemaKind;
+  optional: boolean;
+  options: string[];
+}
+
+function classifyField(declared: ZodField): Omit<SchemaField, "key"> {
+  const optional = declared.def?.type === "optional";
+  const field = optional ? (declared.def?.innerType ?? declared) : declared;
+  const type = field.def?.type ?? "";
+  if (type === "enum")
+    return { kind: "enum", optional, options: Object.keys(field.def?.entries ?? {}) };
+  if (type === "boolean") return { kind: "boolean", optional, options: [] };
+  if (type === "number") return { kind: "number", optional, options: [] };
+  if (type === "array") {
+    // Zod v4 names the array's item schema `element`; optional wraps in `innerType`.
+    const item = field.def?.element ?? field.def?.innerType;
+    return item?.def?.type === "string"
+      ? { kind: "stringList", optional, options: [] }
+      : { kind: "json", optional, options: [] };
+  }
+  if (type === "string") return { kind: "string", optional, options: [] };
+  return { kind: "json", optional, options: [] };
+}
+
+const schemaFields = computed<SchemaField[]>(() => {
+  const name = selectedNode.value?.type;
+  const shape = (name ? entryFor(name)?.props : undefined) as
+    | { def?: { shape?: Record<string, ZodField> } }
+    | undefined;
+  return Object.entries(shape?.def?.shape ?? {}).map(([key, declared]) => ({
+    key,
+    ...classifyField(declared),
+  }));
+});
+
+function setProp(key: string, value: unknown) {
+  const node = selectedNode.value;
+  if (!node) return;
+  if (value === undefined || value === null || value === "") delete node.props[key];
+  else node.props[key] = value;
+}
+
+const propValue = (key: string) => selectedNode.value?.props[key];
+const enumModel = (f: SchemaField) =>
+  typeof propValue(f.key) === "string" ? (propValue(f.key) as string) : "";
+const numberModel = (f: SchemaField) => {
+  const v = propValue(f.key);
+  return typeof v === "number" ? String(v) : "";
+};
+const onNumber = (f: SchemaField, v: string) => {
+  if (v === "") setProp(f.key, undefined);
+  else if (!Number.isNaN(Number(v))) setProp(f.key, Number(v));
+};
+const listModel = (f: SchemaField) => {
+  const v = propValue(f.key);
+  return Array.isArray(v) ? v.join(", ") : "";
+};
+const onListChange = (f: SchemaField, event: Event) => {
+  const raw = (event.target as HTMLInputElement).value;
+  const items = raw
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  setProp(f.key, items.length ? items : undefined);
+};
+const jsonDrafts = ref<Record<string, string>>({});
+const jsonErrors = ref<Record<string, boolean>>({});
+const jsonModel = (f: SchemaField) =>
+  jsonDrafts.value[f.key] ?? JSON.stringify(propValue(f.key) ?? null, null, 2);
+const onJsonInput = (f: SchemaField, v: string) => {
+  jsonDrafts.value[f.key] = v;
+};
+const onJsonCommit = (f: SchemaField) => {
+  const raw = jsonDrafts.value[f.key];
+  if (raw === undefined) return;
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    setProp(f.key, parsed === null ? undefined : parsed);
+    delete jsonDrafts.value[f.key];
+    delete jsonErrors.value[f.key];
+  } catch {
+    jsonErrors.value[f.key] = true;
+  }
+};
+
 const propsDraft = ref("{}");
 const propsError = ref("");
+watch(selectedId, () => {
+  jsonDrafts.value = {};
+  jsonErrors.value = {};
+});
 watch(
   selectedNode,
   (node) => {
@@ -635,17 +745,86 @@ function importJson() {
             <Card.Content class="grid content-start gap-(--bs-gap-md)">
               <template v-if="selectedNode">
                 <Typography.Label>{{ text.inspector.props }}</Typography.Label>
-                <Textarea
-                  v-model="propsDraft"
-                  rows="8"
-                  class="font-mono text-xs"
-                  :aria-label="text.inspector.props"
-                />
-                <p v-if="propsError" class="m-0 text-sm text-danger">{{ propsError }}</p>
-                <Button variant="outline" size="sm" @click="applyProps">
-                  <Icon name="i-lucide-check" />
-                  {{ text.inspector.apply }}
-                </Button>
+                <div v-if="schemaFields.length" class="grid content-start gap-(--bs-gap-sm)">
+                  <div v-for="f in schemaFields" :key="f.key" class="grid content-start gap-1">
+                    <div class="flex items-baseline justify-between gap-(--bs-gap-sm)">
+                      <Typography.Label class="m-0">{{ f.key }}</Typography.Label>
+                      <span v-if="f.optional" class="text-xs text-tertiary">{{
+                        text.inspector.optional
+                      }}</span>
+                    </div>
+                    <Select
+                      v-if="f.kind === 'enum'"
+                      size="sm"
+                      :options="f.options.map((value) => ({ label: value, value }))"
+                      :model-value="enumModel(f)"
+                      :aria-label="f.key"
+                      @update:model-value="(value) => setProp(f.key, value)"
+                    />
+                    <Switch
+                      v-else-if="f.kind === 'boolean'"
+                      size="sm"
+                      :model-value="propValue(f.key) === true"
+                      :aria-label="f.key"
+                      @update:model-value="(value) => setProp(f.key, value)"
+                    />
+                    <NumberInput
+                      v-else-if="f.kind === 'number'"
+                      size="sm"
+                      :model-value="numberModel(f)"
+                      :aria-label="f.key"
+                      @update:model-value="(value) => onNumber(f, value)"
+                    />
+                    <Input
+                      v-else-if="f.kind === 'string'"
+                      size="sm"
+                      :model-value="
+                        typeof propValue(f.key) === 'string' ? (propValue(f.key) as string) : ''
+                      "
+                      :aria-label="f.key"
+                      @update:model-value="(value) => setProp(f.key, value)"
+                    />
+                    <Input
+                      v-else-if="f.kind === 'stringList'"
+                      size="sm"
+                      :placeholder="text.inspector.listHint"
+                      :model-value="listModel(f)"
+                      :aria-label="f.key"
+                      @change="onListChange(f, $event)"
+                    />
+                    <template v-else>
+                      <Textarea
+                        rows="3"
+                        class="font-mono text-xs"
+                        :model-value="jsonModel(f)"
+                        :aria-label="f.key"
+                        @update:model-value="(value) => onJsonInput(f, value)"
+                        @blur="onJsonCommit(f)"
+                      />
+                      <p v-if="jsonErrors[f.key]" class="m-0 text-xs text-danger">
+                        {{ text.inspector.jsonFieldInvalid }}
+                      </p>
+                    </template>
+                  </div>
+                </div>
+                <Typography.Muted v-else>{{ text.inspector.noFields }}</Typography.Muted>
+
+                <details class="grid content-start gap-(--bs-gap-sm)">
+                  <summary class="cursor-pointer text-sm text-tertiary">
+                    {{ text.inspector.advanced }}
+                  </summary>
+                  <Textarea
+                    v-model="propsDraft"
+                    rows="8"
+                    class="font-mono text-xs"
+                    :aria-label="text.inspector.props"
+                  />
+                  <p v-if="propsError" class="m-0 text-sm text-danger">{{ propsError }}</p>
+                  <Button variant="outline" size="sm" @click="applyProps">
+                    <Icon name="i-lucide-check" />
+                    {{ text.inspector.apply }}
+                  </Button>
+                </details>
               </template>
               <Typography.Muted v-else>{{ text.inspector.empty }}</Typography.Muted>
 
