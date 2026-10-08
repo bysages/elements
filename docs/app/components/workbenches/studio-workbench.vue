@@ -282,8 +282,8 @@ interface CompositionRow {
   subRows?: CompositionRow[];
 }
 
-const compositionRows = computed<CompositionRow[]>(() =>
-  rootNode.value.children.map(function toRow(id: string): CompositionRow {
+const compositionRows = computed<CompositionRow[]>(() => {
+  const toRow = (id: string): CompositionRow => {
     const node = nodes.value[id]!;
     const children = node.children.map(toRow);
     return {
@@ -292,8 +292,16 @@ const compositionRows = computed<CompositionRow[]>(() =>
       childCount: children.length,
       subRows: children.length ? children : undefined,
     };
-  }),
-);
+  };
+  return [
+    {
+      id: ROOT_ID,
+      type: text.value.tree.root,
+      childCount: rootNode.value.children.length,
+      subRows: rootNode.value.children.map(toRow),
+    },
+  ];
+});
 
 const col = createColumnHelper<CompositionRow>();
 const compositionColumns = col.columns([
@@ -306,17 +314,19 @@ const compositionColumns = col.columns([
         item.childCount
           ? h("span", { class: "text-xs text-tertiary tabular-nums" }, String(item.childCount))
           : null,
-        h(
-          Button,
-          {
-            variant: "ghost",
-            size: "sm",
-            square: true,
-            "aria-label": `${text.value.tree.remove} ${item.type}`,
-            onClick: () => removeNode(item.id),
-          },
-          () => "×",
-        ),
+        item.id === ROOT_ID
+          ? null
+          : h(
+              Button,
+              {
+                variant: "ghost",
+                size: "sm",
+                square: true,
+                "aria-label": `${text.value.tree.remove} ${item.type}`,
+                onClick: () => removeNode(item.id),
+              },
+              () => "×",
+            ),
       ]);
       return h(
         "span",
@@ -357,7 +367,8 @@ function syncComposition(rows: CompositionRow[]) {
     (row.subRows ?? []).forEach((child) => place(child, below));
   };
 
-  rows.forEach((row) => place(row, [ROOT_ID]));
+  const topLevel = rows.find((row) => row.id === ROOT_ID)?.subRows ?? rows;
+  topLevel.forEach((row) => place(row, [ROOT_ID]));
   rootNode.value.children = children[ROOT_ID]!;
   for (const [id, list] of Object.entries(children)) {
     if (id !== ROOT_ID) nodes.value[id]!.children = list;
