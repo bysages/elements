@@ -29,8 +29,8 @@ export const Affix = withSelfRoot(function Affix(props: AffixProps) {
       {...rest}
       style={{
         ...(rest.style as JSX.CSSProperties),
-        top: own.offsetTop ?? "0px",
-        bottom: own.offsetBottom ?? "0px",
+        "--bs-affix-top": own.offsetTop ?? "0px",
+        "--bs-affix-bottom": own.offsetBottom ?? "0px",
       }}
       data-scope="affix"
       data-part="root"

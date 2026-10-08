@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 
@@ -25,7 +25,13 @@ function AffixImpl({ offsetTop = "0px", offsetBottom = "0px", ...rest }: AffixPr
   return (
     <div
       {...rest}
-      style={{ ...rest.style, top: offsetTop, bottom: offsetBottom }}
+      style={
+        {
+          ...rest.style,
+          "--bs-affix-top": offsetTop,
+          "--bs-affix-bottom": offsetBottom,
+        } as CSSProperties
+      }
       data-scope="affix"
       data-part="root"
     />

@@ -3,5 +3,7 @@ export const affixCss = /* css */ `
    carrier the caller sizes and surfaces. */
 [data-scope="affix"][data-part="root"] {
   position: sticky;
+  top: var(--bs-affix-top, 0px);
+  bottom: var(--bs-affix-bottom, 0px);
 }
 `;

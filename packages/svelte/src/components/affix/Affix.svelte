@@ -14,8 +14,8 @@ its offset, then stays put while the page moves on — plain
 `position: sticky`, pinned to the nearest scrolling ancestor. -->
 <div
   {...rest}
-  style:top={offsetTop}
-  style:bottom={offsetBottom}
+  style:--bs-affix-top={offsetTop}
+  style:--bs-affix-bottom={offsetBottom}
   data-scope="affix"
   data-part="root"
 >

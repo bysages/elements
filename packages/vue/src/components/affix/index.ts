@@ -37,7 +37,10 @@ export const Affix = withSelfRoot(
           "div",
           {
             ...attrs,
-            style: [style as CSSProperties, { top: props.offsetTop, bottom: props.offsetBottom }],
+            style: [
+              style as CSSProperties,
+              { "--bs-affix-top": props.offsetTop, "--bs-affix-bottom": props.offsetBottom },
+            ],
             "data-scope": "affix",
             "data-part": "root",
           },
