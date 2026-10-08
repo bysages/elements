@@ -43,7 +43,7 @@ const activeTab = computed(() => tabs.find((tab) => tab.id === active.value));
       <button
         v-for="tab in tabs"
         :key="tab.id"
-        class="relative flex flex-1 cursor-pointer flex-col items-center bg-transparent py-(--bs-padding-sm) text-xs transition-colors duration-(--bs-duration-fast) ease-(--bs-ease-out) active:bg-surface-inset"
+        class="relative flex flex-1 flex-col items-center bg-transparent py-(--bs-padding-sm) text-xs transition-colors duration-(--bs-duration-fast) ease-(--bs-ease-out) active:bg-surface-inset"
         :class="active === tab.id ? 'text-primary' : 'text-tertiary'"
         type="button"
         @click="active = tab.id"

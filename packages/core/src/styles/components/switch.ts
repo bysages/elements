@@ -39,7 +39,7 @@ export const switchCss =
     box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
-[data-scope="switch"][data-part="control"]:hover:not([data-disabled], [data-state="checked"], [data-focus-visible]) {
+[data-scope="switch"][data-part="control"]:hover:not([data-disabled], [data-invalid], [data-state="checked"], [data-focus-visible]) {
   box-shadow: var(--bs-shadow-sm);
 }
 

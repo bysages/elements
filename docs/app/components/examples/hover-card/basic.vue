@@ -12,7 +12,7 @@ import { HoverCard } from "@bysages/vue";
       <p class="m-0">
         Liked by
         <HoverCard.Trigger
-          class="cursor-pointer text-primary underline underline-offset-[0.2em] decoration-border-strong"
+          class="text-primary underline underline-offset-[0.2em] decoration-border-strong"
           >@sarah_chen</HoverCard.Trigger
         >
         and 3 others.

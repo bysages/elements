@@ -173,7 +173,6 @@ export const Context = {
                 padding: "0.25rem 0.625rem",
                 font: "inherit",
                 fontSize: "var(--bs-font-size-sm)",
-                cursor: "pointer",
               },
             },
             () => "Set A to 10%",

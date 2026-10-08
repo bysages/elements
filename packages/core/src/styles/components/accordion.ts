@@ -1,5 +1,3 @@
-import { discloseKeyframes } from "./shared";
-
 export const accordionCss =
   /* css */ `
 [data-scope="accordion"][data-part="root"] {
@@ -115,7 +113,4 @@ export const accordionCss =
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-` +
-  discloseKeyframes() +
-  /* css */ `
 `;

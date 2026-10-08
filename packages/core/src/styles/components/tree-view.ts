@@ -1,4 +1,4 @@
-import { discloseKeyframes, labelCss, shrinkingTextCss } from "./shared";
+import { labelCss, shrinkingTextCss } from "./shared";
 
 export const treeViewCss =
   labelCss("tree-view") +
@@ -16,6 +16,20 @@ export const treeViewCss =
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-sm);
+}
+
+/* The facade names the tree without adding visible chrome; the label
+   remains in the accessibility tree and Zag links it to role="tree". */
+[data-scope="tree-view"][data-part="label"][data-visually-hidden] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 [data-scope="tree-view"][data-part="tree"] {
@@ -197,7 +211,6 @@ export const treeViewCss =
   box-shadow: var(--bs-focus-ring);
 }
 ` +
-  discloseKeyframes() +
   /* css */ `
 
 /* Size rungs: the root's data-size re-points the row-block knob the

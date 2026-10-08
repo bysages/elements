@@ -1,5 +1,11 @@
 import { inputStateCss } from "./shared";
-import { labelCss, popupContentCss, positionerCss, shrinkingTextCss } from "./shared";
+import {
+  labelCss,
+  optionListCss,
+  popupContentCss,
+  positionerCss,
+  shrinkingTextCss,
+} from "./shared";
 
 export const comboboxCss =
   labelCss("combobox") +
@@ -103,92 +109,9 @@ export const comboboxCss =
   overflow-y: auto;
 }
 
-[data-scope="combobox"][data-part="list"] {
-  display: flex;
-  flex-direction: column;
-  gap: var(--bs-gap-xs);
-}
-
-[data-scope="combobox"][data-part="item-group"] {
-  display: flex;
-  flex-direction: column;
-  gap: var(--bs-gap-xs);
-}
-
-[data-scope="combobox"][data-part="item-group"] + [data-part="item-group"] {
-  margin-block-start: var(--bs-margin-sm);
-}
-
-/* Group headings stay out of the list's way: small, tracked, uppercase. */
-[data-scope="combobox"][data-part="item-group-label"] {
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
-  color: var(--bs-color-text-tertiary);
-  font-size: var(--bs-font-size-xs);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  text-transform: uppercase;
-  user-select: none;
-}
-
-/* Items are quiet rows of ink: no fill at rest, the subtle surface only
-   when asked. The checked row takes the flat primary fill and keeps it
-   under the cursor. */
-[data-scope="combobox"][data-part="item"] {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--bs-gap-sm);
-  min-block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-padding-sm);
-  border-radius: var(--bs-radius-sm);
-  color: var(--bs-color-text-primary);
-  font-size: var(--bs-font-size-sm);
-  cursor: pointer;
-  user-select: none;
-  outline: none;
-  transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
-}
-
-[data-scope="combobox"][data-part="item"] mark {
-  background: transparent;
-  color: var(--bs-color-primary);
-  font-weight: var(--bs-font-weight-medium);
-}
-
-[data-scope="combobox"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
-[data-scope="combobox"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
-  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
-}
-
-[data-scope="combobox"][data-part="item"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring-inset);
-}
-
-[data-scope="combobox"][data-part="item"][data-state="checked"] {
-  background: var(--bs-color-primary);
-  color: var(--bs-color-primary-text);
-  font-weight: var(--bs-font-weight-medium);
-}
-
-[data-scope="combobox"][data-part="item"][data-disabled] {
-  color: var(--bs-color-text-disabled);
-  cursor: not-allowed;
-}
-
-[data-scope="combobox"][data-part="item-indicator"] {
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: inherit;
-}
-
-[data-scope="combobox"][data-part="item-indicator"] svg {
-  inline-size: var(--bs-font-size-sm);
-  block-size: var(--bs-font-size-sm);
-}
-
+` +
+  optionListCss("combobox", { mark: true }) +
+  /* css */ `
 /* Size rungs: the root's data-size re-points the ladder for everything
    inside — the input and its icon-sized triggers move together. */
 [data-scope="combobox"][data-part="root"][data-size="sm"] [data-part="input"] {

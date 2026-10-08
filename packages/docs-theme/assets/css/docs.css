@@ -353,7 +353,6 @@ body {
   margin: var(--bs-margin-lg) var(--bs-padding-md) var(--bs-margin-sm);
   font: inherit;
   text-align: start;
-  cursor: pointer;
 }
 
 /* The folder is the collapsible's trigger, and core dresses that trigger
@@ -1020,7 +1019,6 @@ body {
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   box-shadow: none;
-  cursor: pointer;
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     background-color var(--bs-duration-fast) var(--bs-ease-out);
@@ -1107,7 +1105,6 @@ body {
 .bs-docs-theme-swatch-row[data-scope="radio-group"] [data-part="item"] {
   position: relative;
   display: flex;
-  cursor: pointer;
   border-radius: 100%;
 }
 

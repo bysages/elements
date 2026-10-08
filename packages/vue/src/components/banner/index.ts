@@ -3,6 +3,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
 import { iconNode } from "../../internal/icon";
+import { Button } from "../button";
 import { useComponentMessages } from "../../internal/messages";
 
 const Root = defineComponent({
@@ -56,24 +57,32 @@ const Description = part("Description", "p");
 /** Where the reader answers — the row of buttons a banner may carry. */
 const Actions = part("Actions", "div");
 
-/** The quiet close: a plain square-cut button; dismissal stays the
- * consumer's state. */
+/** The quiet close: the shared ghost square carries the native button,
+ * cursor and halo; the part rides the wrapper so the anatomy contract
+ * holds, and the family keeps only its compact overrides. Dismissal
+ * stays the consumer's state. */
 const Close = defineComponent({
   name: "BannerClose",
-  setup(_, ctx: SetupContext) {
+  setup(_, { attrs }: SetupContext) {
     const messages = useComponentMessages();
+    const { "aria-label": consumerLabel, ...rootAttrs } = attrs;
 
     return () =>
       h(
-        "button",
-        {
-          ...ctx.attrs,
-          type: (ctx.attrs.type as string) ?? "button",
-          "aria-label": (ctx.attrs["aria-label"] as string) ?? messages.value.banner.dismiss,
-          "data-scope": "banner",
-          "data-part": "close",
-        },
-        [iconNode("x")],
+        "span",
+        { ...rootAttrs, "data-scope": "banner", "data-part": "close" },
+        [
+          h(
+            Button,
+            {
+              variant: "ghost",
+              square: true,
+              size: "sm",
+              "aria-label": (consumerLabel as string) ?? messages.value.banner.dismiss,
+            },
+            () => [iconNode("x")],
+          ),
+        ],
       );
   },
 });

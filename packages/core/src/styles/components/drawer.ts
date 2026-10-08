@@ -232,7 +232,7 @@ export const drawerCss =
    it open; it never draws. */
 [data-scope="drawer"][data-part="swipe-area"] {
   position: fixed;
-  z-index: calc(var(--bs-z-overlay) - 1);
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0) - 1);
   background: transparent;
 }
 

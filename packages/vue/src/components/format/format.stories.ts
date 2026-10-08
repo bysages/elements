@@ -34,11 +34,7 @@ const NUM = { style: { fontSize: "var(--bs-font-size-lg)" } } as const;
 
 /** The plain numeral, grouped by the reader's own convention. */
 export const Number = {
-  args: {
-    locale: undefined,
-  },
-  render: (args: { locale?: string }) =>
-    stack(row("Plain", () => h(BSFormat.Number, { value: 1450.45, locale: args.locale }))),
+  render: () => stack(row("Plain", () => h(BSFormat.Number, { value: 1450.45 }))),
 };
 
 /** Grand totals compressed to their headline. */

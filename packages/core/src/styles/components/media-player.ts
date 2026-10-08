@@ -54,43 +54,35 @@ export const mediaPlayerCss = /* css */ `
 [data-scope="media-player"][data-part="mute-button"],
 [data-scope="media-player"][data-part="pip-button"],
 [data-scope="media-player"][data-part="fullscreen-button"] {
-  display: inline-grid;
+  display: inline-flex;
   flex: 0 0 auto;
-  place-items: center;
-  inline-size: var(--bs-control-height-sm);
-  block-size: var(--bs-control-height-sm);
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: var(--bs-radius-sm);
-  background: transparent;
-  color: var(--bs-color-text-secondary);
-  cursor: pointer;
 }
 
-[data-scope="media-player"][data-part="play-button"]:hover:not(:disabled),
-[data-scope="media-player"][data-part="mute-button"]:hover:not(:disabled),
-[data-scope="media-player"][data-part="pip-button"]:hover:not(:disabled),
-[data-scope="media-player"][data-part="fullscreen-button"]:hover:not(:disabled) {
+/* The rail's triggers ride the shared ghost square: the native button,
+   cursor, halo and disabled state are the recipe's; the family keeps
+   only this hover ink and its quiet disabled register. */
+[data-scope="media-player"][data-part="play-button"] [data-scope="button"][data-part="root"]:hover:not(:disabled),
+[data-scope="media-player"][data-part="mute-button"] [data-scope="button"][data-part="root"]:hover:not(:disabled),
+[data-scope="media-player"][data-part="pip-button"] [data-scope="button"][data-part="root"]:hover:not(:disabled),
+[data-scope="media-player"][data-part="fullscreen-button"] [data-scope="button"][data-part="root"]:hover:not(:disabled) {
   border-color: var(--bs-color-border);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
 }
 
-[data-scope="media-player"][data-part="play-button"]:focus-visible,
-[data-scope="media-player"][data-part="mute-button"]:focus-visible,
-[data-scope="media-player"][data-part="pip-button"]:focus-visible,
-[data-scope="media-player"][data-part="fullscreen-button"]:focus-visible {
+[data-scope="media-player"][data-part="play-button"] [data-scope="button"][data-part="root"]:focus-visible,
+[data-scope="media-player"][data-part="mute-button"] [data-scope="button"][data-part="root"]:focus-visible,
+[data-scope="media-player"][data-part="pip-button"] [data-scope="button"][data-part="root"]:focus-visible,
+[data-scope="media-player"][data-part="fullscreen-button"] [data-scope="button"][data-part="root"]:focus-visible {
   border-color: var(--bs-color-primary);
-  box-shadow: var(--bs-focus-ring);
-  outline: none;
 }
 
-[data-scope="media-player"][data-part="play-button"]:disabled,
-[data-scope="media-player"][data-part="mute-button"]:disabled,
-[data-scope="media-player"][data-part="pip-button"]:disabled,
-[data-scope="media-player"][data-part="fullscreen-button"]:disabled {
+[data-scope="media-player"][data-part="play-button"] [data-scope="button"][data-part="root"]:disabled,
+[data-scope="media-player"][data-part="mute-button"] [data-scope="button"][data-part="root"]:disabled,
+[data-scope="media-player"][data-part="pip-button"] [data-scope="button"][data-part="root"]:disabled,
+[data-scope="media-player"][data-part="fullscreen-button"] [data-scope="button"][data-part="root"]:disabled {
+  background: transparent;
   color: var(--bs-color-text-tertiary);
-  cursor: not-allowed;
 }
 
 [data-scope="media-player"][data-part="timeline"],

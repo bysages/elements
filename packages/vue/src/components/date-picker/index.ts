@@ -142,4 +142,4 @@ export const DatePicker = defineFamily(DatePickerFacade, {
   ...ArkDatePicker,
   Root: DatePickerRoot,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof DatePickerFacade &
-  Omit<typeof ArkDatePicker, "Root"> & { Root: typeof DatePickerRoot };
+  Omit<typeof ArkDatePicker, "Root"> & { Root: typeof ArkDatePicker.Root & typeof DatePickerRoot };

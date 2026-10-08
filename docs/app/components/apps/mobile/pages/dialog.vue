@@ -75,13 +75,8 @@ function runAction(action: (typeof actions)[number], index: number) {
             {{ text.alert.description }}
           </Dialog.Description>
           <div class="border-t border-border">
-            <Dialog.CloseTrigger as-child>
-              <button
-                class="w-full cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md text-primary"
-                type="button"
-              >
-                {{ text.alert.confirm }}
-              </button>
+            <Dialog.CloseTrigger data-variant="action" data-tone="primary">
+              {{ text.alert.confirm }}
             </Dialog.CloseTrigger>
           </div>
         </Dialog.Content>
@@ -104,22 +99,19 @@ function runAction(action: (typeof actions)[number], index: number) {
             {{ text.confirm.description }}
           </Dialog.Description>
           <div class="grid grid-cols-2 border-t border-border">
-            <Dialog.CloseTrigger as-child>
-              <button
-                class="cursor-pointer border-r border-border bg-transparent py-(--bs-padding-md) text-center text-md text-secondary"
-                type="button"
-              >
-                {{ text.confirm.cancel }}
-              </button>
+            <Dialog.CloseTrigger
+              class="border-r border-border"
+              data-variant="action"
+              data-tone="secondary"
+            >
+              {{ text.confirm.cancel }}
             </Dialog.CloseTrigger>
-            <Dialog.CloseTrigger as-child>
-              <button
-                class="cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md text-danger"
-                type="button"
-                @click="toast(text.confirm.deleted)"
-              >
-                {{ text.confirm.delete }}
-              </button>
+            <Dialog.CloseTrigger
+              data-variant="action"
+              data-tone="danger"
+              @click="toast(text.confirm.deleted)"
+            >
+              {{ text.confirm.delete }}
             </Dialog.CloseTrigger>
           </div>
         </Dialog.Content>
@@ -137,16 +129,11 @@ function runAction(action: (typeof actions)[number], index: number) {
             <Dialog.CloseTrigger
               v-for="(action, i) in actions"
               :key="action.id"
-              as-child
+              data-variant="action"
+              :data-tone="i === actions.length - 1 ? 'secondary' : undefined"
+              @click="runAction(action, i)"
             >
-              <button
-                class="w-full cursor-pointer bg-transparent py-(--bs-padding-md) text-center text-md"
-                :class="i === actions.length - 1 ? 'text-secondary' : 'text-foreground'"
-                type="button"
-                @click="runAction(action, i)"
-              >
-                {{ action.label[locale] }}
-              </button>
+              {{ action.label[locale] }}
             </Dialog.CloseTrigger>
           </div>
         </Dialog.Content>

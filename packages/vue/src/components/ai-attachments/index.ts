@@ -3,6 +3,7 @@ import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
+import { Button } from "../button";
 import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 
@@ -65,16 +66,17 @@ export const Attachment = withSelfRoot(
             h("span", props.name),
             props.size !== undefined ? h("span", humanSize(props.size)) : null,
             h(
-              "button",
+              Button,
               {
-                type: "button",
-                "data-remove": "",
+                variant: "ghost",
+                square: true,
+                size: "sm",
                 "aria-label":
                   consumerLabel ??
                   formatMessage(messages.value.ai.removeAttachment, { name: props.name }),
                 onClick: () => emit("remove"),
               },
-              removeIcon(),
+              () => [removeIcon()],
             ),
           ],
         );

@@ -59,7 +59,7 @@ provide("phone-toast", (title: string) =>
     >
       <button
         v-if="current !== 'home'"
-        class="grid size-8 cursor-pointer place-items-center rounded-sm bg-transparent text-secondary"
+        class="grid size-8 place-items-center rounded-sm bg-transparent text-secondary"
         :aria-label="locale === 'en' ? 'Back' : '返回'"
         type="button"
         @click="go('home')"

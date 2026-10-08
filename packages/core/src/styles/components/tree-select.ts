@@ -33,12 +33,12 @@ export const treeSelectCss =
   color: var(--bs-color-text-tertiary);
 }
 
-[data-scope="tree-select"][data-part="control"]:hover:not(:focus):not(:disabled):not([data-invalid]):not([data-open]) {
+[data-scope="tree-select"][data-part="control"]:hover:not(:focus):not(:disabled):not([data-invalid]):not([data-state="open"]) {
   border-color: var(--bs-color-border-strong);
 }
 
 [data-scope="tree-select"][data-part="control"]:focus-visible,
-[data-scope="tree-select"][data-part="control"][data-open] {
+[data-scope="tree-select"][data-part="control"][data-state="open"] {
   outline: none;
   border-color: var(--bs-focus-edge);
   box-shadow: var(--bs-focus-ring);
@@ -50,7 +50,7 @@ export const treeSelectCss =
 }
 
 [data-scope="tree-select"][data-part="control"][data-invalid]:focus-visible,
-[data-scope="tree-select"][data-part="control"][data-invalid][data-open] {
+[data-scope="tree-select"][data-part="control"][data-invalid][data-state="open"] {
   box-shadow: inset 0 0 0 1px var(--bs-color-danger);
 }
 
@@ -74,13 +74,28 @@ export const treeSelectCss =
   transition: transform var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="tree-select"][data-part="control"][data-open] [data-part="chevron"] svg {
+[data-scope="tree-select"][data-part="control"][data-state="open"] [data-part="chevron"] svg {
   transform: rotate(90deg);
+}
+
+/* The hidden title gives the dialog a stable accessible name without
+   adding visible chrome to the vessel. */
+[data-scope="tree-select"][data-part="title"][data-visually-hidden] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Inside the shared popup vessel the sheet is a column: an optional
    filter line holds the top, the grove scrolls under it. */
 [data-scope="tree-select"][data-part="content"] {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--bs-gap-sm);

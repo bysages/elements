@@ -1,23 +1,13 @@
-export const buttonCss = /* css */ `
-/* The full control recipe, parameterized twice: the variant chooses how
-   the button rests (filled, outlined, bare, washed) and the tone chooses
-   the pigment it carries. Each variant declares its fill/ink defaults,
-   semantic tones re-point the pigment, and hover/focus ride the same
-   variables. Ink is the solemn default. */
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant]) {
-  --_pigment: var(--bs-color-primary);
-  /* The deep register of the pigment for the subtle wash — the 600-step
-     tone itself fails 4.5:1 on its own wash, so washed fills read from
-     the dedicated -800/-300 text ramp. */
-  --_ink-strong: var(--bs-color-primary-subtle-text);
-  --_fill: transparent;
-  --_fill-hover: transparent;
-  --_ink: var(--bs-color-text-secondary);
-  --_edge: transparent;
-}
+/** The button body is emitted twice because as-child triggers genuinely
+   need the bare trigger's higher specificity. One generator keeps both
+   metric blocks identical without inventing a global selector. */
+const buttonBody =
+  ':is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])';
+const triggerBody = '[data-scope][data-part="trigger"][data-variant]';
 
-/* The recipe's own body: the layout and states of the button proper. */
-[data-scope="button"][data-part="root"] {
+function bodyCss(selector: string): string {
+  return /* css */ `
+${selector} {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -50,39 +40,59 @@ export const buttonCss = /* css */ `
     box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
 }
 
-[data-scope="button"][data-part="root"][data-size="sm"] {
+${selector}[data-size="sm"] {
   block-size: var(--bs-control-height-sm);
   padding: 0 var(--bs-padding-md);
   font-size: var(--bs-font-size-sm);
 }
 
-[data-scope="button"][data-part="root"][data-size="lg"] {
+${selector}[data-size="lg"] {
   block-size: var(--bs-control-height-lg);
   padding: 0 var(--bs-padding-xl);
 }
 
-/* The metric register answers the cursor with the pigment: the outlined
-   shell inks its edge and its label in the working blue, the way the
-   borrowed desk spec reads "available". */
-[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:hover:not([data-disabled]),
-[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:focus-visible:not([data-disabled]) {
-  border-color: var(--_pigment);
-  color: var(--_pigment);
-}
-
 /* Icon-only: the silhouette is the seal — width equals height. */
-[data-scope="button"][data-part="root"][data-square="true"],
-[data-scope="button"][data-part="root"][data-size="sm"][data-square="true"] {
+${selector}[data-square="true"] {
   inline-size: var(--bs-control-height-sm);
   padding-inline: 0;
 }
 
-[data-scope="button"][data-part="root"][data-size="md"][data-square="true"] {
+${selector}[data-size="md"][data-square="true"] {
   inline-size: var(--bs-control-height-md);
 }
 
-[data-scope="button"][data-part="root"][data-size="lg"][data-square="true"] {
+${selector}[data-size="lg"][data-square="true"] {
   inline-size: var(--bs-control-height-lg);
+}
+`;
+}
+
+export const buttonCss = /* css */ `
+/* The full control recipe, parameterized twice: the variant chooses how
+   the button rests (filled, outlined, bare, washed) and the tone chooses
+   the pigment it carries. Each variant declares its fill/ink defaults,
+   semantic tones re-point the pigment, and hover/focus ride the same
+   variables. Ink is the solemn default. */
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant]) {
+  --_pigment: var(--bs-color-primary);
+  /* The deep register of the pigment for the subtle wash — the 600-step
+     tone itself fails 4.5:1 on its own wash, so washed fills read from
+     the dedicated -800/-300 text ramp. */
+  --_ink-strong: var(--bs-color-primary-subtle-text);
+  --_fill: transparent;
+  --_fill-hover: transparent;
+  --_ink: var(--bs-color-text-secondary);
+  --_edge: transparent;
+}
+
+${bodyCss(buttonBody)}
+/* The metric register answers the cursor with the pigment: the outlined
+   shell inks its edge and its label in the working blue, the way the
+   borrowed desk spec reads "available". */
+[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:hover:not([data-disabled], :disabled),
+[data-scene="metric"] :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:focus-visible:not([data-disabled], :disabled) {
+  border-color: var(--_pigment);
+  color: var(--_pigment);
 }
 
 [data-scope="button"][data-part="root"] svg {
@@ -127,28 +137,16 @@ export const buttonCss = /* css */ `
 /* The fixed pigments knead by the theme's measure — a mid-tone body at
    night carries neither deep nor pale text past 4.5:1, so its ink turns
    bright paper. */
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="danger"] {
-  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
-  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
-  --_ink: var(--bs-color-ink-on-fill);
-}
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="success"] {
-  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
-  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
-  --_ink: var(--bs-color-ink-on-fill);
-}
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="warning"] {
-  --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
-  --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
-  --_ink: var(--bs-color-ink-on-fill);
-}
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="danger"],
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="success"],
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="warning"],
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"][data-tone="info"] {
   --_fill: color-mix(in oklab, var(--_pigment) calc(100% - var(--bs-ink-knead, 0%)), black);
   --_fill-hover: color-mix(in oklab, var(--_pigment) calc(85% - var(--bs-ink-knead, 0%)), black);
   --_ink: var(--bs-color-ink-on-fill);
 }
 
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"]:hover:not(:disabled) {
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="solid"]:hover:not(:disabled, [data-disabled]) {
   box-shadow: var(--bs-light-x) calc(1px * var(--bs-light-reach) + var(--bs-light-y))
     calc(3px * var(--bs-light-reach)) 0 color-mix(in oklab, var(--_pigment) 28%, transparent);
 }
@@ -174,12 +172,12 @@ export const buttonCss = /* css */ `
   box-shadow: none;
 }
 
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:hover:not(:disabled),
+:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:hover:not(:disabled, [data-disabled]),
 :is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant="outline"]:focus-visible {
   --_edge: var(--bs-color-border-strong);
 }
 
-[data-scope="button"][data-part="root"]:hover:not(:disabled) {
+[data-scope="button"][data-part="root"]:hover:not(:disabled, [data-disabled]) {
   background: var(--_fill-hover);
 }
 
@@ -199,15 +197,6 @@ export const buttonCss = /* css */ `
   box-shadow: none;
 }
 
-:is([data-scope="button"][data-part="root"], [data-scope][data-part="trigger"][data-variant])[data-variant]:disabled {
-  --_fill: var(--bs-color-surface-inset);
-  --_fill-hover: var(--bs-color-surface-inset);
-  --_ink: var(--bs-color-text-disabled);
-  --_edge: transparent;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
 /* As-child hosting: an overlay trigger that hosts a Button overwrites
    the button's anatomy (data-scope reads the overlay family, not
    "button"), so the body rules never match. The variant, tone and size
@@ -216,63 +205,7 @@ export const buttonCss = /* css */ `
    the same variables. The bare [data-scope] keeps specificity above any
    family's base, and the state branches above its open/focus/disabled
    rules. */
-[data-scope][data-part="trigger"][data-variant] {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--bs-gap-sm);
-  flex: none;
-  block-size: var(--bs-control-height-md);
-  /* One step wider than the shell register, like the body above. */
-  padding: 0 var(--bs-padding-lg);
-  border: 1px solid var(--_edge);
-  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
-  background: var(--_fill);
-  color: var(--_ink);
-  font: inherit;
-  font-size: var(--bs-font-size-md);
-  font-weight: var(--bs-font-weight-medium);
-  letter-spacing: var(--bs-tracking-label);
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: var(--bs-shadow-xs);
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    border-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out),
-    box-shadow calc(var(--bs-duration-fast) * 1.5) var(--bs-ease-out);
-}
-
-[data-scope][data-part="trigger"][data-variant][data-size="sm"] {
-  block-size: var(--bs-control-height-sm);
-  padding: 0 var(--bs-padding-md);
-  font-size: var(--bs-font-size-sm);
-}
-
-[data-scope][data-part="trigger"][data-variant][data-size="lg"] {
-  block-size: var(--bs-control-height-lg);
-  padding: 0 var(--bs-padding-xl);
-}
-
-/* Icon-only: the silhouette is the seal — width equals height. */
-[data-scope][data-part="trigger"][data-variant][data-square="true"] {
-  inline-size: var(--bs-control-height-sm);
-  padding-inline: 0;
-}
-
-[data-scope][data-part="trigger"][data-variant][data-size="md"][data-square="true"] {
-  inline-size: var(--bs-control-height-md);
-}
-
-[data-scope][data-part="trigger"][data-variant][data-size="lg"][data-square="true"] {
-  inline-size: var(--bs-control-height-lg);
-}
-
-[data-scope][data-part="trigger"][data-variant]:hover:not(:disabled) {
-  background: var(--_fill-hover);
-}
+${bodyCss(triggerBody)}
 
 /* The halo is the keyboard's cursor, so it waits for :focus-visible.
    Open answers with the deepened edge alone: a mouse-opened trigger the
@@ -294,8 +227,10 @@ export const buttonCss = /* css */ `
   box-shadow: none;
 }
 
-[data-scope][data-part="trigger"][data-variant]:disabled,
-[data-scope][data-part="trigger"][data-variant][data-disabled] {
+/* Disabled is one state recipe: native buttons and as-child hosts,
+   including machines that expose disabled only as an attribute. */
+${buttonBody}[data-variant]:disabled,
+${triggerBody}[data-disabled] {
   --_fill: var(--bs-color-surface-inset);
   --_fill-hover: var(--bs-color-surface-inset);
   --_ink: var(--bs-color-text-disabled);

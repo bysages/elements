@@ -78,6 +78,8 @@ export interface FamilyDoc {
   description: string;
   anatomy?: { parts: string[]; styled: string[] };
   components: Record<string, ComponentDoc>;
+  /** The facade that precedes the anatomy; undefined for anatomy-only families. */
+  facade?: string;
 }
 
 /** Resolve an extends clause to its interface by following the file's own
@@ -285,11 +287,27 @@ function nativeEmits(component: ObjectLiteralExpression): EmitDoc[] {
         p.isKind(SyntaxKind.PropertyAssignment) && p.getName() === "emits",
     );
   const literal = emitsEntry?.getInitializerIfKind?.(SyntaxKind.ObjectLiteralExpression);
-  if (!literal) return [];
-  return literal.getProperties().flatMap((entry: ObjectLiteralElementLike) => {
-    if (!entry.isKind(SyntaxKind.PropertyAssignment)) return [];
-    const payload = entry.getInitializer()?.getText().replace(/\s+/g, " ") ?? "";
-    return [{ name: entry.getName().replace(/^["']|["']$/g, ""), payload }];
+  if (literal) {
+    return literal.getProperties().flatMap((entry: ObjectLiteralElementLike) => {
+      if (!entry.isKind(SyntaxKind.PropertyAssignment)) return [];
+      const payload = entry.getInitializer()?.getText().replace(/\s+/g, " ") ?? "";
+      return [{ name: entry.getName().replace(/^["']|["']$/g, ""), payload }];
+    });
+  }
+
+  // Vue accepts the concise array form for emits without inline handlers;
+  // derive v-model payloads from the matching facade prop.
+  const names = emitsEntry?.getInitializerIfKind?.(SyntaxKind.ArrayLiteralExpression);
+  if (!names) return [];
+  return names.getElements().flatMap((element) => {
+    if (!element.isKind(SyntaxKind.StringLiteral)) return [];
+    const name = element.getLiteralText();
+    const modelField = name.match(/^update:(.+)$/)?.[1];
+    if (!modelField) return [{ name, payload: "—" }];
+    const prop = nativeProps(component).find((candidate) => candidate.name === modelField);
+    const valueType =
+      prop?.type.match(/PropType<([\s\S]+)>/)?.[1] ?? prop?.type ?? "unknown";
+    return [{ name, payload: `value: ${valueType}` }];
   });
 }
 
@@ -489,6 +507,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
   let components: Record<string, ComponentDoc> = {};
   let source: "ark" | "native";
   let anatomy: string[];
+  let facadeName: string | undefined;
   // Both shelves report the styled parts, and the native branch's anatomy
   // is the same list — read the stylesheet once.
   const styled = styledParts(dir);
@@ -501,6 +520,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
       .filter((p): p is string => !!p && p !== "root-provider" && p !== "context");
     const dressed = dressedProps(indexFile);
     const facade = familyFacade(indexFile);
+    facadeName = facade?.name;
     // The facade is the family's high-level face; Root is the wrapper the
     // other parts mount under, so both precede Ark's own parts.
     const orderedParts = facade ? ["root", ...parts.filter((part) => part !== "root")] : parts;
@@ -584,6 +604,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
     description,
     ...(anatomy.length ? { anatomy: { parts: anatomy, styled } } : {}),
     components,
+    ...(facadeName ? { facade: facadeName } : {}),
   };
 }
 

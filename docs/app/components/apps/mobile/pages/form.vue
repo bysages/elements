@@ -77,7 +77,7 @@ function submit() {
       </div>
       <Switch.Root
         v-model="notify"
-        class="flex w-full cursor-pointer items-center justify-between px-(--bs-padding-lg) py-(--bs-padding-md)"
+        class="flex w-full items-center justify-between px-(--bs-padding-lg) py-(--bs-padding-md)"
       >
         <span class="text-sm text-foreground">{{ text.notifications }}</span>
         <span class="flex items-center gap-(--bs-gap-md)">
@@ -97,7 +97,7 @@ function submit() {
           v-for="option in genders"
           :key="option.value"
           :value="option.value"
-          class="flex cursor-pointer items-center gap-(--bs-gap-sm)"
+          class="flex items-center gap-(--bs-gap-sm)"
         >
           <RadioGroup.ItemControl />
           <RadioGroup.ItemText class="text-sm text-foreground">{{

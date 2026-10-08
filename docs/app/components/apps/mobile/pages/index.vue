@@ -56,7 +56,7 @@ const text = computed(() => copy[locale.value as "en" | "zh"]);
         <button
           v-for="item in group.items"
           :key="item.id"
-          class="flex w-full cursor-pointer items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-md text-foreground"
+          class="flex w-full items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-md text-foreground"
           type="button"
           @click="nav.go(item.id)"
         >

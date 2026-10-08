@@ -62,7 +62,7 @@ function open(name: string) {
       <button
         v-for="chat in chats"
         :key="chat.id"
-        class="flex w-full cursor-pointer items-center gap-(--bs-gap-md) bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left"
+        class="flex w-full items-center gap-(--bs-gap-md) bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left"
         type="button"
         @click="open(chat.name[locale])"
       >
@@ -89,7 +89,7 @@ function open(name: string) {
       <button
         v-for="row in rows"
         :key="row.id"
-        class="flex w-full cursor-pointer items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-sm text-foreground"
+        class="flex w-full items-center justify-between bg-transparent px-(--bs-padding-lg) py-(--bs-padding-md) text-left text-sm text-foreground"
         type="button"
         @click="open(row.label[locale])"
       >

@@ -118,14 +118,39 @@ export const tableCss = /* css */ `
 [data-scope="table"][data-part="header-cell"][data-sort="desc"]::after {
   content: "▼";
 }
+/* Sorting is a real control inside the semantic column header. The
+   button owns focus and activation while aria-sort stays one level up. */
+[data-scope="table"][data-part="sort-trigger"] {
+  flex: 1 1 40%;
+  min-inline-size: 0;
+  block-size: 100%;
+  min-block-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+[data-scope="table"][data-part="sort-trigger"]:focus-visible {
+  outline: none;
+  border-radius: var(--bs-radius-sm);
+  box-shadow: var(--bs-focus-ring);
+}
 
 /* The per-column filter rides inside its header: a quiet slot that wakes
    only under the caret. Zero basis keeps it out of the column's
    max-content floor — filter boxes never widen the tracks. */
 [data-scope="table"][data-part="header-filter"] {
-  flex: 1;
+  flex: 0 1 40%;
   min-inline-size: 0;
-  inline-size: 0;
+  inline-size: min(100%, 12rem);
   block-size: 1.5rem;
   padding: 0 var(--bs-padding-sm);
   border: 1px solid var(--bs-color-border);
@@ -298,6 +323,55 @@ export const tableCss = /* css */ `
   gap: var(--bs-gap-sm);
   min-inline-size: 0;
   padding-inline-start: calc(var(--bs-table-depth, 0) * var(--bs-table-indent));
+}
+/* Keyboard reordering rides beside the first content cell. The controls
+   are present to assistive technology even while visually quiet. */
+[data-scope="table"][data-part="reorder-controls"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-3xs, 0.125rem);
+  flex: none;
+  margin-inline-start: auto;
+  opacity: 0;
+  transition: opacity var(--bs-duration-fast) var(--bs-ease-out);
+}
+
+[data-scope="table"][data-part="row"]:hover > [data-part="cell"] > [data-part="reorder-controls"],
+[data-scope="table"][data-part="row"]:hover
+  > [data-part="cell"]
+  > [data-part="cell-main"]
+  > [data-part="reorder-controls"],
+[data-scope="table"][data-part="reorder-controls"]:focus-within {
+  opacity: 1;
+}
+
+[data-scope="table"][data-part="reorder-trigger"] {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: none;
+  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
+  background: transparent;
+  color: var(--bs-color-text-tertiary);
+  cursor: pointer;
+}
+
+[data-scope="table"][data-part="reorder-trigger"]:hover {
+  color: var(--bs-color-text-primary);
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
+}
+
+[data-scope="table"][data-part="reorder-trigger"]:focus-visible {
+  outline: none;
+  box-shadow: var(--bs-focus-ring);
+}
+
+[data-scope="table"][data-part="reorder-trigger"]:disabled {
+  color: var(--bs-color-text-quaternary, var(--bs-color-text-tertiary));
+  background: transparent;
+  cursor: default;
+  opacity: 0.35;
 }
 
 /* The empty state: the vessel keeps its shape, the ink steps aside. */

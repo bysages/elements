@@ -38,18 +38,6 @@ const TreeViewRoot = defineComponent({
   },
 });
 
-/** The node checkbox rides inside the branch control — a focusable
- * role there would nest one interactive element in another, so the
- * state stays visual and the branch itself answers the keyboard. */
-const TreeViewNodeCheckbox = defineComponent({
-  name: "STreeViewNodeCheckbox",
-  inheritAttrs: false,
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(ArkTreeView.NodeCheckbox, { ...attrs, "aria-hidden": "true", role: "presentation" }, slots);
-  },
-});
-
 /* A branch is born with its chevron — the indicator stays a consumer's
  * slot to override, never a chore to remember. */
 const TreeViewBranchIndicator = defineComponent({
@@ -128,13 +116,17 @@ const TreeViewFacade = defineComponent({
           defaultExpandedValue: props.defaultExpandedValue ?? branchValues,
           ...(props.expandedValue === undefined ? {} : { expandedValue: props.expandedValue }),
           defaultSelectedValue: props.defaultValue,
-          "aria-label": props.label,
           selectionMode: props.multiple ? "multiple" : "single",
           ...(modelValue === undefined ? {} : { selectedValue: modelValue }),
           onSelectionChange: (event: { selectedValue: string[] }) =>
             emit("update:modelValue", event.selectedValue),
         } as never,
-        () => h(ArkTreeView.Tree, () => nodes(props.options)),
+        () => [
+          ...(props.label
+            ? [h(ArkTreeView.Label, { "data-visually-hidden": "" }, () => props.label)]
+            : []),
+          h(ArkTreeView.Tree, () => nodes(props.options)),
+        ],
       );
     };
   },
@@ -143,11 +135,9 @@ const TreeViewFacade = defineComponent({
 export const TreeView = defineFamily(TreeViewFacade, {
   ...ArkTreeView,
   Root: TreeViewRoot,
-  NodeCheckbox: TreeViewNodeCheckbox,
   BranchIndicator: TreeViewBranchIndicator,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof TreeViewFacade &
-  Omit<typeof ArkTreeView, "Root" | "NodeCheckbox" | "BranchIndicator"> & {
-    Root: typeof TreeViewRoot;
-    NodeCheckbox: typeof TreeViewNodeCheckbox;
+  Omit<typeof ArkTreeView, "Root" | "BranchIndicator"> & {
+    Root: typeof ArkTreeView.Root & typeof TreeViewRoot;
     BranchIndicator: typeof TreeViewBranchIndicator;
   };

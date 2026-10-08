@@ -74,26 +74,37 @@ export const layoutCss = /* css */ `
   transition: inline-size var(--bs-duration-slow) var(--bs-ease-out);
 }
 
-/* The hand leads: while dragging, the rail follows the pointer without
-   the easing catching up behind it. */
+/* The hand leads: while Ark resizes, the rail follows without the
+   collapse easing catching up behind it. */
 [data-scope="layout"][data-part="sider"][data-dragging] {
   transition: none;
 }
 
-/* The resize hairline: a generous hit strip at the flow edge whose ink
-   answers to the hand — quiet until hovered, primary while gripped or
-   keyed. The strip stays inside the rail for pointer reach, while its
-   ink sits exactly where the retired border would sit. */
-[data-scope="layout"][data-part="sider-resize"] {
+/* Ark's panels are logical members of the split, but this skeleton still
+   lays them out in semantic grid areas. Undo only the flex assumptions
+   that would offset the rail or clip the flow. */
+[data-scope="layout"] [data-scope="splitter"][data-part="panel"] {
+  display: block;
+  block-size: 100%;
+  overflow: visible !important;
+}
+
+/* Ark owns the separator semantics and interaction. Its button becomes
+   the same generous, hairline-edged strip: no thumb, no shadow, and no
+   space taken from either grid track. */
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"] {
   position: absolute;
   inset-block: 0;
   inset-inline-end: 0;
   inline-size: var(--bs-space-2);
-  cursor: ew-resize;
-  touch-action: none;
+  border: none;
+  padding: 0;
+  background: transparent;
 }
 
-[data-scope="layout"][data-part="sider-resize"]::before {
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"]::before {
   content: "";
   position: absolute;
   inset-block: 0;
@@ -103,27 +114,34 @@ export const layoutCss = /* css */ `
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="layout"][data-part="sider-resize"]:hover::before,
-[data-scope="layout"][data-part="sider-resize"]:focus-visible::before,
-[data-scope="layout"][data-part="sider-resize"][data-dragging]::before {
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"]:hover::before,
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"]:focus-visible::before,
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"][data-focus]::before,
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"][data-dragging]::before {
   background: var(--bs-color-primary);
 }
 
-[data-scope="layout"][data-part="sider-resize"]:focus-visible {
+[data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"]:focus-visible {
   outline: none;
 }
 
-/* An end-side rail wears its handle on the other edge, and the pull
-   toward the flow points the other way — the wrapper already mirrors
-   the arithmetic. */
+/* An end-side rail wears its handle on the other edge; Ark's panel order
+   also mirrors so ArrowLeft remains the key that widens the rail. */
 [data-scope="layout"][data-part="root"][data-sider="end"]
-  [data-scope="layout"][data-part="sider-resize"] {
+  [data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"] {
   inset-inline-end: auto;
   inset-inline-start: 0;
 }
 
 [data-scope="layout"][data-part="root"][data-sider="end"]
-  [data-scope="layout"][data-part="sider-resize"]::before {
+  [data-scope="layout"][data-part="sider"]
+  [data-scope="splitter"][data-part="resize-trigger"]::before {
   inset-inline-end: auto;
   inset-inline-start: 0;
 }
@@ -136,9 +154,9 @@ export const layoutCss = /* css */ `
   border-inline-start: 1px solid var(--bs-color-border);
 }
 
-/* A resizable rail retires its own border: the resize hairline that
-   rides the flow edge is the one line — the border would draw a second
-   one beside it. */
+/* An expanded resizable rail retires its own border: the Ark separator
+   hairline at the flow edge is the one line. A folded rail keeps the
+   structural border because its handle is absent. */
 [data-scope="layout"][data-part="root"][data-sider="start"]
   [data-scope="layout"][data-part="sider"][data-resizable] {
   border-inline-end: none;

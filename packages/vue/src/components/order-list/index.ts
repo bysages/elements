@@ -5,6 +5,7 @@ import { defineComponent, h, ref, type PropType } from "vue";
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
+import { Button } from "../button";
 
 export interface OrderOption {
   label: string;
@@ -21,6 +22,31 @@ const ARROWS = {
   top: ["chevron-up", '<path d="M5 4h14"/>'] as const,
   bottom: ["chevron-down", '<path d="M5 20h14"/>'] as const,
 };
+
+/** Each move step rides the shared ghost square — the recipe carries
+ * the native button, cursor, disabled and halo; the part rides the
+ * wrapper so the anatomy contract holds. */
+function moveControl(
+  label: string,
+  arrows: readonly [string, string?],
+  disabled: boolean,
+  onClick: () => void,
+) {
+  return h("span", { "data-scope": "order-list", "data-part": "move" }, [
+    h(
+      Button,
+      {
+        variant: "ghost",
+        square: true,
+        size: "sm",
+        "aria-label": label,
+        disabled,
+        onClick,
+      },
+      () => [arrowIcon(arrows[0], arrows[1])],
+    ),
+  ]);
+}
 
 /** A ledger the reader may rewrite: rows move by grip or by the side
  * arrows, and the group reports the new order as the value itself —
@@ -148,53 +174,29 @@ export const OrderList = withSelfRoot(
                     ),
                     h("span", { "data-scope": "order-list", "data-part": "label" }, option.label),
                     h("span", { "data-scope": "order-list", "data-part": "controls" }, [
-                      h(
-                        "button",
-                        {
-                          type: "button",
-                          "aria-label": messages.value.orderList.toTop,
-                          "data-scope": "order-list",
-                          "data-part": "move",
-                          disabled: index === 0,
-                          onClick: () => move(option.value, -index),
-                        },
-                        arrowIcon(ARROWS.top[0], ARROWS.top[1]),
+                      moveControl(
+                        messages.value.orderList.toTop,
+                        ARROWS.top,
+                        index === 0,
+                        () => move(option.value, -index),
                       ),
-                      h(
-                        "button",
-                        {
-                          type: "button",
-                          "aria-label": messages.value.orderList.moveUp,
-                          "data-scope": "order-list",
-                          "data-part": "move",
-                          disabled: index === 0,
-                          onClick: () => move(option.value, -1),
-                        },
-                        arrowIcon(ARROWS.up[0]),
+                      moveControl(
+                        messages.value.orderList.moveUp,
+                        ARROWS.up,
+                        index === 0,
+                        () => move(option.value, -1),
                       ),
-                      h(
-                        "button",
-                        {
-                          type: "button",
-                          "aria-label": messages.value.orderList.moveDown,
-                          "data-scope": "order-list",
-                          "data-part": "move",
-                          disabled: index === rows().length - 1,
-                          onClick: () => move(option.value, 1),
-                        },
-                        arrowIcon(ARROWS.down[0]),
+                      moveControl(
+                        messages.value.orderList.moveDown,
+                        ARROWS.down,
+                        index === rows().length - 1,
+                        () => move(option.value, 1),
                       ),
-                      h(
-                        "button",
-                        {
-                          type: "button",
-                          "aria-label": messages.value.orderList.toBottom,
-                          "data-scope": "order-list",
-                          "data-part": "move",
-                          disabled: index === rows().length - 1,
-                          onClick: () => move(option.value, rows().length - 1 - index),
-                        },
-                        arrowIcon(ARROWS.bottom[0], ARROWS.bottom[1]),
+                      moveControl(
+                        messages.value.orderList.toBottom,
+                        ARROWS.bottom,
+                        index === rows().length - 1,
+                        () => move(option.value, rows().length - 1 - index),
                       ),
                     ]),
                   ],

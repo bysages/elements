@@ -166,7 +166,7 @@ export const navigationMenuCss =
   display: flex;
   justify-content: center;
   pointer-events: none;
-  z-index: var(--bs-z-overlay);
+  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
 }
 
 /* A vertical bar hangs its panel off the list's trailing edge — centering

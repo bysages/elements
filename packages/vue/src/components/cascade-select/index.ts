@@ -32,6 +32,10 @@ function checkIcon() {
 }
 
 /**
+ * Direct Zag is an explicit exception: Ark Vue has no cascade-select, and
+ * Select cannot express its tree traversal, linked columns, or filterable
+ * flat matches.
+ *
  * A corridor of linked columns: pick a branch and the next column
  * dissolves open beside it, until a leaf click settles the whole path.
  * `modelValue` is the selected path (or paths, when `multiple`) — the
@@ -80,6 +84,7 @@ const CascadeSelectFacade = defineComponent({
         dir: locale.value.dir,
         getRootNode: env.value.getRootNode.bind(env.value),
         disabled: props.disabled || undefined,
+        invalid: props.invalid || undefined,
         multiple: props.multiple || undefined,
         ...(props.modelValue !== undefined ? { value: props.modelValue } : null),
         ...(props.highlightTrigger != null ? { highlightTrigger: props.highlightTrigger } : null),
@@ -221,26 +226,21 @@ const CascadeSelectFacade = defineComponent({
 
     const rootProps = {
       ...ctx.attrs,
-      id: id.value,
       ...api.value.getRootProps(),
       "data-size": props.size,
     };
 
     return () =>
       h("div", rootProps, [
+        h("label", { ...api.value.getLabelProps(), hidden: true }, props.placeholder),
         h("div", api.value.getControlProps(), [
           h(
             "button",
-            {
-              ...api.value.getTriggerProps(),
-              "aria-labelledby": id.value + ":value-text",
-              "data-invalid": props.invalid ? "" : undefined,
-              disabled: props.disabled || undefined,
-            },
+            api.value.getTriggerProps(),
             [
               h(
                 "span",
-                { ...api.value.getValueTextProps(), id: id.value + ":value-text" },
+                api.value.getValueTextProps(),
                 display.value ?? props.placeholder,
               ),
               h("span", api.value.getIndicatorProps(), chevronDown()),
@@ -290,9 +290,13 @@ const CascadeSelectFacade = defineComponent({
                                   {
                                     key: hit.path.join("/"),
                                     type: "button",
+                                    role: "option",
                                     "data-scope": "cascade-select",
                                     "data-part": "match",
                                     "data-selected": isSelected(hit.path) || undefined,
+                                    "aria-selected": isSelected(hit.path),
+                                    disabled: props.disabled || undefined,
+                                    "aria-disabled": props.disabled || undefined,
                                     onClick: () => pickMatch(hit.path),
                                   },
                                   hit.labels.join(" / "),
@@ -306,6 +310,7 @@ const CascadeSelectFacade = defineComponent({
               ]),
             ]
           : []),
+        h("input", api.value.getHiddenInputProps()),
       ]);
   },
 });

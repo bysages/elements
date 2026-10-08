@@ -1,6 +1,7 @@
-import { defineComponent, h, type SetupContext } from "vue";
+import { defineComponent, h, type SetupContext, type VNode } from "vue";
 
 import { iconNode } from "../../internal/icon";
+import { Button } from "../button";
 import { Select } from "../select";
 import { useMediaPlayer } from "./context";
 import { formatMediaTime } from "./use-media-controls";
@@ -79,6 +80,20 @@ export const Media = defineComponent({
   },
 });
 
+/** The rail's icon triggers share one ghost square: the recipe carries
+ * the native button, cursor, disabled and halo; the part rides the
+ * wrapper so the anatomy contract holds. */
+function trigger(
+  part: string,
+  attrs: SetupContext["attrs"],
+  props: Record<string, unknown>,
+  icon: () => VNode,
+) {
+  return h("span", { ...attrs, "data-scope": "media-player", "data-part": part }, [
+    h(Button, { variant: "ghost", square: true, size: "sm", ...props }, () => [icon()]),
+  ]);
+}
+
 /** Play and pause share one seal-cut control: the state changes the mark,
  * never the control's place in the hand. */
 export const PlayButton = defineComponent({
@@ -92,20 +107,16 @@ export const PlayButton = defineComponent({
     return () => {
       const playing = context.controls.playing.value;
       const label = props.label ?? (playing ? "Pause" : "Play");
-      return h(
-        "button",
+      return trigger(
+        "play-button",
+        ctx.attrs,
         {
-          ...ctx.attrs,
-          type: "button",
-          "data-scope": "media-player",
-          "data-part": "play-button",
           "aria-label": label,
-          "aria-pressed": playing,
           title: label,
           disabled: context.disabled,
           onClick: () => void context.controls.toggle(),
         },
-        iconNode(playing ? "pause" : "play", { width: 16, height: 16 }),
+        () => iconNode(playing ? "pause" : "play", { width: 16, height: 16 }),
       );
     };
   },
@@ -179,20 +190,16 @@ export const MuteButton = defineComponent({
     return () => {
       const muted = context.controls.muted.value || context.controls.volume.value === 0;
       const label = props.label ?? (muted ? "Unmute" : "Mute");
-      return h(
-        "button",
+      return trigger(
+        "mute-button",
+        ctx.attrs,
         {
-          ...ctx.attrs,
-          type: "button",
-          "data-scope": "media-player",
-          "data-part": "mute-button",
           "aria-label": label,
-          "aria-pressed": muted,
           title: label,
           disabled: context.disabled,
           onClick: () => context.controls.toggleMuted(),
         },
-        iconNode(muted ? "volume-x" : "volume-2", { width: 16, height: 16 }),
+        () => iconNode(muted ? "volume-x" : "volume-2", { width: 16, height: 16 }),
       );
     };
   },
@@ -321,19 +328,16 @@ export const PipButton = defineComponent({
 
     return () => {
       if (context.kind !== "video") return null;
-      return h(
-        "button",
+      return trigger(
+        "pip-button",
+        ctx.attrs,
         {
-          ...ctx.attrs,
-          type: "button",
-          "data-scope": "media-player",
-          "data-part": "pip-button",
           "aria-label": props.label,
           title: props.label,
           disabled: context.disabled || !context.controls.supportsPictureInPicture.value,
           onClick: () => void context.controls.togglePictureInPicture(),
         },
-        iconNode("picture-in-picture", { width: 16, height: 16 }),
+        () => iconNode("picture-in-picture", { width: 16, height: 16 }),
       );
     };
   },
@@ -349,13 +353,10 @@ export const FullscreenButton = defineComponent({
 
     return () => {
       if (context.kind !== "video") return null;
-      return h(
-        "button",
+      return trigger(
+        "fullscreen-button",
+        ctx.attrs,
         {
-          ...ctx.attrs,
-          type: "button",
-          "data-scope": "media-player",
-          "data-part": "fullscreen-button",
           "aria-label": props.label,
           title: props.label,
           disabled: context.disabled,
@@ -363,7 +364,7 @@ export const FullscreenButton = defineComponent({
             if (context.root.value) void context.controls.toggleFullscreen(context.root.value);
           },
         },
-        iconNode("maximize-2", { width: 16, height: 16 }),
+        () => iconNode("maximize-2", { width: 16, height: 16 }),
       );
     };
   },

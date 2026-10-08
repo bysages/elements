@@ -1,22 +1,18 @@
-import { ColorPicker as ArkColorPicker, parseColor } from "@ark-ui/vue/color-picker";
-import { injectComponentStyle } from "@bysages/core";
 import {
-  defineComponent,
-  h,
-  ref,
-  type Component,
-  type PropType,
-  type Ref,
-  type SetupContext,
-} from "vue";
+  ColorPicker as ArkColorPicker,
+  parseColor,
+  type ColorPickerColorFormat,
+} from "@ark-ui/vue/color-picker";
+import { injectComponentStyle } from "@bysages/core";
+import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 /** The parsed color representation accepted by the picker. */
 type Color = ReturnType<typeof parseColor>;
-import { useElementId } from "../../internal/id";
 
 /** ColorPicker, dressed in the paper-and-ink system: a seal-sized swatch
  * on the paper, opening into an area, channel sliders, format inputs, and
@@ -25,7 +21,8 @@ import { useElementId } from "../../internal/id";
  * ChannelSlider, ChannelSliderLabel, ChannelSliderTrack, ChannelSliderThumb,
  * ChannelSliderValueText, ChannelInput, TransparencyGrid, SwatchGroup,
  * SwatchTrigger, SwatchIndicator, Swatch, EyeDropperTrigger, FormatTrigger,
- * FormatSelect, HiddenInput, Context. */
+ * FormatSelect, HiddenInput, Context. The facade lets Ark manage rgba, hsla,
+ * and hsba formats. */
 const ColorPickerRoot = defineComponent({
   name: "SColorPickerRoot",
   props: {
@@ -62,30 +59,7 @@ function channelSlider(channel: "hue" | "alpha") {
 }
 
 function channelInputs(channels: string[]) {
-  return h(
-    "div",
-    { style: { display: "flex", gap: "0.5rem" } },
-    channels.map((channel) => h(ArkColorPicker.ChannelInput as never, { channel })),
-  );
-}
-
-function formatSwitch(format: Ref<"rgba" | "hsla">) {
-  return h(
-    "select",
-    {
-      "data-scope": "color-picker",
-      "data-part": "format-select",
-      "aria-label": "Color format",
-      value: format.value,
-      onChange: (event: Event) => {
-        const value = (event.target as HTMLSelectElement).value;
-        if (value === "rgba" || value === "hsla") format.value = value;
-      },
-    },
-    ["rgba", "hsla"].map((itemFormat) =>
-      h("option", { key: itemFormat, value: itemFormat }, itemFormat),
-    ),
-  );
+  return channels.map((channel) => h(ArkColorPicker.ChannelInput as never, { channel }));
 }
 
 /** The complete picker behind one color: a swatch trigger opens the area,
@@ -102,14 +76,15 @@ const ColorPickerFacade = defineComponent({
     label: { type: String, default: undefined },
     /** Colors shown as the saved-color row. */
     swatches: { type: Array as PropType<string[]>, default: () => [] },
-    /** Initial channel format shown by the built-in format switch. */
-    defaultFormat: { type: String as PropType<"rgba" | "hsla">, default: "rgba" },
+    /** Initial channel format shown by Ark's format select. */
+    defaultFormat: {
+      type: String as PropType<ColorPickerColorFormat>,
+      default: "rgba",
+    },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: ["update:modelValue"],
   setup(props, { attrs, emit }: SetupContext) {
-    const format = ref(props.defaultFormat);
-
     return () =>
       h(
         ColorPickerRoot,
@@ -124,10 +99,7 @@ const ColorPickerFacade = defineComponent({
           disabled: props.disabled,
           invalid: props.invalid,
           required: props.required,
-          format: format.value,
-          "onUpdate:format": (value: "rgba" | "hsla") => {
-            format.value = value;
-          },
+          defaultFormat: props.defaultFormat,
           "onUpdate:modelValue": (value: unknown) => emit("update:modelValue", value),
         },
         () => [
@@ -145,22 +117,24 @@ const ColorPickerFacade = defineComponent({
                 h(ArkColorPicker.AreaBackground),
                 h(ArkColorPicker.AreaThumb),
               ]),
-              h("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
-                h(ArkColorPicker.EyeDropperTrigger, () => eyedropperIcon()),
-                h(
-                  "div",
-                  {
-                    style: {
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.5rem",
-                      flex: 1,
-                      minWidth: 0,
+              h(
+                "div",
+                {
+                  "data-scope": "color-picker",
+                  "data-part": "channel-controls",
+                },
+                [
+                  h(ArkColorPicker.EyeDropperTrigger, () => eyedropperIcon()),
+                  h(
+                    "div",
+                    {
+                      "data-scope": "color-picker",
+                      "data-part": "channel-sliders",
                     },
-                  },
-                  [channelSlider("hue"), channelSlider("alpha")],
-                ),
-              ]),
+                    [channelSlider("hue"), channelSlider("alpha")],
+                  ),
+                ],
+              ),
               ...(props.swatches.length
                 ? [
                     h(ArkColorPicker.SwatchGroup, () =>
@@ -180,7 +154,10 @@ const ColorPickerFacade = defineComponent({
               h(ArkColorPicker.View as never, { format: "hsla" }, () =>
                 channelInputs(["hue", "saturation", "lightness", "alpha"]),
               ),
-              formatSwitch(format),
+              h(ArkColorPicker.View as never, { format: "hsba" }, () =>
+                channelInputs(["hue", "saturation", "brightness", "alpha"]),
+              ),
+              h(ArkColorPicker.FormatSelect),
             ]),
           ),
           h(ArkColorPicker.HiddenInput),
@@ -193,6 +170,6 @@ export const ColorPicker = defineFamily(ColorPickerFacade, {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot };
+  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ArkColorPicker.Root & typeof ColorPickerRoot };
 
 export { parseColor };

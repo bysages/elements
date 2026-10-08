@@ -45,7 +45,7 @@ const SelectRoot = defineComponent({
 
 type SelectFacadeValue = string | string[];
 
-type SelectParts = Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot };
+type SelectParts = Omit<typeof ArkSelect, "Root"> & { Root: typeof ArkSelect.Root & typeof SelectRoot };
 
 function toArkValue(value: SelectFacadeValue | undefined) {
   return value === undefined || value === "" ? [] : Array.isArray(value) ? value : [value];

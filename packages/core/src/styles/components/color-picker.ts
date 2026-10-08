@@ -151,6 +151,20 @@ export const colorPickerCss =
     0 0 0 3px var(--bs-color-primary);
 }
 
+[data-scope="color-picker"][data-part="channel-controls"] {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-gap-sm);
+}
+
+[data-scope="color-picker"][data-part="channel-sliders"] {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-inline-size: 0;
+  gap: var(--bs-gap-sm);
+}
+
 [data-scope="color-picker"][data-part="channel-slider"] {
   position: relative;
   block-size: var(--bs-color-picker-track);
@@ -252,11 +266,10 @@ export const colorPickerCss =
   gap: var(--bs-gap-sm);
 }
 
-/* A saved-color view stacks the channel inputs of one format; the picker
-   swaps views as the format turns. */
+/* A format view lays its channel inputs in one row; the picker swaps
+   views as Ark's format select turns. */
 [data-scope="color-picker"][data-part="view"] {
   display: flex;
-  flex-direction: column;
   gap: var(--bs-gap-sm);
 }
 

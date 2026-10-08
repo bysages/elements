@@ -141,4 +141,4 @@ export const Combobox = defineFamily(ComboboxFacade, {
   ...ArkCombobox,
   Root: ComboboxRoot,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof ComboboxFacade &
-  Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot };
+  Omit<typeof ArkCombobox, "Root"> & { Root: typeof ArkCombobox.Root & typeof ComboboxRoot };

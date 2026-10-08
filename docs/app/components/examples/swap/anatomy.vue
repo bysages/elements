@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { check, x } from "@bysages/icons";
-import { Icon, Swap } from "@bysages/vue";
+import { Button, Icon, Swap } from "@bysages/vue";
 import { ref } from "vue";
 
 const swapped = ref(false);
 </script>
 
 <template>
-  <button
-    type="button"
+  <Button
+    variant="outline"
+    size="lg"
+    square
     aria-label="Toggle check"
     :aria-pressed="swapped"
-    class="inline-flex size-10 cursor-pointer items-center justify-center rounded-sm border border-border bg-surface-2 text-foreground"
     @click="swapped = !swapped"
   >
     <Swap.Root :swap="swapped">
@@ -22,5 +23,5 @@ const swapped = ref(false);
         <Icon :glyph="x" />
       </Swap.Indicator>
     </Swap.Root>
-  </button>
+  </Button>
 </template>

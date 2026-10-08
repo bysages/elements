@@ -105,7 +105,6 @@ export const ProgrammaticControl = {
                 padding: "0.25rem 0.625rem",
                 font: "inherit",
                 fontSize: "var(--bs-font-size-sm)",
-                cursor: "pointer",
               },
             },
             () => label,

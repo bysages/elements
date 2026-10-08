@@ -160,17 +160,43 @@ const SELECT_COL_WIDTH = 48;
 
 type TreeNode = RowData & { id?: unknown; subRows?: TreeNode[] };
 
-/** The list holding `id` and the index inside it, or null when absent. */
-function findNode(rows: TreeNode[], id: string): { list: TreeNode[]; index: number } | null {
+/** The list holding `id`, the index inside it, and its parent, or null. */
+function findNode(
+  rows: TreeNode[],
+  id: string,
+  parentId: string | null = null,
+): { list: TreeNode[]; index: number; parentId: string | null } | null {
   for (let index = 0; index < rows.length; index++) {
     const row = rows[index]!;
-    if (String(row.id) === id) return { list: rows, index };
+    if (String(row.id) === id) return { list: rows, index, parentId };
     if (row.subRows) {
-      const hit = findNode(row.subRows, id);
+      const hit = findNode(row.subRows, id, String(row.id));
       if (hit) return hit;
     }
   }
   return null;
+}
+
+/** Replace one list in the tree without mutating the caller's arrays. */
+function replaceList(
+  rows: TreeNode[],
+  parentId: string | null,
+  update: (list: TreeNode[]) => TreeNode[],
+): TreeNode[] {
+  if (parentId === null) return update([...rows]);
+  return rows.map((row) => {
+    if (String(row.id) === parentId) {
+      return {
+        ...(row as Record<string, unknown>),
+        subRows: update([...(row.subRows ?? [])]),
+      };
+    }
+    if (!row.subRows) return row;
+    return {
+      ...(row as Record<string, unknown>),
+      subRows: replaceList(row.subRows, parentId, update),
+    };
+  });
 }
 
 /** True when `id` sits anywhere in the node's subtree — dropping a node
@@ -243,7 +269,10 @@ const DataTableFacade = defineComponent({
   },
   props: {
     data: { type: Array as PropType<RowData[]>, required: true },
-    columns: { type: Array as PropType<ColumnDef<any, any, any>[]>, required: true },
+    columns: {
+      type: Array as PropType<ColumnDef<any, any, any>[]>,
+      required: true,
+    },
     selectable: Boolean,
     sortable: { type: Boolean, default: true },
     filterable: Boolean,
@@ -370,7 +399,12 @@ const DataTableFacade = defineComponent({
           ? { pagination: { pageIndex: 0, pageSize: props.pageSize ?? 10 } }
           : {}),
         ...(props.pinStart || props.pinEnd
-          ? { columnPinning: { start: props.pinStart ?? [], end: props.pinEnd ?? [] } }
+          ? {
+              columnPinning: {
+                start: props.pinStart ?? [],
+                end: props.pinEnd ?? [],
+              },
+            }
           : {}),
       },
     });
@@ -429,10 +463,8 @@ const DataTableFacade = defineComponent({
 
     /** Column ids of the visible leaves, for pin-seam bookkeeping. */
     const leafIds = computed(() => table.getAllLeafColumns().map((c) => c.id));
-    const expandHostId = computed(() => {
-      const id = leafIds.value.find((id) => id !== SELECT_COL_ID);
-      return props.tree ? id : undefined;
-    });
+    const contentHostId = computed(() => leafIds.value.find((id) => id !== SELECT_COL_ID));
+    const expandHostId = computed(() => (props.tree ? contentHostId.value : undefined));
 
     expose({ table });
 
@@ -708,6 +740,116 @@ const DataTableFacade = defineComponent({
       clearRowDrop();
     }
 
+    /** The keyboard path through the same data contract as drag reorder:
+     * sibling moves always exist, while tree rows can also change depth. */
+    function moveRowWithKeyboard(row: TRow, direction: -1 | 1) {
+      const id = String(row.id);
+      if (props.tree) {
+        const hit = findNode(props.data as TreeNode[], id);
+        if (!hit) return;
+        const target = hit.index + direction;
+        if (target < 0 || target >= hit.list.length) return;
+        emit(
+          "rowReorder",
+          replaceList(props.data as TreeNode[], hit.parentId, (list) => {
+            const next = [...list];
+            const [moved] = next.splice(hit.index, 1);
+            next.splice(target, 0, moved!);
+            return next;
+          }),
+        );
+        return;
+      }
+      const from = props.data.findIndex((item) => String((item as TreeNode).id) === id);
+      const to = from + direction;
+      if (from < 0 || to < 0 || to >= props.data.length) return;
+      const next = [...props.data];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved!);
+      emit("rowReorder", next);
+    }
+
+    function indentRowWithKeyboard(row: TRow, indent: boolean) {
+      if (!props.tree) return;
+      const id = String(row.id);
+      const hit = findNode(props.data as TreeNode[], id);
+      if (!hit) return;
+
+      let next = removeById(props.data as TreeNode[], id);
+      if (indent) {
+        const previous = hit.list[hit.index - 1];
+        if (!previous) return;
+        next = replaceById(next, String(previous.id), (node) => ({
+          ...(node as Record<string, unknown>),
+          subRows: [...(node.subRows ?? []), hit.list[hit.index]!],
+        }));
+      } else {
+        if (!hit.parentId) return;
+        const parent = findNode(next, hit.parentId);
+        if (!parent) return;
+        next = replaceList(next, parent.parentId, (list) => {
+          list.splice(parent.index + 1, 0, hit.list[hit.index]!);
+          return list;
+        });
+      }
+      emit("rowReorder", next);
+    }
+
+    function reorderButton(
+      label: string,
+      icon: "up" | "down" | "left" | "right",
+      disabled: boolean,
+      onClick: () => void,
+    ) {
+      const iconName = {
+        up: "chevron-up",
+        down: "chevron-down",
+        left: "arrow-left",
+        right: "arrow-right",
+      };
+      return h(
+        "button",
+        {
+          type: "button",
+          "data-scope": "table",
+          "data-part": "reorder-trigger",
+          "aria-label": label,
+          disabled: disabled || undefined,
+          onClick,
+        },
+        iconNode(iconName[icon], { width: 12, height: 12 }),
+      );
+    }
+
+    function rowReorderControls(row: TRow) {
+      if (!rowDraggable.value) return null;
+      const hit = props.tree ? findNode(props.data as TreeNode[], String(row.id)) : null;
+      return h("div", { "data-scope": "table", "data-part": "reorder-controls" }, [
+        props.tree
+          ? reorderButton(messages.value.transfer.moveLeft, "left", !hit?.parentId, () =>
+              indentRowWithKeyboard(row, false),
+            )
+          : null,
+        reorderButton(
+          messages.value.orderList.moveUp,
+          "up",
+          hit ? hit.index === 0 : row.index === 0,
+          () => moveRowWithKeyboard(row, -1),
+        ),
+        reorderButton(
+          messages.value.orderList.moveDown,
+          "down",
+          hit ? hit.index === hit.list.length - 1 : row.index === props.data.length - 1,
+          () => moveRowWithKeyboard(row, 1),
+        ),
+        props.tree
+          ? reorderButton(messages.value.transfer.moveRight, "right", !hit || hit.index === 0, () =>
+              indentRowWithKeyboard(row, true),
+            )
+          : null,
+      ]);
+    }
+
     function renderCell(cell: ReturnType<TRow["getVisibleCells"]>[number], row: TRow) {
       const column = cell.column;
       if (cell.getIsCovered()) return null;
@@ -755,10 +897,14 @@ const DataTableFacade = defineComponent({
               chevronIcon(),
             ),
             h(FlexRender, { cell }),
+            column.id === contentHostId.value ? rowReorderControls(row) : null,
           ],
         );
       } else {
-        content = h(FlexRender, { cell });
+        content =
+          column.id === contentHostId.value
+            ? [h(FlexRender, { cell }), rowReorderControls(row)]
+            : h(FlexRender, { cell });
       }
 
       return h(
@@ -788,8 +934,23 @@ const DataTableFacade = defineComponent({
       // node on the client — while SSR serializes it to nothing. Treat it
       // as the placeholder it means, or hydration counts a child that
       // isn't there.
+      const isPlaceholder = header.isPlaceholder || column.columnDef.header === "";
+      const headerContent = isPlaceholder ? null : h(FlexRender, { header });
       const children = [
-        header.isPlaceholder || column.columnDef.header === "" ? null : h(FlexRender, { header }),
+        canSort
+          ? h(
+              "button",
+              {
+                type: "button",
+                "data-scope": "table",
+                "data-part": "sort-trigger",
+                // Placeholder columns have no text to name the control.
+                ...(isPlaceholder ? { "aria-label": column.id } : {}),
+                onClick: () => column.toggleSorting(),
+              },
+              [headerContent],
+            )
+          : headerContent,
       ];
       if (canFilter) {
         children.push(
@@ -798,11 +959,12 @@ const DataTableFacade = defineComponent({
             type: "text",
             "data-scope": "table",
             "data-part": "header-filter",
-            "aria-label": formatMessage(messages.value.table.filterColumn, { name: column.id }),
+            "aria-label": formatMessage(messages.value.table.filterColumn, {
+              name: column.id,
+            }),
             value: (column.getFilterValue() as string) ?? "",
             placeholder: messages.value.command.filter,
             draggable: false,
-            onClick: (e: Event) => e.stopPropagation(),
             // Text selection owns a drag from inside the filter box.
             onDragstart: (e: Event) => e.stopPropagation(),
             onInput: (e: Event) => column.setFilterValue((e.target as HTMLInputElement).value),
@@ -825,7 +987,6 @@ const DataTableFacade = defineComponent({
           "aria-sort":
             sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined,
           ...pinAttrs(column),
-          onClick: canSort ? () => column.toggleSorting() : undefined,
           onDragstart: canDrag ? (e: DragEvent) => onColDragStart(e) : undefined,
           onDragover: canDrag ? (e: DragEvent) => onColDragOver(column, e) : undefined,
           onDragleave: canDrag ? onColDragLeave : undefined,
@@ -846,7 +1007,7 @@ const DataTableFacade = defineComponent({
         style.transform = `translateY(${item.start}px)`;
         style.blockSize = `${item.size}px`;
       }
-      const draggable = rowDraggable.value || props.externalDrops;
+      const draggable = rowDraggable.value;
       return h(
         "div",
         {
@@ -876,7 +1037,12 @@ const DataTableFacade = defineComponent({
         table.getHeaderGroups().map((group) =>
           h(
             "div",
-            { key: group.id, role: "row", "data-scope": "table", "data-part": "row" },
+            {
+              key: group.id,
+              role: "row",
+              "data-scope": "table",
+              "data-part": "row",
+            },
             group.headers.map((header) => {
               const column = header.column;
               if (column.id === SELECT_COL_ID) {
@@ -941,11 +1107,20 @@ const DataTableFacade = defineComponent({
         props.stickyFooter && hasFooters
           ? h(
               "div",
-              { role: "rowgroup", "data-scope": "table", "data-part": "footer" },
+              {
+                role: "rowgroup",
+                "data-scope": "table",
+                "data-part": "footer",
+              },
               table.getFooterGroups().map((group) =>
                 h(
                   "div",
-                  { key: group.id, role: "row", "data-scope": "table", "data-part": "row" },
+                  {
+                    key: group.id,
+                    role: "row",
+                    "data-scope": "table",
+                    "data-part": "row",
+                  },
                   group.headers.map((header) =>
                     h(
                       "div",
@@ -1036,7 +1211,11 @@ const DataTableFacade = defineComponent({
                         ? h(ArkPagination.Ellipsis, { key: `e${index}`, index })
                         : h(
                             ArkPagination.Item,
-                            { key: page.value, type: "page", value: page.value },
+                            {
+                              key: page.value,
+                              type: "page",
+                              value: page.value,
+                            },
                             () => String(page.value),
                           ),
                     ),
@@ -1048,7 +1227,9 @@ const DataTableFacade = defineComponent({
               h(
                 "span",
                 { "data-scope": "table", "data-part": "page-status" },
-                formatMessage(messages.value.table.rowsCount, { count: rowCount }),
+                formatMessage(messages.value.table.rowsCount, {
+                  count: rowCount,
+                }),
               ),
               h("div", { "data-scope": "table", "data-part": "page-nav" }, [pageSize, pager]),
             ]);

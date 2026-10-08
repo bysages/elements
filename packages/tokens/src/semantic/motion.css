@@ -73,6 +73,39 @@
   }
 }
 
+/* Expand/collapse families share the height-and-ink disclose: the machine
+   supplies the measured heights, and component sheets only apply these
+   named motions to their own open/closed states. */
+@keyframes bs-disclose-expand {
+  from {
+    height: var(--collapsed-height, 0);
+  }
+  to {
+    height: var(--height);
+  }
+}
+
+@keyframes bs-disclose-collapse {
+  from {
+    height: var(--height);
+  }
+  to {
+    height: var(--collapsed-height, 0);
+  }
+}
+
+@keyframes bs-disclose-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes bs-disclose-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
 /* Followers rise into place on the string — a short lift with the spring
    curve. Combine with per-item `animation-delay: calc(var(--bs-i) * var(--bs-stagger-step))`. */
 @keyframes bs-item-in {

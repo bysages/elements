@@ -151,11 +151,9 @@ const TreeSelectFacade = defineComponent({
                   ]),
                 ]
               : [
-                  h(ArkTreeView.Item, { asChild: true } as never, () =>
-                    h("span", { style: { display: "flex", inlineSize: "100%" } }, [
-                      h(ArkTreeView.ItemText, () => rowProps.node.label),
-                    ]),
-                  ),
+                  h(ArkTreeView.Item, () => [
+                    h(ArkTreeView.ItemText, () => rowProps.node.label),
+                  ]),
                 ],
           );
       },
@@ -174,28 +172,37 @@ const TreeSelectFacade = defineComponent({
           positioning: { sameWidth: true, placement: "bottom-start" },
         }),
         () => [
-          h(ArkPopover.Trigger, { asChild: true, disabled: props.disabled }, () =>
-            h(
-              "button",
-              {
-                ...ctx.attrs,
-                type: "button",
-                "data-scope": "tree-select",
-                "data-part": "control",
-                "data-size": props.size,
-                "data-open": open.value ? "" : undefined,
-                "data-placeholder": label.value == null ? "" : undefined,
-                "data-invalid": props.invalid ? "" : undefined,
-                disabled: props.disabled,
-              },
-              [label.value ?? props.placeholder, chevronDown()],
-            ),
+          h(
+            ArkPopover.Trigger,
+            {
+              ...ctx.attrs,
+              disabled: props.disabled,
+              "data-scope": "tree-select",
+              "data-part": "control",
+              "data-size": props.size,
+              ...(label.value == null ? { "data-placeholder": "" } : {}),
+              ...(props.invalid ? { "data-invalid": "" } : {}),
+            },
+            () => [label.value ?? props.placeholder, chevronDown()],
           ),
           h(ArkPopover.Positioner, () => [
             h(
               ArkPopover.Content,
-              { "data-scope": "tree-select", "data-part": "content", "data-size": props.size },
+              {
+                "data-scope": "tree-select",
+                "data-part": "content",
+                "data-size": props.size,
+              },
               () => [
+                h(
+                  ArkPopover.Title,
+                  {
+                    "data-scope": "tree-select",
+                    "data-part": "title",
+                    "data-visually-hidden": "",
+                  },
+                  () => props.placeholder,
+                ),
                 ...(props.filterable
                   ? [
                       h("div", { "data-scope": "tree-select", "data-part": "search" }, [

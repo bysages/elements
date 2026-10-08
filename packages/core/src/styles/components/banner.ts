@@ -77,33 +77,28 @@ export const bannerCss = /* css */ `
   flex: none;
   align-self: flex-start;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--bs-radius-control, var(--bs-radius-sm));
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    color var(--bs-duration-fast) var(--bs-ease-out),
-    background var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="banner"][data-part="close"]:hover {
+/* The control itself is the shared ghost square — cursor, hover state
+   and halo are the recipe's. The family retunes only this compact
+   register and its wash of ink, and keeps the bare focus edge so the
+   halo alone reads. */
+[data-scope="banner"][data-part="close"] [data-scope="button"][data-part="root"] {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--bs-color-text-tertiary);
+}
+
+[data-scope="banner"][data-part="close"] [data-scope="button"][data-part="root"]:hover:not(:disabled) {
   color: var(--bs-color-text-primary);
   background: color-mix(in oklab, var(--bs-color-text-primary) 8%, transparent);
 }
 
-[data-scope="banner"][data-part="close"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
+[data-scope="banner"][data-part="close"] [data-scope="button"][data-part="root"]:focus-visible {
+  border-color: transparent;
 }
 
-[data-scope="banner"][data-part="close"] svg {
+[data-scope="banner"][data-part="close"] [data-scope="button"] svg {
   inline-size: 0.875rem;
   block-size: 0.875rem;
 }

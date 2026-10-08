@@ -1,6 +1,21 @@
+import { Splitter as ArkSplitter } from "@ark-ui/vue/splitter";
 import { injectComponentStyle } from "@bysages/core";
 import type { CSSProperties, SetupContext, SlotsType } from "vue";
-import { computed, defineComponent, h, inject, provide, ref, watch, type PropType } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  inject,
+  onMounted,
+  onScopeDispose,
+  provide,
+  reactive,
+  ref,
+  watch,
+  watchEffect,
+  type ComponentPublicInstance,
+  type PropType,
+} from "vue";
 
 import { useComponentMessages } from "../../internal/messages";
 
@@ -16,13 +31,48 @@ export interface LayoutRootProps {
   sider?: "start" | "end";
 }
 
-/** Which edge the enclosing root reserves for its rail — shared so the
- * sider's resize handle knows which way the hand pulls. */
+/** Runtime settings the sider shares with its root so the split can be
+ * driven by Ark while the public sizing props stay on `Layout.Sider`. */
+export interface LayoutSiderState {
+  resizable: boolean;
+  collapsed: boolean;
+  width: string;
+  minWidth: string;
+  maxWidth: string;
+}
+
+/** Which edge the enclosing root reserves for its rail, plus the shared
+ * state needed to compose its header/content/footer grid with Ark Splitter. */
 export interface LayoutContext {
   siderPlacement: () => "start" | "end" | undefined;
+  siderState: LayoutSiderState;
+  resizeStart: () => void;
+  resize: (width: number) => void;
+  resizeEnd: () => void;
 }
 
 const LAYOUT_CONTEXT = Symbol("layout-context");
+
+/** One step of Ark's keyboard resize, expressed in layout percentages at
+ * render time so the public behavior remains a 16px move. */
+const RESIZE_STEP = 16;
+
+function styleRecord(style: unknown): CSSProperties {
+  if (!style) return {};
+  if (typeof style === "string") {
+    return Object.fromEntries(
+      style
+        .split(";")
+        .filter(Boolean)
+        .map((rule) => {
+          const split = rule.indexOf(":");
+          return split > 0 ? [rule.slice(0, split).trim(), rule.slice(split + 1).trim()] : [];
+        }),
+    );
+  }
+  if (Array.isArray(style)) return Object.assign({}, ...style.map(styleRecord));
+  return style as CSSProperties;
+}
 
 const Root = defineComponent({
   name: "LayoutRoot",
@@ -32,18 +82,121 @@ const Root = defineComponent({
   setup(props, ctx: SetupContext) {
     injectComponentStyle("layout");
 
-    provide(LAYOUT_CONTEXT, { siderPlacement: () => props.sider } satisfies LayoutContext);
-    return () =>
-      h(
+    const siderState = reactive<LayoutSiderState>({
+      resizable: false,
+      collapsed: false,
+      width: "16rem",
+      minWidth: "12rem",
+      maxWidth: "24rem",
+    });
+
+    const context: LayoutContext = {
+      siderPlacement: () => props.sider,
+      siderState,
+      resizeStart: () => {},
+      resize: () => {},
+      resizeEnd: () => {},
+    };
+    provide(LAYOUT_CONTEXT, context);
+
+    const splitterActive = computed(() => !!props.sider);
+    const splitterRoot = ref<ComponentPublicInstance | null>(null);
+    const rootWidth = ref(0);
+    let observer: ResizeObserver | undefined;
+
+    const observe = (element: Element | undefined) => {
+      observer?.disconnect();
+      if (!element) {
+        rootWidth.value = 0;
+        return;
+      }
+      observer ??= new ResizeObserver(() => {
+        rootWidth.value = element.getBoundingClientRect().width;
+      });
+      observer.observe(element);
+      rootWidth.value = element.getBoundingClientRect().width;
+    };
+
+    onMounted(() => {
+      if (typeof ResizeObserver === "undefined") {
+        rootWidth.value =
+          splitterRoot.value?.$el instanceof Element
+            ? (splitterRoot.value.$el as HTMLElement).getBoundingClientRect().width
+            : 0;
+        return;
+      }
+      watch(
+        () =>
+          splitterRoot.value?.$el instanceof Element
+            ? (splitterRoot.value.$el as Element)
+            : undefined,
+        observe,
+        { immediate: true, flush: "post" },
+      );
+    });
+    onScopeDispose(() => observer?.disconnect());
+
+    const keyboardResizeBy = computed(() =>
+      rootWidth.value > 0 ? (RESIZE_STEP / rootWidth.value) * 100 : RESIZE_STEP,
+    );
+    const panels = computed(() => {
+      const rail = {
+        id: "sider",
+        minSize: siderState.minWidth,
+        maxSize: siderState.maxWidth,
+      };
+      const flow = { id: "flow", minSize: "0px" };
+      return props.sider === "end" ? [flow, rail] : [rail, flow];
+    });
+    const size = computed(() =>
+      props.sider === "end" ? [undefined, siderState.width] : [siderState.width, undefined],
+    );
+    const siderIndex = () => (props.sider === "end" ? 1 : 0);
+
+    const renderGrid = () => {
+      const { style, ...attrs } = ctx.attrs;
+      const callerStyle = styleRecord(style);
+      return h(
         "div",
         {
-          ...ctx.attrs,
+          ...attrs,
+          // Ark's root writes a flex container inline. The semantic layout
+          // grid remains the rendered root; these three values restore it.
+          style: {
+            ...callerStyle,
+            display: callerStyle.display ?? "grid",
+            width: callerStyle.width ?? "auto",
+            height: callerStyle.height ?? "auto",
+            overflow: callerStyle.overflow ?? "visible",
+          },
           "data-scope": "layout",
           "data-part": "root",
           "data-sider": props.sider,
         },
         () => ctx.slots.default?.(),
       );
+    };
+
+    return () => {
+      if (!splitterActive.value) return renderGrid();
+      return h(
+        ArkSplitter.Root as never,
+        {
+          ref: splitterRoot,
+          asChild: true,
+          panels: panels.value,
+          size: size.value,
+          keyboardResizeBy: keyboardResizeBy.value,
+          onResize: (details: { size: number[] }) => {
+            const width = (rootWidth.value * (details.size[siderIndex()] ?? 0)) / 100;
+            if (width > 0) context.resize(width);
+          },
+          onResizeStart: () => context.resizeStart(),
+          onResizeEnd: () => context.resizeEnd(),
+        } as never,
+        renderGrid,
+      );
+    };
   },
 });
 
@@ -53,10 +206,29 @@ function region(name: string, tag: string) {
   return defineComponent({
     name: "Layout" + name,
     setup(_props, ctx: SetupContext) {
-      return () =>
-        h(tag, { ...ctx.attrs, "data-scope": "layout", "data-part": name.toLowerCase() }, () =>
-          ctx.slots.default?.(),
+      const layout = inject<LayoutContext | null>(LAYOUT_CONTEXT, null);
+      const splitPanel = computed(
+        () =>
+          name === "Content" &&
+          !!layout &&
+          layout.siderPlacement() &&
+          layout.siderState.resizable &&
+          !layout.siderState.collapsed,
+      );
+      return () => {
+        const children = () => ctx.slots.default?.();
+        return h(
+          tag,
+          {
+            ...ctx.attrs,
+            "data-scope": "layout",
+            "data-part": name.toLowerCase(),
+          },
+          splitPanel.value
+            ? () => h(ArkSplitter.Panel as never, { id: "flow" } as never, children)
+            : children,
         );
+      };
     },
   });
 }
@@ -74,9 +246,9 @@ export interface LayoutSiderProps {
   width?: string;
   /** The inline size when folded. */
   collapsedWidth?: string;
-  /** Offer the hairline at the flow edge: the rail's width follows the
-   * hand (and the arrow keys), clamped by `min-width`/`max-width`, and
-   * every change rides `update:width`. */
+  /** Offer the Ark-powered hairline at the flow edge: the rail's width
+   * follows the hand and keyboard, clamped by `min-width`/`max-width`,
+   * and every change rides `update:width`. */
   resizable?: boolean;
   /** The rail's narrowest inline size while resizing. */
   minWidth?: string;
@@ -84,14 +256,11 @@ export interface LayoutSiderProps {
   maxWidth?: string;
 }
 
-/** One step of the arrow-key resize, in px. */
-const RESIZE_STEP = 16;
-
 const Sider = defineComponent({
   name: "LayoutSider",
   props: {
     collapsed: { type: Boolean, default: false },
-    width: { type: String, default: "16rem" },
+    width: { type: String, default: undefined },
     collapsedWidth: { type: String, default: "3.5rem" },
     resizable: { type: Boolean, default: false },
     minWidth: { type: String, default: "12rem" },
@@ -123,86 +292,75 @@ const Sider = defineComponent({
     );
 
     // The rail's live width: a controlled prop when given, a local
-    // mirror otherwise — the hand (drag, arrow keys) writes through
-    // both, and the stylesheet clamps it between min and max.
-    const innerWidth = ref(props.width);
+    // mirror otherwise — Ark writes through both, and the stylesheet
+    // clamps it between min and max.
+    const innerWidth = ref(props.width ?? "16rem");
     watch(
       () => props.width,
       (next) => {
-        if (next === innerWidth.value) return;
-        innerWidth.value = next;
-        ctx.emit("update:width", next);
+        const fallback = next ?? "16rem";
+        if (fallback === innerWidth.value) return;
+        innerWidth.value = fallback;
+        ctx.emit("update:width", fallback);
       },
     );
     const width = computed(() => (props.width !== undefined ? props.width : innerWidth.value));
 
-    const rail = ref<HTMLElement | null>(null);
-    const layout = inject<{ siderPlacement: () => "start" | "end" | undefined } | null>(
-      LAYOUT_CONTEXT,
-      null,
-    );
+    const layout = inject<LayoutContext | null>(LAYOUT_CONTEXT, null);
     const dragging = ref(false);
-    let startPointerX = 0;
-    let startWidth = 0;
+    const active = computed(() => props.resizable && !collapsed.value);
 
-    const onPointerdown = (event: PointerEvent) => {
-      dragging.value = true;
-      startPointerX = event.clientX;
-      startWidth = rail.value ? rail.value.getBoundingClientRect().width : 0;
-      (event.currentTarget as Element).setPointerCapture(event.pointerId);
-    };
-    const onPointermove = (event: PointerEvent) => {
-      if (!dragging.value) return;
-      // Pulling toward the flow widens the rail; the side decides which
-      // way that is.
-      const towardFlow = (layout?.siderPlacement() ?? "start") === "end" ? -1 : 1;
-      const next = Math.round(startWidth + towardFlow * (event.clientX - startPointerX));
-      innerWidth.value = `${next}px`;
-      ctx.emit("update:width", `${next}px`);
-    };
-    const onPointerup = (event: PointerEvent) => {
-      dragging.value = false;
-      (event.currentTarget as Element).releasePointerCapture(event.pointerId);
-    };
-    const onKeydown = (event: KeyboardEvent) => {
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      event.preventDefault();
-      const widen =
-        (layout?.siderPlacement() ?? "start") === "end"
-          ? event.key === "ArrowLeft"
-          : event.key === "ArrowRight";
-      const current = rail.value ? rail.value.getBoundingClientRect().width : 0;
-      const next = Math.round(current + (widen ? RESIZE_STEP : -RESIZE_STEP));
-      innerWidth.value = `${next}px`;
-      ctx.emit("update:width", `${next}px`);
-    };
+    watch(active, (next) => {
+      if (!next) dragging.value = false;
+    });
+
+    watchEffect(() => {
+      if (!layout) return;
+      layout.siderState.resizable = props.resizable;
+      layout.siderState.collapsed = collapsed.value;
+      layout.siderState.width = width.value;
+      layout.siderState.minWidth = props.minWidth;
+      layout.siderState.maxWidth = props.maxWidth;
+    });
+    if (layout) {
+      layout.resizeStart = () => {
+        dragging.value = true;
+      };
+      layout.resize = (nextWidth) => {
+        const next = `${Math.round(nextWidth)}px`;
+        innerWidth.value = next;
+        ctx.emit("update:width", next);
+      };
+      layout.resizeEnd = () => {
+        dragging.value = false;
+      };
+      onScopeDispose(() => {
+        layout.siderState.resizable = false;
+        dragging.value = false;
+      });
+    }
 
     return () => {
       const { style, ...attrs } = ctx.attrs;
-      const handle =
-        props.resizable && !collapsed.value
-          ? h("div", {
-              "data-scope": "layout",
-              "data-part": "sider-resize",
-              "data-dragging": dragging.value ? "" : undefined,
-              role: "separator",
-              "aria-orientation": "vertical",
-              tabindex: 0,
-              "aria-label": messages.value.sidebar.resize,
-              "aria-valuenow": Math.round(
-                rail.value ? rail.value.getBoundingClientRect().width : 0,
+      const children = () => ctx.slots.default?.({ collapsed: collapsed.value }) ?? [];
+      const body = active.value
+        ? () =>
+            h(ArkSplitter.Panel as never, { id: "sider" } as never, () =>
+              children().concat(
+                h(
+                  ArkSplitter.ResizeTrigger as never,
+                  {
+                    id: layout?.siderPlacement() === "end" ? "flow:sider" : "sider:flow",
+                    "aria-label": messages.value.sidebar.resize,
+                  } as never,
+                ),
               ),
-              onPointerdown,
-              onPointermove,
-              onPointerup,
-              onKeydown,
-            })
-          : null;
+            )
+        : children;
       return h(
         "aside",
         {
           ...attrs,
-          ref: rail,
           style: [
             style as CSSProperties,
             {
@@ -217,15 +375,18 @@ const Sider = defineComponent({
           "data-part": "sider",
           "data-collapsed": collapsed.value ? "" : undefined,
           "data-dragging": dragging.value ? "" : undefined,
-          "data-resizable": props.resizable ? "" : undefined,
+          "data-resizable": active.value ? "" : undefined,
         },
-        // The default slot receives the fold state, so a rail can swap
-        // its labels for icons instead of being clipped mid-word by the
-        // narrowing edge.
-        () => (ctx.slots.default?.({ collapsed: collapsed.value }) ?? []).concat(handle),
+        body,
       );
     };
   },
 });
 
-export const Layout = Object.assign(Root, { Root, Header, Sider, Content, Footer });
+export const Layout = Object.assign(Root, {
+  Root,
+  Header,
+  Sider,
+  Content,
+  Footer,
+});

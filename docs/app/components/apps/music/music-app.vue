@@ -187,7 +187,6 @@ watch(albumIndex, () => {
             role="button"
             tabindex="0"
             :aria-current="i === trackIndex ? 'true' : undefined"
-            class="cursor-pointer"
             :class="i === trackIndex ? 'bg-primary-subtle text-primary-subtle-text' : ''"
             @click="openTrack(albumIndex, i)"
             @keydown.enter.prevent="openTrack(albumIndex, i)"

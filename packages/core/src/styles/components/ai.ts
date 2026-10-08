@@ -403,25 +403,29 @@ export const aiCss = /* css */ `
   white-space: nowrap;
 }
 
-[data-scope="ai"][data-part="attachment"] [data-remove] {
-  display: inline-flex;
-  align-items: center;
-  flex: none;
+/* The way off: the shared ghost square shrunken to the chip's interior
+   register — the recipe carries cursor, halo and disabled; only this
+   compact size and the chip's ink remain the family's. */
+[data-scope="ai"][data-part="attachment"] [data-scope="button"][data-part="root"] {
+  inline-size: 1rem;
+  block-size: 1rem;
   padding: 0;
-  border: none;
-  background: none;
+  border-radius: var(--bs-radius-sm);
   color: inherit;
-  cursor: pointer;
 }
 
-[data-scope="ai"][data-part="attachment"] [data-remove]:hover {
+[data-scope="ai"][data-part="attachment"] [data-scope="button"] svg {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+[data-scope="ai"][data-part="attachment"] [data-scope="button"]:hover:not(:disabled) {
+  background: none;
   color: var(--bs-color-text-primary);
 }
 
-[data-scope="ai"][data-part="attachment"] [data-remove]:focus-visible {
-  outline: none;
-  border-radius: var(--bs-radius-sm);
-  box-shadow: var(--bs-focus-ring);
+[data-scope="ai"][data-part="attachment"] [data-scope="button"]:focus-visible {
+  border-color: transparent;
 }
 
 /* Actions row: a quiet line of shared ghost buttons. */

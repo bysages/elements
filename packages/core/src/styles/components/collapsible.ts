@@ -1,5 +1,3 @@
-import { discloseKeyframes } from "./shared";
-
 export const collapsibleCss =
   /* css */ `
 [data-scope="collapsible"][data-part="root"] {
@@ -116,7 +114,4 @@ export const collapsibleCss =
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);
 }
-` +
-  discloseKeyframes() +
-  /* css */ `
 `;

@@ -85,33 +85,39 @@ export const orderListCss = /* css */ `
 
 [data-scope="order-list"][data-part="move"] {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   inline-size: var(--bs-part-size-sm);
   block-size: var(--bs-part-size-sm);
-  padding: 0;
-  border: none;
   border-radius: var(--bs-radius-xs, var(--bs-radius-sm));
-  background: transparent;
-  color: var(--bs-color-text-tertiary);
-  cursor: pointer;
-  transition:
-    background-color var(--bs-duration-fast) var(--bs-ease-out),
-    color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
-[data-scope="order-list"][data-part="move"]:hover:not(:disabled) {
+/* Each step rides the shared ghost square: the native button, cursor,
+   halo and disabled state are the recipe's; the family keeps only this
+   interior register and its hover ink. */
+[data-scope="order-list"][data-part="move"] [data-scope="button"][data-part="root"] {
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border-radius: inherit;
+  color: var(--bs-color-text-tertiary);
+}
+
+[data-scope="order-list"][data-part="move"] [data-scope="button"] svg {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+[data-scope="order-list"][data-part="move"] [data-scope="button"][data-part="root"]:hover:not(:disabled) {
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
 }
 
-[data-scope="order-list"][data-part="move"]:disabled {
+[data-scope="order-list"][data-part="move"] [data-scope="button"][data-part="root"]:disabled {
+  background: transparent;
+  color: var(--bs-color-text-tertiary);
   opacity: 0.35;
-  cursor: not-allowed;
 }
 
-[data-scope="order-list"][data-part="move"]:focus-visible {
-  outline: none;
-  box-shadow: var(--bs-focus-ring);
+[data-scope="order-list"][data-part="move"] [data-scope="button"][data-part="root"]:focus-visible {
+  border-color: transparent;
 }
 `;

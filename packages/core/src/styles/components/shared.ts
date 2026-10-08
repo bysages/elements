@@ -76,6 +76,102 @@ export function labelCss(scope: string): string {
 `;
 }
 
+/** The option-list recipe shared by select-family components: one scoped
+ * generator, so anatomy and per-component scope survive without three
+ * copies of the same row grammar. */
+export function optionListCss(
+  scope: string,
+  { list = true, mark = false }: { list?: boolean; mark?: boolean } = {},
+): string {
+  return /* css */ `
+${list ? `[data-scope="${scope}"][data-part="list"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-xs);
+}
+
+` : ""}[data-scope="${scope}"][data-part="item-group"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-xs);
+}
+
+[data-scope="${scope}"][data-part="item-group"] + [data-part="item-group"] {
+  margin-block-start: var(--bs-margin-sm);
+}
+
+/* Group headings stay out of the list's way: small, tracked, uppercase. */
+[data-scope="${scope}"][data-part="item-group-label"] {
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-medium);
+  letter-spacing: var(--bs-tracking-label);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Items are quiet rows of ink: no fill at rest, the subtle surface only
+   when asked. The checked row takes the flat primary fill and keeps it
+   under the cursor. */
+[data-scope="${scope}"][data-part="item"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bs-gap-sm);
+  min-block-size: var(--bs-control-height-sm);
+  padding: 0 var(--bs-padding-sm);
+  border-radius: var(--bs-radius-sm);
+  color: var(--bs-color-text-primary);
+  font-size: var(--bs-font-size-sm);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
+}
+${mark ? `
+[data-scope="${scope}"][data-part="item"] mark {
+  background: transparent;
+  color: var(--bs-color-primary);
+  font-weight: var(--bs-font-weight-medium);
+}
+` : ""}
+[data-scope="${scope}"][data-part="item"]:hover:not([data-state="checked"], [data-disabled]),
+[data-scope="${scope}"][data-part="item"][data-highlighted]:not([data-state="checked"]) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
+}
+
+[data-scope="${scope}"][data-part="item"]:focus-visible {
+  outline: none;
+  box-shadow: var(--bs-focus-ring-inset);
+}
+
+[data-scope="${scope}"][data-part="item"][data-state="checked"] {
+  background: var(--bs-color-primary);
+  color: var(--bs-color-primary-text);
+  font-weight: var(--bs-font-weight-medium);
+}
+
+[data-scope="${scope}"][data-part="item"][data-disabled] {
+  color: var(--bs-color-text-disabled);
+  cursor: not-allowed;
+}
+
+[data-scope="${scope}"][data-part="item-indicator"] {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+[data-scope="${scope}"][data-part="item-indicator"] svg {
+  inline-size: var(--bs-font-size-sm);
+  block-size: var(--bs-font-size-sm);
+}
+`;
+}
+
 /** The corner close button every dismissible vessel carries — square-cut,
  * quiet until hovered. The two insets belong to the vessel's own padding,
  * so they arrive as arguments. */
@@ -110,6 +206,40 @@ export function closeTriggerCss(
 [data-scope="${scope}"][data-part="close-trigger"]:focus-visible {
   outline: none;
   box-shadow: var(--bs-focus-ring);
+}
+
+/* An action close is a full-row choice inside the vessel, not a corner
+ * icon. Tone carries only the row's ink; geometry and interaction stay
+ * component-owned. */
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"] {
+  position: static;
+  inset: auto;
+  inline-size: 100%;
+  block-size: auto;
+  padding: var(--bs-padding-md) var(--bs-padding-lg);
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  font-size: var(--bs-font-size-md);
+  text-align: center;
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"]:hover {
+  color: inherit;
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"][data-tone="primary"] {
+  color: var(--bs-color-primary);
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"][data-tone="secondary"] {
+  color: var(--bs-color-text-secondary);
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"][data-tone="danger"] {
+  color: var(--bs-color-danger);
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"][data-tone="primary"]:hover {
+  color: var(--bs-color-primary-hover);
+}
+[data-scope="${scope}"][data-part="close-trigger"][data-variant="action"][data-tone="danger"]:hover {
+  color: var(--bs-color-danger-hover);
 }
 `;
 }
@@ -217,44 +347,6 @@ export function inputStateCss(scope: string, part = "input"): string {
   color: var(--bs-color-text-disabled);
   box-shadow: none;
   cursor: not-allowed;
-}
-`;
-}
-
-/** The disclose motion every expand/collapse family rides: the panel
- * grows from its collapsed height while the ink fades. The name is
- * shared — every family that injects this also injects the same four
- * definitions, and identical repeats in the cascade are harmless. */
-export function discloseKeyframes(): string {
-  return /* css */ `
-@keyframes bs-disclose-expand {
-  from {
-    height: var(--collapsed-height, 0);
-  }
-  to {
-    height: var(--height);
-  }
-}
-
-@keyframes bs-disclose-collapse {
-  from {
-    height: var(--height);
-  }
-  to {
-    height: var(--collapsed-height, 0);
-  }
-}
-
-@keyframes bs-disclose-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes bs-disclose-fade-out {
-  to {
-    opacity: 0;
-  }
 }
 `;
 }

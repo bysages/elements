@@ -15,22 +15,11 @@ export type { DialogOpenChangeDetails } from "@ark-ui/vue/dialog";
 const DialogRoot = defineComponent({
   name: "SDialogRoot",
   inheritAttrs: false,
-  props: {
-    portalled: { type: Boolean, default: undefined },
-  },
-  setup(props, { attrs, slots }) {
+  setup(_, { attrs, slots }) {
     const id = useElementId("dialog", attrs);
 
     return () =>
-      h(
-        withPresenceRoot(ArkDialog.Root),
-        withPresenceEnter({
-          ...attrs,
-          ...(props.portalled === undefined ? {} : { portalled: props.portalled }),
-          id: id.value,
-        }),
-        slots,
-      );
+      h(withPresenceRoot(ArkDialog.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 }) as unknown as typeof ArkDialog.Root;
 
