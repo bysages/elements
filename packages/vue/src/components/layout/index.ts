@@ -211,23 +211,21 @@ function region(name: string, tag: string) {
         () =>
           name === "Content" &&
           !!layout &&
-          layout.siderPlacement() &&
-          layout.siderState.resizable &&
-          !layout.siderState.collapsed,
+          !!layout.siderPlacement() &&
+          layout.siderState.resizable,
       );
       return () => {
+        const attrs = {
+          ...ctx.attrs,
+          "data-scope": "layout",
+          "data-part": name.toLowerCase(),
+        };
         const children = () => ctx.slots.default?.();
-        return h(
-          tag,
-          {
-            ...ctx.attrs,
-            "data-scope": "layout",
-            "data-part": name.toLowerCase(),
-          },
-          splitPanel.value
-            ? () => h(ArkSplitter.Panel as never, { id: "flow" } as never, children)
-            : children,
-        );
+        return splitPanel.value
+          ? h(ArkSplitter.Panel as never, { id: "flow", asChild: true } as never, () =>
+              h(tag, attrs, children),
+            )
+          : h(tag, attrs, children);
       };
     },
   });
@@ -316,11 +314,14 @@ const Sider = defineComponent({
 
     watchEffect(() => {
       if (!layout) return;
+      // Splitter owns the rendered track, so its clamps must follow the
+      // folded state too; otherwise its inline min-width defeats the CSS
+      // variable that switches the rail to its collapsed measure.
       layout.siderState.resizable = props.resizable;
       layout.siderState.collapsed = collapsed.value;
-      layout.siderState.width = width.value;
-      layout.siderState.minWidth = props.minWidth;
-      layout.siderState.maxWidth = props.maxWidth;
+      layout.siderState.width = collapsed.value ? props.collapsedWidth : width.value;
+      layout.siderState.minWidth = collapsed.value ? props.collapsedWidth : props.minWidth;
+      layout.siderState.maxWidth = collapsed.value ? props.collapsedWidth : props.maxWidth;
     });
     if (layout) {
       layout.resizeStart = () => {
@@ -343,42 +344,43 @@ const Sider = defineComponent({
     return () => {
       const { style, ...attrs } = ctx.attrs;
       const children = () => ctx.slots.default?.({ collapsed: collapsed.value }) ?? [];
-      const body = active.value
-        ? () =>
-            h(ArkSplitter.Panel as never, { id: "sider" } as never, () =>
-              children().concat(
-                h(
+      const aside = () =>
+        h(
+          "aside",
+          {
+            ...attrs,
+            style: [
+              style as CSSProperties,
+              {
+                "--bs-layout-sider-width": collapsed.value ? props.collapsedWidth : width.value,
+                // While folded the clamp collapses onto the folded size —
+                // a 3.5rem rail must never be lifted to the 12rem floor.
+                "--bs-layout-sider-min": collapsed.value ? props.collapsedWidth : props.minWidth,
+                "--bs-layout-sider-max": collapsed.value ? props.collapsedWidth : props.maxWidth,
+              },
+            ],
+            "data-scope": "layout",
+            "data-part": "sider",
+            "data-collapsed": collapsed.value ? "" : undefined,
+            "data-dragging": dragging.value ? "" : undefined,
+            "data-resizable": active.value ? "" : undefined,
+          },
+          children().concat(
+            active.value
+              ? h(
                   ArkSplitter.ResizeTrigger as never,
                   {
                     id: layout?.siderPlacement() === "end" ? "flow:sider" : "sider:flow",
                     "aria-label": messages.value.sidebar.resize,
                   } as never,
-                ),
-              ),
-            )
-        : children;
-      return h(
-        "aside",
-        {
-          ...attrs,
-          style: [
-            style as CSSProperties,
-            {
-              "--bs-layout-sider-width": collapsed.value ? props.collapsedWidth : width.value,
-              // While folded the clamp collapses onto the folded size —
-              // a 3.5rem rail must never be lifted to the 12rem floor.
-              "--bs-layout-sider-min": collapsed.value ? props.collapsedWidth : props.minWidth,
-              "--bs-layout-sider-max": collapsed.value ? props.collapsedWidth : props.maxWidth,
-            },
-          ],
-          "data-scope": "layout",
-          "data-part": "sider",
-          "data-collapsed": collapsed.value ? "" : undefined,
-          "data-dragging": dragging.value ? "" : undefined,
-          "data-resizable": active.value ? "" : undefined,
-        },
-        body,
-      );
+                )
+              : [],
+          ),
+        );
+
+      return props.resizable && layout
+        ? h(ArkSplitter.Panel as never, { id: "sider", asChild: true } as never, aside)
+        : aside();
     };
   },
 });

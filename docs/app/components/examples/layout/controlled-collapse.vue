@@ -18,7 +18,8 @@ const stops = [
     </Button>
     <Layout.Root
       sider="start"
-      class="min-h-72 overflow-clip rounded-lg border border-border bg-surface-0"
+      style="min-height: 18rem"
+      class="overflow-clip rounded-lg border border-border bg-surface-0"
     >
       <Layout.Sider
         v-model:collapsed="state.collapsed"

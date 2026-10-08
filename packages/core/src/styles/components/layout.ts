@@ -71,7 +71,14 @@ export const layoutCss = /* css */ `
   overflow: hidden;
   background: color-mix(in oklab, var(--bs-color-surface-0) 60%, var(--bs-color-surface-inset));
   border-inline-end: var(--bs-hairline) solid var(--bs-color-border);
-  transition: inline-size var(--bs-duration-slow) var(--bs-ease-out);
+  /* When Ark sizes the rail, flex-basis 0px outranks inline-size and the
+     fold re-points flex-grow and the clamps instead — so the resizable
+     path must ease those too or the fold snaps. */
+  transition:
+    inline-size var(--bs-duration-slow) var(--bs-ease-out),
+    flex-grow var(--bs-duration-slow) var(--bs-ease-out),
+    min-width var(--bs-duration-slow) var(--bs-ease-out),
+    max-width var(--bs-duration-slow) var(--bs-ease-out);
 }
 
 /* The hand leads: while Ark resizes, the rail follows without the
