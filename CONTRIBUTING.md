@@ -33,6 +33,7 @@ The package map and the architecture layers live in [AGENTS.md](./AGENTS.md) —
 
 - **Functions**: camelCase with a semantic prefix — `create*` (factories), `resolve*` (derive from tokens/context), `attach*` / `connect*` (wire machine to DOM)
 - **Files & directories**: kebab-case
+- **Tests**: colocated as `<name>.spec.ts` and run through `vp test`
 - **Interfaces**: PascalCase, no `I` prefix, `Options` suffix, `readonly` properties
 - **Constants**: `as const` objects (not `enum`), SCREAMING_SNAKE_CASE keys, lowercase values
 
