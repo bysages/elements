@@ -310,6 +310,13 @@ body {
   inline-size: 100%;
 }
 
+/* Navigation is chrome, not prose: both rails read at the small step so
+   the archive mono voice keeps its technical-index density. */
+[data-scene="archive"] .bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"],
+[data-scene="archive"] .bs-docs-header-bottom .bs-docs-header-nav [data-part="link"] {
+  font-size: var(--bs-font-size-sm);
+}
+
 /* Sidebar entries truncate with an ellipsis instead of wrapping or
    pushing the lane wider — the register is a column of single-line
    titles; the full name still reads in the page and the browser's own
@@ -475,9 +482,9 @@ body {
   margin: 0 0 var(--bs-margin-md);
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-3xl);
-  font-weight: var(--bs-font-weight-bold);
+  font-weight: var(--bs-font-weight-display);
   line-height: var(--bs-line-height-tight);
-  letter-spacing: var(--bs-tracking-label);
+  letter-spacing: var(--bs-tracking-headline);
 }
 
 /* ---------------------------------------------------------------- */
@@ -501,7 +508,7 @@ body {
       var(--bs-control-height-md) + var(--bs-padding-sm) * 2 + var(--bs-space-2)
     );
     font-family: var(--bs-font-serif);
-    letter-spacing: var(--bs-tracking-label);
+    letter-spacing: var(--bs-tracking-headline);
     line-height: var(--bs-line-height-snug);
     color: var(--bs-color-text-primary);
   }
@@ -514,19 +521,19 @@ body {
     padding-block-end: var(--bs-padding-sm);
     border-block-end: 1px solid var(--bs-color-border);
     font-size: var(--bs-font-size-xl);
-    font-weight: var(--bs-font-weight-semibold);
+    font-weight: var(--bs-font-weight-headline);
   }
 
   .bs-docs-prose h3 {
     margin: var(--bs-margin-2xl) 0 var(--bs-margin-md);
     font-size: var(--bs-font-size-lg);
-    font-weight: var(--bs-font-weight-semibold);
+    font-weight: var(--bs-font-weight-headline);
   }
 
   .bs-docs-prose h4 {
     margin: var(--bs-margin-xl) 0 var(--bs-margin-sm);
     font-size: var(--bs-font-size-md);
-    font-weight: var(--bs-font-weight-semibold);
+    font-weight: var(--bs-font-weight-headline);
   }
 
   .bs-docs-prose p {
@@ -1280,8 +1287,8 @@ body {
 .bs-docs-assistant-head h2 {
   margin: 0;
   font-family: var(--bs-font-serif);
-  font-weight: var(--bs-font-weight-semibold);
-  letter-spacing: var(--bs-tracking-label);
+  font-weight: var(--bs-font-weight-headline);
+  letter-spacing: var(--bs-tracking-headline);
 }
 
 .bs-docs-assistant-log {
@@ -1361,9 +1368,9 @@ body {
   margin: 0 0 var(--bs-margin-lg);
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-4xl);
-  font-weight: var(--bs-font-weight-bold);
+  font-weight: var(--bs-font-weight-display);
   line-height: var(--bs-line-height-tight);
-  letter-spacing: var(--bs-tracking-label);
+  letter-spacing: var(--bs-tracking-headline);
 }
 
 .bs-docs-hero-description {
@@ -1463,8 +1470,8 @@ body {
   margin: 0 0 var(--bs-margin-sm);
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-2xl);
-  font-weight: var(--bs-font-weight-semibold);
-  letter-spacing: var(--bs-tracking-label);
+  font-weight: var(--bs-font-weight-headline);
+  letter-spacing: var(--bs-tracking-headline);
   line-height: var(--bs-line-height-snug);
 }
 
@@ -1531,7 +1538,7 @@ body {
   margin: 0;
   font-family: var(--bs-font-serif);
   font-size: var(--bs-font-size-4xl);
-  font-weight: var(--bs-font-weight-bold);
+  font-weight: var(--bs-font-weight-display);
 }
 
 .bs-docs-error-title {

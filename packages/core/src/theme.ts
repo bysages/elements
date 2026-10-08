@@ -24,7 +24,8 @@ export type ThemeScene =
   | "missive"
   | "dispatch"
   | "metric"
-  | "new-york";
+  | "new-york"
+  | "archive";
 
 export type ThemeAccent =
   | "auto"
@@ -61,6 +62,7 @@ export const SCENE_DEFAULT_ACCENT: Record<Exclude<ThemeScene, "auto">, ThemeAcce
   dispatch: "jilan",
   metric: "qingjin",
   "new-york": "ink",
+  archive: "ink",
 };
 
 const SCENES: ThemeScene[] = ["auto", ...(Object.keys(SCENE_DEFAULT_ACCENT) as ThemeScene[])];
@@ -92,6 +94,7 @@ export const SCENE_DEFAULT_CONTRAST: Record<Exclude<ThemeScene, "auto">, "normal
   dispatch: "normal",
   metric: "normal",
   "new-york": "normal",
+  archive: "normal",
 };
 
 export interface ApplyThemeOptions extends Partial<Theme> {

@@ -53,6 +53,7 @@ const copy = {
       dispatch: "Dispatch · 公牍",
       metric: "Metric · 格律",
       "new-york": "New York · 玄素",
+      archive: "Archive · 卷宗",
     },
     accents: {
       auto: "Follow the scene",
@@ -108,6 +109,7 @@ const copy = {
       dispatch: "公牍",
       metric: "格律",
       "new-york": "玄素",
+      archive: "卷宗",
     },
     accents: {
       auto: "随场景",

@@ -9,7 +9,8 @@
    for motion-forward spring, fluent for measured productivity depth,
    material for the elevation-led android-era look, missive and its
    office sibling dispatch for the familiar handheld registers, metric
-   for the metric productivity register.
+   for the metric productivity register, and archive for the Swiss editorial
+   studio register.
 
    A scene moves only what the paper allows: shape (radius), density, motion
    pace and its curves, where the key light stands and how far it reaches,
@@ -17,9 +18,9 @@
    borrows whole — so it may also re-point the focus tokens, speaking
    focus in the register's own dialect instead of the house halo — and it
    may retint the paper itself (the surface ladder, light and dark) where
-   the borrowed register demands its own stock, and let the type follow
-   the register's voice — the one font move allowed is the platform's own
-   stack, which is what the register would speak in anyway. No scene
+   the borrowed register demands its own stock, and let type follow the
+   register's voice — scale, line height, tracking and the platform stack
+   move together when that register needs its own typography. No scene
    touches interaction logic or the semantic pigments. Each scene pairs
    with a default accent and (for civic) the high-contrast tier; those
    pairings are applied by the theme engine as plain data attributes, so
@@ -721,4 +722,95 @@
   --bs-color-primary-active: oklch(0.871 0.006 286);
   --bs-color-ink-on-fill: oklch(0.21 0.006 286);
   --bs-ink-knead: 0%;
+}
+
+[data-scene="archive"] {
+  /* 卷宗 — the archive register: a white Swiss editorial sheet with the
+     discipline of a technical index. Type stays compact and indexed:
+     16px prose, a small step for leads, and display sizes that remain
+     subordinate to the mono voice. Square corners, crisp hairlines and a
+     flat cool light keep the page quiet. Focus is a technical outline. */
+  --bs-radius-xs: 0;
+  --bs-radius-sm: 0;
+  --bs-radius-md: 0;
+  --bs-radius-lg: 0;
+  --bs-radius-xl: 0;
+  --bs-radius-2xl: 0;
+  --bs-radius-control: 0;
+  --bs-control-height-sm: 2rem;
+  --bs-control-height-md: 2.25rem;
+  --bs-control-height-lg: 2.5rem;
+  --bs-density-scale: 1.1;
+  --bs-motion-scale: 0.85;
+  --bs-light-x: 0px;
+  --bs-light-y: 0px;
+  --bs-light-reach: 0.5;
+  --bs-ripple-opacity: 0;
+  --bs-icon-stroke-width: 1.5;
+
+  /* The archive speaks in the technical index's own voice: mono carries
+     prose and headings alike, with platform mono faces as the fallback.
+     Headlines keep a restrained technical ramp that also narrows in
+     small containers; dense lists and navigation stay at the small step. */
+  --bs-font-mono:
+    "JetBrains Mono", "Cascadia Mono", "Cascadia Code", ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, "Noto Sans Mono CJK SC", monospace;
+  --bs-font-sans: var(--bs-font-mono);
+  --bs-font-serif: var(--bs-font-sans);
+  --bs-font-size-2xs: 0.6875rem;
+  --bs-font-size-xs: 0.75rem;
+  --bs-font-size-sm: 0.875rem;
+  --bs-font-size-md: 1rem;
+  --bs-font-size-base: 1rem;
+  --bs-font-size-lg: 1.0625rem;
+  --bs-font-size-xl: clamp(1.25rem, 5vw, 1.5rem);
+  --bs-font-size-2xl: clamp(1.375rem, 5vw, 1.625rem);
+  --bs-font-size-3xl: clamp(1.75rem, 7vw, 2.25rem);
+  --bs-font-size-4xl: clamp(2.5rem, 9vw, 3rem);
+  --bs-line-height-tight: 1.1;
+  --bs-line-height-snug: 1.2;
+  --bs-line-height-normal: 1.5;
+  --bs-line-height-relaxed: 1.6;
+  --bs-tracking-label: 0em;
+  --bs-tracking-headline: 0;
+  --bs-font-weight-headline: 500;
+  --bs-font-weight-display: 500;
+  --bs-focus-ring: 0 0 0 2px var(--bs-color-focus);
+  --bs-focus-ring-inset: inset 0 0 0 2px var(--bs-color-focus);
+}
+
+/* The archive's stock stays white in daylight so hairlines and indexed
+   spacing do the separation; at night it cools to blue-black lacquer. */
+[data-scene="archive"] {
+  --bs-color-surface-0: oklch(1 0 0);
+  --bs-color-surface-1: oklch(1 0 0);
+  --bs-color-surface-2: oklch(1 0 0);
+  --bs-color-surface-3: oklch(1 0 0);
+  --bs-color-surface-4: oklch(1 0 0);
+  --bs-color-surface-5: oklch(1 0 0);
+  --bs-color-text-primary: oklch(0.188 0.004 265);
+  --bs-color-text-secondary: oklch(0.538 0.005 265);
+  --bs-color-text-tertiary: oklch(0.692 0.004 265);
+  --bs-color-text-disabled: oklch(0.786 0.003 265);
+  --bs-color-border: oklch(0.885 0.004 265);
+  --bs-color-border-strong: oklch(0.825 0.005 265);
+  --bs-color-scrim: oklch(0 0 0 / 0.4);
+  --bs-shadow-ink: oklch(0.22 0.006 265);
+}
+
+[data-scene="archive"][data-theme="dark"],
+[data-scene="archive"]:not([data-theme]):where([data-theme="dark"] *) {
+  --bs-color-surface-0: oklch(0.142 0.004 265);
+  --bs-color-surface-1: oklch(0.172 0.004 265);
+  --bs-color-surface-2: oklch(0.201 0.004 265);
+  --bs-color-surface-3: oklch(0.229 0.004 265);
+  --bs-color-surface-4: oklch(0.258 0.004 265);
+  --bs-color-surface-5: oklch(0.288 0.004 265);
+  --bs-color-text-primary: oklch(0.965 0 265);
+  --bs-color-text-secondary: oklch(0.654 0.004 265);
+  --bs-color-text-tertiary: oklch(0.543 0.004 265);
+  --bs-color-text-disabled: oklch(0.404 0.004 265);
+  --bs-color-border: oklch(0.37 0.005 265);
+  --bs-color-border-strong: oklch(0.448 0.006 265);
+  --bs-color-scrim: oklch(0 0 0 / 0.5);
 }

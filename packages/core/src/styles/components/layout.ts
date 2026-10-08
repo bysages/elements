@@ -82,8 +82,8 @@ export const layoutCss = /* css */ `
 
 /* The resize hairline: a generous hit strip at the flow edge whose ink
    answers to the hand — quiet until hovered, primary while gripped or
-   keyed. It stays inside the rail, whose overflow clips anything that
-   pokes out — the strip and its ink both live inboard of the border. */
+   keyed. The strip stays inside the rail for pointer reach, while its
+   ink sits exactly where the retired border would sit. */
 [data-scope="layout"][data-part="sider-resize"] {
   position: absolute;
   inset-block: 0;
@@ -97,7 +97,7 @@ export const layoutCss = /* css */ `
   content: "";
   position: absolute;
   inset-block: 0;
-  inset-inline-end: calc(var(--bs-space-2) / 2);
+  inset-inline-end: 0;
   inline-size: 1px;
   background: var(--bs-color-border);
   transition: background-color var(--bs-duration-fast) var(--bs-ease-out);
@@ -125,7 +125,7 @@ export const layoutCss = /* css */ `
 [data-scope="layout"][data-part="root"][data-sider="end"]
   [data-scope="layout"][data-part="sider-resize"]::before {
   inset-inline-end: auto;
-  inset-inline-start: calc(var(--bs-space-2) / 2);
+  inset-inline-start: 0;
 }
 
 /* The hairline always faces the flow, so an end sider wears it on its

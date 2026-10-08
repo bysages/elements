@@ -97,6 +97,7 @@ const sceneNames: Record<keyof typeof SCENE_DEFAULT_ACCENT, { en: string; zh: st
   dispatch: { en: "Dispatch", zh: "公牍" },
   metric: { en: "Metric", zh: "格律" },
   "new-york": { en: "New York", zh: "玄素" },
+  archive: { en: "Archive", zh: "卷宗" },
 };
 
 const accentNames: Partial<Record<ThemeAccent, { en: string; zh: string }>> = {

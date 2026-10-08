@@ -49,6 +49,12 @@
      property of CJK typesetting, not of any single typeface. */
   --bs-tracking-label: 0.02em;
 
+  /* Headings share the label's CJK breathing by default; a scene can
+     tighten display type without forcing the same move onto controls. */
+  --bs-tracking-headline: 0.02em;
+  --bs-font-weight-headline: var(--bs-font-weight-semibold);
+  --bs-font-weight-display: var(--bs-font-weight-bold);
+
   --bs-font-weight-regular: 400;
   --bs-font-weight-medium: 500;
   --bs-font-weight-semibold: 600;
