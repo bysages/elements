@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { ComputedRef, InjectionKey, SetupContext } from "vue";
+import type { ComputedRef, InjectionKey, PropType, SetupContext } from "vue";
 import { computed, defineComponent, h, inject, provide } from "vue";
 
 import { iconNode } from "../../internal/icon";
@@ -21,7 +21,10 @@ function icon(status: string) {
 const Root = defineComponent({
   name: "AlertRoot",
   props: {
-    status: { type: String, default: "ink" },
+    status: {
+      type: String as PropType<"ink" | "success" | "warning" | "danger" | "info">,
+      default: "ink",
+    },
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("alert");

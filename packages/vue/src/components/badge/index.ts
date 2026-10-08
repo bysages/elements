@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { SetupContext } from "vue";
+import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
@@ -10,8 +10,11 @@ export const Badge = withSelfRoot(
   defineComponent({
     name: "Badge",
     props: {
-      tone: { type: String, default: "ink" },
-      variant: { type: String, default: "solid" },
+      tone: {
+        type: String as PropType<"ink" | "primary" | "success" | "warning" | "danger" | "info">,
+        default: "ink",
+      },
+      variant: { type: String as PropType<"solid" | "subtle" | "outline">, default: "solid" },
     },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("badge");

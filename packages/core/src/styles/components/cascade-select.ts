@@ -149,7 +149,7 @@ export const cascadeSelectCss =
   cursor: pointer;
 }
 
-[data-scope="cascade-select"][data-part="match"]:hover {
+[data-scope="cascade-select"][data-part="match"]:hover:not([data-selected]) {
   background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 

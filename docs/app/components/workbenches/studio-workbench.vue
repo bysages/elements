@@ -576,45 +576,51 @@ function importJson() {
         { type?: string; props?: Record<string, unknown>; children?: string[] }
       >;
     };
-    const rootId = parsed.root ?? ROOT_ID;
-    const rootElement = parsed.elements?.[rootId];
+    const source = parsed.elements ?? {};
+    const declaredRoot = parsed.root && source[parsed.root] ? parsed.root : ROOT_ID;
+    // The tree addresses the page by one id; renaming the declared root
+    // keeps every reference honest under the ROOT_ID the editor assumes.
+    const resolve = (id: string) => (id === declaredRoot ? ROOT_ID : id);
+    const known = new Set(Object.keys(source).map(resolve));
+    const elements = Object.fromEntries(
+      Object.entries(source).map(([id, element]) => [
+        resolve(id),
+        {
+          type: element.type ?? "Text",
+          props: element.props ?? {},
+          // Drop references the composition never defines; a dangling id
+          // would otherwise reach the tree and break its rendering.
+          children: (element.children ?? [])
+            .map(resolve)
+            .filter((child) => child !== resolve(id) && known.has(child)),
+        },
+      ]),
+    );
+    const rootElement = elements[ROOT_ID];
     if (!rootElement?.type) throw new Error("root");
-    const candidate = {
-      root: rootId,
-      elements: Object.fromEntries(
-        Object.entries(parsed.elements ?? {}).map(([id, element]) => [
-          id,
-          {
-            type: element.type ?? "Text",
-            props: element.props ?? {},
-            children: element.children ?? [],
-          },
-        ]),
-      ),
-      state: {},
-    };
+    const candidate = { root: ROOT_ID, elements, state: {} };
     const result = catalog.validate(candidate);
     if (!result.success) throw new Error("spec");
     rootNode.value = {
-      id: rootId,
-      type: candidate.elements[rootId]!.type,
-      props: { ...(candidate.elements[rootId]!.props as Record<string, unknown>) },
-      children: [...(candidate.elements[rootId]!.children ?? [])],
+      id: ROOT_ID,
+      type: rootElement.type,
+      props: { ...(rootElement.props as Record<string, unknown>) },
+      children: [...rootElement.children],
     };
     nodes.value = Object.fromEntries(
-      Object.entries(candidate.elements)
-        .filter(([id]) => id !== rootId)
+      Object.entries(elements)
+        .filter(([id]) => id !== ROOT_ID)
         .map(([id, element]) => [
           id,
           {
             id,
             type: element.type,
             props: { ...(element.props as Record<string, unknown>) },
-            children: [...(element.children ?? [])],
+            children: [...element.children],
           },
         ]),
     );
-    selectedId.value = rootId;
+    selectedId.value = ROOT_ID;
     importError.value = "";
   } catch {
     importError.value = text.value.json.invalid;

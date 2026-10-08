@@ -11,7 +11,7 @@ export default defineEntry({
   RadioGroup: {
     ...faces.RadioGroup,
     component: ({ props }) => {
-      const values = props.items ?? ["Xuan", "Mian", "Lusong"];
+      const values = props.items ?? ["Option A", "Option B", "Option C"];
       return labelled(
         props.label,
         h(RadioGroup.Root as never, { defaultValue: slug(values[0] ?? "") }, () => [

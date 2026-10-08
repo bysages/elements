@@ -77,8 +77,8 @@ export const treeViewCss =
 /* The rows sit straight on the host's surface — a ladder step as the
    wash would vanish wherever the host already wears that same step, so
    the hover carries its own measured ink. */
-[data-scope="tree-view"][data-part="branch-control"]:hover:not([data-disabled]),
-[data-scope="tree-view"][data-part="item"]:hover:not([data-disabled]) {
+[data-scope="tree-view"][data-part="branch-control"]:hover:not([data-disabled]):not([data-selected]),
+[data-scope="tree-view"][data-part="item"]:hover:not([data-disabled]):not([data-selected]) {
   background: color-mix(in oklab, var(--bs-color-text-primary) 5%, transparent);
 }
 

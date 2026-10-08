@@ -12,10 +12,7 @@ import { useMentions } from "../mentions/use-mentions";
 
 const arrowUpIcon = () => iconNode("arrow-up", { width: 14, height: 14 });
 
-const stopIcon = () =>
-  h("svg", { viewBox: "0 0 16 16", width: 14, height: 14, "aria-hidden": "true" }, [
-    h("rect", { x: 4.5, y: 4.5, width: 7, height: 7, fill: "currentColor" }),
-  ]);
+const stopIcon = () => iconNode("square", { width: 14, height: 14 });
 
 /** The prompt vessel: the shared field textarea — self-growing on the
  * machine's autoresize — with the submit seal riding its last line.

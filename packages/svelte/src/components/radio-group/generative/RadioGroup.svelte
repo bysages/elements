@@ -5,7 +5,7 @@
 
   let { props }: BaseComponentProps<any> = $props();
 
-  const values = $derived(props.items ?? ["Xuan", "Mian", "Lusong"]);
+  const values = $derived(props.items ?? ["Option A", "Option B", "Option C"]);
 </script>
 
 {#if props.label}

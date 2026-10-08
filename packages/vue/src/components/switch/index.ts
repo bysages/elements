@@ -46,6 +46,7 @@ const SwitchFacade = defineComponent({
         SwitchRoot,
         {
           ...attrs,
+          size: props.size,
           disabled: props.disabled,
           invalid: props.invalid,
           readOnly: props.readOnly,

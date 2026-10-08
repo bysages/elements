@@ -11,7 +11,7 @@ export default defineEntry({
   RadioGroup: {
     ...faces.RadioGroup,
     component: ({ props }) => {
-      const values = () => props.items ?? ["Xuan", "Mian", "Lusong"];
+      const values = () => props.items ?? ["Option A", "Option B", "Option C"];
       const list: JSX.Element = createComponent(Stack, {
         gap: "sm",
         get children() {

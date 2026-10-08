@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { SetupContext } from "vue";
+import type { PropType, SetupContext } from "vue";
 import { cloneVNode, defineComponent, h } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
@@ -13,10 +13,16 @@ export const Button = withSelfRoot(
     props: {
       /** How the button rests: a solid ink fill, an outline shell, a
        * quiet ghost, or a subtle wash. */
-      variant: { type: String, default: "solid" },
+      variant: {
+        type: String as PropType<"solid" | "outline" | "ghost" | "subtle">,
+        default: "solid",
+      },
       /** The pigment the variant is inked with; ink is the solemn
        * default, and the fixed pigments speak for their meaning. */
-      tone: { type: String, default: "ink" },
+      tone: {
+        type: String as PropType<"ink" | "info" | "success" | "warning" | "danger">,
+        default: "ink",
+      },
       /** One rung of the control-height ladder: the small, medium, or
        * large register. */
       size: { type: String, default: "md" },
