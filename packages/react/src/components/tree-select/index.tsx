@@ -44,10 +44,8 @@ function TreeSelectRow({ node, indexPath }: { node: TreeSelectNode; indexPath: n
           </ArkTreeView.BranchContent>
         </ArkTreeView.Branch>
       ) : (
-        <ArkTreeView.Item asChild>
-          <span style={{ display: "flex", inlineSize: "100%" }}>
-            <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
-          </span>
+        <ArkTreeView.Item>
+          <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
         </ArkTreeView.Item>
       )}
     </ArkTreeView.NodeProvider>

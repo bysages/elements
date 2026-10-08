@@ -126,13 +126,9 @@ function TreeSelectImpl(props: TreeSelectProps) {
         <Show
           when={rowProps.node.children}
           fallback={
-            <ArkTreeView.Item
-              asChild={(propsFn) => (
-                <span {...propsFn()}>
-                  <ArkTreeView.ItemText>{rowProps.node.label}</ArkTreeView.ItemText>
-                </span>
-              )}
-            />
+            <ArkTreeView.Item>
+              <ArkTreeView.ItemText>{rowProps.node.label}</ArkTreeView.ItemText>
+            </ArkTreeView.Item>
           }
         >
           <ArkTreeView.Branch>
