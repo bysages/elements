@@ -6,6 +6,9 @@ export const stackCss = /* css */ `
   display: flex;
   flex-direction: column;
   gap: var(--bs-stack-gap, var(--bs-gap-md));
+  align-items: var(--bs-stack-align, normal);
+  justify-content: var(--bs-stack-justify, normal);
+  flex-wrap: var(--bs-stack-wrap, nowrap);
 }
 
 [data-scope="stack"][data-part="root"][data-direction="row"] {

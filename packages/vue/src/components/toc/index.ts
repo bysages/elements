@@ -81,17 +81,8 @@ const TocFacade = defineComponent({
           h(ArkToc.List, () => [
             h(TocIndicator),
             ...props.items.map((item) =>
-              h(
-                ArkToc.Item as never,
-                {
-                  key: item.value,
-                  item,
-                  style:
-                    item.depth && item.depth > 2
-                      ? { paddingInlineStart: `${item.depth - 2}rem` }
-                      : undefined,
-                },
-                () => h(ArkToc.Link, { href: `#${item.value}` }, () => item.label),
+              h(ArkToc.Item as never, { key: item.value, item }, () =>
+                h(ArkToc.Link, { href: `#${item.value}` }, () => item.label),
               ),
             ),
           ]),

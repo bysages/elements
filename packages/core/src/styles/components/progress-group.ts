@@ -40,6 +40,7 @@ export const progressGroupCss = /* css */ `
 
 [data-scope="progress-group"][data-part="segment"] {
   overflow: hidden;
+  inline-size: var(--bs-progress-group-share, 0%);
   background: var(--_pigment);
   /* The fill flows at the measure's pace — width trails the data like
      the single bar's does. The track's rounded mask rounds the ends;

@@ -38,18 +38,19 @@ ten-thousand-row list costs the DOM a window, not the ledger. -->
   tabindex={0}
   data-scope="virtual-list"
   data-part="root"
-  style="block-size: {blockHeight}"
+  style:--bs-virtual-list-height={blockHeight}
 >
   <div
     data-scope="virtual-list"
     data-part="inner"
-    style="block-size: {total}px; position: relative"
+    style:--bs-virtual-list-total={`${total}px`}
   >
     {#each rows as row (row.key)}
       <div
         data-scope="virtual-list"
         data-part="row"
-        style="position: absolute; top: 0; inset-inline-start: 0; inline-size: 100%; transform: translateY({row.start}px); block-size: {row.size}px"
+        style:--bs-virtual-list-row-start={`${row.start}px`}
+        style:--bs-virtual-list-row-size={`${row.size}px`}
       >
         {@render renderItem?.(items[row.index], row.index)}
       </div>

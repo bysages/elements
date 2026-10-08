@@ -81,6 +81,6 @@ redraws itself when a prop turns — and it never takes a pointer. -->
     data-scope="watermark"
     data-part="marks"
     aria-hidden="true"
-    style:background-image={tile}
+    style:--bs-watermark-image={tile}
   ></div>
 </div>

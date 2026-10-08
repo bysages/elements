@@ -34,9 +34,9 @@ function StackImpl({
   const style = {
     ...rest.style,
     "--bs-stack-gap": gapVars[gap] ?? gapVars.md,
-    alignItems: align,
-    justifyContent: justify,
-    flexWrap: wrap ? "wrap" : undefined,
+    "--bs-stack-align": align,
+    "--bs-stack-justify": justify,
+    "--bs-stack-wrap": wrap ? "wrap" : undefined,
   } as CSSProperties;
 
   return (

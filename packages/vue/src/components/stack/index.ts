@@ -46,9 +46,9 @@ export const Stack = withSelfRoot(
               style as CSSProperties,
               {
                 "--bs-stack-gap": gapVars[props.gap] ?? gapVars.md,
-                alignItems: props.align,
-                justifyContent: props.justify,
-                flexWrap: props.wrap ? "wrap" : undefined,
+                "--bs-stack-align": props.align,
+                "--bs-stack-justify": props.justify,
+                "--bs-stack-wrap": props.wrap ? "wrap" : undefined,
               },
             ],
             "data-scope": "stack",

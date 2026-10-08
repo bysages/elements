@@ -102,7 +102,7 @@ the viewer. -->
           {alt}
           {width}
           {height}
-          style:transform={`scale(${scale}) rotate(${rotation}deg)`}
+          style:--bs-image-viewer-transform={`scale(${scale}) rotate(${rotation}deg)`}
         />
         <div data-scope="image-viewer" data-part="toolbar">
           <ButtonGroup>

@@ -14,6 +14,10 @@ export interface VirtualListProps extends JSX.HTMLAttributes<HTMLDivElement> {
   renderItem?: (item: unknown, index: number) => JSX.Element;
 }
 
+function toCssLength(length: number | string) {
+  return typeof length === "number" ? `${length}px` : length;
+}
+
 /** A ledger that only mounts the rows on stage: the viewport keeps its
  * scroll length by a spacer sized from the row height, the rows
  * themselves are positioned against it — a ten-thousand-row list
@@ -38,13 +42,13 @@ export const VirtualList = withSelfRoot(function VirtualList(props: VirtualListP
       data-part="root"
       style={{
         ...(typeof restStyle === "object" && restStyle ? restStyle : {}),
-        "block-size": typeof own.height === "number" ? `${own.height}px` : (own.height ?? "320px"),
+        "--bs-virtual-list-height": toCssLength(own.height ?? 320),
       }}
     >
       <div
         data-scope="virtual-list"
         data-part="inner"
-        style={{ "block-size": `${virtualizer.getTotalSize()}px`, position: "relative" }}
+        style={{ "--bs-virtual-list-total": `${virtualizer.getTotalSize()}px` }}
       >
         <For each={virtualizer.getVirtualItems()}>
           {(row) => (
@@ -52,12 +56,8 @@ export const VirtualList = withSelfRoot(function VirtualList(props: VirtualListP
               data-scope="virtual-list"
               data-part="row"
               style={{
-                position: "absolute",
-                top: "0",
-                "inset-inline-start": "0",
-                "inline-size": "100%",
-                transform: `translateY(${row.start}px)`,
-                "block-size": `${row.size}px`,
+                "--bs-virtual-list-row-start": `${row.start}px`,
+                "--bs-virtual-list-row-size": `${row.size}px`,
               }}
             >
               {own.renderItem?.(own.items[row.index], row.index)}

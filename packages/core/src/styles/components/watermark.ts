@@ -15,5 +15,6 @@ export const watermarkCss = /* css */ `
   inset: 0;
   pointer-events: none;
   background-repeat: repeat;
+  background-image: var(--bs-watermark-image, none);
 }
 `;

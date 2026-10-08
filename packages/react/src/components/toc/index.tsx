@@ -38,15 +38,7 @@ function TocFacade({ items, scrollEl, title = "On this page", className, style }
         <ArkToc.List>
           <TocIndicator />
           {items.map((item) => (
-            <ArkToc.Item
-              key={item.value}
-              item={item}
-              style={
-                item.depth && item.depth > 2
-                  ? { paddingInlineStart: `${item.depth - 2}rem` }
-                  : undefined
-              }
-            >
+            <ArkToc.Item key={item.value} item={item}>
               <ArkToc.Link href={`#${item.value}`}>{item.label}</ArkToc.Link>
             </ArkToc.Item>
           ))}

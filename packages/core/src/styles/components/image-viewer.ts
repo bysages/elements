@@ -152,6 +152,7 @@ export const imageViewerCss = /* css */ `
   inline-size: 100%;
   object-fit: contain;
   user-select: none;
+  transform: var(--bs-image-viewer-transform, none);
   transition: transform var(--bs-duration-base) var(--bs-ease-out);
 }
 

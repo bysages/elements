@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 import { useEffect, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";
@@ -95,7 +95,7 @@ function WatermarkImpl({
         data-scope="watermark"
         data-part="marks"
         aria-hidden="true"
-        style={{ backgroundImage: tile }}
+        style={{ "--bs-watermark-image": tile } as CSSProperties}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core";
-import type { HTMLAttributes } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 
@@ -45,7 +45,7 @@ function ProgressGroupImpl({ segments, max, showLegend = true, ...rest }: Progre
             aria-valuemin={0}
             aria-valuemax={total}
             aria-label={nameOf(segment, index)}
-            style={{ inlineSize: share(segment.value) }}
+            style={{ "--bs-progress-group-share": share(segment.value) } as CSSProperties}
           />
         ))}
       </div>

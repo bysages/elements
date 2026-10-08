@@ -103,7 +103,7 @@ export const Watermark = withSelfRoot(
             "data-scope": "watermark",
             "data-part": "marks",
             "aria-hidden": "true",
-            style: { backgroundImage: tile.value },
+            style: [{ "--bs-watermark-image": tile.value }],
           }),
         ]);
     },

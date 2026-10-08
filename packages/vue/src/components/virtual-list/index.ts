@@ -1,9 +1,13 @@
 import { injectComponentStyle } from "@bysages/core";
 import { useVirtualizer } from "@tanstack/vue-virtual";
-import type { SetupContext } from "vue";
+import type { CSSProperties, SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
+
+function toCssLength(length: number | string) {
+  return typeof length === "number" ? `${length}px` : length;
+}
 
 /** A ledger that only mounts the rows on stage: the viewport keeps its
  * scroll length by a spacer sized from the row height, the rows
@@ -32,25 +36,27 @@ export const VirtualList = withSelfRoot(
           overscan: 6,
         })),
       );
-      return () =>
-        h(
+      return () => {
+        const { style, ...attrs } = ctx.attrs;
+        return h(
           "div",
           {
-            ...ctx.attrs,
+            ...attrs,
             ref: viewport,
             tabindex: 0,
             "data-scope": "virtual-list",
             "data-part": "root",
-            style: {
-              blockSize: typeof props.height === "number" ? `${props.height}px` : props.height,
-            },
+            style: [
+              style as CSSProperties,
+              { "--bs-virtual-list-height": toCssLength(props.height) },
+            ],
           },
           h(
             "div",
             {
               "data-scope": "virtual-list",
               "data-part": "inner",
-              style: { blockSize: `${virtualizer.value.getTotalSize()}px`, position: "relative" },
+              style: { "--bs-virtual-list-total": `${virtualizer.value.getTotalSize()}px` },
             },
             virtualizer.value.getVirtualItems().map((row) =>
               h(
@@ -60,12 +66,8 @@ export const VirtualList = withSelfRoot(
                   "data-scope": "virtual-list",
                   "data-part": "row",
                   style: {
-                    position: "absolute",
-                    top: 0,
-                    insetInlineStart: 0,
-                    inlineSize: "100%",
-                    transform: `translateY(${row.start}px)`,
-                    blockSize: `${row.size}px`,
+                    "--bs-virtual-list-row-start": `${row.start}px`,
+                    "--bs-virtual-list-row-size": `${row.size}px`,
                   },
                 },
                 ctx.slots.item?.({ item: props.items[row.index], index: row.index }),
@@ -73,6 +75,7 @@ export const VirtualList = withSelfRoot(
             ),
           ),
         );
+      };
     },
   }),
 );

@@ -31,9 +31,9 @@ const gapValue = $derived(gapVars[gap] ?? gapVars.md);
 <div
   {...rest}
   style:--bs-stack-gap={gapValue}
-  style:align-items={align}
-  style:justify-content={justify}
-  style:flex-wrap={wrap ? "wrap" : undefined}
+  style:--bs-stack-align={align}
+  style:--bs-stack-justify={justify}
+  style:--bs-stack-wrap={wrap ? "wrap" : undefined}
   data-scope="stack"
   data-part="root"
   data-direction={direction}

@@ -20,7 +20,7 @@ let { items, scrollEl, title = "On this page", children, ...rest }: {
     <ArkToc.List>
       <TocIndicator />
       {#each items as item (item.value)}
-        <ArkToc.Item item={item} style={item.depth && item.depth > 2 ? `padding-inline-start: ${item.depth - 2}rem` : undefined}>
+        <ArkToc.Item item={item}>
           <ArkToc.Link href={`#${item.value}`}>{item.label}</ArkToc.Link>
         </ArkToc.Item>
       {/each}

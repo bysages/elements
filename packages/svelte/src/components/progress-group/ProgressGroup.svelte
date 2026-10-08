@@ -30,7 +30,7 @@ brings a larger one — the remainder then shows as groove. -->
         aria-valuemin={0}
         aria-valuemax={total}
         aria-label={nameOf(segment, index)}
-        style:inline-size={share(segment.value)}
+        style:--bs-progress-group-share={share(segment.value)}
       ></div>
     {/each}
   </div>

@@ -14,6 +14,10 @@ export interface VirtualListProps extends HTMLAttributes<HTMLDivElement> {
   renderItem?: (item: unknown, index: number) => ReactNode;
 }
 
+function toCssLength(length: number | string) {
+  return typeof length === "number" ? `${length}px` : length;
+}
+
 /** A ledger that only mounts the rows on stage: the viewport keeps its
  * scroll length by a spacer sized from the row height, the rows
  * themselves are positioned against it — a ten-thousand-row list
@@ -40,29 +44,29 @@ function VirtualListImpl({
       tabIndex={0}
       data-scope="virtual-list"
       data-part="root"
-      style={{
-        ...(rest.style as CSSProperties),
-        blockSize: typeof height === "number" ? `${height}px` : height,
-      }}
+      style={
+        {
+          ...(rest.style as CSSProperties),
+          "--bs-virtual-list-height": toCssLength(height),
+        } as CSSProperties
+      }
     >
       <div
         data-scope="virtual-list"
         data-part="inner"
-        style={{ blockSize: virtualizer.getTotalSize(), position: "relative" }}
+        style={{ "--bs-virtual-list-total": `${virtualizer.getTotalSize()}px` } as CSSProperties}
       >
         {virtualizer.getVirtualItems().map((row) => (
           <div
             key={String(row.key)}
             data-scope="virtual-list"
             data-part="row"
-            style={{
-              position: "absolute",
-              top: 0,
-              insetInlineStart: 0,
-              inlineSize: "100%",
-              transform: `translateY(${row.start}px)`,
-              blockSize: row.size,
-            }}
+            style={
+              {
+                "--bs-virtual-list-row-start": `${row.start}px`,
+                "--bs-virtual-list-row-size": `${row.size}px`,
+              } as CSSProperties
+            }
           >
             {renderItem?.(items[row.index], row.index)}
           </div>

@@ -61,7 +61,7 @@ export const ProgressGroup = withSelfRoot(
                   "aria-valuemin": 0,
                   "aria-valuemax": total,
                   "aria-label": nameOf(segment, index),
-                  style: { inlineSize: share(segment.value) },
+                  style: { "--bs-progress-group-share": share(segment.value) },
                 }),
               ),
             ),

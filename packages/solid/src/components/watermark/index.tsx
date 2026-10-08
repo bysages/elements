@@ -93,7 +93,7 @@ export const Watermark = withSelfRoot(function Watermark(props: WatermarkProps) 
         data-scope="watermark"
         data-part="marks"
         aria-hidden="true"
-        style={{ "background-image": tile() }}
+        style={{ "--bs-watermark-image": tile() }}
       />
     </div>
   );

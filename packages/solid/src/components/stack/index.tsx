@@ -32,9 +32,9 @@ export const Stack = withSelfRoot(function Stack(props: StackProps) {
       style={{
         ...(rest.style as JSX.CSSProperties),
         "--bs-stack-gap": gapVars[own.gap ?? "md"] ?? gapVars.md,
-        "align-items": own.align,
-        "justify-content": own.justify,
-        "flex-wrap": own.wrap ? "wrap" : undefined,
+        "--bs-stack-align": own.align,
+        "--bs-stack-justify": own.justify,
+        "--bs-stack-wrap": own.wrap ? "wrap" : undefined,
       }}
       data-scope="stack"
       data-part="root"

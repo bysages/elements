@@ -1,7 +1,7 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { iconNode } from "../../internal/icon";
@@ -144,7 +144,11 @@ function ImageViewerImpl({
               alt={alt}
               width={width}
               height={height}
-              style={{ transform: `scale(${scale}) rotate(${rotation}deg)` }}
+              style={
+                {
+                  "--bs-image-viewer-transform": `scale(${scale}) rotate(${rotation}deg)`,
+                } as CSSProperties
+              }
             />
             <div data-scope="image-viewer" data-part="toolbar">
               <ButtonGroup>

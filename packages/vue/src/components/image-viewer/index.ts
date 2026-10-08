@@ -124,25 +124,22 @@ const ImageViewerFacade = defineComponent({
     // The close rung is the dialog machine's own: the CloseTrigger
     // folds the lightbox, no local handler.
     function closeToolButton(label: string, icon: () => VNode) {
-      return h(
-        ArkDialog.CloseTrigger,
-        { asChild: true },
-        () =>
-          h(
-            Button,
-            {
-              variant: "ghost",
-              square: true,
-              size: "lg",
-              "aria-label": label,
-              // Restate the recipe names: the close trigger's props
-              // ride the same vnode, and the button must keep its own
-              // anatomy for the styles.
-              "data-scope": "button",
-              "data-part": "root",
-            },
-            () => toolIcon(icon),
-          ),
+      return h(ArkDialog.CloseTrigger, { asChild: true }, () =>
+        h(
+          Button,
+          {
+            variant: "ghost",
+            square: true,
+            size: "lg",
+            "aria-label": label,
+            // Restate the recipe names: the close trigger's props
+            // ride the same vnode, and the button must keep its own
+            // anatomy for the styles.
+            "data-scope": "button",
+            "data-part": "root",
+          },
+          () => toolIcon(icon),
+        ),
       );
     }
 
@@ -195,9 +192,11 @@ const ImageViewerFacade = defineComponent({
                   alt: props.alt,
                   width: props.width,
                   height: props.height,
-                  style: {
-                    transform: `scale(${scale.value}) rotate(${rotation.value}deg)`,
-                  },
+                  style: [
+                    {
+                      "--bs-image-viewer-transform": `scale(${scale.value}) rotate(${rotation.value}deg)`,
+                    },
+                  ],
                 }),
                 // The tray's children ride an array: an element's function
                 // children that return a single vnode are dropped by the
