@@ -406,7 +406,8 @@ export const aiCss = /* css */ `
 /* The way off: the shared ghost square shrunken to the chip's interior
    register — the recipe carries cursor, halo and disabled; only this
    compact size and the chip's ink remain the family's. */
-[data-scope="ai"][data-part="attachment"] [data-scope="button"][data-part="root"] {
+[data-scope="ai"][data-part="attachment"]
+  button[data-scope="button"][data-part="root"] {
   inline-size: 1rem;
   block-size: 1rem;
   padding: 0;
@@ -414,17 +415,19 @@ export const aiCss = /* css */ `
   color: inherit;
 }
 
-[data-scope="ai"][data-part="attachment"] [data-scope="button"] svg {
+[data-scope="ai"][data-part="attachment"] button[data-scope="button"] svg {
   inline-size: 0.75rem;
   block-size: 0.75rem;
 }
 
-[data-scope="ai"][data-part="attachment"] [data-scope="button"]:hover:not(:disabled) {
+[data-scope="ai"][data-part="attachment"]
+  button[data-scope="button"]:hover:not(:disabled) {
   background: none;
   color: var(--bs-color-text-primary);
 }
 
-[data-scope="ai"][data-part="attachment"] [data-scope="button"]:focus-visible {
+[data-scope="ai"][data-part="attachment"]
+  button[data-scope="button"]:focus-visible {
   border-color: transparent;
 }
 
