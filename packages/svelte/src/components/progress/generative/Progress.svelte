@@ -5,7 +5,7 @@
   let { props }: BaseComponentProps<any> = $props();
 </script>
 
-<Progress.Root value={props.value}>
+<Progress.Root value={props.value} max={props.max}>
   {#if props.label != null}
     <Progress.Label>{props.label}</Progress.Label>
   {/if}

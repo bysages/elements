@@ -23,6 +23,9 @@ export default defineEntry({
           get rows() {
             return props.rows;
           },
+          get disabled() {
+            return props.disabled;
+          },
           onValueChange: (next: string) => setValue(next),
         }),
       );

@@ -11,16 +11,31 @@ export default defineEntry({
   Select: {
     ...faces.Select,
     component: ({ props, bindings }) => {
-      const [value, setValue] = useBound<string>(props.value, bindings?.value);
+      const [value, setValue] = useBound<string | string[]>(props.value, bindings?.value);
       const collection = collectionFor(props.options);
       return labelled(
         props.label,
         createComponent(Select.Root, {
           collection,
-          get value() {
-            return value != null ? [value] : undefined;
+          get disabled() {
+            return props.disabled;
           },
-          onValueChange: (details: { value: string[] }) => setValue(details.value[0]),
+          get multiple() {
+            return props.multiple;
+          },
+          get value() {
+            return props.multiple
+              ? Array.isArray(value)
+                ? value
+                : value
+                  ? [value]
+                  : undefined
+              : typeof value === "string"
+                ? [value]
+                : undefined;
+          },
+          onValueChange: (details: { value: string[] }) =>
+            setValue(props.multiple ? details.value : (details.value[0] ?? "")),
           get children() {
             return [
               createComponent(Select.Control, {

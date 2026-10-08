@@ -17,15 +17,33 @@
     createListCollection({ items: props.options }),
   );
 
+  const selectedValue = $derived(
+    props.multiple
+      ? Array.isArray(bound.current)
+        ? bound.current
+        : bound.current
+          ? [bound.current]
+          : undefined
+      : typeof bound.current === "string"
+        ? [bound.current]
+        : undefined,
+  );
+
   function setValue(details: { value: string[] }) {
-    bound.current = details.value[0];
+    bound.current = props.multiple ? details.value : (details.value[0] ?? "");
   }
 </script>
 
 {#if props.label}
   <Stack gap="xs">
     <Typography.Label>{props.label}</Typography.Label>
-    <Select.Root {collection} value={bound.current} onValueChange={setValue}>
+    <Select.Root
+      {collection}
+      value={selectedValue}
+      disabled={props.disabled}
+      multiple={props.multiple}
+      onValueChange={setValue}
+    >
       <Select.Control>
         <Select.Trigger>
           <Select.ValueText placeholder={props.placeholder} />
@@ -48,7 +66,13 @@
     </Select.Root>
   </Stack>
 {:else}
-  <Select.Root {collection} value={bound.current} onValueChange={setValue}>
+  <Select.Root
+      {collection}
+      value={selectedValue}
+      disabled={props.disabled}
+      multiple={props.multiple}
+      onValueChange={setValue}
+    >
     <Select.Control>
       <Select.Trigger>
         <Select.ValueText placeholder={props.placeholder} />

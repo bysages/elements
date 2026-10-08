@@ -15,8 +15,18 @@
 {#if props.label}
   <Stack gap="xs">
     <Typography.Label>{props.label}</Typography.Label>
-    <Textarea bind:value={bound.current} placeholder={props.placeholder} rows={props.rows} />
+    <Textarea
+      bind:value={bound.current}
+      placeholder={props.placeholder}
+      rows={props.rows}
+      disabled={props.disabled}
+    />
   </Stack>
 {:else}
-  <Textarea bind:value={bound.current} placeholder={props.placeholder} rows={props.rows} />
+  <Textarea
+      bind:value={bound.current}
+      placeholder={props.placeholder}
+      rows={props.rows}
+      disabled={props.disabled}
+    />
 {/if}

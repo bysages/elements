@@ -16,6 +16,15 @@ export default defineEntry({
           get defaultValue() {
             return [props.value ?? 50];
           },
+          get min() {
+            return props.min;
+          },
+          get max() {
+            return props.max;
+          },
+          get step() {
+            return props.step;
+          },
           get children() {
             return [
               createComponent(Slider.Control, {

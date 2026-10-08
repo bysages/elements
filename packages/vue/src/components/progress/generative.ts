@@ -13,7 +13,7 @@ export default defineEntry({
         Progress.Root,
         // Ark Vue reads the controlled fill from modelValue; value would
         // fall to attrs and the machine would sit at its midpoint.
-        { modelValue: props.value, defaultValue: 0 },
+        { modelValue: props.value, defaultValue: 0, max: props.max },
         () => [
           props.label != null ? h(Progress.Label, () => props.label!) : null,
           h(Progress.Track, () => h(Progress.Range)),

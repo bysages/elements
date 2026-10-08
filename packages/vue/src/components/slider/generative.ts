@@ -12,12 +12,21 @@ export default defineEntry({
     component: ({ props }) =>
       labelled(
         props.label,
-        h(Slider.Root as never, { defaultValue: [props.value ?? 50] } as never, () => [
-          h(Slider.Control, () => [
-            h(Slider.Track, () => h(Slider.Range)),
-            h(Slider.Thumb, { index: 0 }, () => [h(Slider.HiddenInput as never)]),
-          ]),
-        ]),
+        h(
+          Slider.Root as never,
+          {
+            defaultValue: [props.value ?? 50],
+            min: props.min,
+            max: props.max,
+            step: props.step,
+          } as never,
+          () => [
+            h(Slider.Control, () => [
+              h(Slider.Track, () => h(Slider.Range)),
+              h(Slider.Thumb, { index: 0 }, () => [h(Slider.HiddenInput as never)]),
+            ]),
+          ],
+        ),
       ),
   },
 });

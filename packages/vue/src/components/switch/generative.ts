@@ -15,6 +15,7 @@ export default defineEntry({
         Switch.Root,
         {
           checked: checked ?? false,
+          disabled: props.disabled,
           "onUpdate:checked": (next: boolean) => setChecked(next),
         },
         () => [

@@ -13,6 +13,9 @@ export default defineEntry({
         get value() {
           return props.value;
         },
+        get max() {
+          return props.max;
+        },
         get children() {
           return [
             createComponent(Show, {

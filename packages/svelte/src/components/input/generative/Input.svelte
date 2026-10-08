@@ -15,8 +15,18 @@
 {#if props.label}
   <Stack gap="xs">
     <Typography.Label>{props.label}</Typography.Label>
-    <Input bind:value={bound.current} placeholder={props.placeholder} type={props.type} />
+    <Input
+      bind:value={bound.current}
+      placeholder={props.placeholder}
+      type={props.type}
+      disabled={props.disabled}
+    />
   </Stack>
 {:else}
-  <Input bind:value={bound.current} placeholder={props.placeholder} type={props.type} />
+  <Input
+      bind:value={bound.current}
+      placeholder={props.placeholder}
+      type={props.type}
+      disabled={props.disabled}
+    />
 {/if}

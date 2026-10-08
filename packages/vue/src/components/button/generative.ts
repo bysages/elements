@@ -15,6 +15,7 @@ export default defineEntry({
           variant: props.variant ?? "solid",
           tone: props.tone,
           size: props.size,
+          disabled: props.disabled,
           onClick: () => emit("press"),
         },
         () => props.label,

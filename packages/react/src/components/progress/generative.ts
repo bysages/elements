@@ -11,7 +11,7 @@ export default defineEntry({
     component: ({ props }) =>
       createElement(
         Progress.Root,
-        { value: props.value },
+        { value: props.value, max: props.max },
         props.label != null ? createElement(Progress.Label, null, props.label!) : null,
         createElement(Progress.Track, null, createElement(Progress.Range)),
       ),

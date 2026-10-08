@@ -9,14 +9,27 @@ export default defineEntry({
   Select: {
     ...faces.Select,
     component: ({ props, bindings }) => {
-      const [value, setValue] = useBound<string>(props.value, bindings?.value);
+      const [value, setValue] = useBound<string | string[]>(props.value, bindings?.value);
+      const selectedValue = props.multiple
+        ? Array.isArray(value)
+          ? value
+          : value
+            ? [value]
+            : undefined
+        : typeof value === "string"
+          ? [value]
+          : undefined;
       const collection = collectionFor(props.options);
       return labelled(
         props.label,
         <Select.Root
           collection={collection}
-          value={value != null ? [value] : undefined}
-          onValueChange={(details) => setValue(details.value[0])}
+          value={selectedValue}
+          disabled={props.disabled}
+          multiple={props.multiple}
+          onValueChange={(details) =>
+            setValue(props.multiple ? details.value : (details.value[0] ?? ""))
+          }
         >
           <Select.Control>
             <Select.Trigger>

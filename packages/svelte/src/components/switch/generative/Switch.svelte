@@ -12,7 +12,7 @@
   );
 </script>
 
-<Switch.Root bind:checked={bound.current}>
+<Switch.Root bind:checked={bound.current} disabled={props.disabled}>
   <Switch.Control><Switch.Thumb /></Switch.Control>
   {#if props.label != null}
     <Switch.Label>{props.label}</Switch.Label>

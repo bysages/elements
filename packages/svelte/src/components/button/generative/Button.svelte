@@ -9,6 +9,7 @@
   variant={props.variant ?? "solid"}
   tone={props.tone}
   size={props.size}
+  disabled={props.disabled}
   onclick={() => emit("press")}
 >
   {props.label}

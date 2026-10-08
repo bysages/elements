@@ -17,6 +17,7 @@ export default defineEntry({
           modelValue: value ?? "",
           placeholder: props.placeholder,
           type: props.type,
+          disabled: props.disabled,
           "onUpdate:modelValue": (next: string) => setValue(next),
         }),
       );

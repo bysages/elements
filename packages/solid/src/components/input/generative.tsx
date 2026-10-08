@@ -23,6 +23,9 @@ export default defineEntry({
           get type() {
             return props.type;
           },
+          get disabled() {
+            return props.disabled;
+          },
           onValueChange: (next: string) => setValue(next),
         }),
       );

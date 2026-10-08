@@ -19,6 +19,9 @@ export default defineEntry({
         get size() {
           return props.size;
         },
+        get disabled() {
+          return props.disabled;
+        },
         onClick: () => emit("press"),
         get children() {
           return props.label;

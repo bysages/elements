@@ -11,7 +11,7 @@ export default defineEntry({
   Select: {
     ...faces.Select,
     component: ({ props, bindings }) => {
-      const [value, setValue] = useBound<string>(props.value, bindings?.value);
+      const [value, setValue] = useBound<string | string[]>(props.value, bindings?.value);
       const collection = collectionFor(props.options);
       return labelled(
         props.label,
@@ -19,8 +19,17 @@ export default defineEntry({
           Select.Root as never,
           {
             collection,
-            modelValue: value,
-            "onUpdate:modelValue": (next: string) => setValue(next),
+            multiple: props.multiple,
+            disabled: props.disabled,
+            modelValue: props.multiple
+              ? Array.isArray(value)
+                ? value
+                : value
+                  ? [value]
+                  : undefined
+              : value,
+            "onUpdate:modelValue": (next: string[]) =>
+              setValue(props.multiple ? next : (next.at(0) ?? "")),
           },
           () => [
             h(Select.Control, () => [

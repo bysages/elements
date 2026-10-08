@@ -15,6 +15,9 @@ export default defineEntry({
         get checked() {
           return checked ?? false;
         },
+        get disabled() {
+          return props.disabled;
+        },
         onCheckedChange: (details: { checked: boolean }) => setChecked(details.checked),
         get children() {
           return [

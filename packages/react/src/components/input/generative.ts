@@ -17,6 +17,7 @@ export default defineEntry({
           value: value ?? "",
           placeholder: props.placeholder,
           type: props.type,
+          disabled: props.disabled,
           onValueChange: (next: string) => setValue(next),
         }),
       );

@@ -85,6 +85,7 @@ export const faces = defineFace({
       variant: z.enum(["solid", "outline", "ghost", "subtle"]).optional(),
       tone: z.enum(["ink", "success", "warning", "danger", "info"]).optional(),
       size: z.enum(["sm", "md", "lg"]).optional(),
+      disabled: z.boolean().optional(),
     }),
     description:
       "The primary action register: solid ink for the one main action, outline, ghost, or subtle for the rest.",
@@ -116,11 +117,16 @@ export const faces = defineFace({
       placeholder: z.string().optional(),
       type: z.enum(["text", "email", "url", "search", "tel"]).optional(),
       value: z.string().optional(),
+      disabled: z.boolean().optional(),
     }),
     description: "A single-line field; rely on border, surface and the focus halo.",
   },
   Progress: {
-    props: z.object({ value: z.number().optional(), label: z.string().optional() }),
+    props: z.object({
+      value: z.number().optional(),
+      label: z.string().optional(),
+      max: z.number().optional(),
+    }),
     description: "A working track that fills toward done.",
   },
   RadioGroup: {
@@ -132,7 +138,9 @@ export const faces = defineFace({
       label: z.string().optional(),
       placeholder: z.string().optional(),
       options: z.array(z.object({ label: z.string(), value: z.string() })),
-      value: z.string().optional(),
+      value: z.union([z.string(), z.array(z.string())]).optional(),
+      multiple: z.boolean().optional(),
+      disabled: z.boolean().optional(),
     }),
     description: "A choice field that opens a ruled list; options carry label and value.",
   },
@@ -141,7 +149,13 @@ export const faces = defineFace({
     description: "Hairline divider between sections.",
   },
   Slider: {
-    props: z.object({ label: z.string().optional(), value: z.number().optional() }),
+    props: z.object({
+      label: z.string().optional(),
+      value: z.number().optional(),
+      min: z.number().optional(),
+      max: z.number().optional(),
+      step: z.number().optional(),
+    }),
     description: "A ruled track the hand slides between bounds.",
   },
   Spinner: {
@@ -170,7 +184,11 @@ export const faces = defineFace({
     description: "One loud figure with its quiet label and an optional delta.",
   },
   Switch: {
-    props: z.object({ label: z.string().optional(), checked: z.boolean().optional() }),
+    props: z.object({
+      label: z.string().optional(),
+      checked: z.boolean().optional(),
+      disabled: z.boolean().optional(),
+    }),
     description: "An instant on/off; label names what it switches.",
   },
   Text: {
@@ -186,6 +204,7 @@ export const faces = defineFace({
       placeholder: z.string().optional(),
       rows: z.number().int().optional(),
       value: z.string().optional(),
+      disabled: z.boolean().optional(),
     }),
     description: "A multi-line field for prose-length answers.",
   },
