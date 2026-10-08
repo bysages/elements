@@ -27,6 +27,8 @@ export const headingClass: Record<string, string> = {
   "2": "text-3xl",
   "3": "text-2xl",
   "4": "text-xl",
+  "5": "text-lg",
+  "6": "text-base",
 };
 
 export function initials(name: string) {
@@ -105,7 +107,7 @@ export const faces = defineFace({
     description: "One independent box with its label.",
   },
   Heading: {
-    props: z.object({ text: z.string(), level: z.enum(["1", "2", "3", "4"]).optional() }),
+    props: z.object({ text: z.string(), level: z.enum(["1", "2", "3", "4", "5", "6"]).optional() }),
     description: "Section heading. One per view at level 1; do not skip levels.",
   },
   Input: {
