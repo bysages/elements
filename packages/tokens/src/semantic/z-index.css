@@ -1,7 +1,9 @@
 /* Overlay stacking — one shared base for every dismissible layer (dialog,
    popover, menu, select, …), ordered by zag's --layer-index offset so any
-   nesting combination stacks correctly. Per-component bases are forbidden. */
+   nesting combination stacks correctly. Per-component bases are forbidden.
+   Persistent floating chrome sits below every dismissible overlay. */
 :root,
 :host {
   --bs-z-overlay: 1000;
+  --bs-z-floating: calc(var(--bs-z-overlay) - 100);
 }

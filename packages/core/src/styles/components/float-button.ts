@@ -10,7 +10,7 @@ export const floatButtonCss = /* css */ `
      the corner, the actions rise (or hang) beyond it. */
   flex-direction: column-reverse;
   gap: var(--bs-gap-sm);
-  z-index: calc(var(--bs-z-overlay) + var(--layer-index, 0));
+  z-index: var(--bs-z-floating);
 }
 
 /* Top moorings hang the actions below the trigger instead. */

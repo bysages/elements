@@ -7,7 +7,7 @@ export const backTopCss = /* css */ `
   position: fixed;
   inset-inline-end: calc(var(--bs-space-6) + var(--bs-safe-area-inset-right));
   inset-block-end: calc(var(--bs-space-6) + var(--bs-safe-area-inset-bottom));
-  z-index: var(--bs-z-overlay);
+  z-index: var(--bs-z-floating);
   transition:
     opacity var(--bs-duration-base) var(--bs-ease-out),
     translate var(--bs-duration-base) var(--bs-ease-spring);
