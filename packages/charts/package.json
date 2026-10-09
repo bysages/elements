@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "@bysages/core": "workspace:*",
-    "@tanstack/charts": "0.18.0"
+    "@tanstack/charts": "1.1.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "7.3.1",
