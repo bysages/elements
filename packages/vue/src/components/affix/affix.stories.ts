@@ -1,24 +1,21 @@
 import type { Meta } from "@storybook/vue3-vite";
-import { h } from "vue";
+import { h, type VNode } from "vue";
 
 import { Affix } from ".";
 
 const meta: Meta = { title: "Components/Navigation/Affix" };
 export default meta;
 
-function toolbar() {
+function toolbar(label: string, trailing: string) {
   return h(
     "div",
     {
       style:
-        "display: flex; gap: var(--bs-space-3); align-items: center; padding: var(--bs-space-3) var(--bs-space-4); background: var(--bs-color-surface-1); border: 1px solid var(--bs-color-border); border-radius: var(--bs-radius-sm); font-size: var(--bs-font-size-sm); letter-spacing: var(--bs-tracking-label);",
+        "display: flex; gap: var(--bs-space-3); align-items: center; justify-content: space-between; padding: var(--bs-space-3) var(--bs-space-4); background: var(--bs-color-surface-1); border: 1px solid var(--bs-color-border); border-radius: var(--bs-radius-sm); font-size: var(--bs-font-size-sm); letter-spacing: var(--bs-tracking-label);",
     },
     [
-      h("strong", () => "Reading tools"),
-      h("span", { style: "color: var(--bs-color-text-tertiary);" }, "·"),
-      h("span", () => "Contents"),
-      h("span", () => "Print"),
-      h("span", () => "Share"),
+      h("strong", () => label),
+      h("span", { style: "color: var(--bs-color-text-tertiary);" }, trailing),
     ],
   );
 }
@@ -28,37 +25,47 @@ function passage(index: number) {
     "p",
     {
       style:
-        "margin: 0 0 var(--bs-space-4); color: var(--bs-color-text-secondary); line-height: var(--bs-line-height-relaxed);",
+        "margin: 0; color: var(--bs-color-text-secondary); line-height: var(--bs-line-height-relaxed);",
     },
-    `Passage ${index} — the tools travel with the reader: once their row reaches the top of the page they stay there while the chapters move on underneath.`,
+    `Passage ${index} — scroll the panel: the pinned row stays at its edge while this content travels.`,
   );
 }
 
-/** A toolbar nailed to the top of the page: scroll, and it stays. */
+function passages() {
+  return h(
+    "div",
+    { style: "display: grid; gap: var(--bs-space-4);" },
+    Array.from({ length: 14 }, (_, index) => passage(index + 1)),
+  );
+}
+
+function panel(children: VNode[]) {
+  return h(
+    "div",
+    {
+      style:
+        "height: 20rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--bs-space-4); border: 1px solid var(--bs-color-border); border-radius: var(--bs-radius-md); background: var(--bs-color-surface-0);",
+    },
+    children,
+  );
+}
+
+/** A toolbar nailed to the top of its own scroll lane. */
 export const Basic = {
   render: () =>
-    h("div", [
-      h(Affix, () => toolbar()),
-      h(
-        "div",
-        { style: "max-inline-size: 46rem; padding-block-start: var(--bs-space-6);" },
-        Array.from({ length: 16 }, (_, index) => passage(index + 1)),
-      ),
+    panel([
+      h(Affix, () => toolbar("Reading tools", "Contents · Print · Share")),
+      h("div", { style: "padding-block-start: var(--bs-space-4);" }, [passages()]),
     ]),
 };
 
-/** Both offsets given: the row holds its place inside the band between
- * them — clearing the header, keeping clear of the page's end. */
+/** A bottom-offset row stays at the lane's lower edge. */
 export const OffsetBottom = {
   render: () =>
-    h("div", [
-      h(Affix, { offsetTop: "var(--bs-space-12)", offsetBottom: "var(--bs-space-4)" }, () =>
-        toolbar(),
-      ),
-      h(
-        "div",
-        { style: "max-inline-size: 46rem; padding-block-start: var(--bs-space-6);" },
-        Array.from({ length: 16 }, (_, index) => passage(index + 1)),
+    panel([
+      passages(),
+      h(Affix, { offsetBottom: "0px", style: "padding-block-start: var(--bs-space-4);" }, () =>
+        toolbar("Review draft", "Save · Publish"),
       ),
     ]),
 };

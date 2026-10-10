@@ -6,7 +6,7 @@ import type { Snippet } from "svelte";
 
 import type { AffixProps } from "./props";
 
-let { offsetTop = "0px", offsetBottom = "0px", children, ...rest }: AffixProps = $props();
+let { offsetTop, offsetBottom, children, ...rest }: AffixProps = $props();
 </script>
 
 <!-- A nail: the wrapped content travels with the page until it reaches

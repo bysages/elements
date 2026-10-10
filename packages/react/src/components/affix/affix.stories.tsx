@@ -1,17 +1,19 @@
 import type { Meta } from "@storybook/react-vite";
+import type { ReactNode } from "react";
 
 import { Affix } from ".";
 
 const meta: Meta = { title: "Components/Navigation/Affix" };
 export default meta;
 
-function toolbar() {
+function toolbar({ label, trailing }: { label: string; trailing: string }) {
   return (
     <div
       style={{
         display: "flex",
         gap: "var(--bs-space-3)",
         alignItems: "center",
+        justifyContent: "space-between",
         padding: "var(--bs-space-3) var(--bs-space-4)",
         background: "var(--bs-color-surface-1)",
         border: "1px solid var(--bs-color-border)",
@@ -20,11 +22,8 @@ function toolbar() {
         letterSpacing: "var(--bs-tracking-label)",
       }}
     >
-      <strong>Reading tools</strong>
-      <span style={{ color: "var(--bs-color-text-tertiary)" }}>·</span>
-      <span>Contents</span>
-      <span>Print</span>
-      <span>Share</span>
+      <strong>{label}</strong>
+      <span style={{ color: "var(--bs-color-text-tertiary)" }}>{trailing}</span>
     </div>
   );
 }
@@ -34,50 +33,61 @@ function passage(index: number) {
     <p
       key={index}
       style={{
-        margin: "0 0 var(--bs-space-4)",
+        margin: 0,
         color: "var(--bs-color-text-secondary)",
         lineHeight: "var(--bs-line-height-relaxed)",
       }}
     >
-      Passage {index} — the tools travel with the reader: once their row reaches the top of the page
-      they stay there while the chapters move on underneath.
+      Passage {index} — scroll the panel: the pinned row stays at its edge while this content
+      travels.
     </p>
   );
 }
 
-/** A toolbar nailed to the top of the page: scroll, and it stays. */
+function passages() {
+  return (
+    <div style={{ display: "grid", gap: "var(--bs-space-4)" }}>
+      {Array.from({ length: 14 }, (_, index) => passage(index + 1))}
+    </div>
+  );
+}
+
+function Panel({ children }: { children: ReactNode }) {
+  return (
+    <div
+      style={{
+        height: "20rem",
+        overflowY: "auto",
+        overscrollBehavior: "contain",
+        padding: "var(--bs-space-4)",
+        border: "1px solid var(--bs-color-border)",
+        borderRadius: "var(--bs-radius-md)",
+        background: "var(--bs-color-surface-0)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** A toolbar nailed to the top of its own scroll lane. */
 export const Basic = {
   render: () => (
-    <div>
-      <Affix>{toolbar()}</Affix>
-      <div
-        style={{
-          maxInlineSize: "46rem",
-          paddingBlockStart: "var(--bs-space-6)",
-        }}
-      >
-        {Array.from({ length: 16 }, (_, index) => passage(index + 1))}
-      </div>
-    </div>
+    <Panel>
+      <Affix>{toolbar({ label: "Reading tools", trailing: "Contents · Print · Share" })}</Affix>
+      <div style={{ paddingBlockStart: "var(--bs-space-4)" }}>{passages()}</div>
+    </Panel>
   ),
 };
 
-/** Both offsets given: the row holds its place inside the band between
- * them — clearing the header, keeping clear of the page's end. */
+/** A bottom-offset row stays at the lane's lower edge. */
 export const OffsetBottom = {
   render: () => (
-    <div>
-      <Affix offsetTop="var(--bs-space-12)" offsetBottom="var(--bs-space-4)">
-        {toolbar()}
+    <Panel>
+      {passages()}
+      <Affix offsetBottom="0px" style={{ paddingBlockStart: "var(--bs-space-4)" }}>
+        {toolbar({ label: "Review draft", trailing: "Save · Publish" })}
       </Affix>
-      <div
-        style={{
-          maxInlineSize: "46rem",
-          paddingBlockStart: "var(--bs-space-6)",
-        }}
-      >
-        {Array.from({ length: 16 }, (_, index) => passage(index + 1))}
-      </div>
-    </div>
+    </Panel>
   ),
 };

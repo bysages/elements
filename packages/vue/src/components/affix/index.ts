@@ -25,8 +25,8 @@ export const Affix = withSelfRoot(
   defineComponent({
     name: "Affix",
     props: {
-      offsetTop: { type: String, default: "0px" },
-      offsetBottom: { type: String, default: "0px" },
+      offsetTop: { type: String, default: undefined },
+      offsetBottom: { type: String, default: undefined },
     },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("affix");

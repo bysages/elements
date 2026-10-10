@@ -20,7 +20,7 @@ export interface AffixProps extends HTMLAttributes<HTMLDivElement> {
   offsetBottom?: string;
 }
 
-function AffixImpl({ offsetTop = "0px", offsetBottom = "0px", ...rest }: AffixProps) {
+function AffixImpl({ offsetTop, offsetBottom, ...rest }: AffixProps) {
   injectComponentStyle("affix");
   return (
     <div

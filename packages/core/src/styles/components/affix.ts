@@ -4,6 +4,6 @@ export const affixCss = /* css */ `
 [data-scope="affix"][data-part="root"] {
   position: sticky;
   top: var(--bs-affix-top, 0px);
-  bottom: var(--bs-affix-bottom, 0px);
+  bottom: var(--bs-affix-bottom, auto);
 }
 `;

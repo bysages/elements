@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import { Affix } from "@bysages/vue";
 
-const passages = 16;
+const passages = 14;
 </script>
 
 <template>
-  <div class="w-full">
-    <Affix offset-top="var(--bs-space-12)" offset-bottom="var(--bs-space-4)">
-      <div
-        class="flex gap-3 items-center px-4 py-3 bg-surface-1 border border-border rounded-sm text-sm tracking-label"
-      >
-        <strong>Reading tools</strong>
-        <span class="text-tertiary">·</span>
-        <span>Contents</span>
-        <span>Print</span>
-        <span>Share</span>
-      </div>
-    </Affix>
-    <div class="pt-4">
-      <p v-for="n in passages" :key="n" class="leading-relaxed text-secondary">
-        Passage {{ n }} — with both offsets given, the row holds its place inside the band between
-        them: clear of the header, clear of the page's end.
+  <div
+    class="h-80 overflow-y-auto overscroll-contain rounded-md border border-border bg-surface-0 p-4"
+  >
+    <div class="space-y-4">
+      <p v-for="n in passages" :key="n" class="m-0 leading-relaxed text-secondary">
+        Passage {{ n }} — scroll this panel: the action bar waits at the lower edge while the
+        passages travel above it.
       </p>
     </div>
+    <Affix class="pt-4" offset-bottom="0px">
+      <div
+        class="flex gap-3 items-center justify-between px-4 py-3 bg-surface-1 border border-border rounded-sm text-sm tracking-label"
+      >
+        <strong>Review draft</strong>
+        <span class="text-tertiary">Save · Publish</span>
+      </div>
+    </Affix>
   </div>
 </template>
