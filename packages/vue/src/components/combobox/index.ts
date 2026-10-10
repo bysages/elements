@@ -1,6 +1,6 @@
 import { createListCollection } from "@ark-ui/vue/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/vue/combobox";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import {
   computed,
   defineComponent,

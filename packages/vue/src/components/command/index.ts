@@ -1,7 +1,7 @@
 import { useListCollection, type ListCollection } from "@ark-ui/vue/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/vue/combobox";
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import { defineComponent, h, ref, watch, type PropType } from "vue";
 

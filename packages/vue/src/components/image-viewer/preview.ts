@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type VNode } from "vue";
 
 import { iconNode } from "../../internal/icon";

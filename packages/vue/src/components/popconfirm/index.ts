@@ -1,5 +1,5 @@
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 

@@ -1,5 +1,5 @@
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/vue/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import {
   computed,
   defineComponent,

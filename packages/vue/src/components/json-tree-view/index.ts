@@ -1,5 +1,5 @@
 import { JsonTreeView as ArkJsonTreeView } from "@ark-ui/vue/json-tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h } from "vue";
 
 import { defineFamily } from "../../internal/family";

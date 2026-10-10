@@ -1,5 +1,5 @@
 import { DateInput as ArkDateInput, type DateInputDateValue } from "@ark-ui/vue/date-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { renderHtml } from "@tanstack/markdown/html";
 import type { PropType } from "vue";
 import { computed, defineComponent, h, ref, watchPostEffect } from "vue";

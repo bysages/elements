@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { getIcon } from "@bysages/core/icons";
 import type { IconifyIcon } from "@bysages/core/icons";
 import type { SetupContext } from "vue";

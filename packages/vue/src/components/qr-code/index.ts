@@ -1,5 +1,5 @@
 import { QrCode as ArkQrCode } from "@ark-ui/vue/qr-code";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

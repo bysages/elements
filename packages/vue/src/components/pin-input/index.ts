@@ -1,5 +1,5 @@
 import { PinInput as ArkPinInput } from "@ark-ui/vue/pin-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

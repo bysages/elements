@@ -1,5 +1,5 @@
 import { useFieldContext } from "@ark-ui/vue/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, ref, watchPostEffect, type PropType, type SetupContext } from "vue";
 
 import { withSelfRoot } from "../../internal/family";

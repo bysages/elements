@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComputedRef, InjectionKey, PropType, SetupContext } from "vue";
 import { computed, defineComponent, h, inject, provide } from "vue";
 

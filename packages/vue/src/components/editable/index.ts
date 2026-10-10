@@ -1,5 +1,5 @@
 import { Editable as ArkEditable, useEditableContext } from "@ark-ui/vue/editable";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, unref, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

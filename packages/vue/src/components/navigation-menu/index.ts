@@ -1,5 +1,5 @@
 import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/vue/navigation-menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

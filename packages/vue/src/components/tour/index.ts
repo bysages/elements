@@ -5,7 +5,7 @@ import {
   type UseTourReturn,
   type TourStepDetails,
 } from "@ark-ui/vue/tour";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { Component, PropType, SetupContext } from "vue";
 import { computed, defineComponent, h, useId } from "vue";
 

@@ -1,5 +1,5 @@
 import { Field as ArkField } from "@ark-ui/vue/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useForm, useField } from "@tanstack/vue-form";
 import { defineComponent, h, inject, provide, type Component, type PropType } from "vue";
 

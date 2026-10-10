@@ -1,5 +1,5 @@
 import { TagsInput as ArkTagsInput } from "@ark-ui/vue/tags-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

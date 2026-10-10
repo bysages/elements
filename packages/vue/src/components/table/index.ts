@@ -1,5 +1,5 @@
 import { createListCollection } from "@ark-ui/vue/select";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SortingState } from "@tanstack/vue-table";
 import {
   FlexRender,

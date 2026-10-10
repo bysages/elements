@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useVirtualizer } from "@tanstack/vue-virtual";
 import type { CSSProperties, SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";

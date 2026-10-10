@@ -1,5 +1,5 @@
 import { Menu as ArkMenu } from "@ark-ui/vue/menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import {
   computed,
   defineComponent,

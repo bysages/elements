@@ -1,5 +1,5 @@
 import { Toc as ArkToc } from "@ark-ui/vue/toc";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, onMounted, ref, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

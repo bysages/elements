@@ -1,6 +1,6 @@
 import { DEFAULT_ENVIRONMENT, useEnvironmentContext } from "@ark-ui/vue/environment";
 import { DEFAULT_LOCALE, useLocaleContext, useFilter } from "@ark-ui/vue/locale";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/vue";
 import type { SetupContext, VNodeArrayChildren } from "vue";

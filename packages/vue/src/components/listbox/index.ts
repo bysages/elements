@@ -1,6 +1,6 @@
 import { createListCollection } from "@ark-ui/vue/collection";
 import { Listbox as ArkListbox } from "@ark-ui/vue/listbox";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import {
   computed,
   defineComponent,

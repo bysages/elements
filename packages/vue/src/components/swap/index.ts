@@ -1,5 +1,5 @@
 import { Swap as ArkSwap } from "@ark-ui/vue/swap";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h } from "vue";
 
 import { defineFamily } from "../../internal/family";

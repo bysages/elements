@@ -1,5 +1,5 @@
 import { Timer as ArkTimer } from "@ark-ui/vue/timer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component } from "vue";
 
 import { defineFamily } from "../../internal/family";

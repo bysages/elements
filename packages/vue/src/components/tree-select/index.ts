@@ -1,7 +1,7 @@
 import { useFilter } from "@ark-ui/vue/locale";
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/vue/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 

@@ -1,5 +1,5 @@
 import { Splitter as ArkSplitter } from "@ark-ui/vue/splitter";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, SetupContext, SlotsType } from "vue";
 import {
   computed,

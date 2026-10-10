@@ -1,5 +1,5 @@
 import { SignaturePad as ArkSignaturePad } from "@ark-ui/vue/signature-pad";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

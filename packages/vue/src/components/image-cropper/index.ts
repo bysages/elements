@@ -1,5 +1,5 @@
 import { ImageCropper as ArkImageCropper } from "@ark-ui/vue/image-cropper";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h } from "vue";
 
 import { defineFamily } from "../../internal/family";

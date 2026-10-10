@@ -1,6 +1,6 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/vue/checkbox";
 import { useFieldContext } from "@ark-ui/vue/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import { computed, defineComponent, h, type PropType } from "vue";
 

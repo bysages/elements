@@ -1,5 +1,5 @@
 import { Marquee as ArkMarquee } from "@ark-ui/vue/marquee";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

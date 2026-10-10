@@ -1,5 +1,5 @@
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

@@ -1,5 +1,5 @@
 import { Avatar as ArkAvatar } from "@ark-ui/vue/avatar";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";

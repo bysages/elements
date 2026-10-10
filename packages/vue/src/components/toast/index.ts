@@ -4,7 +4,7 @@ import {
   createToaster,
   type CreateToasterReturn,
 } from "@ark-ui/vue/toast";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type DefineComponent, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

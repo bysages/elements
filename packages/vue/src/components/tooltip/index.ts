@@ -1,5 +1,5 @@
 import { Tooltip as ArkTooltip } from "@ark-ui/vue/tooltip";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";

@@ -1,5 +1,5 @@
 import { Fieldset as ArkFieldset } from "@ark-ui/vue/fieldset";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
