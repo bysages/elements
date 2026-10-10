@@ -21,6 +21,8 @@ let {
 }: AutoCompleteProps =
   $props();
 
+// The field's live text is kept outside the sync effect's dependencies.
+let fieldText = "";
 const messages = useComponentMessages();
 const { collection, filter: filterItems, set } = useListCollection<string>({
   initialItems: untrack(() => items),
@@ -28,8 +30,12 @@ const { collection, filter: filterItems, set } = useListCollection<string>({
     filter ? filter(item, input) : item.toLowerCase().includes(input.toLowerCase()),
 });
 
+// A caller's list is live: sync it without remounting, then restore the
+// active query because `set` clears the collection's own filter. The
+// field text is untracked so keystrokes do not rebuild the collection.
 $effect(() => {
   set(items);
+  filterItems(untrack(() => fieldText));
 });
 </script>
 
@@ -47,6 +53,7 @@ one job. -->
     if (first != null) value = first;
   }}
   onInputValueChange={(details) => {
+    fieldText = details.inputValue;
     filterItems(details.inputValue);
     value = details.inputValue;
   }}

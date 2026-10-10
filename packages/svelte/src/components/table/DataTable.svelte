@@ -200,6 +200,7 @@ const mergeMode = $derived(!virtual && !!merge);
  * actually renders. */
 const baseRowHeight = () => rowHeight ?? 40;
 function densityScale() {
+  if (typeof document === "undefined") return 1;
   const value = Number(
     getComputedStyle(document.documentElement).getPropertyValue("--bs-density-scale"),
   );
@@ -223,6 +224,30 @@ $effect(() => {
   void rows.length;
   get(virtualizer).measure();
 });
+let hydrated = $state(false);
+$effect(() => {
+  hydrated = true;
+});
+type VirtualRow = { key: string | number; index: number; start: number; size: number };
+
+// TanStack cannot see the scroll element until hydration. The declared
+// row height serves the same first-screen slice on server and client;
+// the measured window takes over after mount.
+const virtualRows = $derived.by<VirtualRow[]>(() => {
+  if (hydrated) return $virtualizer.getVirtualItems();
+  if (!virtualMode) return [];
+  const fallback = Math.max(1, Math.ceil(320 / baseRowHeight()));
+  return rows.slice(0, fallback).map((row, index) => ({
+    key: row.id ?? index,
+    index,
+    start: index * baseRowHeight(),
+    size: baseRowHeight(),
+  }));
+});
+const virtualTotal = $derived(
+  hydrated ? $virtualizer.getTotalSize() : rows.length * baseRowHeight(),
+);
+
 // Density and scene presets rewrite the scale in place; re-measure so
 // the virtual window keeps matching the rendered rows.
 $effect(() => {
@@ -611,11 +636,11 @@ function cellStyle(column: TColumn, span: number) {
         data-merge={mergeMode || undefined}
         data-virtual={virtualMode || undefined}
         style={virtualMode
-          ? { "--bs-table-virtual-total": `${$virtualizer.getTotalSize()}px` }
+          ? { "--bs-table-virtual-total": `${virtualTotal}px` }
           : undefined}
       >
         {#if virtualMode}
-          {#each $virtualizer.getVirtualItems() as item (item.key)}
+          {#each virtualRows as item (item.key)}
             {@const row = rows[item.index]!}
             {@render renderRow(row, item)}
           {/each}

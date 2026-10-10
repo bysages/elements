@@ -3,6 +3,7 @@ import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
+import { useEffect, useRef } from "react";
 
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -41,11 +42,26 @@ function AutoCompleteImpl({
   injectComponentStyle("combobox");
   const messages = useComponentMessages();
   const hostId = useElementId("autocomplete", rest);
-  const { collection, filter: filterItems } = useListCollection({
+  const fieldText = useRef("");
+  const {
+    collection,
+    set,
+    filter: filterItems,
+  } = useListCollection({
     initialItems: items,
     filter: (item: string, input: string) =>
       filter ? filter(item, input) : item.toLowerCase().includes(input.toLowerCase()),
   });
+
+  // A caller's list is live: sync it without remounting, then restore the
+  // active query because `set` clears the collection's own filter.
+  useEffect(() => {
+    set(items);
+    filterItems(fieldText.current);
+    // The field text is read at sync time, not a dependency; keystrokes
+    // filter immediately below and must not make this effect re-run.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
   return (
     <ArkCombobox.Root
@@ -60,6 +76,7 @@ function AutoCompleteImpl({
         if (first != null) onValueChange?.(first);
       }}
       onInputValueChange={(details) => {
+        fieldText.current = details.inputValue;
         filterItems(details.inputValue);
         onValueChange?.(details.inputValue);
       }}

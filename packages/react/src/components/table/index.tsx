@@ -44,7 +44,15 @@ import {
   useTable,
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from "react";
+import {
+  type CSSProperties,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -361,6 +369,7 @@ function DataTableImpl(rawProps: DataTableProps) {
 
   const viewport = useRef<HTMLDivElement>(null);
   const rows = table.getRowModel().rows;
+  const [hydrated, setHydrated] = useState(false);
 
   /** The declared row height is the density-scale baseline; the live
    * scale comes off the document so the virtual window matches what CSS
@@ -395,8 +404,21 @@ function DataTableImpl(rawProps: DataTableProps) {
     return () => observer.disconnect();
   }, [virtual]);
 
-  const virtualRows = virtualizer.getVirtualItems();
-  const totalSize = virtualizer.getTotalSize();
+  // TanStack cannot see the scroll element until hydration. The declared
+  // row height serves the same first-screen slice on server and client;
+  // the measured window takes over after mount.
+  useEffect(() => setHydrated(true), []);
+  type VirtualRow = { key: string | number; index: number; start: number; size: number };
+  const fallbackRows = virtual
+    ? rows.slice(0, Math.max(1, Math.ceil(320 / rowHeight))).map((row, index): VirtualRow => ({
+        key: row.id ?? index,
+        index,
+        start: index * rowHeight,
+        size: rowHeight,
+      }))
+    : [];
+  const virtualRows = hydrated ? virtualizer.getVirtualItems() : fallbackRows;
+  const totalSize = hydrated ? virtualizer.getTotalSize() : rows.length * rowHeight;
 
   /** Column ids of the visible leaves, for pin-seam bookkeeping. */
   const leafIds = table.getAllLeafColumns().map((c) => c.id);

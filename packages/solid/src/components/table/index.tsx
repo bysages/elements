@@ -321,6 +321,7 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
 
   const [viewport, setViewport] = createSignal<HTMLDivElement | null>(null);
   const rows = createMemo(() => table.getRowModel().rows);
+  const [mounted, setMounted] = createSignal(false);
 
   /** Instance-shaped aliases for the render helpers below. */
   type TColumn = Column<Features, any, unknown>;
@@ -367,6 +368,26 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
 
   const virtual = () => props.virtual && !props.merge;
   const mergeMode = () => !props.virtual && !!props.merge;
+
+  // TanStack cannot see the scroll element until hydration. The declared
+  // row height serves the same first-screen slice on server and client;
+  // the measured window takes over after mount.
+  onMount(() => setMounted(true));
+  type VirtualRow = ReturnType<typeof virtualizer.getVirtualItems>[number];
+  const virtualRows = (): VirtualRow[] => {
+    if (mounted()) return virtualizer.getVirtualItems();
+    if (!virtual()) return [];
+    const fallback = Math.max(1, Math.ceil(320 / baseRowHeight()));
+    return rows()
+      .slice(0, fallback)
+      .map((row, index) => {
+        const start = index * baseRowHeight();
+        const size = baseRowHeight();
+        return { key: row.id ?? index, index, start, end: start + size, size, lane: 0 };
+      });
+  };
+  const totalSize = () =>
+    mounted() ? virtualizer.getTotalSize() : rows().length * baseRowHeight();
 
   /** Column ids of the visible leaves, for pin-seam bookkeeping. */
   const leafIds = createMemo(() => table.getAllLeafColumns().map((c) => c.id));
@@ -826,16 +847,10 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
             data-part="body"
             data-merge={mergeMode() || undefined}
             data-virtual={virtual() || undefined}
-            style={
-              virtual()
-                ? { "--bs-table-virtual-total": `${virtualizer.getTotalSize()}px` }
-                : undefined
-            }
+            style={virtual() ? { "--bs-table-virtual-total": `${totalSize()}px` } : undefined}
           >
             {virtual() ? (
-              <For each={virtualizer.getVirtualItems()}>
-                {(item) => renderRow(rows()[item.index]!, item)}
-              </For>
+              <For each={virtualRows()}>{(item) => renderRow(rows()[item.index]!, item)}</For>
             ) : (
               <For each={rows()}>{(row) => renderRow(row)}</For>
             )}

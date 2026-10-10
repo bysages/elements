@@ -1,7 +1,7 @@
 import { useListCollection } from "@ark-ui/solid/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/solid/combobox";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { For, splitProps } from "solid-js";
+import { For, createEffect, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
@@ -42,10 +42,20 @@ function AutoCompleteImpl(props: AutoCompleteProps) {
     "onValueChange",
   ]);
   const id = useElementId("autocomplete", () => props.id);
-  const { collection, filter } = useListCollection({
+  // The field's live text is never rendered; keeping it plain keeps the
+  // collection sync effect focused on the caller's list alone.
+  let fieldText = "";
+  const { collection, set, filter } = useListCollection({
     initialItems: own.items ?? [],
     filter: (item, input) =>
       own.filter ? own.filter(item, input) : item.toLowerCase().includes(input.toLowerCase()),
+  });
+
+  // A caller's list is live: sync it without remounting, then restore the
+  // active query because `set` clears the collection's own filter.
+  createEffect(() => {
+    set(own.items ?? []);
+    filter(fieldText);
   });
 
   return (
@@ -61,6 +71,7 @@ function AutoCompleteImpl(props: AutoCompleteProps) {
         if (first != null) own.onValueChange?.(first);
       }}
       onInputValueChange={(details) => {
+        fieldText = details.inputValue;
         filter(details.inputValue);
         own.onValueChange?.(details.inputValue);
       }}
