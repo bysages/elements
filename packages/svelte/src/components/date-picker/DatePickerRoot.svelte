@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("date-picker");
 
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("date-picker", generatedId, rest.id));
 <ArkDatePicker.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkDatePicker.Root>
+

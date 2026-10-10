@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("toggle-group");
 
 import { ToggleGroup as ArkToggleGroup } from "@ark-ui/svelte/toggle-group";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("toggle-group", generatedId, rest.id));
 <ArkToggleGroup.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkToggleGroup.Root>
+

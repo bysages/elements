@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { Collapsible } from "../collapsible";
@@ -24,3 +24,4 @@ register: bare ink for a trigger, the thought on one hairline. -->
     </div>
   </Collapsible.Content>
 </Collapsible.Root>
+

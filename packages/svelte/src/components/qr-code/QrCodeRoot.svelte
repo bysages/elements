@@ -1,6 +1,6 @@
 <script lang="ts">
 import { QrCode as ArkQrCode } from "@ark-ui/svelte/qr-code";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { QrCodeRootProps } from "@ark-ui/svelte/qr-code";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("qr-code", generatedId, rest.id));
 <ArkQrCode.Root bind:ref bind:value {...rest} {id}>
   {@render children?.()}
 </ArkQrCode.Root>
+

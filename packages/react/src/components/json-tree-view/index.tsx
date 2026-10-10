@@ -1,5 +1,5 @@
 import { JsonTreeView as ArkJsonTreeView } from "@ark-ui/react/json-tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { iconNode } from "../../internal/icon";

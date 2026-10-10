@@ -1,5 +1,5 @@
 import { Field as ArkField } from "@ark-ui/react/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ChangeEvent, ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

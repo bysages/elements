@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("tags-input");
 
 import { TagsInput as ArkTagsInput } from "@ark-ui/svelte/tags-input";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("tags-input", generatedId, rest.id));
 <ArkTagsInput.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkTagsInput.Root>
+

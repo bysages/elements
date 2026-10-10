@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Collapsible as ArkCollapsible } from "@ark-ui/svelte/collapsible";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { CollapsibleRootProps } from "@ark-ui/svelte/collapsible";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("collapsible", generatedId, rest.id));
 <ArkCollapsible.Root bind:ref bind:open {...rest} {id}>
   {@render children?.()}
 </ArkCollapsible.Root>
+

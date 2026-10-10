@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("rating-group");
 
 import { RatingGroup as ArkRatingGroup } from "@ark-ui/svelte/rating-group";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("rating-group", generatedId, rest.id));
 <ArkRatingGroup.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkRatingGroup.Root>
+

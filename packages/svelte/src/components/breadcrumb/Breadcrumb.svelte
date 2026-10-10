@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("breadcrumb");
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -12,3 +12,4 @@ const messages = useComponentMessages();
 <nav {...rest} aria-label={label ?? messages().breadcrumb.label} data-scope="breadcrumb" data-part="root">
   {@render children?.()}
 </nav>
+

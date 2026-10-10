@@ -1,5 +1,5 @@
 import { Highlight as ArkHighlight } from "@ark-ui/svelte/highlight";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { withSelfRoot } from "../../internal/family";
 

@@ -1,5 +1,5 @@
 import { Tour as ArkTour } from "@ark-ui/svelte/tour";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { defineFamily } from "../../internal/family";
 import TourFacade from "./Tour.svelte";

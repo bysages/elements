@@ -1,6 +1,6 @@
 <script lang="ts">
 import { ImageCropper as ArkImageCropper } from "@ark-ui/svelte/image-cropper";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { ImageCropperRootProps } from "@ark-ui/svelte/image-cropper";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("image-cropper", generatedId, rest.id));
 <ArkImageCropper.Root bind:ref bind:zoom bind:rotation bind:flip {...rest} {id}>
   {@render children?.()}
 </ArkImageCropper.Root>
+

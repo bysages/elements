@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("empty");
 
 import type { EmptyTitleProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: EmptyTitleProps = $props();
 <h3 {...rest} data-scope="empty" data-part="title">
   {@render children?.()}
 </h3>
+

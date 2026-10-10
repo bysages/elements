@@ -1,7 +1,7 @@
 import { useListCollection } from "@ark-ui/react/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
 import { useElementId } from "../../internal/id";

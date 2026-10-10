@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactNode } from "react";
 
 /** A ledger of rows: Root is the list, Item one row, Leading the mark

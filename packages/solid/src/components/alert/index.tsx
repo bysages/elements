@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createContext, useContext, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 

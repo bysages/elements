@@ -1,6 +1,6 @@
 import { Progress as ArkProgress } from "@ark-ui/solid/progress";
 import type { ProgressRootProps as ArkProgressRootProps } from "@ark-ui/solid/progress";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

@@ -1,5 +1,5 @@
 import { createListCollection } from "@ark-ui/react/select";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type {
   CellData,
   Column,

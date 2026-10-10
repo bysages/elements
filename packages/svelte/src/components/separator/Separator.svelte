@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("separator");
 
 import type { SeparatorProps } from "./props";
@@ -15,3 +15,4 @@ let { orientation = "horizontal", decorative = false, ...rest }: SeparatorProps 
   data-orientation={orientation}
   aria-orientation={decorative ? undefined : orientation}
 ></div>
+

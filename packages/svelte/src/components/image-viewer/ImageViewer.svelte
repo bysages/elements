@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("image-viewer");
 
 import { Dialog } from "../dialog";
@@ -130,3 +130,4 @@ the viewer. -->
     </ArkDialog.Positioner>
   </Portal>
 </Dialog.Root>
+

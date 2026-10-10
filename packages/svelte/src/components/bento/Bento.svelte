@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "svelte/elements";
 
 injectComponentStyle("bento");
@@ -17,3 +17,4 @@ let { columns = 3, children, ...rest }: Props = $props();
 <div {...rest} style:--bs-bento-columns={String(columns)} data-scope="bento" data-part="root">
   {@render children?.()}
 </div>
+

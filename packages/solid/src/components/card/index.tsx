@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { Component, JSX } from "solid-js";
 
 /** A vessel: round, resting at the first elevation, one hairline for its

@@ -1,5 +1,5 @@
 import { Timer as ArkTimer } from "@ark-ui/react/timer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

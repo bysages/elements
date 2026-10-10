@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { Collapsible } from "../collapsible";
@@ -37,3 +37,4 @@ output folded inside. -->
     </div>
   </Collapsible.Content>
 </Collapsible.Root>
+

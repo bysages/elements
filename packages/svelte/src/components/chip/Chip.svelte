@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("chip");
 
 import type { ChipProps } from "./props";
@@ -10,3 +10,4 @@ let { value, max, tone = "ink", variant = "solid", ...rest }: ChipProps = $props
 <span {...rest} data-scope="chip" data-part="root" data-tone={tone} data-variant={variant}>
   {max != null && value > max ? `${max}+` : String(value)}
 </span>
+

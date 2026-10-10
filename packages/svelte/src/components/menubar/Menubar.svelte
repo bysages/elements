@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("menubar");
 injectComponentStyle("menu");
 
@@ -50,3 +50,4 @@ version. Inside an open menu the machine handles arrows and Escape. -->
     </ArkMenu.Root>
   {/each}
 </div>
+

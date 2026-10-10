@@ -1,6 +1,6 @@
 import { Editable as ArkEditable } from "@ark-ui/solid/editable";
 import type { EditableRootProps as ArkEditableRootProps } from "@ark-ui/solid/editable";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

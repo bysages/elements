@@ -1,5 +1,5 @@
 import { Swap as ArkSwap } from "@ark-ui/react/swap";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

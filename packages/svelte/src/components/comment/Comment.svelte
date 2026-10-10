@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("comment");
 
 import type { CommentProps } from "./props";
@@ -34,3 +34,4 @@ answers. -->
     {/if}
   </div>
 </article>
+

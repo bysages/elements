@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ButtonHTMLAttributes, HTMLAttributes } from "react";
 
 import { iconNode } from "../../internal/icon";

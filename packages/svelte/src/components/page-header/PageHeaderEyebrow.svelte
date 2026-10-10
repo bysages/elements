@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("page-header");
 
 import type {PageHeaderPartProps} from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: PageHeaderPartProps = $props();
 <p {...rest} data-scope="page-header" data-part="eyebrow">
   {@render children?.()}
 </p>
+

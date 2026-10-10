@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("color-picker");
 
 import { ColorPicker as ArkColorPicker } from "@ark-ui/svelte/color-picker";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("color-picker", generatedId, rest.id));
 <ArkColorPicker.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkColorPicker.Root>
+

@@ -1,6 +1,6 @@
 import { ToggleGroup as ArkToggleGroup } from "@ark-ui/solid/toggle-group";
 import type { ToggleGroupRootProps as ArkToggleGroupRootProps } from "@ark-ui/solid/toggle-group";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

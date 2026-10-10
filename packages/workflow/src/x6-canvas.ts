@@ -1,6 +1,6 @@
 import { Graph, History, Keyboard, MiniMap, Selection, Shape } from "@antv/x6";
 import type { Cell, EdgeMetadata, NodeMetadata } from "@antv/x6";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { LayoutOptions } from "elkjs/lib/elk.bundled.js";
 
 import { createWorkflowStore } from "./store";

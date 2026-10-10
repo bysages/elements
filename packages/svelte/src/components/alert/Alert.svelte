@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("alert");
 
 import { setContext } from "svelte";
@@ -21,3 +21,4 @@ setContext<() => AlertStatus>("alert:status", () => status);
 >
   {@render children?.()}
 </div>
+

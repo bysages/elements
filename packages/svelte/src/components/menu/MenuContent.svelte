@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("menu");
 
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
@@ -17,3 +17,4 @@ let { children, ...rest }: MenuContentProps = $props();
 <ArkMenu.Content {...rest} data-size={size()}>
   {@render children?.()}
 </ArkMenu.Content>
+

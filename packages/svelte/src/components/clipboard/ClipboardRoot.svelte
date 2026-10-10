@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("clipboard");
 
 import { Clipboard as ArkClipboard } from "@ark-ui/svelte/clipboard";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("clipboard", generatedId, rest.id));
 <ArkClipboard.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkClipboard.Root>
+

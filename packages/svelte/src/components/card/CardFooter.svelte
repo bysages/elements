@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("card");
 
 import type { CardPartProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: CardPartProps = $props();
 <footer {...rest} data-scope="card" data-part="footer">
   {@render children?.()}
 </footer>
+

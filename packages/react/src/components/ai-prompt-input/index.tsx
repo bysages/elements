@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactNode } from "react";
 import { useRef } from "react";
 

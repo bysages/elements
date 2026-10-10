@@ -1,5 +1,5 @@
 import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/react/segment-group";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

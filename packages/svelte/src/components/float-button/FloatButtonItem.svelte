@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("float-button");
 
 import { Button } from "../button";
@@ -35,3 +35,4 @@ const STEP_DOWN: Record<string, "sm" | "md"> = { lg: "md", md: "sm", sm: "sm" };
     {label}
   </span>
 </div>
+

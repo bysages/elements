@@ -2,7 +2,7 @@ import type { CollectionItem } from "@ark-ui/react/collection";
 import type { ListboxRootComponentProps } from "@ark-ui/react/listbox";
 import { Listbox as ArkListbox } from "@ark-ui/react/listbox";
 import { createListCollection } from "@ark-ui/react/listbox";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 
 import { iconNode } from "../../internal/icon";

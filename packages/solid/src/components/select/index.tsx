@@ -1,7 +1,7 @@
 import type { CollectionItem } from "@ark-ui/solid/collection";
 import { createListCollection, Select as ArkSelect } from "@ark-ui/solid/select";
 import type { SelectRootProps as ArkSelectRootProps } from "@ark-ui/solid/select";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

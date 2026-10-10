@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("user");
 
 import { Avatar as ArkAvatar } from "@ark-ui/svelte/avatar";

@@ -1,6 +1,6 @@
 import { Accordion as ArkAccordion } from "@ark-ui/solid/accordion";
 import type { AccordionRootProps as ArkAccordionRootProps } from "@ark-ui/solid/accordion";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

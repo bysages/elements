@@ -1,4 +1,4 @@
-import { injectTokens, stylesShipped } from "@bysages/core";
+import { injectTokens, stylesShipped } from "@bysages/core/styling";
 
 import { chartColors } from "./palette";
 
@@ -59,7 +59,7 @@ let injected = false;
 export function injectChartTheme(): void {
   if (injected || stylesShipped() || typeof document === "undefined") return;
 
-  injectTokens();
+  void injectTokens();
 
   const style = document.createElement("style");
   style.dataset.bsStyles = "chart-theme";

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("button");
 
 import type { ButtonProps } from "./props";
@@ -32,3 +32,4 @@ let {
 >
   {@render children?.()}
 </svelte:element>
+

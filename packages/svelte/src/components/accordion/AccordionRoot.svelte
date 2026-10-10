@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Accordion as ArkAccordion } from "@ark-ui/svelte/accordion";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { AccordionRootProps } from "@ark-ui/svelte/accordion";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("accordion", generatedId, rest.id));
 <ArkAccordion.Root bind:ref bind:value {...rest} {id}>
   {@render children?.()}
 </ArkAccordion.Root>
+

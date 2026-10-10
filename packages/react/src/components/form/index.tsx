@@ -1,5 +1,5 @@
 import { Field as ArkField } from "@ark-ui/react/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactNode } from "react";
 import { type ComponentType, createContext, useContext } from "react";
 

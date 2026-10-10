@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { Button } from "../button";
@@ -169,3 +169,4 @@ the seal becomes a stop seal and Enter holds its breath. -->
     </div>
   {/if}
 </form>
+

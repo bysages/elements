@@ -4,7 +4,7 @@ import {
   type UseTourProps,
   type UseTourReturn,
 } from "@ark-ui/solid/tour";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, mergeProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

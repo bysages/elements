@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("password-input");
 
 import { PasswordInput as ArkPasswordInput } from "@ark-ui/svelte/password-input";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("password-input", generatedId, rest.id));
 <ArkPasswordInput.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkPasswordInput.Root>
+

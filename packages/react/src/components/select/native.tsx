@@ -1,5 +1,5 @@
 import { useFieldContext } from "@ark-ui/react/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, SelectHTMLAttributes } from "react";
 
 import { iconNode } from "../../internal/icon";

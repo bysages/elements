@@ -1,5 +1,5 @@
 import { Tabs as ArkTabs } from "@ark-ui/react/tabs";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";

@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { withSelfRoot } from "../../internal/family";
 import SplitButtonComponent from "./SplitButton.svelte";

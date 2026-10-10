@@ -1,5 +1,5 @@
 import { PasswordInput as ArkPasswordInput } from "@ark-ui/react/password-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { iconNode } from "../../internal/icon";

@@ -2,7 +2,7 @@ import { useFilter } from "@ark-ui/react/locale";
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/react/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 import { useMemo, useState } from "react";
 

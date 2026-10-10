@@ -1,5 +1,5 @@
 import { Clipboard as ArkClipboard } from "@ark-ui/react/clipboard";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps, HTMLAttributes } from "react";
 

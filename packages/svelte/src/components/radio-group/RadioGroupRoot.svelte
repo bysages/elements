@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("radio-group");
 
 import { RadioGroup as ArkRadioGroup } from "@ark-ui/svelte/radio-group";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("radio-group", generatedId, rest.id));
 <ArkRadioGroup.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkRadioGroup.Root>
+

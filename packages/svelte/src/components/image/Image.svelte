@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("image");
 
 import type { ImageProps } from "./props";
@@ -59,3 +59,4 @@ give. -->
     </div>
   {/if}
 </figure>
+

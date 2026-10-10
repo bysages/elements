@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("progress-group");
 
 import type { ProgressGroupProps, ProgressSegment } from "./props";
@@ -46,3 +46,4 @@ brings a larger one — the remainder then shows as groove. -->
     </div>
   {/if}
 </div>
+

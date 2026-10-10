@@ -1,5 +1,5 @@
 import { Swap as ArkSwap } from "@ark-ui/svelte/swap";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { defineFamily } from "../../internal/family";
 import SwapFacade from "./Swap.svelte";

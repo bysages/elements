@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("float-button");
 
 import { setContext } from "svelte";
@@ -50,3 +50,4 @@ mooring, the fan and the fold. -->
 >
   {@render children?.()}
 </div>
+

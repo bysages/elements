@@ -1,6 +1,6 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";
@@ -38,10 +38,7 @@ function PopconfirmImpl({
   injectComponentStyle("popconfirm");
   const hostId = useElementId("popconfirm", { id });
   return (
-    <ArkPopover.Root
-      id={`${hostId}:popover`}
-      positioning={{ placement: "top" }}
-    >
+    <ArkPopover.Root id={`${hostId}:popover`} positioning={{ placement: "top" }}>
       <ArkPopover.Trigger asChild>{children}</ArkPopover.Trigger>
       <Portal>
         <ArkPopover.Positioner>

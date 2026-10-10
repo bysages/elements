@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 export interface BentoProps extends HTMLAttributes<HTMLDivElement> {

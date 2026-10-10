@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "svelte/elements";
 
 injectComponentStyle("browser");
@@ -17,3 +17,4 @@ const tones = ["danger", "warning", "success"];
     <span data-scope="browser" data-part="dot" data-tone={tone}></span>
   {/each}
 </div>
+

@@ -1,5 +1,5 @@
 import { Carousel as ArkCarousel } from "@ark-ui/react/carousel";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

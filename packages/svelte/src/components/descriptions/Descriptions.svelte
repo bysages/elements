@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("descriptions");
 
 import DescriptionsDetail from "./DescriptionsDetail.svelte";
@@ -29,3 +29,4 @@ let { layout = "horizontal", bordered = false, column = 1, items, children, ...r
     {/each}
   {/if}
 </dl>
+

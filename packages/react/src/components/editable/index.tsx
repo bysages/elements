@@ -1,5 +1,5 @@
 import { Editable as ArkEditable } from "@ark-ui/react/editable";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

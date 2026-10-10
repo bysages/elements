@@ -1,5 +1,5 @@
 import { Avatar as ArkAvatar } from "@ark-ui/solid/avatar";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps, type JSX } from "solid-js";
 
 import { withSelfRoot } from "../../internal/family";

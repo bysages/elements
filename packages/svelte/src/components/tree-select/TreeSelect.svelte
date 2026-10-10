@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("tree-select");
 
 import { useFilter } from "@ark-ui/svelte/locale";
@@ -177,3 +177,4 @@ matches keep their ancestors and the branches fan open. -->
     </ArkPopover.Positioner>
   </Portal>
 </ArkPopover.Root>
+

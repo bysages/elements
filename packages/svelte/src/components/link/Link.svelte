@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("link");
 
 import type { LinkProps } from "./props";
@@ -13,3 +13,4 @@ on hover, or never. -->
 <a {...rest} data-scope="link" data-part="root" data-underline={underline}>
   {@render children?.()}
 </a>
+

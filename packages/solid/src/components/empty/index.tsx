@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { Component, JSX } from "solid-js";
 
 /** An empty state: the page holds its breath. Root centers the column,

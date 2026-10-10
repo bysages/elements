@@ -1,6 +1,6 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/react/date-picker";
 import { type DateValue } from "@ark-ui/react/date-picker";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

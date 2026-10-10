@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("aspect-ratio");
 
 import type { AspectRatioProps } from "./props";
@@ -13,3 +13,4 @@ given. -->
 <div {...rest} style:--bs-aspect-ratio={ratio} data-scope="aspect-ratio" data-part="root">
   {@render children?.()}
 </div>
+

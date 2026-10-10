@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("table");
 
 import {
@@ -781,3 +781,4 @@ function cellStyle(column: TColumn, span: number) {
     {/each}
   </div>
 {/snippet}
+

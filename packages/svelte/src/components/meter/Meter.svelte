@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("meter");
 
 import type { MeterRootProps } from "./props";
@@ -45,3 +45,4 @@ const ratio = $derived.by(() => {
     <MeterTrack />
   {/if}
 </div>
+

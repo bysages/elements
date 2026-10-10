@@ -1,5 +1,5 @@
 import { useFieldContext } from "@ark-ui/solid/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 

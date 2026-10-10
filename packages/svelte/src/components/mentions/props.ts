@@ -1,7 +1,6 @@
-import type { HTMLAttributes } from "svelte/elements";
-import type { Snippet } from "svelte";
-
 import type { PopoverAnchorProps } from "@ark-ui/svelte/popover";
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 
 export interface MentionEntry {
   label: string;

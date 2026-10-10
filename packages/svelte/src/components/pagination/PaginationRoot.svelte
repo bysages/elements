@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("pagination");
 
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("pagination", generatedId, rest.id));
 <ArkPagination.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkPagination.Root>
+

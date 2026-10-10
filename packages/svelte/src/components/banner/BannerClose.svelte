@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("banner");
 
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -21,3 +21,4 @@ consumer's state. -->
 >
   <InternalIcon name="x" />
 </button>
+

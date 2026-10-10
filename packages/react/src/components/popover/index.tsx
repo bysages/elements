@@ -1,5 +1,5 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

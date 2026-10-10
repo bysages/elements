@@ -1,5 +1,5 @@
 import { Menu as ArkMenu } from "@ark-ui/solid/menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, createContext, splitProps, useContext } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 
 import { useComponentMessages } from "../../internal/messages";

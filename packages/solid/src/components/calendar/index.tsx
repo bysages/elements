@@ -1,6 +1,6 @@
 import { DatePicker as ArkDatePicker } from "@ark-ui/solid/date-picker";
 import type { DatePickerRootProps, UseDatePickerContext } from "@ark-ui/solid/date-picker";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 

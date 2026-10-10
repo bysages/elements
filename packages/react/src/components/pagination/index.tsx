@@ -1,5 +1,5 @@
 import { Pagination as ArkPagination } from "@ark-ui/react/pagination";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

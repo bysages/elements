@@ -1,6 +1,6 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/react/checkbox";
 import { useFieldContext } from "@ark-ui/react/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
 import { iconNode } from "../../internal/icon";

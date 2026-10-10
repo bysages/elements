@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("container");
 
 import type { ContainerProps } from "./props";
@@ -19,3 +19,4 @@ owns its edges, the container only owns how long a line of ink runs. -->
 >
   {@render children?.()}
 </div>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("back-top");
 
 import { Button } from "../button";
@@ -77,3 +77,4 @@ never a pop. -->
     {/if}
   </Button>
 </div>
+

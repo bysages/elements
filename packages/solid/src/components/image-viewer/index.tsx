@@ -1,5 +1,5 @@
 import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createEffect, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";

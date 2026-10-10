@@ -1,7 +1,7 @@
 import { useListCollection } from "@ark-ui/solid/collection";
 import { Combobox as ArkCombobox, type ListCollection } from "@ark-ui/solid/combobox";
 import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createEffect, createSignal, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 

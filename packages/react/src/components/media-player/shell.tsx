@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 
 import { MediaPlayerProvider, type MediaPlayerContext } from "./context";

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Marquee as ArkMarquee } from "@ark-ui/svelte/marquee";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { MarqueeRootProps } from "@ark-ui/svelte/marquee";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("marquee", generatedId, rest.id));
 <ArkMarquee.Root bind:ref {...rest} {id}>
   {@render children?.()}
 </ArkMarquee.Root>
+

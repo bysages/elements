@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { renderHtml } from "@tanstack/markdown/html";
@@ -54,3 +54,4 @@ inert — streaming-safe by construction. -->
 >
   {@html html}
 </div>
+

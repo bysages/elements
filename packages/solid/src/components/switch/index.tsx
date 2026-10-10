@@ -1,6 +1,6 @@
 import { Switch as ArkSwitch } from "@ark-ui/solid/switch";
 import type { SwitchRootProps as ArkSwitchRootProps } from "@ark-ui/solid/switch";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("affix");
 
 import type { Snippet } from "svelte";
@@ -21,3 +21,4 @@ its offset, then stays put while the page moves on — plain
 >
   {@render children?.()}
 </div>
+

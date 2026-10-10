@@ -1,6 +1,6 @@
 <script lang="ts">
 import { SignaturePad as ArkSignaturePad } from "@ark-ui/svelte/signature-pad";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { SignaturePadRootProps } from "@ark-ui/svelte/signature-pad";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("signature-pad", generatedId, rest.id));
 <ArkSignaturePad.Root bind:ref bind:paths {...rest} {id}>
   {@render children?.()}
 </ArkSignaturePad.Root>
+

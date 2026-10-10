@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("file-upload");
 
 import { FileUpload as ArkFileUpload } from "@ark-ui/svelte/file-upload";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("file-upload", generatedId, rest.id));
 <ArkFileUpload.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkFileUpload.Root>
+

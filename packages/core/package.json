@@ -9,7 +9,6 @@
     "design-tokens",
     "headless",
     "lighting",
-    "style-engine",
     "theming",
     "ui"
   ],
@@ -41,6 +40,10 @@
     "./icons": {
       "types": "./dist/icons/index.d.mts",
       "import": "./dist/icons/index.mjs"
+    },
+    "./styling": {
+      "types": "./dist/styling.d.mts",
+      "import": "./dist/styling.mjs"
     }
   },
   "scripts": {

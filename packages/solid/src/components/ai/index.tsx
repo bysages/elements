@@ -1,4 +1,5 @@
-import { injectComponentStyle, type ComponentMessages } from "@bysages/core";
+import type { ComponentMessages } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { JSX } from "solid-js";
 
 import { withSelfRoot } from "../../internal/family";

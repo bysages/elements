@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("grid");
 
 import type { GridProps } from "./props";
@@ -34,3 +34,4 @@ fits. -->
 >
   {@render children?.()}
 </div>
+

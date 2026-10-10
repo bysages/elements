@@ -1,6 +1,6 @@
 import { PasswordInput as ArkPasswordInput } from "@ark-ui/solid/password-input";
 import type { PasswordInputRootProps as ArkPasswordInputRootProps } from "@ark-ui/solid/password-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

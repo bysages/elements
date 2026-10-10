@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("breadcrumb");
 
 import type { BreadcrumbLinkProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: BreadcrumbLinkProps = $props();
 <a {...rest} data-scope="breadcrumb" data-part="link">
   {@render children?.()}
 </a>
+

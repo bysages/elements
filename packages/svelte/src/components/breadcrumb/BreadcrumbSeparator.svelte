@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("breadcrumb");
 
 import type { BreadcrumbSeparatorProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: BreadcrumbSeparatorProps = $props();
 <span {...rest} aria-hidden="true" data-scope="breadcrumb" data-part="separator">
   {#if children}{@render children()}{:else}/{/if}
 </span>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("watermark");
 
 import type { WatermarkProps } from "./props";
@@ -84,3 +84,4 @@ redraws itself when a prop turns — and it never takes a pointer. -->
     style:--bs-watermark-image={tile}
   ></div>
 </div>
+

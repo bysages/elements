@@ -1,5 +1,5 @@
 import { Tooltip as ArkTooltip } from "@ark-ui/react/tooltip";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";

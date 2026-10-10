@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("tabs");
 
 import { Tabs as ArkTabs } from "@ark-ui/svelte/tabs";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("tabs", generatedId, rest.id));
 <ArkTabs.Root {...rest} {id} data-size={size} data-variant={variant}>
   {@render children?.()}
 </ArkTabs.Root>
+

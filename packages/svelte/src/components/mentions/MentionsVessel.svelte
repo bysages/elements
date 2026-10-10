@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("mentions");
 
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
@@ -79,3 +79,4 @@ the textarea in the host's own anatomy. -->
     </ArkPopover.Positioner>
   </Portal>
 </ArkPopover.Root>
+

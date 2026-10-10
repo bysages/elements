@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("pin-input");
 
 import { PinInput as ArkPinInput } from "@ark-ui/svelte/pin-input";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("pin-input", generatedId, rest.id));
 <ArkPinInput.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkPinInput.Root>
+

@@ -2,7 +2,7 @@ import { useFilter } from "@ark-ui/solid/locale";
 import { Popover as ArkPopover } from "@ark-ui/solid/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/solid/tree-view";
 import type { TreeViewSelectionChangeDetails } from "@ark-ui/solid/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createMemo, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";

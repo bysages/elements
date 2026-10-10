@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { type HTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";

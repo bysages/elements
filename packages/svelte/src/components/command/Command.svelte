@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("command");
 
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
@@ -199,3 +199,4 @@ grafts onto the sheet's list. -->
     </ArkDialog.Positioner>
   </Portal>
 </ArkDialog.Root>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("checkbox-group");
 
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
@@ -63,3 +63,4 @@ routes to its name dress every box at once. -->
     </ArkCheckbox.Root>
   {/each}
 </ArkCheckbox.Group>
+

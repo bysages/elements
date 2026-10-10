@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("cascade-select");
 
 import { useEnvironmentContext } from "@ark-ui/svelte/environment";
@@ -213,3 +213,4 @@ its full route. -->
     </div>
   </Portal>
 </div>
+

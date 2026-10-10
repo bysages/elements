@@ -1,5 +1,5 @@
 import { createListCollection } from "@ark-ui/solid/select";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SortingState } from "@tanstack/solid-table";
 import {
   FlexRender,

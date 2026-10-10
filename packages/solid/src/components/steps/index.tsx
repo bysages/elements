@@ -1,6 +1,6 @@
 import { Steps as ArkSteps } from "@ark-ui/solid/steps";
 import type { StepsRootProps as ArkStepsRootProps } from "@ark-ui/solid/steps";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

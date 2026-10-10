@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { injectComponentStyle } from "@bysages/core";
+  import { injectComponentStyle } from "@bysages/core/styling";
 
   import Captions from "./Captions.svelte";
   import Controls from "./Controls.svelte";
@@ -36,3 +36,4 @@
     <FullscreenButton />
   </Controls>
 </VideoRoot>
+

@@ -1,6 +1,6 @@
 import { Toc as ArkToc } from "@ark-ui/react/toc";
 import type { TocItemData } from "@ark-ui/react/toc";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, CSSProperties } from "react";
 
 import { useElementId } from "../../internal/id";

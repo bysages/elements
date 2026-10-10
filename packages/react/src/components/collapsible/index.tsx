@@ -1,5 +1,5 @@
 import { Collapsible as ArkCollapsible } from "@ark-ui/react/collapsible";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

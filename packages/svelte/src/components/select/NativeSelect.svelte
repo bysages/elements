@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("select");
 
 import { useFieldContext } from "@ark-ui/svelte/field";
@@ -56,3 +56,4 @@ list behind the same hairline shell the framed select wears. -->
     <InternalIcon name="chevron-down" />
   </span>
 </span>
+

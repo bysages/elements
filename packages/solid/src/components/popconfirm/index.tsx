@@ -1,5 +1,5 @@
 import { Popover as ArkPopover } from "@ark-ui/solid/popover";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";

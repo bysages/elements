@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("steps");
 
 import { Steps as ArkSteps } from "@ark-ui/svelte/steps";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("steps", generatedId, rest.id));
 <ArkSteps.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkSteps.Root>
+

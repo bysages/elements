@@ -1,5 +1,5 @@
 import { Tooltip as ArkTooltip, type TooltipTriggerProps } from "@ark-ui/solid/tooltip";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { isElement, withElementProps } from "../../internal/element";

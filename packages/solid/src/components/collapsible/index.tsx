@@ -1,5 +1,5 @@
 import { Collapsible as ArkCollapsible } from "@ark-ui/solid/collapsible";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

@@ -1,7 +1,7 @@
 import type { CollectionItem } from "@ark-ui/react/collection";
 import type { SelectRootComponentProps } from "@ark-ui/react/select";
 import { createListCollection, Select as ArkSelect } from "@ark-ui/react/select";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useMemo } from "react";
 
 import { iconNode } from "../../internal/icon";

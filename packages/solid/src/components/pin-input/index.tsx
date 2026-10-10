@@ -1,6 +1,6 @@
 import { PinInput as ArkPinInput } from "@ark-ui/solid/pin-input";
 import type { PinInputRootProps as ArkPinInputRootProps } from "@ark-ui/solid/pin-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

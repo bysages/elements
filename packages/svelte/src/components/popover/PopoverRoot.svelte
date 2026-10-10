@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { PopoverRootProps } from "@ark-ui/svelte/popover";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("popover", generatedId, rest.id));
 <ArkPopover.Root bind:open {...rest} {id}>
   {@render children?.()}
 </ArkPopover.Root>
+

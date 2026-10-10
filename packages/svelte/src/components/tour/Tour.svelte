@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Tour as ArkTour, type UseTourReturn } from "@ark-ui/svelte/tour";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { Button } from "../button";
 import TourRoot from "./TourRoot.svelte";
@@ -47,3 +47,4 @@ let {
     </ArkTour.Content>
   </ArkTour.Positioner>
 </TourRoot>
+

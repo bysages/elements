@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("form");
 
   import { untrack } from "svelte";
@@ -70,3 +70,4 @@ injectComponentStyle("form");
 {:else}
   {@render assemble(undefined)}
 {/if}
+

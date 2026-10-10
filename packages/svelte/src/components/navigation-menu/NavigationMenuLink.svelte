@@ -1,6 +1,6 @@
 <script lang="ts">
 import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/svelte/navigation-menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import type { NavigationMenuLinkProps } from "@ark-ui/svelte/navigation-menu";
 
@@ -12,3 +12,4 @@ let { children, ...rest }: NavigationMenuLinkProps = $props();
 <ArkNavigationMenu.Link {...rest} data-motion="ink-ripple">
   {@render children?.()}
 </ArkNavigationMenu.Link>
+

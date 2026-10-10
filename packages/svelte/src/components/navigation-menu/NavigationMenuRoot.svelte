@@ -1,6 +1,6 @@
 <script lang="ts">
 import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/svelte/navigation-menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { NavigationMenuRootProps } from "@ark-ui/svelte/navigation-menu";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("navigation-menu", generatedId, rest.id));
 <ArkNavigationMenu.Root bind:ref bind:value {...rest} {id}>
   {@render children?.()}
 </ArkNavigationMenu.Root>
+

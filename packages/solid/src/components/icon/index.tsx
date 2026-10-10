@@ -1,6 +1,6 @@
-import { injectComponentStyle } from "@bysages/core";
 import { getIcon } from "@bysages/core/icons";
 import type { IconifyIcon } from "@bysages/core/icons";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 

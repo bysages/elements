@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("input-group");
 
 import type { InputGroupAddonProps } from "./props";
@@ -12,3 +12,4 @@ quiet button — placed before or after the entry. -->
 <div {...rest} data-scope="input-group" data-part="addon">
   {@render children?.()}
 </div>
+

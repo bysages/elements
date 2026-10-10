@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("descriptions");
 
 import type { DescriptionsItemProps } from "./props";
@@ -15,3 +15,4 @@ let { span = 1, children, ...rest }: DescriptionsItemProps = $props();
 >
   {@render children?.()}
 </div>
+

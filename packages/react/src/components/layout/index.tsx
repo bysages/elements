@@ -1,5 +1,5 @@
 import { Splitter as ArkSplitter } from "@ark-ui/react/splitter";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type {
   ComponentProps,
   CSSProperties,

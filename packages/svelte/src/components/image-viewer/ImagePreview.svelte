@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { injectComponentStyle } from "@bysages/core";
+  import { injectComponentStyle } from "@bysages/core/styling";
   injectComponentStyle("image-viewer");
 
   import { useComponentMessages } from "../config-provider/messages";
@@ -35,3 +35,4 @@ that icon as its hover and focus affordance. -->
     <InternalIcon name="eye" size="lg" />
   {/if}
 </span>
+

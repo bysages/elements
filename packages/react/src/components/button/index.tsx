@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
 import { Children, cloneElement, isValidElement } from "react";
 

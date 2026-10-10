@@ -1,5 +1,5 @@
 import { Toast as ArkToast, Toaster as ArkToaster, createToaster } from "@ark-ui/react/toast";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 import { forwardRef } from "react";
 

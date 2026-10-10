@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("textarea");
 
 import { useFieldContext } from "@ark-ui/svelte/field";
@@ -26,3 +26,4 @@ and the invalid state. -->
   oninput={(event) => {
     value = event.currentTarget.value;
   }}></textarea>
+

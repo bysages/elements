@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("popconfirm");
 
 import { Portal } from "@ark-ui/svelte/portal";
@@ -65,3 +65,4 @@ cancellation are the caller's to act on — the panel closes either way. -->
     </ArkPopover.Positioner>
   </Portal>
 </ArkPopover.Root>
+

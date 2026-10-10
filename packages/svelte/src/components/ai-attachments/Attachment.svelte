@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -43,3 +43,4 @@ dashed ghost, error as danger ink. -->
     <InternalIcon name="x" size="sm" />
   </button>
 </span>
+

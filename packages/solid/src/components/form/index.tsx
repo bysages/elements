@@ -1,5 +1,5 @@
 import { Field as ArkField } from "@ark-ui/solid/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createForm, createField } from "@tanstack/solid-form";
 import { createContext, useContext, splitProps, Show, type Component, type JSX } from "solid-js";
 

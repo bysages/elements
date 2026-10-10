@@ -1,7 +1,7 @@
 import type { TreeNode } from "@ark-ui/solid/tree-view";
 import { TreeView as ArkTreeView } from "@ark-ui/solid/tree-view";
 import type { TreeViewRootProps as ArkTreeViewRootProps } from "@ark-ui/solid/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 

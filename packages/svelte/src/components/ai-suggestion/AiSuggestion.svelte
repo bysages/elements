@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { Button } from "../button";
@@ -13,3 +13,4 @@ the prompt. The shared Button in its outline register. -->
 <Button variant="outline" size="sm" {...rest} onclick={() => onSelect?.(prompt)}>
   {prompt}
 </Button>
+

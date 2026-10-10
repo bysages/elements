@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("select");
 
 import { Select as ArkSelect } from "@ark-ui/svelte/select";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("select", generatedId, rest.id));
 <ArkSelect.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkSelect.Root>
+

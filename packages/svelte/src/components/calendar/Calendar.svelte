@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("calendar");
 
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
@@ -136,3 +136,4 @@ off, since no popup content ever renders for it to watch. -->
   </ArkDatePicker.Root>
   {@render children?.()}
 </div>
+

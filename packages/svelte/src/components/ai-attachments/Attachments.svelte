@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import type { AttachmentsProps } from "./props";
@@ -11,3 +11,4 @@ let { children, ...rest }: AttachmentsProps = $props();
 <span {...rest} data-scope="ai" data-part="attachments">
   {@render children?.()}
 </span>
+

@@ -1,5 +1,5 @@
 import { ScrollArea as ArkScrollArea } from "@ark-ui/react/scroll-area";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, ReactNode } from "react";
 import type { ComponentProps } from "react";
 

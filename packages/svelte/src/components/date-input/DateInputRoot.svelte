@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("date-input");
 
 import { DateInput as ArkDateInput } from "@ark-ui/svelte/date-input";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("date-input", generatedId, rest.id));
 <ArkDateInput.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkDateInput.Root>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("button-group");
 
 import type { ButtonGroupProps } from "./props";
@@ -22,3 +22,4 @@ the toggle group; this is layout alone. -->
 >
   {@render children?.()}
 </div>
+

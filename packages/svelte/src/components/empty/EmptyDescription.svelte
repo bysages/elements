@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("empty");
 
 import type { EmptyDescriptionProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: EmptyDescriptionProps = $props();
 <p {...rest} data-scope="empty" data-part="description">
   {@render children?.()}
 </p>
+

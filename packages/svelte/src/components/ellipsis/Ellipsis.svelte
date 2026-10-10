@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ellipsis");
 
 import type { EllipsisProps } from "./props";
@@ -21,3 +21,4 @@ stays the consumer's decision. -->
 >
   {@render children?.()}
 </span>
+

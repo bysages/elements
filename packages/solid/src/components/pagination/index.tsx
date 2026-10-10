@@ -1,6 +1,6 @@
 import { Pagination as ArkPagination } from "@ark-ui/solid/pagination";
 import type { PaginationRootProps as ArkPaginationRootProps } from "@ark-ui/solid/pagination";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

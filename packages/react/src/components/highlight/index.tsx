@@ -1,5 +1,5 @@
 import { Highlight as ArkHighlight } from "@ark-ui/react/highlight";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { withSelfRoot } from "../../internal/family";

@@ -1,5 +1,5 @@
 import { SignaturePad as ArkSignaturePad } from "@ark-ui/solid/signature-pad";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

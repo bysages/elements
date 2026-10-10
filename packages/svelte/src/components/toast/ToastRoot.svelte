@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Toast as ArkToast } from "@ark-ui/svelte/toast";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { ToastRootProps } from "@ark-ui/svelte/toast";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("toast", generatedId, rest.id));
 <ArkToast.Root bind:ref {...rest} {id}>
   {@render children?.()}
 </ArkToast.Root>
+

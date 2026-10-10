@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("virtual-list");
 
 import { untrack } from "svelte";
@@ -57,3 +57,4 @@ ten-thousand-row list costs the DOM a window, not the ledger. -->
     {/each}
   </div>
 </div>
+

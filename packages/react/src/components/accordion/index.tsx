@@ -1,5 +1,5 @@
 import { Accordion as ArkAccordion } from "@ark-ui/react/accordion";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { iconNode } from "../../internal/icon";

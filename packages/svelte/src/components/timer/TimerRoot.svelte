@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Timer as ArkTimer } from "@ark-ui/svelte/timer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { TimerRootProps } from "@ark-ui/svelte/timer";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("timer", generatedId, rest.id));
 <ArkTimer.Root bind:ref {...rest} {id}>
   {@render children?.()}
 </ArkTimer.Root>
+

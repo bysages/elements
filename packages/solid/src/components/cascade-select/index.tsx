@@ -1,6 +1,6 @@
 import { useEnvironmentContext } from "@ark-ui/solid/environment";
 import { useFilter, useLocaleContext } from "@ark-ui/solid/locale";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/solid";
 import { For, Show, createMemo, createSignal, mergeProps, splitProps } from "solid-js";

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("stack");
 
 import type { StackProps } from "./props";
@@ -40,3 +40,4 @@ const gapValue = $derived(gapVars[gap] ?? gapVars.md);
 >
   {@render children?.()}
 </div>
+

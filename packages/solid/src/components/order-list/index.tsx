@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, createSignal, splitProps, type JSX } from "solid-js";
 
 import { withSelfRoot } from "../../internal/family";

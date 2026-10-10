@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("avatar");
 
 import { Avatar as ArkAvatar } from "@ark-ui/svelte/avatar";
@@ -17,3 +17,4 @@ core styles re-point --bs-avatar-size per rung. -->
 <ArkAvatar.Root {...rest} {id} data-size={size} data-shape={shape}>
   {@render children?.()}
 </ArkAvatar.Root>
+

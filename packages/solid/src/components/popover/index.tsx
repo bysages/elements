@@ -1,5 +1,5 @@
 import { Popover as ArkPopover, type PopoverTriggerProps } from "@ark-ui/solid/popover";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { isElement, withElementProps } from "../../internal/element";

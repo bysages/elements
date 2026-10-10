@@ -2,7 +2,7 @@ import type { CollectionItem } from "@ark-ui/react/collection";
 import type { ComboboxRootComponentProps } from "@ark-ui/react/combobox";
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { createListCollection } from "@ark-ui/react/combobox";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 
 import { iconNode } from "../../internal/icon";

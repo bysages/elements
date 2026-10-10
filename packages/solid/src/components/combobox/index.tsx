@@ -1,7 +1,7 @@
 import type { CollectionItem } from "@ark-ui/solid/collection";
 import { createListCollection, Combobox as ArkCombobox } from "@ark-ui/solid/combobox";
 import type { ComboboxRootProps as ArkComboboxRootProps } from "@ark-ui/solid/combobox";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

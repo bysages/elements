@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("icon");
 
   import { getIcon } from "@bysages/core/icons";
@@ -38,3 +38,4 @@ pigment and no size of its own. Bring an `@bysages/icons` export or any other Ic
     </svg>
   {/if}
 </span>
+

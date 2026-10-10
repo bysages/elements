@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactElement } from "react";
 import { Children, cloneElement, isValidElement } from "react";
 

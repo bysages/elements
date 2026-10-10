@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Carousel as ArkCarousel } from "@ark-ui/svelte/carousel";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { CarouselRootProps } from "@ark-ui/svelte/carousel";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("carousel", generatedId, rest.id));
 <ArkCarousel.Root bind:ref bind:page {...rest} {id}>
   {@render children?.()}
 </ArkCarousel.Root>
+

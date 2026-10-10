@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { type CSSProperties, type HTMLAttributes, type ReactNode, useRef } from "react";
 

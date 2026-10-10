@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("alert");
 
 import type { AlertPartProps } from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: AlertPartProps = $props();
 <p {...rest} data-scope="alert" data-part="description">
   {@render children?.()}
 </p>
+

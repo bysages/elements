@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("layout");
 
 import { provideLayout } from "./context";
@@ -17,3 +17,4 @@ on. -->
 <div {...rest} data-scope="layout" data-part="root" data-sider={sider}>
   {@render children?.()}
 </div>
+

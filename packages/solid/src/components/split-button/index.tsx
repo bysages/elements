@@ -1,5 +1,5 @@
 import { Menu as ArkMenu } from "@ark-ui/solid/menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";

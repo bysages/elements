@@ -1,5 +1,5 @@
 import { Timer as ArkTimer } from "@ark-ui/solid/timer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

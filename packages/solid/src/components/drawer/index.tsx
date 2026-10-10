@@ -1,5 +1,5 @@
 import { Drawer as ArkDrawer } from "@ark-ui/solid/drawer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

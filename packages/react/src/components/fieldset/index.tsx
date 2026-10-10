@@ -1,5 +1,5 @@
 import { Fieldset as ArkFieldset } from "@ark-ui/react/fieldset";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";

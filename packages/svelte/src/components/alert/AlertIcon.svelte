@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("alert");
 
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -23,3 +23,4 @@ const statusIcons: Record<AlertStatus, string> = {
 <span {...rest} data-scope="alert" data-part="icon">
   <InternalIcon name={statusIcons[readStatus()]} />
 </span>
+

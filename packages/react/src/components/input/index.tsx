@@ -1,5 +1,5 @@
 import { useFieldContext } from "@ark-ui/react/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { forwardRef, type InputHTMLAttributes } from "react";
 
 import { withSelfRoot } from "../../internal/family";

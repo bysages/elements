@@ -1,5 +1,5 @@
 import { Avatar as ArkAvatar } from "@ark-ui/react/avatar";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

@@ -1,6 +1,6 @@
 import { ColorPicker as ArkColorPicker } from "@ark-ui/react/color-picker";
 import { parseColor, type Color } from "@ark-ui/react/color-picker";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

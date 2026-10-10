@@ -1,5 +1,5 @@
 import { Progress as ArkProgress } from "@ark-ui/react/progress";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

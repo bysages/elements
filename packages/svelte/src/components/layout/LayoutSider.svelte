@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("layout");
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -108,3 +108,4 @@ function onKeyDown(event: KeyboardEvent) {
     ></div>
   {/if}
 </aside>
+

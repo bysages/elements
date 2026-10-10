@@ -1,5 +1,5 @@
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/solid/floating-panel";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

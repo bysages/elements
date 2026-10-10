@@ -1,6 +1,6 @@
 import { Checkbox as ArkCheckbox } from "@ark-ui/solid/checkbox";
 import { useFieldContext } from "@ark-ui/solid/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 

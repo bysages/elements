@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Tooltip as ArkTooltip } from "@ark-ui/svelte/tooltip";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { TooltipRootProps } from "@ark-ui/svelte/tooltip";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("tooltip", generatedId, rest.id));
 <ArkTooltip.Root bind:open {...rest} {id}>
   {@render children?.()}
 </ArkTooltip.Root>
+

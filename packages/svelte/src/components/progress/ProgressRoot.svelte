@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("progress");
 
 import { Progress as ArkProgress } from "@ark-ui/svelte/progress";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("progress", generatedId, rest.id));
 <ArkProgress.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkProgress.Root>
+

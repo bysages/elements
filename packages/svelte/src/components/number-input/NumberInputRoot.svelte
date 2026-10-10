@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("number-input");
 
 import { NumberInput as ArkNumberInput } from "@ark-ui/svelte/number-input";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("number-input", generatedId, rest.id));
 <ArkNumberInput.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkNumberInput.Root>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("banner");
 
 import type { BannerProps } from "./props";
@@ -19,3 +19,4 @@ neutral register; the four semantic pigments are fixed. -->
 >
   {@render children?.()}
 </div>
+

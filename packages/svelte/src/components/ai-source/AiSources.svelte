@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import type { SourcesProps } from "./props";
@@ -11,3 +11,4 @@ let { children, ...rest }: SourcesProps = $props();
 <ol {...rest} data-scope="ai" data-part="sources">
   {@render children?.()}
 </ol>
+

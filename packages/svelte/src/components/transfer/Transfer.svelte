@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("transfer");
 
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
@@ -130,3 +130,4 @@ stays on the left. -->
   </div>
   {@render panel("target", titles[1], targetItems, checkedTarget)}
 </div>
+

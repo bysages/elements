@@ -1,5 +1,5 @@
 import { HoverCard as ArkHoverCard } from "@ark-ui/react/hover-card";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";

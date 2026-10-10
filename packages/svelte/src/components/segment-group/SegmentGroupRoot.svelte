@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("segment-group");
 
 import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/svelte/segment-group";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("segment-group", generatedId, rest.id));
 <ArkSegmentGroup.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkSegmentGroup.Root>
+

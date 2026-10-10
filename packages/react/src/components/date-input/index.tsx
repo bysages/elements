@@ -1,6 +1,6 @@
 import { DateInput as ArkDateInput } from "@ark-ui/react/date-input";
 import { type DateInputDateValue } from "@ark-ui/react/date-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

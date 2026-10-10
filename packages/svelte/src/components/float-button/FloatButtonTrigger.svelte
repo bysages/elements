@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("float-button");
 
 import { Button } from "../button";
@@ -24,3 +24,4 @@ const context = useFloatButton();
 >
   {@render children?.()}
 </Button>
+

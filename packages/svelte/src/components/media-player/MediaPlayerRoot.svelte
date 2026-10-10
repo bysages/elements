@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { injectComponentStyle } from "@bysages/core";
+  import { injectComponentStyle } from "@bysages/core/styling";
 
   import { provideMediaPlayer } from "./context";
   import type { MediaPlayerKind, MediaPlayerProps } from "./props";
@@ -92,3 +92,4 @@
 >
   {@render children?.()}
 </div>
+

@@ -1,6 +1,6 @@
 import { Clipboard as ArkClipboard } from "@ark-ui/solid/clipboard";
 import type { ClipboardRootProps as ArkClipboardRootProps } from "@ark-ui/solid/clipboard";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

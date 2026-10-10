@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("list");
 
 import type { ListProps } from "./props";
@@ -16,3 +16,4 @@ let { bordered = false, hoverable = false, children, ...rest }: ListProps = $pro
 >
   {@render children?.()}
 </ul>
+

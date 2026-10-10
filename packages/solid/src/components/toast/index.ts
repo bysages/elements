@@ -1,5 +1,5 @@
 import { Toaster as ArkToaster, Toast as ArkToast, createToaster } from "@ark-ui/solid/toast";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";

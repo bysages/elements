@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("list");
 
 import type { ListItemProps } from "./props";
@@ -10,3 +10,4 @@ let { children, role: _role, ...rest }: ListItemProps = $props();
 <li {...rest} data-scope="list" data-part="item">
   {@render children?.()}
 </li>
+

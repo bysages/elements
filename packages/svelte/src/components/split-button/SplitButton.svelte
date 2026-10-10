@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("split-button");
 
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
@@ -72,3 +72,4 @@ same register whose entries emit `onSelect` with their value. -->
     </Portal>
   </ArkMenu.Root>
 </div>
+

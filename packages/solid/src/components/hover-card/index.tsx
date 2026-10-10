@@ -1,5 +1,5 @@
 import { HoverCard as ArkHoverCard, type HoverCardTriggerProps } from "@ark-ui/solid/hover-card";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { isElement, withElementProps } from "../../internal/element";

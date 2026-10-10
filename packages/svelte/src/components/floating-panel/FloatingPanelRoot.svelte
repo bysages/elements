@@ -1,6 +1,6 @@
 <script lang="ts">
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/svelte/floating-panel";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { FloatingPanelRootProps } from "@ark-ui/svelte/floating-panel";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("floating-panel", generatedId, rest.id));
 <ArkFloatingPanel.Root bind:open bind:position bind:size {...rest} {id}>
   {@render children?.()}
 </ArkFloatingPanel.Root>
+

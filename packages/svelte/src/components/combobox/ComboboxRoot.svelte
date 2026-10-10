@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("combobox");
 
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("combobox", generatedId, rest.id));
 <ArkCombobox.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkCombobox.Root>
+

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("stat");
 
 import type {StatPartProps} from "./props";
@@ -10,3 +10,4 @@ let { children, ...rest }: StatPartProps = $props();
 <p {...rest} data-scope="stat" data-part="label">
   {@render children?.()}
 </p>
+

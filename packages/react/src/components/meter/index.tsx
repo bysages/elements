@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, HTMLAttributes } from "react";
 
 function part(name: string, tag: string) {

@@ -1,5 +1,5 @@
 import { Menu as ArkMenu } from "@ark-ui/react/menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createContext, useContext, type ComponentProps } from "react";
 
 import { iconNode } from "../../internal/icon";

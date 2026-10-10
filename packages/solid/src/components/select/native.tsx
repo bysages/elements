@@ -1,5 +1,5 @@
 import { useFieldContext } from "@ark-ui/solid/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
 
 import { iconNode } from "../../internal/icon";

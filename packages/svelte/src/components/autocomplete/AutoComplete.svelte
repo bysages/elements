@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("combobox");
 
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
@@ -69,3 +69,4 @@ one job. -->
     </ArkCombobox.Positioner>
   </Portal>
 </ArkCombobox.Root>
+

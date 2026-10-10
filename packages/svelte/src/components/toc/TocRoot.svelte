@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Toc as ArkToc } from "@ark-ui/svelte/toc";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { TocRootProps } from "@ark-ui/svelte/toc";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("toc", generatedId, rest.id));
 <ArkToc.Root bind:ref {...rest} {id}>
   {@render children?.()}
 </ArkToc.Root>
+

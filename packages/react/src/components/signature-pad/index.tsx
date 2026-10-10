@@ -1,5 +1,5 @@
 import { SignaturePad as ArkSignaturePad } from "@ark-ui/react/signature-pad";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

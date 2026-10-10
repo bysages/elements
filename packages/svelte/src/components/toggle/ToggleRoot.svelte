@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Toggle as ArkToggle } from "@ark-ui/svelte/toggle";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { ToggleRootProps } from "@ark-ui/svelte/toggle";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("toggle", generatedId, rest.id));
 <ArkToggle.Root bind:ref bind:pressed {...rest} {id}>
   {@render children?.()}
 </ArkToggle.Root>
+

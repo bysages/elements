@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import type { MessageProps } from "./props";
@@ -10,3 +10,4 @@ let { role = "assistant", children, ...rest }: MessageProps = $props();
 <article {...rest} data-scope="ai" data-part="message" data-role={role}>
   {@render children?.()}
 </article>
+

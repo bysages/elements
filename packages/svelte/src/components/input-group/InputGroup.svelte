@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("input-group");
 
 import type { InputGroupProps } from "./props";
@@ -14,3 +14,4 @@ the merging, this wrapper adds no visuals of its own. -->
 <div {...rest} data-scope="input-group" data-part="root">
   {@render children?.()}
 </div>
+

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { DialogRootProps } from "@ark-ui/svelte/dialog";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("dialog", generatedId, rest.id));
 <ArkDialog.Root bind:open {...rest} {id}>
   {@render children?.()}
 </ArkDialog.Root>
+

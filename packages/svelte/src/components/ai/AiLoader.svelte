@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -12,3 +12,4 @@ const messages = useComponentMessages();
 <span {...rest} role="status" aria-label={label ?? messages().ai.loading} data-scope="ai" data-part="loader">
   {@render children?.()}
 </span>
+

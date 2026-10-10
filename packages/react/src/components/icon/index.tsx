@@ -1,6 +1,6 @@
-import { injectComponentStyle } from "@bysages/core";
 import { getIcon } from "@bysages/core/icons";
 import type { IconifyIcon } from "@bysages/core/icons";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
 import { withSelfRoot } from "../../internal/family";

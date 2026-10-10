@@ -1,5 +1,5 @@
 import { Field as ArkField } from "@ark-ui/solid/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

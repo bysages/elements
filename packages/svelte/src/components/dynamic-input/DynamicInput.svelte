@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("dynamic-input");
 
 import { Button } from "../button";
@@ -76,3 +76,4 @@ truth. -->
     </Button>
   </div>
 </div>
+

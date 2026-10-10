@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("input");
 
 import { useFieldContext } from "@ark-ui/svelte/field";
@@ -29,3 +29,4 @@ also the seam the Form validation layer drives. -->
     value = mask ? applyMask(event.currentTarget.value, mask) : event.currentTarget.value;
   }}
 />
+

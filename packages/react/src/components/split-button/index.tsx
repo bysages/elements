@@ -1,6 +1,6 @@
 import { Menu as ArkMenu } from "@ark-ui/react/menu";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
 import { iconNode } from "../../internal/icon";

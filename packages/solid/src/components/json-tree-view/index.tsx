@@ -1,6 +1,6 @@
 import { JsonTreeView as ArkJsonTreeView } from "@ark-ui/solid/json-tree-view";
 import type { JsonTreeViewTreeProps } from "@ark-ui/solid/json-tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 

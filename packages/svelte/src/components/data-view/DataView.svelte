@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("data-view");
 
 import { Pagination as ArkPagination } from "@ark-ui/svelte/pagination";

@@ -1,6 +1,6 @@
 import { ColorPicker as ArkColorPicker, parseColor, type Color } from "@ark-ui/solid/color-picker";
 import type { ColorPickerRootProps as ArkColorPickerRootProps } from "@ark-ui/solid/color-picker";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, splitProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

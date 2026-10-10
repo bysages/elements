@@ -1,6 +1,6 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ChangeEvent, HTMLAttributes } from "react";
 import { useRef, useState } from "react";
 

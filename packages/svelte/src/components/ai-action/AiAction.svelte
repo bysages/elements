@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import { Button } from "../button";
@@ -14,3 +14,4 @@ Button in its ghost register. -->
 <Button variant="ghost" size="sm" square aria-label={label} title={label} {...rest}>
   {@render children?.()}
 </Button>
+

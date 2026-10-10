@@ -1,5 +1,5 @@
 import { AngleSlider as ArkAngleSlider } from "@ark-ui/react/angle-slider";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

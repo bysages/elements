@@ -1,6 +1,6 @@
 import { NumberInput as ArkNumberInput } from "@ark-ui/solid/number-input";
 import type { NumberInputRootProps as ArkNumberInputRootProps } from "@ark-ui/solid/number-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

@@ -1,5 +1,5 @@
 import { QrCode as ArkQrCode } from "@ark-ui/react/qr-code";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

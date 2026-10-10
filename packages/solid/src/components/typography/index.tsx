@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { JSX } from "solid-js";
 
 /** The typographic voices, named so prose can ask for one: display and

@@ -1,6 +1,6 @@
 import { Slider as ArkSlider } from "@ark-ui/solid/slider";
 import type { SliderRootProps as ArkSliderRootProps } from "@ark-ui/solid/slider";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

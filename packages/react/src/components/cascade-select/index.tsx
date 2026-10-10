@@ -1,7 +1,7 @@
 import { useEnvironmentContext } from "@ark-ui/react/environment";
 import { useFilter, useLocaleContext } from "@ark-ui/react/locale";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import type { HTMLAttributes, ReactNode } from "react";

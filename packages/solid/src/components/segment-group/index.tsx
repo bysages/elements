@@ -1,6 +1,6 @@
 import { SegmentGroup as ArkSegmentGroup } from "@ark-ui/solid/segment-group";
 import type { SegmentGroupRootProps as ArkSegmentGroupRootProps } from "@ark-ui/solid/segment-group";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { createComponent, mergeProps, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

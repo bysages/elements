@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "svelte/elements";
 
 injectComponentStyle("bento");
@@ -25,3 +25,4 @@ let { span = 1, rowSpan = 1, children, ...rest }: Props = $props();
 >
   {@render children?.()}
 </div>
+

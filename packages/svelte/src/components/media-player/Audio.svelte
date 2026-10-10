@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { injectComponentStyle } from "@bysages/core";
+  import { injectComponentStyle } from "@bysages/core/styling";
 
   import AudioRoot from "./AudioRoot.svelte";
   import Controls from "./Controls.svelte";
@@ -30,3 +30,4 @@
     <Rate />
   </Controls>
 </AudioRoot>
+

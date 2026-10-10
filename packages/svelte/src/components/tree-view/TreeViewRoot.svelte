@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("tree-view");
 
 import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("tree-view", generatedId, rest.id));
 <ArkTreeView.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkTreeView.Root>
+

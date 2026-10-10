@@ -1,4 +1,4 @@
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { type DragEvent, type HTMLAttributes, useRef, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";

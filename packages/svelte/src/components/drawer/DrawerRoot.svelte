@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Drawer as ArkDrawer } from "@ark-ui/svelte/drawer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { DrawerRootProps } from "@ark-ui/svelte/drawer";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("drawer", generatedId, rest.id));
 <ArkDrawer.Root bind:open {...rest} {id}>
   {@render children?.()}
 </ArkDrawer.Root>
+

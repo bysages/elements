@@ -1,6 +1,6 @@
 import { RadioGroup as ArkRadioGroup } from "@ark-ui/solid/radio-group";
 import type { RadioGroupRootProps as ArkRadioGroupRootProps } from "@ark-ui/solid/radio-group";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

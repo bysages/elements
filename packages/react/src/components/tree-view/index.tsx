@@ -2,7 +2,7 @@ import type { CollectionItem } from "@ark-ui/react/collection";
 import type { TreeViewRootComponentProps } from "@ark-ui/react/tree-view";
 import { TreeView as ArkTreeView } from "@ark-ui/react/tree-view";
 import { createTreeCollection } from "@ark-ui/react/tree-view";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, ReactNode } from "react";
 import type { ComponentProps } from "react";
 

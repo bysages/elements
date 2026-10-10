@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("switch");
 
 import { Switch as ArkSwitch } from "@ark-ui/svelte/switch";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("switch", generatedId, rest.id));
 <ArkSwitch.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkSwitch.Root>
+

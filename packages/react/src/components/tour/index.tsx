@@ -4,7 +4,7 @@ import {
   type UseTourProps,
   type UseTourReturn,
 } from "@ark-ui/react/tour";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { useElementId } from "../../internal/id";

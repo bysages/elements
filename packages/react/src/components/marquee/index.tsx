@@ -1,5 +1,5 @@
 import { Marquee as ArkMarquee } from "@ark-ui/react/marquee";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 

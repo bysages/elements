@@ -1,5 +1,5 @@
 import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/react/navigation-menu";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

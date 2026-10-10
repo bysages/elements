@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("stat");
 
 import type { StatDeltaProps } from "./props";
@@ -12,3 +12,4 @@ explicit `data-direction` attribute on the consumer side still wins. -->
 <span {...rest} data-scope="stat" data-part="delta" data-direction={rest["data-direction"] ?? direction}>
   {@render children?.()}
 </span>
+

@@ -2,7 +2,7 @@ import { type ListCollection, useListCollection } from "@ark-ui/react/collection
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { useEffect, useState } from "react";
 
 import { useElementId } from "../../internal/id";

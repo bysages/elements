@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("slider");
 
 import { Slider as ArkSlider } from "@ark-ui/svelte/slider";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("slider", generatedId, rest.id));
 <ArkSlider.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkSlider.Root>
+

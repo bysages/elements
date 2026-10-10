@@ -1,5 +1,5 @@
 import { Drawer as ArkDrawer } from "@ark-ui/react/drawer";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

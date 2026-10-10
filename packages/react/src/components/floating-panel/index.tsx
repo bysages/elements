@@ -1,5 +1,5 @@
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/react/floating-panel";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

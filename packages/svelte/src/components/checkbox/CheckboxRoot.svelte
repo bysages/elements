@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("checkbox");
 
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
@@ -14,3 +14,4 @@ const id = $derived(useElementId("checkbox", generatedId, rest.id));
 <ArkCheckbox.Root {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkCheckbox.Root>
+

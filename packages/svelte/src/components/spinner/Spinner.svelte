@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("spinner");
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -26,3 +26,4 @@ by default — it reports progress without claiming attention. -->
   </svg>
   {@render children?.()}
 </span>
+

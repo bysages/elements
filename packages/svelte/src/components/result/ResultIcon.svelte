@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { injectComponentStyle } from "@bysages/core";
+  import { injectComponentStyle } from "@bysages/core/styling";
   import type { HTMLAttributes } from "svelte/elements";
 
   injectComponentStyle("result");
@@ -32,3 +32,4 @@
     </svg>
   {/if}
 </div>
+

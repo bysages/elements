@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("form");
 
   import type { FormProps } from "./props";
@@ -24,3 +24,4 @@ event to the engine; the grid and its spacing live in the stylesheet. -->
 >
   {@render children?.()}
 </form>
+

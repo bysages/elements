@@ -1,5 +1,5 @@
 import { FileUpload as ArkFileUpload } from "@ark-ui/react/file-upload";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
 import { iconNode } from "../../internal/icon";

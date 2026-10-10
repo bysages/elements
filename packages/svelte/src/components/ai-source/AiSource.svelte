@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
 
 import type { SourceProps } from "./props";
@@ -13,3 +13,4 @@ let { href, children, ...rest }: SourceProps = $props();
     {#if children}{@render children()}{:else}{href}{/if}
   </a>
 </li>
+

@@ -1,6 +1,6 @@
 import { Tabs as ArkTabs } from "@ark-ui/solid/tabs";
 import type { TabsRootProps as ArkTabsRootProps } from "@ark-ui/solid/tabs";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

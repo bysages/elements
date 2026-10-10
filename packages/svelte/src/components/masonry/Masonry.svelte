@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("masonry");
 
 import type { MasonryProps } from "./props";
@@ -32,3 +32,4 @@ would need grid masonry, which browsers do not ship yet. -->
 >
   {@render children?.()}
 </div>
+

@@ -1,6 +1,6 @@
 import { TagsInput as ArkTagsInput } from "@ark-ui/solid/tags-input";
 import type { TagsInputRootProps as ArkTagsInputRootProps } from "@ark-ui/solid/tags-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";

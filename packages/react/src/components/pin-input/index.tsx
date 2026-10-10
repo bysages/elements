@@ -1,5 +1,5 @@
 import { PinInput as ArkPinInput } from "@ark-ui/react/pin-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";

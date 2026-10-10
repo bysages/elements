@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "svelte/elements";
 
 injectComponentStyle("browser");
@@ -13,3 +13,4 @@ let { children, ...rest }: Props = $props();
 <div {...rest} data-scope="browser" data-part="body">
   {@render children?.()}
 </div>
+

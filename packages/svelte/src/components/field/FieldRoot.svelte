@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Field as ArkField } from "@ark-ui/svelte/field";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 
 import { useElementId } from "../../internal/id";
 import type { FieldRootProps } from "@ark-ui/svelte/field";
@@ -15,3 +15,4 @@ const id = $derived(useElementId("field", generatedId, rest.id));
 <ArkField.Root bind:ref {...rest} {id}>
   {@render children?.()}
 </ArkField.Root>
+

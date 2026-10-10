@@ -1,5 +1,5 @@
 <script lang="ts">
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("list");
 
 import type { ListContentProps } from "./props";
@@ -18,3 +18,4 @@ snippets, the children snippet follows them for anything else. -->
   {/if}
   {@render children?.()}
 </div>
+

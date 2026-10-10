@@ -1,6 +1,6 @@
 import { DateInput as ArkDateInput } from "@ark-ui/solid/date-input";
 import type { DateInputRootProps as ArkDateInputRootProps } from "@ark-ui/solid/date-input";
-import { injectComponentStyle } from "@bysages/core";
+import { injectComponentStyle } from "@bysages/core/styling";
 import { splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
