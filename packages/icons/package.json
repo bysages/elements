@@ -1,6 +1,6 @@
 {
   "name": "@bysages/icons",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Icon registry for By Sages Elements — the Lucide collection as named exports, one canonical set for every framework wrapper",
   "keywords": [
     "design-system",
@@ -45,7 +45,7 @@
     "@iconify/types": "2.0.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "1.2.138",
+    "@iconify-json/lucide": "1.2.142",
     "@iconify/utils": "3.1.7"
   }
 }

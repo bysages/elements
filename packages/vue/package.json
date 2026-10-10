@@ -1,6 +1,6 @@
 {
   "name": "@bysages/vue",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "By Sages Elements components for Vue — styled by the paper-and-ink design tokens",
   "keywords": [
     "accessible",
@@ -53,14 +53,14 @@
     "release": "basis publish"
   },
   "dependencies": {
-    "@ark-ui/vue": "5.39.2",
+    "@ark-ui/vue": "5.39.3",
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "1.0.0",
     "@tanstack/vue-form": "1.33.5",
-    "@tanstack/vue-table": "9.2.4",
-    "@tanstack/vue-virtual": "3.13.39",
-    "@zag-js/cascade-select": "1.44.0",
-    "@zag-js/vue": "1.44.0"
+    "@tanstack/vue-table": "9.2.8",
+    "@tanstack/vue-virtual": "3.13.40",
+    "@zag-js/cascade-select": "1.45.0",
+    "@zag-js/vue": "1.45.0"
   },
   "devDependencies": {
     "@json-render/core": "0.21.0",
@@ -68,7 +68,7 @@
     "@storybook/addon-a11y": "10.6.1",
     "@storybook/addon-docs": "10.6.1",
     "@storybook/vue3-vite": "10.6.1",
-    "ai": "7.0.126",
+    "ai": "7.0.137",
     "storybook": "10.6.1",
     "vue": "3.5.43",
     "zod": "4.6.5"

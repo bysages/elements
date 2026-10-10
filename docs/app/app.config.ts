@@ -1,10 +1,10 @@
 export default defineAppConfig({
   header: {
-    title: "Elements",
+    title: "Elements · By Sages",
   },
   seo: {
-    titleTemplate: "%s · Elements",
-    title: "Elements",
+    titleTemplate: "%s · Elements · By Sages",
+    title: "Elements · By Sages",
     description:
       "The By Sages UI component library — headless interaction dressed in paper and ink.",
   },
@@ -17,7 +17,7 @@ export default defineAppConfig({
     sub: "header",
   },
   docs: {
-    name: "Elements",
+    name: "Elements · By Sages",
     description:
       "The By Sages UI component library — headless interaction dressed in paper and ink.",
     copyright: { label: "By Sages", url: "https://www.bysages.com/" },
