@@ -60,7 +60,7 @@
     "ts-morph": "28.0.0",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
-    "vite-plus": "1.0.0",
+    "vite-plus": "1.1.0",
     "vue-tsc": "3.3.13"
   },
   "packageManager": "pnpm@10.34.6+sha512.7e1ae66a83a9143c118cc1944f37cc4f2b8acddeda4b001cfa78908f6e46e45e15292739ca6c9d026426cc757e9318cc98c5551d6a16c165097b0028ba87b4e6"
