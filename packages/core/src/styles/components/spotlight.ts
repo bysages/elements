@@ -15,7 +15,7 @@ export const spotlightCss = /* css */ `
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
+  padding: var(--bs-hairline);
   background: radial-gradient(
     var(--bs-spot-radius, 16rem) circle at var(--bs-spot-x, 50%) var(--bs-spot-y, 50%),
     var(--bs-color-primary),

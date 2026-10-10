@@ -8,7 +8,7 @@ defineProps<{ surround?: Array<{ title: string; path: string; description?: stri
 
 <template>
   <nav
-    class="flex justify-between gap-(--bs-gap-md) mt-(--bs-space-16)"
+    class="flex justify-between gap-(--bs-gap-md) mt-(--bs-margin-2xl)"
     :aria-label="t('docs.pagination')"
   >
     <Button v-if="surround?.[0]" variant="outline" size="sm" as-child>

@@ -10,7 +10,6 @@
 @layer bs.tokens, bs.pre, bs.prose;
 
 @import "@bysages/tokens/css";
-
 /* ---------------------------------------------------------------- */
 /* Document                                                          */
 /* ---------------------------------------------------------------- */
@@ -70,7 +69,7 @@ body {
   inset-inline-start: var(--bs-space-2);
   z-index: calc(var(--bs-z-overlay) + 1);
   padding: var(--bs-padding-xs) var(--bs-padding-sm);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
@@ -188,7 +187,7 @@ body {
   align-items: center;
   gap: var(--bs-gap-xs) var(--bs-gap-md);
   padding: var(--bs-padding-sm) var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-2);
 }
@@ -665,7 +664,7 @@ body {
 .bs-docs-pre {
   margin: var(--bs-margin-xl) 0;
   background: var(--bs-color-surface-2);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   overflow: hidden;
 }
@@ -755,7 +754,7 @@ body {
 .bs-docs-code-group[data-scope="tabs"][data-part="root"] {
   gap: 0;
   margin-block: var(--bs-margin-xl);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
   overflow: clip;
@@ -805,7 +804,7 @@ body {
   gap: 0;
   min-inline-size: 0;
   margin-block: var(--bs-margin-xl);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);
   background: var(--bs-color-surface-2);
 }
@@ -1014,8 +1013,8 @@ body {
   align-items: center;
   gap: var(--bs-gap-xs);
   min-inline-size: 0;
-  padding: 0.25rem 0.375rem;
-  border: 1px solid var(--bs-color-border);
+  padding: var(--bs-padding-xs) calc(var(--bs-padding-xs) * 1.5);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   box-shadow: none;
@@ -1096,10 +1095,9 @@ body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--bs-gap-sm);
-  /* Two pixels of optical breath around the radio stack — below the
-     token ramp on purpose; any real spacing step would misalign the
-     swatch grid against its neighbours. */
-  padding: 0.125rem 0;
+  /* A hairline pair gives optical breath around the radio stack; a real
+     spacing step would misalign the swatch grid against its neighbours. */
+  padding-block: calc(var(--bs-hairline) * 2);
 }
 
 .bs-docs-theme-swatch-row[data-scope="radio-group"] [data-part="item"] {
@@ -1181,8 +1179,8 @@ body {
 
 /* The kbd hint rides quiet inside the ghost trigger. */
 .bs-docs-search-trigger kbd {
-  padding: 1px var(--bs-padding-xs);
-  border: 1px solid var(--bs-color-border);
+  padding: var(--bs-hairline) var(--bs-padding-xs);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-xs);
   background: var(--bs-color-surface-1);
   color: var(--bs-color-text-tertiary);
@@ -1200,7 +1198,7 @@ body {
   inline-size: min(17rem, 100%);
   block-size: var(--bs-control-height-sm);
   padding-inline: var(--bs-padding-md);
-  border: 1px solid var(--bs-color-border);
+  border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-sm);
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-tertiary);
@@ -1631,6 +1629,6 @@ body {
   .bs-docs-header [data-scope="button"][data-square="true"][data-size="sm"]::after {
     content: "";
     position: absolute;
-    inset: -7px;
+    inset: calc(-1 * var(--bs-space-2));
   }
 }

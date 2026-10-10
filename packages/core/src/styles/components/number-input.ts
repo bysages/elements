@@ -76,7 +76,7 @@ export const numberInputCss =
 [data-scope="number-input"][data-part="increment-trigger"],
 [data-scope="number-input"][data-part="decrement-trigger"] {
   position: absolute;
-  inset-inline-end: 1px;
+  inset-inline-end: var(--bs-hairline);
   display: grid;
   place-items: center;
   inline-size: var(--bs-space-6);
@@ -92,7 +92,7 @@ export const numberInputCss =
 }
 
 [data-scope="number-input"][data-part="increment-trigger"] {
-  inset-block-start: 1px;
+  inset-block-start: var(--bs-hairline);
   inset-block-end: 50%;
   border-start-end-radius: var(--bs-radius-sm);
   border-bottom: var(--bs-hairline) solid var(--bs-color-border);
@@ -100,7 +100,7 @@ export const numberInputCss =
 
 [data-scope="number-input"][data-part="decrement-trigger"] {
   inset-block-start: 50%;
-  inset-block-end: 1px;
+  inset-block-end: var(--bs-hairline);
   border-end-end-radius: var(--bs-radius-sm);
 }
 
@@ -131,8 +131,8 @@ export const numberInputCss =
    dial you drag, so the cursor says so. */
 [data-scope="number-input"][data-part="scrubber"] {
   position: absolute;
-  inset-block: 1px;
-  inset-inline-start: 1px;
+  inset-block: var(--bs-hairline);
+  inset-inline-start: var(--bs-hairline);
   display: grid;
   place-items: center;
   inline-size: var(--bs-space-6);

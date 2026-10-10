@@ -482,11 +482,11 @@ export const tableCss = /* css */ `
 }
 
 [data-scope="table"][data-part="row"][data-drop-before]::before {
-  inset-block-start: -1px;
+  inset-block-start: calc(-1 * var(--bs-hairline));
 }
 
 [data-scope="table"][data-part="row"][data-drop-after]::before {
-  inset-block-end: -1px;
+  inset-block-end: calc(-1 * var(--bs-hairline));
 }
 
 /* Same specificity as the row hover wash, later in the file, so the

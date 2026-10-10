@@ -52,7 +52,7 @@ const config = {
     "nuxt-llms",
   ],
 
-  css: [resolve("./assets/css/docs.css")],
+  css: [resolve("./assets/css/docs.css"), resolve("./assets/css/tailwind.css")],
 
   // Icon CSS defaults to width: 1em and lands unlayered — unlayered beats
   // every cascade layer, so utility sizes (size-4, size-7) could never

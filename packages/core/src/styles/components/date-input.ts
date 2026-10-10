@@ -68,7 +68,7 @@ export const dateInputCss =
   align-items: center;
   justify-content: center;
   min-width: 2ch;
-  padding: 0 2px;
+  padding-inline: calc(var(--bs-hairline) * 2);
   border-radius: var(--bs-radius-xs);
   font-variant-numeric: tabular-nums;
   caret-color: transparent;

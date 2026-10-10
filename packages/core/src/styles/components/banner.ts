@@ -34,7 +34,7 @@ export const bannerCss = /* css */ `
   flex: none;
   display: flex;
   align-items: flex-start;
-  padding-block-start: 1px;
+  padding-block-start: var(--bs-hairline);
   color: var(--_pigment);
 }
 

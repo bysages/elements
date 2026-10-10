@@ -53,7 +53,7 @@ export const descriptionsCss = /* css */ `
    gutter between them draws the full grid, the term resting on inset
    paper inside its cell. */
 [data-scope="descriptions"][data-bordered] {
-  gap: 1px;
+  gap: var(--bs-hairline);
   border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-border);

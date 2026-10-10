@@ -73,7 +73,7 @@ export const orderListCss = /* css */ `
 
 [data-scope="order-list"][data-part="controls"] {
   display: flex;
-  gap: 2px;
+  gap: calc(var(--bs-gap-xs) / 2);
   opacity: 0;
   transition: opacity var(--bs-duration-fast) var(--bs-ease-out);
 }

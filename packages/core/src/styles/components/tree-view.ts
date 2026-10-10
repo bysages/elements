@@ -25,7 +25,7 @@ export const treeViewCss =
   inline-size: 1px;
   block-size: 1px;
   padding: 0;
-  margin: -1px;
+  margin: calc(-1 * var(--bs-hairline));
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
