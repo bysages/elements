@@ -5,12 +5,13 @@ import {
   Button,
   Card,
   Dialog,
+  Drawer,
   Field,
   Input,
   NavigationMenu,
   Textarea,
 } from "@bysages/vue";
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, onScopeDispose, reactive, ref } from "vue";
 
 const { locale } = useI18n();
 
@@ -31,6 +32,7 @@ const copy = {
   en: {
     compose: "Compose",
     search: "Search mail",
+    foldersTitle: "Folders",
     folders: {
       inbox: "Inbox",
       starred: "Starred",
@@ -51,6 +53,7 @@ const copy = {
   zh: {
     compose: "撰写",
     search: "搜索邮件",
+    foldersTitle: "文件夹",
     folders: {
       inbox: "收件箱",
       starred: "已加星标",
@@ -227,7 +230,8 @@ const mails = reactive<Mail[]>([
 ]);
 
 const folder = ref<Folder>("inbox");
-const selectedId = ref<string | null>("m-01");
+const selectedId = ref<string | null>(null);
+const foldersOpen = ref(false);
 const query = ref("");
 
 const folderList: Array<{ key: Folder; icon: string }> = [
@@ -237,6 +241,18 @@ const folderList: Array<{ key: Folder; icon: string }> = [
   { key: "archive", icon: "i-lucide-archive" },
   { key: "trash", icon: "i-lucide-trash-2" },
 ];
+
+let desktopViewport: MediaQueryList | undefined;
+const syncInitialMail = () => {
+  selectedId.value = desktopViewport?.matches ? (visible.value.at(0)?.id ?? null) : null;
+};
+onMounted(() => {
+  // Tailwind's `md` rung is the exact boundary where the folders rail appears.
+  desktopViewport = window.matchMedia("(min-width: 48rem)");
+  syncInitialMail();
+  desktopViewport.addEventListener("change", syncInitialMail);
+});
+onScopeDispose(() => desktopViewport?.removeEventListener("change", syncInitialMail));
 
 const unreadCount = (key: Folder) =>
   mails.filter((m) => (key === "starred" ? m.starred : m.folder === key && m.unread)).length;
@@ -265,6 +281,7 @@ function toggleStar(mail: Mail) {
 
 function onFolder(key: Folder) {
   folder.value = key;
+  foldersOpen.value = false;
   selectedId.value = null;
 }
 
@@ -310,7 +327,7 @@ function send() {
 <template>
   <Card>
     <Card.Content class="p-0!">
-      <div class="grid h-[38rem] md:grid-cols-[11rem_17rem_1fr]">
+      <div class="grid h-[38rem] min-w-0 grid-cols-1 md:grid-cols-[11rem_17rem_1fr]">
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
         <div class="hidden flex-col border-r border-border p-(--bs-padding-md) md:flex">
           <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
@@ -377,10 +394,60 @@ function send() {
 
         <!-- The list: sender, subject, one line of the letter. -->
         <div
-          class="flex min-h-0 flex-col border-border md:border-r"
+          class="flex min-h-0 min-w-0 flex-col border-border md:border-r"
           :class="selected ? 'hidden md:flex' : 'flex'"
         >
-          <div class="p-(--bs-padding-sm)">
+          <!-- The pocket header keeps one control register: square ink ghosts
+               flank the field, and the wider action is reading the mail. -->
+          <div class="flex items-center gap-(--bs-gap-sm) p-(--bs-padding-sm) md:hidden">
+            <Drawer.Root v-model:open="foldersOpen" swipe-direction="left">
+              <Drawer.Trigger as-child>
+                <Button variant="ghost" size="sm" square :aria-label="text.foldersTitle">
+                  <Icon name="i-lucide-menu" />
+                </Button>
+              </Drawer.Trigger>
+              <Teleport to="body">
+                <Drawer.Backdrop />
+                <Drawer.Positioner>
+                  <Drawer.Content :aria-label="text.foldersTitle" class="flex flex-col">
+                    <Drawer.Title class="sr-only">{{ text.foldersTitle }}</Drawer.Title>
+                    <NavigationMenu.Root orientation="vertical" class="w-full!">
+                      <NavigationMenu.List class="px-(--bs-padding-sm)!">
+                        <NavigationMenu.Item v-for="f in folderList" :key="f.key">
+                          <NavigationMenu.Link as-child :current="folder === f.key">
+                            <button
+                              type="button"
+                              class="w-full! border-0 bg-transparent"
+                              @click="onFolder(f.key)"
+                            >
+                              <Icon :name="f.icon" />
+                              {{ text.folders[f.key] }}
+                              <span
+                                v-if="unreadCount(f.key)"
+                                class="ml-auto text-xs tabular-nums text-tertiary"
+                                >{{ unreadCount(f.key) }}</span
+                              >
+                            </button>
+                          </NavigationMenu.Link>
+                        </NavigationMenu.Item>
+                      </NavigationMenu.List>
+                    </NavigationMenu.Root>
+                  </Drawer.Content>
+                </Drawer.Positioner>
+              </Teleport>
+            </Drawer.Root>
+            <Input v-model="query" :placeholder="text.search" class="min-w-0 flex-1" />
+            <Button
+              variant="ghost"
+              size="sm"
+              square
+              :aria-label="text.compose"
+              @click="composing = true"
+            >
+              <Icon name="i-lucide-pen-line" />
+            </Button>
+          </div>
+          <div class="hidden p-(--bs-padding-sm) md:block">
             <Input v-model="query" :placeholder="text.search" />
           </div>
           <div class="min-h-0 flex-1 overflow-y-auto">
@@ -440,13 +507,18 @@ function send() {
 
         <!-- The letter itself. -->
         <div
-          class="flex min-h-0 flex-col overflow-y-auto p-(--bs-padding-xl)"
+          class="flex min-h-0 min-w-0 flex-col overflow-y-auto p-(--bs-padding-xl)"
           :class="selected ? 'block' : 'hidden md:block'"
         >
           <Transition name="bs-fade" mode="out-in">
             <div v-if="selected">
               <div class="mb-(--bs-margin-md) flex items-center gap-(--bs-gap-xs) md:hidden">
-                <Button variant="ghost" size="sm" @click="selectedId = null">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  :aria-label="locale === 'zh' ? '返回列表' : 'Back to list'"
+                  @click="selectedId = null"
+                >
                   <Icon name="i-lucide-arrow-left" />
                 </Button>
               </div>
