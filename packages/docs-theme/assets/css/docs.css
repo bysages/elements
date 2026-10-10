@@ -747,6 +747,15 @@ body {
   color: var(--bs-color-danger);
 }
 
+/* Scrollable tab strips and clipped code chrome cannot show an external
+   halo; the inset token keeps focus visible without turning the strip
+   into a vertical scroll container. */
+.bs-docs-code-group [data-scope="tabs"][data-part="trigger"]:focus-visible,
+.bs-docs-demo [data-scope="tabs"][data-part="trigger"]:focus-visible,
+.bs-docs-pre-bar [data-scope="button"][data-part="root"]:focus-visible {
+  box-shadow: var(--bs-focus-ring-inset);
+}
+
 /* Code groups share one vessel: the tab strip on top, the panes beneath
    — each pane's own title bar and border dissolve into the group. The
    vessel stays paper, not inset: the code reads like a printed block. */

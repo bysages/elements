@@ -18,7 +18,7 @@ const copy = computed(() => resolveLandingCopy(locale.value).features);
       <h2 class="m-0 font-serif text-3xl leading-tight">{{ copy.title }}</h2>
     </header>
 
-    <div class="grid gap-(--bs-gap-lg) sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-(--bs-gap-lg) @min-[28rem]:grid-cols-2 @min-[52rem]:grid-cols-4">
       <Card v-for="feature in copy.items" :key="feature.title">
         <Card.Content class="grid content-start gap-(--bs-gap-md)">
           <span

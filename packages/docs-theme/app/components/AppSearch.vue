@@ -15,6 +15,10 @@ interface SearchSection {
 const { t, isEnabled, localeOf } = useDocsI18n();
 const route = useRoute();
 
+// The shortcut stays truthful on each platform without shipping a runtime
+// key-detection dependency into the server payload.
+const modifierKey = ref("⌘");
+
 // The rail's square trigger shares this state — the palette is opened
 // from the header's field or its folded trigger alike.
 const open = useDocsSearch();
@@ -90,6 +94,10 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 if (import.meta.client) {
+  onMounted(() => {
+    if (!navigator.userAgent.includes("Mac")) modifierKey.value = "Ctrl";
+  });
+
   window.addEventListener("keydown", onKeydown);
   onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 }
@@ -101,7 +109,7 @@ if (import.meta.client) {
   <Button variant="ghost" size="sm" class="bs-docs-search-trigger" @click="open = true">
     <Icon name="i-lucide-search" />
     <span>{{ t("docs.search") }}</span>
-    <kbd>⌘K</kbd>
+    <kbd>{{ modifierKey }}K</kbd>
   </Button>
   <Command
     :items="items"

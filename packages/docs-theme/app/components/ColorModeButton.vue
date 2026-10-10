@@ -7,6 +7,10 @@ const { t } = useDocsI18n();
 // would let them drift apart, so the mode lives in shared app state.
 const mode = useState<"light" | "dark" | "system">("color-mode", () => getTheme().mode);
 
+/** The reveal is slower than a control fade: one-and-a-half slow beats,
+ * still derived from the theme's reduced-motion-aware duration ladder. */
+const REVEAL_BEATS = 1.5;
+
 type ViewTransitionDocument = Document & {
   startViewTransition?: (update: () => void) => { ready: Promise<void> };
 };
@@ -53,9 +57,13 @@ function toggle(event: MouseEvent) {
   transition.ready
     .then(() => {
       const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      const duration =
+        Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--bs-duration-slow"),
+        ) * REVEAL_BEATS;
       document.documentElement.animate(
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-        { duration: 500, easing: "linear", pseudoElement: "::view-transition-new(root)" },
+        { duration, easing: "linear", pseudoElement: "::view-transition-new(root)" },
       );
     })
     .catch(() => {});

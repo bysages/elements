@@ -362,7 +362,7 @@ function send() {
                 <NavigationMenu.Link as-child :current="folder === f.key">
                   <button type="button" class="border-0 bg-transparent" @click="onFolder(f.key)">
                     <Icon :name="f.icon" />
-                  {{ text.folders[f.key] }}
+                    {{ text.folders[f.key] }}
                     <span
                       v-if="unreadCount(f.key)"
                       class="ml-auto text-xs tabular-nums text-tertiary"

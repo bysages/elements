@@ -354,11 +354,13 @@ const orgs = [
   },
 ];
 
-// GitHub's rail carries the member's local clock — it ticks on the
-// client, so the interval only exists after mount.
-const now = ref(Date.now());
+// GitHub's rail carries the member's local clock. Server and hydration
+// must agree on the first paint, so the demo starts from a fixed local
+// time and catches up only after mount.
+const now = ref(Date.parse("2026-10-01T08:44:22+08:00"));
 let clock: ReturnType<typeof setInterval> | undefined;
 onMounted(() => {
+  now.value = Date.now();
   clock = setInterval(() => (now.value = Date.now()), 30_000);
 });
 onUnmounted(() => clearInterval(clock));

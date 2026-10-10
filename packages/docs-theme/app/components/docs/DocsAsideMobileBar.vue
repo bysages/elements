@@ -25,25 +25,25 @@ const links = computed(() => props.page?.body?.toc?.links ?? []);
   <!-- Below the wide-container breakpoint the outline lane is folded
        away; the bar carries its entry instead. -->
   <Root>
-  <div v-if="links.length" class="bs-docs-mobile-bar">
-    <Trigger as-child>
-      <Button variant="ghost" size="sm">
-        <Icon name="i-lucide-list-tree" class="size-4" />
-        {{ t("docs.toc") }}
-      </Button>
-    </Trigger>
-  </div>
+    <div v-if="links.length" class="bs-docs-mobile-bar">
+      <Trigger as-child>
+        <Button variant="ghost" size="sm">
+          <Icon name="i-lucide-list-tree" class="size-4" />
+          {{ t("docs.toc") }}
+        </Button>
+      </Trigger>
+    </div>
 
-  <ClientOnly>
-    <!-- The outline rises from the bottom edge too — one gesture
+    <ClientOnly>
+      <!-- The outline rises from the bottom edge too — one gesture
          vocabulary for every sheet on the phone. -->
-    <Backdrop />
+      <Backdrop />
       <Positioner>
         <Content :aria-label="t('docs.toc')">
           <Title>{{ t("docs.toc") }}</Title>
           <DocsAsideRight :page="page" />
         </Content>
       </Positioner>
-  </ClientOnly>
+    </ClientOnly>
   </Root>
 </template>

@@ -52,7 +52,9 @@ function submit() {
 </script>
 
 <template>
-  <div class="grid min-h-[34rem] place-items-center p-(--bs-padding-xl) sm:p-10">
+  <div
+    class="grid min-h-[34rem] place-items-center p-(--bs-padding-xl) @min-[28rem]:p-(--bs-padding-2xl)"
+  >
     <div class="w-full max-w-sm text-center">
       <div v-if="verified" class="grid place-items-center gap-(--bs-gap-md)">
         <span

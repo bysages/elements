@@ -6,12 +6,12 @@ const blocked = ref(true);
 </script>
 
 <template>
-  <div class="flex w-96 flex-col gap-4">
+  <div class="flex w-96 flex-col gap-(--bs-gap-lg)">
     <Button size="sm" variant="outline" @click="blocked = !blocked">
       {{ blocked ? "Lift the curtain" : "Draw the curtain" }}
     </Button>
     <BlockUI :blocked="blocked">
-      <div class="rounded-md border border-border p-6 text-sm text-secondary">
+      <div class="rounded-md border border-border p-(--bs-padding-xl) text-sm text-secondary">
         Invoices settle every quarter. The ledger holds its shape while the curtain is drawn.
       </div>
     </BlockUI>

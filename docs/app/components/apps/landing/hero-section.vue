@@ -16,7 +16,7 @@ function goTo(hash: string) {
 <template>
   <section
     id="top"
-    class="mx-auto grid max-w-[64rem] gap-10 px-(--bs-padding-xl) pb-16 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"
+    class="mx-auto grid max-w-[64rem] gap-(--bs-gap-2xl) px-(--bs-padding-xl) pb-(--bs-padding-2xl) pt-(--bs-padding-2xl) @min-[48rem]:grid-cols-[1.05fr_0.95fr] @min-[48rem]:items-center"
   >
     <div>
       <p

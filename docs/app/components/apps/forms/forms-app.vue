@@ -117,7 +117,7 @@ const frequency = ref("weekly");
 </script>
 
 <template>
-  <div class="grid gap-(--bs-gap-xl) lg:grid-cols-2">
+  <div class="grid gap-(--bs-gap-xl) @min-[48rem]:grid-cols-2">
     <Card>
       <Card.Header>
         <Card.Title>{{ text.profile.title }}</Card.Title>

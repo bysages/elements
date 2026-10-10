@@ -753,8 +753,8 @@
      Headlines keep a restrained technical ramp that also narrows in
      small containers; dense lists and navigation stay at the small step. */
   --bs-font-mono:
-    "JetBrains Mono", "Cascadia Mono", "Cascadia Code", ui-monospace, SFMono-Regular,
-    "SF Mono", Menlo, Consolas, "Noto Sans Mono CJK SC", monospace;
+    "JetBrains Mono", "Cascadia Mono", "Cascadia Code", ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Noto Sans Mono CJK SC", monospace;
   --bs-font-sans: var(--bs-font-mono);
   --bs-font-serif: var(--bs-font-sans);
   --bs-font-size-2xs: 0.6875rem;

@@ -268,195 +268,195 @@ onBeforeUnmount(scriptAbort);
 
 <template>
   <Drawer.Root v-model:open="navOpen" swipe-direction="left">
-  <Layout.Root sider="start" class="ai-workbench @container h-full min-h-0!">
-    <Layout.Sider
-      v-model:collapsed="railCollapsed"
-      width="17rem"
-      collapsed-width="4.5rem"
-      class="ai-rail overflow-visible! @max-[60rem]:hidden!"
-      :aria-label="text.history"
-    >
-      <template #default="{ collapsed }">
-        <div class="ai-rail-body">
-          <div class="ai-brand">
-            <Avatar size="sm" aria-hidden="true">
-              <Avatar.Fallback>AI</Avatar.Fallback>
-            </Avatar>
-            <span v-if="!collapsed" class="min-w-0 flex-1 truncate">{{ text.workspace }}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              square
-              :aria-label="collapsed ? text.expandSidebar : text.collapseSidebar"
-              @click="toggleRail"
-            >
-              <Icon :glyph="collapsed ? panel_left_open : panel_left_close" />
-            </Button>
-          </div>
+    <Layout.Root sider="start" class="ai-workbench @container h-full min-h-0!">
+      <Layout.Sider
+        v-model:collapsed="railCollapsed"
+        width="17rem"
+        collapsed-width="4.5rem"
+        class="ai-rail overflow-visible! @max-[60rem]:hidden!"
+        :aria-label="text.history"
+      >
+        <template #default="{ collapsed }">
+          <div class="ai-rail-body">
+            <div class="ai-brand">
+              <Avatar size="sm" aria-hidden="true">
+                <Avatar.Fallback>AI</Avatar.Fallback>
+              </Avatar>
+              <span v-if="!collapsed" class="min-w-0 flex-1 truncate">{{ text.workspace }}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                square
+                :aria-label="collapsed ? text.expandSidebar : text.collapseSidebar"
+                @click="toggleRail"
+              >
+                <Icon :glyph="collapsed ? panel_left_open : panel_left_close" />
+              </Button>
+            </div>
 
-          <div class="ai-rail-actions">
-            <Button
-              variant="ghost"
-              size="sm"
-              :class="collapsed ? '' : 'w-full! justify-start!'"
-              :square="collapsed"
-              @click="newConversation"
-            >
-              <Icon :glyph="plus" />
-              <span v-if="!collapsed">{{ text.newChat }}</span>
-            </Button>
+            <div class="ai-rail-actions">
+              <Button
+                variant="ghost"
+                size="sm"
+                :class="collapsed ? '' : 'w-full! justify-start!'"
+                :square="collapsed"
+                @click="newConversation"
+              >
+                <Icon :glyph="plus" />
+                <span v-if="!collapsed">{{ text.newChat }}</span>
+              </Button>
 
-            <Popover.Root
-              v-if="collapsed"
-              :open="historyOpen"
-              :positioning="{ placement: 'right-start' }"
-              @update:open="historyOpen = $event"
-            >
-              <Popover.Trigger as-child>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  square
-                  :aria-label="text.history"
-                  :aria-expanded="historyOpen"
-                >
-                  <Icon :glyph="messages_square" />
-                </Button>
-              </Popover.Trigger>
-              <Popover.Positioner>
-                <Popover.Content class="ai-history-panel">
-                  <Popover.Title class="ai-rail-label">{{ text.recent }}</Popover.Title>
-                  <ThreadList
-                    compact
-                    :threads="threads"
-                    :active-id="activeId"
-                    :empty-text="text.emptyHistory"
-                    @select="selectThread"
-                  />
-                </Popover.Content>
-              </Popover.Positioner>
-            </Popover.Root>
-          </div>
+              <Popover.Root
+                v-if="collapsed"
+                :open="historyOpen"
+                :positioning="{ placement: 'right-start' }"
+                @update:open="historyOpen = $event"
+              >
+                <Popover.Trigger as-child>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    square
+                    :aria-label="text.history"
+                    :aria-expanded="historyOpen"
+                  >
+                    <Icon :glyph="messages_square" />
+                  </Button>
+                </Popover.Trigger>
+                <Popover.Positioner>
+                  <Popover.Content class="ai-history-panel">
+                    <Popover.Title class="ai-rail-label">{{ text.recent }}</Popover.Title>
+                    <ThreadList
+                      compact
+                      :threads="threads"
+                      :active-id="activeId"
+                      :empty-text="text.emptyHistory"
+                      @select="selectThread"
+                    />
+                  </Popover.Content>
+                </Popover.Positioner>
+              </Popover.Root>
+            </div>
 
-          <div v-if="!collapsed" class="ai-rail-scroll">
-            <p class="ai-rail-label">{{ text.recent }}</p>
-            <ThreadList
-              :threads="threads"
-              :active-id="activeId"
-              :empty-text="text.emptyHistory"
-              @select="selectThread"
-            />
-          </div>
-          <div v-else class="flex-1" />
+            <div v-if="!collapsed" class="ai-rail-scroll">
+              <p class="ai-rail-label">{{ text.recent }}</p>
+              <ThreadList
+                :threads="threads"
+                :active-id="activeId"
+                :empty-text="text.emptyHistory"
+                @select="selectThread"
+              />
+            </div>
+            <div v-else class="flex-1" />
 
-          <div class="ai-account">
-            <Avatar size="sm">
-              <Avatar.Fallback>BS</Avatar.Fallback>
-            </Avatar>
-            <div v-if="!collapsed" class="min-w-0">
-              <p class="m-0 truncate text-sm">{{ text.account }}</p>
-              <p class="m-0 text-xs text-tertiary">{{ text.plan }}</p>
+            <div class="ai-account">
+              <Avatar size="sm">
+                <Avatar.Fallback>BS</Avatar.Fallback>
+              </Avatar>
+              <div v-if="!collapsed" class="min-w-0">
+                <p class="m-0 truncate text-sm">{{ text.account }}</p>
+                <p class="m-0 text-xs text-tertiary">{{ text.plan }}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-    </Layout.Sider>
+        </template>
+      </Layout.Sider>
 
-    <Layout.Header>
-      <Drawer.Trigger as-child>
-        <Button
-          variant="ghost"
+      <Layout.Header>
+        <Drawer.Trigger as-child>
+          <Button
+            variant="ghost"
+            size="sm"
+            square
+            class="hidden! @max-[60rem]:flex!"
+            :aria-label="text.openHistory"
+          >
+            <Icon :glyph="menu" />
+          </Button>
+        </Drawer.Trigger>
+        <h2 class="m-0 min-w-0 flex-1 truncate text-base font-semibold">
+          {{ activeThread.title }}
+        </h2>
+        <Select
+          v-model="model"
+          :options="modelOptions"
+          :placeholder="text.model"
+          :clearable="false"
           size="sm"
-          square
-          class="hidden! @max-[60rem]:flex!"
-          :aria-label="text.openHistory"
-        >
-          <Icon :glyph="menu" />
-        </Button>
-      </Drawer.Trigger>
-      <h2 class="m-0 min-w-0 flex-1 truncate text-base font-semibold">
-        {{ activeThread.title }}
-      </h2>
-      <Select
-        v-model="model"
-        :options="modelOptions"
-        :placeholder="text.model"
-        :clearable="false"
-        size="sm"
-        class="max-[38rem]:hidden! w-44!"
-      />
-      <Badge tone="success" variant="subtle">{{ text.local }}</Badge>
-    </Layout.Header>
+          class="max-[38rem]:hidden! w-44!"
+        />
+        <Badge tone="success" variant="subtle">{{ text.local }}</Badge>
+      </Layout.Header>
 
-    <Layout.Content class="ai-workspace" :class="{ 'ai-workspace-empty': !hasConversation }">
-      <div v-if="hasConversation" ref="transcript" class="ai-transcript">
-        <Ai.Conversation class="mx-auto w-full max-w-[46rem]" :aria-label="text.conversation">
-          <Ai.Message role="assistant">
-            <AiContent>{{ greetingText }}</AiContent>
-          </Ai.Message>
-
-          <template v-for="entry in activeThread.entries" :key="entry.id">
-            <Ai.Message :role="entry.role">
-              <AiLoader v-if="!entry.reasoning && entry.streaming && !entry.content" />
-              <template v-else-if="entry.reasoning">
-                <AiReasoning :label="text.thinking">{{ entry.reasoning }}</AiReasoning>
-                <AiTool
-                  v-if="entry.tool"
-                  :name="entry.tool.name"
-                  :input="entry.tool.input"
-                  :status="entry.toolStatus"
-                >
-                  {{ entry.tool.output }}
-                </AiTool>
-                <Ai.Response v-if="entry.content" :content="entry.content" />
-              </template>
-              <template v-else-if="entry.tool">
-                <AiTool
-                  :name="entry.tool.name"
-                  :input="entry.tool.input"
-                  :status="entry.toolStatus"
-                >
-                  {{ entry.tool.output }}
-                </AiTool>
-                <AiContent>{{ entry.content }}</AiContent>
-              </template>
-              <AiContent v-else>{{ entry.content }}</AiContent>
+      <Layout.Content class="ai-workspace" :class="{ 'ai-workspace-empty': !hasConversation }">
+        <div v-if="hasConversation" ref="transcript" class="ai-transcript">
+          <Ai.Conversation class="mx-auto w-full max-w-[46rem]" :aria-label="text.conversation">
+            <Ai.Message role="assistant">
+              <AiContent>{{ greetingText }}</AiContent>
             </Ai.Message>
-          </template>
-        </Ai.Conversation>
-      </div>
 
-      <div v-else class="ai-welcome">
-        <p class="ai-welcome-eyebrow">{{ text.workspace }}</p>
-        <h1 class="ai-welcome-title">{{ text.greetingTitle }}</h1>
-        <p class="ai-welcome-body">{{ text.greetingBody }}</p>
-      </div>
-
-      <div class="mx-auto w-full max-w-[46rem]">
-        <div v-if="visibleSuggestions.length" class="ai-suggestions">
-          <AiSuggestion
-            v-for="suggestion in visibleSuggestions"
-            :key="suggestion"
-            :prompt="suggestion"
-            @select="send"
-          />
+            <template v-for="entry in activeThread.entries" :key="entry.id">
+              <Ai.Message :role="entry.role">
+                <AiLoader v-if="!entry.reasoning && entry.streaming && !entry.content" />
+                <template v-else-if="entry.reasoning">
+                  <AiReasoning :label="text.thinking">{{ entry.reasoning }}</AiReasoning>
+                  <AiTool
+                    v-if="entry.tool"
+                    :name="entry.tool.name"
+                    :input="entry.tool.input"
+                    :status="entry.toolStatus"
+                  >
+                    {{ entry.tool.output }}
+                  </AiTool>
+                  <Ai.Response v-if="entry.content" :content="entry.content" />
+                </template>
+                <template v-else-if="entry.tool">
+                  <AiTool
+                    :name="entry.tool.name"
+                    :input="entry.tool.input"
+                    :status="entry.toolStatus"
+                  >
+                    {{ entry.tool.output }}
+                  </AiTool>
+                  <AiContent>{{ entry.content }}</AiContent>
+                </template>
+                <AiContent v-else>{{ entry.content }}</AiContent>
+              </Ai.Message>
+            </template>
+          </Ai.Conversation>
         </div>
-        <AiPromptInput
-          v-model="prompt"
-          :placeholder="text.ask"
-          :busy="busy"
-          @submit="send"
-          @stop="scriptAbort"
-        >
-          <template #footer>
-            <Badge tone="ink" variant="outline">{{ text.simulated }}</Badge>
-          </template>
-        </AiPromptInput>
-      </div>
-    </Layout.Content>
-  </Layout.Root>
 
-  <Teleport to="body">
+        <div v-else class="ai-welcome">
+          <p class="ai-welcome-eyebrow">{{ text.workspace }}</p>
+          <h1 class="ai-welcome-title">{{ text.greetingTitle }}</h1>
+          <p class="ai-welcome-body">{{ text.greetingBody }}</p>
+        </div>
+
+        <div class="mx-auto w-full max-w-[46rem]">
+          <div v-if="visibleSuggestions.length" class="ai-suggestions">
+            <AiSuggestion
+              v-for="suggestion in visibleSuggestions"
+              :key="suggestion"
+              :prompt="suggestion"
+              @select="send"
+            />
+          </div>
+          <AiPromptInput
+            v-model="prompt"
+            :placeholder="text.ask"
+            :busy="busy"
+            @submit="send"
+            @stop="scriptAbort"
+          >
+            <template #footer>
+              <Badge tone="ink" variant="outline">{{ text.simulated }}</Badge>
+            </template>
+          </AiPromptInput>
+        </div>
+      </Layout.Content>
+    </Layout.Root>
+
+    <Teleport to="body">
       <Drawer.Backdrop />
       <Drawer.Positioner>
         <Drawer.Content :aria-label="text.history" class="ai-sheet">

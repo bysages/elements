@@ -41,7 +41,7 @@ const routePath = computed(() => route.path);
   </li>
   <Item v-else :value="item.path!">
     <Link as-child :current="routePath === item.path">
-      <NuxtLink :to="item.path!">{{ item.title }}</NuxtLink>
+      <NuxtLink :to="item.path!" :title="item.title">{{ item.title }}</NuxtLink>
     </Link>
   </Item>
 </template>

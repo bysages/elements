@@ -9,7 +9,7 @@ const tasks = [
 </script>
 
 <template>
-  <div class="grid gap-3 w-full">
+  <div class="grid gap-(--bs-gap-md) w-full">
     <Checkbox
       v-for="task in tasks"
       :key="task.label"

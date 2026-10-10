@@ -87,7 +87,7 @@ function save() {
 </script>
 
 <template>
-  <div class="grid content-start gap-(--bs-gap-lg) lg:grid-cols-2">
+  <div class="grid content-start gap-(--bs-gap-lg) @min-[48rem]:grid-cols-2">
     <Card>
       <Card.Header>
         <Card.Title>{{ text.workspace.title }}</Card.Title>
@@ -125,7 +125,7 @@ function save() {
 
     <!-- The save belongs to the whole form, not to either card — an
          empty vessel just to host a button would be a fake object. -->
-    <div class="flex justify-end lg:col-span-2">
+    <div class="flex justify-end @min-[48rem]:col-span-2">
       <Button
         @click="
           toaster.create({
