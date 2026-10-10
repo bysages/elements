@@ -305,8 +305,7 @@ function nativeEmits(component: ObjectLiteralExpression): EmitDoc[] {
     const modelField = name.match(/^update:(.+)$/)?.[1];
     if (!modelField) return [{ name, payload: "—" }];
     const prop = nativeProps(component).find((candidate) => candidate.name === modelField);
-    const valueType =
-      prop?.type.match(/PropType<([\s\S]+)>/)?.[1] ?? prop?.type ?? "unknown";
+    const valueType = prop?.type.match(/PropType<([\s\S]+)>/)?.[1] ?? prop?.type ?? "unknown";
     return [{ name, payload: `value: ${valueType}` }];
   });
 }
