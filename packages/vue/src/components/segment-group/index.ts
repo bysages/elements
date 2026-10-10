@@ -71,7 +71,9 @@ const SegmentGroupFacade = defineComponent({
       default: "horizontal",
     },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("segment-group");
 

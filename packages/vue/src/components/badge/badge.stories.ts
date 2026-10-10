@@ -20,7 +20,7 @@ type Story = StoryObj<typeof Badge>;
 
 const TONES = ["ink", "primary", "danger", "success", "warning", "info"] as const;
 
-const stack = (variant: string) =>
+const stack = (variant: "solid" | "subtle" | "outline") =>
   h(
     "div",
     { style: { display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" } },

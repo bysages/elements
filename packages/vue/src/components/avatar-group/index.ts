@@ -9,6 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export const AvatarGroup = withSelfRoot(
   defineComponent({
     name: "AvatarGroup",
+    inheritAttrs: false,
     props: {
       /** One register for every seal: falls onto data-size for the
        * stylesheet to re-point the avatars' measure. */

@@ -36,7 +36,9 @@ const RatingGroupFacade = defineComponent({
     /** One rung of the control-height ladder every seal stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("rating-group");
 

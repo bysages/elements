@@ -1,6 +1,6 @@
-import { injectComponentStyle } from "@bysages/core/styling";
 import { getIcon } from "@bysages/core/icons";
 import type { IconifyIcon } from "@bysages/core/icons";
+import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
@@ -28,6 +28,7 @@ export interface IconProps {
 export const Icon = withSelfRoot(
   defineComponent({
     name: "Icon",
+    inheritAttrs: false,
     props: {
       /** Size steps follow the surrounding font size; `inherit` is the
        * default — one em of the text the icon sits in. */

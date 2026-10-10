@@ -35,6 +35,7 @@ export interface BackTopProps {
 export const BackTop = withSelfRoot(
   defineComponent({
     name: "BackTop",
+    inheritAttrs: false,
     props: {
       threshold: { type: Number, default: 400 },
       label: { type: String, default: "Back to top" },

@@ -10,6 +10,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Link = withSelfRoot(
   defineComponent({
     name: "Link",
+    inheritAttrs: false,
     props: {
       underline: {
         type: String as PropType<"always" | "hover" | "none">,

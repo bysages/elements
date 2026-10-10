@@ -29,7 +29,9 @@ export const ImageViewerPreview = defineComponent({
           ...attrs,
           "data-scope": "image-viewer",
           "data-part": parts,
-          ...(isIcon ? { "data-empty": "true", "aria-label": messages.value.imageViewer.preview } : {}),
+          ...(isIcon
+            ? { "data-empty": "true", "aria-label": messages.value.imageViewer.preview }
+            : {}),
         },
         [
           content ?? iconNode("eye"),
@@ -42,7 +44,10 @@ export const ImageViewerPreview = defineComponent({
                   "data-part": "preview-overlay",
                   "aria-hidden": true,
                 },
-                [iconNode("eye"), props.label ? h("span", { "data-part": "preview-label" }, props.label) : null],
+                [
+                  iconNode("eye"),
+                  props.label ? h("span", { "data-part": "preview-label" }, props.label) : null,
+                ],
               ),
         ],
       );

@@ -55,7 +55,9 @@ const ToggleGroupFacade = defineComponent({
     /** One rung of the control-height ladder for the items. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: ToggleValue) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("toggle-group");
 

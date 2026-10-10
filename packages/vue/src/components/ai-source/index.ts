@@ -8,6 +8,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Source = withSelfRoot(
   defineComponent({
     name: "AiSource",
+    inheritAttrs: false,
     props: {
       /** Where the ink came from — also the link text when no slot is
        * given; opens in a new tab, referrer-free. */
@@ -32,6 +33,7 @@ export const Source = withSelfRoot(
 export const Sources = withSelfRoot(
   defineComponent({
     name: "AiSources",
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       return () =>
         h(

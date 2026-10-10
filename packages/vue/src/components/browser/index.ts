@@ -5,6 +5,7 @@ import { defineComponent, h } from "vue";
 function part(name: string) {
   return defineComponent({
     name: "SBrowser" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("browser");
 
@@ -27,6 +28,7 @@ const Body = part("Body");
  * semantics reserved for danger, warning, and success. */
 const Dots = defineComponent({
   name: "SBrowserDots",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     injectComponentStyle("browser");
 

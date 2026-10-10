@@ -35,7 +35,9 @@ const AngleSliderFacade = defineComponent({
     /** One rung of the dial ladder — the diameter the needle sweeps. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("angle-slider");
 

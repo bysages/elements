@@ -14,6 +14,7 @@ const MARK =
 
 const Root = defineComponent({
   name: "SResultRoot",
+  inheritAttrs: false,
   props: {
     /** The verdict the operation returned; the fixed pigments speak it. */
     status: { type: String as PropType<Status>, default: "info" },
@@ -34,6 +35,7 @@ const Root = defineComponent({
  * icon can never drift from the status the root declares. */
 const Icon = defineComponent({
   name: "SResultIcon",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     injectComponentStyle("result");
 
@@ -61,6 +63,7 @@ const Icon = defineComponent({
 function part(name: string, tag: "h3" | "p" | "div") {
   return defineComponent({
     name: "SResult" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("result");
       return () =>

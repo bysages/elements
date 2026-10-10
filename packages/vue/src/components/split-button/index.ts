@@ -29,6 +29,7 @@ export interface SplitButtonEntry {
  */
 const SplitButtonFacade = defineComponent({
   name: "SplitButton",
+  inheritAttrs: false,
   props: {
     /** The main action's label. */
     label: { type: String, required: true },
@@ -36,12 +37,18 @@ const SplitButtonFacade = defineComponent({
     items: { type: Array as PropType<SplitButtonEntry[]>, default: () => [] },
     /** How both halves rest; the arrow always reads as one control with
      * the main button. */
-    variant: { type: String, default: "solid" },
+    variant: {
+      type: String as PropType<"solid" | "outline" | "ghost" | "subtle">,
+      default: "solid",
+    },
     /** The pigment the halves are inked with; ink is the solemn
      * default, and the fixed pigments speak for their meaning. */
-    tone: { type: String, default: "ink" },
+    tone: {
+      type: String as PropType<"ink" | "info" | "success" | "warning" | "danger">,
+      default: "ink",
+    },
     /** One rung of the control-height ladder for both halves. */
-    size: { type: String, default: "md" },
+    size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     disabled: { type: Boolean, default: false },
   },
   emits: {

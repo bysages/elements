@@ -33,6 +33,7 @@ const PaginationRoot = defineComponent({
 
 const PaginationPrevTrigger = defineComponent({
   name: "SPaginationPrevTrigger",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     const messages = useComponentMessages();
     const { "aria-label": consumerLabel, ...attrs } = ctx.attrs;
@@ -51,6 +52,7 @@ const PaginationPrevTrigger = defineComponent({
 
 const PaginationNextTrigger = defineComponent({
   name: "SPaginationNextTrigger",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     const messages = useComponentMessages();
     const { "aria-label": consumerLabel, ...attrs } = ctx.attrs;
@@ -81,7 +83,9 @@ const PaginationFacade = defineComponent({
     label: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     return () =>
       h(

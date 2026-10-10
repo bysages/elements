@@ -17,6 +17,7 @@ export interface ContainerProps {
 export const Container = withSelfRoot(
   defineComponent({
     name: "Container",
+    inheritAttrs: false,
     props: {
       /** The typographic measure the ink runs to: narrow, readable,
        * wide, or the full frame. */

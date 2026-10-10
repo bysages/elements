@@ -43,7 +43,9 @@ const PasswordInputFacade = defineComponent({
     required: { type: Boolean, default: false },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, { attrs, emit }) {
     return () =>
       h(

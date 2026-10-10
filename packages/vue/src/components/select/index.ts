@@ -45,7 +45,9 @@ const SelectRoot = defineComponent({
 
 type SelectFacadeValue = string | string[];
 
-type SelectParts = Omit<typeof ArkSelect, "Root"> & { Root: typeof ArkSelect.Root & typeof SelectRoot };
+type SelectParts = Omit<typeof ArkSelect, "Root"> & {
+  Root: typeof ArkSelect.Root & typeof SelectRoot;
+};
 
 function toArkValue(value: SelectFacadeValue | undefined) {
   return value === undefined || value === "" ? [] : Array.isArray(value) ? value : [value];
@@ -78,7 +80,9 @@ const SelectFacade = defineComponent({
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: SelectFacadeValue) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("select");
     const collection = computed(() => createListCollection({ items: props.options }));

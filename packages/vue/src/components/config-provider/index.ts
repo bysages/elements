@@ -73,6 +73,7 @@ export interface ConfigProviderProps {
 export const ConfigProvider = withSelfRoot(
   defineComponent({
     name: "ConfigProvider",
+    inheritAttrs: false,
     props: {
       density: { type: String as PropType<ConfigDensity>, default: undefined },
       scene: { type: String as PropType<ConfigScene>, default: undefined },

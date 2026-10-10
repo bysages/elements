@@ -47,6 +47,7 @@ export const FLOAT_BUTTON_CONTEXT: InjectionKey<FloatButtonContext> =
  */
 const Root = defineComponent({
   name: "FloatButtonRoot",
+  inheritAttrs: false,
   props: {
     /** Controlled openness: leave unset to let the group hold its own
      * state; while set, the Trigger reports back through

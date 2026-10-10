@@ -11,6 +11,7 @@ import { Spinner } from "../spinner";
 export const BlockUI = withSelfRoot(
   defineComponent({
     name: "BlockUI",
+    inheritAttrs: false,
     props: {
       /** Whether the curtain is drawn. */
       blocked: { type: Boolean, default: false },

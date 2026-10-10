@@ -48,7 +48,9 @@ const RadioGroupFacade = defineComponent({
     /** One rung for the dial; the chosen dot rides it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("radio-group");
 

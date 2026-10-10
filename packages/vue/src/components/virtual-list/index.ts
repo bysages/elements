@@ -1,7 +1,7 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import { useVirtualizer } from "@tanstack/vue-virtual";
 import type { CSSProperties, SetupContext } from "vue";
-import { computed, defineComponent, h, ref, type PropType } from "vue";
+import { computed, defineComponent, h, onMounted, ref, type PropType } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
 
@@ -28,6 +28,10 @@ export const VirtualList = withSelfRoot(
       injectComponentStyle("virtual-list");
 
       const viewport = ref<HTMLElement | null>(null);
+      const mounted = ref(false);
+      onMounted(() => {
+        mounted.value = true;
+      });
       const virtualizer = useVirtualizer(
         computed(() => ({
           count: props.items.length,
@@ -36,6 +40,27 @@ export const VirtualList = withSelfRoot(
           overscan: 6,
         })),
       );
+      const fallbackRows = computed(() => {
+        const viewportHeight =
+          typeof props.height === "number" ? props.height : Number.parseFloat(props.height);
+        const rowCount =
+          Number.isFinite(viewportHeight) && viewportHeight > 0
+            ? Math.ceil(viewportHeight / props.itemHeight)
+            : 1;
+        return props.items.slice(0, rowCount).map((_, index) => ({
+          key: index,
+          index,
+          start: index * props.itemHeight,
+          size: props.itemHeight,
+        }));
+      });
+      const visibleRows = computed(() =>
+        mounted.value ? virtualizer.value.getVirtualItems() : fallbackRows.value,
+      );
+      const totalSize = computed(() =>
+        mounted.value ? virtualizer.value.getTotalSize() : props.items.length * props.itemHeight,
+      );
+
       return () => {
         const { style, ...attrs } = ctx.attrs;
         return h(
@@ -56,9 +81,9 @@ export const VirtualList = withSelfRoot(
             {
               "data-scope": "virtual-list",
               "data-part": "inner",
-              style: { "--bs-virtual-list-total": `${virtualizer.value.getTotalSize()}px` },
+              style: { "--bs-virtual-list-total": `${totalSize.value}px` },
             },
-            virtualizer.value.getVirtualItems().map((row) =>
+            visibleRows.value.map((row) =>
               h(
                 "div",
                 {

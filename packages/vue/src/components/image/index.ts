@@ -33,6 +33,7 @@ export interface ImageProps {
 export const Image = withSelfRoot(
   defineComponent({
     name: "Image",
+    inheritAttrs: false,
     props: {
       src: { type: String, required: true },
       alt: { type: String, default: "" },

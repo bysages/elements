@@ -28,6 +28,7 @@ function checkIcon() {
  */
 const CheckboxGroupFacade = defineComponent({
   name: "CheckboxGroup",
+  inheritAttrs: false,
   props: {
     modelValue: { type: Array as PropType<string[]>, default: undefined },
     defaultValue: { type: Array as PropType<string[]>, default: undefined },
@@ -39,7 +40,9 @@ const CheckboxGroupFacade = defineComponent({
     invalid: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string[]) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("checkbox-group");
     injectComponentStyle("checkbox");

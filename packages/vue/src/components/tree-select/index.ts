@@ -51,7 +51,9 @@ const TreeSelectFacade = defineComponent({
      * row register follow it together. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("tree-select");
     injectComponentStyle("tree-view");
@@ -150,11 +152,7 @@ const TreeSelectFacade = defineComponent({
                     ]),
                   ]),
                 ]
-              : [
-                  h(ArkTreeView.Item, () => [
-                    h(ArkTreeView.ItemText, () => rowProps.node.label),
-                  ]),
-                ],
+              : [h(ArkTreeView.Item, () => [h(ArkTreeView.ItemText, () => rowProps.node.label)])],
           );
       },
     });

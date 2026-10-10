@@ -26,6 +26,7 @@ export interface StackProps {
 export const Stack = withSelfRoot(
   defineComponent({
     name: "Stack",
+    inheritAttrs: false,
     props: {
       direction: { type: String, default: "column" },
       gap: { type: String, default: "md" },

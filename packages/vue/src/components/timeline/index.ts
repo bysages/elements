@@ -6,6 +6,7 @@ import { defineComponent, h, type PropType } from "vue";
  * left to right. */
 const Root = defineComponent({
   name: "TimelineRoot",
+  inheritAttrs: false,
   props: {
     orientation: { type: String as PropType<"vertical" | "horizontal">, default: "vertical" },
   },
@@ -29,6 +30,7 @@ const Root = defineComponent({
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Timeline" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("timeline");
 

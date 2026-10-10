@@ -63,7 +63,9 @@ const ListboxFacade = defineComponent({
     label: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: ListboxFacadeValue | undefined) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     const collection = computed(() => createListCollection({ items: props.options }));
 

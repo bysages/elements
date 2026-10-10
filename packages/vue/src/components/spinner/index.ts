@@ -10,6 +10,7 @@ import { useComponentMessages } from "../../internal/messages";
 export const Spinner = withSelfRoot(
   defineComponent({
     name: "Spinner",
+    inheritAttrs: false,
     props: {
       /** One rung of the control ladder for the wheel's diameter. */
       size: {

@@ -12,6 +12,7 @@ import { useComponentMessages } from "../../internal/messages";
 export const Terminal = withSelfRoot(
   defineComponent({
     name: "Terminal",
+    inheritAttrs: false,
     props: {
       /** The transcript, oldest line first. */
       lines: { type: Array as PropType<string[]>, default: () => [] },

@@ -12,6 +12,7 @@ import { Avatar, type AvatarSize } from "../avatar";
 export const User = withSelfRoot(
   defineComponent({
     name: "User",
+    inheritAttrs: false,
     props: {
       /** The person's name — the loud line. */
       name: { type: String, required: true },

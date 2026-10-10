@@ -12,6 +12,7 @@ import { withSelfRoot } from "../../internal/family";
 export const DeferredContent = withSelfRoot(
   defineComponent({
     name: "DeferredContent",
+    inheritAttrs: false,
     props: {
       /** How much of the placeholder must be visible before the content
        * mounts, from 0 (any pixel) to 1 (the whole box). */

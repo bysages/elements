@@ -38,7 +38,9 @@ const FieldFacade = defineComponent({
     invalid: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string | number) => true,
+  },
   setup(props, { attrs, emit }) {
     return () =>
       h(

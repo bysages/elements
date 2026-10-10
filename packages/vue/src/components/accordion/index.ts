@@ -40,7 +40,9 @@ const AccordionFacade = defineComponent({
       default: "vertical",
     },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string[]) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("accordion");
 

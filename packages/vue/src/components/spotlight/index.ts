@@ -15,6 +15,7 @@ export interface SpotlightProps {
 export const Spotlight = withSelfRoot(
   defineComponent({
     name: "SSpotlight",
+    inheritAttrs: false,
     props: {
       radius: { type: String, default: undefined },
     },

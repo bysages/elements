@@ -72,6 +72,7 @@ const mediaEmits = {
  * FullscreenButton. */
 const AudioRoot = defineComponent({
   name: "AudioRoot",
+  inheritAttrs: false,
   props: audioProps,
   emits: mediaEmits,
   setup(props, ctx: SetupContext) {
@@ -85,6 +86,7 @@ const AudioRoot = defineComponent({
  * rail, while custom arrangement stays on Audio.Root. */
 const AudioFacade = defineComponent({
   name: "Audio",
+  inheritAttrs: false,
   props: audioProps,
   emits: mediaEmits,
   setup(props, ctx: SetupContext) {
@@ -102,6 +104,7 @@ const AudioFacade = defineComponent({
  * full control set remain rearrangeable. */
 const VideoRoot = defineComponent({
   name: "VideoRoot",
+  inheritAttrs: false,
   props: videoProps,
   emits: mediaEmits,
   setup(props, ctx: SetupContext) {
@@ -115,6 +118,7 @@ const VideoRoot = defineComponent({
  * controls compose under the stage, while Video.Root stays open. */
 const VideoFacade = defineComponent({
   name: "Video",
+  inheritAttrs: false,
   props: videoProps,
   emits: mediaEmits,
   setup(props, ctx: SetupContext) {

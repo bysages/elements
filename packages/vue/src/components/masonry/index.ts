@@ -29,6 +29,7 @@ export interface MasonryProps {
 export const Masonry = withSelfRoot(
   defineComponent({
     name: "Masonry",
+    inheritAttrs: false,
     props: {
       columns: { type: Number, default: 3 },
       minColumn: { type: String, default: undefined },

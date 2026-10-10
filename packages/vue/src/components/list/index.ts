@@ -5,6 +5,7 @@ import { defineComponent, h } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "List" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("list");
 
@@ -20,6 +21,7 @@ function part(name: string, tag: string) {
 
 const Root = defineComponent({
   name: "ListRoot",
+  inheritAttrs: false,
   props: {
     /** One hairline between rows. */
     bordered: { type: Boolean, default: false },
@@ -59,6 +61,7 @@ const Actions = part("Actions", "div");
  * slots, the default slot follows them for anything else. */
 const Content = defineComponent({
   name: "ListContent",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "list", "data-part": "content" }, () => [

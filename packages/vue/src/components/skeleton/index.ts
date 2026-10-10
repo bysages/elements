@@ -9,6 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Skeleton = withSelfRoot(
   defineComponent({
     name: "Skeleton",
+    inheritAttrs: false,
     props: {},
     setup(_, ctx: SetupContext) {
       injectComponentStyle("skeleton");

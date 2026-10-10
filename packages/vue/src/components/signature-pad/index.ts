@@ -33,7 +33,9 @@ const SignaturePadFacade = defineComponent({
     /** Show the reset control. */
     clearable: { type: Boolean, default: true },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string[]) => true,
+  },
   setup(props, { attrs, emit }) {
     return () =>
       h(

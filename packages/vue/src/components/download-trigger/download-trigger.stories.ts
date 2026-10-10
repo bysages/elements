@@ -1,8 +1,8 @@
 import type { Meta } from "@storybook/vue3-vite";
 import { h } from "vue";
 
-import { Button } from "../button";
 import { DownloadTrigger } from ".";
+import { Button } from "../button";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/Actions/DownloadTrigger" };

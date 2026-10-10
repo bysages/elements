@@ -24,6 +24,7 @@ export interface AffixProps {
 export const Affix = withSelfRoot(
   defineComponent({
     name: "Affix",
+    inheritAttrs: false,
     props: {
       offsetTop: { type: String, default: undefined },
       offsetBottom: { type: String, default: undefined },

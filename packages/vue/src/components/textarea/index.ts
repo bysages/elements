@@ -13,11 +13,14 @@ import { withSelfRoot } from "../../internal/family";
 export const Textarea = withSelfRoot(
   defineComponent({
     name: "Textarea",
+    inheritAttrs: false,
     props: {
       modelValue: { type: String, default: undefined },
       invalid: { type: Boolean, default: false },
     },
-    emits: ["update:modelValue"],
+    emits: {
+      "update:modelValue": (_value: string) => true,
+    },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("textarea");
 

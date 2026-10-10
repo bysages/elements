@@ -63,7 +63,9 @@ const TabsFacade = defineComponent({
     /** One rung of the control-height ladder for the tab rows. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, { attrs, emit, slots }: SetupContext) {
     injectComponentStyle("tabs");
 

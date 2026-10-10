@@ -8,6 +8,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Kbd = withSelfRoot(
   defineComponent({
     name: "Kbd",
+    inheritAttrs: false,
     props: {},
     setup(_, ctx: SetupContext) {
       injectComponentStyle("kbd");

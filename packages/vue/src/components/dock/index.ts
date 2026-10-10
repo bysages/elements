@@ -16,6 +16,7 @@ const ITEM = '[data-scope="dock"][data-part="item"]';
  * eases the chase, so no spring engine rides along. */
 const DockRoot = defineComponent({
   name: "SDockRoot",
+  inheritAttrs: false,
   props: {
     maxScale: { type: Number, default: 1.5 },
     radius: { type: Number, default: 96 },
@@ -60,6 +61,7 @@ const DockRoot = defineComponent({
  * floor, never from its center. */
 const DockItem = defineComponent({
   name: "SDockItem",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     injectComponentStyle("dock");
 

@@ -4,6 +4,7 @@ import { defineComponent, h } from "vue";
 
 const Root = defineComponent({
   name: "ButtonGroup",
+  inheritAttrs: false,
   props: {
     /** The seam runs across the group (default) or down it. */
     orientation: { type: String as PropType<"horizontal" | "vertical">, default: "horizontal" },

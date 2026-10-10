@@ -14,6 +14,7 @@ export interface EllipsisProps {
 export const Ellipsis = withSelfRoot(
   defineComponent({
     name: "Ellipsis",
+    inheritAttrs: false,
     props: {
       lines: { type: Number, default: 1 },
     },

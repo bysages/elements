@@ -51,6 +51,7 @@ function applyMask(raw: string, mask: string) {
 export const Input = withSelfRoot(
   defineComponent({
     name: "Input",
+    inheritAttrs: false,
     props: {
       modelValue: { type: [String, Number] as PropType<string | number>, default: undefined },
       /** One rung of the control-height ladder for the field. */
@@ -60,7 +61,9 @@ export const Input = withSelfRoot(
        * literal. e.g. `"999-99-9999"`, `"(999) 999-9999"`. */
       mask: { type: String, default: undefined },
     },
-    emits: ["update:modelValue"],
+    emits: {
+      "update:modelValue": (_value: string) => true,
+    },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("input");
 

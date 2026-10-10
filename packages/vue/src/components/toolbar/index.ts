@@ -11,6 +11,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Toolbar = withSelfRoot(
   defineComponent({
     name: "Toolbar",
+    inheritAttrs: false,
     props: {
       /** Accessible name when more than one toolbar shares a page. */
       label: { type: String, default: undefined },

@@ -19,6 +19,7 @@ import { Input } from "../input";
 export const DynamicInput = withSelfRoot(
   defineComponent({
     name: "DynamicInput",
+    inheritAttrs: false,
     props: {
       /** The rows' values; the group renders one Input per entry. */
       modelValue: { type: Array as PropType<string[]>, default: () => [""] },
@@ -34,7 +35,9 @@ export const DynamicInput = withSelfRoot(
       /** One rung of the ladder, handed to every row's field and seals. */
       size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     },
-    emits: ["update:modelValue"],
+    emits: {
+      "update:modelValue": (_value: string[]) => true,
+    },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("dynamic-input");
       const messages = useComponentMessages();

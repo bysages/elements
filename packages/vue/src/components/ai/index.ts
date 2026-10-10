@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent, h, onScopeDispose, ref, watch } from "vue";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
@@ -35,6 +35,7 @@ export type {
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
     name: "Ai" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("ai");
 
@@ -60,6 +61,7 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
  * the bottom and the follow resumes. */
 export const AiConversation = defineComponent({
   name: "AiConversation",
+  inheritAttrs: false,
   props: {
     /** Follow the stream's growth while the reader rests at the bottom. */
     autoScroll: { type: Boolean, default: true },
@@ -76,22 +78,35 @@ export const AiConversation = defineComponent({
     // always settled before the next stream stroke lands.
     let pinned = true;
 
-    onMounted(() => {
+    const handleScroll = () => {
       const node = el.value;
-      if (!node || !props.autoScroll) return;
-      node.addEventListener(
-        "scroll",
-        () => {
-          pinned = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
-        },
-        { passive: true },
-      );
+      if (!node) return;
+      pinned = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
+    };
+    const stopFollowing = (node: HTMLElement | null = el.value) => {
+      node?.removeEventListener("scroll", handleScroll);
+      observer?.disconnect();
+      observer = undefined;
+    };
+    const startFollowing = (node: HTMLElement) => {
+      if (!props.autoScroll) return;
+      node.addEventListener("scroll", handleScroll, { passive: true });
       observer = new MutationObserver(() => {
         if (pinned) node.scrollTop = node.scrollHeight;
       });
       observer.observe(node, { childList: true, subtree: true, characterData: true });
-    });
-    onUnmounted(() => observer?.disconnect());
+    };
+
+    watch(
+      [el, () => props.autoScroll],
+      ([node], previous) => {
+        stopFollowing(previous?.[0] ?? null);
+        if (!node) return;
+        startFollowing(node);
+      },
+      { immediate: true },
+    );
+    onScopeDispose(stopFollowing);
 
     return () =>
       h(
@@ -120,6 +135,7 @@ export const AiActions = withSelfRoot(part("Actions", "div"));
 export const AiLoader = withSelfRoot(
   defineComponent({
     name: "AiLoader",
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("ai");
       const messages = useComponentMessages();

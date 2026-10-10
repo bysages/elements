@@ -46,6 +46,7 @@ function checkIcon() {
  */
 const CascadeSelectFacade = defineComponent({
   name: "CascadeSelect",
+  inheritAttrs: false,
   props: {
     modelValue: { type: Array as PropType<string[][]>, default: undefined },
     data: { type: Array as PropType<CascadeSelectNode[]>, required: true },
@@ -58,7 +59,9 @@ const CascadeSelectFacade = defineComponent({
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string[][]) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("cascade-select");
     const messages = useComponentMessages();
@@ -234,18 +237,10 @@ const CascadeSelectFacade = defineComponent({
       h("div", rootProps, [
         h("label", { ...api.value.getLabelProps(), hidden: true }, props.placeholder),
         h("div", api.value.getControlProps(), [
-          h(
-            "button",
-            api.value.getTriggerProps(),
-            [
-              h(
-                "span",
-                api.value.getValueTextProps(),
-                display.value ?? props.placeholder,
-              ),
-              h("span", api.value.getIndicatorProps(), chevronDown()),
-            ],
-          ),
+          h("button", api.value.getTriggerProps(), [
+            h("span", api.value.getValueTextProps(), display.value ?? props.placeholder),
+            h("span", api.value.getIndicatorProps(), chevronDown()),
+          ]),
         ]),
         ...(api.value.open
           ? [

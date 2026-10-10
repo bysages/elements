@@ -34,6 +34,7 @@ function arrowIcon(direction: "right" | "left") {
  */
 const TransferFacade = defineComponent({
   name: "Transfer",
+  inheritAttrs: false,
   props: {
     modelValue: { type: Array as PropType<string[]>, default: () => [] },
     data: { type: Array as PropType<TransferItem[]>, required: true },
@@ -41,7 +42,9 @@ const TransferFacade = defineComponent({
     searchable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string[]) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("transfer");
     injectComponentStyle("checkbox");

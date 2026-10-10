@@ -83,7 +83,9 @@ const ColorPickerFacade = defineComponent({
     },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: Color) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     return () =>
       h(
@@ -100,7 +102,7 @@ const ColorPickerFacade = defineComponent({
           invalid: props.invalid,
           required: props.required,
           defaultFormat: props.defaultFormat,
-          "onUpdate:modelValue": (value: unknown) => emit("update:modelValue", value),
+          "onUpdate:modelValue": (value: Color) => emit("update:modelValue", value),
         },
         () => [
           ...(props.label ? [h(ArkColorPicker.Label, () => props.label)] : []),
@@ -170,6 +172,8 @@ export const ColorPicker = defineFamily(ColorPickerFacade, {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ArkColorPicker.Root & typeof ColorPickerRoot };
+  Omit<typeof ArkColorPicker, "Root"> & {
+    Root: typeof ArkColorPicker.Root & typeof ColorPickerRoot;
+  };
 
 export { parseColor };

@@ -7,6 +7,7 @@ import { useComponentMessages } from "../../internal/messages";
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
     name: "Breadcrumb" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("breadcrumb");
 
@@ -27,6 +28,7 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
 
 const Root = defineComponent({
   name: "BreadcrumbRoot",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     injectComponentStyle("breadcrumb");
     const messages = useComponentMessages();

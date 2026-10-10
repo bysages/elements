@@ -15,6 +15,7 @@ export interface SeparatorProps {
 export const Separator = withSelfRoot(
   defineComponent({
     name: "Separator",
+    inheritAttrs: false,
     props: {
       orientation: { type: String, default: "horizontal" },
       decorative: { type: Boolean, default: false },

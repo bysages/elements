@@ -7,6 +7,7 @@ import { withSelfRoot } from "../../internal/family";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Typography" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("typography");
 

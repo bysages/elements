@@ -14,6 +14,7 @@ export interface AspectRatioProps {
 export const AspectRatio = withSelfRoot(
   defineComponent({
     name: "AspectRatio",
+    inheritAttrs: false,
     props: {
       ratio: { type: String, default: "1 / 1" },
     },

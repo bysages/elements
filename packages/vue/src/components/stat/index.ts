@@ -5,6 +5,7 @@ import { computed, defineComponent, h, type PropType } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Stat" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("stat");
 
@@ -27,6 +28,7 @@ const Description = part("Description", "p");
  * `data-direction` attribute on the consumer side still wins). */
 const Delta = defineComponent({
   name: "StatDelta",
+  inheritAttrs: false,
   props: {
     direction: {
       type: String as PropType<"up" | "down" | "flat">,

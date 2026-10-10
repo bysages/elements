@@ -10,6 +10,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Button = withSelfRoot(
   defineComponent({
     name: "Button",
+    inheritAttrs: false,
     props: {
       /** How the button rests: a solid ink fill, an outline shell, a
        * quiet ghost, or a subtle wash. */

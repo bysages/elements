@@ -9,6 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Badge = withSelfRoot(
   defineComponent({
     name: "Badge",
+    inheritAttrs: false,
     props: {
       tone: {
         type: String as PropType<"ink" | "primary" | "success" | "warning" | "danger" | "info">,

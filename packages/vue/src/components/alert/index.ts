@@ -20,6 +20,7 @@ function icon(status: string) {
 
 const Root = defineComponent({
   name: "AlertRoot",
+  inheritAttrs: false,
   props: {
     status: {
       type: String as PropType<"ink" | "success" | "warning" | "danger" | "info">,
@@ -61,6 +62,7 @@ const Icon = defineComponent({
 
 const Body = defineComponent({
   name: "AlertBody",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "alert", "data-part": "body" }, ctx.slots.default?.());
@@ -69,6 +71,7 @@ const Body = defineComponent({
 
 const Title = defineComponent({
   name: "AlertTitle",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h("p", { ...ctx.attrs, "data-scope": "alert", "data-part": "title" }, ctx.slots.default?.());
@@ -77,6 +80,7 @@ const Title = defineComponent({
 
 const Description = defineComponent({
   name: "AlertDescription",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h(

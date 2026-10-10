@@ -9,6 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Message = withSelfRoot(
   defineComponent({
     name: "AiMessage",
+    inheritAttrs: false,
     props: {
       /** Whose stroke this is — the user's words sit in a recessed
        * bubble, the assistant speaks flat on the paper. */

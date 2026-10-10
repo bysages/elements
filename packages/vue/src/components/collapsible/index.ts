@@ -33,7 +33,9 @@ const CollapsibleFacade = defineComponent({
     label: { type: String, required: true },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["update:open"],
+  emits: {
+    "update:open": (_open: boolean) => true,
+  },
   setup(props, { attrs, emit, slots }: SetupContext) {
     injectComponentStyle("collapsible");
 

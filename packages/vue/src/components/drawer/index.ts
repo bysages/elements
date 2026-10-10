@@ -37,7 +37,9 @@ const DrawerFacade = defineComponent({
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
   },
-  emits: ["update:open"],
+  emits: {
+    "update:open": (_open: boolean) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("drawer");
 

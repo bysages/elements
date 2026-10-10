@@ -50,7 +50,9 @@ const PopoverFacade = defineComponent({
     disabled: { type: Boolean, default: false },
     placement: { type: String as PropType<PopoverPlacement>, default: undefined },
   },
-  emits: ["update:open"],
+  emits: {
+    "update:open": (_open: boolean) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("popover");
 

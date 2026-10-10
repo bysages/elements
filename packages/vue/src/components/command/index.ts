@@ -61,7 +61,11 @@ const CommandFacade = defineComponent({
     inputValue: { type: String, default: undefined },
     emptyText: { type: String, default: undefined },
   },
-  emits: ["update:open", "update:inputValue", "select"],
+  emits: {
+    "update:open": (_open: boolean) => true,
+    "update:inputValue": (_value: string) => true,
+    select: (_value: string) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("command");
     const messages = useComponentMessages();

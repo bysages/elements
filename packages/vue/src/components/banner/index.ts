@@ -3,11 +3,12 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
 import { iconNode } from "../../internal/icon";
-import { Button } from "../button";
 import { useComponentMessages } from "../../internal/messages";
+import { Button } from "../button";
 
 const Root = defineComponent({
   name: "BannerRoot",
+  inheritAttrs: false,
   props: {
     status: {
       type: String as PropType<"ink" | "info" | "success" | "warning" | "danger">,
@@ -35,6 +36,7 @@ const Root = defineComponent({
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Banner" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       return () =>
         h(
@@ -68,22 +70,18 @@ const Close = defineComponent({
     const { "aria-label": consumerLabel, ...rootAttrs } = attrs;
 
     return () =>
-      h(
-        "span",
-        { ...rootAttrs, "data-scope": "banner", "data-part": "close" },
-        [
-          h(
-            Button,
-            {
-              variant: "ghost",
-              square: true,
-              size: "sm",
-              "aria-label": (consumerLabel as string) ?? messages.value.banner.dismiss,
-            },
-            () => [iconNode("x")],
-          ),
-        ],
-      );
+      h("span", { ...rootAttrs, "data-scope": "banner", "data-part": "close" }, [
+        h(
+          Button,
+          {
+            variant: "ghost",
+            square: true,
+            size: "sm",
+            "aria-label": (consumerLabel as string) ?? messages.value.banner.dismiss,
+          },
+          () => [iconNode("x")],
+        ),
+      ]);
   },
 });
 

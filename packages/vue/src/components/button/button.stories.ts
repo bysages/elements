@@ -11,7 +11,7 @@ const meta: Meta<typeof Button> = {
     variant: { control: "radio", options: ["solid", "outline", "ghost", "subtle"] },
     tone: {
       control: "select",
-      options: ["ink", "primary", "danger", "success", "warning", "info"],
+      options: ["ink", "danger", "success", "warning", "info"],
     },
     size: { control: "radio", options: ["sm", "md", "lg"] },
   },
@@ -59,7 +59,7 @@ export const Tones: Story = {
         h(
           "div",
           { style: { display: "flex", gap: "0.75rem", flexWrap: "wrap" } },
-          (["ink", "primary", "danger", "success", "warning", "info"] as const).map((tone) =>
+          (["ink", "danger", "success", "warning", "info"] as const).map((tone) =>
             h(Button, { key: tone, tone }, () => tone),
           ),
         ),

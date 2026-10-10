@@ -5,6 +5,7 @@ import { computed, defineComponent, h, type PropType } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Meter" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("meter");
 
@@ -23,6 +24,7 @@ const ValueText = part("ValueText", "span");
 
 const Track = defineComponent({
   name: "MeterTrack",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h(
@@ -35,6 +37,7 @@ const Track = defineComponent({
 
 const Root = defineComponent({
   name: "MeterRoot",
+  inheritAttrs: false,
   props: {
     /** The measured value — clamped between min and max. */
     value: { type: Number, required: true },

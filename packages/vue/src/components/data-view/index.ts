@@ -13,6 +13,7 @@ import { Pagination } from "../pagination";
 export const DataView = withSelfRoot(
   defineComponent({
     name: "DataView",
+    inheritAttrs: false,
     props: {
       items: { type: Array as PropType<unknown[]>, required: true },
       /** Ledger rows or a lattice of cards. */

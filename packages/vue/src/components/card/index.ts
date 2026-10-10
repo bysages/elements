@@ -5,6 +5,7 @@ import { cloneVNode, defineComponent, h } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Card" + name,
+    inheritAttrs: false,
     props: {
       /** Render the slot's element as the part — a link may wear the
        * vessel itself. */

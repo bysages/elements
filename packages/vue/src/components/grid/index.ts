@@ -28,6 +28,7 @@ export interface GridProps {
 export const Grid = withSelfRoot(
   defineComponent({
     name: "Grid",
+    inheritAttrs: false,
     props: {
       columns: { type: Number, default: 12 },
       gap: { type: String, default: "md" },

@@ -31,6 +31,7 @@ export interface WatermarkProps {
 export const Watermark = withSelfRoot(
   defineComponent({
     name: "Watermark",
+    inheritAttrs: false,
     props: {
       content: { type: String, required: true },
       opacity: { type: Number, default: 0.06 },

@@ -3,9 +3,9 @@ import type { PropType, SetupContext } from "vue";
 import { defineComponent, h } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
-import { Button } from "../button";
 import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
+import { Button } from "../button";
 
 const imageIcon = () => iconNode("image");
 

@@ -29,6 +29,7 @@ function chevron(dir: "left" | "right") {
  * included. */
 const CalendarFacade = defineComponent({
   name: "Calendar",
+  inheritAttrs: false,
   props: {
     /** Selected date(s) — an array, as the machine speaks in ranges. */
     modelValue: {

@@ -163,6 +163,7 @@ export const MentionsVessel = withSelfRoot(
  */
 const MentionsFacade = defineComponent({
   name: "Mentions",
+  inheritAttrs: false,
   props: {
     items: { type: Array as PropType<MentionEntry[]>, default: () => [] },
     modelValue: { type: String, default: undefined },
@@ -173,7 +174,9 @@ const MentionsFacade = defineComponent({
     /** One rung of the control-height ladder for the resting field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, ctx: SetupContext) {
     // Mirrors the controlled value when the caller does not pass one.
     const hostId = useElementId("mentions", ctx.attrs);

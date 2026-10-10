@@ -50,7 +50,9 @@ const TooltipFacade = defineComponent({
     /** Where the tooltip sits relative to its trigger. */
     placement: { type: String as PropType<TooltipPlacement>, default: undefined },
   },
-  emits: ["update:open"],
+  emits: {
+    "update:open": (_open: boolean) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("tooltip");
 

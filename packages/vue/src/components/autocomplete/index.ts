@@ -2,7 +2,7 @@ import { useListCollection } from "@ark-ui/vue/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/vue/combobox";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, ref, watch, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -31,17 +31,34 @@ const AutoCompleteFacade = defineComponent({
     /** One rung of the control-height ladder for the field row. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("combobox");
 
     const hostId = useElementId("autocomplete", ctx.attrs);
 
-    const { collection, filter } = useListCollection({
+    const { collection, set, filter } = useListCollection({
       initialItems: props.items,
       filter: (item: string, input: string) =>
         props.filter ? props.filter(item, input) : item.toLowerCase().includes(input.toLowerCase()),
     });
+
+    // The field's live text, kept so a caller's new list can be
+    // re-narrowed against it (the collection's `set` clears the filter).
+    const fieldText = ref("");
+
+    // The caller's list is live — an index landing after mount or a
+    // search that re-ranks per keystroke must reach the collection
+    // without a remount.
+    watch(
+      () => props.items,
+      (items) => {
+        set(items);
+        filter(fieldText.value);
+      },
+    );
 
     // `as never` sidesteps TS2590 — the compiler cannot unroll the
     // combobox machine's prop union inside h(); never widens to
@@ -60,6 +77,7 @@ const AutoCompleteFacade = defineComponent({
             if (first != null) ctx.emit("update:modelValue", first);
           },
           onInputValueChange: (details: { inputValue: string }) => {
+            fieldText.value = details.inputValue;
             filter(details.inputValue);
             ctx.emit("update:modelValue", details.inputValue);
           },

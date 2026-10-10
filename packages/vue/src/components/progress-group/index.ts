@@ -27,6 +27,7 @@ export interface ProgressGroupProps {
 export const ProgressGroup = withSelfRoot(
   defineComponent({
     name: "ProgressGroup",
+    inheritAttrs: false,
     props: {
       segments: {
         type: Array as PropType<ProgressSegment[]>,

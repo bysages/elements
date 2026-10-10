@@ -4,6 +4,7 @@ import { defineComponent, h } from "vue";
 
 const Root = defineComponent({
   name: "InputGroupRoot",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     injectComponentStyle("input-group");
 
@@ -16,6 +17,7 @@ const Root = defineComponent({
 
 const Addon = defineComponent({
   name: "InputGroupAddon",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     return () =>
       h("div", { ...ctx.attrs, "data-scope": "input-group", "data-part": "addon" }, () =>

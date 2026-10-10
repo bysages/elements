@@ -25,7 +25,9 @@ const QrCodeFacade = defineComponent({
     modelValue: { type: String, default: undefined },
     defaultValue: { type: String, default: undefined },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: string) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("qr-code");
     return () =>

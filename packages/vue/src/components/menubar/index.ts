@@ -41,6 +41,7 @@ export interface MenubarProps {
  */
 const MenubarFacade = defineComponent({
   name: "Menubar",
+  inheritAttrs: false,
   props: {
     items: { type: Array as PropType<MenubarGroup[]>, default: () => [] },
     onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },

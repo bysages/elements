@@ -76,6 +76,7 @@ function styleRecord(style: unknown): CSSProperties {
 
 const Root = defineComponent({
   name: "LayoutRoot",
+  inheritAttrs: false,
   props: {
     sider: { type: String as PropType<"start" | "end">, default: undefined },
   },
@@ -205,6 +206,7 @@ const Root = defineComponent({
 function region(name: string, tag: string) {
   return defineComponent({
     name: "Layout" + name,
+    inheritAttrs: false,
     setup(_props, ctx: SetupContext) {
       const layout = inject<LayoutContext | null>(LAYOUT_CONTEXT, null);
       const splitPanel = computed(
@@ -256,6 +258,7 @@ export interface LayoutSiderProps {
 
 const Sider = defineComponent({
   name: "LayoutSider",
+  inheritAttrs: false,
   props: {
     collapsed: { type: Boolean, default: false },
     width: { type: String, default: undefined },

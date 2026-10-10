@@ -5,6 +5,7 @@ import { defineComponent, h } from "vue";
 function part(name: string, tag: string) {
   return defineComponent({
     name: "PageHeader" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       injectComponentStyle("page-header");
 

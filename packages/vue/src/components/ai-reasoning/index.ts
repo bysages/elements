@@ -11,6 +11,7 @@ import { Collapsible } from "../collapsible";
 export const Reasoning = withSelfRoot(
   defineComponent({
     name: "AiReasoning",
+    inheritAttrs: false,
     props: {
       /** The trigger's words — the fold arrives open under them. */
       label: { type: String, default: "Thinking" },

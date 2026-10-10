@@ -38,7 +38,9 @@ const CheckboxFacade = defineComponent({
     /** One rung for the control's box: the tick scales with it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: boolean) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("checkbox");
 

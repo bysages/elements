@@ -11,6 +11,7 @@ export interface BentoProps {
  * The container owns the track count; each cell claims its own span. */
 const BentoRoot = defineComponent({
   name: "SBentoRoot",
+  inheritAttrs: false,
   props: {
     columns: { type: Number, default: 3 },
   },
@@ -35,6 +36,7 @@ const BentoRoot = defineComponent({
  * of the plate stays in measure. */
 const BentoCell = defineComponent({
   name: "SBentoCell",
+  inheritAttrs: false,
   props: {
     span: { type: Number, default: 1 },
     rowSpan: { type: Number, default: 1 },

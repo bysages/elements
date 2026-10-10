@@ -17,6 +17,7 @@ export interface CommentProps {
 export const Comment = withSelfRoot(
   defineComponent({
     name: "Comment",
+    inheritAttrs: false,
     props: {
       author: { type: String, default: undefined },
       datetime: { type: String, default: undefined },

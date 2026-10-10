@@ -48,6 +48,7 @@ import {
   computed,
   defineComponent,
   h,
+  onMounted,
   onScopeDispose,
   ref,
   type CSSProperties,
@@ -411,6 +412,10 @@ const DataTableFacade = defineComponent({
 
     const viewport = ref<HTMLElement | null>(null);
     const rows = computed(() => table.getRowModel().rows);
+    const mounted = ref(false);
+    onMounted(() => {
+      mounted.value = true;
+    });
 
     /** Instance-shaped aliases for the render helpers below. */
     type TColumn = Column<Features, any, unknown>;
@@ -455,8 +460,23 @@ const DataTableFacade = defineComponent({
       });
       onScopeDispose(() => densityObserver.disconnect());
     }
-    const virtualRows = computed(() => virtualizer.value.getVirtualItems());
-    const totalSize = computed(() => virtualizer.value.getTotalSize());
+    // TanStack cannot measure the scroll element before hydration. The
+    // declared row height yields the same first-screen slice on the server
+    // and client; the measured window takes over after mount.
+    const fallbackRowCount = computed(() => Math.max(1, Math.ceil(320 / baseRowHeight())));
+    const virtualRows = computed(() =>
+      mounted.value
+        ? virtualizer.value.getVirtualItems()
+        : rows.value.slice(0, fallbackRowCount.value).map((_, index) => ({
+            key: rows.value[index]?.id ?? index,
+            index,
+            start: index * baseRowHeight(),
+            size: baseRowHeight(),
+          })),
+    );
+    const totalSize = computed(() =>
+      mounted.value ? virtualizer.value.getTotalSize() : rows.value.length * baseRowHeight(),
+    );
 
     const virtual = computed(() => props.virtual && !props.merge);
     const mergeMode = computed(() => !props.virtual && !!props.merge);

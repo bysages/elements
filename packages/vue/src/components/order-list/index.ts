@@ -56,6 +56,7 @@ function moveControl(
 export const OrderList = withSelfRoot(
   defineComponent({
     name: "OrderList",
+    inheritAttrs: false,
     props: {
       /** The rows in their current order — the value is the order. */
       modelValue: { type: Array as PropType<string[]>, required: true },
@@ -63,7 +64,9 @@ export const OrderList = withSelfRoot(
       options: { type: Array as PropType<OrderOption[]>, required: true },
       label: { type: String, default: undefined },
     },
-    emits: ["update:modelValue"],
+    emits: {
+      "update:modelValue": (_value: string[]) => true,
+    },
     setup(props, ctx: SetupContext) {
       injectComponentStyle("order-list");
       const messages = useComponentMessages();
@@ -174,17 +177,11 @@ export const OrderList = withSelfRoot(
                     ),
                     h("span", { "data-scope": "order-list", "data-part": "label" }, option.label),
                     h("span", { "data-scope": "order-list", "data-part": "controls" }, [
-                      moveControl(
-                        messages.value.orderList.toTop,
-                        ARROWS.top,
-                        index === 0,
-                        () => move(option.value, -index),
+                      moveControl(messages.value.orderList.toTop, ARROWS.top, index === 0, () =>
+                        move(option.value, -index),
                       ),
-                      moveControl(
-                        messages.value.orderList.moveUp,
-                        ARROWS.up,
-                        index === 0,
-                        () => move(option.value, -1),
+                      moveControl(messages.value.orderList.moveUp, ARROWS.up, index === 0, () =>
+                        move(option.value, -1),
                       ),
                       moveControl(
                         messages.value.orderList.moveDown,

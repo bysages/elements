@@ -9,6 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export const Chip = withSelfRoot(
   defineComponent({
     name: "Chip",
+    inheritAttrs: false,
     props: {
       value: { type: Number, required: true },
       max: { type: Number, default: undefined },

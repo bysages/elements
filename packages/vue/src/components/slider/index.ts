@@ -44,7 +44,9 @@ const SliderFacade = defineComponent({
     /** One rung of the part-size ladder for the thumb seal. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("slider");
 

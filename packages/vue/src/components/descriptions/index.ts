@@ -6,6 +6,7 @@ import { withSelfRoot } from "../../internal/family";
 
 const Root = defineComponent({
   name: "Descriptions",
+  inheritAttrs: false,
   props: {
     layout: {
       type: String as PropType<"horizontal" | "vertical">,
@@ -47,6 +48,7 @@ const Root = defineComponent({
 function part(name: string, tag: string) {
   return defineComponent({
     name: "Descriptions" + name,
+    inheritAttrs: false,
     setup(_, ctx: SetupContext) {
       return () =>
         h(
@@ -64,6 +66,7 @@ function part(name: string, tag: string) {
 
 const Item = defineComponent({
   name: "DescriptionsItem",
+  inheritAttrs: false,
   props: {
     /** Column pairs this entry stretches across. */
     span: { type: Number, default: 1 },

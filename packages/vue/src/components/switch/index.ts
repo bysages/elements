@@ -37,7 +37,9 @@ const SwitchFacade = defineComponent({
     /** One rung for the thumb; the track travels with it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: boolean) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("switch");
 

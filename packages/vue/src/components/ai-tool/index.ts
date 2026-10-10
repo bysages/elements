@@ -12,6 +12,7 @@ import { Collapsible } from "../collapsible";
 export const Tool = withSelfRoot(
   defineComponent({
     name: "AiTool",
+    inheritAttrs: false,
     props: {
       /** The name the tool was reached by — shown raw on the trigger
        * unless the `label` slot speaks friendlier words. */

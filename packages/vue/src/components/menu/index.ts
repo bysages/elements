@@ -92,7 +92,10 @@ const MenuFacade = defineComponent({
     placement: { type: String as PropType<MenuPlacement>, default: "bottom-start" },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
-  emits: ["select", "update:open"],
+  emits: {
+    select: (_value: string) => true,
+    "update:open": (_open: boolean) => true,
+  },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("menu");
 

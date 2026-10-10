@@ -34,7 +34,9 @@ const SplitterFacade = defineComponent({
       default: "horizontal",
     },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number[]) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("splitter");
     const panels = () => props.items.map((item) => ({ id: item.id }));

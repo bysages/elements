@@ -33,7 +33,9 @@ const CarouselFacade = defineComponent({
     spacing: { type: String, default: undefined },
     label: { type: String, default: undefined },
   },
-  emits: ["update:modelValue"],
+  emits: {
+    "update:modelValue": (_value: number) => true,
+  },
   setup(props, { attrs, emit }: SetupContext) {
     injectComponentStyle("carousel");
     return () => {
