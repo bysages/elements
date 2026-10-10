@@ -53,11 +53,11 @@
   "dependencies": {
     "@bysages/core": "workspace:*",
     "@bysages/vue": "workspace:*",
-    "@nuxt/kit": "4.5.2"
+    "@nuxt/kit": "4.6.1"
   },
   "devDependencies": {
     "@nuxt/module-builder": "1.0.3",
-    "nuxt": "4.5.2"
+    "nuxt": "4.6.1"
   },
   "peerDependencies": {
     "nuxt": "^4.0.0",
