@@ -10,10 +10,16 @@ interface TocLink {
 
 const props = defineProps<{
   page?: { body?: { toc?: { links?: TocLink[] } } } | null;
+  /** Hide the rail's own heading when its overlay already supplies one. */
+  hideTitle?: boolean;
+  /** Reuse an overlay heading as the navigation's accessible title. */
+  titleId?: string;
 }>();
 
 const app = useAppConfig();
 const { t } = useDocsI18n();
+
+const heading = computed(() => (props.hideTitle ? "" : (app.docs.toc?.title ?? t("docs.toc"))));
 
 /** The machine wants a flat list: `value` is the heading id it watches,
  * `depth` drives the indent, and the label rides along for rendering. */
@@ -33,9 +39,9 @@ const { Root, Nav, Title, List, Indicator, Item, Link } = Toc;
 </script>
 
 <template>
-  <Root v-if="items.length" :items="items">
+  <Root v-if="items.length" :items="items" :ids="titleId ? { title: titleId } : undefined">
     <Nav>
-      <Title>{{ app.docs.toc?.title ?? t("docs.toc") }}</Title>
+      <Title v-if="heading">{{ heading }}</Title>
       <List>
         <Indicator />
         <Item v-for="item in items" :key="item.value" :item="item">

@@ -177,6 +177,12 @@ body {
   gap: var(--bs-gap-md);
 }
 
+/* Outline rows stretch to the sheet: hover and focus cover the whole
+   lane instead of only the words inside a full-width rail. */
+.bs-docs-toc-drawer [data-scope="toc"][data-part="root"] {
+  align-items: stretch;
+}
+
 /* The shelf switch inside the drawer: the sections the header's bottom
    rail carries on wide screens, wrapped for a thumb, the active shelf
    inked like a chosen cell. */

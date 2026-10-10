@@ -101,8 +101,11 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
     return navigation.value.find((item) => item.path && onShelf(route.path, item.path));
   });
 
+  // Site sections belong to the header drawer on every page: a landing
+  // reader is one tap away from the docs, while the bottom rail itself
+  // still waits for a docs route to enter header mode.
   const sections = computed(() => {
-    if (!subNavigationMode.value || !navigation?.value) return [];
+    if (!navigation?.value) return [];
     const shelf = navigation.value
       .filter((item) => item.children?.length)
       .map((item) => ({

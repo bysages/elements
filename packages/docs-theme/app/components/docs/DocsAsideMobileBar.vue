@@ -19,6 +19,7 @@ const { t } = useDocsI18n();
 const { Root, Trigger, Backdrop, Positioner, Content, Title } = Drawer;
 
 const links = computed(() => props.page?.body?.toc?.links ?? []);
+const tocTitleId = useId();
 </script>
 
 <template>
@@ -39,9 +40,9 @@ const links = computed(() => props.page?.body?.toc?.links ?? []);
          vocabulary for every sheet on the phone. -->
       <Backdrop />
       <Positioner>
-        <Content :aria-label="t('docs.toc')">
-          <Title>{{ t("docs.toc") }}</Title>
-          <DocsAsideRight :page="page" />
+        <Content :aria-label="t('docs.toc')" class="bs-docs-toc-drawer">
+          <Title :id="tocTitleId">{{ t("docs.toc") }}</Title>
+          <DocsAsideRight :page="page" hide-title :title-id="tocTitleId" />
         </Content>
       </Positioner>
     </ClientOnly>
