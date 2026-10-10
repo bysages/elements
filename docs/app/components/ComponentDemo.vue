@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { Button, Tabs } from "@bysages/vue";
-import { computed, ref } from "vue";
-
-import workbenchLinks from "~/storybook-links.json";
-import reactWorkbenchLinks from "~/storybook-react-links.json";
+import type { Component } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 
 // A live example: the canvas renders the real example component from
 // app/components/examples, the code tab shows its source verbatim. The
@@ -12,30 +10,68 @@ import reactWorkbenchLinks from "~/storybook-react-links.json";
 // self-closing tag's following section into it, swallowing the page.
 const props = defineProps<{ name: string }>();
 
-const modules = import.meta.glob<{ default: any }>("~/components/examples/**/*.vue", {
-  eager: true,
-});
+const demoLoaders = import.meta.glob<{ default: Component }>("~/components/examples/**/*.vue");
 const sourceLoaders = import.meta.glob<string>("~/components/examples/**/*.vue", {
   query: "?raw",
   import: "default",
 });
 
 const path = computed(() => `/components/examples/${props.name}.vue`);
-const demo = computed(() => modules[path.value]?.default);
-// The source rides in lazy raw chunks — the setup await resolves before
-// the highlight fetch and the copy button read it.
-const code = ref((await sourceLoaders[path.value]?.().catch(() => "")) ?? "");
+const demo = computed(() => {
+  const loader = demoLoaders[path.value];
+  return loader ? defineAsyncComponent(loader) : undefined;
+});
 
-// The interactive workbench rides the same domain at /storybook/ — the
-// links file is generated from the workbench's own build index, so a
-// demo deep-links to the exact story that renders it.
-const storyId = (workbenchLinks as Record<string, string>)[props.name];
-const reactStoryId = (reactWorkbenchLinks as Record<string, string>)[props.name];
-// The two workbenches mirror story titles one-to-one, so the same id
-// deep-links into either — the door only chooses the prefix.
-const workbenchHref = computed(() => (storyId ? `/storybook/?path=/story/${storyId}` : undefined));
+// The source and its highlighted twin travel in lazy chunks; the payload
+// carries only the one demo's source, never the whole examples tree.
+const { data: source } = await useAsyncData(
+  `demo-source:${props.name}`,
+  async () => (await sourceLoaders[path.value]?.().catch(() => "")) ?? "",
+  { default: () => "", watch: [path] },
+);
+const code = computed(() => source.value ?? "");
+
+const { data: highlighted } = await useAsyncData(
+  `demo-code:${props.name}`,
+  async () =>
+    code.value
+      ? await $fetch<string>("/api/highlight", {
+          method: "POST",
+          body: { code: code.value, lang: "vue" },
+        })
+      : "",
+  { default: () => "", watch: [code] },
+);
+
+// The interactive workbench rides the same domain at /storybook/. The
+// generated maps are too large for every demo page, so this instance
+// fetches only its own two ids and the result joins the server payload.
+interface WorkbenchLinks {
+  vue?: string;
+  react?: string;
+}
+const { data: storyLinks } = await useAsyncData(
+  `demo-links:${props.name}`,
+  async (): Promise<WorkbenchLinks> => {
+    const [vueLinks, reactLinks] = await Promise.all([
+      import("~/storybook-links.json"),
+      import("~/storybook-react-links.json"),
+    ]);
+    return {
+      vue: (vueLinks.default as Record<string, string>)[props.name],
+      react: (reactLinks.default as Record<string, string>)[props.name],
+    };
+  },
+  {
+    default: () => ({}) satisfies WorkbenchLinks,
+    watch: [path],
+  },
+);
+const workbenchHref = computed(() =>
+  storyLinks.value?.vue ? `/storybook/?path=/story/${storyLinks.value.vue}` : undefined,
+);
 const reactWorkbenchHref = computed(() =>
-  reactStoryId ? `/storybook/react/?path=/story/${reactStoryId}` : undefined,
+  storyLinks.value?.react ? `/storybook/react/?path=/story/${storyLinks.value.react}` : undefined,
 );
 
 const copied = ref(false);
@@ -46,19 +82,10 @@ async function copy() {
   copied.value = true;
   setTimeout(() => (copied.value = false), 1500);
 }
-
-// The code tab rides the same shiki pipeline as the markdown blocks —
-// server-highlighted once, then carried in the payload.
-const { data: highlighted } = await useAsyncData(
-  `demo-code:${props.name}`,
-  () =>
-    $fetch<string>("/api/highlight", { method: "POST", body: { code: code.value, lang: "vue" } }),
-  { default: () => "" },
-);
 </script>
 
 <template>
-  <Tabs.Root class="bs-docs-demo" default-value="preview">
+  <Tabs.Root class="bs-docs-demo" default-value="preview" lazy-mount>
     <Tabs.List>
       <Tabs.Trigger value="preview">{{ t("docs.demo.preview") }}</Tabs.Trigger>
       <Tabs.Trigger v-if="code" value="code">{{ t("docs.demo.code") }}</Tabs.Trigger>
