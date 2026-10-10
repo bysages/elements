@@ -1,17 +1,19 @@
-import { applyTheme } from "@bysages/core";
+import { applyTheme, hasStoredTheme, initTheme } from "@bysages/core";
 
 import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
 
-/** Applies the theme configured through module options on the client.
- * The wrappers' own injection already stands down against the build-time
- * stylesheet via the head marker the module plants. Published modules
- * cannot lean on the application's auto-imports — the Nuxt APIs come
- * in explicitly from `#imports`, which the consuming build resolves. */
+/** Applies the configured default theme, but never outranks an explicit
+ * persisted choice. A stored theme is restored before mount instead; the
+ * module's early head script already prevents the first-paint flash. */
 export default defineNuxtPlugin(() => {
   if (import.meta.server) return;
 
   const { theme } = useRuntimeConfig().public.bsElements as {
     theme: Parameters<typeof applyTheme>[0] | null;
   };
-  if (theme) applyTheme(theme);
+  if (hasStoredTheme()) {
+    initTheme();
+  } else if (theme) {
+    applyTheme(theme);
+  }
 });

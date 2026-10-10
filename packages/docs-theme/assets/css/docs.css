@@ -3,13 +3,12 @@
    page they stand on, and every visual value rides the tokens. */
 
 /* Layer order is fixed here — the earliest sheet the site loads — so
-   the preflight slot (bs.pre, filled by the site's tailwind entry)
+   the token rules ship through @bysages/nuxt and the preflight slot (bs.pre, filled by the site's tailwind entry)
    stays beneath the prose layer it must never outrank: first statement
    wins the naming order, and a layer declared only by a later sheet
    would rank above every layer named before it. */
 @layer bs.tokens, bs.pre, bs.prose;
 
-@import "@bysages/tokens/css";
 /* ---------------------------------------------------------------- */
 /* Document                                                          */
 /* ---------------------------------------------------------------- */

@@ -1,4 +1,4 @@
-import { componentStyles, tokensCss, type ApplyThemeOptions } from "@bysages/core";
+import { componentStyles, themeStorageKey, tokensCss, type ApplyThemeOptions } from "@bysages/core";
 import { addComponent, addPlugin, addTemplate, createResolver, defineNuxtModule } from "@nuxt/kit";
 
 /** Whether a value exported by @bysages/vue is a component or a family
@@ -16,16 +16,12 @@ function isComponentExport(value: unknown): boolean {
   );
 }
 
-/** Global component names this module must not claim: they belong to the
- * Nuxt ecosystem, and the site templates are written against them. */
-const RESERVED = new Set(["Icon"]);
-
 export interface BsElementsOptions {
-  /** Prefix for the auto-imported components — "Bs" renders `<BsButton>`.
-   * Empty by default. */
+  /** Prefix for auto-imported components — `Bs` renders `<BsButton>`.
+   * `"Bs"` by default; use `""` only when the app owns the name space. */
   prefix?: string;
-  /** Theme applied on the client before the app mounts: mode, accent,
-   * scene, density, contrast — anything `applyTheme` accepts. */
+  /** Default theme applied before mount: mode, accent, scene, density,
+   * contrast — anything `applyTheme` accepts. A persisted user choice wins. */
   theme?: ApplyThemeOptions;
 }
 
@@ -35,7 +31,7 @@ export default defineNuxtModule<BsElementsOptions>({
     configKey: "bsElements",
   },
   defaults: {
-    prefix: "",
+    prefix: "Bs",
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
@@ -48,13 +44,14 @@ export default defineNuxtModule<BsElementsOptions>({
     const families = (await import("@bysages/vue")) as unknown as Record<string, unknown>;
     for (const name of Object.keys(families)) {
       if (!/^[A-Z]/.test(name) || !isComponentExport(families[name])) continue;
-      // @nuxt/icon owns the global `Icon` name — every docs template
-      // writes `<Icon name="i-lucide-*">` against it, and our inkwell
-      // shell (a bare box that carries children, no `name` prop) would
-      // shadow it into silence. It stays import-only.
-      if (RESERVED.has(name)) continue;
+
+      // Compare the resolved name, not the library export: a prefixed
+      // install can safely expose `BsIcon`, while an unprefixed docs install
+      // keeps `Icon` for @nuxt/icon. Our own shell would otherwise shadow it.
+      const componentName = `${options.prefix}${name}`;
+      if (componentName === "Icon") continue;
       addComponent({
-        name: options.prefix + name,
+        name: componentName,
         export: name,
         filePath: "@bysages/vue",
       });
@@ -86,6 +83,33 @@ export default defineNuxtModule<BsElementsOptions>({
     nuxt.options.css.push(styles.dst);
     nuxt.options.app.head.meta ||= [];
     nuxt.options.app.head.meta.push({ name: "bs-styles-shipped", content: "build" });
+
+    // Resolve the first paint's root attributes before any bundle executes.
+    // A persisted user choice wins; otherwise the module default seeds the
+    // visible mode/density/scene while the normal plugin completes accent
+    // pairing and persists an explicit default.
+    const configuredTheme = JSON.stringify(options.theme ?? null).replaceAll("<", "\\u003c");
+    nuxt.options.app.head.script ||= [];
+    nuxt.options.app.head.script.push({
+      tagPosition: "head",
+      innerHTML: `(() => {
+        try {
+          const stored = JSON.parse(localStorage.getItem(${JSON.stringify(themeStorageKey)}) || "null");
+          const theme = stored || ${configuredTheme};
+          if (!theme) return;
+          const mode = theme.mode === "system"
+            ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+            : theme.mode;
+          const root = document.documentElement;
+          if (mode === "dark" || mode === "light") root.dataset.theme = mode;
+          if (theme.contrast === "high") root.dataset.contrast = "high";
+          else delete root.dataset.contrast;
+          root.dataset.density = theme.density || "default";
+          if (theme.scene && theme.scene !== "auto") root.dataset.scene = theme.scene;
+          else delete root.dataset.scene;
+        } catch {}
+      })();`,
+    });
 
     addPlugin(resolver.resolve("./runtime/plugin"));
   },

@@ -103,6 +103,9 @@ export interface ApplyThemeOptions extends Partial<Theme> {
 }
 
 const STORAGE_KEY = "bs-theme";
+
+/** Storage key used by SSR bootstraps that need to avoid a theme flash. */
+export const themeStorageKey = STORAGE_KEY;
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 
 const defaults: Theme = {
@@ -187,6 +190,16 @@ function readTheme(): Theme {
   return { ...defaults };
 }
 
+/** Whether the user has a valid persisted theme. Module defaults use this
+ * to avoid treating an explicit choice as a fresh default. */
+export function hasStoredTheme(): boolean {
+  if (typeof localStorage === "undefined") return false;
+  try {
+    return !!localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return false;
+  }
+}
 /**
  * Apply a theme to the document root. Omitted fields keep the current value;
  * `mode: "system"` resolves against `prefers-color-scheme`, and an "auto"

@@ -62,6 +62,12 @@ const config = {
     cssLayer: "icons",
   },
 
+  // The documentation shell was designed around unprefixed component names
+  // and explicitly leaves `Icon` to @nuxt/icon. Library consumers keep the
+  // safer `Bs` default.
+  bsElements: {
+    prefix: "",
+  },
   ogImage: {
     // Templates render on demand; the runtime bundle is dead weight.
     zeroRuntime: true,
