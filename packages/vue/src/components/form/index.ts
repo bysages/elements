@@ -7,7 +7,7 @@ import { withSelfRoot } from "../../internal/family";
 
 export { useForm, useField };
 export type { VueFormApi } from "@tanstack/vue-form";
-export type { FormApi, FieldApi } from "@tanstack/form-core";
+export type { FormApi, FieldApi } from "@tanstack/vue-form";
 
 /** The seam this family passes the engine through — the members the
  * components drive, with the engine's field-name generics opened to

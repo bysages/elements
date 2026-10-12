@@ -3,7 +3,7 @@ import { Field as ArkField } from "@ark-ui/react/field";
 import { act, createElement as h, Fragment } from "react";
 import { createRoot } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { CheckboxGroup, type CheckboxOption } from "./index";
 

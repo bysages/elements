@@ -5,7 +5,7 @@ import { type ComponentType, createContext, useContext } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 
-export type { FieldApi, FormApi } from "@tanstack/form-core";
+export type { FieldApi, FormApi } from "@tanstack/react-form";
 export { useField, useForm } from "@tanstack/react-form";
 
 /** The seam this family passes the engine through — the members the

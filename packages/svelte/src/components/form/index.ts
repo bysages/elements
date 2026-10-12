@@ -14,7 +14,7 @@ export { createForm, createField } from "@tanstack/svelte-form";
  * matrix without renaming the engine calls. */
 export { createForm as useForm, createField as useField } from "@tanstack/svelte-form";
 export type { SvelteFormApi } from "@tanstack/svelte-form";
-export type { FormApi, FieldApi } from "@tanstack/form-core";
+export type { FormApi, FieldApi } from "@tanstack/svelte-form";
 export type { AnyFormApi } from "./context";
 export type { FormProps, FormFieldProps } from "./props";
 

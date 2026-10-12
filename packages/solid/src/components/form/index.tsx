@@ -11,7 +11,7 @@ export { createForm, createField };
  * matrix without renaming the engine calls. */
 export { createForm as useForm, createField as useField };
 export type { SolidFormApi } from "@tanstack/solid-form";
-export type { FormApi, FieldApi } from "@tanstack/form-core";
+export type { FormApi, FieldApi } from "@tanstack/solid-form";
 
 /** The seam this family passes the engine through — the members the
  * components drive, with the engine's field-name generics opened to

@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { Field as ArkField } from "@ark-ui/vue/field";
 import { Select as ArkSelect, createListCollection } from "@ark-ui/vue/select";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vite-plus/test";
 import { createApp, createSSRApp, defineComponent, h, nextTick, ref, Suspense } from "vue";
 import { renderToString } from "vue/server-renderer";
 

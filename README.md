@@ -9,7 +9,7 @@ English | [简体中文](./README.zh-CN.md)
 
 > Elements is the UI component library of By Sages: accessible, headless components styled entirely by **design tokens compiled to CSS variables**, and responsive through native **CSS Container Queries** — one design system, shipped as React, Vue, Solid, and Svelte components.
 
-[Documentation](https://elements.bysages.com) · [AI Integration](https://elements.bysages.com/en/guide/ai) · [Discussions](https://github.com/bysages/elements/discussions) · [Report Issues](https://github.com/bysages/elements/issues)
+[Documentation](https://elements.bysages.com) · [AI Integration](https://elements.bysages.com/en/guide/ai) · [Report Issues](https://github.com/bysages/elements/issues)
 
 ⭐ **If Elements is useful to you, a star helps other developers find it.**
 
@@ -156,7 +156,6 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full 
 ## Support & Community
 
 - 📫 [Report Issues](https://github.com/bysages/elements/issues)
-- 💬 [Discussions](https://github.com/bysages/elements/discussions) — questions, ideas, and show-and-tell
 
 If Elements is useful to you, a [⭐ star](https://github.com/bysages/elements/stargazers) helps other developers find it.
 

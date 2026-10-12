@@ -193,6 +193,9 @@ importers:
       nuxt-schema-org:
         specifier: 6.4.3
         version: 6.4.3(12db3357d075d28f2e75530a36882db9)
+      tailwindcss:
+        specifier: 4.3.3
+        version: 4.3.3
       zod:
         specifier: 4.6.5
         version: 4.6.5
@@ -13796,7 +13799,7 @@ snapshots:
     dependencies:
       '@tanstack/devtools-event-client': 0.4.4
       '@tanstack/pacer-lite': 0.1.1
-      '@tanstack/store': 0.11.1
+      '@tanstack/store': 0.11.2
 
   '@tanstack/highlight@1.1.0': {}
 

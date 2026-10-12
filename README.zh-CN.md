@@ -9,7 +9,7 @@
 
 > Elements 是 By Sages 的界面组件库：无头交互、完全由**编译为 CSS 变量的设计令牌**驱动样式，靠原生 **CSS 容器查询**响应式布局——一套设计系统，同时交付 React、Vue、Solid 与 Svelte 组件。
 
-[文档站](https://elements.bysages.com) · [AI 集成](https://elements.bysages.com/zh/guide/ai) · [讨论区](https://github.com/bysages/elements/discussions) · [问题反馈](https://github.com/bysages/elements/issues)
+[文档站](https://elements.bysages.com) · [AI 集成](https://elements.bysages.com/zh/guide/ai) · [问题反馈](https://github.com/bysages/elements/issues)
 
 ⭐ **如果 Elements 对你有用，一个 star 能帮更多开发者发现它。**
 
@@ -150,7 +150,6 @@ pnpm exec vp check                          # Lint、格式化与类型检查
 ## 支持与社区
 
 - 📫 [问题反馈](https://github.com/bysages/elements/issues)
-- 💬 [讨论区](https://github.com/bysages/elements/discussions) — 提问、想法与展示
 
 如果 Elements 对你有用，一个 [⭐ star](https://github.com/bysages/elements/stargazers) 能帮更多开发者发现它。
 
