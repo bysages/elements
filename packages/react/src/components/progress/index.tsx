@@ -31,7 +31,7 @@ type ProgressFacadeProps = {
   min?: number;
   max?: number;
   label?: string;
-  variant?: "linear" | "circle";
+  variant?: "linear" | "circle" | "dashboard";
   size?: "sm" | "md" | "lg";
   className?: string;
   style?: CSSProperties;
@@ -39,7 +39,7 @@ type ProgressFacadeProps = {
 };
 
 /** The complete progress behind one value: a labelled linear groove by
- * default, with a circular variant for compact status. */
+ * default, with circular and dashboard dials for compact status. */
 function ProgressFacade(props: ProgressFacadeProps) {
   const {
     value,
@@ -54,6 +54,17 @@ function ProgressFacade(props: ProgressFacadeProps) {
     onValueChange,
   } = props;
 
+  // Ark exposes percent only through the inline geometry of its SVG range,
+  // so the dashboard derives the same measure from the facade props to
+  // drive a CSS gradient.
+  const dashboardPercent = (() => {
+    const lower = min ?? 0;
+    const upper = max ?? 100;
+    const current = value ?? defaultValue ?? lower + (upper - lower) / 2;
+    const percent = ((current - lower) / (upper - lower)) * 100;
+    return !Number.isFinite(percent) ? 0 : Math.min(100, Math.max(0, percent));
+  })();
+
   return (
     <ProgressRoot
       size={size}
@@ -67,8 +78,17 @@ function ProgressFacade(props: ProgressFacadeProps) {
       onValueChange={(event: { value: number | null }) => onValueChange?.(event.value)}
     >
       {label ? <ArkProgress.Label>{label}</ArkProgress.Label> : null}
-      <ArkProgress.ValueText />
-      {variant === "circle" ? (
+      {variant === "dashboard" ? (
+        <div data-scope="progress" data-part="view" data-view="dashboard">
+          <div
+            aria-hidden="true"
+            data-scope="progress"
+            data-part="dash-ring"
+            style={{ "--percent": String(dashboardPercent) } as CSSProperties}
+          />
+          <ArkProgress.ValueText />
+        </div>
+      ) : variant === "circle" ? (
         <ProgressView view="circle">
           <ArkProgress.Circle>
             <ArkProgress.CircleRange />
@@ -79,6 +99,7 @@ function ProgressFacade(props: ProgressFacadeProps) {
           <ArkProgress.Range />
         </ArkProgress.Track>
       )}
+      {variant !== "dashboard" ? <ArkProgress.ValueText /> : null}
     </ProgressRoot>
   );
 }

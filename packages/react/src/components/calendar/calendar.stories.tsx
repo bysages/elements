@@ -34,3 +34,42 @@ export const Controlled = {
     );
   },
 };
+
+/** The full variant opens the grid to its container and gives every day
+ * room for an annotation; today rides the machine through the header. */
+export const Full = {
+  render: () => <Calendar variant="full" />,
+};
+
+/** Year mode opens the machine on its month overview: paging
+ * walks years, and choosing a month drills into that day grid. */
+export const Year = {
+  render: () => <Calendar mode="year" />,
+};
+
+/** Multiple selection keeps every chosen day in one array. */
+export const Multiple = {
+  render: () => (
+    <Calendar
+      selectionMode="multiple"
+      defaultValue={[parseDate("2026-09-08"), parseDate("2026-09-11"), parseDate("2026-09-25")]}
+    />
+  ),
+};
+
+/** The shared machine carries range geometry: the middle days read as a
+ * continuous band between the endpoints. */
+export const Range = {
+  render: () => (
+    <Calendar
+      selectionMode="range"
+      defaultValue={[parseDate("2026-09-08"), parseDate("2026-09-19")]}
+      style={{ maxWidth: "22rem" }}
+    />
+  ),
+};
+
+/** Week numbers turn the rows into calendar-week coordinates. */
+export const WeekNumbers = {
+  render: () => <Calendar showWeekNumbers fixedWeeks />,
+};

@@ -133,6 +133,8 @@ export interface DataTableProps {
   pageSizeOptions?: number[];
   /** Keep the (optional) footer row pinned to the viewport bottom. */
   stickyFooter?: boolean;
+  /** Band every other body row so wide measures keep the eye on line. */
+  striped?: boolean;
   initialSorting?: SortingState;
   globalFilterPlaceholder?: string;
   emptyText?: string;
@@ -786,6 +788,7 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
       data-scope="table"
       data-part="root"
       data-reorderable={props.reorderable || undefined}
+      data-striped={props.striped || undefined}
       style={{ "--bs-table-row-height": `calc(${baseRowHeight()}px * var(--bs-density-scale, 1))` }}
     >
       {props.filterable && (props.showToolbar ?? true) ? (

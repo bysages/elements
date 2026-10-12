@@ -99,6 +99,20 @@ export const Basic = {
     ),
 };
 
+/** Every other body row carries one step of shade, so wide measures
+ * keep the eye on its line. */
+export const Striped = {
+  render: () =>
+    frame(
+      <DataTable
+        data={makeRows(12)}
+        columns={salesColumns.slice(0, 5)}
+        striped
+        style={{ maxWidth: "48rem" }}
+      />,
+    ),
+};
+
 /** Header cells answer clicks; the arrow carries the sort. */
 export const Sortable = {
   render: () =>

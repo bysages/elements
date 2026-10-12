@@ -50,6 +50,8 @@ export interface DataTableProps extends HTMLAttributes<HTMLDivElement> {
   /** Keep the (optional) footer row pinned to the viewport bottom. */
   stickyFooter?: boolean;
   initialSorting?: SortingState;
+  /** Band every other body row so wide measures keep the eye on line. */
+  striped?: boolean;
   globalFilterPlaceholder?: string;
   emptyText?: string;
   /** Allow dragging header cells onto each other to reorder columns and

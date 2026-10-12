@@ -11,6 +11,7 @@ let {
   items,
   linear = false,
   orientation = "horizontal",
+  variant = "default",
   children,
   ...rest
 }: {
@@ -19,16 +20,18 @@ let {
   items: StepsItem[];
   linear?: boolean;
   orientation?: "horizontal" | "vertical";
+  /** Default renders numbered seals; dot reduces each step to a bead. */
+  variant?: "default" | "dot";
   children?: import("svelte").Snippet;
 } & import("./props").StepsRootProps = $props();
 </script>
 
-<StepsRoot bind:step {defaultStep} count={items.length} {linear} {orientation} {...rest}>
+<StepsRoot bind:step {defaultStep} count={items.length} {linear} {orientation} {variant} {...rest}>
   <ArkSteps.List>
     {#each items as item, index (item.title)}
       <ArkSteps.Item index={index} role="presentation">
         <ArkSteps.Trigger>
-          <ArkSteps.Indicator>{index + 1}</ArkSteps.Indicator>
+          <ArkSteps.Indicator>{#if variant !== "dot"}{index + 1}{/if}</ArkSteps.Indicator>
           {item.title}
         </ArkSteps.Trigger>
         <ArkSteps.Separator />

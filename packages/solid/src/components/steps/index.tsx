@@ -14,17 +14,26 @@ import { useElementId } from "../../internal/id";
  * data-complete / data-current / data-incomplete.
  */
 
-type StepsRootProps = ArkStepsRootProps & StepsOwnProps;
-
 type StepsOwnProps = {
   /** One rung of the control-height ladder every indicator stands on. */
   size?: "sm" | "md" | "lg";
+  /** Default renders numbered seals; dot reduces each step to a bead. */
+  variant?: "default" | "dot";
 };
 
+type StepsRootProps = ArkStepsRootProps & StepsOwnProps;
+
 function StepsRoot(props: StepsRootProps) {
-  const [own, rest] = splitProps(props, ["size"]);
+  const [own, rest] = splitProps(props, ["size", "variant"]);
   const id = useElementId("steps", () => rest.id);
-  return <ArkSteps.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
+  return (
+    <ArkSteps.Root
+      {...rest}
+      id={id()}
+      data-size={own.size ?? "md"}
+      data-variant={own.variant === "dot" ? own.variant : undefined}
+    />
+  );
 }
 
 export type StepsItem = {
@@ -39,17 +48,21 @@ export interface StepsFacadeProps {
   orientation?: "horizontal" | "vertical";
   /** One rung of the control-height ladder every indicator stands on. */
   size?: "sm" | "md" | "lg";
+  /** Default renders numbered seals; dot reduces each step to a bead. */
+  variant?: "default" | "dot";
   class?: string;
   onStepChange?: (step: number) => void;
 }
 
 function StepsFacade(props: StepsFacadeProps) {
   injectComponentStyle("steps");
+  const variant = props.variant ?? "default";
 
   return (
     <StepsRoot
       class={props.class}
       size={props.size ?? "md"}
+      variant={variant}
       count={props.items.length}
       linear={props.linear ?? false}
       orientation={props.orientation ?? "horizontal"}
@@ -62,7 +75,9 @@ function StepsFacade(props: StepsFacadeProps) {
           {(item, index) => (
             <ArkSteps.Item index={index()} role="presentation">
               <ArkSteps.Trigger>
-                <ArkSteps.Indicator>{String(index() + 1)}</ArkSteps.Indicator>
+                <ArkSteps.Indicator>
+                  {variant === "dot" ? null : String(index() + 1)}
+                </ArkSteps.Indicator>
                 {item.title}
               </ArkSteps.Trigger>
               <ArkSteps.Separator />

@@ -21,6 +21,18 @@ export const Basic = {
   ),
 };
 
+/** The dot register drops the numbers: beads on the road carry the
+ * progress, labels keep the meaning. */
+export const Dot = {
+  render: () => (
+    <Steps
+      items={[{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }]}
+      defaultStep={1}
+      variant="dot"
+    />
+  ),
+};
+
 /** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
 export const Anatomy = {
   args: {

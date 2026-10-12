@@ -9,7 +9,7 @@ import { withSelfRoot } from "../../internal/family";
 export interface ChipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   value: number;
   max?: number;
-  tone?: "ink" | "info" | "success" | "warning" | "danger";
+  tone?: "ink" | "primary" | "success" | "warning" | "danger" | "info";
   variant?: "solid" | "subtle" | "outline";
 }
 

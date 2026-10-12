@@ -71,6 +71,7 @@ let {
   pageSizeOptions = [10, 20, 50],
   stickyFooter = false,
   initialSorting,
+  striped = false,
   globalFilterPlaceholder,
   emptyText,
   reorderable = false,
@@ -525,6 +526,7 @@ function cellStyle(column: TColumn, span: number) {
   data-scope="table"
   data-part="root"
   data-reorderable={reorderable || undefined}
+  data-striped={striped || undefined}
   style:--bs-table-row-height={`calc(${baseRowHeight()}px * var(--bs-density-scale, 1))`}
 >
   {#if filterable && showToolbar}
@@ -806,4 +808,3 @@ function cellStyle(column: TColumn, span: number) {
     {/each}
   </div>
 {/snippet}
-

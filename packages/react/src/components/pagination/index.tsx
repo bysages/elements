@@ -35,6 +35,8 @@ type PaginationFacadeProps = {
   siblingCount?: number;
   label?: string;
   size?: "sm" | "md" | "lg";
+  /** full is the page-seal ladder; simple keeps prev, the count, next. */
+  variant?: "default" | "simple";
   className?: string;
   style?: CSSProperties;
   onValueChange?: (page: number) => void;
@@ -55,6 +57,7 @@ function PaginationFacade(props: PaginationFacadeProps) {
     siblingCount = 1,
     label,
     size = "md",
+    variant = "default",
     className,
     style,
     onValueChange,
@@ -70,31 +73,52 @@ function PaginationFacade(props: PaginationFacadeProps) {
       {...(pageSize === undefined ? {} : { pageSize })}
       {...(defaultPageSize === undefined ? {} : { defaultPageSize })}
       siblingCount={siblingCount}
+      data-variant={variant === "simple" ? variant : undefined}
       className={className}
       style={style}
       onPageChange={(event: { page: number }) => onValueChange?.(event.page)}
     >
-      <PaginationPrevTrigger aria-label="Previous page">
-        {iconNode("chevron-left", { width: 14, height: 14 })}
-      </PaginationPrevTrigger>
-      <ArkPagination.Context>
-        {(pagination: { pages: Array<{ type: string; value?: number }> }) =>
-          pagination.pages.map((page, index) =>
-            page.type === "page" ? (
-              <ArkPagination.Item key={page.value} type="page" value={page.value!}>
-                {page.value}
-              </ArkPagination.Item>
-            ) : (
-              <ArkPagination.Ellipsis key={`ellipsis-${index}`} index={index}>
-                …
-              </ArkPagination.Ellipsis>
-            ),
-          )
-        }
-      </ArkPagination.Context>
-      <PaginationNextTrigger aria-label="Next page">
-        {iconNode("chevron-right", { width: 14, height: 14 })}
-      </PaginationNextTrigger>
+      {variant === "simple" ? (
+        <>
+          <PaginationPrevTrigger aria-label="Previous page">
+            {iconNode("chevron-left", { width: 14, height: 14 })}
+          </PaginationPrevTrigger>
+          <ArkPagination.Context>
+            {(pagination: { page: number; totalPages: number }) => (
+              <span data-scope="pagination" data-part="status">
+                {pagination.page} / {pagination.totalPages}
+              </span>
+            )}
+          </ArkPagination.Context>
+          <PaginationNextTrigger aria-label="Next page">
+            {iconNode("chevron-right", { width: 14, height: 14 })}
+          </PaginationNextTrigger>
+        </>
+      ) : (
+        <>
+          <PaginationPrevTrigger aria-label="Previous page">
+            {iconNode("chevron-left", { width: 14, height: 14 })}
+          </PaginationPrevTrigger>
+          <ArkPagination.Context>
+            {(pagination: { pages: Array<{ type: string; value?: number }> }) =>
+              pagination.pages.map((page, index) =>
+                page.type === "page" ? (
+                  <ArkPagination.Item key={page.value} type="page" value={page.value!}>
+                    {page.value}
+                  </ArkPagination.Item>
+                ) : (
+                  <ArkPagination.Ellipsis key={`ellipsis-${index}`} index={index}>
+                    …
+                  </ArkPagination.Ellipsis>
+                ),
+              )
+            }
+          </ArkPagination.Context>
+          <PaginationNextTrigger aria-label="Next page">
+            {iconNode("chevron-right", { width: 14, height: 14 })}
+          </PaginationNextTrigger>
+        </>
+      )}
     </PaginationRoot>
   );
 }

@@ -7,13 +7,22 @@ import { useElementId } from "../../internal/id";
 type StepsRootProps = ComponentProps<typeof ArkSteps.Root> & {
   /** One rung of the control-height ladder every indicator stands on. */
   size?: "sm" | "md" | "lg";
+  /** Default renders numbered seals; dot reduces each step to a bead. */
+  variant?: "default" | "dot";
 };
 
 function StepsRoot(props: StepsRootProps) {
   const id = useElementId("steps", props);
-  const { size = "md", ...rest } = props;
+  const { size = "md", variant = "default", ...rest } = props;
 
-  return <ArkSteps.Root {...rest} id={id} data-size={size} />;
+  return (
+    <ArkSteps.Root
+      {...rest}
+      id={id}
+      data-size={size}
+      data-variant={variant === "dot" ? variant : undefined}
+    />
+  );
 }
 
 export type StepsItem = {
@@ -28,6 +37,8 @@ export interface StepsFacadeProps {
   orientation?: "horizontal" | "vertical";
   /** One rung of the control-height ladder every indicator stands on. */
   size?: "sm" | "md" | "lg";
+  /** Default renders numbered seals; dot reduces each step to a bead. */
+  variant?: "default" | "dot";
   className?: string;
   onStepChange?: (step: number) => void;
 }
@@ -39,6 +50,7 @@ function StepsFacade({
   linear = false,
   orientation = "horizontal",
   size = "md",
+  variant = "default",
   className,
   onStepChange,
 }: StepsFacadeProps) {
@@ -49,6 +61,7 @@ function StepsFacade({
       count={items.length}
       linear={linear}
       orientation={orientation}
+      variant={variant}
       defaultStep={defaultStep}
       {...(step === undefined ? {} : { step })}
       onStepChange={(details: { step: number }) => onStepChange?.(details.step)}
@@ -57,7 +70,9 @@ function StepsFacade({
         {items.map((item, index) => (
           <ArkSteps.Item key={item.title} index={index} role="presentation">
             <ArkSteps.Trigger>
-              <ArkSteps.Indicator>{String(index + 1)}</ArkSteps.Indicator>
+              <ArkSteps.Indicator>
+                {variant === "dot" ? null : String(index + 1)}
+              </ArkSteps.Indicator>
               {item.title}
             </ArkSteps.Trigger>
             <ArkSteps.Separator />

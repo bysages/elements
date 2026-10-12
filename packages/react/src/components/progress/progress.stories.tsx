@@ -10,6 +10,12 @@ export const Basic = {
   render: () => <Progress defaultValue={42} label="Copying the archive" />,
 };
 
+/** Dashboard progress bends the fill onto a three-quarter dial whose
+ * opening rests at the base. */
+export const Dashboard = {
+  render: () => <Progress defaultValue={68} label="Preparing the ledger" variant="dashboard" />,
+};
+
 /** Linear progress: label and value sit on one line, the groove runs the
  * full measure beneath them. */
 export const Anatomy = {

@@ -11,20 +11,49 @@ function chevron(dir: "left" | "right") {
   return iconNode(dir === "left" ? "chevron-left" : "chevron-right", { width: 16, height: 16 });
 }
 
-export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
+export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   /** Selected date(s) — an array, as the machine speaks in ranges. */
   value?: DatePickerRootProps["value"];
+  defaultValue?: DatePickerRootProps["defaultValue"];
   min?: DatePickerRootProps["min"];
   max?: DatePickerRootProps["max"];
+  /** compact keeps the popup's measure; full gives cells room for content. */
+  variant?: "compact" | "full";
+  /** month is the day grid; year starts on a month overview. */
+  mode?: "month" | "year";
+  selectionMode?: DatePickerRootProps["selectionMode"];
+  startOfWeek?: number;
+  fixedWeeks?: boolean;
+  showWeekNumbers?: boolean;
+  outsideDaySelectable?: boolean;
+  closeOnSelect?: boolean;
+  minView?: DatePickerRootProps["minView"];
+  maxView?: DatePickerRootProps["maxView"];
   onValueChange?: (value: NonNullable<DatePickerRootProps["value"]>) => void;
 }
 
-/** The date-picker's month grid, standing on the page without its
- * popup: always open, the trigger gone, the vessel a quiet card. The
- * title zooms out through month and year grids; the grids themselves
- * are the shared machinery — value, range selection, and focus ride
- * Ark's own contract. */
-function CalendarImpl({ value, min, max, onValueChange, children, ...rest }: CalendarProps) {
+/** The date-picker's grid standing on the page. Compact is the popup's
+ * quiet card; full opens it into a dashboard calendar. Year mode starts
+ * on a month overview; choosing a month drills into its day grid. */
+function CalendarImpl({
+  value,
+  defaultValue,
+  min,
+  max,
+  variant = "compact",
+  mode = "month",
+  selectionMode,
+  startOfWeek,
+  fixedWeeks = false,
+  showWeekNumbers = false,
+  outsideDaySelectable = true,
+  closeOnSelect = true,
+  minView,
+  maxView,
+  onValueChange,
+  children,
+  ...rest
+}: CalendarProps) {
   injectComponentStyle("calendar");
   injectComponentStyle("date-picker");
   const hostId = useElementId("calendar", rest);
@@ -32,122 +61,169 @@ function CalendarImpl({ value, min, max, onValueChange, children, ...rest }: Cal
      the month and year steps never move — it would freeze the title.
      Formatting the focused value keeps it in step with the arrows. */
   const title = (dp: UseDatePickerContext) => {
-    const d = dp.focusedValue;
-    if (!d) return "";
-    if (dp.view === "day") return dp.format(d, { month: "long", year: "numeric" });
-    if (dp.view === "month") return dp.format(d, { year: "numeric" });
-    const decade = Math.floor(d.year / 10) * 10;
+    const date = dp.focusedValue;
+    if (!date) return "";
+    if (dp.view === "month") return dp.format(date, { year: "numeric" });
+    if (dp.view === "day") return dp.format(date, { month: "long", year: "numeric" });
+    const decade = Math.floor(date.year / 10) * 10;
     return `${decade} - ${decade + 9}`;
   };
-  /* The header lives inside every view: the triggers read their view
-     from the view's props context, so one shared header outside the
-     views would step months while the machine sits in month or year. */
-  const header = (
+
+  const header = (dp?: UseDatePickerContext) => (
     <div data-scope="calendar" data-part="header">
       <ArkDatePicker.ViewControl>
         <ArkDatePicker.PrevTrigger>{chevron("left")}</ArkDatePicker.PrevTrigger>
         <ArkDatePicker.Context>
-          {(dp) => <ArkDatePicker.ViewTrigger>{title(dp)}</ArkDatePicker.ViewTrigger>}
+          {(context) => <ArkDatePicker.ViewTrigger>{title(context)}</ArkDatePicker.ViewTrigger>}
         </ArkDatePicker.Context>
+        {variant === "full" && dp ? todayTrigger(dp) : null}
         <ArkDatePicker.NextTrigger>{chevron("right")}</ArkDatePicker.NextTrigger>
       </ArkDatePicker.ViewControl>
     </div>
   );
+
+  const todayTrigger = (dp: UseDatePickerContext) => (
+    <button
+      type="button"
+      data-scope="calendar"
+      data-part="today-trigger"
+      onClick={() => {
+        dp.selectToday();
+        if (mode === "year" && dp.view === "month") dp.setView("day");
+      }}
+    >
+      Today
+    </button>
+  );
+
+  const dayTable = (dp: UseDatePickerContext) => {
+    const weeks = dp.weeks;
+    return (
+      <ArkDatePicker.Table>
+        <ArkDatePicker.TableHead>
+          <ArkDatePicker.TableRow>
+            {showWeekNumbers ? (
+              <ArkDatePicker.WeekNumberHeaderCell>Wk</ArkDatePicker.WeekNumberHeaderCell>
+            ) : null}
+            {dp.weekDays.map((day, id) => (
+              <ArkDatePicker.TableHeader key={id} aria-label={day.long}>
+                {day.narrow}
+              </ArkDatePicker.TableHeader>
+            ))}
+          </ArkDatePicker.TableRow>
+        </ArkDatePicker.TableHead>
+        <ArkDatePicker.TableBody>
+          {weeks.map((week, id) => (
+            <ArkDatePicker.TableRow key={id}>
+              {showWeekNumbers ? (
+                <ArkDatePicker.WeekNumberCell key="week" weekIndex={id} week={week}>
+                  {dp.getWeekNumber(week)}
+                </ArkDatePicker.WeekNumberCell>
+              ) : null}
+              {week.map((day, cellId) => (
+                <ArkDatePicker.TableCell key={cellId} value={day}>
+                  <ArkDatePicker.TableCellTrigger>{day.day}</ArkDatePicker.TableCellTrigger>
+                </ArkDatePicker.TableCell>
+              ))}
+            </ArkDatePicker.TableRow>
+          ))}
+        </ArkDatePicker.TableBody>
+      </ArkDatePicker.Table>
+    );
+  };
+
+  const monthGrid = (dp: UseDatePickerContext, columns: 3 | 4) => (
+    <ArkDatePicker.Table columns={columns}>
+      <ArkDatePicker.TableBody>
+        {dp
+          .getMonthsGrid({ columns, format: columns === 4 ? "short" : "long" })
+          .map((months, id) => (
+            <ArkDatePicker.TableRow key={id}>
+              {months.map((month, monthId) => (
+                <ArkDatePicker.TableCell key={monthId} value={month.value} columns={columns}>
+                  <ArkDatePicker.TableCellTrigger>{month.label}</ArkDatePicker.TableCellTrigger>
+                </ArkDatePicker.TableCell>
+              ))}
+            </ArkDatePicker.TableRow>
+          ))}
+      </ArkDatePicker.TableBody>
+    </ArkDatePicker.Table>
+  );
+
+  const yearGrid = (dp: UseDatePickerContext) => (
+    <ArkDatePicker.Table columns={3}>
+      <ArkDatePicker.TableBody>
+        {dp.getYearsGrid({ columns: 3 }).map((years, id) => (
+          <ArkDatePicker.TableRow key={id}>
+            {years.map((year, yearId) => (
+              <ArkDatePicker.TableCell key={yearId} value={year.value} columns={3}>
+                <ArkDatePicker.TableCellTrigger>{year.label}</ArkDatePicker.TableCellTrigger>
+              </ArkDatePicker.TableCell>
+            ))}
+          </ArkDatePicker.TableRow>
+        ))}
+      </ArkDatePicker.TableBody>
+    </ArkDatePicker.Table>
+  );
+
   return (
-    <div {...rest} data-scope="calendar" data-part="root">
-      {/* inline: the calendar stands on the page with no popup parts,
-          so the machine must skip its dismissable layer — without it
-          it hunts for a content node that never renders. */}
+    <div {...rest} data-scope="calendar" data-part="root" data-variant={variant} data-mode={mode}>
       <ArkDatePicker.Root
         id={`${hostId}:date-picker`}
         open
-        closeOnSelect
         inline
+        closeOnSelect={closeOnSelect}
+        outsideDaySelectable={outsideDaySelectable}
         {...(value !== undefined ? { value } : {})}
+        {...(defaultValue !== undefined ? { defaultValue } : {})}
         {...(min !== undefined ? { min } : {})}
         {...(max !== undefined ? { max } : {})}
+        {...(selectionMode !== undefined ? { selectionMode } : {})}
+        {...(startOfWeek !== undefined ? { startOfWeek } : {})}
+        /* Full is a page-shaped register: every month shows six
+           weeks so paging never reshapes the sheet. */
+        fixedWeeks={fixedWeeks || variant === "full"}
+        showWeekNumbers={showWeekNumbers}
+        {...(minView !== undefined ? { minView } : {})}
+        {...(maxView !== undefined ? { maxView } : {})}
+        /* Year mode starts on the year's month overview. The machine
+           stays free to drill down, so choosing a month opens its
+           day calendar instead of "selecting the month". */
+        {...(mode === "year" ? { defaultView: "month" as const, maxView: "month" as const } : {})}
         onValueChange={(details) => onValueChange?.(details.value)}
       >
-        {/* Three views ride the machine; only the one matching the current
-            view shows. Month and year are hand-laid grids of three columns
-            — the machine supplies the cells. */}
         <ArkDatePicker.View view="day">
-          {header}
-          <ArkDatePicker.Table>
-            <ArkDatePicker.TableHead>
-              <ArkDatePicker.TableRow>
-                <ArkDatePicker.Context>
-                  {(dp) =>
-                    dp.weekDays.map((day, id) => (
-                      <ArkDatePicker.TableHeader key={id} aria-label={day.long}>
-                        {day.narrow}
-                      </ArkDatePicker.TableHeader>
-                    ))
-                  }
-                </ArkDatePicker.Context>
-              </ArkDatePicker.TableRow>
-            </ArkDatePicker.TableHead>
-            <ArkDatePicker.TableBody>
-              <ArkDatePicker.Context>
-                {(dp) =>
-                  dp.weeks.map((week, id) => (
-                    <ArkDatePicker.TableRow key={id}>
-                      {week.map((day, id2) => (
-                        <ArkDatePicker.TableCell key={id2} value={day}>
-                          <ArkDatePicker.TableCellTrigger>{day.day}</ArkDatePicker.TableCellTrigger>
-                        </ArkDatePicker.TableCell>
-                      ))}
-                    </ArkDatePicker.TableRow>
-                  ))
-                }
-              </ArkDatePicker.Context>
-            </ArkDatePicker.TableBody>
-          </ArkDatePicker.Table>
+          <ArkDatePicker.Context>
+            {(dp) => (
+              <>
+                {header(dp)}
+                {dayTable(dp)}
+              </>
+            )}
+          </ArkDatePicker.Context>
         </ArkDatePicker.View>
         <ArkDatePicker.View view="month">
-          {header}
-          <ArkDatePicker.Table columns={3}>
-            <ArkDatePicker.TableBody>
-              <ArkDatePicker.Context>
-                {(dp) =>
-                  dp.getMonthsGrid({ columns: 3 }).map((months, id) => (
-                    <ArkDatePicker.TableRow key={id}>
-                      {months.map((month, id2) => (
-                        <ArkDatePicker.TableCell key={id2} value={month.value} columns={3}>
-                          <ArkDatePicker.TableCellTrigger>
-                            {month.label}
-                          </ArkDatePicker.TableCellTrigger>
-                        </ArkDatePicker.TableCell>
-                      ))}
-                    </ArkDatePicker.TableRow>
-                  ))
-                }
-              </ArkDatePicker.Context>
-            </ArkDatePicker.TableBody>
-          </ArkDatePicker.Table>
+          <ArkDatePicker.Context>
+            {(dp) => (
+              <>
+                {header(dp)}
+                {monthGrid(dp, mode === "year" ? 4 : 3)}
+              </>
+            )}
+          </ArkDatePicker.Context>
         </ArkDatePicker.View>
-        <ArkDatePicker.View view="year">
-          {header}
-          <ArkDatePicker.Table columns={3}>
-            <ArkDatePicker.TableBody>
-              <ArkDatePicker.Context>
-                {(dp) =>
-                  dp.getYearsGrid({ columns: 3 }).map((years, id) => (
-                    <ArkDatePicker.TableRow key={id}>
-                      {years.map((year, id2) => (
-                        <ArkDatePicker.TableCell key={id2} value={year.value} columns={3}>
-                          <ArkDatePicker.TableCellTrigger>
-                            {year.label}
-                          </ArkDatePicker.TableCellTrigger>
-                        </ArkDatePicker.TableCell>
-                      ))}
-                    </ArkDatePicker.TableRow>
-                  ))
-                }
-              </ArkDatePicker.Context>
-            </ArkDatePicker.TableBody>
-          </ArkDatePicker.Table>
-        </ArkDatePicker.View>
+        {mode === "month" ? (
+          <ArkDatePicker.View view="year">
+            <ArkDatePicker.Context>
+              {(dp) => (
+                <>
+                  {header()}
+                  {yearGrid(dp)}
+                </>
+              )}
+            </ArkDatePicker.Context>
+          </ArkDatePicker.View>
+        ) : null}
       </ArkDatePicker.Root>
       {children}
     </div>

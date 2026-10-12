@@ -119,6 +119,7 @@ export * from "./components/steps";
 export * from "./components/swap";
 export * from "./components/switch";
 export * from "./components/table";
+export * from "./components/tag";
 export * from "./components/tabs";
 export * from "./components/terminal";
 export * from "./components/tags-input";

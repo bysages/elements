@@ -137,6 +137,8 @@ export interface DataTableProps {
   initialSorting?: SortingState;
   globalFilterPlaceholder?: string;
   emptyText?: string;
+  /** Band every other body row so wide measures keep the eye on line. */
+  striped?: boolean;
   /** Allow dragging header cells onto each other to reorder columns and
    * body rows onto each other to reorder data — with `tree`, row drops
    * read as before / inside / after, so a drop can also nest a branch
@@ -980,6 +982,7 @@ function DataTableImpl(rawProps: DataTableProps) {
       data-scope="table"
       data-part="root"
       data-reorderable={reorderable || undefined}
+      data-striped={props.striped || undefined}
       style={
         {
           "--bs-table-row-height": `calc(${rowHeight}px * var(--bs-density-scale, 1))`,
