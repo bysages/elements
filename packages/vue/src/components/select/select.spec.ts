@@ -1,8 +1,11 @@
-import { beforeEach, describe, expect, it } from "vitest";
 // @vitest-environment happy-dom
-import { createApp, createSSRApp, defineComponent, h, nextTick, ref } from "vue";
+import { Field as ArkField } from "@ark-ui/vue/field";
+import { Select as ArkSelect, createListCollection } from "@ark-ui/vue/select";
+import { beforeEach, describe, expect, it } from "vitest";
+import { createApp, createSSRApp, defineComponent, h, nextTick, ref, Suspense } from "vue";
 import { renderToString } from "vue/server-renderer";
 
+import { Field } from "../field";
 import { Select, type NativeSelectOption } from "./index";
 
 const options: NativeSelectOption[] = [
@@ -67,6 +70,32 @@ describe("select facade SSR", () => {
     container.remove();
   });
 
+  it("keeps Field-wrapped HiddenSelect ids stable through hydration", async () => {
+    const page = defineComponent({
+      render: () =>
+        h(Field.Root, () =>
+          h(Select, { options, modelValue: "vue", label: "Framework", name: "framework" }),
+        ),
+    });
+
+    const html = await renderToString(createSSRApp(page));
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    document.body.append(container);
+    const before = [...container.querySelectorAll('select[name="framework"]')].map(
+      (node) => node.id,
+    );
+
+    createSSRApp(page).mount(container);
+    const after = [...container.querySelectorAll('select[name="framework"]')].map(
+      (node) => node.id,
+    );
+
+    expect(before).toHaveLength(1);
+    expect(after).toEqual(before);
+    container.remove();
+  });
+
   it("passes ids.hiddenSelect to the hidden native select", async () => {
     const page = defineComponent({
       render: () =>
@@ -81,6 +110,66 @@ describe("select facade SSR", () => {
     const html = await renderToString(createSSRApp(page));
 
     expect(html).toContain('id="named-hidden-select"');
+  });
+});
+
+describe("select anatomy inside a field", () => {
+  function anatomyPage() {
+    return defineComponent({
+      setup() {
+        return () =>
+          h(Field.Root, () => [
+            h(ArkField.Label, () => "Framework"),
+            h(
+              ArkSelect.Root as never,
+              { collection: createListCollection({ items: options }), name: "framework" },
+              () => [h(ArkSelect.HiddenSelect)],
+            ),
+          ]);
+      },
+    });
+  }
+
+  function hiddenSelectIds() {
+    return [...document.querySelectorAll("select")].map((node) => node.id);
+  }
+
+  it("keeps HiddenSelect ids stable through hydration", async () => {
+    const page = anatomyPage();
+
+    const html = await renderToString(createSSRApp(page));
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    document.body.append(container);
+    const before = hiddenSelectIds();
+
+    createSSRApp(page).mount(container);
+    const after = hiddenSelectIds();
+
+    expect(before).toHaveLength(1);
+    expect(after).toEqual(before);
+    container.remove();
+  });
+
+  it("keeps ids stable when the tree mounts inside Suspense", async () => {
+    const page = anatomyPage();
+    const host = defineComponent({
+      render: () => h(Suspense, null, () => h(page)),
+    });
+
+    const html = await renderToString(createSSRApp(host));
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    document.body.append(container);
+    const before = hiddenSelectIds();
+
+    createSSRApp(host).mount(container);
+    await new Promise((r) => setTimeout(r, 50));
+    const after = hiddenSelectIds();
+
+    expect(before).toHaveLength(1);
+    expect(after).toEqual(before);
+    container.remove();
   });
 });
 

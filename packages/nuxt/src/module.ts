@@ -57,6 +57,22 @@ export default defineNuxtModule<BsElementsOptions>({
       });
     }
 
+    // Ark's Vue package builds contexts (field, locale, ...) on
+    // module-level Symbols behind deep imports. When Vite prebundles one
+    // subpath an app imports directly — @ark-ui/vue/select for
+    // createListCollection — while another, @ark-ui/vue/field, is reached
+    // only through these wrappers, each copy mints its own Symbol and the
+    // field context injected inside the select machine silently resolves
+    // to nothing: SSR renders the field-linked hidden-select id, the
+    // client re-renders the machine default, and hydration flags every
+    // HiddenSelect. Keep the whole package on one module graph so the
+    // Symbols stay unique.
+    nuxt.options.vite.optimizeDeps ||= {};
+    nuxt.options.vite.optimizeDeps.exclude ||= [];
+    if (!nuxt.options.vite.optimizeDeps.exclude.includes("@ark-ui/vue")) {
+      nuxt.options.vite.optimizeDeps.exclude.push("@ark-ui/vue");
+    }
+
     // The wrappers and the theme plugin are authored in TypeScript and
     // rely on the app's aliases and auto-imports — they must ride the
     // Nuxt build.
