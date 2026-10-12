@@ -30,14 +30,29 @@ function JsonTreeViewTree(props: JsonTreeViewTreeProps) {
   return <ArkJsonTreeView.Tree {...props} arrow={props.arrow ?? iconNode("chevron-right")} />;
 }
 
-export const JsonTreeView: typeof JsonTreeViewRoot &
-  Omit<typeof ArkJsonTreeView, "Root"> & { Root: typeof JsonTreeViewRoot } = defineFamily(
-  JsonTreeViewRoot,
-  {
-    ...ArkJsonTreeView,
-    Root: JsonTreeViewRoot,
-    Tree: JsonTreeViewTree,
-  },
-);
+export interface JsonTreeViewFacadeProps {
+  data: unknown;
+  defaultExpandedDepth?: number;
+}
+
+/** The one-tag path for a read-only tree: `data` and the initial depth
+ * are all a quiet ledger needs; deeper control stays on the anatomy. */
+function JsonTreeViewFacade(props: JsonTreeViewFacadeProps) {
+  return (
+    <JsonTreeViewRoot data={props.data} defaultExpandedDepth={props.defaultExpandedDepth ?? 1}>
+      <JsonTreeViewTree />
+    </JsonTreeViewRoot>
+  );
+}
+
+export const JsonTreeView: typeof JsonTreeViewFacade &
+  Omit<typeof ArkJsonTreeView, "Root"> & {
+    Root: typeof JsonTreeViewRoot;
+    Tree: typeof JsonTreeViewTree;
+  } = defineFamily(JsonTreeViewFacade, {
+  ...ArkJsonTreeView,
+  Root: JsonTreeViewRoot,
+  Tree: JsonTreeViewTree,
+});
 
 injectComponentStyle("json-tree-view");

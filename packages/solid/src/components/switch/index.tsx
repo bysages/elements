@@ -1,7 +1,7 @@
 import { Switch as ArkSwitch } from "@ark-ui/solid/switch";
 import type { SwitchRootProps as ArkSwitchRootProps } from "@ark-ui/solid/switch";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { splitProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -22,10 +22,50 @@ function SwitchRoot(props: ArkSwitchRootProps & SwitchOwnProps) {
   return <ArkSwitch.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
-/* Ark's namespace is frozen — spread copies the members so Root can be
- * the sized wrapper while the rest stay Ark's own parts. */
-export const Switch: typeof SwitchRoot &
-  Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot } = defineFamily(SwitchRoot, {
+/** The complete switch behind one on/off state and its label. */
+export interface SwitchFacadeProps {
+  checked?: boolean;
+  defaultValue?: boolean;
+  label?: string;
+  disabled?: boolean;
+  invalid?: boolean;
+  required?: boolean;
+  readOnly?: boolean;
+  /** One rung for the thumb; the track travels with it. */
+  size?: "sm" | "md" | "lg";
+  onCheckedChange?: (checked: boolean) => void;
+}
+
+function SwitchFacade(props: SwitchFacadeProps) {
+  injectComponentStyle("switch");
+
+  return (
+    <SwitchRoot
+      size={props.size ?? "md"}
+      disabled={props.disabled}
+      invalid={props.invalid}
+      readOnly={props.readOnly}
+      required={props.required}
+      defaultChecked={props.defaultValue ?? false}
+      {...(props.checked === undefined ? {} : { checked: props.checked })}
+      onCheckedChange={(details: { checked: boolean }) => props.onCheckedChange?.(details.checked)}
+    >
+      <ArkSwitch.Control>
+        <ArkSwitch.Thumb />
+      </ArkSwitch.Control>
+      <Show when={props.label}>
+        <ArkSwitch.Label>{props.label}</ArkSwitch.Label>
+      </Show>
+      <ArkSwitch.HiddenInput />
+    </SwitchRoot>
+  );
+}
+
+type SwitchParts = Omit<typeof ArkSwitch, "Root"> & { Root: typeof SwitchRoot };
+
+/* Ark's namespace is frozen — spread copies the members so the facade
+ * coexists with the anatomy while Root stays the sized wrapper. */
+export const Switch: typeof SwitchFacade & SwitchParts = defineFamily(SwitchFacade, {
   ...ArkSwitch,
   Root: SwitchRoot,
 });

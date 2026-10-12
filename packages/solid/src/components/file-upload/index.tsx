@@ -1,10 +1,11 @@
 import { FileUpload as ArkFileUpload } from "@ark-ui/solid/file-upload";
 import type { FileUploadRootProps as ArkFileUploadRootProps } from "@ark-ui/solid/file-upload";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { splitProps } from "solid-js";
+import { For, Show, splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
 /** The inner trigger repeats the click binding the dropzone already
@@ -32,11 +33,66 @@ function FileUploadRoot(props: ArkFileUploadRootProps & FileUploadOwnProps) {
   return <ArkFileUpload.Root {...rest} id={id()} data-size={own.size ?? "md"} />;
 }
 
+/** The one-tag path: a labelled dropzone and its accepted slips; MIME
+ * rules, directories, and controlled files stay on the anatomy. */
+export interface FileUploadFacadeProps {
+  label?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  invalid?: boolean;
+  required?: boolean;
+  maxFiles?: number;
+  /** One rung of the control-height ladder for the trigger. */
+  size?: "sm" | "md" | "lg";
+}
+
+function FileUploadFacade(props: FileUploadFacadeProps) {
+  injectComponentStyle("file-upload");
+
+  return (
+    <FileUploadRoot
+      size={props.size ?? "md"}
+      disabled={props.disabled}
+      invalid={props.invalid}
+      required={props.required}
+      maxFiles={props.maxFiles}
+    >
+      <Show when={props.label}>
+        <ArkFileUpload.Label>{props.label}</ArkFileUpload.Label>
+      </Show>
+      <ArkFileUpload.Dropzone>
+        <FileUploadTrigger>{props.placeholder ?? "Choose files"}</FileUploadTrigger>
+      </ArkFileUpload.Dropzone>
+      <ArkFileUpload.ItemGroup>
+        <ArkFileUpload.Context>
+          {(context) => (
+            <For each={context().acceptedFiles}>
+              {(file) => (
+                <ArkFileUpload.Item file={file}>
+                  <ArkFileUpload.ItemPreview>{iconNode("file")}</ArkFileUpload.ItemPreview>
+                  <ArkFileUpload.ItemName />
+                  <ArkFileUpload.ItemSizeText />
+                  <ArkFileUpload.ItemDeleteTrigger>{iconNode("x")}</ArkFileUpload.ItemDeleteTrigger>
+                </ArkFileUpload.Item>
+              )}
+            </For>
+          )}
+        </ArkFileUpload.Context>
+      </ArkFileUpload.ItemGroup>
+      <ArkFileUpload.HiddenInput />
+    </FileUploadRoot>
+  );
+}
+
+type FileUploadParts = Omit<typeof ArkFileUpload, "Root" | "Trigger"> & {
+  Root: typeof FileUploadRoot;
+  Trigger: typeof FileUploadTrigger;
+};
+
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const FileUpload: typeof FileUploadRoot &
-  Omit<typeof ArkFileUpload, "Root"> & { Root: typeof FileUploadRoot } = defineFamily(
-  FileUploadRoot,
+export const FileUpload: typeof FileUploadFacade & FileUploadParts = defineFamily(
+  FileUploadFacade,
   {
     ...ArkFileUpload,
     Root: FileUploadRoot,

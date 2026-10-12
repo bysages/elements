@@ -19,7 +19,14 @@ function checkIcon() {
   return iconNode("check");
 }
 
-export interface CheckboxGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
+/**
+ * One question, many answers: a labelled stack (or row) of the seal-cut
+ * checkboxes bound to a single array. Ark's group owns selection, form
+ * wiring, and limits; the facade maps an options list onto it. Inside a
+ * `Field.Root` the group picks up the field context, so invalid and
+ * disabled states dress every box at once.
+ */
+export interface CheckboxGroupFacadeProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value?: string[];
   defaultValue?: string[];
   options: CheckboxOption[];
@@ -32,7 +39,7 @@ export interface CheckboxGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   onValueChange?: (value: string[]) => void;
 }
 
-function CheckboxGroupImpl(props: CheckboxGroupProps) {
+function CheckboxGroupFacade(props: CheckboxGroupFacadeProps) {
   injectComponentStyle("checkbox-group");
   injectComponentStyle("checkbox");
   const field = useFieldContext();
@@ -87,5 +94,7 @@ function CheckboxGroupImpl(props: CheckboxGroupProps) {
   );
 }
 
-export const CheckboxGroup = defineFamily(CheckboxGroupImpl, Checkbox) as typeof CheckboxGroupImpl &
-  typeof Checkbox;
+export const CheckboxGroup: typeof CheckboxGroupFacade & typeof Checkbox = defineFamily(
+  CheckboxGroupFacade,
+  Checkbox,
+);

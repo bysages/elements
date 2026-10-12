@@ -1,4 +1,4 @@
-import { Progress as ArkProgress } from "@ark-ui/solid/progress";
+import { Progress as ArkProgress, useProgressContext } from "@ark-ui/solid/progress";
 import type { ProgressRootProps as ArkProgressRootProps } from "@ark-ui/solid/progress";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createMemo, splitProps } from "solid-js";
@@ -70,10 +70,69 @@ function ProgressRoot(props: ArkProgressRootProps & ProgressOwnProps) {
   );
 }
 
+export interface ProgressFacadeProps {
+  value?: number;
+  defaultValue?: number;
+  min?: number;
+  max?: number;
+  label?: string;
+  variant?: "linear" | "circle" | "dashboard";
+  /** One rung of the groove ladder — the track's thickness. */
+  size?: "sm" | "md" | "lg";
+  onValueChange?: (value: number | null) => void;
+}
+
+function ProgressCircleView() {
+  const progress = useProgressContext();
+  const value = progress().value;
+  const max = progress().max;
+  const state = value === null ? "indeterminate" : value === max ? "complete" : "loading";
+
+  return (
+    <ArkProgress.View state={state}>
+      <ArkProgress.Circle>
+        <ArkProgress.CircleRange />
+      </ArkProgress.Circle>
+    </ArkProgress.View>
+  );
+}
+
+/** The complete progress behind one value: a labelled linear groove by
+ * default, with circular and dashboard dials for compact status. */
+function ProgressFacade(props: ProgressFacadeProps) {
+  const variant = () => props.variant ?? "linear";
+
+  return (
+    <ProgressRoot
+      size={props.size ?? "md"}
+      variant={variant()}
+      label={props.label}
+      defaultValue={props.defaultValue}
+      min={props.min}
+      max={props.max}
+      {...(props.value === undefined ? {} : { value: props.value })}
+      onValueChange={(details: { value: number | null }) => props.onValueChange?.(details.value)}
+    >
+      {variant() === "dashboard"
+        ? null
+        : [
+            props.label ? <ArkProgress.Label>{props.label}</ArkProgress.Label> : null,
+            variant() === "circle" ? (
+              <ProgressCircleView />
+            ) : (
+              <ArkProgress.Track>
+                <ArkProgress.Range />
+              </ArkProgress.Track>
+            ),
+          ]}
+    </ProgressRoot>
+  );
+}
+
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
-export const Progress: typeof ProgressRoot &
-  Omit<typeof ArkProgress, "Root"> & { Root: typeof ProgressRoot } = defineFamily(ProgressRoot, {
+export const Progress: typeof ProgressFacade &
+  Omit<typeof ArkProgress, "Root"> & { Root: typeof ProgressRoot } = defineFamily(ProgressFacade, {
   ...ArkProgress,
   Root: ProgressRoot,
 });
