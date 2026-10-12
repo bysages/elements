@@ -241,6 +241,22 @@ export const Controlled = {
     }),
 };
 
+/** The facade can hand the machine named ranges; they become quick
+ * choices inside the popup. */
+export const Presets = {
+  render: () =>
+    h(DatePicker as any, {
+      selectionMode: "range",
+      label: "Report period",
+      placeholder: "yyyy-mm-dd",
+      presets: [
+        { label: "Last 7 days", value: "last7Days" },
+        { label: "Last 30 days", value: "last30Days" },
+        { label: "This month", value: "thisMonth" },
+      ],
+    }),
+};
+
 /** A range spans two inputs, one per endpoint; the preset triggers stamp
  * whole spans in one click. */
 export const RangeSelection = {

@@ -31,6 +31,7 @@ export const componentSections: Array<{
       "kbd",
       "presence",
       "separator",
+      "tag",
       "deferred-content",
       "user",
     ],

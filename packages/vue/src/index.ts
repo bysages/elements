@@ -122,6 +122,7 @@ export * from "./components/swap";
 export * from "./components/table";
 export * from "./components/tabs";
 export * from "./components/terminal";
+export * from "./components/tag";
 export * from "./components/tags-input";
 export * from "./components/textarea";
 export * from "./components/timeline";

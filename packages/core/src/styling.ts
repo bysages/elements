@@ -87,6 +87,7 @@ const styleLoaders = {
   swap: () => import("./styles/components/swap").then((m) => m.swapCss),
   switch: () => import("./styles/components/switch").then((m) => m.switchCss),
   tabs: () => import("./styles/components/tabs").then((m) => m.tabsCss),
+  tag: () => import("./styles/components/tag").then((m) => m.tagCss),
   terminal: () => import("./styles/components/terminal").then((m) => m.terminalCss),
   "tags-input": () => import("./styles/components/tags-input").then((m) => m.tagsInputCss),
   textarea: () =>

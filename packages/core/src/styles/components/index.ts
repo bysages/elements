@@ -101,6 +101,7 @@ import { swapCss } from "./swap";
 import { switchCss } from "./switch";
 import { tableCss } from "./table";
 import { tabsCss } from "./tabs";
+import { tagCss } from "./tag";
 import { tagsInputCss } from "./tags-input";
 import { terminalCss } from "./terminal";
 import { timelineCss } from "./timeline";
@@ -205,6 +206,7 @@ export const componentStyles: Record<string, string> = {
   swap: swapCss,
   switch: switchCss,
   tabs: tabsCss,
+  tag: tagCss,
   terminal: terminalCss,
   "tags-input": tagsInputCss,
   textarea: fieldControlCss
@@ -335,6 +337,7 @@ export {
   stepsCss,
   swapCss,
   switchCss,
+  tagCss,
   tabsCss,
   tagsInputCss,
   terminalCss,

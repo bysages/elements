@@ -1,6 +1,13 @@
 import { Progress as ArkProgress } from "@ark-ui/vue/progress";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  type Component,
+  type PropType,
+  type SetupContext,
+} from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -23,7 +30,7 @@ const ProgressRoot = defineComponent({
 });
 
 /** The complete progress behind one value: a labelled linear groove by
- * default, with a circular variant for compact status. */
+ * default, with circular and dashboard dials for compact status. */
 const ProgressFacade = defineComponent({
   name: "SProgress",
   props: {
@@ -33,7 +40,7 @@ const ProgressFacade = defineComponent({
     max: { type: Number, default: undefined },
     label: { type: String, default: undefined },
     variant: {
-      type: String as PropType<"linear" | "circle">,
+      type: String as PropType<"linear" | "circle" | "dashboard">,
       default: "linear",
     },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
@@ -42,6 +49,18 @@ const ProgressFacade = defineComponent({
     "update:modelValue": (_value: number | null) => true,
   },
   setup(props, { attrs, emit }: SetupContext) {
+    // Ark exposes percent only through the inline geometry of its SVG range,
+    // so the dashboard derives the same measure from the facade props to
+    // drive a CSS gradient.
+    const dashboardPercent = computed(() => {
+      const min = props.min ?? 0;
+      const max = props.max ?? 100;
+      const value = props.modelValue ?? props.defaultValue ?? min + (max - min) / 2;
+      const percent = ((value - min) / (max - min)) * 100;
+
+      return !Number.isFinite(percent) ? 0 : Math.min(100, Math.max(0, percent));
+    });
+
     return () =>
       h(
         ProgressRoot,
@@ -56,12 +75,29 @@ const ProgressFacade = defineComponent({
         },
         () => [
           ...(props.label ? [h(ArkProgress.Label, () => props.label)] : []),
-          h(ArkProgress.ValueText),
-          props.variant === "circle"
-            ? h(ArkProgress.View as never, { view: "circle" }, () => [
-                h(ArkProgress.Circle, () => h(ArkProgress.CircleRange)),
-              ])
-            : h(ArkProgress.Track, () => h(ArkProgress.Range)),
+          props.variant === "dashboard"
+            ? h(
+                "div",
+                {
+                  "data-scope": "progress",
+                  "data-part": "view",
+                  "data-view": "dashboard",
+                },
+                () => [
+                  h("div", {
+                    "aria-hidden": "true",
+                    "data-scope": "progress",
+                    "data-part": "dash-ring",
+                    style: { "--percent": String(dashboardPercent.value) },
+                  }),
+                  h(ArkProgress.ValueText),
+                ],
+              )
+            : props.variant === "circle"
+              ? h(ArkProgress.View as never, { view: "circle" }, () => [
+                  h(ArkProgress.Circle, () => h(ArkProgress.CircleRange)),
+                ])
+              : h(ArkProgress.Track, () => h(ArkProgress.Range)),
         ],
       );
   },

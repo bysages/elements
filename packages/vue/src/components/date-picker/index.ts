@@ -1,4 +1,8 @@
-import { DatePicker as ArkDatePicker, type DateValue } from "@ark-ui/vue/date-picker";
+import {
+  DatePicker as ArkDatePicker,
+  type DatePickerDateRangePreset,
+  type DateValue,
+} from "@ark-ui/vue/date-picker";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
@@ -42,6 +46,12 @@ const DatePickerRoot = defineComponent({
 
 type DatePickerFacadeValue = DateValue | DateValue[];
 
+/** One quick choice in the popup: a named range, or exact dates. */
+export type DatePickerPreset = {
+  label: string;
+  value: DatePickerDateRangePreset | DateValue[];
+};
+
 function toDatePickerValue(value: DatePickerFacadeValue | undefined) {
   if (value === undefined) return undefined;
   return Array.isArray(value) ? value : [value];
@@ -66,6 +76,9 @@ const DatePickerFacade = defineComponent({
     label: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** Quick choices rendered above the calendar; the picker's own preset
+     * machine resolves named ranges. */
+    presets: { type: Array as PropType<DatePickerPreset[]>, default: undefined },
   },
   emits: {
     "update:modelValue": (_value: DateValue[]) => true,
@@ -96,6 +109,19 @@ const DatePickerFacade = defineComponent({
               h(ArkDatePicker.View, { view: "day" }, () =>
                 h(ArkDatePicker.Context, null, {
                   default: (dp: any) => [
+                    ...(props.presets?.length
+                      ? [
+                          h("div", { "data-scope": "date-picker", "data-part": "presets" }, () =>
+                            props.presets!.map((preset, index) =>
+                              h(
+                                ArkDatePicker.PresetTrigger as never,
+                                { key: index, value: preset.value },
+                                () => preset.label,
+                              ),
+                            ),
+                          ),
+                        ]
+                      : []),
                     h(ArkDatePicker.ViewControl, () => [
                       h(ArkDatePicker.PrevTrigger, () =>
                         iconNode("chevron-left", { width: 14, height: 14 }),

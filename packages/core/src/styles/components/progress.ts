@@ -113,6 +113,46 @@ export const progressCss =
   transition: stroke-dashoffset var(--bs-duration-slow) var(--bs-ease-out);
 }
 
+/* A dashboard bends the fill onto a three-quarter dial. Zag pins the SVG
+   range to a full circumference, so the dial is drawn from --percent and its
+   opening is centered on the base. */
+[data-scope="progress"][data-part="root"][data-variant="dashboard"]
+[data-part="view"][data-view="dashboard"] {
+  position: relative;
+  inline-size: calc(var(--bs-control-height-lg) * 2);
+  aspect-ratio: 1;
+}
+
+[data-scope="progress"][data-part="dash-ring"] {
+  --bs-progress-dash-angle: calc(var(--percent, 0) * 2.7deg);
+  --bs-progress-dash-track: color-mix(in oklab, var(--bs-color-surface-0) 92%, black);
+  --bs-progress-ring-thickness: calc(var(--bs-space-2) * 1.5);
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 135deg,
+    var(--bs-color-primary) 0 var(--bs-progress-dash-angle),
+    var(--bs-progress-dash-track) var(--bs-progress-dash-angle) 270deg,
+    transparent 270deg
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--bs-progress-ring-thickness)),
+    currentColor calc(100% - var(--bs-progress-ring-thickness) + var(--bs-hairline))
+  );
+}
+
+[data-scope="progress"][data-part="root"][data-variant="dashboard"]
+[data-part="value-text"] {
+  position: relative;
+  z-index: 1;
+  color: var(--bs-color-text-primary);
+  font-size: var(--bs-font-size-md);
+  font-weight: var(--bs-font-weight-medium);
+  text-align: center;
+}
+
 @keyframes bs-progress-drift {
   0% {
     transform: translateX(-100%);

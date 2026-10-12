@@ -8,6 +8,14 @@ export const datePickerCss =
   /* css */ `
 /* The popup rents the standing calendar's vessel, so it pads and rows
    its contents exactly as the calendar pads its own panel. */
+[data-scope="date-picker"][data-part="presets"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bs-gap-xs);
+  padding-block-end: var(--bs-gap-xs);
+  border-block-end: var(--bs-hairline) solid var(--bs-color-border);
+}
+
 [data-scope="date-picker"][data-part="content"] {
   display: flex;
   flex-direction: column;

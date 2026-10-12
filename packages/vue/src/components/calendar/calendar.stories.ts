@@ -37,3 +37,40 @@ export const Controlled: Story = {
     );
   },
 };
+
+/** The full variant opens the grid to its container and gives every day
+ * room for an annotation; today rides the machine through the header. */
+export const Full: Story = {
+  render: () => h(Calendar as any, { variant: "full" }),
+};
+
+/** Year mode opens the machine on its month overview: paging
+ * walks years, and choosing a month drills into that day grid. */
+export const Year: Story = {
+  render: () => h(Calendar as any, { mode: "year" }),
+};
+
+/** Multiple selection keeps every chosen day in one array. */
+export const Multiple: Story = {
+  render: () =>
+    h(Calendar as any, {
+      selectionMode: "multiple",
+      defaultValue: [parseDate("2026-09-08"), parseDate("2026-09-11"), parseDate("2026-09-25")],
+    }),
+};
+
+/** The shared machine carries range geometry: the middle days read as a
+ * continuous band between the endpoints. */
+export const Range: Story = {
+  render: () =>
+    h(Calendar as any, {
+      selectionMode: "range",
+      defaultValue: [parseDate("2026-09-08"), parseDate("2026-09-19")],
+      style: { maxInlineSize: "22rem" },
+    }),
+};
+
+/** Week numbers turn the rows into calendar-week coordinates. */
+export const WeekNumbers: Story = {
+  render: () => h(Calendar as any, { showWeekNumbers: true, fixedWeeks: true }),
+};
