@@ -66,4 +66,14 @@ export const chipCss = /* css */ `
   --_fill: color-mix(in oklab, var(--_pigment) 12%, transparent);
   --_ink: var(--_ink-strong);
 }
+
+[data-scope="chip"][data-part="root"][data-variant="outline"] {
+  --_fill: transparent;
+  --_ink: var(--_ink-strong);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--_pigment) 45%, transparent);
+}
+
+[data-scope="chip"][data-part="root"][data-tone="ink"][data-variant="outline"] {
+  box-shadow: inset 0 0 0 1px var(--bs-color-border);
+}
 `;

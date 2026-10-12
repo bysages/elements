@@ -17,12 +17,24 @@ const StepsRoot = defineComponent({
   props: {
     /** One rung of the control-height ladder every indicator stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** Default renders numbered seals; dot reduces each step to a bead. */
+    variant: { type: String as PropType<"default" | "dot">, default: "default" },
   },
   setup(props, { attrs, slots }) {
     const id = useElementId("steps", attrs);
     injectComponentStyle("steps");
 
-    return () => h(ArkSteps.Root, { ...attrs, id: id.value, "data-size": props.size }, slots);
+    return () =>
+      h(
+        ArkSteps.Root,
+        {
+          ...attrs,
+          id: id.value,
+          "data-size": props.size,
+          "data-variant": props.variant === "dot" ? props.variant : undefined,
+        },
+        slots,
+      );
   },
 });
 
@@ -55,6 +67,8 @@ const StepsFacade = defineComponent({
     },
     /** One rung of the control-height ladder every indicator stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** Default renders numbered seals; dot reduces each step to a bead. */
+    variant: { type: String as PropType<"default" | "dot">, default: "default" },
   },
   emits: {
     "update:step": (_step: number) => true,
@@ -70,6 +84,7 @@ const StepsFacade = defineComponent({
           count: props.items.length,
           linear: props.linear,
           orientation: props.orientation,
+          variant: props.variant,
           defaultStep: props.defaultStep,
           ...(props.step === undefined ? {} : { step: props.step }),
           "onUpdate:step": (step: number) => emit("update:step", step),
@@ -79,7 +94,7 @@ const StepsFacade = defineComponent({
             props.items.map((item, index) =>
               h(StepsItem, { key: item.title, index }, () => [
                 h(ArkSteps.Trigger, () => [
-                  h(ArkSteps.Indicator, () => String(index + 1)),
+                  h(ArkSteps.Indicator, () => (props.variant === "dot" ? null : String(index + 1))),
                   item.title,
                 ]),
                 h(ArkSteps.Separator),

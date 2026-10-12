@@ -82,6 +82,8 @@ const PaginationFacade = defineComponent({
     siblingCount: { type: Number, default: 1 },
     label: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    /** full is the page-seal ladder; simple keeps prev, the count, next. */
+    variant: { type: String as PropType<"default" | "simple">, default: "default" },
   },
   emits: {
     "update:modelValue": (_value: number) => true,
@@ -99,28 +101,47 @@ const PaginationFacade = defineComponent({
           pageSize: props.pageSize,
           defaultPageSize: props.defaultPageSize,
           siblingCount: props.siblingCount,
+          "data-variant": props.variant === "simple" ? props.variant : undefined,
           "onUpdate:page": (page: number) => emit("update:modelValue", page),
         },
-        () => [
-          h(PaginationPrevTrigger, { "aria-label": "Previous page" }, () =>
-            iconNode("chevron-left", { width: 14, height: 14 }),
-          ),
-          h(ArkPagination.Context, null, {
-            default: (pagination: { pages: Array<{ type: string; value?: number }> }) =>
-              pagination.pages.map((page, index) =>
-                page.type === "page"
-                  ? h(
-                      ArkPagination.Item as never,
-                      { key: page.value, value: page.value },
-                      () => page.value,
-                    )
-                  : h(ArkPagination.Ellipsis, { key: `ellipsis-${index}`, index }, () => "…"),
-              ),
-          }),
-          h(PaginationNextTrigger, { "aria-label": "Next page" }, () =>
-            iconNode("chevron-right", { width: 14, height: 14 }),
-          ),
-        ],
+        () =>
+          props.variant === "simple"
+            ? [
+                h(PaginationPrevTrigger, { "aria-label": "Previous page" }, () =>
+                  iconNode("chevron-left", { width: 14, height: 14 }),
+                ),
+                h(ArkPagination.Context, null, {
+                  default: (pagination: { page: number; totalPages: number }) =>
+                    h(
+                      "span",
+                      { "data-scope": "pagination", "data-part": "status" },
+                      `${pagination.page} / ${pagination.totalPages}`,
+                    ),
+                }),
+                h(PaginationNextTrigger, { "aria-label": "Next page" }, () =>
+                  iconNode("chevron-right", { width: 14, height: 14 }),
+                ),
+              ]
+            : [
+                h(PaginationPrevTrigger, { "aria-label": "Previous page" }, () =>
+                  iconNode("chevron-left", { width: 14, height: 14 }),
+                ),
+                h(ArkPagination.Context, null, {
+                  default: (pagination: { pages: Array<{ type: string; value?: number }> }) =>
+                    pagination.pages.map((page, index) =>
+                      page.type === "page"
+                        ? h(
+                            ArkPagination.Item as never,
+                            { key: page.value, value: page.value },
+                            () => page.value,
+                          )
+                        : h(ArkPagination.Ellipsis, { key: `ellipsis-${index}`, index }, () => "…"),
+                    ),
+                }),
+                h(PaginationNextTrigger, { "aria-label": "Next page" }, () =>
+                  iconNode("chevron-right", { width: 14, height: 14 }),
+                ),
+              ],
       );
   },
 });

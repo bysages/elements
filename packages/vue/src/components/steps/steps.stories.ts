@@ -22,6 +22,17 @@ export const Basic = {
     }),
 };
 
+/** The dot register drops the numbers: beads on the road carry the
+ * progress, labels keep the meaning. */
+export const Dot = {
+  render: () =>
+    h(Steps, {
+      items: [{ title: "Account" }, { title: "Profile" }, { title: "Confirm" }],
+      defaultStep: 1,
+      variant: "dot",
+    }),
+};
+
 /** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
 export const Anatomy = {
   render: () => {
@@ -39,16 +50,27 @@ export const Anatomy = {
   },
 };
 
+/** Progress rides under the ladder: the percent reads from Context —
+ * the Progress part itself renders no slot props. */
 export const Progress = {
   render: () =>
-    h(Steps.Root, { count: items.length }, () => [
-      h(
-        Steps.Progress,
-        { "aria-label": "Step progress" },
-        {
-          default: (progress: { percent: number }) => `Done ${Math.round(progress.percent)}%`,
-        },
+    h(Steps.Root, { count: items.length, defaultStep: 1 }, () => [
+      h(Steps.List, () =>
+        items.map((item, index) =>
+          h(Steps.Item, { key: item.title, index }, () => [
+            h(Steps.Trigger, () => [h(Steps.Indicator, () => String(index + 1)), item.title]),
+            h(Steps.Separator),
+          ]),
+        ),
       ),
+      h(Steps.Context, null, {
+        default: (steps: { percent: number }) =>
+          h(
+            Steps.Progress,
+            { "aria-label": "Step progress" },
+            () => `Done ${Math.round(steps.percent)}%`,
+          ),
+      }),
     ]),
 };
 

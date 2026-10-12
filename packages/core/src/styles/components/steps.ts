@@ -177,6 +177,16 @@ export const stepsCss = /* css */ `
 }
 
 
+/* The dot register drops the numbers: every seal shrinks to a bead on
+   the road, and the states alone carry the progress. */
+[data-scope="steps"][data-part="root"][data-variant="dot"] {
+  --bs-steps-marker: calc(var(--bs-part-size-sm) * 0.5);
+}
+
+[data-scope="steps"][data-part="root"][data-variant="dot"] [data-part="trigger"] {
+  padding: var(--bs-padding-xs) 0;
+  margin-inline-start: 0;
+}
 /* The vertical climb: the list turns, each step standing on its own
    row for narrow measures. */
 [data-scope="steps"][data-orientation="vertical"] [data-part="list"] {

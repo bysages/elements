@@ -44,6 +44,19 @@ export const Basic = {
     }),
 };
 
+/** The simple register: prev, the standing count, next — for toolbars
+ * and card footers where the ladder will not fit. */
+export const Simple = {
+  render: () =>
+    h(Pagination, {
+      defaultValue: 3,
+      count: 5000,
+      pageSize: 10,
+      label: "Archive pages",
+      variant: "simple",
+    }),
+};
+
 /** The page marks render from the machine: numbers, gaps as ellipses,
  * the current page in ink. */
 function pages() {

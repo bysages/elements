@@ -94,4 +94,13 @@ export const paginationCss = /* css */ `
   min-inline-size: var(--bs-control-height-md);
   block-size: var(--bs-control-height-md);
 }
+
+/* The simple register: prev, the standing count, next — no seals. */
+[data-scope="pagination"][data-part="status"] {
+  padding: 0 var(--bs-padding-sm);
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 `;

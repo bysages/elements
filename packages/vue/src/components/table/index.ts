@@ -152,6 +152,8 @@ export interface DataTableProps {
   /** Expand every branch when the table mounts; the user's collapses
    * survive reorders. */
   defaultExpanded?: boolean;
+  /** Band every other body row so wide measures keep the eye on line. */
+  striped?: boolean;
 }
 
 const SELECT_COL_ID = "__select";
@@ -297,6 +299,8 @@ const DataTableFacade = defineComponent({
     reorderable: Boolean,
     externalDrops: Boolean,
     defaultExpanded: Boolean,
+    /** Band every other body row so wide measures keep the eye on line. */
+    striped: Boolean,
   },
   setup(rawProps, { attrs, expose, emit }: SetupContext) {
     injectComponentStyle("table");
@@ -1276,6 +1280,7 @@ const DataTableFacade = defineComponent({
           "data-scope": "table",
           "data-part": "root",
           "data-reorderable": props.reorderable || undefined,
+          "data-striped": props.striped || undefined,
           style: {
             "--bs-table-row-height": `calc(${baseRowHeight()}px * var(--bs-density-scale, 1))`,
           },

@@ -199,6 +199,14 @@ export const tableCss = /* css */ `
   font-variant-numeric: tabular-nums;
 }
 
+/* Striped reading: every other body row carries one step of shade so
+   wide measures keep the eye on its line. Selection and hover always
+   outrank the band. */
+[data-scope="table"][data-striped]
+  [data-part="body"]:not([data-merge])
+  [data-part="row"]:nth-child(odd):not([data-selected], :hover) {
+  background: color-mix(in oklab, var(--bs-color-text-primary) 3%, transparent);
+}
 /* Rows answer the cursor one step of shade at a time; a selected row
    holds the primary wash and hover never repaints it. */
 [data-scope="table"][data-part="row"]:hover:not([data-selected]) {

@@ -65,3 +65,21 @@ export const Tones: Story = {
         ),
     ),
 };
+
+/** The three registers: solid, subtle, outline. */
+export const Variants: Story = {
+  render: () =>
+    withState(
+      () => () =>
+        h(
+          "div",
+          { style: { display: "flex", gap: "1.5rem", alignItems: "center" } },
+          (["solid", "subtle", "outline"] as const).map((variant) =>
+            h("span", { key: variant, style: { position: "relative", display: "inline-flex" } }, [
+              "Drafts",
+              h(Chip, { value: 3, tone: "primary", variant }),
+            ]),
+          ),
+        ),
+    ),
+};
