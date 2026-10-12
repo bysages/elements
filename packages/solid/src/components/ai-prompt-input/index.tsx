@@ -13,11 +13,7 @@ function arrowUpIcon() {
 }
 
 function stopIcon() {
-  return (
-    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-      <rect x="4.5" y="4.5" width="7" height="7" fill="currentColor" />
-    </svg>
-  );
+  return iconNode("square", { width: "14", height: "14" });
 }
 
 export interface PromptInputProps extends Omit<

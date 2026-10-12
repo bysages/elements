@@ -12,11 +12,7 @@ import { MentionsVessel, useMentions } from "../mentions";
 
 const arrowUpIcon = iconNode("arrow-up", { width: 14, height: 14 });
 
-const stopIcon = (
-  <svg viewBox="0 0 16 16" width={14} height={14} aria-hidden="true">
-    <rect x={4.5} y={4.5} width={7} height={7} fill="currentColor" />
-  </svg>
-);
+const stopIcon = iconNode("square", { width: 14, height: 14 });
 
 /** An empty slot leaves no part in the anatomy — the bare vessel keeps
  * its single-line posture. */

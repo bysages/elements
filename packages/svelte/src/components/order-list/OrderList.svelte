@@ -2,6 +2,7 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("order-list");
 
+import { iconHtml } from "../../internal/icon";
 import { useComponentMessages } from "../config-provider/messages";
 import type { OrderListProps } from "./props";
 
@@ -92,16 +93,16 @@ marks the seam the row will land on. -->
         <span data-scope="order-list" data-part="label">{option.label}</span>
         <span data-scope="order-list" data-part="controls">
           <button type="button" aria-label={messages().orderList.toTop} data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -index)}>
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6" /><path d="M5 4h14" /></svg>
+            {@html iconHtml("chevron-up", { width: "12", height: "12" }, '<path d="M5 4h14"/>')}
           </button>
           <button type="button" aria-label={messages().orderList.moveUp} data-scope="order-list" data-part="move" disabled={index === 0} onclick={() => move(option.value, -1)}>
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6" /></svg>
+            {@html iconHtml("chevron-up", { width: "12", height: "12" })}
           </button>
           <button type="button" aria-label={messages().orderList.moveDown} data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, 1)}>
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            {@html iconHtml("chevron-down", { width: "12", height: "12" })}
           </button>
           <button type="button" aria-label={messages().orderList.toBottom} data-scope="order-list" data-part="move" disabled={index === rows.length - 1} onclick={() => move(option.value, rows.length - 1 - index)}>
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /><path d="M5 20h14" /></svg>
+            {@html iconHtml("chevron-down", { width: "12", height: "12" }, '<path d="M5 20h14"/>')}
           </button>
         </span>
       </li>

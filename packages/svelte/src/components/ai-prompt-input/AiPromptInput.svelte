@@ -5,6 +5,7 @@ injectComponentStyle("ai");
 import { Button } from "../button";
 import { Field } from "../field";
 import InternalIcon from "../../internal/InternalIcon.svelte";
+import { iconHtml } from "../../internal/icon";
 import { MentionsVessel, useMentions } from "../mentions";
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -70,9 +71,7 @@ const hasFooter = $derived(footer != null);
       {disabled}
       onclick={() => onStop?.()}
     >
-      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-        <rect x="4.5" y="4.5" width="7" height="7" fill="currentColor" />
-      </svg>
+      {@html iconHtml("square", { width: "14", height: "14" })}
     </Button>
   {:else}
     <Button

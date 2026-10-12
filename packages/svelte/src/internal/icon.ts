@@ -1,8 +1,9 @@
 import { getIcon } from "@bysages/core/icons";
 
 /** Render a curated core icon as an SVG string, for enhancements that write
- * innerHTML rather than mount elements. */
-export function iconHtml(name: string, attrs: Record<string, string> = {}): string {
+ * innerHTML rather than mount elements. Extra body appends after the icon's
+ * own paths, for composed marks. */
+export function iconHtml(name: string, attrs: Record<string, string> = {}, extraBody = ""): string {
   const icon = getIcon(name);
   if (!icon) throw new Error(`Unknown icon "${name}" in the curated core registry`);
   const attributes = {
@@ -15,5 +16,5 @@ export function iconHtml(name: string, attrs: Record<string, string> = {}): stri
   const pairs = Object.entries(attributes)
     .map(([key, value]) => ` ${key}="${value}"`)
     .join("");
-  return `<svg${pairs}>${icon.body}</svg>`;
+  return `<svg${pairs}>${icon.body + extraBody}</svg>`;
 }
