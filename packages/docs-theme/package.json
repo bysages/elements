@@ -70,7 +70,7 @@
     "nuxt-agent-discovery": "0.7.1",
     "nuxt-llms": "0.2.0",
     "nuxt-og-image": "6.10.3",
-    "nuxt-schema-org": "6.4.3",
+    "nuxt-schema-org": "7.0.1",
     "tailwindcss": "4.3.3",
     "zod": "4.6.5"
   },
