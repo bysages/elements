@@ -25,10 +25,17 @@ export function iconNode(name: string, attrs: Record<string, unknown> = {}, extr
  * innerHTML rather than mount vnodes. */
 export function iconHtml(name: string, attrs: Record<string, string> = {}): string {
   const icon = resolve(name);
-  const pairs = Object.entries(attrs)
+  const attributes = {
+    width: String(icon.width),
+    height: String(icon.height),
+    viewBox: `0 0 ${icon.width} ${icon.height}`,
+    "aria-hidden": "true",
+    ...attrs,
+  };
+  const pairs = Object.entries(attributes)
     .map(([key, value]) => ` ${key}="${value}"`)
     .join("");
-  return `<svg width="${icon.width}" height="${icon.height}" viewBox="0 0 ${icon.width} ${icon.height}" aria-hidden="true"${pairs}>${icon.body}</svg>`;
+  return `<svg${pairs}>${icon.body}</svg>`;
 }
 
 /** The curated icon's drawing body, for composed marks that share one svg. */

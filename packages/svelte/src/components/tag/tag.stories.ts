@@ -29,7 +29,14 @@ const renderStory = (story: NonNullable<TagStoriesProps["story"]>) => (args: Sto
   props: { story, ...args },
 });
 type TagStoriesProps = {
-  story?: "basic" | "tones" | "variants" | "checkable" | "closable" | "disabled";
+  story?:
+    | "basic"
+    | "tones"
+    | "variants"
+    | "checkable"
+    | "checkable-closable"
+    | "closable"
+    | "disabled";
 } & Partial<StoryArgs>;
 
 /** The resting seal: a small named label riding the solemn ink. */
@@ -47,6 +54,11 @@ export const Variants: Story = { render: renderStory("variants") };
 
 /** The checkable seal presses into its solid register and holds. */
 export const Checkable: Story = { render: renderStory("checkable") };
+
+/** Both actions share one seal while their controls stay separate. */
+export const CheckableClosable: Story = {
+  render: renderStory("checkable-closable"),
+};
 
 /** The quiet close: removal stays the consumer's state. */
 export const Closable: Story = { render: renderStory("closable") };

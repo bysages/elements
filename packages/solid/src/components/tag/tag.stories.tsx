@@ -1,4 +1,4 @@
-import { For, createSignal } from "solid-js";
+import { For, Show, createSignal } from "solid-js";
 
 import { Tag } from ".";
 
@@ -78,6 +78,29 @@ export const Checkable = {
           Celadon
         </Tag>
       </div>
+    );
+  },
+};
+
+/** Both actions share one seal while their controls stay separate. */
+export const CheckableClosable = {
+  render: () => {
+    const [checked, setChecked] = createSignal(true);
+    const [removed, setRemoved] = createSignal(false);
+
+    return (
+      <Show when={!removed()}>
+        <Tag
+          checkable
+          closable
+          variant="outline"
+          checked={checked()}
+          onValueChange={setChecked}
+          onClose={() => setRemoved(true)}
+        >
+          Qinghua
+        </Tag>
+      </Show>
     );
   },
 };

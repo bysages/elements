@@ -7,7 +7,14 @@ let {
   tone = "ink",
   variant = "solid",
 }: {
-  story?: "basic" | "tones" | "variants" | "checkable" | "closable" | "disabled";
+  story?:
+    | "basic"
+    | "tones"
+    | "variants"
+    | "checkable"
+    | "checkable-closable"
+    | "closable"
+    | "disabled";
   tone?: NonNullable<TagProps["tone"]>;
   variant?: NonNullable<TagProps["variant"]>;
 } = $props();
@@ -15,6 +22,8 @@ let {
 const qinghua = $state(true);
 const celadon = $state(false);
 let names = $state(["Paper", "Ink", "Seal"]);
+let combinedChecked = $state(true);
+let combinedRemoved = $state(false);
 
 function remove(name: string) {
   names = names.filter((entry) => entry !== name);
@@ -38,6 +47,18 @@ function remove(name: string) {
     <Tag checkable variant="outline" bind:checked={qinghua}>Qinghua</Tag>
     <Tag checkable variant="outline" bind:checked={celadon}>Celadon</Tag>
   </div>
+{:else if story === "checkable-closable"}
+  {#if !combinedRemoved}
+    <Tag
+      checkable
+      closable
+      variant="outline"
+      bind:checked={combinedChecked}
+      onClose={() => (combinedRemoved = true)}
+    >
+      Qinghua
+    </Tag>
+  {/if}
 {:else if story === "closable"}
   <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
     {#each names as name (name)}

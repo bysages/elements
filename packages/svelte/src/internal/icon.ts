@@ -18,3 +18,10 @@ export function iconHtml(name: string, attrs: Record<string, string> = {}, extra
     .join("");
   return `<svg${pairs}>${icon.body + extraBody}</svg>`;
 }
+
+/** The curated icon's drawing body, for composed marks that share one svg. */
+export function iconBody(name: string): string {
+  const icon = getIcon(name);
+  if (!icon) throw new Error(`Unknown icon "${name}" in the curated core registry`);
+  return icon.body;
+}
