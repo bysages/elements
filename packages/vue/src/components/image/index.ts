@@ -103,7 +103,7 @@ export const Image = withSelfRoot(
               ? h(
                   "div",
                   { "data-scope": "image", "data-part": "fallback" },
-                  ctx.slots.fallback ?? placeholderIcon,
+                  ctx.slots.default?.() ?? placeholderIcon(),
                 )
               : null,
           ],

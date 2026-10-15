@@ -80,6 +80,30 @@ export const Checkable: Story = {
   },
 };
 
+/** Both actions share one seal while their controls stay separate. */
+export const CheckableClosable: Story = {
+  render: () => {
+    const [checked, setChecked] = useState(true);
+    const [removed, setRemoved] = useState(false);
+    return (
+      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        {!removed && (
+          <Tag
+            checkable
+            closable
+            variant="outline"
+            value={checked}
+            onValueChange={setChecked}
+            onClose={() => setRemoved(true)}
+          >
+            Qinghua
+          </Tag>
+        )}
+      </div>
+    );
+  },
+};
+
 /** The quiet close: removal stays the consumer's state. */
 export const Closable: Story = {
   render: () => {
