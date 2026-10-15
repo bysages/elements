@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { RadioGroup, Stack, Typography } from "../index";
+  import { RadioGroup } from "../index";
+  import { Stack } from "../../stack";
+  import { Typography } from "../../typography";
   import { slug } from "../../../generative/shared";
   import type { BaseComponentProps } from "@json-render/svelte";
 

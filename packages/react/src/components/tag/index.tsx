@@ -63,22 +63,16 @@ function TagImpl({
 
   const pressed = checkable && checked;
   const closeControl = closable ? (
-    checkable ? (
-      <span data-scope="tag" data-part="close" aria-hidden="true" onClick={dismiss}>
-        {iconNode("x")}
-      </span>
-    ) : (
-      <button
-        data-scope="tag"
-        data-part="close"
-        type="button"
-        aria-label="Remove"
-        disabled={disabled}
-        onClick={dismiss}
-      >
-        {iconNode("x")}
-      </button>
-    )
+    <button
+      data-scope="tag"
+      data-part="close"
+      type="button"
+      aria-label="Remove"
+      disabled={disabled}
+      onClick={dismiss}
+    >
+      {iconNode("x")}
+    </button>
   ) : null;
 
   const partProps = {
@@ -91,6 +85,27 @@ function TagImpl({
     ...(pressed ? { "data-checked": "true" } : {}),
     ...(disabled ? { "data-disabled": "true" } : {}),
   } as HTMLAttributes<HTMLElement>;
+
+  // A button cannot contain another control. When both actions are on,
+  // the visual tag becomes a group: the check control and the close
+  // control stay siblings, independently focusable and announced.
+  if (checkable && closable) {
+    return (
+      <span {...partProps}>
+        <button
+          data-scope="tag"
+          data-part="check"
+          type="button"
+          aria-pressed={checked}
+          disabled={disabled}
+          onClick={toggle}
+        >
+          {children}
+        </button>
+        {closeControl}
+      </span>
+    );
+  }
 
   if (checkable) {
     return (

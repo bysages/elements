@@ -98,3 +98,4 @@ await writeFile("dist/js/styles.mjs", stylesModule);
 await writeFile("dist/js/styles.d.ts", stylesTypes);
 await mkdir("dist", { recursive: true });
 await copyFile("src/static/index.d.ts", "dist/index.d.ts");
+await copyFile("src/static/css.d.ts", "dist/css.d.ts");

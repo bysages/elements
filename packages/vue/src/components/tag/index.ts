@@ -74,38 +74,46 @@ export const Tag = withSelfRoot(
           ...(props.disabled ? { "data-disabled": "true" } : {}),
         };
 
-        // A control cannot nest in the pressed root, so the seal rides a
-        // bare span there and keeps the real button beside the span root.
         const closeControl = props.closable
-          ? props.checkable
-            ? h(
-                "span",
-                {
-                  "data-scope": "tag",
-                  "data-part": "close",
-                  "aria-hidden": "true",
-                  onClick: dismiss,
-                },
-                [iconNode("x")],
-              )
-            : h(
-                "button",
-                {
-                  "data-scope": "tag",
-                  "data-part": "close",
-                  type: "button",
-                  "aria-label": "Remove",
-                  disabled: props.disabled,
-                  onClick: dismiss,
-                },
-                [iconNode("x")],
-              )
+          ? h(
+              "button",
+              {
+                "data-scope": "tag",
+                "data-part": "close",
+                type: "button",
+                "aria-label": "Remove",
+                disabled: props.disabled,
+                onClick: dismiss,
+              },
+              [iconNode("x")],
+            )
           : null;
 
         const children = [
           ...(ctx.slots.default?.() ?? []),
           ...(closeControl ? [closeControl] : []),
         ];
+
+        // A button cannot contain another control. When both actions
+        // are on, the visual tag keeps the check control and the close
+        // control as siblings, independently focusable and announced.
+        if (props.checkable && props.closable) {
+          return h("span", partProps, [
+            h(
+              "button",
+              {
+                "data-scope": "tag",
+                "data-part": "check",
+                type: "button",
+                "aria-pressed": checked.value,
+                disabled: props.disabled,
+                onClick: toggle,
+              },
+              ctx.slots.default?.() ?? [],
+            ),
+            closeControl,
+          ]);
+        }
 
         if (props.checkable) {
           return h(

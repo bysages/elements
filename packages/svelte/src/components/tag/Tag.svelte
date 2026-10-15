@@ -37,7 +37,41 @@ function dismiss(event: MouseEvent) {
 }
 </script>
 
-{#if checkable}
+{#if checkable && closable}
+  <!-- A button cannot contain another control. Both actions stay
+  siblings so each is independently focusable and announced. -->
+  <span
+    {...rest}
+    data-scope="tag"
+    data-part="root"
+    data-tone={tone}
+    data-variant={variant}
+    data-checkable="true"
+    data-checked={isChecked || undefined}
+    data-disabled={disabled || undefined}
+  >
+    <button
+      type="button"
+      data-scope="tag"
+      data-part="check"
+      aria-pressed={isChecked}
+      {disabled}
+      onclick={toggle}
+    >
+      {@render children?.()}
+    </button>
+    <button
+      type="button"
+      data-scope="tag"
+      data-part="close"
+      aria-label="Remove"
+      {disabled}
+      onclick={dismiss}
+    >
+      <InternalIcon name="x" />
+    </button>
+  </span>
+{:else if checkable}
   <button
     {...rest}
     type="button"
@@ -53,11 +87,6 @@ function dismiss(event: MouseEvent) {
     onclick={toggle}
   >
     {@render children?.()}
-    {#if closable}
-      <span data-scope="tag" data-part="close" aria-hidden="true" onclick={dismiss}>
-        <InternalIcon name="x" />
-      </span>
-    {/if}
   </button>
 {:else}
   <span

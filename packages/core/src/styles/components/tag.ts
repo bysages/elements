@@ -122,8 +122,27 @@ export const tagCss = /* css */ `
   box-shadow: inset 0 0 0 1px var(--bs-color-border-strong);
 }
 
+/* When the check and close actions must coexist, the root is a plain
+   container and this button owns the pressable label without nesting a
+   control inside another control. */
+[data-scope="tag"][data-part="check"] {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  white-space: inherit;
+  cursor: inherit;
+}
+
 /* The halo is the keyboard's cursor, not an effect to ease in. */
-[data-scope="tag"][data-part="root"][data-checkable]:focus-visible {
+[data-scope="tag"][data-part="root"][data-checkable]:focus-visible,
+[data-scope="tag"][data-part="check"]:focus-visible {
   outline: none;
   box-shadow: var(--bs-focus-ring);
   transition: none;
@@ -137,9 +156,7 @@ export const tagCss = /* css */ `
 }
 
 /* The removal rides the root's own ink; the square seal is the shared
-   ghost recipe at tag scale. Inside the checkable root the seal is a
-   bare span — a control cannot nest in a button — so the part rules
-   carry its whole face. */
+   ghost recipe at tag scale and remains a real, focusable button. */
 [data-scope="tag"][data-part="close"] {
   display: inline-flex;
   align-items: center;

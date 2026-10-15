@@ -36,11 +36,10 @@ export const User = withSelfRoot(
       );
       return () =>
         h("div", { ...ctx.attrs, "data-scope": "user", "data-part": "root" }, [
-          h(
-            Avatar.Root,
-            { size: props.size, shape: props.shape, src: props.src ?? undefined },
-            () => h(Avatar.Fallback, () => initials.value),
-          ),
+          h(Avatar.Root, { size: props.size, shape: props.shape }, () => [
+            props.src ? h(Avatar.Image, { src: props.src }) : null,
+            h(Avatar.Fallback, () => initials.value),
+          ]),
           h("div", { "data-scope": "user", "data-part": "meta" }, [
             h("span", { "data-scope": "user", "data-part": "name" }, props.name),
             props.description

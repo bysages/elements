@@ -3,15 +3,11 @@ import type { PropType, SetupContext } from "vue";
 import { defineComponent, h, nextTick, onMounted, ref, watch } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 
-/** The mark for a source that never arrived: a quiet mountain-and-sun,
- * drawn in the stylesheet's stroke and hidden from the reader. */
+/** The curated registry mark for a source that never arrived. */
 function placeholderIcon() {
-  return [
-    h("rect", { x: 3, y: 4, width: 18, height: 16, rx: 1.5 }),
-    h("circle", { cx: 9, cy: 10, r: 1.5 }),
-    h("path", { d: "m5.5 17.5 4.5-5 3 3.5 2.5-3 3 4.5" }),
-  ];
+  return iconNode("image");
 }
 
 /** A framed picture: while the source loads, the frame keeps the

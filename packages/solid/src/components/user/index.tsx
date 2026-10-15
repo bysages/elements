@@ -42,6 +42,7 @@ export const User = withSelfRoot(function User(props: UserProps) {
   return (
     <div {...rest} data-scope="user" data-part="root">
       <ArkAvatar.Root id={id()} data-size={own.size} data-shape={own.shape ?? "circle"}>
+        {own.src ? <ArkAvatar.Image src={own.src} /> : null}
         <ArkAvatar.Fallback>{initials()}</ArkAvatar.Fallback>
       </ArkAvatar.Root>
       <div data-scope="user" data-part="meta">

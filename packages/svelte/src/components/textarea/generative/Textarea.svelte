@@ -2,7 +2,9 @@
   import { getBoundProp } from "@json-render/svelte";
   import type { BaseComponentProps } from "@json-render/svelte";
 
-  import { Stack, Textarea, Typography } from "../index";
+  import { Textarea } from "../index";
+  import { Stack } from "../../stack";
+  import { Typography } from "../../typography";
 
   let { props, bindings }: BaseComponentProps<any> = $props();
 

@@ -74,25 +74,38 @@ export const Tag = withSelfRoot(function Tag(props: TagProps) {
     ...(own.disabled ? { "data-disabled": "true" } : {}),
   });
   const closeControl = own.closable ? (
-    own.checkable ? (
-      // A control cannot nest in the pressed root, so the seal rides a
-      // bare span there and keeps the real button beside the span root.
-      <span data-scope="tag" data-part="close" aria-hidden="true" onclick={dismiss}>
-        {iconNode("x")}
-      </span>
-    ) : (
-      <button
-        type="button"
-        data-scope="tag"
-        data-part="close"
-        aria-label="Remove"
-        disabled={own.disabled}
-        onclick={dismiss}
-      >
-        {iconNode("x")}
-      </button>
-    )
+    <button
+      type="button"
+      data-scope="tag"
+      data-part="close"
+      aria-label="Remove"
+      disabled={own.disabled}
+      onclick={dismiss}
+    >
+      {iconNode("x")}
+    </button>
   ) : null;
+
+  // A button cannot contain another control. When both actions are on,
+  // the visual tag keeps the check control and the close control as
+  // siblings, independently focusable and announced.
+  if (own.checkable && own.closable) {
+    return (
+      <span {...rest} {...rootAttrs()}>
+        <button
+          type="button"
+          data-scope="tag"
+          data-part="check"
+          aria-pressed={checked()}
+          disabled={own.disabled}
+          onclick={toggle}
+        >
+          {own.children}
+        </button>
+        {closeControl}
+      </span>
+    );
+  }
 
   if (own.checkable) {
     return (

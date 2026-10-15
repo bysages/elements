@@ -4,7 +4,9 @@
   import type { BaseComponentProps } from "@json-render/svelte";
 
   import InternalIcon from "../../../internal/InternalIcon.svelte";
-  import { Select, Stack, Typography } from "../index";
+  import { Select } from "../index";
+  import { Stack } from "../../stack";
+  import { Typography } from "../../typography";
 
   let { props, bindings }: BaseComponentProps<any> = $props();
 
