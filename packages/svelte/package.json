@@ -55,20 +55,20 @@
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "1.0.0",
     "@tanstack/svelte-form": "1.33.5",
-    "@tanstack/svelte-table": "9.2.8",
-    "@tanstack/svelte-virtual": "3.13.40",
-    "@zag-js/cascade-select": "1.45.0",
-    "@zag-js/svelte": "1.45.0"
+    "@tanstack/svelte-table": "9.3.1",
+    "@tanstack/svelte-virtual": "3.13.47",
+    "@zag-js/cascade-select": "1.46.0",
+    "@zag-js/svelte": "1.46.0"
   },
   "devDependencies": {
-    "@json-render/core": "0.21.0",
-    "@json-render/svelte": "0.21.0",
+    "@json-render/core": "0.21.1",
+    "@json-render/svelte": "0.21.1",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
-    "ai": "7.0.137",
+    "ai": "7.0.143",
     "rollup-plugin-svelte": "7.2.3",
     "svelte": "5.57.2",
-    "svelte2tsx": "0.7.61",
-    "zod": "4.6.5"
+    "svelte2tsx": "0.7.62",
+    "zod": "4.6.7"
   },
   "peerDependencies": {
     "@json-render/core": "^0.21.0",
