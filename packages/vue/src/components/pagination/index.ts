@@ -11,7 +11,7 @@ import { useComponentMessages } from "../../internal/messages";
  * Pagination — paged navigation.
  *
  * Parts: Root, Item (page seals), Ellipsis, PrevTrigger, NextTrigger,
- * FirstTrigger, LastTrigger. Items carry data-selected.
+ * FirstTrigger, LastTrigger. Items carry `data-selected`.
  */
 const PaginationRoot = defineComponent({
   name: "SPaginationRoot",

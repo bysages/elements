@@ -34,7 +34,7 @@ const CheckboxGroupFacade = defineComponent({
     defaultValue: { type: Array as PropType<string[]>, default: undefined },
     options: { type: Array as PropType<CheckboxOption[]>, required: true },
     layout: { type: String as PropType<"vertical" | "horizontal">, default: "vertical" },
-    /** One register for every box: falls onto each root's data-size for
+    /** One register for every box: falls onto each root's `data-size` for
      * the stylesheet to retune. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     invalid: { type: Boolean, default: false },

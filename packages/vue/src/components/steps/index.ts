@@ -10,7 +10,7 @@ import { useElementId } from "../../internal/id";
  *
  * Parts: Root, List, Item, Trigger, Indicator, Separator, Content,
  * PrevTrigger, NextTrigger, Progress. Indicator and Separator carry
- * data-complete / data-current / data-incomplete.
+ * `data-complete` / `data-current` / `data-incomplete`.
  */
 const StepsRoot = defineComponent({
   name: "SStepsRoot",

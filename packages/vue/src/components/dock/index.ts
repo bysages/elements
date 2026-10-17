@@ -12,7 +12,7 @@ export interface DockProps {
 const ITEM = '[data-scope="dock"][data-part="item"]';
 
 /** The magnifying dock: a floating rail whose icons swell toward the
- * hand. The wrapper measures per item and writes --bs-dock-scale; CSS
+ * hand. The wrapper measures per item and writes `--bs-dock-scale`; CSS
  * eases the chase, so no spring engine rides along. */
 const DockRoot = defineComponent({
   name: "SDockRoot",

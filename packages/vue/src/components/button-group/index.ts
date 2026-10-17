@@ -8,10 +8,10 @@ const Root = defineComponent({
   props: {
     /** The seam runs across the group (default) or down it. */
     orientation: { type: String as PropType<"horizontal" | "vertical">, default: "horizontal" },
-    /** One register for every member: falls onto data-size for the
+    /** One register for every member: falls onto `data-size` for the
      * stylesheet to retune the buttons' heights. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: undefined },
-    /** The members' corner register: retunes --bs-radius-control for the
+    /** The members' corner register: retunes `--bs-radius-control` for the
      * whole fused shape — edges and trimmed seams keep one story. */
     radius: {
       type: String as PropType<"sm" | "md" | "lg" | "xl" | "2xl" | "full">,

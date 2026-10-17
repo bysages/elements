@@ -110,10 +110,11 @@ const cell = (text: string) =>
 
 /** The Default column already carries it — the prose repeats "@default N".
  * Cells stay single-line, whatever the source comment wrapped. */
-const prose = (text: string) =>
-  text
+const prose = (text: string | undefined) =>
+  (text ?? "")
     .replace(/@default\s+[\s\S]*$/, "")
     .replace(/\s+/g, " ")
+    .replace(/(?<!`)v-model(?!`)/g, "`v-model`")
     .trim() || "—";
 
 /** The part as the sections title it — "item-trigger" → "ItemTrigger". */
@@ -125,8 +126,8 @@ const partTitle = (part: string) =>
  * stays the fallback so the dictionary can trail the wrappers. */
 const propCell = (family: string, part: string, p: PropDoc, locale: string) => {
   const en = prose(p.description);
-  if (locale !== "zh") return en;
-  return normalizeZh(jsdocZh[family]?.parts?.[part]?.props?.[p.name] ?? en);
+  if (locale !== "zh") return prose(en);
+  return prose(normalizeZh(jsdocZh[family]?.parts?.[part]?.props?.[p.name] ?? en));
 };
 
 const markdownProps = (
@@ -139,7 +140,7 @@ const markdownProps = (
   "| --- | --- | --- | --- |",
   ...props.map(
     (p) =>
-      `| \`${p.name}\` | \`${cell(p.type)}\` | ${p.default ? `\`${cell(p.default)}\`` : ""} | ${propCell(family, part, p, locale)} |`,
+      `| \`${p.name}\` | \`${cell(p.type)}\` | ${p.default ? `\`${cell(p.default)}\`` : "—"} | ${propCell(family, part, p, locale)} |`,
   ),
 ];
 
@@ -164,7 +165,7 @@ const page = (
   const frontmatter = [
     "---",
     `title: ${JSON.stringify(title)}`,
-    `description: ${JSON.stringify(description.replace(/\s*\n\s*/g, " ").trim())}`,
+    `description: ${JSON.stringify(prose(description))}`,
     ...(navSection ? ["navigation:", `  section: ${JSON.stringify(navSection.label)}`] : []),
     "---",
   ];
@@ -174,8 +175,14 @@ const page = (
 
 const stemOf = (index: number, slug: string) => `${String(index + 1).padStart(2, "0")}.${slug}`;
 
-/** The line a prop-less part carries in both shelves, per shelf
- * language. */
+/** Wrapped Roots commonly expose only forwarded machine API; this short
+ * line avoids an empty heading where no family-specific JSDoc exists. */
+const rootLine = {
+  en: "The styled anatomy root.",
+  zh: "带样式的解剖根部件。",
+} as const;
+
+/** The line a prop-less part carries in both shelves, per shelf language. */
 const propslessLine = {
   en: "A styled part — no props of its own; it takes the anatomy's shared styling.",
   zh: "纯造型的部件——自身没有属性，沿用部件结构的共享样式。",
@@ -220,10 +227,15 @@ function render(): Map<string, string> {
         // supplies the rendering when it has one and defers to the
         // English JSDoc when it doesn't, so it can trail the wrappers
         // without blanking a shelf.
-        const partDesc = (name: string, c: FamilyDoc["components"][string]) =>
-          locale === "zh"
-            ? normalizeZh(jsdocZh[family]?.parts?.[name]?.description ?? c.description)
-            : c.description;
+        const partDesc = (name: string, c: FamilyDoc["components"][string]) => {
+          const fallback = name === "Root" && doc.source === "ark" ? rootLine[locale] : undefined;
+          const source =
+            locale === "zh"
+              ? (jsdocZh[family]?.parts?.[name]?.description ?? c.description)
+              : c.description;
+          const description = source ?? fallback;
+          return description === undefined ? undefined : prose(description);
+        };
 
         // Every exported part rides the component page — its own words
         // first, then the API tables; the ones without props of their
