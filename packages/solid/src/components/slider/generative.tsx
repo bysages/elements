@@ -1,7 +1,6 @@
-import { createComponent, type JSX } from "solid-js";
+import { createComponent } from "solid-js";
 
 import { faces } from "../../generative/faces.generated";
-import { labelled } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { Slider } from "./index";
 
@@ -10,38 +9,22 @@ export default defineEntry({
   Slider: {
     ...faces.Slider,
     component: ({ props }) =>
-      labelled(
-        props.label,
-        createComponent(Slider.Root, {
-          get defaultValue() {
-            return [props.value ?? 50];
-          },
-          get min() {
-            return props.min;
-          },
-          get max() {
-            return props.max;
-          },
-          get step() {
-            return props.step;
-          },
-          get children() {
-            return [
-              createComponent(Slider.Control, {
-                get children() {
-                  return [
-                    createComponent(Slider.Track, {
-                      get children() {
-                        return createComponent(Slider.Range, {});
-                      },
-                    }),
-                    createComponent(Slider.Thumb, { index: 0 }),
-                  ] as JSX.Element;
-                },
-              }),
-            ] as JSX.Element;
-          },
-        }),
-      ),
+      createComponent(Slider, {
+        get label() {
+          return props.label;
+        },
+        get defaultValue() {
+          return props.value ?? 50;
+        },
+        get min() {
+          return props.min;
+        },
+        get max() {
+          return props.max;
+        },
+        get step() {
+          return props.step;
+        },
+      }),
   },
 });

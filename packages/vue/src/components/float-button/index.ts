@@ -12,6 +12,8 @@ import {
   type Ref,
 } from "vue";
 
+import { defineFamily } from "../../internal/family";
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
@@ -168,4 +170,85 @@ const Item = defineComponent({
   },
 });
 
-export const FloatButton = Object.assign(Root, { Root, Trigger, Item });
+/** One entry on the speed dial: a named, optionally disabled action. */
+export type FloatButtonAction = {
+  label: string;
+  /** A curated core icon; pencil is the fallback mark. */
+  icon?: string;
+  disabled?: boolean;
+  /** The action fires before the fan folds. */
+  onClick?: () => void;
+};
+
+/** The one-tag dial: a trigger label and its fanned actions are enough
+ * for the common speed dial; custom dials stay on the anatomy. */
+const FloatButtonFacade = defineComponent({
+  name: "SFloatButton",
+  inheritAttrs: false,
+  props: {
+    /** The trigger's accessible name; the icon-only control falls back
+     * to the shared label when it is not given. */
+    label: { type: String, default: undefined },
+    /** The actions surfaced beside the trigger while the dial is open. */
+    actions: { type: Array as PropType<FloatButtonAction[]>, default: () => [] },
+    /** Which corner the group moors at. */
+    placement: { type: String as PropType<FloatButtonPlacement>, default: "bottom-end" },
+    /** One rung of the button ladder for the whole group. */
+    size: { type: String as PropType<FloatButtonSize>, default: "lg" },
+    /** Whether the dial starts open. */
+    defaultOpen: { type: Boolean, default: false },
+    /** Controlled openness; leave unset for the facade to hold it. */
+    open: { type: Boolean, default: undefined },
+  },
+  emits: {
+    "update:open": (_open: boolean) => true,
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("float-button");
+    const innerOpen = ref(props.defaultOpen);
+    const open = computed({
+      get: () => (props.open !== undefined ? props.open : innerOpen.value),
+      set: (value: boolean) => {
+        innerOpen.value = value;
+        ctx.emit("update:open", value);
+      },
+    });
+
+    return () =>
+      h(
+        Root,
+        {
+          ...ctx.attrs,
+          open: open.value,
+          placement: props.placement,
+          size: props.size,
+          "onUpdate:open": (value: boolean) => {
+            open.value = value;
+          },
+        },
+        () =>
+          ctx.slots.default
+            ? ctx.slots.default()
+            : [
+                h(Trigger, { label: props.label }, () => iconNode("plus")),
+                ...props.actions.map((action, index) =>
+                  h(
+                    Item,
+                    {
+                      key: `${index}:${action.label}`,
+                      label: action.label,
+                      disabled: action.disabled ?? false,
+                      onClick: action.onClick,
+                    },
+                    () => iconNode(action.icon ?? "pencil"),
+                  ),
+                ),
+              ],
+      );
+  },
+});
+
+/** A floating action and its fanned alternatives — FAB and speed
+ * dial in one family. Root moors the group, Trigger flips it, and each
+ * Item is one action. */
+export const FloatButton = defineFamily(FloatButtonFacade, { Root, Trigger, Item });

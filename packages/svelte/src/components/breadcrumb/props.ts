@@ -24,3 +24,15 @@ export interface BreadcrumbCurrentProps extends HTMLAttributes<HTMLSpanElement> 
 export interface BreadcrumbSeparatorProps extends HTMLAttributes<HTMLSpanElement> {
   children?: Snippet;
 }
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+export interface BreadcrumbFacadeProps extends HTMLAttributes<HTMLElement> {
+  /** The trail, in reading order; the last item is the current page. */
+  items: ReadonlyArray<string | BreadcrumbItem>;
+  /** The nav's accessible name; the locale supplies a default. */
+  label?: string;
+}

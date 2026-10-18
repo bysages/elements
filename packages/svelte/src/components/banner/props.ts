@@ -13,3 +13,18 @@ export interface BannerPartProps extends HTMLAttributes<HTMLElement> {
 }
 
 export interface BannerCloseProps extends HTMLButtonAttributes {}
+
+export interface BannerFacadeProps extends HTMLAttributes<HTMLElement> {
+  /** The status pigment; ink is the neutral register. */
+  status?: BannerStatus;
+  /** The line the reader reads first. */
+  title?: string;
+  /** The supporting line. */
+  message?: string;
+  /** Renders the close and lets the facade retire itself. */
+  dismissible?: boolean;
+  /** Extra body content after the title and message. */
+  children?: Snippet;
+  /** Row of answers inside the body. */
+  actions?: Snippet;
+}

@@ -13,21 +13,16 @@ type Story = StoryObj<typeof Banner>;
  * the way out resting in the actions row. */
 export const Basic: Story = {
   render: () =>
-    withState(
-      () => () =>
-        h(Banner.Root as any, {}, () => [
-          h(Banner.Body, () => [
-            h(Banner.Title, () => "Scheduled maintenance"),
-            h(
-              Banner.Description,
-              () => "The reading room closes early this Friday, at four in the afternoon.",
-            ),
-            h(Banner.Actions, () => [
-              h(Button as any, { variant: "outline", size: "sm" }, () => "View schedule"),
-            ]),
-          ]),
-          h(Banner.Close as any),
-        ]),
+    h(
+      Banner as any,
+      {
+        title: "Scheduled maintenance",
+        message: "The reading room closes early this Friday, at four in the afternoon.",
+        dismissible: true,
+      },
+      {
+        actions: () => h(Button as any, { variant: "outline", size: "sm" }, () => "View schedule"),
+      },
     ),
 };
 

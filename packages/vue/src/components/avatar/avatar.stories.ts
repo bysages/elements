@@ -11,11 +11,7 @@ export default meta;
 
 /** The facade is the one-tag path. */
 export const Basic = {
-  render: () =>
-    h(Avatar, {}, () => [
-      h(Avatar.Fallback, () => "S"),
-      h(Avatar.Image, { src: PORTRAIT, alt: "Portrait of Sage" }),
-    ]),
+  render: () => h(Avatar, { name: "Sage", src: PORTRAIT }),
 };
 
 /** A tiny inline portrait: loads instantly, keeps the story offline. */

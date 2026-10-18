@@ -1,4 +1,4 @@
-import { createComponent, type JSX } from "solid-js";
+import { createComponent } from "solid-js";
 
 import { faces } from "../../generative/faces.generated";
 import { useBound } from "../../generative/shared";
@@ -11,29 +11,17 @@ export default defineEntry({
     ...faces.Switch,
     component: ({ props, bindings }) => {
       const [checked, setChecked] = useBound<boolean>(props.checked, bindings?.checked);
-      return createComponent(Switch.Root, {
+      return createComponent(Switch, {
         get checked() {
           return checked ?? false;
+        },
+        get label() {
+          return props.label;
         },
         get disabled() {
           return props.disabled;
         },
-        onCheckedChange: (details: { checked: boolean }) => setChecked(details.checked),
-        get children() {
-          return [
-            createComponent(Switch.Control, {
-              get children() {
-                return createComponent(Switch.Thumb, {});
-              },
-            }),
-            createComponent(Switch.Label, {
-              get children() {
-                return props.label;
-              },
-            }),
-            createComponent(Switch.HiddenInput, {}),
-          ] as JSX.Element;
-        },
+        onCheckedChange: (next: boolean) => setChecked(next),
       });
     },
   },

@@ -1,7 +1,6 @@
-import { createComponent, Show, type JSX } from "solid-js";
+import { createComponent } from "solid-js";
 
 import { faces } from "../../generative/faces.generated";
-import { initials } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { Avatar } from "./index";
 
@@ -10,34 +9,15 @@ export default defineEntry({
   Avatar: {
     ...faces.Avatar,
     component: ({ props }) =>
-      createComponent(Avatar.Root, {
+      createComponent(Avatar, {
+        get name() {
+          return props.name;
+        },
         get size() {
           return props.size;
         },
-        get children() {
-          return [
-            createComponent(Show, {
-              keyed: true,
-              get when() {
-                return props.src != null;
-              },
-              get children() {
-                return createComponent(Avatar.Image, {
-                  get src() {
-                    return props.src;
-                  },
-                  get alt() {
-                    return props.name;
-                  },
-                });
-              },
-            }),
-            createComponent(Avatar.Fallback, {
-              get children() {
-                return initials(props.name);
-              },
-            }),
-          ] as JSX.Element;
+        get src() {
+          return props.src;
         },
       }),
   },

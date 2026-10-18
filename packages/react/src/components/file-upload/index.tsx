@@ -35,8 +35,6 @@ function FileUploadTrigger(props: ComponentProps<typeof ArkFileUpload.Trigger>) 
 
 const fileIcon = iconNode("file", { width: 16, height: 16 });
 
-const uploadIcon = iconNode("upload", { width: 28, height: 28 });
-
 const closeIcon = iconNode("x", { width: 14, height: 14 });
 
 interface FileUploadFacadeProps {
@@ -71,10 +69,7 @@ function FileUploadFacade({
     >
       {label ? <ArkFileUpload.Label>{label}</ArkFileUpload.Label> : null}
       <ArkFileUpload.Dropzone>
-        <FileUploadTrigger>
-          {uploadIcon}
-          {placeholder ?? "Choose files"}
-        </FileUploadTrigger>
+        <FileUploadTrigger>{placeholder ?? "Choose files"}</FileUploadTrigger>
       </ArkFileUpload.Dropzone>
       <ArkFileUpload.ItemGroup>
         <ArkFileUpload.Context>

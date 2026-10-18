@@ -21,7 +21,7 @@ let {
 <CollapsibleRoot bind:open {disabled} {...rest}>
   <ArkCollapsible.Trigger>
     {label}
-    <ArkCollapsible.Indicator><InternalIcon name="chevron-down" /></ArkCollapsible.Indicator>
+    <ArkCollapsible.Indicator><InternalIcon name="chevron-right" /></ArkCollapsible.Indicator>
   </ArkCollapsible.Trigger>
   <ArkCollapsible.Content>{@render children?.()}</ArkCollapsible.Content>
 </CollapsibleRoot>

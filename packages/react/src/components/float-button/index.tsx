@@ -2,6 +2,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 
+import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 
@@ -146,6 +147,65 @@ function Item({ label, disabled = false, onClick, children }: FloatButtonItemPro
   );
 }
 
-export const FloatButton = Object.assign(Root, { Root, Trigger, Item });
+export interface FloatButtonAction {
+  /** The action's accessible name and its surfaced annotation. */
+  label: string;
+  /** A curated core icon; pencil is the fallback mark. */
+  icon?: string;
+  disabled?: boolean;
+  /** The action fires before the fan folds. */
+  onClick?: () => void;
+}
+
+export interface FloatButtonFacadeProps extends FloatButtonRootProps {
+  /** The trigger's accessible name. */
+  label?: string;
+  /** The fanned actions behind the trigger. */
+  actions?: FloatButtonAction[];
+  /** Starts the speed dial open before the reader touches it. */
+  defaultOpen?: boolean;
+}
+
+function FloatButtonFacade({
+  label,
+  actions = [],
+  placement,
+  size,
+  defaultOpen = false,
+  children,
+  open: openProp,
+  onOpenChange,
+  ...rest
+}: FloatButtonFacadeProps) {
+  const [innerOpen, setInnerOpen] = useState(defaultOpen);
+  const open = openProp ?? innerOpen;
+  const setOpen = (value: boolean) => {
+    setInnerOpen(value);
+    onOpenChange?.(value);
+  };
+
+  return (
+    <Root open={open} onOpenChange={setOpen} placement={placement} size={size} {...rest}>
+      {children ?? (
+        <>
+          <Trigger label={label}>{iconNode("plus")}</Trigger>
+          {actions.map((action) => (
+            <Item
+              key={action.label}
+              label={action.label}
+              disabled={action.disabled}
+              onClick={action.onClick}
+            >
+              {iconNode(action.icon ?? "pencil")}
+            </Item>
+          ))}
+        </>
+      )}
+    </Root>
+  );
+}
+FloatButtonFacade.displayName = "SFloatButton";
+
+export const FloatButton = Object.assign(FloatButtonFacade, { Root, Trigger, Item });
 
 injectComponentStyle("float-button");

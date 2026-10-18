@@ -6,7 +6,7 @@ import { Avatar as ArkAvatar } from "@ark-ui/svelte/avatar";
 import { useElementId } from "../../internal/id";
 import type { AvatarProps } from "./props";
 
-let { size, shape = "circle", children, ...rest }: AvatarProps = $props();
+let { size = "md", shape = "circle", children, ...rest }: AvatarProps = $props();
 const generatedId = $props.id();
 const id = $derived(useElementId("avatar", generatedId, rest.id));
 </script>

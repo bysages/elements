@@ -7,6 +7,8 @@ import type { ComponentProps } from "react";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
+const checkIcon = iconNode("check", { width: 12, height: 12 });
+
 type ColorPickerRootProps = ComponentProps<typeof ArkColorPicker.Root> & {
   /** One rung of the control-height ladder for the swatch seal. */
   size?: "sm" | "md" | "lg";
@@ -36,6 +38,8 @@ type ColorPickerFacadeProps = {
   invalid?: boolean;
   required?: boolean;
   label?: string;
+  /** Saved colors rendered as a flat swatch row. */
+  swatches?: string[];
   size?: "sm" | "md" | "lg";
   className?: string;
   style?: CSSProperties;
@@ -53,6 +57,7 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
     invalid,
     required,
     label,
+    swatches = [],
     size = "md",
     className,
     style,
@@ -103,6 +108,17 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
               </ArkColorPicker.ChannelSlider>
             </div>
           </div>
+          {swatches.length > 0 ? (
+            <ArkColorPicker.SwatchGroup>
+              {swatches.map((color) => (
+                <ArkColorPicker.SwatchTrigger key={color} value={color}>
+                  <ArkColorPicker.Swatch value={color}>
+                    <ArkColorPicker.SwatchIndicator>{checkIcon}</ArkColorPicker.SwatchIndicator>
+                  </ArkColorPicker.Swatch>
+                </ArkColorPicker.SwatchTrigger>
+              ))}
+            </ArkColorPicker.SwatchGroup>
+          ) : null}
         </ArkColorPicker.Content>
       </ArkColorPicker.Positioner>
       <ArkColorPicker.HiddenInput />

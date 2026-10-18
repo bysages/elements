@@ -10,22 +10,14 @@ export default defineEntry({
   Toc: {
     props: z.object({ items: z.array(z.string()).optional() }),
     description: "A table of contents rail; items link down the page.",
-    component: ({ props }) => {
-      const items = props.items ?? ["Overview", "Tokens", "Lighting"];
-      const sections = items.map((item: string) => ({ value: slug(item), label: item, depth: 1 }));
-      return h(Toc.Root as never, { items: sections } as never, () => [
-        h(Toc.Nav, () => [
-          h(Toc.Title, () => "On this page"),
-          h(Toc.List, () => [
-            h(Toc.Indicator),
-            ...sections.map((section: { value: string; label: string; depth: number }) =>
-              h(Toc.Item, { key: section.value, item: section }, () =>
-                h(Toc.Link, { href: "#" + section.value }, () => section.label),
-              ),
-            ),
-          ]),
-        ]),
-      ]);
-    },
+    component: ({ props }) =>
+      h(Toc, {
+        title: "On this page",
+        items: (props.items ?? ["Overview", "Tokens", "Lighting"]).map((label: string) => ({
+          value: slug(label),
+          label,
+          depth: 1,
+        })),
+      }),
   },
 });

@@ -10,10 +10,6 @@ export default defineEntry({
     props: z.object({ value: z.number().optional(), label: z.string().optional() }),
     description: "A read-only measure between bounds.",
     component: ({ props }) =>
-      h(
-        Meter.Root as never,
-        { value: props.value ?? 0, label: props.label ?? undefined } as never,
-        () => [h(Meter.Track as never)],
-      ),
+      h(Meter, { value: props.value ?? 0, label: props.label ?? undefined }),
   },
 });

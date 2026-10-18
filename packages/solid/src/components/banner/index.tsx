@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import { splitProps, type JSX } from "solid-js";
+import { Show, createSignal, splitProps, type JSX } from "solid-js";
 
 import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -60,7 +60,56 @@ function Close(props: JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
   );
 }
 
-export const Banner = Object.assign(Root, {
+export interface BannerFacadeProps extends Omit<BannerRootProps, "status" | "title"> {
+  /** The status pigment; ink is the neutral register. */
+  status?: BannerStatus;
+  /** What the notice says at a glance. */
+  title?: string;
+  /** The supporting line, in the quiet register. */
+  message?: string;
+  /** Give the reader a way to fold the notice. */
+  dismissible?: boolean;
+  /** Where the reader answers — a row of buttons. */
+  actions?: JSX.Element;
+  children?: JSX.Element;
+}
+
+/** The shorthand: a complete notice from text, with actions and the
+ * close folded away until asked for. Once closed, it stays closed. */
+function BannerFacade(props: BannerFacadeProps) {
+  const [own, rest] = splitProps(props, [
+    "actions",
+    "children",
+    "dismissible",
+    "message",
+    "status",
+    "title",
+  ]);
+  const [visible, setVisible] = createSignal(true);
+  return (
+    <Show when={visible()}>
+      <Root {...rest} status={own.status}>
+        <Body>
+          <Show when={own.title}>
+            <Title>{own.title}</Title>
+          </Show>
+          <Show when={own.message}>
+            <Description>{own.message}</Description>
+          </Show>
+          <Show when={own.children}>{own.children}</Show>
+          <Show when={own.actions}>
+            <Actions>{own.actions}</Actions>
+          </Show>
+        </Body>
+        <Show when={own.dismissible}>
+          <Close onClick={() => setVisible(false)} />
+        </Show>
+      </Root>
+    </Show>
+  );
+}
+
+export const Banner = Object.assign(BannerFacade, {
   Root,
   Icon,
   Body,

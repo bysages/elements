@@ -419,7 +419,22 @@ function isComponentStatement(statement: Node): boolean {
   );
 }
 
-function wrapperHeaderComment(file: SourceFile): string {
+function wrapperHeaderComment(file: SourceFile, preferFamilyExport = false): string {
+  // The family export speaks for the whole page when it has its own
+  // dressing; other exported types and context keys come later.
+  if (preferFamilyExport) {
+    for (const statement of file.getStatements()) {
+      if (!exportedStatement(statement) || !isFamilyFacadeStatement(statement)) continue;
+      const facadeText = commentText(statement);
+      if (
+        facadeText &&
+        !facadeText.startsWith("Ark's namespace is frozen") &&
+        !facadeText.startsWith("//")
+      )
+        return facadeText;
+    }
+  }
+
   // The dressing note sits above the family's main face. Native
   // families document it on the export — the Object.assign vessel or
   // the props type. A spread namespace can carry it too (editable), or
@@ -428,7 +443,20 @@ function wrapperHeaderComment(file: SourceFile): string {
   // never dresses anything.
   for (const statement of file.getStatements()) {
     if (!exportedStatement(statement)) continue;
-    if (isComponentStatement(statement) || isFamilyFacadeStatement(statement)) continue;
+    if (isFamilyFacadeStatement(statement)) {
+      // A native family's export may carry the page's own dressing; plumbing
+      // comments and Ark's frozen-namespace note never document the family.
+      const facadeText = commentText(statement);
+      if (
+        facadeText &&
+        !facadeText.startsWith("Ark's namespace is frozen") &&
+        !facadeText.startsWith("//")
+      ) {
+        return facadeText;
+      }
+      continue;
+    }
+    if (isComponentStatement(statement)) continue;
     const text = commentText(statement);
     if (
       Node.isVariableStatement(statement) &&
@@ -497,11 +525,11 @@ export function documentFamily(dir: string): FamilyDoc | null {
   const indexText = indexFile.getFullText();
 
   const arkImport = indexText.match(/import \{[^}]*as Ark\w+[^}]*\} from "@ark-ui\/vue\/([\w-]+)"/);
-  const description = wrapperHeaderComment(indexFile);
   // A family that merely composes an Ark part under another name (the
   // calendar wears the date-picker) is still its own native family —
   // only a re-export of the matching module is a wrapped one.
   const isWrapped = arkImport !== null && arkImport[1] === dir;
+  const description = wrapperHeaderComment(indexFile, !isWrapped);
 
   let components: Record<string, ComponentDoc> = {};
   let source: "ark" | "native";

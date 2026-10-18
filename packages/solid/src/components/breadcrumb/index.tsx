@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import { mergeProps } from "solid-js";
+import { For, Show, mergeProps, splitProps } from "solid-js";
 import type { Component, JSX } from "solid-js";
 
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -49,7 +49,46 @@ const Separator: Component<JSX.HTMLAttributes<HTMLSpanElement>> = (props) => (
   />
 );
 
-export const Breadcrumb = Object.assign(Root, {
+export type BreadcrumbItem = string | { label: string; href?: string };
+
+export interface BreadcrumbFacadeProps extends Omit<JSX.HTMLAttributes<HTMLElement>, "children"> {
+  /** The waymarks, in walking order. */
+  items: BreadcrumbItem[];
+  /** The trail's name, when the default is not enough. */
+  label?: string;
+}
+
+/** The shorthand: the whole trail from plain labels and destinations,
+ * with the last waymark set down as the current page. */
+function BreadcrumbFacade(props: BreadcrumbFacadeProps) {
+  const [own, rest] = splitProps(props, ["items", "label"]);
+  return (
+    <Root {...rest} {...(own.label ? { "aria-label": own.label } : {})}>
+      <List>
+        <For each={own.items}>
+          {(item, index) => {
+            const entry = typeof item === "string" ? { label: item } : item;
+            const current = () => index() === own.items.length - 1;
+            return (
+              <>
+                <Item>
+                  <Show when={!current()} fallback={<Current>{entry.label}</Current>}>
+                    <Link href={entry.href}>{entry.label}</Link>
+                  </Show>
+                </Item>
+                <Show when={!current()}>
+                  <Separator />
+                </Show>
+              </>
+            );
+          }}
+        </For>
+      </List>
+    </Root>
+  );
+}
+
+export const Breadcrumb = Object.assign(BreadcrumbFacade, {
   Root,
   List,
   Item,

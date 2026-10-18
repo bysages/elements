@@ -1,7 +1,6 @@
 import { h } from "vue";
 import { z } from "zod";
 
-import { initials } from "../../generative/shared";
 import { defineEntry } from "../../generative/shared";
 import { Avatar } from "../avatar";
 import { AvatarGroup } from "./index";
@@ -17,9 +16,7 @@ export default defineEntry({
     component: ({ props }) =>
       h(AvatarGroup as never, { size: props.size } as never, () =>
         (props.names ?? []).map((name: string) =>
-          h(Avatar.Root as never, { key: name }, () =>
-            h(Avatar.Fallback as never, () => initials(name)),
-          ),
+          h(Avatar as never, { key: name, name, size: props.size }),
         ),
       ),
   },

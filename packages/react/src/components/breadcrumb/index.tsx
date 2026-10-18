@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { Fragment } from "react";
 
 import { useComponentMessages } from "../../internal/messages";
 
@@ -47,7 +48,42 @@ const Link = part<AnchorHTMLAttributes<HTMLAnchorElement>>("Link", "a");
 const Current = part("Current", "span", { "aria-current": "page" });
 const Separator = part("Separator", "span", { "aria-hidden": "true" }, "/");
 
-export const Breadcrumb = Object.assign(Root, {
+export type BreadcrumbItem = string | { label: string; href?: string };
+
+export interface BreadcrumbFacadeProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+  /** The trail, ordered from its origin to the current page. */
+  items: BreadcrumbItem[];
+  /** Replaces the shared accessible name for the trail. */
+  label?: string;
+}
+
+function BreadcrumbFacade({ items, label, className, ...rest }: BreadcrumbFacadeProps) {
+  const last = items.length - 1;
+
+  return (
+    <Root className={className} {...rest} aria-label={rest["aria-label"] ?? label}>
+      <List>
+        {items.map((item, index) => {
+          const text = typeof item === "string" ? item : item.label;
+          const href = typeof item === "string" ? undefined : item.href;
+
+          return (
+            <Fragment key={`${text}-${index}`}>
+              <Item>
+                {index === last ? <Current>{text}</Current> : <Link href={href}>{text}</Link>}
+              </Item>
+              {index < last ? <Separator /> : null}
+            </Fragment>
+          );
+        })}
+      </List>
+    </Root>
+  );
+}
+
+BreadcrumbFacade.displayName = "SBreadcrumb";
+
+export const Breadcrumb = Object.assign(BreadcrumbFacade, {
   Root,
   List,
   Item,

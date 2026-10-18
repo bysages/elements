@@ -285,6 +285,15 @@ export const jsdocZh: Record<string, FamilyZh> = {
     description:
       "Avatar：头像组件。先在内凹纸面上显示首字母，图片加载完成后覆盖显示。`size` 从控件高度阶梯中取一档，core 样式会按档位改写 `--bs-avatar-size`，场景仍可直接调整这个变量。",
     parts: {
+      Avatar: {
+        description: "一体化头像：名称和图片来源即可生成常用头像；需要精细组合时继续使用解剖部件。",
+        props: {
+          name: "人物名称，同时用于推导首字母和图片描述",
+          src: "覆盖首字母的头像图片来源",
+          size: "头像直径，取控件高度档位；默认 `md`",
+          shape: "头像形状，可为 `circle` 或 `square`；默认 `circle`",
+        },
+      },
       Root: {
         props: {
           size: "头像直径，取控件高度档位；默认 `md`，与其他控件对齐，头像随行显示时不会撑高行",
@@ -330,6 +339,16 @@ export const jsdocZh: Record<string, FamilyZh> = {
     description:
       "Banner：页面级通知。通栏使用状态色浅色填充，前缘有一条更重的发丝线，并预留操作和关闭按钮的位置。默认为墨色，四种语义色固定不变。",
     parts: {
+      SBanner: {
+        description:
+          "一体化横幅：标题、描述、可选操作和关闭按钮组成常用通知；关闭后由组件自身隐藏。",
+        props: {
+          status: "通知状态色；默认 `ink`，语义色固定为 `info`、`success`、`warning` 或 `danger`",
+          title: "读者第一眼看到的标题",
+          message: "标题下的补充说明",
+          dismissible: "是否渲染关闭按钮，并允许组件自行隐藏",
+        },
+      },
       BannerIcon: {
         description: "横幅状态对应的图标。",
       },
@@ -380,6 +399,16 @@ export const jsdocZh: Record<string, FamilyZh> = {
   breadcrumb: {
     description:
       "Breadcrumb：面包屑导航。Root 包裹 nav，List 承载有序路径，每个 Item 内放 Link 或当前页，项之间由 Separator 分隔。Link 通过属性接收 href 和其他配置。",
+    parts: {
+      SBreadcrumb: {
+        description:
+          "一体化面包屑：按顺序读取路径，末项显示为当前页，其余项渲染为链接；分隔符只出现在项与项之间。",
+        props: {
+          items: "路径列表；可用字符串或 `{ label, href }`，末项作为当前页",
+          label: "路径的无障碍名称，替代共享默认文案",
+        },
+      },
+    },
   },
   browser: {
     description:
@@ -1116,6 +1145,18 @@ export const jsdocZh: Record<string, FamilyZh> = {
   "float-button": {
     description: "FloatButton：浮动按钮。组内的展开状态从挂载点共享给各个部件。",
     parts: {
+      SFloatButton: {
+        description:
+          "一体化浮动按钮：触发器和命名动作组成常用 speed dial；需要自定义触发器或动作时继续使用解剖部件。",
+        props: {
+          label: "触发器的无障碍名称；未提供时使用共享文案",
+          actions: "展开后显示的动作列表；`icon` 使用 curated 图标名",
+          placement: "组停靠的角落",
+          size: "整组按钮使用的尺寸档位",
+          defaultOpen: "初始展开状态；`open` 未绑定时生效",
+          open: "受控展开状态；可用 `v-model:open` 从外部控制",
+        },
+      },
       FloatButtonRoot: {
         description:
           "悬浮动作组件同时覆盖 FAB 和 speed dial：Root 把组固定在页面角落并管理展开状态（受控时镜像 `open`），Trigger 切换展开，每个 Item 是圆形动作按钮，展开时名称显示在旁边。按钮复用共享样式，这里容器为圆形；组件只负责悬浮定位、展开和收起。",

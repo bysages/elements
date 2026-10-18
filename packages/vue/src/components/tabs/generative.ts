@@ -15,24 +15,21 @@ export default defineEntry({
     }),
     description: "Tabbed sections; items name the tabs, children fill the first panel.",
     component: ({ props, children }) => {
-      const items = props.items ?? ["Account", "Billing", "Privacy"];
-      const first = slug(items[0] ?? "");
+      const labels = props.items ?? ["Account", "Billing", "Privacy"];
+      const items = labels.map((label: string) => ({ value: slug(label), label }));
       return h(
-        Tabs.Root as never,
-        { defaultValue: first, variant: props.variant, orientation: props.orientation },
-        () => [
-          h(Tabs.List, () => [
-            ...items.map((item: string) =>
-              h(Tabs.Trigger, { key: item, value: slug(item) }, () => item),
-            ),
-            h(Tabs.Indicator),
-          ]),
-          ...items.map((item: string, index: number) =>
-            h(Tabs.Content, { key: item, value: slug(item) }, () =>
-              index === 0 ? slotted(children) : [h("p", () => item + " panel.")],
-            ),
-          ),
-        ],
+        Tabs,
+        {
+          items,
+          variant: props.variant,
+          orientation: props.orientation,
+        },
+        {
+          default: ({ item }: { item: (typeof items)[number] }) => {
+            const index = items.findIndex((entry: { value: string }) => entry.value === item.value);
+            return index === 0 ? slotted(children) : [h("p", () => item.label + " panel.")];
+          },
+        },
       );
     },
   },

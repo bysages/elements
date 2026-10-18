@@ -7,21 +7,13 @@ export default meta;
 
 export const Basic = {
   render: () => (
-    <Breadcrumb.Root>
-      <Breadcrumb.List>
-        <Breadcrumb.Item>
-          <Breadcrumb.Link href="#home">Home</Breadcrumb.Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Separator />
-        <Breadcrumb.Item>
-          <Breadcrumb.Link href="#library">Library</Breadcrumb.Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Separator />
-        <Breadcrumb.Item>
-          <Breadcrumb.Current>Components</Breadcrumb.Current>
-        </Breadcrumb.Item>
-      </Breadcrumb.List>
-    </Breadcrumb.Root>
+    <Breadcrumb
+      items={[
+        { label: "Home", href: "#home" },
+        { label: "Library", href: "#library" },
+        { label: "Components" },
+      ]}
+    />
   ),
 };
 

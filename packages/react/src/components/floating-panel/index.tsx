@@ -61,6 +61,9 @@ function FloatingPanelFacade({
                 <ArkFloatingPanel.StageTrigger stage="maximized">
                   {iconNode("maximize-2")}
                 </ArkFloatingPanel.StageTrigger>
+                <ArkFloatingPanel.StageTrigger stage="default" aria-label="Restore">
+                  {iconNode("minimize-2")}
+                </ArkFloatingPanel.StageTrigger>
                 <ArkFloatingPanel.CloseTrigger aria-label="Close">
                   {iconNode("x")}
                 </ArkFloatingPanel.CloseTrigger>

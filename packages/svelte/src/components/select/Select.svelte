@@ -61,7 +61,7 @@ function handleValueChange(details: { value: string[] }) {
   <ArkSelect.Control>
     <ArkSelect.Trigger>
       <ArkSelect.ValueText {placeholder} />
-      <ArkSelect.Indicator><InternalIcon name="chevron-down" /></ArkSelect.Indicator>
+      <ArkSelect.Indicator><InternalIcon name="chevrons-up-down" /></ArkSelect.Indicator>
     </ArkSelect.Trigger>
     {#if clearable}<ArkSelect.ClearTrigger><InternalIcon name="x" /></ArkSelect.ClearTrigger>{/if}
   </ArkSelect.Control>

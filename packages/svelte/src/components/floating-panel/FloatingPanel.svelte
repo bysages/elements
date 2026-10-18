@@ -36,6 +36,7 @@ const resizeAxes = ["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const;
             <ArkFloatingPanel.Control>
               <ArkFloatingPanel.StageTrigger stage="minimized"><InternalIcon name="minus" /></ArkFloatingPanel.StageTrigger>
               <ArkFloatingPanel.StageTrigger stage="maximized"><InternalIcon name="maximize-2" /></ArkFloatingPanel.StageTrigger>
+              <ArkFloatingPanel.StageTrigger stage="default" aria-label="Restore"><InternalIcon name="minimize-2" /></ArkFloatingPanel.StageTrigger>
               <ArkFloatingPanel.CloseTrigger aria-label="Close"><InternalIcon name="x" /></ArkFloatingPanel.CloseTrigger>
             </ArkFloatingPanel.Control>
           </ArkFloatingPanel.Header>

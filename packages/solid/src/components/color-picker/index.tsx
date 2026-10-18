@@ -1,7 +1,7 @@
 import { ColorPicker as ArkColorPicker, parseColor, type Color } from "@ark-ui/solid/color-picker";
 import type { ColorPickerRootProps as ArkColorPickerRootProps } from "@ark-ui/solid/color-picker";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { Show, splitProps, type ComponentProps } from "solid-js";
+import { For, Show, splitProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -19,6 +19,8 @@ import { useElementId } from "../../internal/id";
 type ColorPickerOwnProps = {
   /** One rung of the control-height ladder for the swatch seal. */
   size?: "sm" | "md" | "lg";
+  /** Saved colors rendered as a flat swatch row. */
+  swatches?: string[];
 };
 
 function ColorPickerRoot(props: ArkColorPickerRootProps & ColorPickerOwnProps) {
@@ -44,17 +46,20 @@ type ColorPickerFacadeProps = Omit<
   invalid?: boolean;
   required?: boolean;
   label?: string;
+  /** Saved colors rendered as a flat swatch row. */
+  swatches?: string[];
   onValueChange?: (value: unknown) => void;
 };
 
 function ColorPickerFacade(props: ColorPickerFacadeProps) {
   injectComponentStyle("color-picker");
+  const [own, rootProps] = splitProps(props, ["size", "swatches"]);
   const toColor = (color: string | Color | undefined): Color | undefined =>
     typeof color === "string" ? parseColor(color) : color;
 
   return (
     <ColorPickerRoot
-      {...props}
+      {...rootProps}
       value={toColor(props.value)}
       defaultValue={toColor(props.defaultValue)}
       disabled={props.disabled}
@@ -94,6 +99,21 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
               </ArkColorPicker.ChannelSlider>
             </div>
           </div>
+          <Show when={(own.swatches ?? []).length > 0}>
+            <ArkColorPicker.SwatchGroup>
+              <For each={own.swatches}>
+                {(color) => (
+                  <ArkColorPicker.SwatchTrigger value={color}>
+                    <ArkColorPicker.Swatch value={color}>
+                      <ArkColorPicker.SwatchIndicator>
+                        {iconNode("check", { width: "12", height: "12" })}
+                      </ArkColorPicker.SwatchIndicator>
+                    </ArkColorPicker.Swatch>
+                  </ArkColorPicker.SwatchTrigger>
+                )}
+              </For>
+            </ArkColorPicker.SwatchGroup>
+          </Show>
         </ArkColorPicker.Content>
       </ArkColorPicker.Positioner>
       <ArkColorPicker.HiddenInput />

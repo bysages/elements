@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import { Accordion } from "../components/accordion";
+import { Avatar } from "../components/avatar";
+import { Banner } from "../components/banner";
+import { Breadcrumb } from "../components/breadcrumb";
 import { Dialog } from "../components/dialog";
 import { Drawer } from "../components/drawer";
+import { FloatButton } from "../components/float-button";
 import { FloatingPanel } from "../components/floating-panel";
 import { Highlight } from "../components/highlight";
 import { HoverCard } from "../components/hover-card";
@@ -17,6 +21,10 @@ import { Tour } from "../components/tour";
 
 const compositeFamilies = {
   Accordion,
+  Avatar,
+  Banner,
+  Breadcrumb,
+  FloatButton,
   Dialog,
   Drawer,
   FloatingPanel,

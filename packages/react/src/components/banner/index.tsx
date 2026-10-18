@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { ButtonHTMLAttributes, HTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { useState } from "react";
 
 import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
@@ -61,7 +62,48 @@ const Close = (rest: ButtonHTMLAttributes<HTMLButtonElement>) => {
   );
 };
 
-export const Banner = Object.assign(Root, {
+export interface BannerFacadeProps extends Omit<BannerRootProps, "title"> {
+  /** The glance line, set in the serif. */
+  title?: string;
+  /** The supporting line beneath the title. */
+  message?: string;
+  /** Adds the close control and lets the facade own dismissal. */
+  dismissible?: boolean;
+  /** The reader's answers, laid beside the notice's prose. */
+  actions?: ReactNode;
+}
+
+function BannerFacade({
+  status = "ink",
+  title,
+  message,
+  dismissible = false,
+  actions,
+  children,
+  ...rest
+}: BannerFacadeProps) {
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <Root status={status} {...rest}>
+      <Body>
+        {title ? <Title>{title}</Title> : null}
+        {message ? <Description>{message}</Description> : null}
+        {children}
+        {actions ? <Actions>{actions}</Actions> : null}
+      </Body>
+      {dismissible ? <Close onClick={() => setOpen(false)} /> : null}
+    </Root>
+  );
+}
+
+BannerFacade.displayName = "SBanner";
+
+export const Banner = Object.assign(BannerFacade, {
   Root,
   Icon,
   Body,

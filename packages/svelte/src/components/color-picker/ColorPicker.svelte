@@ -8,6 +8,7 @@ let {
   value = $bindable(),
   defaultValue,
   label,
+  swatches = [],
   disabled = false,
   invalid = false,
   required = false,
@@ -17,6 +18,8 @@ let {
   value?: string | Color;
   defaultValue?: string | Color;
   label?: string;
+  /** Saved colors rendered as a flat swatch row. */
+  swatches?: string[];
   disabled?: boolean;
   invalid?: boolean;
   required?: boolean;
@@ -57,6 +60,17 @@ const toColor = (color: string | Color | undefined) => (typeof color === "string
           </ArkColorPicker.ChannelSlider>
         </div>
       </div>
+      {#if swatches.length > 0}
+        <ArkColorPicker.SwatchGroup>
+          {#each swatches as color (color)}
+            <ArkColorPicker.SwatchTrigger value={color}>
+              <ArkColorPicker.Swatch value={color}>
+                <ArkColorPicker.SwatchIndicator><InternalIcon name="check" /></ArkColorPicker.SwatchIndicator>
+              </ArkColorPicker.Swatch>
+            </ArkColorPicker.SwatchTrigger>
+          {/each}
+        </ArkColorPicker.SwatchGroup>
+      {/if}
       <ArkColorPicker.ChannelInput channel="hex" />
     </ArkColorPicker.Content>
   </ArkColorPicker.Positioner>

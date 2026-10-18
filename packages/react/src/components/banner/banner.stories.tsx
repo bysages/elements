@@ -11,20 +11,16 @@ export default meta;
  * the way out resting in the actions row. */
 export const Basic = {
   render: () => (
-    <Banner.Root>
-      <Banner.Body>
-        <Banner.Title>Scheduled maintenance</Banner.Title>
-        <Banner.Description>
-          The reading room closes early this Friday, at four in the afternoon.
-        </Banner.Description>
-        <Banner.Actions>
-          <Button variant="outline" size="sm">
-            View schedule
-          </Button>
-        </Banner.Actions>
-      </Banner.Body>
-      <Banner.Close />
-    </Banner.Root>
+    <Banner
+      title="Scheduled maintenance"
+      message="The reading room closes early this Friday, at four in the afternoon."
+      dismissible
+      actions={
+        <Button variant="outline" size="sm">
+          View schedule
+        </Button>
+      }
+    />
   ),
 };
 

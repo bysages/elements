@@ -1,7 +1,7 @@
 import { Avatar as ArkAvatar } from "@ark-ui/solid/avatar";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { splitProps } from "solid-js";
-import type { ComponentProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
+import type { ComponentProps, JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -15,7 +15,7 @@ export type AvatarSize = "sm" | "md" | "lg";
 
 export interface AvatarProps extends ComponentProps<typeof ArkAvatar.Root> {
   /** Seal diameter: the small, medium, or large control rung. The
-   * default (large) stands as tall as the biggest control so an avatar
+   * default (medium) stands as tall as the biggest control so an avatar
    * rides a row without stretching it. */
   size?: AvatarSize;
   /** The corner: round by default; square cuts it sharp, a stamp
@@ -27,14 +27,66 @@ function AvatarRoot(props: AvatarProps) {
   const [own, rest] = splitProps(props, ["size", "shape"]);
   const id = useElementId("avatar", () => rest.id);
   return (
-    <ArkAvatar.Root {...rest} id={id()} data-size={own.size} data-shape={own.shape ?? "circle"} />
+    <ArkAvatar.Root
+      {...rest}
+      id={id()}
+      data-size={own.size ?? "md"}
+      data-shape={own.shape ?? "circle"}
+    />
   );
 }
 
-/* Ark's namespace is frozen — spread copies the members so Root
- * can be the sized wrapper while the rest stay Ark's own parts. */
-export const Avatar: typeof AvatarRoot &
-  Omit<typeof ArkAvatar, "Root"> & { Root: typeof AvatarRoot } = defineFamily(AvatarRoot, {
+export interface AvatarFacadeProps extends Omit<AvatarProps, "children" | "shape" | "size"> {
+  /** The person's name — the fallback initials and image description. */
+  name?: string;
+  /** The portrait source, loaded above the initials fallback. */
+  src?: string;
+  size?: AvatarSize;
+  shape?: "circle" | "square";
+  children?: JSX.Element;
+}
+
+function initials(name: string | undefined) {
+  return (
+    name
+      ?.trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((word) => word.charAt(0).toUpperCase())
+      .join("") ?? ""
+  );
+}
+
+/** The shorthand: a complete avatar from a name and image, with the
+ * anatomy still there when a consumer needs to compose its own. */
+function AvatarFacade(props: AvatarFacadeProps) {
+  const [own, rest] = splitProps(props, ["name", "shape", "size", "src"]);
+  return (
+    <AvatarRoot {...rest} shape={own.shape ?? "circle"} size={own.size ?? "md"}>
+      <Show
+        when={props.children}
+        fallback={
+          <>
+            <Show when={own.src}>
+              <ArkAvatar.Image alt={own.name} src={own.src} />
+            </Show>
+            <Show when={own.name}>
+              <ArkAvatar.Fallback>{initials(own.name)}</ArkAvatar.Fallback>
+            </Show>
+          </>
+        }
+      >
+        {props.children}
+      </Show>
+    </AvatarRoot>
+  );
+}
+
+/* Ark's namespace is frozen — spread copies the members so the facade
+ * stays callable while Root remains the sized wrapper and the rest stay
+ * Ark's own parts. */
+export const Avatar: typeof AvatarFacade &
+  Omit<typeof ArkAvatar, "Root"> & { Root: typeof AvatarRoot } = defineFamily(AvatarFacade, {
   ...ArkAvatar,
   Root: AvatarRoot,
 });

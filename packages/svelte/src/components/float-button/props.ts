@@ -32,3 +32,30 @@ export interface FloatButtonItemProps {
   onclick?: () => void;
   children?: Snippet;
 }
+
+export interface FloatButtonAction {
+  /** The action's accessible name and visible annotation. */
+  label: string;
+  /** A curated core icon; pencil is the fallback mark. */
+  icon?: string;
+  disabled?: boolean;
+  /** Fired when the item's action is chosen. */
+  onclick?: () => void;
+}
+
+export interface FloatButtonFacadeProps extends HTMLAttributes<HTMLDivElement> {
+  /** Custom anatomy; providing it replaces the generated trigger/actions. */
+  children?: Snippet;
+  /** The trigger's accessible name; the locale supplies a default. */
+  label?: string;
+  /** The speed-dial actions, read from the mooring outward. */
+  actions?: ReadonlyArray<FloatButtonAction>;
+  /** Which corner the group moors at. */
+  placement?: FloatButtonPlacement;
+  /** One rung of the button ladder for the whole group. */
+  size?: FloatButtonSize;
+  /** The initial openness when `open` is not bound. */
+  defaultOpen?: boolean;
+  /** Controlled openness — bind it to own the fan from outside. */
+  open?: boolean;
+}

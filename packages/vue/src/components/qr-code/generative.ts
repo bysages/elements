@@ -10,10 +10,6 @@ export default defineEntry({
     props: z.object({ value: z.string().optional() }),
     description: "A QR seal encoding a value.",
     component: ({ props }) =>
-      h(
-        QrCode.Root as never,
-        { defaultValue: props.value ?? "https://elements.bysages.com" },
-        () => [h(QrCode.Frame, () => h(QrCode.Pattern as never))],
-      ),
+      h(QrCode, { defaultValue: props.value ?? "https://elements.bysages.com" }),
   },
 });

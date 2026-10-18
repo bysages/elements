@@ -10,11 +10,8 @@ const PORTRAIT =
 
 <template>
   <div class="flex items-center gap-(--bs-gap-md)">
-    <Avatar>
-      <Avatar.Fallback>S</Avatar.Fallback>
-      <Avatar.Image :src="PORTRAIT" alt="Portrait of Sage" />
-    </Avatar>
-    <Avatar>墨</Avatar>
-    <Avatar shape="square">印</Avatar>
+    <Avatar name="Sage" :src="PORTRAIT" />
+    <Avatar name="Mo Ke" />
+    <Avatar name="Ink Seal" shape="square" />
   </div>
 </template>

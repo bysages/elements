@@ -1,4 +1,3 @@
-import { createListCollection } from "@ark-ui/react/collection";
 import { useBoundProp } from "@json-render/react";
 import type { BaseComponentProps } from "@json-render/react";
 import { createElement, type ReactNode } from "react";
@@ -40,24 +39,6 @@ export const textVoices = {
  * setter, typed for the family's use. */
 export function useBound<T>(value: unknown, path?: string) {
   return useBoundProp<T>(value as T, path);
-}
-
-/** The machine keeps its state in the collection's identity, so one
- * option list yields one collection — a fresh one per render would
- * reset the open state under the pointer. */
-import type { SelectOption } from "./faces.generated";
-export type { SelectOption };
-
-const collectionCache = new Map<string, ReturnType<typeof createListCollection<SelectOption>>>();
-
-export function collectionFor(options: SelectOption[]) {
-  const key = JSON.stringify(options);
-  let collection = collectionCache.get(key);
-  if (!collection) {
-    collection = createListCollection({ items: options });
-    collectionCache.set(key, collection);
-  }
-  return collection;
 }
 
 /** A labelled field: the label whispers above, the control answers. */

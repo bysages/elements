@@ -1,6 +1,8 @@
 <script lang="ts">
 import { SignaturePad as ArkSignaturePad } from "@ark-ui/svelte/signature-pad";
 
+import InternalIcon from "../../internal/InternalIcon.svelte";
+
 import SignaturePadRoot from "./SignaturePadRoot.svelte";
 
 let {
@@ -35,6 +37,6 @@ let {
       <ArkSignaturePad.Guide />
     </ArkSignaturePad.Segment>
   </ArkSignaturePad.Control>
-  {#if clearable}<ArkSignaturePad.ClearTrigger>Clear</ArkSignaturePad.ClearTrigger>{/if}
+  {#if clearable}<ArkSignaturePad.ClearTrigger><InternalIcon name="undo" /></ArkSignaturePad.ClearTrigger>{/if}
   {@render children?.()}
 </SignaturePadRoot>

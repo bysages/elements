@@ -71,6 +71,19 @@ export const faces = defineFace({
     }),
     description: "A person's seal: image when given, initials as the fallback.",
   },
+  Banner: {
+    props: z.object({
+      status: z.enum(["ink", "info", "success", "warning", "danger"]).optional(),
+      title: z.string().optional(),
+      message: z.string().optional(),
+      dismissible: z.boolean().optional(),
+    }),
+    description: "A full-width notice that speaks once across the page.",
+  },
+  Breadcrumb: {
+    props: z.object({ items: z.array(z.string()).optional() }),
+    description: "A trail of waymarks from home to the current page.",
+  },
   Badge: {
     props: z.object({
       text: z.string(),
@@ -106,6 +119,24 @@ export const faces = defineFace({
       disabled: z.boolean().optional(),
     }),
     description: "One independent box with its label.",
+  },
+  FloatButton: {
+    props: z.object({
+      label: z.string().optional(),
+      actions: z
+        .array(
+          z.object({
+            label: z.string(),
+            icon: z.string().optional(),
+            disabled: z.boolean().optional(),
+          }),
+        )
+        .optional(),
+      placement: z.enum(["bottom-end", "bottom-start", "top-end", "top-start"]).optional(),
+      size: z.enum(["sm", "md", "lg"]).optional(),
+      defaultOpen: z.boolean().optional(),
+    }),
+    description: "A floating action and its fanned alternatives; actions use curated icon names.",
   },
   Heading: {
     props: z.object({ text: z.string(), level: z.enum(["1", "2", "3", "4", "5", "6"]).optional() }),

@@ -12,22 +12,13 @@ type Story = StoryObj<typeof Breadcrumb>;
  * ink, parted by a whispered slash. */
 export const Basic: Story = {
   render: () =>
-    withState(
-      () => () =>
-        h(Breadcrumb.Root as any, () => [
-          h(Breadcrumb.List, () => [
-            h(Breadcrumb.Item, () => [
-              h(Breadcrumb.Link as any, { href: "#home" }, () => "Home"),
-              h(Breadcrumb.Separator as any),
-            ]),
-            h(Breadcrumb.Item, () => [
-              h(Breadcrumb.Link as any, { href: "#library" }, () => "Library"),
-              h(Breadcrumb.Separator as any),
-            ]),
-            h(Breadcrumb.Item, () => h(Breadcrumb.Current as any, () => "Archives")),
-          ]),
-        ]),
-    ),
+    h(Breadcrumb as any, {
+      items: [
+        { label: "Home", href: "#home" },
+        { label: "Library", href: "#library" },
+        { label: "Archives" },
+      ],
+    }),
 };
 
 /** A deep trail wraps instead of truncating — every waymark stays

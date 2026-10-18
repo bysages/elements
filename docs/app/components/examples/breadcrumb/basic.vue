@@ -1,21 +1,13 @@
 <script setup lang="ts">
 import { Breadcrumb } from "@bysages/vue";
+
+const items = [
+  { label: "Home", href: "#home" },
+  { label: "Library", href: "#library" },
+  { label: "Archives" },
+];
 </script>
 
 <template>
-  <Breadcrumb>
-    <Breadcrumb.List>
-      <Breadcrumb.Item>
-        <Breadcrumb.Link href="#home">Home</Breadcrumb.Link>
-        <Breadcrumb.Separator />
-      </Breadcrumb.Item>
-      <Breadcrumb.Item>
-        <Breadcrumb.Link href="#library">Library</Breadcrumb.Link>
-        <Breadcrumb.Separator />
-      </Breadcrumb.Item>
-      <Breadcrumb.Item>
-        <Breadcrumb.Current>Archives</Breadcrumb.Current>
-      </Breadcrumb.Item>
-    </Breadcrumb.List>
-  </Breadcrumb>
+  <Breadcrumb :items="items" />
 </template>

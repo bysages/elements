@@ -14,24 +14,10 @@ export default defineEntry({
     description: "A numbered progression; items name the steps in order.",
     component: ({ props }) => {
       const items = props.items ?? ["Draft", "Review", "Publish"];
-      return h(
-        Steps.Root as never,
-        { count: items.length, defaultStep: props.current ?? 0 } as never,
-        () => [
-          h(Steps.List, () =>
-            items.map((item: string, index: number) =>
-              h(Steps.Item, { key: item, index }, () => [
-                h(Steps.Trigger, () => [
-                  h(Steps.Indicator, () => String(index + 1)),
-                  h("span", item),
-                ]),
-                h(Steps.Separator),
-              ]),
-            ),
-          ),
-          h(Steps.CompletedContent, () => "All steps completed."),
-        ],
-      );
+      return h(Steps, {
+        items: items.map((title: string) => ({ title })),
+        defaultStep: props.current ?? 0,
+      });
     },
   },
 });

@@ -1,6 +1,6 @@
 import { Avatar as ArkAvatar } from "@ark-ui/vue/avatar";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { defineComponent, h, type Component, type PropType } from "vue";
+import { defineComponent, h, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
@@ -41,16 +41,64 @@ const AvatarRoot = defineComponent({
   },
 });
 
+function initials(name?: string) {
+  if (!name) return "";
+
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+/** The one-tag avatar: rich composition stays on the anatomy, while a
+ * name and portrait are enough for the common seal. */
+const AvatarFacade = defineComponent({
+  name: "SAvatar",
+  inheritAttrs: false,
+  props: {
+    /** The person's name, from which the fallback initials derive. */
+    name: { type: String, default: undefined },
+    /** The portrait to load over the initials. */
+    src: { type: String, default: undefined },
+    size: { type: String as PropType<AvatarSize>, default: "md" },
+    shape: { type: String as PropType<"circle" | "square">, default: "circle" },
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("avatar");
+
+    return () =>
+      h(AvatarRoot, { ...ctx.attrs, size: props.size, shape: props.shape }, () => {
+        if (ctx.slots.default) return ctx.slots.default();
+
+        return [
+          props.src ? h(ArkAvatar.Image, { alt: props.name, src: props.src }) : null,
+          props.name ? h(ArkAvatar.Fallback, () => initials(props.name)) : null,
+        ];
+      });
+  },
+});
+
+type AvatarParts = Omit<typeof ArkAvatar, "Root"> & { Root: typeof AvatarRoot };
+
 /* Ark's namespace is frozen — spread copies the members as data
  * properties so Root can be the sized wrapper while the rest stay
  * Ark's own parts. */
-export const Avatar = defineFamily(AvatarRoot, { ...ArkAvatar, Root: AvatarRoot } as unknown as {
-  Root: Component;
-} & Record<string, Component>) as typeof AvatarRoot & typeof ArkAvatar;
+export const Avatar = defineFamily(AvatarFacade, {
+  ...ArkAvatar,
+  Root: AvatarRoot,
+} as unknown as AvatarParts) as typeof AvatarFacade & AvatarParts;
 
 export type AvatarProps = {
+  /** The person's name, from which the fallback initials derive. */
+  name?: string;
+  /** The portrait to load over the initials. */
+  src?: string;
   /** Seal diameter: the small, medium, or large control rung. The
-   * default (large) stands as tall as the biggest control so an avatar
+   * default (medium) stands as tall as the biggest control so an avatar
    * rides a row without stretching it. */
   size?: AvatarSize;
+  /** The corner: round by default; square cuts it sharp. */
+  shape?: "circle" | "square";
 };

@@ -1,23 +1,28 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { defineEntry } from "../../generative/shared";
 import { FloatButton } from "./index";
 
-/** A floating action cluster: the trigger speaks the label, items fan out beneath. */
+type FacadeAction = { label: string; icon?: string; disabled?: boolean };
+
+/** A floating action cluster: the trigger and named actions fan from one corner. */
 export default defineEntry({
   FloatButton: {
-    props: z.object({ label: z.string().optional(), items: z.array(z.string()).optional() }),
-    slots: ["default"],
-    description: "A floating action cluster: the trigger speaks the label, items fan out beneath.",
+    ...faces.FloatButton,
     component: ({ props }) => {
-      const items = props.items ?? ["Edit"];
-      return h(FloatButton.Root as never, { defaultOpen: true }, () => [
-        h(FloatButton.Trigger as never, { label: props.label ?? "Actions" }),
-        ...items.map((item: string) =>
-          h(FloatButton.Item as never, { key: item, label: item }, () => item),
-        ),
-      ]);
+      const actions: FacadeAction[] = Array.isArray(props.actions)
+        ? props.actions
+        : [{ label: "Edit" }];
+
+      return h(
+        FloatButton as never,
+        {
+          ...props,
+          actions: actions.map((action) => ({ ...action, icon: action.icon ?? "pencil" })),
+          defaultOpen: true,
+        } as never,
+      );
     },
   },
 });

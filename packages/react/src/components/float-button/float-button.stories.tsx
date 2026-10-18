@@ -28,8 +28,6 @@ function icon(d: string): ReactNode {
 
 const plus = "M12 5v14m-7-7h14";
 const compose = "M12 20h9m-1.5-12.5a2.1 2.1 0 0 0-3-3L4 17v3h3Z";
-const share = "M12 3v12m0-12 4 4m-4-4-4 4m-4 8v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3";
-const trash = "M4 7h16m-9-4h2m-6 4 1 13h8l1-13m-7 4v6m4-6v6";
 
 const statusStyle = {
   marginBlockStart: "var(--bs-space-4)",
@@ -40,28 +38,17 @@ const statusStyle = {
 /** The moored trigger fans out its actions; each name surfaces beside
  * its button, and clicking one reports through `onClick`. */
 export const Basic = {
-  render: () => {
-    const [status, setStatus] = useState("Nothing chosen yet.");
-    return (
-      <>
-        <FloatButton>
-          <FloatButton.Trigger label="Actions">{icon(plus)}</FloatButton.Trigger>
-          <FloatButton.Item label="Compose" onClick={() => setStatus("Compose")}>
-            {icon(compose)}
-          </FloatButton.Item>
-          <FloatButton.Item label="Share" onClick={() => setStatus("Share")}>
-            {icon(share)}
-          </FloatButton.Item>
-          <FloatButton.Item label="Delete" onClick={() => setStatus("Delete")}>
-            {icon(trash)}
-          </FloatButton.Item>
-        </FloatButton>
-        <p role="status" style={statusStyle}>
-          {status}
-        </p>
-      </>
-    );
-  },
+  render: () => (
+    <FloatButton
+      label="Actions"
+      defaultOpen
+      actions={[
+        { label: "Compose", icon: "pencil" },
+        { label: "Share", icon: "arrow-up" },
+        { label: "Delete", icon: "x" },
+      ]}
+    />
+  ),
 };
 
 /** Controlled: an outside hand drives the group; the Trigger reports

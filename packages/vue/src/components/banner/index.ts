@@ -1,7 +1,8 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h, type PropType } from "vue";
+import { defineComponent, h, ref, type PropType } from "vue";
 
+import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
@@ -85,12 +86,54 @@ const Close = defineComponent({
   },
 });
 
+/** The one-tag banner: content props for the common notice, with room
+ * for extra body content and named actions. */
+const BannerFacade = defineComponent({
+  name: "SBanner",
+  inheritAttrs: false,
+  props: {
+    status: {
+      type: String as PropType<"ink" | "info" | "success" | "warning" | "danger">,
+      default: "ink",
+    },
+    /** The notice read at a glance. */
+    title: { type: String, default: undefined },
+    /** The supporting line beneath the title. */
+    message: { type: String, default: undefined },
+    /** Whether the notice offers its quiet close. */
+    dismissible: { type: Boolean, default: false },
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("banner");
+    const dismissed = ref(false);
+
+    return () => {
+      if (dismissed.value) return null;
+
+      return h(Root, { ...ctx.attrs, status: props.status }, () => [
+        h(Body, () => [
+          props.title ? h(Title, () => props.title) : null,
+          props.message ? h(Description, () => props.message) : null,
+          ctx.slots.default?.(),
+          ctx.slots.actions ? h(Actions, ctx.slots.actions) : null,
+        ]),
+        props.dismissible
+          ? h(Close, {
+              onClick: () => {
+                dismissed.value = true;
+              },
+            })
+          : null,
+      ]);
+    };
+  },
+});
+
 /** A page-level notice, spoken across the full measure: a wash of the
  * status pigment, one heavier hairline on the leading edge, and room
  * for actions and a quiet close. Ink is the neutral register; the four
  * semantic pigments are fixed. */
-
-export const Banner = Object.assign(Root, {
+export const Banner = defineFamily(BannerFacade, {
   Root,
   Icon,
   Body,

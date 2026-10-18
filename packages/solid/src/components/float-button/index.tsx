@@ -1,7 +1,7 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import { createContext, createSignal, useContext, splitProps } from "solid-js";
-import type { JSX } from "solid-js";
+import { For, Show, createContext, createSignal, useContext, splitProps, type JSX } from "solid-js";
 
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 
@@ -142,7 +142,81 @@ function FloatButtonItem(props: FloatButtonItemProps) {
   );
 }
 
-export const FloatButton = Object.assign(FloatButtonRoot, {
+export interface FloatButtonAction {
+  label: string;
+  /** A curated core icon; pencil is the fallback mark. */
+  icon?: string;
+  disabled?: boolean;
+  /** The action fires before the fan folds. */
+  onClick?: () => void;
+}
+
+export interface FloatButtonFacadeProps extends Omit<FloatButtonRootProps, "open"> {
+  /** Controlled openness; leave unset for the facade to hold it. */
+  open?: boolean;
+  /** The accessible name for the floating trigger. */
+  label?: string;
+  /** The fanned-out actions, in reading order. */
+  actions?: FloatButtonAction[];
+  placement?: FloatButtonPlacement;
+  size?: FloatButtonSize;
+  /** Open the dial when it mounts. */
+  defaultOpen?: boolean;
+}
+
+/** The shorthand: a speed dial from plain actions; the trigger and
+ * openness stay inside the family. */
+function FloatButtonFacade(props: FloatButtonFacadeProps) {
+  const [own, rest] = splitProps(props, [
+    "actions",
+    "children",
+    "defaultOpen",
+    "label",
+    "onOpenChange",
+    "open",
+    "placement",
+    "size",
+  ]);
+  const [inner, setInner] = createSignal(own.defaultOpen ?? false);
+  const open = () => own.open ?? inner();
+  const setOpen = (value: boolean) => {
+    setInner(value);
+    own.onOpenChange?.(value);
+  };
+  return (
+    <FloatButtonRoot
+      {...rest}
+      onOpenChange={setOpen}
+      open={open()}
+      placement={own.placement}
+      size={own.size}
+    >
+      <Show
+        when={own.children}
+        fallback={
+          <>
+            <FloatButtonTrigger label={own.label}>{iconNode("plus")}</FloatButtonTrigger>
+            <For each={own.actions ?? []}>
+              {(action) => (
+                <FloatButtonItem
+                  disabled={action.disabled}
+                  label={action.label}
+                  onClick={action.onClick}
+                >
+                  {iconNode(action.icon ?? "pencil")}
+                </FloatButtonItem>
+              )}
+            </For>
+          </>
+        }
+      >
+        {own.children}
+      </Show>
+    </FloatButtonRoot>
+  );
+}
+
+export const FloatButton = Object.assign(FloatButtonFacade, {
   Root: FloatButtonRoot,
   Trigger: FloatButtonTrigger,
   Item: FloatButtonItem,

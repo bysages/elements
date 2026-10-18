@@ -13,16 +13,14 @@ export default defineEntry({
       size: z.enum(["sm", "md", "lg"]).optional(),
     }),
     description: "A row of pressed-or-not siblings; multiple allows several held at once.",
-    component: ({ props }) => {
-      const values = props.items ?? ["Bold", "Italic", "Underline"];
-      return h(
-        ToggleGroup.Root as never,
-        { multiple: props.multiple ?? false, size: props.size ?? undefined },
-        () =>
-          values.map((value: string) =>
-            h(ToggleGroup.Item as never, { key: value, value, "aria-label": value }, () => value),
-          ),
-      );
-    },
+    component: ({ props }) =>
+      h(ToggleGroup, {
+        items: (props.items ?? ["Bold", "Italic", "Underline"]).map((label: string) => ({
+          value: label,
+          label,
+        })),
+        multiple: props.multiple ?? false,
+        size: props.size,
+      }),
   },
 });

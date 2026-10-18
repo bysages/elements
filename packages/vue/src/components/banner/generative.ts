@@ -1,25 +1,13 @@
 import { h } from "vue";
-import { z } from "zod";
 
+import { faces } from "../../generative/faces";
 import { defineEntry } from "../../generative/shared";
 import { Banner } from "./index";
 
-/** A full-width notice that sits above the page. */
+/** A full-width notice that speaks once across the page. */
 export default defineEntry({
   Banner: {
-    props: z.object({
-      status: z.string().optional(),
-      title: z.string().optional(),
-      message: z.string().optional(),
-    }),
-    description: "A full-width notice that sits above the page.",
-    component: ({ props }) =>
-      h(Banner.Root as never, { status: props.status } as never, () => [
-        h(Banner.Body, () => [
-          props.title != null ? h(Banner.Title, () => props.title!) : null,
-          props.message != null ? h(Banner.Description, () => props.message!) : null,
-        ]),
-        h(Banner.Close, () => "x"),
-      ]),
+    ...faces.Banner,
+    component: ({ props }) => h(Banner as never, { ...props, dismissible: true } as never),
   },
 });
