@@ -57,21 +57,21 @@
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "1.0.0",
     "@tanstack/vue-form": "1.33.5",
-    "@tanstack/vue-table": "9.2.8",
-    "@tanstack/vue-virtual": "3.13.40",
-    "@zag-js/cascade-select": "1.45.0",
-    "@zag-js/vue": "1.45.0"
+    "@tanstack/vue-table": "9.3.1",
+    "@tanstack/vue-virtual": "3.13.48",
+    "@zag-js/cascade-select": "1.46.0",
+    "@zag-js/vue": "1.46.0"
   },
   "devDependencies": {
-    "@json-render/core": "0.21.0",
-    "@json-render/vue": "0.21.0",
-    "@storybook/addon-a11y": "10.6.1",
-    "@storybook/addon-docs": "10.6.1",
-    "@storybook/vue3-vite": "10.6.1",
-    "ai": "7.0.137",
-    "storybook": "10.6.1",
-    "vue": "3.5.43",
-    "zod": "4.6.5"
+    "@json-render/core": "0.21.3",
+    "@json-render/vue": "0.21.3",
+    "@storybook/addon-a11y": "10.6.3",
+    "@storybook/addon-docs": "10.6.3",
+    "@storybook/vue3-vite": "10.6.3",
+    "ai": "7.0.152",
+    "storybook": "10.6.3",
+    "vue": "3.5.44",
+    "zod": "4.6.7"
   },
   "peerDependencies": {
     "@json-render/core": "^0.21.0",
