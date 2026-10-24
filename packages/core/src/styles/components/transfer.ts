@@ -7,6 +7,8 @@ export const transferCss =
    paper-and-hairline at rest weight, the buttons column rides between. */
 [data-scope="transfer"][data-part="root"] {
   display: flex;
+  max-inline-size: 100%;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--bs-gap-md);
 }
@@ -14,7 +16,10 @@ export const transferCss =
 [data-scope="transfer"][data-part="panel"] {
   display: flex;
   flex-direction: column;
-  inline-size: 14rem;
+  flex: 1 1 14rem;
+  inline-size: min(14rem, 100%);
+  max-inline-size: 14rem;
+  min-inline-size: 0;
   border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-md);
   background: var(--bs-color-surface-1);

@@ -1,6 +1,8 @@
 export const paginationCss = /* css */ `
 [data-scope="pagination"][data-part="root"] {
   display: flex;
+  max-inline-size: 100%;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--bs-gap-xs);
 }

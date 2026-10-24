@@ -5,7 +5,7 @@ const title = "A long chapter title walks into a narrow column and leaves its ta
 </script>
 
 <template>
-  <div class="w-80">
+  <div class="w-full max-w-80">
     <Ellipsis :title="title">{{ title }}</Ellipsis>
   </div>
 </template>

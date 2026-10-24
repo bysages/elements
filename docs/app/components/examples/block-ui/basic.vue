@@ -6,7 +6,7 @@ const blocked = ref(true);
 </script>
 
 <template>
-  <div class="flex w-96 flex-col gap-(--bs-gap-lg)">
+  <div class="flex w-full max-w-96 flex-col gap-(--bs-gap-lg)">
     <Button size="sm" variant="outline" @click="blocked = !blocked">
       {{ blocked ? "Lift the curtain" : "Draw the curtain" }}
     </Button>

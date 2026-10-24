@@ -2,7 +2,7 @@
 import { Button, Layout } from "@bysages/vue";
 import { reactive } from "vue";
 
-const state = reactive({ collapsed: false, width: "16rem" });
+const state = reactive({ collapsed: false, width: "10rem" });
 const stops = [
   { icon: "i-lucide-layout-dashboard", label: "Overview" },
   { icon: "i-lucide-book-open", label: "Ledger" },
@@ -24,6 +24,9 @@ const stops = [
       <Layout.Sider
         v-model:collapsed="state.collapsed"
         v-model:width="state.width"
+        width="10rem"
+        min-width="10rem"
+        max-width="16rem"
         resizable
         class="min-h-full"
       >

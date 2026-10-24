@@ -357,6 +357,8 @@ export const aiCss = /* css */ `
    dashed ghost, error speaks in danger ink; no chip casts a shadow. */
 [data-scope="ai"][data-part="attachments"] {
   display: flex;
+  inline-size: 100%;
+  min-inline-size: 0;
   flex-wrap: wrap;
   gap: var(--bs-gap-xs);
 }
@@ -398,6 +400,7 @@ export const aiCss = /* css */ `
 }
 
 [data-scope="ai"][data-part="attachment"] > span {
+  min-inline-size: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

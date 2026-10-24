@@ -2,7 +2,7 @@
 import { Button, Card, ConfigProvider } from "@bysages/vue";
 
 const contentStyle = { display: "flex", flexWrap: "wrap", gap: "var(--bs-gap-sm)" };
-const cardStyle = { inlineSize: "26rem" };
+const cardStyle = { inlineSize: "min(26rem, 100%)" };
 </script>
 
 <template>

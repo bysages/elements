@@ -6,6 +6,8 @@ export const layoutCss = /* css */ `
    shoving every sibling aside. */
 [data-scope="layout"][data-part="root"] {
   display: grid;
+  max-inline-size: 100%;
+  min-inline-size: 0;
   min-block-size: 100dvh;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
@@ -35,6 +37,7 @@ export const layoutCss = /* css */ `
 
 [data-scope="layout"][data-part="header"] {
   display: flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--bs-gap-md);
   grid-area: header;
@@ -44,6 +47,7 @@ export const layoutCss = /* css */ `
 
 [data-scope="layout"][data-part="footer"] {
   display: flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--bs-gap-md);
   grid-area: footer;
@@ -79,6 +83,13 @@ export const layoutCss = /* css */ `
     flex-grow var(--bs-duration-slow) var(--bs-ease-out),
     min-width var(--bs-duration-slow) var(--bs-ease-out),
     max-width var(--bs-duration-slow) var(--bs-ease-out);
+}
+
+/* Ark writes fixed basis and bounds on the resizable panel; the caller-owned variables remain the source of truth, including a narrower demo rail on tiny containers. */
+[data-scope="layout"][data-part="sider"] {
+  flex-basis: var(--bs-layout-sider-width, 16rem) !important;
+  min-width: var(--bs-layout-sider-min, 12rem) !important;
+  max-width: var(--bs-layout-sider-max, 24rem) !important;
 }
 
 /* The hand leads: while Ark resizes, the rail follows without the
@@ -165,17 +176,18 @@ export const layoutCss = /* css */ `
    hairline at the flow edge is the one line. A folded rail keeps the
    structural border because its handle is absent. */
 [data-scope="layout"][data-part="root"][data-sider="start"]
-  [data-scope="layout"][data-part="sider"][data-resizable] {
+  [data-scope="layout"][data-part="sider"] {
   border-inline-end: none;
 }
 
 [data-scope="layout"][data-part="root"][data-sider="end"]
-  [data-scope="layout"][data-part="sider"][data-resizable] {
+  [data-scope="layout"][data-part="sider"] {
   border-inline-start: none;
 }
 
 [data-scope="layout"][data-part="content"] {
   grid-area: content;
+  min-inline-size: 0;
   padding: var(--bs-padding-xl);
 }
 `;

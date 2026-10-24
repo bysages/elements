@@ -23,7 +23,7 @@ const notices = [
 
 <template>
   <div class="grid gap-4">
-    <Alert v-for="n in notices" :key="n.status" :status="n.status" class="w-120">
+    <Alert v-for="n in notices" :key="n.status" :status="n.status" class="w-full max-w-120">
       <Alert.Icon />
       <Alert.Body>
         <Alert.Title>{{ n.title }}</Alert.Title>

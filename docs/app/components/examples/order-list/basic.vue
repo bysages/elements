@@ -13,7 +13,7 @@ const value = ref(options.map((option) => option.value));
 </script>
 
 <template>
-  <div class="flex w-80 flex-col gap-3">
+  <div class="flex w-full max-w-80 flex-col gap-3">
     <OrderList v-model="value" :options="options" label="Movements" />
     <output class="text-xs text-tertiary">{{ value.join(" → ") }}</output>
   </div>

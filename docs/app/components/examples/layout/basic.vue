@@ -12,7 +12,7 @@ const stops = ["Overview", "Ledger", "Archive", "Settings"];
     style="min-height: 18rem"
     class="overflow-clip rounded-lg border border-border bg-surface-0"
   >
-    <Layout.Sider>
+    <Layout.Sider width="10rem" min-width="8rem">
       <nav class="grid gap-(--bs-gap-xs) p-(--bs-padding-sm)">
         <Button v-for="stop in stops" :key="stop" variant="ghost" class="justify-start!">
           {{ stop }}

@@ -8,18 +8,24 @@ defineProps<{ surround?: Array<{ title: string; path: string; description?: stri
 
 <template>
   <nav
-    class="flex justify-between gap-(--bs-gap-md) mt-(--bs-margin-2xl)"
+    class="flex min-w-0 justify-between gap-(--bs-gap-md) mt-(--bs-margin-2xl)"
     :aria-label="t('docs.pagination')"
   >
     <Button v-if="surround?.[0]" variant="outline" size="sm" as-child>
-      <NuxtLink :to="surround[0].path" class="bs-docs-surround-link">
+      <NuxtLink
+        :to="surround[0].path"
+        class="bs-docs-surround-link min-w-0 max-w-full flex-1! whitespace-normal! text-start"
+      >
         <span class="text-xs text-tertiary tracking-label">{{ t("docs.prev") }}</span>
         {{ surround[0].title }}
       </NuxtLink>
     </Button>
     <span v-else aria-hidden="true" />
     <Button v-if="surround?.[1]" variant="outline" size="sm" as-child>
-      <NuxtLink :to="surround[1].path" class="bs-docs-surround-link is-next">
+      <NuxtLink
+        :to="surround[1].path"
+        class="bs-docs-surround-link is-next min-w-0 max-w-full flex-1! whitespace-normal! text-start"
+      >
         <span class="text-xs text-tertiary tracking-label">{{ t("docs.next") }}</span>
         {{ surround[1].title }}
       </NuxtLink>
