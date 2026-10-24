@@ -7,5 +7,7 @@ export interface TerminalProps extends Omit<HTMLAttributes<HTMLDivElement>, "onc
   prompt?: string;
   placeholder?: string;
   label?: string;
+  /** Treat the transcript as output only; no command line mounts. */
+  readOnly?: boolean;
   onCommand?: (text: string) => void;
 }

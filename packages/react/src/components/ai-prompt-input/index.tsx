@@ -4,6 +4,7 @@ import { useRef } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
@@ -37,7 +38,10 @@ function row(part: string, content: ReactNode): ReactNode {
  * `submit`. Enter sends; Shift+Enter breaks the line. While `busy`
  * the seal becomes a stop seal and Enter holds its breath.
  */
-export interface PromptInputProps extends Omit<HTMLAttributes<HTMLFormElement>, "onSubmit"> {
+export interface PromptInputProps extends Omit<
+  HTMLAttributes<HTMLFormElement>,
+  "onSubmit" | "onSelect"
+> {
   /** The draft in the vessel — bind `value`; it clears itself on a
    * successful submit. */
   value: string;
@@ -52,11 +56,19 @@ export interface PromptInputProps extends Omit<HTMLAttributes<HTMLFormElement>, 
   /** The machine is working — the seal becomes a stop seal and Enter
    * holds its breath. */
   busy?: boolean;
-  /** Mention candidates for the field: pass the roster and the summon
-   * character (`@` unless told otherwise) and the vessel rides the
-   * textarea. While candidates are up, Enter inserts and the send
+  /** Mention candidates for the field: pass the roster and one or more
+   * summon characters (`@` unless told otherwise). `insertOnSelect=false`
+   * reports the choice without rewriting the prompt; commands can own
+   * the next action. While candidates are up, Enter inserts and the send
    * waits. */
-  mentions?: { items: MentionEntry[]; trigger?: string };
+  mentions?: {
+    items: MentionEntry[];
+    trigger?: string;
+    triggers?: string | string[];
+    insertOnSelect?: boolean;
+  };
+  /** The whole mention entry was selected. */
+  onSelect?: (entry: MentionEntry) => void;
   header?: ReactNode;
   leading?: ReactNode;
   trailing?: ReactNode;
@@ -74,6 +86,7 @@ function PromptInputImpl({
   disabled = false,
   busy = false,
   mentions,
+  onSelect,
   header,
   leading,
   trailing,
@@ -84,15 +97,24 @@ function PromptInputImpl({
   injectComponentStyle("ai");
   // The field part is a component; its ref carries the textarea itself.
   const fieldRef = useRef<HTMLTextAreaElement | null>(null);
+  const hostId = useElementId("ai-prompt", rest);
   const messages = useComponentMessages();
   const placeholderText = placeholder ?? messages.ai.conversation;
 
   const mentionState = useMentions(
-    () => ({ items: mentions?.items ?? [], trigger: mentions?.trigger }),
+    () => ({
+      items: mentions?.items ?? [],
+      trigger: mentions?.trigger,
+      triggers: mentions?.triggers,
+    }),
     () => fieldRef.current,
     {
       getText: () => fieldRef.current?.value ?? value,
       setText: (next) => onValueChange?.(next),
+      select: (entry) => {
+        onSelect?.(entry);
+        return mentions?.insertOnSelect !== false;
+      },
     },
   );
   // The vessel only rides along when a roster was actually given.
@@ -153,12 +175,18 @@ function PromptInputImpl({
             value={value}
             placeholder={placeholderText}
             aria-label={ariaLabel ?? messages.ai.conversation}
+            aria-expanded={mentionsActive ? mentionState.open : undefined}
+            aria-controls={
+              mentionsActive && mentionState.open ? `${hostId}:mentions:popup` : undefined
+            }
             disabled={disabled}
             onChange={(event) => {
               onValueChange?.(event.target.value);
               mentionState.onInput();
             }}
             onKeyDown={(event) => {
+              // IME Enter is composition, not a send.
+              if (event.nativeEvent.isComposing || event.keyCode === 229) return;
               // The candidates eat their keys first; only on a quiet
               // field does Enter become the send.
               if (mentionState.onKeydown(event)) return;
@@ -171,6 +199,7 @@ function PromptInputImpl({
         </Field.Root>
         {mentionsActive ? (
           <MentionsVessel
+            id={`${hostId}:mentions`}
             open={mentionState.open}
             matches={mentionState.matches}
             active={mentionState.active}

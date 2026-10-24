@@ -43,3 +43,15 @@ export const Basic: Story = {
       return () => h(Host);
     }),
 };
+
+/** Output only: the transcript remains scrollable, while no entry line
+ * mounts for accidental edits. */
+export const Readonly: Story = {
+  render: () =>
+    h(Terminal, {
+      lines: ["session started", "watching build output…", "build completed"],
+      readOnly: true,
+      label: "Build output",
+      style: { maxInlineSize: "34rem" },
+    }),
+};

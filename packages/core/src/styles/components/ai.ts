@@ -304,6 +304,18 @@ export const aiCss = /* css */ `
   background: var(--bs-color-danger);
 }
 
+[data-ai="tool"][data-status="denied"] [data-part="tool-status"]::before {
+  border-color: var(--bs-color-danger);
+  background: var(--bs-color-danger);
+}
+
+[data-scope="ai"][data-part="tool-actions"] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--bs-gap-xs);
+}
+
 [data-scope="collapsible"][data-part="content"] > [data-scope="ai"][data-part="tool-body"] {
   display: grid;
   gap: var(--bs-gap-sm);

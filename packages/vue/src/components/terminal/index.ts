@@ -20,6 +20,8 @@ export const Terminal = withSelfRoot(
       prompt: { type: String, default: "$" },
       placeholder: { type: String, default: undefined },
       label: { type: String, default: undefined },
+      /** Treat the transcript as output only; no command line mounts. */
+      readOnly: { type: Boolean, default: false },
     },
     emits: ["command"],
     setup(props, ctx: SetupContext) {
@@ -29,7 +31,7 @@ export const Terminal = withSelfRoot(
       const draft = ref("");
       const scroll = ref<HTMLElement | null>(null);
       watch(
-        () => props.lines.length,
+        () => props.lines.join("\n"),
         async () => {
           await nextTick();
           scroll.value?.scrollTo({ top: scroll.value.scrollHeight });
@@ -50,6 +52,7 @@ export const Terminal = withSelfRoot(
             "aria-label": props.label ?? undefined,
             "data-scope": "terminal",
             "data-part": "root",
+            ...(props.readOnly ? { "data-readonly": "" } : {}),
           },
           [
             h(
@@ -59,30 +62,32 @@ export const Terminal = withSelfRoot(
                 h("div", { key: index, "data-scope": "terminal", "data-part": "line" }, line),
               ),
             ),
-            h("div", { "data-scope": "terminal", "data-part": "entry" }, [
-              h(
-                "span",
-                { "data-scope": "terminal", "data-part": "sigil", "aria-hidden": true },
-                props.prompt,
-              ),
-              h("input", {
-                "data-scope": "terminal",
-                "data-part": "input",
-                value: draft.value,
-                placeholder: props.placeholder ?? undefined,
-                "aria-label": props.label ?? messages.value.terminal.commandLine,
-                spellcheck: false,
-                autocomplete: "off",
-                onInput: (event: InputEvent) =>
-                  (draft.value = (event.target as HTMLInputElement).value),
-                onKeydown: (event: KeyboardEvent) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    submit();
-                  }
-                },
-              }),
-            ]),
+            props.readOnly
+              ? null
+              : h("div", { "data-scope": "terminal", "data-part": "entry" }, [
+                  h(
+                    "span",
+                    { "data-scope": "terminal", "data-part": "sigil", "aria-hidden": true },
+                    props.prompt,
+                  ),
+                  h("input", {
+                    "data-scope": "terminal",
+                    "data-part": "input",
+                    value: draft.value,
+                    placeholder: props.placeholder ?? undefined,
+                    "aria-label": props.label ?? messages.value.terminal.commandLine,
+                    spellcheck: false,
+                    autocomplete: "off",
+                    onInput: (event: InputEvent) =>
+                      (draft.value = (event.target as HTMLInputElement).value),
+                    onKeydown: (event: KeyboardEvent) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        submit();
+                      }
+                    },
+                  }),
+                ]),
           ],
         );
     },

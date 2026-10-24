@@ -3,7 +3,7 @@ import { defineConfig } from "vite-plus";
 export default defineConfig({
   test: {
     // Scope tests to the workspace packages.
-    include: ["packages/**/*.{spec,test}.ts"],
+    include: ["packages/**/*.{spec,test}.{ts,tsx}"],
     sequence: {
       concurrent: true,
     },

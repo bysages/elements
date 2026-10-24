@@ -1,6 +1,13 @@
 import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
+import {
+  Show,
+  createComponent,
+  mergeProps,
+  splitProps,
+  type ComponentProps,
+  type JSX,
+} from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -8,6 +15,39 @@ import { useElementId } from "../../internal/id";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/solid/dialog";
 
+export interface DialogPartProps extends JSX.HTMLAttributes<HTMLElement> {}
+
+export interface DialogBodyProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+
+/** A semantic section for the dialog's title and description. */
+function DialogHeader(props: DialogPartProps) {
+  const [own, rest] = splitProps(props, ["children"]);
+  return (
+    <header {...rest} data-scope="dialog" data-part="header">
+      {own.children}
+    </header>
+  );
+}
+
+/** The dialog's principal content; it may shrink inside narrow sheets. */
+function DialogBody(props: DialogBodyProps) {
+  const [own, rest] = splitProps(props, ["children"]);
+  return (
+    <div {...rest} data-scope="dialog" data-part="body">
+      {own.children}
+    </div>
+  );
+}
+
+/** The dialog's action row; actions read from start to end. */
+function DialogFooter(props: DialogPartProps) {
+  const [own, rest] = splitProps(props, ["children"]);
+  return (
+    <footer {...rest} data-scope="dialog" data-part="footer">
+      {own.children}
+    </footer>
+  );
+}
 /** Ark's Dialog, dressed in the paper-and-ink system: the sheet dissolves
  * in on elevation, the backdrop fades, and nested overlays stack through
  * the shared z-index ladder. The API is Ark's own — Root, Trigger,
@@ -51,14 +91,18 @@ function DialogFacade(props: DialogFacadeProps) {
       <ArkDialog.Backdrop />
       <ArkDialog.Positioner>
         <ArkDialog.Content>
-          <ArkDialog.Title>{title()}</ArkDialog.Title>
-          <Show when={props.description}>
-            <ArkDialog.Description>{props.description}</ArkDialog.Description>
-          </Show>
-          <Show when={props.content}>
-            <p>{props.content}</p>
-          </Show>
-          {props.children}
+          <DialogHeader>
+            <ArkDialog.Title>{title()}</ArkDialog.Title>
+            <Show when={props.description}>
+              <ArkDialog.Description>{props.description}</ArkDialog.Description>
+            </Show>
+          </DialogHeader>
+          <DialogBody>
+            <Show when={props.content}>
+              <p>{props.content}</p>
+            </Show>
+            {props.children}
+          </DialogBody>
           <ArkDialog.CloseTrigger aria-label="Close">
             {iconNode("x", { width: 14, height: 14 })}
           </ArkDialog.CloseTrigger>
@@ -69,8 +113,16 @@ function DialogFacade(props: DialogFacadeProps) {
 }
 
 export const Dialog: typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root"> & { Root: typeof DialogRoot } = defineFamily(DialogFacade, {
+  Omit<typeof ArkDialog, "Root"> & {
+    Root: typeof DialogRoot;
+    Header: typeof DialogHeader;
+    Body: typeof DialogBody;
+    Footer: typeof DialogFooter;
+  } = defineFamily(DialogFacade, {
   ...ArkDialog,
   Root: DialogRoot,
+  Header: DialogHeader,
+  Body: DialogBody,
+  Footer: DialogFooter,
 });
 injectComponentStyle("dialog");

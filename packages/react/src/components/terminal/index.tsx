@@ -11,6 +11,8 @@ export interface TerminalProps extends HTMLAttributes<HTMLDivElement> {
   prompt?: string;
   placeholder?: string;
   label?: string;
+  /** Treat the transcript as output only; no command line mounts. */
+  readOnly?: boolean;
   onCommand?: (text: string) => void;
 }
 
@@ -23,6 +25,7 @@ function TerminalImpl({
   prompt = "$",
   placeholder,
   label,
+  readOnly = false,
   onCommand,
   ...rest
 }: TerminalProps) {
@@ -31,9 +34,12 @@ function TerminalImpl({
   const commandLineLabel = label ?? messages.terminal.commandLine;
   const [draft, setDraft] = useState("");
   const scroll = useRef<HTMLDivElement | null>(null);
+  // Joined lines also notice replacements at the same length — a live
+  // transcript can change without merely growing.
+  const transcript = lines.join("\n");
   useEffect(() => {
     scroll.current?.scrollTo({ top: scroll.current.scrollHeight });
-  }, [lines.length]);
+  }, [transcript]);
   function submit() {
     const text = draft.trim();
     if (!text) return;
@@ -41,7 +47,14 @@ function TerminalImpl({
     onCommand?.(text);
   }
   return (
-    <div {...rest} role="log" aria-label={commandLineLabel} data-scope="terminal" data-part="root">
+    <div
+      {...rest}
+      role="log"
+      aria-label={commandLineLabel}
+      data-scope="terminal"
+      data-part="root"
+      {...(readOnly ? { "data-readonly": "" } : {})}
+    >
       <div ref={scroll} data-scope="terminal" data-part="scroll">
         {lines.map((line, index) => (
           <div key={index} data-scope="terminal" data-part="line">
@@ -49,27 +62,29 @@ function TerminalImpl({
           </div>
         ))}
       </div>
-      <div data-scope="terminal" data-part="entry">
-        <span data-scope="terminal" data-part="sigil" aria-hidden="true">
-          {prompt}
-        </span>
-        <input
-          data-scope="terminal"
-          data-part="input"
-          value={draft}
-          placeholder={placeholder}
-          aria-label={commandLineLabel}
-          spellCheck={false}
-          autoComplete="off"
-          onInput={(event) => setDraft((event.target as HTMLInputElement).value)}
-          onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              submit();
-            }
-          }}
-        />
-      </div>
+      {readOnly ? null : (
+        <div data-scope="terminal" data-part="entry">
+          <span data-scope="terminal" data-part="sigil" aria-hidden="true">
+            {prompt}
+          </span>
+          <input
+            data-scope="terminal"
+            data-part="input"
+            value={draft}
+            placeholder={placeholder}
+            aria-label={commandLineLabel}
+            spellCheck={false}
+            autoComplete="off"
+            onInput={(event) => setDraft((event.target as HTMLInputElement).value)}
+            onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                submit();
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

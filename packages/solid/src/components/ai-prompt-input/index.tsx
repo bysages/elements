@@ -1,12 +1,15 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import { Show, splitProps } from "solid-js";
+import { Show, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Field } from "../field";
+import { MentionsVessel, type MentionEntry, type MentionTriggers } from "../mentions";
+import { useMentions } from "../mentions/use-mentions";
 
 function arrowUpIcon() {
   return iconNode("arrow-up", { width: "14", height: "14" });
@@ -18,7 +21,7 @@ function stopIcon() {
 
 export interface PromptInputProps extends Omit<
   JSX.HTMLAttributes<HTMLFormElement>,
-  "onSubmit" | "value"
+  "onSubmit" | "onSelect" | "value"
 > {
   /** The draft in the vessel — bind `value`; it clears itself on
    * a successful submit. */
@@ -46,6 +49,18 @@ export interface PromptInputProps extends Omit<
   /** The controls that close the footer row — the seal falls there
    * when a footer exists. */
   footerEnd?: JSX.Element;
+  /** Mention candidates for the field: pass the roster and the summon
+   * character(s) (`@` unless told otherwise) and the vessel rides the
+   * textarea. While candidates are up, Enter inserts and the send waits. */
+  mentions?: {
+    items: MentionEntry[];
+    trigger?: string;
+    triggers?: MentionTriggers;
+    insertOnSelect?: boolean;
+  };
+  /** A candidate was chosen, including when `mentions.insertOnSelect`
+   * keeps the composer text untouched. */
+  onSelect?: (entry: MentionEntry) => void;
 }
 
 /** The prompt vessel: the shared field textarea — self-growing on the
@@ -75,9 +90,32 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
     "trailing",
     "footer",
     "footerEnd",
+    "mentions",
+    "onSelect",
   ]);
 
   const messages = useComponentMessages();
+  const hostId = useElementId("ai-prompt", () => rest.id);
+  const mentionsId = () => `${hostId()}:mentions`;
+  const [fieldEl, setFieldEl] = createSignal<HTMLTextAreaElement | null>(null);
+
+  const mentions = useMentions(
+    () => ({
+      items: own.mentions?.items ?? [],
+      trigger: own.mentions?.trigger,
+      triggers: own.mentions?.triggers,
+    }),
+    fieldEl,
+    {
+      getText: () => fieldEl()?.value ?? own.value ?? "",
+      setText: (next) => own.onValueChange?.(next),
+      select: (entry) => {
+        own.onSelect?.(entry);
+        return own.mentions?.insertOnSelect !== false;
+      },
+    },
+  );
+  const mentionsActive = () => own.mentions != null;
 
   const send = () => {
     const value = (own.value ?? "").trim();
@@ -140,14 +178,25 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
         {row("prompt-leading", own.leading)}
         <Field.Root>
           <Field.Textarea
+            ref={(node) => setFieldEl(node)}
             autoresize
             rows={1}
             value={own.value ?? ""}
             placeholder={own.placeholder ?? messages().ai.send}
             aria-label={messages().ai.conversation}
+            aria-expanded={mentions.open()}
+            aria-controls={mentions.open() ? `${mentionsId()}:popup` : undefined}
             disabled={own.disabled}
-            onInput={(event) => own.onValueChange?.(event.currentTarget.value)}
+            onInput={(event) => {
+              own.onValueChange?.(event.currentTarget.value);
+              mentions.onInput();
+            }}
             onKeyDown={(event) => {
+              // IME Enter is composition, not a send.
+              if (event.isComposing || event.keyCode === 229) return;
+              // The candidates eat their keys first; only on a
+              // quiet field does Enter become the send.
+              if (mentions.onKeydown(event)) return;
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
                 send();
@@ -155,6 +204,20 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
             }}
           />
         </Field.Root>
+        <Show when={mentionsActive()}>
+          <MentionsVessel
+            open={mentions.open()}
+            matches={mentions.matches()}
+            active={mentions.active()}
+            anchor={fieldEl()}
+            id={mentionsId()}
+            onInsert={mentions.insert}
+            onActiveChange={mentions.setActive}
+            onOpenChange={(open) => {
+              if (!open) mentions.close();
+            }}
+          />
+        </Show>
         {row("prompt-trailing", trailing())}
       </div>
       <Show when={own.footer != null}>

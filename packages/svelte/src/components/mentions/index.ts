@@ -18,6 +18,7 @@ export { useMentions } from "./use-mentions.svelte";
 
 export type {
   MentionEntry,
+  MentionTriggers,
   MentionsProps,
   MentionsVesselProps,
   UseMentionsHandlers,

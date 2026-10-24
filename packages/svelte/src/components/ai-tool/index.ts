@@ -7,4 +7,4 @@ import AiToolComponent from "./AiTool.svelte";
 export const AiTool = withSelfRoot(AiToolComponent);
 export { AiTool as Tool };
 
-export type { ToolProps, ToolStatus } from "./props";
+export type { ToolApproval, ToolProps, ToolStatus, ToolValue } from "./props";

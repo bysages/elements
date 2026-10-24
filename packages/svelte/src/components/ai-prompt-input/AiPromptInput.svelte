@@ -6,6 +6,7 @@ import { Button } from "../button";
 import { Field } from "../field";
 import InternalIcon from "../../internal/InternalIcon.svelte";
 import { iconHtml } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { MentionsVessel, useMentions } from "../mentions";
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -22,6 +23,7 @@ let {
   disabled = false,
   busy = false,
   mentions,
+  onSelect,
   header,
   leading,
   trailing,
@@ -30,19 +32,31 @@ let {
   ...rest
 }: PromptInputProps = $props();
 
+const generatedId = $props.id();
+const hostId = $derived(useElementId("ai-prompt", generatedId, rest.id));
+const mentionsId = $derived(`${hostId}:mentions`);
+
 let textareaEl = $state<HTMLTextAreaElement | null>(null);
 
 const messages = useComponentMessages();
 const placeholderText = $derived(placeholder ?? messages().ai.send);
 
 const mentionState = useMentions(
-  () => ({ items: mentions?.items ?? [], trigger: mentions?.trigger }),
+  () => ({
+    items: mentions?.items ?? [],
+    trigger: mentions?.trigger,
+    triggers: mentions?.triggers,
+  }),
   () => textareaEl,
   {
     getText: () => textareaEl?.value ?? value,
     setText: (next: string) => {
       value = next;
       onValueChange?.(next);
+    },
+    select: (entry: MentionEntry) => {
+      onSelect?.(entry);
+      return mentions?.insertOnSelect !== false;
     },
   },
 );
@@ -99,6 +113,7 @@ back the text. Enter sends; Shift+Enter breaks the line. While `busy`
 the seal becomes a stop seal and Enter holds its breath. -->
 <form
   {...rest}
+  id={hostId}
   data-scope="ai"
   data-part="prompt"
   onsubmit={(event) => {
@@ -121,9 +136,13 @@ the seal becomes a stop seal and Enter holds its breath. -->
         rows={1}
         {placeholderText}
         aria-label={messages().ai.conversation}
+        aria-expanded={mentionState.open ? "true" : undefined}
+        aria-controls={mentionState.open ? `${mentionsId}:popup` : undefined}
         {disabled}
         oninput={() => mentionState.onInput()}
         onkeydown={(event) => {
+          // IME Enter is composition, not a send.
+          if (event.isComposing || event.keyCode === 229) return;
           // The candidates eat their keys first; only on a quiet
           // field does Enter become the send.
           if (mentionState.onKeydown(event)) return;
@@ -136,6 +155,7 @@ the seal becomes a stop seal and Enter holds its breath. -->
     </Field.Root>
     {#if mentionsActive}
       <MentionsVessel
+        id={mentionsId}
         open={mentionState.open}
         matches={mentionState.matches}
         active={mentionState.active}
@@ -168,4 +188,3 @@ the seal becomes a stop seal and Enter holds its breath. -->
     </div>
   {/if}
 </form>
-

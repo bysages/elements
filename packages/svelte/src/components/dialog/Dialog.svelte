@@ -4,11 +4,14 @@ import { Portal } from "@ark-ui/svelte/portal";
 
 import { iconHtml } from "../../internal/icon";
 
+import DialogBody from "./DialogBody.svelte";
+import DialogHeader from "./DialogHeader.svelte";
 import DialogRoot from "./DialogRoot.svelte";
 
 let {
   open = $bindable(),
   trigger = "Open",
+  content,
   label,
   description,
   disabled = false,
@@ -17,6 +20,7 @@ let {
 }: {
   open?: boolean;
   trigger?: string;
+  content?: string;
   label?: string;
   description?: string;
   disabled?: boolean;
@@ -30,9 +34,14 @@ let {
     <ArkDialog.Backdrop />
     <ArkDialog.Positioner>
       <ArkDialog.Content>
-        <ArkDialog.Title>{label ?? trigger}</ArkDialog.Title>
-        {#if description}<ArkDialog.Description>{description}</ArkDialog.Description>{/if}
-        {@render children?.()}
+        <DialogHeader>
+          <ArkDialog.Title>{label ?? trigger}</ArkDialog.Title>
+          {#if description}<ArkDialog.Description>{description}</ArkDialog.Description>{/if}
+        </DialogHeader>
+        <DialogBody>
+          {#if content}<p>{content}</p>{/if}
+          {@render children?.()}
+        </DialogBody>
         <ArkDialog.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkDialog.CloseTrigger>
       </ArkDialog.Content>
     </ArkDialog.Positioner>

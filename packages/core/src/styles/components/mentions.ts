@@ -90,6 +90,52 @@ export const mentionsCss = /* css */ `
   background: var(--bs-color-surface-0);
 }
 
+[data-scope="mentions"][data-part="option"][data-disabled] {
+  color: var(--bs-color-text-disabled);
+  cursor: not-allowed;
+}
+
+[data-scope="mentions"][data-part="group"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-gap-xs);
+  padding-block-start: var(--bs-padding-xs);
+}
+
+[data-scope="mentions"][data-part="group-label"] {
+  padding: 0 var(--bs-padding-sm);
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-semibold);
+  letter-spacing: var(--bs-tracking-label);
+  text-transform: uppercase;
+}
+
+[data-scope="mentions"][data-part="option-main"] {
+  display: grid;
+  flex: 1;
+  min-inline-size: 0;
+  gap: 0;
+}
+
+[data-scope="mentions"][data-part="option-label"],
+[data-scope="mentions"][data-part="option-description"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-scope="mentions"][data-part="option-description"] {
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+  line-height: var(--bs-line-height-snug);
+}
+
+[data-scope="mentions"][data-part="option-kind"] {
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+}
+
 /* Size rungs: the root's data-size re-points the resting measure of
    the field and the rows inside its vessel. */
 [data-scope="mentions"][data-part="root"][data-size="sm"] [data-part="textarea"] {

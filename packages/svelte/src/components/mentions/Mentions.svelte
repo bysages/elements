@@ -6,31 +6,42 @@ import { Field } from "../field";
 
 import MentionsVessel from "./MentionsVessel.svelte";
 import { useMentions } from "./use-mentions.svelte";
+import { useElementId } from "../../internal/id";
 import type { MentionsProps } from "./props";
 
 let {
   items = [],
   value = $bindable(""),
   trigger = "@",
+  triggers,
+  insertOnSelect = true,
   placeholder,
   autoresize = false,
   invalid = false,
   size = "md",
   onValueChange,
+  onSelect,
   ...rest
 }: MentionsProps = $props();
+
+const generatedId = $props.id();
+const hostId = $derived(useElementId("mentions", generatedId, rest.id));
 
 // The field part's element — the caret's home and the vessel's anchor.
 let textareaEl = $state<HTMLTextAreaElement | null>(null);
 
 const mentions = useMentions(
-  () => ({ items, trigger }),
+  () => ({ items, trigger, triggers }),
   () => textareaEl,
   {
     getText: () => textareaEl?.value ?? value,
     setText: (next) => {
       value = next;
       onValueChange?.(next);
+    },
+    select: (entry) => {
+      onSelect?.(entry);
+      return insertOnSelect;
     },
   },
 );
@@ -42,10 +53,10 @@ function onInput(event: Event & { currentTarget: HTMLTextAreaElement }) {
 </script>
 
 <!-- @-mentions: a plain textarea that, when the text before the caret
-ends with the trigger character followed by a token, offers the
-matching candidates in a small anchored vessel; choosing one replaces
-the token with `trigger + label` and hands the whole text back through
-`bind:value`. Arrows move, Enter inserts, Escape dismisses.
+ends with a trigger character followed by a token, offers the matching
+candidates in a small anchored vessel; choosing one replaces the token
+with the same trigger and the candidate's label. Arrows move, Enter or
+Space inserts, Escape dismisses.
 
 The field is the shared `Field.Textarea` — field wiring (label ids,
 the invalid state, autoresize) rides on it for free — and the vessel
@@ -54,8 +65,9 @@ coordinates; caret-precise positioning would need a second positioning
 system for no practical gain at typical field sizes. Composers that
 keep their own field anatomy (the AI prompt input) skip this shell and
 wire `useMentions` plus `MentionsVessel` themselves. -->
-<div {...rest} data-scope="mentions" data-part="root" data-size={size}>
+<div {...rest} id={hostId} data-scope="mentions" data-part="root" data-size={size}>
   <MentionsVessel
+    id={`${hostId}:vessel`}
     open={mentions.open}
     matches={mentions.matches}
     active={mentions.active}
@@ -74,6 +86,8 @@ wire `useMentions` plus `MentionsVessel` themselves. -->
         autoresize={autoresize}
         rows={3}
         {placeholder}
+        aria-expanded={mentions.open ? "true" : undefined}
+        aria-controls={mentions.open ? `${hostId}:vessel:popup` : undefined}
         aria-invalid={invalid ? "true" : undefined}
         data-scope="mentions"
         data-part="textarea"
@@ -83,4 +97,3 @@ wire `useMentions` plus `MentionsVessel` themselves. -->
     {/snippet}
   </MentionsVessel>
 </div>
-

@@ -13,9 +13,11 @@ function vessel(title: string, description: string, ...extra: any[]) {
     h(Dialog.Backdrop),
     h(Dialog.Positioner, () =>
       h(Dialog.Content, () => [
-        h(Dialog.Title, () => title),
-        h(Dialog.Description, () => description),
-        ...extra,
+        h(Dialog.Header, () => [
+          h(Dialog.Title, () => title),
+          h(Dialog.Description, () => description),
+        ]),
+        h(Dialog.Body, () => [...extra]),
         h(Dialog.CloseTrigger, () => "×"),
       ]),
     ),
@@ -69,6 +71,26 @@ export const Anatomy = {
           ],
         ),
     ),
+};
+
+/** Header, Body and Footer name the sections when the anatomy needs
+ * shared layout or consumer-owned styles. */
+export const Semantics = {
+  render: () =>
+    h(Dialog.Root, {}, () => [
+      trigger("Open semantics"),
+      h(Dialog.Backdrop),
+      h(Dialog.Positioner, () =>
+        h(Dialog.Content, () => [
+          h(Dialog.Header, () => [
+            h(Dialog.Title, () => "Semantic sections"),
+            h(Dialog.Description, () => "Header, Body and Footer stay first-class parts."),
+          ]),
+          h(Dialog.Body, () => h("p", () => "Body copy keeps the sheet's reading rhythm.")),
+          h(Dialog.Footer, {}, () => [h(Dialog.CloseTrigger, () => "Acknowledge")]),
+        ]),
+      ),
+    ]),
 };
 
 /** The dialog answers to state — open and close belong to the caller. */

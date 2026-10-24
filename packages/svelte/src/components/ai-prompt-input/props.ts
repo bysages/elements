@@ -1,7 +1,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-import type { MentionEntry } from "../mentions";
+import type { MentionEntry, MentionTriggers } from "../mentions";
 
 export interface PromptInputProps extends HTMLAttributes<HTMLFormElement> {
   /** The draft in the vessel — bind `value`; it clears itself on a
@@ -18,11 +18,18 @@ export interface PromptInputProps extends HTMLAttributes<HTMLFormElement> {
   /** The machine is working — the seal becomes a stop seal and Enter
    * holds its breath. */
   busy?: boolean;
-  /** Mention candidates for the field: pass the roster and the summon
-   * character (`@` unless told otherwise) and the vessel rides the
-   * textarea. While candidates are up, Enter inserts and the send
-   * waits. */
-  mentions?: { items: MentionEntry[]; trigger?: string };
+  /** Mention candidates for the field: pass the roster, the summon
+   * character(s) (`@` unless told otherwise), and whether a selection
+   * rewrites the composer text. While candidates are up, Enter inserts
+   * and the send waits. */
+  mentions?: {
+    items: MentionEntry[];
+    trigger?: string;
+    triggers?: MentionTriggers;
+    insertOnSelect?: boolean;
+  };
+  /** A candidate was confirmed; the whole entry rides back. */
+  onSelect?: (entry: MentionEntry) => void;
   /** Attachments riding above the text. */
   header?: Snippet;
   /** The tools at the text's left. */

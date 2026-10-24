@@ -9,6 +9,30 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/vue/dialog";
 
+function part(name: string, tag: string) {
+  return defineComponent({
+    name: "Dialog" + name,
+    inheritAttrs: false,
+    setup(_, ctx) {
+      injectComponentStyle("dialog");
+
+      return () =>
+        h(
+          tag,
+          { ...ctx.attrs, "data-scope": "dialog", "data-part": name.toLowerCase() },
+          ctx.slots.default?.(),
+        );
+    },
+  });
+}
+
+/** A semantic section for the dialog's title and description. */
+const Header = part("Header", "header");
+/** The dialog's principal content; it may shrink inside narrow sheets. */
+const Body = part("Body", "div");
+/** The dialog's action row; actions read from start to end. */
+const Footer = part("Footer", "footer");
+
 /** Dialog, dressed in the paper-and-ink system: the sheet dissolves
  * in on elevation, the backdrop fades, and nested overlays stack through
  * the shared z-index ladder. The parts — Root, Trigger,
@@ -63,10 +87,14 @@ const DialogFacade = defineComponent({
           h(ArkDialog.Backdrop),
           h(ArkDialog.Positioner, () =>
             h(ArkDialog.Content, () => [
-              h(ArkDialog.Title, () => title),
-              props.description ? h(ArkDialog.Description, () => props.description) : null,
-              props.content ? h("p", () => props.content) : null,
-              ctx.slots.default?.(),
+              h(Header, () => [
+                h(ArkDialog.Title, () => title),
+                props.description ? h(ArkDialog.Description, () => props.description) : null,
+              ]),
+              h(Body, () => [
+                props.content ? h("p", () => props.content) : null,
+                ctx.slots.default?.(),
+              ]),
               h(ArkDialog.CloseTrigger, { "aria-label": "Close" }, () =>
                 iconNode("x", { width: 14, height: 14 }),
               ),
@@ -78,7 +106,18 @@ const DialogFacade = defineComponent({
   },
 });
 
-export const Dialog = defineFamily(DialogFacade, { ...ArkDialog, Root: DialogRoot } as unknown as {
+export const Dialog = defineFamily(DialogFacade, {
+  ...ArkDialog,
+  Root: DialogRoot,
+  Header,
+  Body,
+  Footer,
+} as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root"> & { Root: typeof DialogRoot };
+  Omit<typeof ArkDialog, "Root"> & {
+    Root: typeof DialogRoot;
+    Header: Component;
+    Body: Component;
+    Footer: Component;
+  };

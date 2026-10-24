@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import { For, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
+import { For, Show, createEffect, createSignal, onMount, splitProps, type JSX } from "solid-js";
 
 import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -11,6 +11,8 @@ export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
   prompt?: string;
   placeholder?: string;
   label?: string;
+  /** Treat the transcript as output only; no command line mounts. */
+  readOnly?: boolean;
   onCommand?: (text: string) => void;
 }
 
@@ -21,12 +23,21 @@ export interface TerminalProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 
 export const Terminal = withSelfRoot(function Terminal(props: TerminalProps) {
   const messages = useComponentMessages();
   injectComponentStyle("terminal");
-  const [own, rest] = splitProps(props, ["lines", "prompt", "placeholder", "label", "onCommand"]);
+  const [own, rest] = splitProps(props, [
+    "lines",
+    "prompt",
+    "placeholder",
+    "label",
+    "readOnly",
+    "onCommand",
+  ]);
   const [draft, setDraft] = createSignal("");
   const [scroll, setScroll] = createSignal<HTMLDivElement | null>(null);
   onMount(() => {
     createEffect(() => {
-      if (own.lines?.length === undefined) return;
+      // Watching the joined transcript catches replacements inside an
+      // array, not only a change in how many lines it holds.
+      (own.lines ?? []).join("\n");
       scroll()?.scrollTo({ top: scroll()?.scrollHeight });
     });
   });
@@ -37,7 +48,14 @@ export const Terminal = withSelfRoot(function Terminal(props: TerminalProps) {
     own.onCommand?.(text);
   }
   return (
-    <div {...rest} role="log" aria-label={own.label} data-scope="terminal" data-part="root">
+    <div
+      {...rest}
+      {...(own.readOnly ? { "data-readonly": "" } : {})}
+      role="log"
+      aria-label={own.label}
+      data-scope="terminal"
+      data-part="root"
+    >
       <div ref={setScroll} data-scope="terminal" data-part="scroll">
         <For each={own.lines}>
           {(line) => (
@@ -47,27 +65,29 @@ export const Terminal = withSelfRoot(function Terminal(props: TerminalProps) {
           )}
         </For>
       </div>
-      <div data-scope="terminal" data-part="entry">
-        <span data-scope="terminal" data-part="sigil" aria-hidden="true">
-          {own.prompt ?? "$"}
-        </span>
-        <input
-          data-scope="terminal"
-          data-part="input"
-          value={draft()}
-          placeholder={own.placeholder}
-          aria-label={own.label ?? messages().terminal.commandLine}
-          spellcheck={false}
-          autocomplete="off"
-          onInput={(event) => setDraft(event.currentTarget.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              submit();
-            }
-          }}
-        />
-      </div>
+      <Show when={!own.readOnly}>
+        <div data-scope="terminal" data-part="entry">
+          <span data-scope="terminal" data-part="sigil" aria-hidden="true">
+            {own.prompt ?? "$"}
+          </span>
+          <input
+            data-scope="terminal"
+            data-part="input"
+            value={draft()}
+            placeholder={own.placeholder}
+            aria-label={own.label ?? messages().terminal.commandLine}
+            spellcheck={false}
+            autocomplete="off"
+            onInput={(event) => setDraft(event.currentTarget.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                submit();
+              }
+            }}
+          />
+        </div>
+      </Show>
     </div>
   );
 });

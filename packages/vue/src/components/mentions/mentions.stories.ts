@@ -84,3 +84,53 @@ export const WithField = {
         ]);
     }),
 };
+
+/** Several triggers and rich rows: `@` finds people, `/` finds commands,
+ * and grouping gives the vessel a stable reading order. */
+export const Groups = {
+  render: () =>
+    withState(() => {
+      const text = ref("");
+      return () => [
+        h(Mentions as never, {
+          items: [
+            {
+              label: "Lin Hua",
+              value: "lin",
+              group: "People",
+              description: "Design systems",
+              icon: "pencil",
+            },
+            {
+              label: "Mei Chen",
+              value: "mei",
+              group: "People",
+              description: "Editorial",
+              icon: "pencil",
+            },
+            {
+              label: "Search web",
+              value: "search-web",
+              group: "Commands",
+              description: "Find current sources",
+              icon: "file",
+              insertText: "/search-web ",
+            },
+          ],
+          triggers: ["@", "/"],
+          placeholder: "Mention @Lin or run /Search…",
+          modelValue: text.value,
+          "onUpdate:modelValue": (value: string) => (text.value = value),
+        }),
+        h(
+          "p",
+          {
+            role: "status",
+            style:
+              "margin-block-start: var(--bs-space-4); font-size: var(--bs-font-size-sm); color: var(--bs-color-text-tertiary);",
+          },
+          () => (text.value ? `Field holds: ${text.value}` : "Type @ or / to see groups."),
+        ),
+      ];
+    }),
+};

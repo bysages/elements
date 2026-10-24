@@ -15,6 +15,10 @@ export type ComponentMessages = {
     copyCode: string;
     copied: string;
     removeAttachment: string;
+    input: string;
+    output: string;
+    approve: string;
+    deny: string;
   };
   banner: { dismiss: string };
   breadcrumb: { label: string };
@@ -61,6 +65,10 @@ const ENGLISH_MESSAGES: ComponentMessages = {
     copyCode: "Copy code",
     copied: "Copied",
     removeAttachment: "Remove {name}",
+    input: "Input",
+    output: "Output",
+    approve: "Approve",
+    deny: "Deny",
   },
   banner: { dismiss: "Dismiss" },
   breadcrumb: { label: "Breadcrumb" },
@@ -115,6 +123,10 @@ const CHINESE_MESSAGES: ComponentMessages = {
     copyCode: "复制代码",
     copied: "已复制",
     removeAttachment: "移除 {name}",
+    input: "输入",
+    output: "输出",
+    approve: "批准",
+    deny: "拒绝",
   },
   banner: { dismiss: "关闭" },
   breadcrumb: { label: "面包屑" },

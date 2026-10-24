@@ -80,10 +80,24 @@ export const dialogCss =
   line-height: var(--bs-line-height-snug);
 }
 
+[data-scope="dialog"][data-part="header"] {
+  display: grid;
+  gap: var(--bs-gap-sm);
+}
+
+[data-scope="dialog"][data-part="body"] {
+  min-inline-size: 0;
+}
+
+[data-scope="dialog"][data-part="footer"] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--bs-gap-sm);
+}
+
 [data-scope="dialog"][data-part="description"] {
-  /* The description belongs to the title, not to the body — pull it out
-     of the section rhythm so the pair reads as one header (8px). */
-  margin: calc(var(--bs-margin-sm) - var(--bs-margin-lg)) 0 0;
+  margin: 0;
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
   line-height: var(--bs-line-height-relaxed);

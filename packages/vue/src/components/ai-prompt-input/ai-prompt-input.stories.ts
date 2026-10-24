@@ -338,3 +338,59 @@ export const Mentions = {
         );
     }),
 };
+
+/** Slash commands can report selection without rewriting the prompt:
+ * the consumer receives the whole entry and owns the next action. */
+export const Triggers = {
+  render: () =>
+    withState(() => {
+      const state = reactive({ prompt: "", chosen: "" });
+      const items = [
+        { label: "Lin Hua", value: "lin" },
+        {
+          label: "Search web",
+          value: "search-web",
+          group: "Commands",
+          description: "Find current sources",
+        },
+      ];
+      return () =>
+        h(
+          "div",
+          {
+            style: {
+              display: "grid",
+              gap: "0.75rem",
+              inlineSize: "100%",
+              maxInlineSize: "46rem",
+            },
+          },
+          [
+            h(AiPromptInput, {
+              modelValue: state.prompt,
+              placeholder: "Type @ to mention or / to command…",
+              mentions: { items, triggers: ["@", "/"], insertOnSelect: false },
+              "onUpdate:modelValue": (value: string) => {
+                state.prompt = value;
+              },
+              onSelect: (entry: { label: string }) => {
+                state.chosen = entry.label;
+              },
+            }),
+            h(
+              "p",
+              {
+                role: "status",
+                style: {
+                  fontSize: "var(--bs-font-size-sm)",
+                  color: "var(--bs-color-text-tertiary)",
+                },
+              },
+              state.chosen
+                ? `Selected: ${state.chosen}`
+                : "The text stays untouched after selection.",
+            ),
+          ],
+        );
+    }),
+};

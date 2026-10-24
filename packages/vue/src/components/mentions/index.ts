@@ -1,12 +1,13 @@
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h, ref, type PropType, type Ref } from "vue";
+import { computed, defineComponent, h, ref, type PropType, type Ref } from "vue";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Field } from "../field";
+import { Icon } from "../icon";
 import { Popover } from "../popover";
 import { useMentions } from "./use-mentions";
 
@@ -14,18 +15,42 @@ export type { UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {
+  /** Stable identity for tests, popups and business handlers. */
+  id?: string;
+  /** The primary words shown in the popup and inserted by default. */
   label: string;
+  /** The semantic value reported by the field. */
   value: string;
+  /** One line of supporting copy under the label. */
+  description?: string;
+  /** A curated core icon name. */
+  icon?: string;
+  /** Optional section heading; entries with the same heading travel together. */
+  group?: string;
+  /** The consumer's coarse entry type, such as `file`, `agent` or `command`. */
+  kind?: string;
+  /** A visible candidate the keyboard and pointer cannot choose. */
+  disabled?: boolean;
+  /** Exact composer text to insert; it bypasses `trigger + label`. */
+  insertText?: string;
+  /** Extra consumer data carried back through `select`. */
+  meta?: Record<string, unknown>;
 }
 
+export type MentionTriggers = string | string[];
+
 export interface MentionsProps {
-  /** The candidates offered once the trigger character is typed. */
+  /** The candidates offered once a trigger character is typed. */
   items: MentionEntry[];
   /** The text held by the field. Supply it to control the field;
    * changes are reported via `update:modelValue`. */
   modelValue?: string;
   /** The character that summons the candidates. */
   trigger?: string;
+  /** One or more summoning characters, such as `@` and `/`. */
+  triggers?: MentionTriggers;
+  /** Keep composer text untouched when a candidate is selected. */
+  insertOnSelect?: boolean;
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -52,42 +77,121 @@ const MentionsPopup = defineComponent({
     "update:active": (_index: number) => true,
   },
   setup(props, ctx) {
-    return () =>
-      h(
+    const id = useElementId("mentions-popup", ctx.attrs);
+    const groups = computed(() => {
+      const ordered: Array<{
+        name: string;
+        entries: Array<{ entry: MentionEntry; index: number }>;
+      }> = [];
+      const byName = new Map<
+        string,
+        { name: string; entries: Array<{ entry: MentionEntry; index: number }> }
+      >();
+
+      props.matches.forEach((entry, index) => {
+        const name = entry.group ?? "";
+        const group = byName.get(name);
+        if (group) group.entries.push({ entry, index });
+        else {
+          const next = { name, entries: [{ entry, index }] };
+          byName.set(name, next);
+          ordered.push(next);
+        }
+      });
+      return ordered;
+    });
+
+    const optionId = (index: number) => `${id.value}:option-${index}`;
+
+    return () => {
+      const activeEntry = props.matches[props.active];
+      return h(
         "div",
         {
           ...ctx.attrs,
+          id: id.value,
           "data-scope": "mentions",
           "data-part": "popup",
           "data-size": props.size,
           role: "listbox",
+          "aria-activedescendant":
+            activeEntry && !activeEntry.disabled ? optionId(props.active) : undefined,
         },
-        props.matches.map((entry, index) =>
-          h(
-            "div",
-            {
-              key: entry.value,
-              role: "option",
-              "aria-selected": index === props.active,
-              tabindex: -1,
-              "data-scope": "mentions",
-              "data-part": "option",
-              "data-active": index === props.active ? "" : undefined,
-              onMouseEnter: () => ctx.emit("update:active", index),
-              // The pointer confirms without moving the
-              // keyboard's active row out from under it.
-              onMouseDown: (event: MouseEvent) => event.preventDefault(),
-              onClick: () => ctx.emit("insert", entry),
-              onKeyDown: (event: KeyboardEvent) => {
-                if (event.key !== "Enter" && event.key !== " ") return;
-                event.preventDefault();
-                ctx.emit("insert", entry);
+        groups.value.flatMap((group, groupIndex) => {
+          const labelId = group.name ? `${id.value}:group-${groupIndex}` : undefined;
+          const options = group.entries.map(({ entry, index }) =>
+            h(
+              "div",
+              {
+                key: `${entry.id ?? entry.value}:${index}`,
+                id: optionId(index),
+                role: "option",
+                "aria-selected": index === props.active && !entry.disabled,
+                "aria-disabled": entry.disabled ? "true" : undefined,
+                tabindex: -1,
+                "data-scope": "mentions",
+                "data-part": "option",
+                "data-active": index === props.active && !entry.disabled ? "" : undefined,
+                "data-disabled": entry.disabled ? "" : undefined,
+                onMouseEnter: () => {
+                  if (!entry.disabled) ctx.emit("update:active", index);
+                },
+                // Confirm on press, before the floating vessel can tear
+                // down; focus stays on the field.
+                onMouseDown: (event: MouseEvent) => {
+                  if (event.button !== 0) return;
+                  event.preventDefault();
+                  if (!entry.disabled) ctx.emit("insert", entry);
+                },
+                onKeyDown: (event: KeyboardEvent) => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  if (!entry.disabled) ctx.emit("insert", entry);
+                },
               },
-            },
-            () => entry.label,
-          ),
-        ),
+              () => [
+                entry.icon ? h(Icon, { name: entry.icon }) : null,
+                h("span", { "data-scope": "mentions", "data-part": "option-main" }, [
+                  h("span", { "data-scope": "mentions", "data-part": "option-label" }, entry.label),
+                  entry.description
+                    ? h(
+                        "span",
+                        { "data-scope": "mentions", "data-part": "option-description" },
+                        entry.description,
+                      )
+                    : null,
+                ]),
+                entry.kind
+                  ? h("span", { "data-scope": "mentions", "data-part": "option-kind" }, entry.kind)
+                  : null,
+              ],
+            ),
+          );
+
+          if (!group.name) return options;
+          return [
+            h(
+              "div",
+              {
+                key: `group:${group.name}`,
+                role: "group",
+                "aria-labelledby": labelId,
+                "data-scope": "mentions",
+                "data-part": "group",
+              },
+              [
+                h(
+                  "div",
+                  { id: labelId, "data-scope": "mentions", "data-part": "group-label" },
+                  group.name,
+                ),
+                ...options,
+              ],
+            ),
+          ];
+        }),
       );
+    };
   },
 });
 
@@ -121,6 +225,7 @@ export const MentionsVessel = withSelfRoot(
           withPresenceRoot(ArkPopover.Root as never),
           withPresenceEnter({
             id: id.value,
+            ids: { content: `${id.value}:popup` },
             open: props.open,
             "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
             positioning: {
@@ -132,6 +237,7 @@ export const MentionsVessel = withSelfRoot(
             h(ArkPopover.Positioner, () =>
               h(ArkPopover.Content, { asChild: true }, () =>
                 h(MentionsPopup, {
+                  id: `${id.value}:popup`,
                   size: props.size,
                   matches: props.matches,
                   active: props.active,
@@ -147,11 +253,11 @@ export const MentionsVessel = withSelfRoot(
 );
 
 /**
- * @-mentions: a plain textarea that, when the text before the caret ends
- * with the trigger character followed by a token, offers the matching
- * candidates in a small anchored vessel; choosing one replaces the token
- * with `trigger + label` and hands the whole text back through
- * `update:modelValue`. Arrows move, Enter inserts, Escape dismisses.
+ * Mentions: a textarea that, when the text before the caret ends with a
+ * trigger character followed by a token, offers matching candidates in a
+ * small anchored vessel. Entries may carry descriptions, icons, groups
+ * and consumer metadata. Selecting reports the whole entry; by default it
+ * also replaces the token with `trigger + label`.
  *
  * The field is the shared `Field.Textarea` — field wiring (label ids,
  * the invalid state, autoresize) rides on it for free — and the vessel
@@ -168,6 +274,8 @@ const MentionsFacade = defineComponent({
     items: { type: Array as PropType<MentionEntry[]>, default: () => [] },
     modelValue: { type: String, default: undefined },
     trigger: { type: String, default: "@" },
+    triggers: { type: [String, Array] as PropType<MentionTriggers>, default: undefined },
+    insertOnSelect: { type: Boolean, default: true },
     placeholder: { type: String, default: undefined },
     autoresize: { type: Boolean, default: false },
     invalid: { type: Boolean, default: false },
@@ -176,6 +284,7 @@ const MentionsFacade = defineComponent({
   },
   emits: {
     "update:modelValue": (_value: string) => true,
+    select: (_entry: MentionEntry) => true,
   },
   setup(props, ctx: SetupContext) {
     // Mirrors the controlled value when the caller does not pass one.
@@ -191,13 +300,25 @@ const MentionsFacade = defineComponent({
 
     const value = () => props.modelValue ?? internal.value;
 
-    const mentions = useMentions(() => ({ items: props.items, trigger: props.trigger }), el, {
-      getText: () => el()?.value ?? value(),
-      setText: (next) => {
-        internal.value = next;
-        ctx.emit("update:modelValue", next);
+    const mentions = useMentions(
+      () => ({
+        items: props.items,
+        trigger: props.trigger,
+        triggers: props.triggers,
+      }),
+      el,
+      {
+        getText: () => el()?.value ?? value(),
+        setText: (next) => {
+          internal.value = next;
+          ctx.emit("update:modelValue", next);
+        },
+        select: (entry) => {
+          ctx.emit("select", entry);
+          return props.insertOnSelect;
+        },
       },
-    });
+    );
 
     const onInput = () => {
       const node = el();
@@ -222,6 +343,7 @@ const MentionsFacade = defineComponent({
             withPresenceRoot(ArkPopover.Root as never),
             withPresenceEnter({
               id: `${hostId.value}:vessel`,
+              ids: { content: `${hostId.value}:vessel:popup` },
               open: mentions.open.value,
               "onUpdate:open": (open: boolean) => {
                 if (!open) mentions.close();
@@ -236,6 +358,8 @@ const MentionsFacade = defineComponent({
                   rows: 3,
                   placeholder: props.placeholder,
                   modelValue: value(),
+                  "aria-expanded": mentions.open.value,
+                  "aria-controls": mentions.open.value ? `${hostId.value}:vessel:popup` : undefined,
                   "onUpdate:modelValue": (next: string) => {
                     internal.value = next;
                     ctx.emit("update:modelValue", next);
@@ -249,6 +373,7 @@ const MentionsFacade = defineComponent({
               h(ArkPopover.Positioner, () =>
                 h(ArkPopover.Content, { asChild: true }, () =>
                   h(MentionsPopup, {
+                    id: `${hostId.value}:vessel:popup`,
                     size: props.size,
                     matches: mentions.matches.value,
                     active: mentions.active.value,

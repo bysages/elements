@@ -22,14 +22,31 @@ export function useMentions(
     active: 0,
   });
 
-  // Where the trigger character sits, and where the caret was — the
-  // token between them is what a choice replaces.
+  // Where the trigger character sits, where the caret was, and which of
+  // the summoning characters opened the live token.
   let anchorIndex = 0;
   let caretIndex = 0;
+  let activeTrigger = "@";
+
+  function triggers(): string[] {
+    const value = options().triggers ?? options().trigger ?? "@";
+    const all = Array.isArray(value) ? value : [value];
+    return all.filter((trigger): trigger is string => trigger.length > 0);
+  }
 
   function closePopup() {
     state.open = false;
     state.matches = [];
+  }
+
+  function moveActive(delta: 1 | -1) {
+    const enabled = state.matches
+      .map((entry, index) => ({ entry, index }))
+      .filter(({ entry }) => !entry.disabled);
+    if (enabled.length === 0) return;
+    const position = enabled.findIndex(({ index }) => index === state.active);
+    const next = position === -1 ? 0 : (position + delta + enabled.length) % enabled.length;
+    state.active = enabled[next]?.index ?? 0;
   }
 
   function detect() {
@@ -38,35 +55,51 @@ export function useMentions(
     const caret = el?.selectionStart ?? text.length;
     caretIndex = caret;
     const head = text.slice(0, caret);
-    const char = options().trigger ?? "@";
-    const anchor = head.lastIndexOf(char);
-    const token = anchor === -1 ? "" : head.slice(anchor + char.length);
+    const candidates = triggers()
+      .map((trigger) => ({ trigger, anchor: head.lastIndexOf(trigger) }))
+      .filter((candidate) => candidate.anchor !== -1)
+      .sort((left, right) => right.anchor - left.anchor || right.trigger.length - left.trigger.length);
+    const found = candidates[0];
+    const token = found ? head.slice(found.anchor + found.trigger.length) : "";
+
     // A token ends at the first space: mentions name one subject.
-    if (anchor === -1 || /\s/.test(token)) {
+    if (!found || /\s/.test(token)) {
       closePopup();
       return;
     }
-    const found = options().items.filter((entry) =>
-      entry.label.toLowerCase().startsWith(token.toLowerCase()),
+
+    const query = token.toLowerCase();
+    const roster = options().items.filter(
+      (entry) =>
+        entry.label.toLowerCase().startsWith(query) ||
+        entry.value.toLowerCase().startsWith(query),
     );
-    state.matches = found;
-    state.active = 0;
-    anchorIndex = anchor;
-    state.open = found.length > 0;
+    state.matches = roster;
+    state.active = roster.findIndex((entry) => !entry.disabled);
+    anchorIndex = found.anchor;
+    activeTrigger = found.trigger;
+    state.open = roster.length > 0;
   }
 
   async function insert(entry: MentionEntry) {
+    if (entry.disabled || handlers.select?.(entry) === false) {
+      closePopup();
+      return;
+    }
+
     const text = handlers.getText();
-    const char = options().trigger ?? "@";
+    const trigger = activeTrigger;
+    const replacement = entry.insertText ?? trigger + entry.label;
+    const suffix = entry.insertText == null ? " " : "";
     const next =
-      text.slice(0, anchorIndex) + char + entry.label + " " + text.slice(caretIndex);
+      text.slice(0, anchorIndex) + replacement + suffix + text.slice(caretIndex);
     handlers.setText(next);
     closePopup();
     // The field must hold the new text before the caret lands in it.
     await tick();
     const el = textarea();
     if (!el) return;
-    const caret = anchorIndex + char.length + entry.label.length + 1;
+    const caret = anchorIndex + replacement.length + suffix.length;
     el.focus();
     el.setSelectionRange(caret, caret);
   }
@@ -83,15 +116,15 @@ export function useMentions(
     if (!state.open || state.matches.length === 0) return false;
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      state.active = (state.active + 1) % state.matches.length;
+      moveActive(1);
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      state.active = (state.active - 1 + state.matches.length) % state.matches.length;
-    } else if (event.key === "Enter") {
-      // Enter is the insert answer while the vessel is up — never a
-      // newline, and never the host's own action.
+      moveActive(-1);
+    } else if (event.key === "Enter" || event.key === " ") {
+      const entry = state.matches[state.active];
+      if (!entry || entry.disabled) return false;
       event.preventDefault();
-      void insert(state.matches[state.active]);
+      void insert(entry);
     } else if (event.key === "Escape") {
       closePopup();
     } else {

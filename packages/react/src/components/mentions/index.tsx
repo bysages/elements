@@ -2,11 +2,12 @@ import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ChangeEvent, HTMLAttributes } from "react";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 import { Field } from "../field";
+import { Icon } from "../icon";
 import { Popover } from "../popover";
 import { useMentions } from "./use-mentions";
 
@@ -14,9 +15,29 @@ export type { UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {
+  /** Stable identity for tests, popups and business handlers. */
+  id?: string;
+  /** The primary words shown in the popup and inserted by default. */
   label: string;
+  /** The semantic value reported by the field. */
   value: string;
+  /** One line of supporting copy under the label. */
+  description?: string;
+  /** A curated core icon name. */
+  icon?: string;
+  /** Optional section heading; entries with the same heading travel together. */
+  group?: string;
+  /** The consumer's coarse entry type, such as `file`, `agent` or `command`. */
+  kind?: string;
+  /** A visible candidate the keyboard and pointer cannot choose. */
+  disabled?: boolean;
+  /** Exact composer text to insert; it bypasses `trigger + label`. */
+  insertText?: string;
+  /** Extra consumer data carried back through `onSelect`. */
+  meta?: Record<string, unknown>;
 }
+
+export type MentionTriggers = string | string[];
 
 export interface MentionsVesselProps {
   id?: string;
@@ -58,31 +79,105 @@ function MentionsPopup({
   onActiveChange,
   ...rest
 }: MentionsPopupProps) {
+  const id = useElementId("mentions-popup", rest);
+  const groups: Array<{
+    name: string;
+    entries: Array<{ entry: MentionEntry; index: number }>;
+  }> = [];
+  const byName = new Map<
+    string,
+    { name: string; entries: Array<{ entry: MentionEntry; index: number }> }
+  >();
+
+  matches.forEach((entry, index) => {
+    const name = entry.group ?? "";
+    const group = byName.get(name);
+    if (group) group.entries.push({ entry, index });
+    else {
+      const next = { name, entries: [{ entry, index }] };
+      byName.set(name, next);
+      groups.push(next);
+    }
+  });
+
+  const optionId = (index: number) => `${id}:option-${index}`;
+  const activeEntry = matches[active];
+
   return (
-    <div {...rest} data-scope="mentions" data-part="popup" data-size={size} role="listbox">
-      {matches.map((entry, index) => (
-        <div
-          key={entry.value}
-          role="option"
-          aria-selected={index === active}
-          tabIndex={-1}
-          data-scope="mentions"
-          data-part="option"
-          data-active={index === active ? "" : undefined}
-          onMouseEnter={() => onActiveChange?.(index)}
-          // The pointer confirms without moving the keyboard's
-          // active row out from under it.
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => onInsert?.(entry)}
-          onKeyDown={(event) => {
-            if (event.key !== "Enter" && event.key !== " ") return;
-            event.preventDefault();
-            onInsert?.(entry);
-          }}
-        >
-          {entry.label}
-        </div>
-      ))}
+    <div
+      {...rest}
+      id={id}
+      data-scope="mentions"
+      data-part="popup"
+      data-size={size}
+      role="listbox"
+      aria-activedescendant={activeEntry && !activeEntry.disabled ? optionId(active) : undefined}
+    >
+      {groups.map((group, groupIndex) => {
+        const labelId = group.name ? `${id}:group-${groupIndex}` : undefined;
+        const options = group.entries.map(({ entry, index }) => (
+          <div
+            key={`${entry.id ?? entry.value}:${index}`}
+            id={optionId(index)}
+            role="option"
+            aria-selected={index === active && !entry.disabled}
+            aria-disabled={entry.disabled ? "true" : undefined}
+            tabIndex={-1}
+            data-scope="mentions"
+            data-part="option"
+            data-active={index === active && !entry.disabled ? "" : undefined}
+            data-disabled={entry.disabled ? "" : undefined}
+            onMouseEnter={() => {
+              if (!entry.disabled) onActiveChange?.(index);
+            }}
+            // Confirm on press, before the floating vessel can tear
+            // down; focus stays on the field.
+            onMouseDown={(event) => {
+              if (event.button !== 0) return;
+              event.preventDefault();
+              if (!entry.disabled) onInsert?.(entry);
+            }}
+            onKeyDown={(event) => {
+              if (event.key !== "Enter" && event.key !== " ") return;
+              event.preventDefault();
+              if (!entry.disabled) onInsert?.(entry);
+            }}
+          >
+            {entry.icon ? <Icon name={entry.icon} /> : null}
+            <span data-scope="mentions" data-part="option-main">
+              <span data-scope="mentions" data-part="option-label">
+                {entry.label}
+              </span>
+              {entry.description ? (
+                <span data-scope="mentions" data-part="option-description">
+                  {entry.description}
+                </span>
+              ) : null}
+            </span>
+            {entry.kind ? (
+              <span data-scope="mentions" data-part="option-kind">
+                {entry.kind}
+              </span>
+            ) : null}
+          </div>
+        ));
+
+        if (!group.name) return <Fragment key="ungrouped">{options}</Fragment>;
+        return (
+          <div
+            key={`group:${group.name}`}
+            role="group"
+            aria-labelledby={labelId}
+            data-scope="mentions"
+            data-part="group"
+          >
+            <div id={labelId} data-scope="mentions" data-part="group-label">
+              {group.name}
+            </div>
+            {options}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -108,6 +203,7 @@ function MentionsVesselImpl({
   return (
     <ArkPopover.Root
       id={`${hostId}:vessel`}
+      ids={{ content: `${hostId}:popup` }}
       open={open}
       onOpenChange={(details) => onOpenChange?.(details.open)}
       positioning={{
@@ -124,6 +220,7 @@ function MentionsVesselImpl({
               active={active}
               onInsert={onInsert}
               onActiveChange={onActiveChange}
+              id={`${hostId}:popup`}
             />
           </ArkPopover.Content>
         </ArkPopover.Positioner>
@@ -135,11 +232,11 @@ function MentionsVesselImpl({
 export const MentionsVessel = withSelfRoot(MentionsVesselImpl);
 
 /**
- * @-mentions: a plain textarea that, when the text before the caret ends
- * with the trigger character followed by a token, offers the matching
- * candidates in a small anchored vessel; choosing one replaces the token
- * with `trigger + label` and hands the whole text back through
- * `onValueChange`. Arrows move, Enter inserts, Escape dismisses.
+ * Mentions: a textarea that, when the text before the caret ends with a
+ * trigger character followed by a token, offers matching candidates in a
+ * small anchored vessel. Entries may carry descriptions, icons, groups
+ * and consumer metadata. Selecting reports the whole entry; by default it
+ * also replaces the token with `trigger + label`.
  *
  * The field is the shared `Field.Textarea` — field wiring (label ids,
  * the invalid state, autoresize) rides on it for free — and the vessel
@@ -149,14 +246,18 @@ export const MentionsVessel = withSelfRoot(MentionsVesselImpl);
  * input) skip this shell and wire `useMentions` plus `MentionsVessel`
  * themselves.
  */
-export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
-  /** The candidates offered once the trigger character is typed. */
+export interface MentionsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
+  /** The candidates offered once a trigger character is typed. */
   items?: MentionEntry[];
   /** The text held by the field. Supply it to control the field;
    * changes are reported via `onValueChange`. */
   value?: string;
   /** The character that summons the candidates. */
   trigger?: string;
+  /** One or more summoning characters, such as `@` and `/`. */
+  triggers?: MentionTriggers;
+  /** Keep composer text untouched when a candidate is selected. */
+  insertOnSelect?: boolean;
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -167,17 +268,22 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg";
   /** Reports the field's next text. */
   onValueChange?: (value: string) => void;
+  /** Reports the whole selected entry. */
+  onSelect?: (entry: MentionEntry) => void;
 }
 
 function MentionsImpl({
   items = [],
   value,
   trigger = "@",
+  triggers,
+  insertOnSelect = true,
   placeholder,
   autoresize = false,
   invalid = false,
   size = "md",
   onValueChange,
+  onSelect,
   children,
   ...rest
 }: MentionsProps) {
@@ -192,11 +298,15 @@ function MentionsImpl({
 
   const current = value ?? internal;
 
-  const mentions = useMentions({ items, trigger }, el, {
+  const mentions = useMentions(() => ({ items, trigger, triggers }), el, {
     getText: () => el()?.value ?? current,
     setText: (next) => {
       setInternal(next);
       onValueChange?.(next);
+    },
+    select: (entry) => {
+      onSelect?.(entry);
+      return insertOnSelect;
     },
   });
 
@@ -211,6 +321,7 @@ function MentionsImpl({
     <div {...rest} data-scope="mentions" data-part="root" data-size={size}>
       <ArkPopover.Root
         id={`${hostId}:vessel`}
+        ids={{ content: `${hostId}:vessel:popup` }}
         open={mentions.open}
         onOpenChange={(details) => {
           if (!details.open) mentions.close();
@@ -224,6 +335,8 @@ function MentionsImpl({
             rows={3}
             placeholder={placeholder}
             value={current}
+            aria-expanded={mentions.open}
+            aria-controls={mentions.open ? `${hostId}:vessel:popup` : undefined}
             onChange={handleChange}
             onKeyDown={(event) => mentions.onKeydown(event)}
             data-invalid={invalid || undefined}
@@ -239,6 +352,7 @@ function MentionsImpl({
               active={mentions.active}
               onInsert={mentions.insert}
               onActiveChange={mentions.setActive}
+              id={`${hostId}:vessel:popup`}
             />
           </ArkPopover.Content>
         </ArkPopover.Positioner>

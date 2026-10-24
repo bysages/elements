@@ -4,6 +4,7 @@ import { computed, defineComponent, h, ref } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
@@ -40,17 +41,23 @@ export const PromptInput = withSelfRoot(
       /** The machine is working — the seal becomes a stop seal and
        * Enter holds its breath. */
       busy: { type: Boolean, default: false },
-      /** Mention candidates for the field: pass the roster and the summon
-       * character (`@` unless told otherwise) and the vessel rides the
-       * textarea. While candidates are up, Enter inserts and the send
-       * waits. */
+      /** Mention candidates for the field: pass the roster and one or
+       * more summoning characters, plus whether a choice rewrites the
+       * text, and the vessel rides the textarea. While candidates are up,
+       * Enter inserts and the send waits. */
       mentions: {
-        type: Object as PropType<{ items: MentionEntry[]; trigger?: string }>,
+        type: Object as PropType<{
+          items: MentionEntry[];
+          trigger?: string;
+          triggers?: string | string[];
+          insertOnSelect?: boolean;
+        }>,
         default: undefined,
       },
     },
     emits: {
       "update:modelValue": (_value: string) => true,
+      select: (_entry: MentionEntry) => true,
       submit: (_value: string) => true,
       stop: () => true,
     },
@@ -58,6 +65,8 @@ export const PromptInput = withSelfRoot(
       injectComponentStyle("ai");
       const messages = useComponentMessages();
       const { "aria-label": consumerLabel, ...formAttrs } = attrs;
+      const hostId = useElementId("ai-prompt", attrs);
+      const mentionsId = computed(() => `${hostId.value}:mentions`);
 
       // The field part is a component; its root element rides `$el`.
       const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
@@ -65,11 +74,19 @@ export const PromptInput = withSelfRoot(
         (fieldRef.value?.$el as HTMLTextAreaElement | undefined) ?? null;
 
       const mentions = useMentions(
-        () => ({ items: props.mentions?.items ?? [], trigger: props.mentions?.trigger }),
+        () => ({
+          items: props.mentions?.items ?? [],
+          trigger: props.mentions?.trigger,
+          triggers: props.mentions?.triggers,
+        }),
         el,
         {
           getText: () => el()?.value ?? props.modelValue,
           setText: (next) => emit("update:modelValue", next),
+          select: (entry) => {
+            emit("select", entry);
+            return props.mentions?.insertOnSelect !== false;
+          },
         },
       );
       // The vessel only rides along when a roster was actually given.
@@ -145,10 +162,14 @@ export const PromptInput = withSelfRoot(
                   modelValue: props.modelValue,
                   placeholder: props.placeholder,
                   "aria-label": consumerLabel ?? messages.value.ai.conversation,
+                  "aria-expanded": mentions.open.value,
+                  "aria-controls": mentions.open.value ? `${mentionsId.value}:popup` : undefined,
                   disabled: props.disabled,
                   "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
                   onInput: () => mentions.onInput(),
                   onKeydown: (event: KeyboardEvent) => {
+                    // IME Enter is composition, not a send.
+                    if (event.isComposing || event.keyCode === 229) return;
                     // The candidates eat their keys first; only on a
                     // quiet field does Enter become the send.
                     if (mentions.onKeydown(event)) return;
@@ -165,6 +186,7 @@ export const PromptInput = withSelfRoot(
                     matches: mentions.matches.value,
                     active: mentions.active.value,
                     anchor: el(),
+                    id: mentionsId.value,
                     onInsert: mentions.insert,
                     "onUpdate:active": (index: number) => (mentions.active.value = index),
                     "onUpdate:open": (open: boolean) => {
