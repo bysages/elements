@@ -50,7 +50,7 @@ export interface MentionsVesselProps {
   /** The keyboard's active row. */
   active?: number;
   /** The rectangle the vessel points at — the host's textarea. */
-  anchor?: HTMLTextAreaElement | null;
+  anchor?: HTMLElement | null;
   /** A candidate was chosen. */
   onInsert?: (entry: MentionEntry) => void;
   /** The pointer moved to a row. */

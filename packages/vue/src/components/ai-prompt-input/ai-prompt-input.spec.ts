@@ -1,9 +1,10 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it } from "vite-plus/test";
-import { createApp, defineComponent, h, nextTick } from "vue";
+import { createApp, defineComponent, h, nextTick, ref } from "vue";
 
 import type { MentionEntry } from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
+import { insertEditorToken } from "./editor";
 import { AiPromptInput } from "./index";
 
 const mentions: MentionEntry[] = [
@@ -35,11 +36,85 @@ describe("ai prompt input", () => {
     document.body.append(container);
     const app = createApp(host);
     app.mount(container);
-    const textarea = container.querySelector("textarea");
-    if (!textarea) throw new Error("prompt textarea is missing");
+    const textarea = container.querySelector<HTMLElement>(`[data-part="prompt-editor"]`);
+    if (!textarea) throw new Error("prompt editor is missing");
     return { app, container, textarea };
   }
 
+  it("clears the placeholder, opens candidates and inserts a rich token", async () => {
+    const host = defineComponent({
+      setup() {
+        const value = ref("");
+        return () =>
+          h(AiPromptInput, {
+            modelValue: value.value,
+            placeholder: "Ask a teammate",
+            mentions: { items: mentions, triggers: ["@", "/"] },
+            "onUpdate:modelValue": (next: string) => {
+              value.value = next;
+            },
+          });
+      },
+    });
+    const container = document.createElement("div");
+    document.body.append(container);
+    const app = createApp(host);
+    app.mount(container);
+    await nextTick();
+
+    const editor = container.querySelector<HTMLElement>('[data-part="prompt-editor"]');
+    if (!editor) throw new Error("prompt editor is missing");
+    expect(editor.hasAttribute("data-empty")).toBe(true);
+
+    editor.append(document.createTextNode("@Agent"));
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+    await nextTick();
+    expect(editor.hasAttribute("data-empty")).toBe(false);
+    expect(editor.getAttribute("aria-expanded")).toBe("true");
+
+    editor.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }),
+    );
+    await nextTick();
+
+    expect(editor.querySelector('[data-part="prompt-mention"]')).not.toBeNull();
+    expect(editor.getAttribute("aria-expanded")).toBe("false");
+    app.unmount();
+  });
+  it("places the caret in editable text after an existing token boundary", () => {
+    const editor = document.createElement("div");
+    editor.append(document.createTextNode("@Agent world"));
+
+    const value = insertEditorToken(editor, mentions[0]!, "@", 0, 6);
+    const selection = window.getSelection();
+    const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+
+    expect(value).toBe("@Agent world");
+    expect(range?.startContainer.nodeType).toBe(Node.TEXT_NODE);
+    expect(range?.startContainer.textContent).toBe(" world");
+    expect(range?.startOffset).toBe(0);
+  });
+  it("renders a recognized mention as a rich token and keeps plain text", async () => {
+    const host = defineComponent({
+      setup() {
+        return () =>
+          h(AiPromptInput, {
+            modelValue: "Review with @Agent tomorrow",
+            mentions: { items: mentions },
+          });
+      },
+    });
+    const container = document.createElement("div");
+    document.body.append(container);
+    const app = createApp(host);
+    app.mount(container);
+    await nextTick();
+
+    const token = container.querySelector<HTMLElement>('[data-part="prompt-mention"]');
+    expect(token?.dataset.promptValue).toBe("agent");
+    expect(token?.textContent).toContain("Agent");
+    app.unmount();
+  });
   it("does not submit an IME composition Enter", async () => {
     const submitted: string[] = [];
     const prompt = mountPrompt({ submit: (value) => submitted.push(value) });

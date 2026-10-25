@@ -54,6 +54,42 @@ describe("mentions", () => {
     app.unmount();
   });
 
+  it("inserts from a pointer press without moving focus into the popup", async () => {
+    let value = "";
+    const host = defineComponent({
+      setup() {
+        return () =>
+          h(Mentions as Component, {
+            items,
+            "onUpdate:modelValue": (next: string) => {
+              value = next;
+            },
+          });
+      },
+    });
+    const container = document.createElement("div");
+    document.body.append(container);
+    const app = createApp(host);
+    app.mount(container);
+    const textarea = container.querySelector("textarea");
+    if (!textarea) throw new Error("mentions textarea is missing");
+
+    textarea.value = "@Me";
+    textarea.setSelectionRange(3, 3);
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    await nextTick();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    const option = document.querySelector<HTMLElement>('[data-part="option"]');
+    if (!option) throw new Error("mention option is missing");
+    option.dispatchEvent(
+      new MouseEvent("mousedown", { button: 0, bubbles: true, cancelable: true }),
+    );
+    await nextTick();
+
+    expect(value).toBe("@Mei Chen ");
+    app.unmount();
+  });
   it("renders disabled candidates but skips them for insertion", async () => {
     let selected: unknown;
     const host = defineComponent({

@@ -33,8 +33,8 @@ describe("ai prompt input", () => {
         />,
       );
     });
-    const textarea = container.querySelector("textarea");
-    if (!textarea) throw new Error("prompt textarea is missing");
+    const textarea = container.querySelector<HTMLElement>(`[data-part="prompt-editor"]`);
+    if (!textarea) throw new Error("prompt editor is missing");
 
     act(() => {
       textarea.dispatchEvent(
@@ -60,8 +60,8 @@ describe("ai prompt input", () => {
         />,
       );
     });
-    const textarea = container.querySelector("textarea");
-    if (!textarea) throw new Error("prompt textarea is missing");
+    const textarea = container.querySelector<HTMLElement>(`[data-part="prompt-editor"]`);
+    if (!textarea) throw new Error("prompt editor is missing");
 
     act(() => {
       textarea.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));

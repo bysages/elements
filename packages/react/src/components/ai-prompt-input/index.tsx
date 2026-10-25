@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes, ReactNode } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -10,6 +10,13 @@ import { Button } from "../button";
 import { Field } from "../field";
 import type { MentionEntry } from "../mentions";
 import { MentionsVessel, useMentions } from "../mentions";
+import {
+  insertEditorToken,
+  insertLineBreak,
+  readCaret,
+  renderEditor,
+  serializeEditor,
+} from "./editor";
 
 const arrowUpIcon = iconNode("arrow-up", { width: 14, height: 14 });
 
@@ -28,15 +35,8 @@ function row(part: string, content: ReactNode): ReactNode {
 
 /**
  * The prompt vessel: the shared field textarea — self-growing on the
- * machine's autoresize — with the submit seal riding its last line.
- * Around the body, props answer the composer's anatomy: `header` for
- * attachments riding above, `leading` for the tools at the text's
- * left, `trailing` for the seal itself, `footer` for the tools beneath,
- * and `footerEnd` for the controls that close the footer row — the
- * seal falls there by default, so a model picker dropped in rides the
- * send's shoulder. Controlled — bind `value` and take the text on
- * `submit`. Enter sends; Shift+Enter breaks the line. While `busy`
- * the seal becomes a stop seal and Enter holds its breath.
+ * machine's autoresize — with the submit seal riding its last line. With
+ * mentions it becomes a token editor; the bound value remains plain text.
  */
 export interface PromptInputProps extends Omit<
   HTMLAttributes<HTMLFormElement>,
@@ -56,11 +56,8 @@ export interface PromptInputProps extends Omit<
   /** The machine is working — the seal becomes a stop seal and Enter
    * holds its breath. */
   busy?: boolean;
-  /** Mention candidates for the field: pass the roster and one or more
-   * summon characters (`@` unless told otherwise). `insertOnSelect=false`
-   * reports the choice without rewriting the prompt; commands can own
-   * the next action. While candidates are up, Enter inserts and the send
-   * waits. */
+  /** Mention candidates. Rich tokens render after a choice; the value
+   * stays ordinary composer text. */
   mentions?: {
     items: MentionEntry[];
     trigger?: string;
@@ -95,11 +92,12 @@ function PromptInputImpl({
   ...rest
 }: PromptInputProps) {
   injectComponentStyle("ai");
-  // The field part is a component; its ref carries the textarea itself.
   const fieldRef = useRef<HTMLTextAreaElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const hostId = useElementId("ai-prompt", rest);
   const messages = useComponentMessages();
   const placeholderText = placeholder ?? messages.ai.conversation;
+  const mentionsActive = mentions != null;
 
   const mentionState = useMentions(
     () => ({
@@ -109,7 +107,9 @@ function PromptInputImpl({
     }),
     () => fieldRef.current,
     {
-      getText: () => fieldRef.current?.value ?? value,
+      getCaret: () => (mentions ? readCaret(editorRef.current!) : undefined),
+      getText: () =>
+        mentions ? serializeEditor(editorRef.current!) : (fieldRef.current?.value ?? value),
       setText: (next) => onValueChange?.(next),
       select: (entry) => {
         onSelect?.(entry);
@@ -117,14 +117,78 @@ function PromptInputImpl({
       },
     },
   );
-  // The vessel only rides along when a roster was actually given.
-  const mentionsActive = mentions != null;
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    renderEditor(editor, value, mentions?.items ?? [], mentions?.triggers);
+    editor.toggleAttribute("data-empty", !value);
+  });
+
+  const publishEditor = () => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const next = serializeEditor(editor);
+    editor.toggleAttribute("data-empty", !next);
+    onValueChange?.(next);
+  };
+
+  const insertChoice = (entry: MentionEntry) => {
+    const editor = editorRef.current;
+    if (!editor || entry.disabled || mentions?.insertOnSelect === false) {
+      mentionState.close();
+      return;
+    }
+
+    onSelect?.(entry);
+    const next = insertEditorToken(
+      editor,
+      entry,
+      mentionState.activeTrigger.current,
+      mentionState.anchorIndex.current,
+      mentionState.caretIndex.current,
+    );
+    editor.toggleAttribute("data-empty", !next);
+    onValueChange?.(next);
+    mentionState.close();
+  };
 
   const submit = () => {
     const text = value.trim();
     if (!text || disabled || busy) return;
     onSubmit?.(text);
     onValueChange?.("");
+  };
+
+  const editorKeydown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+
+    if (event.key === "Enter" && event.shiftKey) {
+      event.preventDefault();
+      const editor = editorRef.current;
+      if (!editor) return;
+      onValueChange?.(insertLineBreak(editor));
+      return;
+    }
+
+    if (
+      mentionState.open &&
+      (event.key === "Enter" || event.key === " ") &&
+      !mentionState.matches[mentionState.active]?.disabled
+    ) {
+      const entry = mentionState.matches[mentionState.active];
+      if (!entry) return;
+      event.preventDefault();
+      insertChoice(entry);
+      return;
+    }
+
+    if (mentionState.onKeydown(event)) return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      submit();
+    }
   };
 
   const seal = busy ? (
@@ -167,59 +231,71 @@ function PromptInputImpl({
       {row("prompt-header", header)}
       <div data-scope="ai" data-part="prompt-main">
         {row("prompt-leading", leading)}
-        <Field.Root>
-          <Field.Textarea
-            ref={fieldRef}
-            autoresize
-            rows={1}
-            value={value}
-            placeholder={placeholderText}
+        {mentionsActive ? (
+          <div
+            ref={editorRef}
+            contentEditable={!disabled}
+            role="textbox"
+            aria-multiline="true"
             aria-label={ariaLabel ?? messages.ai.conversation}
-            aria-expanded={mentionsActive ? mentionState.open : undefined}
-            aria-controls={
-              mentionsActive && mentionState.open ? `${hostId}:mentions:popup` : undefined
-            }
-            disabled={disabled}
-            onChange={(event) => {
-              onValueChange?.(event.target.value);
-              mentionState.onInput();
+            aria-expanded={mentionState.open}
+            aria-controls={mentionState.open ? `${hostId}:mentions:popup` : undefined}
+            aria-disabled={disabled || undefined}
+            data-scope="ai"
+            data-part="prompt-editor"
+            data-empty={value ? undefined : ""}
+            data-placeholder={placeholderText}
+            data-disabled={disabled || undefined}
+            onInput={() => {
+              publishEditor();
+              if (!disabled) mentionState.onInput();
             }}
-            onKeyDown={(event) => {
-              // IME Enter is composition, not a send.
-              if (event.nativeEvent.isComposing || event.keyCode === 229) return;
-              // The candidates eat their keys first; only on a quiet
-              // field does Enter become the send.
-              if (mentionState.onKeydown(event)) return;
-              if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                submit();
-              }
-            }}
+            onKeyDown={editorKeydown}
           />
-        </Field.Root>
+        ) : (
+          <Field.Root>
+            <Field.Textarea
+              ref={fieldRef}
+              autoresize
+              rows={1}
+              value={value}
+              placeholder={placeholderText}
+              aria-label={ariaLabel ?? messages.ai.conversation}
+              disabled={disabled}
+              onChange={(event) => {
+                onValueChange?.(event.target.value);
+                mentionState.onInput();
+              }}
+              onKeyDown={(event) => {
+                if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+                if (mentionState.onKeydown(event)) return;
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  submit();
+                }
+              }}
+            />
+          </Field.Root>
+        )}
         {mentionsActive ? (
           <MentionsVessel
             id={`${hostId}:mentions`}
             open={mentionState.open}
             matches={mentionState.matches}
             active={mentionState.active}
-            anchor={fieldRef.current}
-            onInsert={mentionState.insert}
+            anchor={editorRef.current}
+            onInsert={insertChoice}
             onActiveChange={mentionState.setActive}
             onOpenChange={(open) => {
               if (!open) mentionState.close();
             }}
           />
         ) : null}
-        {/* With a tool row beneath, the seal sinks into it — the send
-            belongs at the row's far end, with the tools. */}
         {row("prompt-trailing", hasFooter ? trailing : (trailing ?? seal))}
       </div>
       {hasFooter ? (
         <div data-scope="ai" data-part="prompt-footer">
           {footer}
-          {/* The row closes with an end group: the caller's send-side
-              controls, with the seal as their quiet last member. */}
           {row(
             "prompt-end",
             footerEnd == null ? (

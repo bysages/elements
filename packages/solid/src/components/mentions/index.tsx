@@ -69,7 +69,7 @@ export interface MentionsVesselProps {
   active?: number;
   /** The live element the vessel points at — the anchor is virtual, a
    * rectangle read off the host's field. */
-  anchor?: HTMLTextAreaElement | null;
+  anchor?: HTMLElement | null;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
   /** The vessel's stable base id; popup ids derive from it. */

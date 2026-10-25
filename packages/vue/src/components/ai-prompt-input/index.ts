@@ -1,6 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { Component, PropType, SetupContext, VNode } from "vue";
-import { computed, defineComponent, h, ref } from "vue";
+import { computed, defineComponent, h, onMounted, ref, watch } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -10,22 +10,27 @@ import { Button } from "../button";
 import { Field } from "../field";
 import { MentionsVessel, type MentionEntry } from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
+import {
+  insertEditorToken,
+  insertLineBreak,
+  readCaret,
+  renderEditor,
+  serializeEditor,
+} from "./editor";
 
 const arrowUpIcon = () => iconNode("arrow-up", { width: 14, height: 14 });
 
 const stopIcon = () => iconNode("square", { width: 14, height: 14 });
 
 /** The prompt vessel: the shared field textarea — self-growing on the
- * machine's autoresize — with the submit seal riding its last line.
- * Around the body, slots answer the composer's anatomy: `header` for
- * attachments riding above, `leading` for the tools at the text's
- * left, `trailing` for the seal itself, `footer` for the tools beneath,
- * and `footer-end` for the controls that close the footer row — the
- * seal falls there by default, so a model picker dropped in rides the
- * send's shoulder. An empty slot renders no part, so the bare vessel
- * stays one quiet line. Controlled — bind `v-model` and take the text
- * on `submit`. Enter sends; Shift+Enter breaks the line. While `busy`
- * the seal becomes a stop seal and Enter holds its breath. */
+ * machine's autoresize — with the submit seal riding its last line. With
+ * mentions it becomes a token editor: choices stay rich, while the model
+ * still reads and writes ordinary composer text. Around the body, slots
+ * answer the composer's anatomy: `header` for attachments riding above,
+ * `leading` for the tools at the text's left, `trailing` for the seal
+ * itself, `footer` for the tools beneath, and `footer-end` for the
+ * controls that close the footer row. Controlled — bind `v-model` and
+ * take the text on `submit`. Enter sends; Shift+Enter breaks the line. */
 export const PromptInput = withSelfRoot(
   defineComponent({
     name: "AiPromptInput",
@@ -41,10 +46,8 @@ export const PromptInput = withSelfRoot(
       /** The machine is working — the seal becomes a stop seal and
        * Enter holds its breath. */
       busy: { type: Boolean, default: false },
-      /** Mention candidates for the field: pass the roster and one or
-       * more summoning characters, plus whether a choice rewrites the
-       * text, and the vessel rides the textarea. While candidates are up,
-       * Enter inserts and the send waits. */
+      /** Mention candidates for the field. The field holds rich tokens
+       * after a choice; the bound value remains plain text. */
       mentions: {
         type: Object as PropType<{
           items: MentionEntry[];
@@ -68,8 +71,21 @@ export const PromptInput = withSelfRoot(
       const hostId = useElementId("ai-prompt", attrs);
       const mentionsId = computed(() => `${hostId.value}:mentions`);
 
-      // The field part is a component; its root element rides `$el`.
       const fieldRef = ref<{ $el?: HTMLTextAreaElement } | null>(null);
+      const editorRef = ref<HTMLElement | null>(null);
+
+      onMounted(() => {
+        const editor = editorRef.value;
+        if (!editor) return;
+        renderEditor(
+          editor,
+          props.modelValue,
+          props.mentions?.items ?? [],
+          props.mentions?.triggers,
+        );
+        editor.toggleAttribute("data-empty", !props.modelValue);
+      });
+
       const el = (): HTMLTextAreaElement | null =>
         (fieldRef.value?.$el as HTMLTextAreaElement | undefined) ?? null;
 
@@ -81,7 +97,9 @@ export const PromptInput = withSelfRoot(
         }),
         el,
         {
-          getText: () => el()?.value ?? props.modelValue,
+          getCaret: () => (props.mentions ? readCaret(editorRef.value!) : undefined),
+          getText: () =>
+            props.mentions ? serializeEditor(editorRef.value!) : (el()?.value ?? props.modelValue),
           setText: (next) => emit("update:modelValue", next),
           select: (entry) => {
             emit("select", entry);
@@ -89,8 +107,66 @@ export const PromptInput = withSelfRoot(
           },
         },
       );
-      // The vessel only rides along when a roster was actually given.
       const mentionsActive = computed(() => props.mentions != null);
+
+      const publishEditor = () => {
+        const editor = editorRef.value;
+        if (!editor) return;
+        const next = serializeEditor(editor);
+        editor.toggleAttribute("data-empty", !next);
+        emit("update:modelValue", next);
+      };
+
+      const insertChoice = (entry: MentionEntry) => {
+        const editor = editorRef.value;
+        if (!editor || entry.disabled || props.mentions?.insertOnSelect === false) {
+          mentions.close();
+          return;
+        }
+
+        emit("select", entry);
+        const next = insertEditorToken(
+          editor,
+          entry,
+          mentions.activeTrigger.value,
+          mentions.anchorIndex.value,
+          mentions.caretIndex.value,
+        );
+        editor.toggleAttribute("data-empty", !next);
+        emit("update:modelValue", next);
+        mentions.close();
+      };
+
+      const editorKeydown = (event: KeyboardEvent) => {
+        if (event.isComposing || event.keyCode === 229) return;
+
+        if (event.key === "Enter" && event.shiftKey) {
+          event.preventDefault();
+          const editor = editorRef.value;
+          if (!editor) return;
+          emit("update:modelValue", insertLineBreak(editor));
+          return;
+        }
+
+        if (
+          mentions.open.value &&
+          (event.key === "Enter" || event.key === " ") &&
+          !mentions.matches.value[mentions.active.value]?.disabled
+        ) {
+          const entry = mentions.matches.value[mentions.active.value];
+          if (!entry) return;
+          event.preventDefault();
+          insertChoice(entry);
+          return;
+        }
+
+        if (mentions.onKeydown(event)) return;
+
+        if (event.key === "Enter") {
+          event.preventDefault();
+          submit();
+        }
+      };
 
       const submit = () => {
         const value = props.modelValue.trim();
@@ -99,9 +175,16 @@ export const PromptInput = withSelfRoot(
         emit("update:modelValue", "");
       };
 
-      // An empty slot leaves no part in the anatomy — the bare vessel
-      // keeps its single-line posture. Children ride as a function so the
-      // caller's popups keep their reactive update path.
+      watch(
+        () => props.modelValue,
+        (value) => {
+          const editor = editorRef.value;
+          if (!editor || serializeEditor(editor) === value) return;
+          renderEditor(editor, value, props.mentions?.items ?? [], props.mentions?.triggers);
+          editor.toggleAttribute("data-empty", !value);
+        },
+      );
+
       const row = (part: string, content: VNode[] | undefined) =>
         content && content.length
           ? h("div", { "data-scope": "ai", "data-part": part }, () => content)
@@ -135,6 +218,49 @@ export const PromptInput = withSelfRoot(
         const footer = slots.footer?.();
         const hasFooter = !!(footer && footer.length);
         const sealNode = seal();
+        const field = mentionsActive.value
+          ? () =>
+              h("div", {
+                ref: editorRef,
+                key: "ai-prompt-editor",
+                contenteditable: props.disabled ? "false" : "true",
+                role: "textbox",
+                "aria-multiline": "true",
+                "aria-label": consumerLabel ?? messages.value.ai.conversation,
+                "aria-expanded": mentions.open.value,
+                "aria-controls": mentions.open.value ? `${mentionsId.value}:popup` : undefined,
+                "aria-disabled": props.disabled ? "true" : undefined,
+                "data-scope": "ai",
+                "data-part": "prompt-editor",
+                "data-empty": props.modelValue ? undefined : "",
+                "data-placeholder": props.placeholder,
+                "data-disabled": props.disabled ? "" : undefined,
+                onInput: () => {
+                  publishEditor();
+                  if (!props.disabled) mentions.onInput();
+                },
+                onKeydown: editorKeydown,
+              })
+          : () =>
+              h(Field.Textarea as Component, {
+                ref: fieldRef,
+                autoresize: true,
+                rows: 1,
+                modelValue: props.modelValue,
+                placeholder: props.placeholder,
+                "aria-label": consumerLabel ?? messages.value.ai.conversation,
+                disabled: props.disabled,
+                "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
+                onInput: () => mentions.onInput(),
+                onKeydown: (event: KeyboardEvent) => {
+                  if (event.isComposing || event.keyCode === 229) return;
+                  if (mentions.onKeydown(event)) return;
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    submit();
+                  }
+                },
+              });
 
         return h(
           "form",
@@ -147,55 +273,25 @@ export const PromptInput = withSelfRoot(
               submit();
             },
           },
-          // Every row's children ride as a function: slot content passed
-          // through plain arrays loses its reactive update path, and the
-          // popups summoned inside it (menu, select) never mount.
           () => [
             row("prompt-header", slots.header?.()),
             h("div", { "data-scope": "ai", "data-part": "prompt-main" }, () => [
               row("prompt-leading", slots.leading?.()),
-              h(Field.Root as Component, () =>
-                h(Field.Textarea as Component, {
-                  ref: fieldRef,
-                  autoresize: true,
-                  rows: 1,
-                  modelValue: props.modelValue,
-                  placeholder: props.placeholder,
-                  "aria-label": consumerLabel ?? messages.value.ai.conversation,
-                  "aria-expanded": mentions.open.value,
-                  "aria-controls": mentions.open.value ? `${mentionsId.value}:popup` : undefined,
-                  disabled: props.disabled,
-                  "onUpdate:modelValue": (value: string) => emit("update:modelValue", value),
-                  onInput: () => mentions.onInput(),
-                  onKeydown: (event: KeyboardEvent) => {
-                    // IME Enter is composition, not a send.
-                    if (event.isComposing || event.keyCode === 229) return;
-                    // The candidates eat their keys first; only on a
-                    // quiet field does Enter become the send.
-                    if (mentions.onKeydown(event)) return;
-                    if (event.key === "Enter" && !event.shiftKey) {
-                      event.preventDefault();
-                      submit();
-                    }
-                  },
-                }),
-              ),
+              mentionsActive.value ? field() : h(Field.Root as Component, () => [field()]),
               mentionsActive.value
                 ? h(MentionsVessel, {
                     open: mentions.open.value,
                     matches: mentions.matches.value,
                     active: mentions.active.value,
-                    anchor: el(),
+                    anchor: editorRef.value,
                     id: mentionsId.value,
-                    onInsert: mentions.insert,
+                    onInsert: insertChoice,
                     "onUpdate:active": (index: number) => (mentions.active.value = index),
                     "onUpdate:open": (open: boolean) => {
                       if (!open) mentions.close();
                     },
                   })
                 : null,
-              // With a tool row beneath, the seal sinks into it — the
-              // send belongs at the row's far end, with the tools.
               row(
                 "prompt-trailing",
                 hasFooter ? slots.trailing?.() : (slots.trailing?.() ?? [sealNode]),
@@ -204,8 +300,6 @@ export const PromptInput = withSelfRoot(
             hasFooter
               ? h("div", { "data-scope": "ai", "data-part": "prompt-footer" }, () => [
                   ...footer,
-                  // The row closes with an end group: the caller's send-side
-                  // controls, with the seal as their quiet last member.
                   row("prompt-end", [...(slots.footerEnd?.() ?? []), sealNode]),
                 ])
               : null,

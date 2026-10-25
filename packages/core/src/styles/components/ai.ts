@@ -531,6 +531,83 @@ export const aiCss = /* css */ `
   resize: none;
 }
 
+/* With mentions, the prompt writes into a rich editor that keeps the
+   textarea's rhythm. The bound value stays text; choices become chips. */
+[data-scope="ai"][data-part="prompt-editor"] {
+  box-sizing: border-box;
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: var(--bs-control-height-sm);
+  max-block-size: calc(var(--bs-space-16) * 2);
+  overflow-block: auto;
+  padding-block: calc(
+    (var(--bs-control-height-sm) - var(--bs-font-size-md) * var(--bs-line-height-relaxed)) / 2
+  );
+  color: var(--bs-color-text-primary);
+  font: inherit;
+  font-size: var(--bs-font-size-md);
+  line-height: var(--bs-line-height-relaxed);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+
+[data-scope="ai"][data-part="prompt-editor"]:focus {
+  outline: none;
+}
+
+[data-scope="ai"][data-part="prompt-editor"][data-disabled] {
+  color: var(--bs-color-text-tertiary);
+  cursor: default;
+}
+
+[data-scope="ai"][data-part="prompt-editor"][data-empty]::before {
+  color: var(--bs-color-text-tertiary);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+[data-scope="ai"][data-part="prompt-mention"] {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: var(--bs-gap-xs);
+  padding: 0 var(--bs-padding-sm);
+  border: var(--bs-hairline) solid var(--bs-color-border);
+  border-radius: var(--bs-radius-full);
+  position: relative;
+  margin-inline-end: var(--bs-space-1);
+  background: var(--bs-color-surface-inset);
+  color: var(--bs-color-text-primary);
+  font-size: var(--bs-font-size-xs);
+  font-weight: var(--bs-font-weight-medium);
+  letter-spacing: var(--bs-tracking-label);
+  vertical-align: middle;
+  line-height: var(--bs-line-height-normal);
+}
+
+[data-scope="ai"][data-part="mention-trigger"] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+[data-scope="ai"][data-part="mention-icon"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: var(--bs-color-text-secondary);
+}
+
+[data-scope="ai"][data-part="mention-icon"] svg {
+  inline-size: 0.875em;
+  block-size: 0.875em;
+  flex: none;
+}
 /* The tool row beneath the writing: the model and its switches — the
    seal closes the row at its far end. */
 [data-scope="ai"][data-part="prompt-footer"] {

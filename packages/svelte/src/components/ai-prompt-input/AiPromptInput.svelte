@@ -11,6 +11,13 @@ import { MentionsVessel, useMentions } from "../mentions";
 
 import { useComponentMessages } from "../config-provider/messages";
 import type { MentionEntry } from "../mentions";
+import {
+  insertEditorToken,
+  insertLineBreak,
+  readCaret,
+  renderEditor,
+  serializeEditor,
+} from "./editor";
 
 import type { PromptInputProps } from "./props";
 
@@ -37,9 +44,11 @@ const hostId = $derived(useElementId("ai-prompt", generatedId, rest.id));
 const mentionsId = $derived(`${hostId}:mentions`);
 
 let textareaEl = $state<HTMLTextAreaElement | null>(null);
+let editorEl = $state<HTMLElement | null>(null);
+const mentionsActive = $derived(mentions != null);
 
 const messages = useComponentMessages();
-const placeholderText = $derived(placeholder ?? messages().ai.send);
+const placeholderText = $derived(placeholder ?? messages().ai.conversation);
 
 const mentionState = useMentions(
   () => ({
@@ -49,7 +58,9 @@ const mentionState = useMentions(
   }),
   () => textareaEl,
   {
-    getText: () => textareaEl?.value ?? value,
+    getCaret: () => (mentions && editorEl ? readCaret(editorEl) : undefined),
+    getText: () =>
+      mentions && editorEl ? serializeEditor(editorEl) : (textareaEl?.value ?? value),
     setText: (next: string) => {
       value = next;
       onValueChange?.(next);
@@ -60,8 +71,40 @@ const mentionState = useMentions(
     },
   },
 );
-// The vessel only rides along when a roster was actually given.
-const mentionsActive = $derived(mentions != null);
+
+$effect(() => {
+  if (!editorEl) return;
+  renderEditor(editorEl, value, mentions?.items ?? [], mentions?.triggers);
+  editorEl.toggleAttribute("data-empty", !value);
+});
+
+function publishEditor() {
+  if (!editorEl) return;
+  const next = serializeEditor(editorEl);
+  editorEl.toggleAttribute("data-empty", !next);
+  value = next;
+  onValueChange?.(next);
+}
+
+function insertChoice(entry: MentionEntry) {
+  if (!editorEl || entry.disabled || mentions?.insertOnSelect === false) {
+    mentionState.close();
+    return;
+  }
+
+  onSelect?.(entry);
+  const next = insertEditorToken(
+    editorEl,
+    entry,
+    mentionState.activeTrigger,
+    mentionState.anchorIndex,
+    mentionState.caretIndex,
+  );
+  editorEl.toggleAttribute("data-empty", !next);
+  value = next;
+  onValueChange?.(next);
+  mentionState.close();
+}
 
 function send() {
   const text = value.trim();
@@ -69,6 +112,37 @@ function send() {
   onSubmit?.(text);
   value = "";
   onValueChange?.("");
+}
+
+function editorKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return;
+
+  if (event.key === "Enter" && event.shiftKey) {
+    event.preventDefault();
+    if (!editorEl) return;
+    value = insertLineBreak(editorEl);
+    onValueChange?.(value);
+    return;
+  }
+
+  if (
+    mentionState.open &&
+    (event.key === "Enter" || event.key === " ") &&
+    !mentionState.matches[mentionState.active]?.disabled
+  ) {
+    const entry = mentionState.matches[mentionState.active];
+    if (!entry) return;
+    event.preventDefault();
+    insertChoice(entry);
+    return;
+  }
+
+  if (mentionState.onKeydown(event)) return;
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    send();
+  }
 }
 
 const hasFooter = $derived(footer != null);
@@ -102,15 +176,8 @@ const hasFooter = $derived(footer != null);
 {/snippet}
 
 <!-- The prompt vessel: the shared field textarea — self-growing on the
-machine's autoresize — with the submit seal riding its last line.
-Around the body, snippets answer the composer's anatomy: `header` for
-attachments riding above, `leading` for the tools at the text's left,
-`trailing` for the seal itself, `footer` for the tools beneath, and
-`footerEnd` for the controls that close the footer row — the seal falls
-there by default, so a model picker dropped in rides the send's
-shoulder. Controlled — `bind:value` mirrors the field, `onSubmit` hands
-back the text. Enter sends; Shift+Enter breaks the line. While `busy`
-the seal becomes a stop seal and Enter holds its breath. -->
+machine's autoresize — with the submit seal riding its last line. With
+mentions it renders rich tokens while the bound value remains text. -->
 <form
   {...rest}
   id={hostId}
@@ -128,47 +195,63 @@ the seal becomes a stop seal and Enter holds its breath. -->
     {#if leading}
       <div data-scope="ai" data-part="prompt-leading">{@render leading()}</div>
     {/if}
-    <Field.Root>
-      <Field.Textarea
-        bind:ref={textareaEl}
-        bind:value
-        autoresize
-        rows={1}
-        {placeholderText}
+    {#if mentionsActive}
+      <div
+        bind:this={editorEl}
+        contenteditable={!disabled}
+        role="textbox"
+        aria-multiline="true"
         aria-label={messages().ai.conversation}
         aria-expanded={mentionState.open ? "true" : undefined}
         aria-controls={mentionState.open ? `${mentionsId}:popup` : undefined}
-        {disabled}
-        oninput={() => mentionState.onInput()}
-        onkeydown={(event) => {
-          // IME Enter is composition, not a send.
-          if (event.isComposing || event.keyCode === 229) return;
-          // The candidates eat their keys first; only on a quiet
-          // field does Enter become the send.
-          if (mentionState.onKeydown(event)) return;
-          if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            send();
-          }
+        aria-disabled={disabled || undefined}
+        data-scope="ai"
+        data-part="prompt-editor"
+        data-empty={value ? undefined : ""}
+        data-placeholder={placeholderText}
+        data-disabled={disabled || undefined}
+        oninput={() => {
+          publishEditor();
+          if (!disabled) mentionState.onInput();
         }}
+        onkeydown={editorKeydown}
       />
-    </Field.Root>
+    {:else}
+      <Field.Root>
+        <Field.Textarea
+          bind:ref={textareaEl}
+          bind:value
+          autoresize
+          rows={1}
+          {placeholderText}
+          aria-label={messages().ai.conversation}
+          disabled={disabled}
+          oninput={() => mentionState.onInput()}
+          onkeydown={(event) => {
+            if (event.isComposing || event.keyCode === 229) return;
+            if (mentionState.onKeydown(event)) return;
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              send();
+            }
+          }}
+        />
+      </Field.Root>
+    {/if}
     {#if mentionsActive}
       <MentionsVessel
         id={mentionsId}
         open={mentionState.open}
         matches={mentionState.matches}
         active={mentionState.active}
-        anchor={textareaEl}
-        onInsert={mentionState.insert}
+        anchor={editorEl}
+        onInsert={insertChoice}
         onActiveChange={(index) => (mentionState.active = index)}
         onOpenChange={(open) => {
           if (!open) mentionState.close();
         }}
       />
     {/if}
-    <!-- With a tool row beneath, the seal sinks into it — the send
-        belongs at the row's far end, with the tools. -->
     {#if !hasFooter || trailing}
       <div data-scope="ai" data-part="prompt-trailing">
         {#if trailing}{@render trailing()}{/if}
@@ -179,8 +262,6 @@ the seal becomes a stop seal and Enter holds its breath. -->
   {#if hasFooter}
     <div data-scope="ai" data-part="prompt-footer">
       {@render footer()}
-      <!-- The row closes with an end group: the caller's send-side
-          controls, with the seal as their quiet last member. -->
       <div data-scope="ai" data-part="prompt-end">
         {#if footerEnd}{@render footerEnd()}{/if}
         {@render seal()}

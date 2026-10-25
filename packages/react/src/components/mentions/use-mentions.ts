@@ -18,6 +18,9 @@ export interface UseMentionsHandlers {
   getText: () => string;
   /** Writes the field's next text: a mention inserted at the token. */
   setText: (value: string) => void;
+  /** The absolute text offset of the field caret; a rich editor supplies this.
+   * A textarea is read from its own selection when omitted. */
+  getCaret?: () => number | undefined;
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
@@ -81,7 +84,7 @@ export function useMentions(
   const detect = () => {
     const text = handlers.getText();
     const el = textarea();
-    const caret = el?.selectionStart ?? text.length;
+    const caret = handlers.getCaret?.() ?? el?.selectionStart ?? text.length;
     caretIndex.current = caret;
     const head = text.slice(0, caret);
     const candidates = triggers()
@@ -168,6 +171,9 @@ export function useMentions(
     matches,
     active,
     setActive,
+    anchorIndex,
+    caretIndex,
+    activeTrigger,
     insert,
     close: closePopup,
     onInput,

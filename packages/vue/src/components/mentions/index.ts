@@ -133,17 +133,17 @@ const MentionsPopup = defineComponent({
                 "data-part": "option",
                 "data-active": index === props.active && !entry.disabled ? "" : undefined,
                 "data-disabled": entry.disabled ? "" : undefined,
-                onMouseEnter: () => {
+                onMouseenter: () => {
                   if (!entry.disabled) ctx.emit("update:active", index);
                 },
                 // Confirm on press, before the floating vessel can tear
                 // down; focus stays on the field.
-                onMouseDown: (event: MouseEvent) => {
+                onMousedown: (event: MouseEvent) => {
                   if (event.button !== 0) return;
                   event.preventDefault();
                   if (!entry.disabled) ctx.emit("insert", entry);
                 },
-                onKeyDown: (event: KeyboardEvent) => {
+                onKeydown: (event: KeyboardEvent) => {
                   if (event.key !== "Enter" && event.key !== " ") return;
                   event.preventDefault();
                   if (!entry.disabled) ctx.emit("insert", entry);
@@ -207,7 +207,7 @@ export const MentionsVessel = withSelfRoot(
       open: { type: Boolean, default: false },
       matches: { type: Array as PropType<MentionEntry[]>, default: () => [] },
       active: { type: Number, default: 0 },
-      anchor: { type: Object as PropType<HTMLTextAreaElement | null>, default: null },
+      anchor: { type: Object as PropType<HTMLElement | null>, default: null },
       /** The host field's rung, so the rows keep the field's register. */
       size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     },
@@ -227,6 +227,7 @@ export const MentionsVessel = withSelfRoot(
             id: id.value,
             ids: { content: `${id.value}:popup` },
             open: props.open,
+            autoFocus: false,
             "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
             positioning: {
               placement: "bottom-start",

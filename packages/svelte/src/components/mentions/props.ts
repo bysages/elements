@@ -43,6 +43,9 @@ export interface UseMentionsHandlers {
   getText: () => string;
   /** Writes the field's next text: a mention inserted at the token. */
   setText: (value: string) => void;
+  /** The absolute text offset of the field caret; a rich editor supplies this.
+   * A textarea is read from its own selection when omitted. */
+  getCaret?: () => number | undefined;
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
@@ -81,7 +84,7 @@ export interface MentionsVesselProps {
   matches?: MentionEntry[];
   active?: number;
   /** The live rectangle the vessel points at — the host's field. */
-  anchor?: HTMLTextAreaElement | null;
+  anchor?: HTMLElement | null;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
   /** A candidate was confirmed (click or Enter). */

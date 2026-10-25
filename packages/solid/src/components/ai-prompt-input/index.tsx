@@ -10,6 +10,13 @@ import { useComponentMessages } from "../config-provider/use-component-messages"
 import { Field } from "../field";
 import { MentionsVessel, type MentionEntry, type MentionTriggers } from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
+import {
+  insertEditorToken,
+  insertLineBreak,
+  readCaret,
+  renderEditor,
+  serializeEditor,
+} from "./editor";
 
 function arrowUpIcon() {
   return iconNode("arrow-up", { width: "14", height: "14" });
@@ -49,9 +56,8 @@ export interface PromptInputProps extends Omit<
   /** The controls that close the footer row — the seal falls there
    * when a footer exists. */
   footerEnd?: JSX.Element;
-  /** Mention candidates for the field: pass the roster and the summon
-   * character(s) (`@` unless told otherwise) and the vessel rides the
-   * textarea. While candidates are up, Enter inserts and the send waits. */
+  /** Mention candidates. Rich tokens render after a choice; the
+   * bound value remains plain text. */
   mentions?: {
     items: MentionEntry[];
     trigger?: string;
@@ -65,16 +71,8 @@ export interface PromptInputProps extends Omit<
 
 /** The prompt vessel: the shared field textarea — self-growing on the
  * machine's autoresize — with the submit seal riding its last line.
- * Around the body, the slot props answer the composer's anatomy:
- * `header` for attachments riding above, `leading` for the tools at
- * the text's left, `trailing` for the seal itself, `footer` for the
- * tools beneath, and `footerEnd` for the controls that close the
- * footer row — the seal falls there by default, so a model picker
- * dropped in rides the send's shoulder. An empty slot renders no part,
- * so the bare vessel stays one quiet line. Controlled — bind `value`
- * and take the text on `onSubmit`. Enter sends; Shift+Enter breaks the
- * line. While `busy` the seal becomes a stop seal and Enter holds its
- * breath. */
+ * With mentions it becomes a rich token editor while the value stays
+ * ordinary composer text. */
 export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputProps) {
   injectComponentStyle("ai");
   const [own, rest] = splitProps(props, [
@@ -98,6 +96,8 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
   const hostId = useElementId("ai-prompt", () => rest.id);
   const mentionsId = () => `${hostId()}:mentions`;
   const [fieldEl, setFieldEl] = createSignal<HTMLTextAreaElement | null>(null);
+  const [editorEl, setEditorEl] = createSignal<HTMLElement | null>(null);
+  const mentionsActive = () => own.mentions != null;
 
   const mentions = useMentions(
     () => ({
@@ -107,7 +107,9 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
     }),
     fieldEl,
     {
-      getText: () => fieldEl()?.value ?? own.value ?? "",
+      getCaret: () => (own.mentions ? readCaret(editorEl()!) : undefined),
+      getText: () =>
+        own.mentions ? serializeEditor(editorEl()!) : (fieldEl()?.value ?? own.value ?? ""),
       setText: (next) => own.onValueChange?.(next),
       select: (entry) => {
         own.onSelect?.(entry);
@@ -115,7 +117,40 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       },
     },
   );
-  const mentionsActive = () => own.mentions != null;
+
+  const bindEditor = (node: HTMLElement) => {
+    setEditorEl(node);
+    renderEditor(node, own.value ?? "", own.mentions?.items ?? [], own.mentions?.triggers);
+    node.toggleAttribute("data-empty", !own.value);
+  };
+
+  const publishEditor = () => {
+    const editor = editorEl();
+    if (!editor) return;
+    const next = serializeEditor(editor);
+    editor.toggleAttribute("data-empty", !next);
+    own.onValueChange?.(next);
+  };
+
+  const insertChoice = (entry: MentionEntry) => {
+    const editor = editorEl();
+    if (!editor || entry.disabled || own.mentions?.insertOnSelect === false) {
+      mentions.close();
+      return;
+    }
+
+    own.onSelect?.(entry);
+    const next = insertEditorToken(
+      editor,
+      entry,
+      mentions.activeTrigger(),
+      mentions.anchorIndex(),
+      mentions.caretIndex(),
+    );
+    editor.toggleAttribute("data-empty", !next);
+    own.onValueChange?.(next);
+    mentions.close();
+  };
 
   const send = () => {
     const value = (own.value ?? "").trim();
@@ -124,8 +159,6 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
     own.onValueChange?.("");
   };
 
-  // An empty slot leaves no part in the anatomy — the bare vessel
-  // keeps its single-line posture.
   const row = (part: string, content: JSX.Element | undefined) =>
     content != null ? (
       <div data-scope="ai" data-part={part}>
@@ -159,9 +192,38 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       </Button>
     );
 
-  // With a tool row beneath, the seal sinks into it — the send
-  // belongs at the row's far end, with the tools.
-  const trailing = () => (own.footer != null ? own.trailing : (own.trailing ?? seal()));
+  const editorKeydown = (event: KeyboardEvent) => {
+    if (event.isComposing || event.keyCode === 229) return;
+
+    if (event.key === "Enter" && event.shiftKey) {
+      event.preventDefault();
+      const editor = editorEl();
+      if (!editor) return;
+      own.onValueChange?.(insertLineBreak(editor));
+      return;
+    }
+
+    if (
+      mentions.open() &&
+      (event.key === "Enter" || event.key === " ") &&
+      !mentions.matches()[mentions.active()]?.disabled
+    ) {
+      const entry = mentions.matches()[mentions.active()];
+      if (!entry) return;
+      event.preventDefault();
+      insertChoice(entry);
+      return;
+    }
+
+    if (mentions.onKeydown(event)) return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      send();
+    }
+  };
+
+  const hasFooter = () => own.footer != null;
 
   return (
     <form
@@ -176,51 +238,69 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       {row("prompt-header", own.header)}
       <div data-scope="ai" data-part="prompt-main">
         {row("prompt-leading", own.leading)}
-        <Field.Root>
-          <Field.Textarea
-            ref={(node) => setFieldEl(node)}
-            autoresize
-            rows={1}
-            value={own.value ?? ""}
-            placeholder={own.placeholder ?? messages().ai.send}
+        <Show
+          when={mentionsActive()}
+          fallback={
+            <Field.Root>
+              <Field.Textarea
+                ref={setFieldEl}
+                autoresize
+                rows={1}
+                value={own.value ?? ""}
+                placeholder={own.placeholder ?? messages().ai.conversation}
+                aria-label={messages().ai.conversation}
+                disabled={own.disabled}
+                onInput={() => mentions.onInput()}
+                onKeyDown={(event) => {
+                  if (event.isComposing || event.keyCode === 229) return;
+                  if (mentions.onKeydown(event)) return;
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    send();
+                  }
+                }}
+              />
+            </Field.Root>
+          }
+        >
+          <div
+            ref={bindEditor}
+            contentEditable={!own.disabled}
+            role="textbox"
+            aria-multiline="true"
             aria-label={messages().ai.conversation}
             aria-expanded={mentions.open()}
             aria-controls={mentions.open() ? `${mentionsId()}:popup` : undefined}
-            disabled={own.disabled}
-            onInput={(event) => {
-              own.onValueChange?.(event.currentTarget.value);
-              mentions.onInput();
+            aria-disabled={own.disabled || undefined}
+            data-scope="ai"
+            data-part="prompt-editor"
+            data-empty={!(own.value ?? "") ? "" : undefined}
+            data-placeholder={own.placeholder ?? messages().ai.conversation}
+            data-disabled={own.disabled || undefined}
+            onInput={() => {
+              publishEditor();
+              if (!own.disabled) mentions.onInput();
             }}
-            onKeyDown={(event) => {
-              // IME Enter is composition, not a send.
-              if (event.isComposing || event.keyCode === 229) return;
-              // The candidates eat their keys first; only on a
-              // quiet field does Enter become the send.
-              if (mentions.onKeydown(event)) return;
-              if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                send();
-              }
-            }}
+            onKeyDown={editorKeydown}
           />
-        </Field.Root>
+        </Show>
         <Show when={mentionsActive()}>
           <MentionsVessel
+            id={mentionsId()}
             open={mentions.open()}
             matches={mentions.matches()}
             active={mentions.active()}
-            anchor={fieldEl()}
-            id={mentionsId()}
-            onInsert={mentions.insert}
+            anchor={editorEl()}
+            onInsert={insertChoice}
             onActiveChange={mentions.setActive}
             onOpenChange={(open) => {
               if (!open) mentions.close();
             }}
           />
         </Show>
-        {row("prompt-trailing", trailing())}
+        {row("prompt-trailing", hasFooter() ? own.trailing : (own.trailing ?? seal()))}
       </div>
-      <Show when={own.footer != null}>
+      <Show when={hasFooter()}>
         <div data-scope="ai" data-part="prompt-footer">
           {own.footer}
           <div data-scope="ai" data-part="prompt-end">
@@ -232,4 +312,3 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
     </form>
   );
 });
-export { PromptInput as AiPromptInput };

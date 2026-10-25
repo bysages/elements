@@ -52,7 +52,7 @@ export function useMentions(
   function detect() {
     const text = handlers.getText();
     const el = textarea();
-    const caret = el?.selectionStart ?? text.length;
+    const caret = handlers.getCaret?.() ?? el?.selectionStart ?? text.length;
     caretIndex = caret;
     const head = text.slice(0, caret);
     const candidates = triggers()
@@ -148,6 +148,15 @@ export function useMentions(
     },
     set active(value: number) {
       state.active = value;
+    },
+    get anchorIndex() {
+      return anchorIndex;
+    },
+    get caretIndex() {
+      return caretIndex;
+    },
+    get activeTrigger() {
+      return activeTrigger;
     },
     insert,
     close: closePopup,
