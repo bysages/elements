@@ -112,6 +112,17 @@ export const treeViewCss =
   gap: var(--bs-gap-sm);
 }
 
+/* A nav row can carry a quiet count at its trailing edge; custom actions
+   keep the row's own spacing and stay after the count. */
+[data-scope="tree-view"][data-part="node-meta"] {
+  margin-inline-start: auto;
+  overflow: hidden;
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* The chevron swings open on the spring — puppets have strings. */
 [data-scope="tree-view"][data-part="branch-indicator"] {
   display: inline-flex;

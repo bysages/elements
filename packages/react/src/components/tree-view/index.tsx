@@ -4,6 +4,7 @@ import { TreeView as ArkTreeView } from "@ark-ui/react/tree-view";
 import { createTreeCollection } from "@ark-ui/react/tree-view";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties, ReactNode } from "react";
+import { useMemo } from "react";
 import type { ComponentProps } from "react";
 
 import { iconNode } from "../../internal/icon";
@@ -44,16 +45,26 @@ function TreeViewBranchIndicator(props: ComponentProps<typeof ArkTreeView.Branch
   return <ArkTreeView.BranchIndicator {...rest}>{children}</ArkTreeView.BranchIndicator>;
 }
 
-type TreeOption = {
+export type TreeViewOption = {
   label: string;
   value: string;
   disabled?: boolean;
-  children?: TreeOption[];
+  /** A curated core icon at the row's leading edge. */
+  icon?: string;
+  /** A quiet trailing label, commonly a count. */
+  meta?: string;
+  children?: TreeViewOption[];
 };
+
+type TreeOption = TreeViewOption;
 
 type TreeViewFacadeProps = {
   value?: string[];
   defaultValue?: string[];
+  /** Branch values expanded on first render; top-level branches by default. */
+  defaultExpandedValue?: string[];
+  /** Controlled expanded branch values. */
+  expandedValue?: string[];
   options: TreeOption[];
   multiple?: boolean;
   label?: string;
@@ -61,22 +72,47 @@ type TreeViewFacadeProps = {
   className?: string;
   style?: CSSProperties;
   onValueChange?: (value: string[]) => void;
+  onExpandedChange?: (value: string[]) => void;
+  renderTrailing?: (node: TreeOption) => ReactNode;
 };
 
-function treeNodes(items: TreeOption[], path: number[] = []): ReactNode {
+function nodeTrailing(node: TreeOption, props: TreeViewFacadeProps): ReactNode {
+  return (
+    <>
+      {node.meta ? (
+        <span data-scope="tree-view" data-part="node-meta">
+          {node.meta}
+        </span>
+      ) : null}
+      {props.renderTrailing?.(node)}
+    </>
+  );
+}
+
+function treeNodes(
+  items: TreeOption[],
+  path: number[] = [],
+  facade: TreeViewFacadeProps,
+): ReactNode {
   return items.map((node, index) => {
     const indexPath = [...path, index];
     const row = node.children?.length ? (
       <ArkTreeView.Branch>
         <ArkTreeView.BranchControl>
+          {node.icon ? iconNode(node.icon) : null}
           <ArkTreeView.BranchIndicator>{iconNode("chevron-right")}</ArkTreeView.BranchIndicator>
           <ArkTreeView.BranchText>{node.label}</ArkTreeView.BranchText>
+          {nodeTrailing(node, facade)}
         </ArkTreeView.BranchControl>
-        <ArkTreeView.BranchContent>{treeNodes(node.children, indexPath)}</ArkTreeView.BranchContent>
+        <ArkTreeView.BranchContent>
+          {treeNodes(node.children, indexPath, facade)}
+        </ArkTreeView.BranchContent>
       </ArkTreeView.Branch>
     ) : (
       <ArkTreeView.Item>
+        {node.icon ? iconNode(node.icon) : null}
         <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
+        {nodeTrailing(node, facade)}
       </ArkTreeView.Item>
     );
 
@@ -94,6 +130,8 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
   const {
     value,
     defaultValue,
+    defaultExpandedValue,
+    expandedValue,
     options,
     multiple,
     label,
@@ -101,23 +139,28 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
     className,
     style,
     onValueChange,
+    onExpandedChange,
   } = props;
   const branchValues = options
     .filter((option) => option.children?.length)
     .map((option) => option.value);
-  const collection = createTreeCollection({
-    nodeToValue: (node: TreeOption) => node.value,
-    nodeToString: (node: TreeOption) => node.label,
-
-    isNodeDisabled: (node: TreeOption) => !!node.disabled,
-    rootNode: { value: "root", label: "", children: options },
-  });
+  const collection = useMemo(
+    () =>
+      createTreeCollection({
+        nodeToValue: (node: TreeOption) => node.value,
+        nodeToString: (node: TreeOption) => node.label,
+        isNodeDisabled: (node: TreeOption) => !!node.disabled,
+        rootNode: { value: "root", label: "", children: options },
+      }),
+    [options],
+  );
 
   return (
     <TreeViewRoot
       size={size}
       collection={collection}
-      defaultExpandedValue={branchValues}
+      defaultExpandedValue={defaultExpandedValue ?? branchValues}
+      {...(expandedValue === undefined ? {} : { expandedValue })}
       defaultSelectedValue={defaultValue}
       selectedValue={value}
       selectionMode={multiple ? "multiple" : "single"}
@@ -127,8 +170,11 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
       onSelectionChange={(event: { selectedValue: string[] }) =>
         onValueChange?.(event.selectedValue)
       }
+      onExpandedChange={(event: { expandedValue: string[] }) =>
+        onExpandedChange?.(event.expandedValue)
+      }
     >
-      <ArkTreeView.Tree>{treeNodes(options)}</ArkTreeView.Tree>
+      <ArkTreeView.Tree>{treeNodes(options, [], props)}</ArkTreeView.Tree>
     </TreeViewRoot>
   );
 }

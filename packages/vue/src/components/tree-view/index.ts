@@ -40,6 +40,14 @@ const TreeViewRoot = defineComponent({
 
 /* A branch is born with its chevron — the indicator stays a consumer's
  * slot to override, never a chore to remember. */
+const TreeViewNodeCheckbox = defineComponent({
+  name: "STreeViewNodeCheckbox",
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () => h(ArkTreeView.NodeCheckbox, { ...attrs, "aria-hidden": true }, slots);
+  },
+});
+
 const TreeViewBranchIndicator = defineComponent({
   name: "STreeViewBranchIndicator",
   inheritAttrs: false,
@@ -49,11 +57,15 @@ const TreeViewBranchIndicator = defineComponent({
   },
 });
 
-type TreeOption = {
+export type TreeViewOption = {
   label: string;
   value: string;
   disabled?: boolean;
-  children?: TreeOption[];
+  /** A curated core icon at the row's leading edge. */
+  icon?: string;
+  /** A quiet trailing label, commonly a count. */
+  meta?: string;
+  children?: TreeViewOption[];
 };
 
 /** The complete tree behind selected values: nested options render their own
@@ -67,37 +79,52 @@ const TreeViewFacade = defineComponent({
     defaultExpandedValue: { type: Array as PropType<string[]>, default: undefined },
     /** Controlled expanded branch values. */
     expandedValue: { type: Array as PropType<string[]>, default: undefined },
-    options: { type: Array as PropType<TreeOption[]>, required: true },
+    options: { type: Array as PropType<TreeViewOption[]>, required: true },
     multiple: { type: Boolean, default: false },
     label: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   },
   emits: {
     "update:modelValue": (_value: string[]) => true,
+    "update:expandedValue": (_value: string[]) => true,
   },
-  setup(props, { attrs, emit }: SetupContext) {
+  setup(props, { attrs, emit, slots }: SetupContext) {
     const collection = computed(() =>
       createTreeCollection({
-        nodeToValue: (node: TreeOption) => node.value,
-        nodeToString: (node: TreeOption) => node.label,
+        nodeToValue: (node: TreeViewOption) => node.value,
+        nodeToString: (node: TreeViewOption) => node.label,
 
-        isNodeDisabled: (node: TreeOption) => !!node.disabled,
+        isNodeDisabled: (node: TreeViewOption) => !!node.disabled,
         rootNode: { value: "root", label: "", children: props.options },
       }),
     );
 
-    const nodes = (items: TreeOption[], path: number[] = []): any[] =>
+    const nodeTrailing = (node: TreeViewOption) =>
+      [
+        node.meta
+          ? h("span", { "data-scope": "tree-view", "data-part": "node-meta" }, node.meta)
+          : null,
+        ...((slots.trailing?.({ node }) ?? []) as any[]),
+      ].filter(Boolean);
+
+    const nodes = (items: TreeViewOption[], path: number[] = []): any[] =>
       items.map((node, index) => {
         const indexPath = [...path, index];
         const row = node.children?.length
           ? h(ArkTreeView.Branch, () => [
               h(ArkTreeView.BranchControl, () => [
+                node.icon ? iconNode(node.icon) : null,
                 h(ArkTreeView.BranchIndicator, () => iconNode("chevron-right")),
                 h(ArkTreeView.BranchText, () => node.label),
+                ...nodeTrailing(node),
               ]),
               h(ArkTreeView.BranchContent, () => nodes(node.children!, indexPath)),
             ])
-          : h(ArkTreeView.Item, () => h(ArkTreeView.ItemText, () => node.label));
+          : h(ArkTreeView.Item, () => [
+              node.icon ? iconNode(node.icon) : null,
+              h(ArkTreeView.ItemText, () => node.label),
+              ...nodeTrailing(node),
+            ]);
         return h(
           ArkTreeView.NodeProvider as never,
           { key: node.value, node, indexPath },
@@ -122,6 +149,8 @@ const TreeViewFacade = defineComponent({
           ...(modelValue === undefined ? {} : { selectedValue: modelValue }),
           onSelectionChange: (event: { selectedValue: string[] }) =>
             emit("update:modelValue", event.selectedValue),
+          onExpandedChange: (event: { expandedValue: string[] }) =>
+            emit("update:expandedValue", event.expandedValue),
         } as never,
         () => [
           ...(props.label
@@ -137,9 +166,11 @@ const TreeViewFacade = defineComponent({
 export const TreeView = defineFamily(TreeViewFacade, {
   ...ArkTreeView,
   Root: TreeViewRoot,
+  NodeCheckbox: TreeViewNodeCheckbox,
   BranchIndicator: TreeViewBranchIndicator,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof TreeViewFacade &
-  Omit<typeof ArkTreeView, "Root" | "BranchIndicator"> & {
+  Omit<typeof ArkTreeView, "Root" | "NodeCheckbox" | "BranchIndicator"> & {
     Root: typeof ArkTreeView.Root & typeof TreeViewRoot;
+    NodeCheckbox: typeof TreeViewNodeCheckbox;
     BranchIndicator: typeof TreeViewBranchIndicator;
   };

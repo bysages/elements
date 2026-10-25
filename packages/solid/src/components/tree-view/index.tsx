@@ -49,12 +49,18 @@ function TreeViewBranchIndicator(props: ComponentProps<typeof ArkTreeView.Branch
   );
 }
 
-type TreeOption = {
+export type TreeViewOption = {
   label: string;
   value: string;
   disabled?: boolean;
-  children?: TreeOption[];
+  /** A curated core icon at the row's leading edge. */
+  icon?: string;
+  /** A quiet trailing label, commonly a count. */
+  meta?: string;
+  children?: TreeViewOption[];
 };
+
+type TreeOption = TreeViewOption;
 
 export interface TreeViewFacadeProps {
   value?: string[];
@@ -69,6 +75,8 @@ export interface TreeViewFacadeProps {
   /** One rung of the row register: the rows' breathing room follows it. */
   size?: "sm" | "md" | "lg";
   onValueChange?: (value: string[]) => void;
+  onExpandedChange?: (value: string[]) => void;
+  renderTrailing?: (node: TreeOption) => JSX.Element;
 }
 
 /** The complete tree behind selected values: nested options render their own
@@ -84,13 +92,26 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
     }),
   );
 
+  const nodeTrailing = (node: TreeOption) => (
+    <>
+      {node.meta && (
+        <span data-scope="tree-view" data-part="node-meta">
+          {node.meta}
+        </span>
+      )}
+      {props.renderTrailing?.(node)}
+    </>
+  );
+
   const renderNode = (node: TreeOption, indexPath: number[]): JSX.Element => (
     <ArkTreeView.NodeProvider node={node} indexPath={indexPath}>
       {node.children?.length ? (
         <ArkTreeView.Branch>
           <ArkTreeView.BranchControl>
+            {node.icon ? iconNode(node.icon) : null}
             <ArkTreeView.BranchIndicator>{iconNode("chevron-right")}</ArkTreeView.BranchIndicator>
             <ArkTreeView.BranchText>{node.label}</ArkTreeView.BranchText>
+            {nodeTrailing(node)}
           </ArkTreeView.BranchControl>
           <ArkTreeView.BranchContent>
             <For each={node.children}>
@@ -100,7 +121,9 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
         </ArkTreeView.Branch>
       ) : (
         <ArkTreeView.Item>
+          {node.icon ? iconNode(node.icon) : null}
           <ArkTreeView.ItemText>{node.label}</ArkTreeView.ItemText>
+          {nodeTrailing(node)}
         </ArkTreeView.Item>
       )}
     </ArkTreeView.NodeProvider>
@@ -120,6 +143,9 @@ function TreeViewFacade(props: TreeViewFacadeProps) {
       {...(props.value === undefined ? {} : { selectedValue: props.value })}
       onSelectionChange={(event: { selectedValue: string[] }) =>
         props.onValueChange?.(event.selectedValue)
+      }
+      onExpandedChange={(event: { expandedValue: string[] }) =>
+        props.onExpandedChange?.(event.expandedValue)
       }
     >
       <Show when={props.label}>

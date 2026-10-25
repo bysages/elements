@@ -281,6 +281,50 @@ export const Basic = {
     }),
 };
 
+/** Workspace navigation reads from plain options: curated leading icons,
+ * quiet trailing counts, and an optional scoped action per row. */
+export const Nav = {
+  render: () =>
+    h("div", { style: { inlineSize: "100%", maxInlineSize: "22rem" } }, () => [
+      h(
+        TreeView,
+        {
+          options: [
+            {
+              label: "Workspace",
+              value: "workspace",
+              icon: "folder",
+              meta: "12",
+              children: [
+                { label: "Elements", value: "elements", icon: "file", meta: "8" },
+                { label: "Examples", value: "examples", icon: "image", meta: "4" },
+              ],
+            },
+            {
+              label: "Agents",
+              value: "agents",
+              icon: "inbox",
+              meta: "3",
+              children: [
+                { label: "Research", value: "research", icon: "star", meta: "2" },
+                { label: "Release", value: "release", icon: "calendar" },
+              ],
+            },
+          ],
+          defaultValue: ["elements"],
+          defaultExpandedValue: ["workspace", "agents"],
+          label: "Workspace",
+        },
+        {
+          trailing: ({ node }: { node: { value: string } }) =>
+            node.value === "agents"
+              ? [h("span", { "data-part": "node-action" }, iconNode("chevron-right"))]
+              : [],
+        },
+      ),
+    ]),
+};
+
 /** The library tree: branches open on click, files sit at the leaves. */
 export const Anatomy = {
   args: {

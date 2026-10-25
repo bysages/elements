@@ -4,6 +4,7 @@ import type { Meta } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { TreeView } from ".";
+import { iconNode } from "../../internal/icon";
 import { Button } from "../button";
 import { Input } from "../input";
 
@@ -117,6 +118,47 @@ export const Basic = {
       defaultValue={["ink/brush"]}
       label="Library"
     />
+  ),
+};
+
+/** Workspace navigation reads from plain options: curated leading icons,
+ * quiet trailing counts, and an optional trailing action per row. */
+export const Nav = {
+  render: () => (
+    <div style={{ width: "100%", maxWidth: "22rem" }}>
+      <TreeView
+        options={[
+          {
+            label: "Workspace",
+            value: "workspace",
+            icon: "folder",
+            meta: "12",
+            children: [
+              { label: "Elements", value: "elements", icon: "file", meta: "8" },
+              { label: "Examples", value: "examples", icon: "image", meta: "4" },
+            ],
+          },
+          {
+            label: "Agents",
+            value: "agents",
+            icon: "inbox",
+            meta: "3",
+            children: [
+              { label: "Research", value: "research", icon: "star", meta: "2" },
+              { label: "Release", value: "release", icon: "calendar" },
+            ],
+          },
+        ]}
+        defaultValue={["elements"]}
+        defaultExpandedValue={["workspace", "agents"]}
+        label="Workspace"
+        renderTrailing={(node) =>
+          node?.value === "agents" ? (
+            <span data-part="node-action">{iconNode("chevron-right")}</span>
+          ) : null
+        }
+      />
+    </div>
   ),
 };
 

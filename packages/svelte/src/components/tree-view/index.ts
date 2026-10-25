@@ -27,4 +27,5 @@ export const TreeView: typeof TreeViewFacade &
   BranchIndicator: TreeViewBranchIndicator,
 });
 
+export type { TreeViewOption } from "./props";
 export type { TreeViewRootProps } from "./props";
