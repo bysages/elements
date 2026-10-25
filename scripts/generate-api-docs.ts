@@ -16,6 +16,7 @@ import { join, dirname } from "node:path";
 import {
   Project,
   SyntaxKind,
+  type CallExpression,
   type ExpressionWithTypeArguments,
   type InterfaceDeclaration,
   Node,
@@ -599,6 +600,16 @@ function zagParts(family: string): string[] {
   return [...list.matchAll(/"([\w-]+)"/g)].map((m) => m[1]);
 }
 
+function unwrapSelfRoot(call: CallExpression): CallExpression {
+  let current = call;
+  while (current.getExpression().getText() === "withSelfRoot") {
+    const inner = current.getArguments()[0]?.asKind(SyntaxKind.CallExpression);
+    if (!inner) break;
+    current = inner;
+  }
+  return current;
+}
+
 export function documentFamily(dir: string): FamilyDoc | null {
   const indexPath = join(WRAPPERS, dir, "index.ts");
   if (!existsSync(indexPath)) return null;
@@ -664,8 +675,9 @@ export function documentFamily(dir: string): FamilyDoc | null {
     source = "native";
     components = {};
     for (const decl of indexFile.getVariableDeclarations()) {
-      const call = decl.getInitializer()?.asKind(SyntaxKind.CallExpression);
-      if (!call) continue;
+      const initializer = decl.getInitializer()?.asKind(SyntaxKind.CallExpression);
+      if (!initializer) continue;
+      const call = unwrapSelfRoot(initializer);
       const callee = call.getExpression().getText();
       // A part factory ("part(\"Icon\", \"span\")") contributes a styled
       // part with no API of its own — its runtime name is the family's
