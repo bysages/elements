@@ -270,3 +270,48 @@ export const Mentions = {
     );
   },
 };
+
+/** Slash commands can report selection without rewriting the prompt:
+ * the consumer receives the whole entry and owns the next action. */
+export const Triggers = {
+  render: () => {
+    const [prompt, setPrompt] = useState("");
+    const [chosen, setChosen] = useState("");
+    const items = [
+      { label: "Lin Hua", value: "lin" },
+      {
+        label: "Search web",
+        value: "search-web",
+        group: "Commands",
+        description: "Find current sources",
+      },
+    ];
+    return (
+      <div
+        style={{
+          display: "grid",
+          gap: "0.75rem",
+          inlineSize: "100%",
+          maxInlineSize: "46rem",
+        }}
+      >
+        <PromptInput
+          value={prompt}
+          placeholder="Type @ to mention or / to command…"
+          mentions={{ items, triggers: ["@", "/"], insertOnSelect: false }}
+          onValueChange={setPrompt}
+          onSelect={(entry) => setChosen(entry.label)}
+        />
+        <p
+          role="status"
+          style={{
+            fontSize: "var(--bs-font-size-sm)",
+            color: "var(--bs-color-text-tertiary)",
+          }}
+        >
+          {chosen ? `Selected: ${chosen}` : "The text stays untouched after selection."}
+        </p>
+      </div>
+    );
+  },
+};

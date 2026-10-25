@@ -16,7 +16,9 @@ export interface MessageProps<MESSAGE extends AiSdkMessage = AiSdkMessage> {
 }
 
 /** Whose stroke this is — the user's words sit in a recessed bubble,
- * the assistant speaks flat on the paper. */
+ * the assistant speaks flat on the paper. The generic
+ * `MESSAGE extends AiSdkMessage` follows the application's AI SDK
+ * `UIMessage` contract. */
 export const Message = withSelfRoot(
   defineComponent({
     name: "AiMessage",

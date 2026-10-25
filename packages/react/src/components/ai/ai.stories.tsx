@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Ai } from ".";
 import { iconNode } from "../../internal/icon";
+import { Layout } from "../layout";
 
 const meta: Meta = { title: "Components/AI/AI Conversation" };
 export default meta;
@@ -149,4 +150,79 @@ export const TypedParts = {
  * code, quote, table — each in its hairline dress. */
 export const Loader = {
   render: () => <Ai.Loader />,
+};
+
+/** The whole workbench: the layout rail, the conversation log, and
+ * the composer stand in one shell — the arrangement the chat app
+ * example ships with, at storybook scale. */
+export const Workbench = {
+  render: () => {
+    const [prompt, setPrompt] = useState("");
+    const [pending, setPending] = useState(false);
+    const [messages, setMessages] = useState<Array<{ role: "user" | "assistant"; text: string }>>([
+      { role: "assistant", text: reply },
+    ]);
+    const send = (value: string) => {
+      if (!value.trim() || pending) return;
+      setMessages((previous) => [...previous, { role: "user", text: value }]);
+      setPrompt("");
+      setPending(true);
+      setTimeout(() => {
+        setMessages((previous) => [
+          ...previous,
+          { role: "assistant", text: "Noted — the colophon is filed with the release." },
+        ]);
+        setPending(false);
+      }, 900);
+    };
+    return (
+      <Layout.Root sider="start" style={{ minBlockSize: "34rem" }}>
+        <Layout.Sider
+          style={{
+            display: "grid",
+            alignContent: "start",
+            gap: "var(--bs-gap-xs)",
+            padding: "var(--bs-padding-sm)",
+          }}
+        >
+          {["Threads", "Search", "Archive"].map((label) => (
+            <span
+              key={label}
+              style={{ fontSize: "var(--bs-font-size-sm)", color: "var(--bs-color-text-tertiary)" }}
+            >
+              {label}
+            </span>
+          ))}
+        </Layout.Sider>
+        <Layout.Header>
+          <strong style={{ fontSize: "var(--bs-font-size-lg)" }}>AI Workbench</strong>
+        </Layout.Header>
+        <Layout.Content
+          style={{ display: "grid", gridTemplateRows: "1fr auto", overflow: "hidden" }}
+        >
+          <Ai.Conversation
+            aria-label="Workbench conversation"
+            style={{ padding: "var(--bs-padding-md)" }}
+          >
+            {messages.map((message, index) => (
+              <Ai.Message key={index} role={message.role}>
+                {message.role === "user" ? (
+                  <Ai.MessageContent>{message.text}</Ai.MessageContent>
+                ) : (
+                  <Ai.Response content={message.text} />
+                )}
+              </Ai.Message>
+            ))}
+            {pending ? <Ai.Loader /> : null}
+          </Ai.Conversation>
+          <Ai.PromptInput
+            value={prompt}
+            placeholder="Ask the paper…"
+            onValueChange={setPrompt}
+            onSubmit={send}
+          />
+        </Layout.Content>
+      </Layout.Root>
+    );
+  },
 };

@@ -313,8 +313,10 @@ function nativeEmits(component: ObjectLiteralExpression): EmitDoc[] {
 }
 
 /** Named slots a native part reads: every `ctx.slots.X` call inside the
- * component's own source span. The default slot goes unreported — the
- * examples show it. */
+ * component's own source span, plus the setup-destructured `slots.X`
+ * form. The plain default slot goes unreported — the examples show it —
+ * while a scoped default (called with a props object) is reported so
+ * readers learn the slot carries data. */
 function nativeSlots(component: ObjectLiteralExpression): { name: string }[] {
   const found = new Set<string>();
   const text = component.getText();
@@ -322,10 +324,12 @@ function nativeSlots(component: ObjectLiteralExpression): { name: string }[] {
     (match) => match[1]!,
   );
   const scope = aliases.length
-    ? new RegExp(`(?:ctx\\.slots|${aliases.join("|")})\\.(\\w+)`, "g")
-    : /ctx\.slots\.(\w+)/g;
+    ? new RegExp(`(?:ctx\\.slots|(?:${aliases.join("|")})|(?<![\\w.$])slots)\\.(\\w+)`, "g")
+    : /(?:ctx\.slots|(?<![\w.$])slots)\.(\w+)/g;
   for (const match of text.matchAll(scope)) {
-    if (match[1] !== "default") found.add(match[1]!);
+    const rest = text.slice(match.index! + match[0].length).trimStart();
+    const scoped = rest.startsWith("?.({") || rest.startsWith("({");
+    if (match[1] !== "default" || scoped) found.add(match[1]!);
   }
   return [...found].sort().map((name) => ({ name }));
 }

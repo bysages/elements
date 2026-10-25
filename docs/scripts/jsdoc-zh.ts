@@ -108,7 +108,7 @@ export const jsdocZh: Record<string, FamilyZh> = {
       },
       Parts: {
         description:
-          "AI SDK 消息部件渲染器：按 `UIMessage.parts` 依次渲染文本、推理、工具、来源、媒体等类型；应用自有数据可通过同名插槽接管，工具审批事件保留给调用方。",
+          "AI SDK 消息部件渲染器：按 `UIMessage.parts` 依次渲染文本、推理、工具、来源、媒体等类型；应用自有数据可通过同名插槽接管，工具审批事件保留给调用方。泛型 `MESSAGE extends AiSdkMessage` 会把每个部件和插槽收窄到应用自己的 `UIMessage` 类型。",
         props: {
           message: "要渲染的 AI SDK `UIMessage`",
           highlighter: "传给每个文本片段的代码高亮函数",

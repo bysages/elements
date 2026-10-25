@@ -4,6 +4,7 @@ import { h, reactive } from "vue";
 
 import { Ai } from ".";
 import { iconNode } from "../../internal/icon";
+import { Layout } from "../layout";
 import { withState } from "../with-state.js";
 
 const meta: Meta = { title: "Components/AI/AI Conversation" };
@@ -161,4 +162,95 @@ export const TypedParts = {
 /** Two beads of ink breathing while the answer is on its way. */
 export const Loader = {
   render: () => h(Ai.Loader),
+};
+
+/** The whole workbench: the layout rail, the conversation log, and
+ * the composer stand in one shell — the arrangement the chat app
+ * example ships with, at storybook scale. */
+export const Workbench = {
+  render: () =>
+    withState(() => {
+      const state = reactive({
+        prompt: "",
+        pending: false,
+        messages: [{ role: "assistant", text: reply }] as Array<{
+          role: "user" | "assistant";
+          text: string;
+        }>,
+      });
+      const send = (value: string) => {
+        if (!value.trim() || state.pending) return;
+        state.messages.push({ role: "user", text: value });
+        state.prompt = "";
+        state.pending = true;
+        setTimeout(() => {
+          state.messages.push({
+            role: "assistant",
+            text: "Noted — the colophon is filed with the release.",
+          });
+          state.pending = false;
+        }, 900);
+      };
+      return () =>
+        h(Layout.Root, { sider: "start", style: { minBlockSize: "34rem" } }, () => [
+          h(
+            Layout.Sider,
+            {
+              style: {
+                display: "grid",
+                alignContent: "start",
+                gap: "var(--bs-gap-xs)",
+                padding: "var(--bs-padding-sm)",
+              },
+            },
+            () =>
+              ["Threads", "Search", "Archive"].map((label) =>
+                h(
+                  "span",
+                  {
+                    style: {
+                      fontSize: "var(--bs-font-size-sm)",
+                      color: "var(--bs-color-text-tertiary)",
+                    },
+                  },
+                  label,
+                ),
+              ),
+          ),
+          h(Layout.Header, () =>
+            h("strong", { style: { fontSize: "var(--bs-font-size-lg)" } }, "AI Workbench"),
+          ),
+          h(
+            Layout.Content,
+            { style: { display: "grid", gridTemplateRows: "1fr auto", overflow: "hidden" } },
+            () => [
+              h(
+                Ai.Conversation,
+                {
+                  "aria-label": "Workbench conversation",
+                  style: { padding: "var(--bs-padding-md)" },
+                },
+                () => [
+                  ...state.messages.map((message) =>
+                    h(Ai.Message, { role: message.role }, () =>
+                      message.role === "user"
+                        ? h(Ai.MessageContent, () => message.text)
+                        : h(Ai.Response, { content: message.text }),
+                    ),
+                  ),
+                  state.pending ? h(Ai.Loader) : null,
+                ],
+              ),
+              h(Ai.PromptInput, {
+                modelValue: state.prompt,
+                placeholder: "Ask the paper…",
+                "onUpdate:modelValue": (value: string) => {
+                  state.prompt = value;
+                },
+                onSubmit: send,
+              }),
+            ],
+          ),
+        ]);
+    }),
 };

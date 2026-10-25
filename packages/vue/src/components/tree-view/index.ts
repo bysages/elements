@@ -79,6 +79,9 @@ const TreeViewFacade = defineComponent({
     defaultExpandedValue: { type: Array as PropType<string[]>, default: undefined },
     /** Controlled expanded branch values. */
     expandedValue: { type: Array as PropType<string[]>, default: undefined },
+    /** Nested rows: `{ label, value, disabled?, icon?, meta?, children? }` —
+     * `icon` rides the core whitelist, `meta` renders a quiet trailing
+     * label, and `children` turns the row into a branch. */
     options: { type: Array as PropType<TreeViewOption[]>, required: true },
     multiple: { type: Boolean, default: false },
     label: { type: String, default: undefined },

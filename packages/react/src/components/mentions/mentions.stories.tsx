@@ -83,3 +83,48 @@ export const WithField = {
     );
   },
 };
+
+/** Several triggers and rich rows: `@` finds people, `/` finds commands,
+ * and grouping gives the vessel a stable reading order. */
+export const Groups = {
+  render: () => {
+    const [text, setText] = useState("");
+    return (
+      <div>
+        <Mentions
+          items={[
+            {
+              label: "Lin Hua",
+              value: "lin",
+              group: "People",
+              description: "Design systems",
+              icon: "pencil",
+            },
+            {
+              label: "Mei Chen",
+              value: "mei",
+              group: "People",
+              description: "Editorial",
+              icon: "pencil",
+            },
+            {
+              label: "Search web",
+              value: "search-web",
+              group: "Commands",
+              description: "Find current sources",
+              icon: "file",
+              insertText: "/search-web ",
+            },
+          ]}
+          triggers={["@", "/"]}
+          placeholder="Mention @Lin or run /Search…"
+          value={text}
+          onValueChange={setText}
+        />
+        <p role="status" style={statusStyle}>
+          {text ? `Field holds: ${text}` : "Type @ or / to see groups."}
+        </p>
+      </div>
+    );
+  },
+};

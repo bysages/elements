@@ -244,7 +244,9 @@ export interface AiPartsSlots<MESSAGE extends AiSdkMessage = AiSdkMessage> {
 /** Renders one typed `UIMessage` from AI SDK as the shared conversation
  * anatomy. SDK state stays authoritative: streaming reasoning opens,
  * completed reasoning folds, approval state maps to tool actions, and
- * unknown data parts wait for their application slot. */
+ * unknown data parts wait for their application slot. The generic
+ * `MESSAGE extends AiSdkMessage` narrows every part and slot to the
+ * application's own `UIMessage` type. */
 export const AiParts = defineComponent({
   name: "AiParts",
   props: {
