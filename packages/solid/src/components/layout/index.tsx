@@ -126,6 +126,22 @@ function LayoutSider(props: LayoutSiderProps) {
 
   const railWidth = () => (rail ? Math.round(rail.getBoundingClientRect().width) : 0);
 
+  // The stylesheet clamps the visual rail, but the state and the
+  // width callback must carry the same bounds or callers observe an
+  // out-of-range rail that never renders.
+  const clampWidth = (next: number): number => {
+    const toPx = (value: string): number => {
+      const size = Number.parseFloat(value);
+      if (Number.isNaN(size)) return 0;
+      if (value.endsWith("rem")) {
+        const root = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        return size * root;
+      }
+      return size;
+    };
+    return Math.min(Math.max(next, toPx(own.minWidth ?? "12rem")), toPx(own.maxWidth ?? "24rem"));
+  };
+
   const onPointerDown = (event: PointerEvent & { currentTarget: HTMLElement }) => {
     setDragging(true);
     startPointerX = event.clientX;
@@ -137,7 +153,7 @@ function LayoutSider(props: LayoutSiderProps) {
     // Pulling toward the flow widens the rail; the side decides which
     // way that is.
     const towardFlow = (layout?.siderPlacement() ?? "start") === "end" ? -1 : 1;
-    const next = Math.round(startWidth + towardFlow * (event.clientX - startPointerX));
+    const next = clampWidth(Math.round(startWidth + towardFlow * (event.clientX - startPointerX)));
     setInnerWidth(`${next}px`);
     own.onWidthChange?.(`${next}px`);
   };
@@ -152,7 +168,7 @@ function LayoutSider(props: LayoutSiderProps) {
       (layout?.siderPlacement() ?? "start") === "end"
         ? event.key === "ArrowLeft"
         : event.key === "ArrowRight";
-    const next = railWidth() + (widen ? RESIZE_STEP : -RESIZE_STEP);
+    const next = clampWidth(railWidth() + (widen ? RESIZE_STEP : -RESIZE_STEP));
     setInnerWidth(`${next}px`);
     own.onWidthChange?.(`${next}px`);
   };

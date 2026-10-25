@@ -166,10 +166,7 @@ function region(name: string, tag: "header" | "main" | "footer") {
   const Component = ({ children, ...rest }: HTMLAttributes<HTMLElement>) => {
     const layout = useContext(LAYOUT_CONTEXT);
     const splitPanel =
-      name === "Content" &&
-      !!layout?.siderPlacement() &&
-      !!layout.getSiderState()?.resizable &&
-      !layout.getSiderState()!.collapsed;
+      name === "Content" && !!layout?.siderPlacement() && !!layout.getSiderState()?.resizable;
     return (
       <Tag {...rest} data-scope="layout" data-part={name.toLowerCase()}>
         {splitPanel ? <ArkSplitter.Panel id="flow">{children}</ArkSplitter.Panel> : children}
@@ -237,25 +234,31 @@ function Sider({
   const width = widthProp !== undefined ? widthProp : innerWidth;
 
   useEffect(() => {
+    // Splitter owns the rendered track, so its clamps must follow the
+    // folded state too; otherwise its inline min-width defeats the CSS
+    // variable that switches the rail to its collapsed measure.
+    const railWidth = collapsed ? collapsedWidth : width;
+    const railMin = collapsed ? collapsedWidth : minWidth;
+    const railMax = collapsed ? collapsedWidth : maxWidth;
     layout?.setSiderState((previous) =>
       previous
         ? {
             ...previous,
             resizable,
             collapsed,
-            width,
-            minWidth,
-            maxWidth,
+            width: railWidth,
+            minWidth: railMin,
+            maxWidth: railMax,
           }
         : {
             resizable,
             collapsed,
-            width,
-            minWidth,
-            maxWidth,
+            width: railWidth,
+            minWidth: railMin,
+            maxWidth: railMax,
           },
     );
-  }, [layout, resizable, collapsed, width, minWidth, maxWidth]);
+  }, [layout, resizable, collapsed, collapsedWidth, width, minWidth, maxWidth]);
 
   useEffect(() => () => layout?.setSiderState(null), [layout]);
 
@@ -295,17 +298,21 @@ function Sider({
   }, [layout, onWidthChange]);
 
   const contents = typeof children === "function" ? children({ collapsed }) : children;
-  const body = active ? (
-    <ArkSplitter.Panel id="sider">
-      {contents}
-      <ArkSplitter.ResizeTrigger
-        id={layout?.siderPlacement() === "end" ? "flow:sider" : "sider:flow"}
-        aria-label={messages.sidebar.resize}
-      />
-    </ArkSplitter.Panel>
-  ) : (
-    contents
-  );
+  const resizeTrigger = active ? (
+    <ArkSplitter.ResizeTrigger
+      id={layout?.siderPlacement() === "end" ? "flow:sider" : "sider:flow"}
+      aria-label={messages.sidebar.resize}
+    />
+  ) : null;
+  const body =
+    resizable && layout ? (
+      <ArkSplitter.Panel id="sider">
+        {contents}
+        {resizeTrigger}
+      </ArkSplitter.Panel>
+    ) : (
+      contents
+    );
 
   return (
     <aside

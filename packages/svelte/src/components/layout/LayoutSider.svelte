@@ -53,9 +53,25 @@ function onPointerDown(event: PointerEvent) {
   (event.currentTarget as Element).setPointerCapture(event.pointerId);
 }
 
+// The stylesheet clamps the visual rail, but the bound width must
+// carry the same bounds or callers observe an out-of-range rail that
+// never renders.
+function clampWidth(next: number): number {
+  const toPx = (value: string): number => {
+    const size = Number.parseFloat(value);
+    if (Number.isNaN(size)) return 0;
+    if (value.endsWith("rem")) {
+      const root = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      return size * root;
+    }
+    return size;
+  };
+  return Math.min(Math.max(next, toPx(minWidth)), toPx(maxWidth));
+}
+
 function onPointerMove(event: PointerEvent) {
   if (!dragging) return;
-  const next = Math.round(startWidth + towardFlow * (event.clientX - startPointerX));
+  const next = clampWidth(Math.round(startWidth + towardFlow * (event.clientX - startPointerX)));
   width = `${next}px`;
 }
 
@@ -72,7 +88,7 @@ function onKeyDown(event: KeyboardEvent) {
       ? event.key === "ArrowLeft"
       : event.key === "ArrowRight";
   const current = rail ? rail.getBoundingClientRect().width : 0;
-  const next = Math.round(current + (widen ? RESIZE_STEP : -RESIZE_STEP));
+  const next = clampWidth(Math.round(current + (widen ? RESIZE_STEP : -RESIZE_STEP)));
   width = `${next}px`;
 }
 </script>
