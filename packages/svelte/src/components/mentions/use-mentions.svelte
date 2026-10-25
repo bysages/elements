@@ -1,7 +1,12 @@
 <script module lang="ts">
 import { tick } from "svelte";
 
-import type { MentionEntry, UseMentionsHandlers, UseMentionsOptions } from "./props";
+import type {
+  MentionCommitKey,
+  MentionEntry,
+  UseMentionsHandlers,
+  UseMentionsOptions,
+} from "./props";
 
 /** The @-detection machinery behind a mention field: watch the caret,
  * offer the matching candidates, and answer for the keys that drive
@@ -89,6 +94,11 @@ export function useMentions(
 
     const text = handlers.getText();
     const trigger = activeTrigger;
+    if (handlers.commit) {
+      handlers.commit(entry);
+      closePopup();
+      return;
+    }
     const replacement = entry.insertText ?? trigger + entry.label;
     const suffix = entry.insertText == null ? " " : "";
     const next =
@@ -110,8 +120,8 @@ export function useMentions(
     detect();
   }
 
-  /** Arrows move, Enter inserts, Escape dismisses. Answers `true` when
-   * the vessel consumed the key. */
+  /** Arrows move, configured keys commit, Escape dismisses. Answers
+   * `true` when the vessel consumed the key. */
   function onKeydown(event: KeyboardEvent): boolean {
     if (!state.open || state.matches.length === 0) return false;
     if (event.key === "ArrowDown") {
@@ -120,7 +130,9 @@ export function useMentions(
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       moveActive(-1);
-    } else if (event.key === "Enter" || event.key === " ") {
+    } else if (event.key === "Enter" || event.key === " " || event.key === "Tab") {
+      const commitKeys = options().commitKeys ?? (["Enter", " "] as MentionCommitKey[]);
+      if (!commitKeys.includes(event.key as MentionCommitKey)) return false;
       const entry = state.matches[state.active];
       if (!entry || entry.disabled) return false;
       event.preventDefault();

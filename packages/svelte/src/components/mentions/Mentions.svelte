@@ -15,6 +15,8 @@ let {
   trigger = "@",
   triggers,
   insertOnSelect = true,
+  commitKeys,
+  placement = "bottom-start",
   placeholder,
   autoresize = false,
   invalid = false,
@@ -31,7 +33,7 @@ const hostId = $derived(useElementId("mentions", generatedId, rest.id));
 let textareaEl = $state<HTMLTextAreaElement | null>(null);
 
 const mentions = useMentions(
-  () => ({ items, trigger, triggers }),
+  () => ({ items, trigger, triggers, commitKeys }),
   () => textareaEl,
   {
     getText: () => textareaEl?.value ?? value,
@@ -72,6 +74,7 @@ wire `useMentions` plus `MentionsVessel` themselves. -->
     matches={mentions.matches}
     active={mentions.active}
     size={size}
+    {placement}
     onInsert={mentions.insert}
     onActiveChange={(index) => (mentions.active = index)}
     onOpenChange={(open) => {

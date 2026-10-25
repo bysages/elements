@@ -8,7 +8,13 @@ import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Field } from "../field";
-import { MentionsVessel, type MentionEntry, type MentionTriggers } from "../mentions";
+import {
+  MentionsVessel,
+  type MentionCommitKey,
+  type MentionEntry,
+  type MentionPlacement,
+  type MentionTriggers,
+} from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
 import {
   insertEditorToken,
@@ -16,6 +22,7 @@ import {
   readCaret,
   renderEditor,
   serializeEditor,
+  setEditorCaret,
 } from "./editor";
 
 function arrowUpIcon() {
@@ -63,6 +70,9 @@ export interface PromptInputProps extends Omit<
     trigger?: string;
     triggers?: MentionTriggers;
     insertOnSelect?: boolean;
+    commitKeys?: MentionCommitKey[];
+    placement?: MentionPlacement;
+    clearQueryOnSelect?: boolean;
   };
   /** A candidate was chosen, including when `mentions.insertOnSelect`
    * keeps the composer text untouched. */
@@ -104,6 +114,7 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       items: own.mentions?.items ?? [],
       trigger: own.mentions?.trigger,
       triggers: own.mentions?.triggers,
+      commitKeys: own.mentions?.commitKeys ?? ["Enter", " ", "Tab"],
     }),
     fieldEl,
     {
@@ -113,8 +124,10 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       setText: (next) => own.onValueChange?.(next),
       select: (entry) => {
         own.onSelect?.(entry);
-        return own.mentions?.insertOnSelect !== false;
+        const insert = own.mentions?.insertOnSelect !== false;
+        return insert || own.mentions?.clearQueryOnSelect !== false;
       },
+      commit: (entry) => insertChoice(entry),
     },
   );
 
@@ -134,7 +147,21 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
 
   const insertChoice = (entry: MentionEntry) => {
     const editor = editorEl();
-    if (!editor || entry.disabled || own.mentions?.insertOnSelect === false) {
+    const clearQuery =
+      own.mentions?.insertOnSelect === false && own.mentions?.clearQueryOnSelect !== false;
+    if (!editor || entry.disabled || (own.mentions?.insertOnSelect === false && !clearQuery)) {
+      mentions.close();
+      return;
+    }
+
+    if (clearQuery) {
+      const text = serializeEditor(editor);
+      const next = text.slice(0, mentions.anchorIndex()) + text.slice(mentions.caretIndex());
+      renderEditor(editor, next, own.mentions?.items ?? [], own.mentions?.triggers);
+      editor.toggleAttribute("data-empty", !next);
+      editor.focus();
+      setEditorCaret(editor, mentions.anchorIndex());
+      own.onValueChange?.(next);
       mentions.close();
       return;
     }
@@ -203,18 +230,6 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
       return;
     }
 
-    if (
-      mentions.open() &&
-      (event.key === "Enter" || event.key === " ") &&
-      !mentions.matches()[mentions.active()]?.disabled
-    ) {
-      const entry = mentions.matches()[mentions.active()];
-      if (!entry) return;
-      event.preventDefault();
-      insertChoice(entry);
-      return;
-    }
-
     if (mentions.onKeydown(event)) return;
 
     if (event.key === "Enter") {
@@ -266,8 +281,9 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
           <div
             ref={bindEditor}
             contentEditable={!own.disabled}
-            role="textbox"
-            aria-multiline="true"
+            role="combobox"
+            aria-autocomplete="list"
+            tabindex={own.disabled ? undefined : 0}
             aria-label={messages().ai.conversation}
             aria-expanded={mentions.open()}
             aria-controls={mentions.open() ? `${mentionsId()}:popup` : undefined}
@@ -291,6 +307,7 @@ export const PromptInput = withSelfRoot(function PromptInput(props: PromptInputP
             matches={mentions.matches()}
             active={mentions.active()}
             anchor={editorEl()}
+            placement={own.mentions?.placement ?? "top-start"}
             onInsert={insertChoice}
             onActiveChange={mentions.setActive}
             onOpenChange={(open) => {

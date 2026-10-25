@@ -16,6 +16,7 @@ let {
   active = 0,
   anchor = null,
   size = "md",
+  placement = "bottom-start",
   children,
   onInsert,
   onActiveChange,
@@ -60,11 +61,8 @@ the textarea in the host's own anatomy. -->
   {open}
   positioning={
     children
-      ? { placement: "bottom-start" }
-      : {
-          placement: "bottom-start",
-          getAnchorRect: () => anchor?.getBoundingClientRect() ?? null,
-        }
+      ? { placement }
+      : { placement, getAnchorRect: () => anchor?.getBoundingClientRect() ?? null }
   }
   onOpenChange={(details) => onOpenChange?.(details.open)}
 >

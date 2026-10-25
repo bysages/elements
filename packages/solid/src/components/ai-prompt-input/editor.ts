@@ -210,6 +210,17 @@ export const insertEditorToken = (
   return serializeEditor(root);
 };
 
+export const setEditorCaret = (root: HTMLElement, offset: number): void => {
+  const position = caretPosition(root, offset);
+  const selection = window.getSelection();
+  if (!selection) return;
+  const range = document.createRange();
+  range.setStart(position.container, position.offset);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+};
+
 export const insertLineBreak = (root: HTMLElement): string => {
   document.execCommand("insertLineBreak");
   return serializeEditor(root);

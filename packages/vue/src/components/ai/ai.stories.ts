@@ -1,4 +1,5 @@
 import type { Meta } from "@storybook/vue3-vite";
+import type { UIMessage } from "ai";
 import { h, reactive } from "vue";
 
 import { Ai } from ".";
@@ -99,6 +100,62 @@ export const Basic = {
           ],
         );
     }),
+};
+
+/** One typed AI SDK message rendered directly: text, file, approval, and
+ * custom data parts all land on the shared conversation anatomy. */
+export const TypedParts = {
+  render: () => {
+    type DemoMessage = UIMessage<
+      unknown,
+      { status: { label: string } },
+      { searchWeb: { input: { query: string }; output: { hits: number } } }
+    >;
+    const message: DemoMessage = {
+      id: "sdk-message",
+      role: "assistant",
+      parts: [
+        { type: "text", text: "Here is the sampled ink, with the search waiting on approval." },
+        {
+          type: "file",
+          mediaType: "image/svg+xml",
+          filename: "ink-sample.svg",
+          url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 72' width='240' height='144'%3E%3Crect width='120' height='72' fill='%23f8f4ec'/%3E%3Cpath d='M18 52C36 22 82 20 102 34' stroke='%23221f1a' stroke-width='3' fill='none'/%3E%3C/svg%3E",
+        },
+        {
+          type: "tool-searchWeb",
+          toolCallId: "call-sample",
+          state: "approval-requested",
+          input: { query: "paper and ink release" },
+          approval: { id: "approval-sample" },
+        },
+        { type: "step-start" },
+        { type: "data-status", data: { label: "Writing" } },
+      ],
+    };
+    const decision = reactive({ value: "" });
+    const setDecision = (value: string) => {
+      decision.value = value;
+    };
+    return () =>
+      h("div", { style: { display: "grid", gap: "1rem", maxInlineSize: "46rem" } }, [
+        h(Ai.Message, { message }, () =>
+          h(
+            Ai.Parts as never,
+            {
+              message,
+              onApprove: () => setDecision("approved"),
+              onDeny: () => setDecision("denied"),
+            } as never,
+          ),
+        ),
+        h(
+          "p",
+          { role: "status", style: { margin: 0, color: "var(--bs-color-text-tertiary)" } },
+          decision.value ? `Approval ${decision.value}.` : "The tool waits for approval.",
+        ),
+      ]);
+  },
 };
 
 /** Two beads of ink breathing while the answer is on its way. */

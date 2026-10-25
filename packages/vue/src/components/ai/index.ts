@@ -12,6 +12,7 @@ import { Response } from "../ai-response";
 import { AiSource as Source, AiSources as Sources } from "../ai-source";
 import { Suggestion } from "../ai-suggestion";
 import { Tool } from "../ai-tool";
+import { AiMedia, AiParts } from "./parts";
 
 /** A conversation column: Root is the log, Message carries a role, and
  * the speaking parts — Response, Reasoning, Tool, Sources — part the
@@ -20,17 +21,58 @@ import { Tool } from "../ai-tool";
  * agnostic of any client; consumers map their message format (e.g. the
  * `UIMessage` parts re-exported here) onto these primitives. */
 export type {
+  ChatOnDataCallback,
+  ChatOnErrorCallback,
+  ChatOnFinishCallback,
+  ChatState,
+  ChatStatus,
+  CreateUIMessage,
+  CustomContentUIPart,
   DataUIPart,
+  DynamicToolUIPart,
   FileUIPart,
+  InferUITools,
+  ProviderMetadata,
+  ProviderReference,
+  ReasoningFileUIPart,
   ReasoningUIPart,
   SourceDocumentUIPart,
   SourceUrlUIPart,
   StepStartUIPart,
   TextUIPart,
+  ToolSet,
   ToolUIPart,
+  UIDataTypes,
   UIMessage,
+  UIMessageChunk,
   UIMessagePart,
+  UITool,
+  UIToolInvocation,
+  UITools,
 } from "ai";
+export type {
+  AiMediaKind,
+  AiMediaProps,
+  AiPartsProps,
+  AiPartsSlots,
+  AiSdkCustomPart,
+  AiSdkDataPart,
+  AiSdkFilePart,
+  AiSdkMessage,
+  AiSdkMediaPart,
+  AiSdkMessagePart,
+  AiSdkReasoningFilePart,
+  AiSdkReasoningPart,
+  AiSdkSourceDocumentPart,
+  AiSdkSourceUrlPart,
+  AiSdkStepStartPart,
+  AiSdkTextPart,
+  AiSdkToolPart,
+  AiToolDisplay,
+} from "./parts";
+export type { MessageProps } from "../ai-message";
+export { toolPartDisplay } from "./parts";
+export { AiMedia, AiParts };
 
 function part(name: string, tag: string, extra: Record<string, unknown> = {}, fallback?: string) {
   return defineComponent({
@@ -165,6 +207,8 @@ export const Ai = defineFamily(AiConversation, {
   MessageContent: AiContent,
   Actions: AiActions,
   Loader: AiLoader,
+  Media: AiMedia,
+  Parts: AiParts,
   Message,
   Response,
   Reasoning,

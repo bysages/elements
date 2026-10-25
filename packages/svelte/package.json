@@ -73,6 +73,7 @@
   "peerDependencies": {
     "@json-render/core": "^0.21.0",
     "@json-render/svelte": "^0.21.0",
+    "ai": "^7.0.0",
     "svelte": "^5",
     "zod": "^4.0"
   },

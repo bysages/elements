@@ -6,7 +6,7 @@ import MentionsVesselComponent from "./MentionsVessel.svelte";
  * ends with the trigger character followed by a token, offers the
  * matching candidates in a small anchored vessel; choosing one replaces
  * the token with `trigger + label` and hands the whole text back
- * through `bind:value`. Arrows move, Enter inserts, Escape dismisses. */
+ * through `bind:value`. Arrows move, configured keys commit, Escape dismisses. */
 export const Mentions = withSelfRoot(MentionsComponent);
 
 /** The vessel: the candidates themselves as a floating card. Composers
@@ -17,7 +17,9 @@ export const MentionsVessel = withSelfRoot(MentionsVesselComponent);
 export { useMentions } from "./use-mentions.svelte";
 
 export type {
+  MentionCommitKey,
   MentionEntry,
+  MentionPlacement,
   MentionTriggers,
   MentionsProps,
   MentionsVesselProps,

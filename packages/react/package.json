@@ -78,6 +78,7 @@
   "peerDependencies": {
     "@json-render/core": "^0.21.0",
     "@json-render/react": "^0.21.0",
+    "ai": "^7.0.0",
     "react": ">=18",
     "react-dom": ">=18",
     "zod": "^4.0"

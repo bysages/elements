@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 
 import type { MentionEntry } from "./index";
 
+export type MentionCommitKey = "Enter" | "Tab" | " ";
+
 export interface UseMentionsOptions {
   /** The candidates offered once a trigger character is typed. */
   items: MentionEntry[];
@@ -10,6 +12,8 @@ export interface UseMentionsOptions {
   /** One or more summoning characters; the longest token closest to the
    * caret wins when several triggers are active. */
   triggers?: string | string[];
+  /** Keys that choose the highlighted candidate. */
+  commitKeys?: MentionCommitKey[];
 }
 
 export interface UseMentionsHandlers {
@@ -24,6 +28,8 @@ export interface UseMentionsHandlers {
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
+  /** Replaces default insertion so rich editors can commit their own token. */
+  commit?: (entry: MentionEntry) => void;
 }
 
 /** Whatever carries a key press — a native KeyboardEvent or a React
@@ -115,7 +121,17 @@ export function useMentions(
   };
 
   const insert = (entry: MentionEntry) => {
-    if (entry.disabled || handlers.select?.(entry) === false) {
+    if (entry.disabled) {
+      closePopup();
+      return;
+    }
+    if (handlers.select?.(entry) === false) {
+      handlers.commit?.(entry);
+      closePopup();
+      return;
+    }
+    if (handlers.commit) {
+      handlers.commit(entry);
       closePopup();
       return;
     }
@@ -143,7 +159,7 @@ export function useMentions(
    * the text as it lands, from the element itself. */
   const onInput = () => detect();
 
-  /** Arrows move, Enter or Space inserts, Escape dismisses. Answers
+  /** Arrows move, configured commit keys insert, Escape dismisses. Answers
    * `true` when the vessel consumed the key. */
   const onKeydown = (event: MentionKeyEvent): boolean => {
     if (!popupOpen || matches.length === 0) return false;
@@ -153,7 +169,7 @@ export function useMentions(
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       moveActive(-1);
-    } else if (event.key === "Enter" || event.key === " ") {
+    } else if ((resolve().commitKeys ?? ["Enter", " "]).includes(event.key as MentionCommitKey)) {
       const entry = matches[active];
       if (!entry || entry.disabled) return false;
       event.preventDefault();

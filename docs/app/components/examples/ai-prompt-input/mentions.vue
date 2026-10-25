@@ -50,7 +50,13 @@ const onSubmit = (value: string) => {
     <AiPromptInput
       v-model="prompt"
       placeholder="Ask the room — @Lin or /Search…"
-      :mentions="{ items: entries, triggers: ['@', '/'] }"
+      :mentions="{
+        items: entries,
+        triggers: ['@', '/'],
+        insertOnSelect: false,
+        clearQueryOnSelect: true,
+        placement: 'top-start',
+      }"
       @select="selected = $event.label"
       @submit="onSubmit"
     />

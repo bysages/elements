@@ -9,9 +9,9 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Field } from "../field";
 import { Icon } from "../icon";
 import { Popover } from "../popover";
-import { useMentions } from "./use-mentions";
+import { useMentions, type MentionCommitKey } from "./use-mentions";
 
-export type { UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
+export type { MentionCommitKey, UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {
@@ -38,6 +38,7 @@ export interface MentionEntry {
 }
 
 export type MentionTriggers = string | string[];
+export type MentionPlacement = "bottom-start" | "top-start";
 
 export interface MentionsProps {
   /** The candidates offered once a trigger character is typed. */
@@ -51,6 +52,8 @@ export interface MentionsProps {
   triggers?: MentionTriggers;
   /** Keep composer text untouched when a candidate is selected. */
   insertOnSelect?: boolean;
+  /** Keys that choose the highlighted candidate. */
+  commitKeys?: MentionCommitKey[];
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -210,6 +213,8 @@ export const MentionsVessel = withSelfRoot(
       anchor: { type: Object as PropType<HTMLElement | null>, default: null },
       /** The host field's rung, so the rows keep the field's register. */
       size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+      /** Which side of the composer hosts the candidates. */
+      placement: { type: String as PropType<MentionPlacement>, default: "bottom-start" },
     },
     emits: {
       insert: (_entry: MentionEntry) => true,
@@ -230,21 +235,25 @@ export const MentionsVessel = withSelfRoot(
             autoFocus: false,
             "onUpdate:open": (open: boolean) => ctx.emit("update:open", open),
             positioning: {
-              placement: "bottom-start",
+              placement: props.placement,
               getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
             },
           }),
           () => [
             h(ArkPopover.Positioner, () =>
               h(ArkPopover.Content, { asChild: true }, () =>
-                h(MentionsPopup, {
-                  id: `${id.value}:popup`,
-                  size: props.size,
-                  matches: props.matches,
-                  active: props.active,
-                  onInsert: (entry: MentionEntry) => ctx.emit("insert", entry),
-                  "onUpdate:active": (index: number) => ctx.emit("update:active", index),
-                }),
+                h(
+                  MentionsPopup,
+                  {
+                    id: `${id.value}:popup`,
+                    size: props.size,
+                    matches: props.matches,
+                    active: props.active,
+                    onInsert: (entry: MentionEntry) => ctx.emit("insert", entry),
+                    "onUpdate:active": (index: number) => ctx.emit("update:active", index),
+                  },
+                  ctx.slots.option ? { option: ctx.slots.option } : undefined,
+                ),
               ),
             ),
           ],
@@ -277,6 +286,10 @@ const MentionsFacade = defineComponent({
     trigger: { type: String, default: "@" },
     triggers: { type: [String, Array] as PropType<MentionTriggers>, default: undefined },
     insertOnSelect: { type: Boolean, default: true },
+    commitKeys: {
+      type: Array as PropType<MentionCommitKey[]>,
+      default: undefined,
+    },
     placeholder: { type: String, default: undefined },
     autoresize: { type: Boolean, default: false },
     invalid: { type: Boolean, default: false },
@@ -306,6 +319,7 @@ const MentionsFacade = defineComponent({
         items: props.items,
         trigger: props.trigger,
         triggers: props.triggers,
+        commitKeys: props.commitKeys,
       }),
       el,
       {

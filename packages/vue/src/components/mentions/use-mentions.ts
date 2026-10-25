@@ -1,6 +1,8 @@
-import { nextTick, ref } from "vue";
+import { nextTick, ref, watch } from "vue";
 
 import type { MentionEntry } from "./index";
+
+export type MentionCommitKey = "Enter" | "Tab" | " ";
 
 export interface UseMentionsOptions {
   /** The candidates offered once a trigger character is typed. */
@@ -10,6 +12,9 @@ export interface UseMentionsOptions {
   /** One or more summoning characters; the longest token closest to the
    * caret wins when several triggers are active. */
   triggers?: string | string[];
+  /** Keys that choose the highlighted candidate. Tab stays optional so a
+   * plain field does not take focus movement away from the browser. */
+  commitKeys?: MentionCommitKey[];
 }
 
 export interface UseMentionsHandlers {
@@ -24,6 +29,9 @@ export interface UseMentionsHandlers {
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
+  /** Replaces the default plain-text insertion. Rich editors use this so
+   * the candidate becomes a token, not another run of characters. */
+  commit?: (entry: MentionEntry) => void;
 }
 
 /** Candidate detection behind a mention field: watch the caret, offer the
@@ -49,6 +57,10 @@ export function useMentions(
   // The trigger that opened the live token, kept through insertion so a
   // multi-trigger roster does not silently rewrite `/` as `@`.
   const activeTrigger = ref("@");
+  // Escape means “not this token”. Editing the same token again reopens;
+  // moving to a different trigger or query starts a fresh request.
+  const dismissed = ref(false);
+  const tokenSignature = ref("");
 
   const triggers = (): string[] => {
     const value = options().triggers ?? options().trigger ?? "@";
@@ -71,7 +83,15 @@ export function useMentions(
     active.value = enabled[next]?.index ?? 0;
   };
 
+  let activeItems: MentionEntry[] | null = null;
+
   const detect = () => {
+    const items = options().items;
+    // A new roster is a new answer, even when the raw query is unchanged.
+    if (activeItems !== items) {
+      dismissed.value = false;
+      activeItems = items;
+    }
     const text = handlers.getText();
     const el = textarea();
     const caret = handlers.getCaret?.() ?? el?.selectionStart ?? text.length;
@@ -88,24 +108,51 @@ export function useMentions(
 
     // A token ends at the first space: mentions name one subject.
     if (!found || /\s/.test(token)) {
+      dismissed.value = false;
+      tokenSignature.value = "";
+      closePopup();
+      return;
+    }
+
+    const signature = `${found.anchor}:${found.trigger}:${token}`;
+    if (dismissed.value && signature === tokenSignature.value) {
       closePopup();
       return;
     }
 
     const query = token.toLowerCase();
-    const roster = options().items.filter(
+    const matchesForQuery = items.filter(
       (entry) =>
         entry.label.toLowerCase().startsWith(query) || entry.value.toLowerCase().startsWith(query),
     );
-    matches.value = roster;
-    active.value = roster.findIndex((entry) => !entry.disabled);
+    dismissed.value = false;
+    tokenSignature.value = signature;
+    matches.value = matchesForQuery;
+    active.value = matchesForQuery.findIndex((entry) => !entry.disabled);
     anchorIndex.value = found.anchor;
     activeTrigger.value = found.trigger;
-    popupOpen.value = roster.length > 0;
+    popupOpen.value = matchesForQuery.length > 0;
   };
+
+  // Async rosters arrive after the keystroke: keep the live token in step
+  // with the list the host just replaced.
+  watch(
+    () => options().items,
+    () => {
+      if (!popupOpen.value && !dismissed.value) return;
+      dismissed.value = false;
+      detect();
+    },
+  );
 
   const insert = (entry: MentionEntry) => {
     if (entry.disabled || handlers.select?.(entry) === false) {
+      closePopup();
+      return;
+    }
+
+    if (handlers.commit) {
+      handlers.commit(entry);
       closePopup();
       return;
     }
@@ -131,8 +178,8 @@ export function useMentions(
    * the text as it lands, from the element itself. */
   const onInput = () => detect();
 
-  /** Arrows move, Enter inserts, Escape dismisses. Answers `true` when
-   * the vessel consumed the key. */
+  /** Arrows move, configured keys commit, Escape dismisses. Answers
+   * `true` when the vessel consumed the key. */
   const onKeydown = (event: KeyboardEvent): boolean => {
     if (!popupOpen.value || matches.value.length === 0) return false;
     if (event.key === "ArrowDown") {
@@ -141,12 +188,15 @@ export function useMentions(
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       moveActive(-1);
-    } else if (event.key === "Enter" || event.key === " ") {
+    } else if (event.key === "Enter" || event.key === " " || event.key === "Tab") {
+      const commitKeys = options().commitKeys ?? (["Enter", " "] as MentionCommitKey[]);
+      if (!commitKeys.includes(event.key as MentionCommitKey)) return false;
       const entry = matches.value[active.value];
       if (!entry || entry.disabled) return false;
       event.preventDefault();
       insert(entry);
     } else if (event.key === "Escape") {
+      dismissed.value = true;
       closePopup();
     } else {
       return false;

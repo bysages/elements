@@ -24,6 +24,7 @@ import {
   type PropertyAssignment,
   type PropertySignature,
   type SourceFile,
+  type VariableDeclaration,
 } from "ts-morph";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
@@ -314,16 +315,16 @@ function nativeEmits(component: ObjectLiteralExpression): EmitDoc[] {
  * component's own source span. The default slot goes unreported — the
  * examples show it. */
 function nativeSlots(component: ObjectLiteralExpression): { name: string }[] {
-  const sourceFile = component.getSourceFile();
-  const start = component.getStart();
-  const end = component.getEnd();
   const found = new Set<string>();
-  for (const call of sourceFile.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression)) {
-    const text = call.getText();
-    const match = text.match(/ctx\.slots\.(\w+)/);
-    if (match && match[1] !== "default" && call.getStart() >= start && call.getEnd() <= end) {
-      found.add(match[1]!);
-    }
+  const text = component.getText();
+  const aliases = [...text.matchAll(/(?:const|let|var)\s+(\w+)\s*=\s*ctx\.slots\b/g)].map(
+    (match) => match[1]!,
+  );
+  const scope = aliases.length
+    ? new RegExp(`(?:ctx\\.slots|${aliases.join("|")})\\.(\\w+)`, "g")
+    : /ctx\.slots\.(\w+)/g;
+  for (const match of text.matchAll(scope)) {
+    if (match[1] !== "default") found.add(match[1]!);
   }
   return [...found].sort().map((name) => ({ name }));
 }
@@ -371,6 +372,86 @@ function propsFromLiteral(literal: ObjectLiteralExpression, sourceFile: SourceFi
     const def = pick("default");
     return [{ ...doc, ...(def ? { default: def } : {}) }];
   });
+}
+
+/** Find the runtime defineComponent object behind a declaration: direct
+ * calls and wrappers such as withSelfRoot both resolve to the same API. */
+function componentLiteral(expression: Node | undefined): ObjectLiteralExpression | undefined {
+  if (!expression) return undefined;
+  const calls = Node.isCallExpression(expression)
+    ? [expression, ...expression.getDescendantsOfKind(SyntaxKind.CallExpression)]
+    : expression.getDescendantsOfKind(SyntaxKind.CallExpression);
+  const call = calls.find((candidate) => candidate.getExpression().getText() === "defineComponent");
+  return call?.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
+}
+
+/** Resolve a local or relative imported component identifier so composed
+ * families can document members that live beside the index. */
+function componentFromIdentifier(
+  sourceFile: SourceFile,
+  expression: Node | undefined,
+): { component: ObjectLiteralExpression; description?: string } | undefined {
+  if (!expression || !Node.isIdentifier(expression)) return undefined;
+  const name = expression.getText();
+  // Local aliases are already documented by the direct declaration scan;
+  // composition only needs to pull in members that live beside the index.
+  if (sourceFile.getVariableDeclaration(name)) return undefined;
+  let declaration: VariableDeclaration | undefined;
+
+  {
+    const imported = sourceFile
+      .getImportDeclarations()
+      .flatMap((decl) => decl.getNamedImports().filter((item) => item.getName() === name))
+      .find((item) => item.getName() === name);
+    const spec = imported?.getImportDeclaration().getModuleSpecifierValue();
+    if (!spec || !spec.startsWith(".")) return undefined;
+
+    const base = join(dirname(sourceFile.getFilePath()), spec).replace(/\\/g, "/");
+    const path = [base, `${base}.ts`, join(base, "index.ts")].find(existsSync);
+    if (!path) return undefined;
+    const owner = project.addSourceFileAtPath(path);
+    declaration = owner.getVariableDeclaration(name);
+  }
+  if (!declaration) return undefined;
+
+  const component = componentLiteral(declaration.getInitializer());
+  if (!component) return undefined;
+  const statement = declaration.getVariableStatement() ?? declaration;
+  const description = commentText(statement);
+  return { component, ...(description ? { description } : {}) };
+}
+
+/** Native families can expose imported or wrapped members through an
+ * Object.assign namespace. Resolve those aliases too, while direct
+ * declarations keep their source-order position. */
+function composedComponents(
+  file: SourceFile,
+  existing: Record<string, ComponentDoc>,
+): Record<string, ComponentDoc> {
+  const out: Record<string, ComponentDoc> = {};
+  for (const decl of file.getVariableDeclarations()) {
+    const call = decl.getInitializer()?.asKind(SyntaxKind.CallExpression);
+    const callee = call?.getExpression().getText();
+    if (!call) continue;
+    if (callee !== "Object.assign" && callee !== "defineFamily") continue;
+    const members = call.getArguments()[1]?.asKind(SyntaxKind.ObjectLiteralExpression);
+    if (!members) continue;
+
+    for (const member of members.getProperties()) {
+      if (!member.isKind(SyntaxKind.PropertyAssignment)) continue;
+      const name = pascal(member.getName().replace(/^["']|["']$/g, ""));
+      if (existing[name] || out[name]) continue;
+      const found = componentFromIdentifier(file, member.getInitializer());
+      if (!found) continue;
+      out[name] = {
+        ...(found.description ? { description: found.description } : {}),
+        props: nativeProps(found.component),
+        emits: nativeEmits(found.component),
+        slots: nativeSlots(found.component),
+      };
+    }
+  }
+  return out;
 }
 
 /** Props of a native primitive: the runtime declaration inside its
@@ -622,6 +703,7 @@ export function documentFamily(dir: string): FamilyDoc | null {
         ...(slots.length ? { slots } : {}),
       };
     }
+    components = { ...components, ...composedComponents(indexFile, components) };
     anatomy = styled;
   }
 

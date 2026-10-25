@@ -683,6 +683,80 @@ export const aiCss = /* css */ `
   }
 }
 
+/* AI SDK message parts: media keeps its own frame without escaping the
+   transcript; step boundaries and document sources read as quiet
+   evidence, not UI chrome. */
+[data-scope="ai"][data-part="media"] {
+  display: grid;
+  gap: var(--bs-gap-xs);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  margin: 0;
+}
+
+[data-scope="ai"][data-part="media"] img,
+[data-scope="ai"][data-part="media"] video {
+  display: block;
+  max-inline-size: 100%;
+  border: var(--bs-hairline) solid var(--bs-color-border);
+  border-radius: var(--bs-radius-lg);
+}
+
+[data-scope="ai"][data-part="media"] img {
+  block-size: auto;
+  max-block-size: 20rem;
+  object-fit: contain;
+}
+
+[data-scope="ai"][data-part="media"] video {
+  inline-size: 100%;
+  max-block-size: 24rem;
+  background: var(--bs-color-surface-inset);
+}
+
+[data-scope="ai"][data-part="media"] audio {
+  inline-size: 100%;
+}
+
+[data-scope="ai"][data-part="file-link"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-xs);
+  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  border: var(--bs-hairline) solid var(--bs-color-border);
+  border-radius: var(--bs-radius-full);
+  background: var(--bs-color-surface-inset);
+  color: var(--bs-color-text-primary);
+  font-size: var(--bs-font-size-sm);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+[data-scope="ai"][data-part="file-link"]:hover {
+  border-color: var(--bs-color-border-strong);
+  color: var(--bs-color-primary-subtle-text);
+}
+
+[data-scope="ai"][data-part="step-start"] {
+  inline-size: 100%;
+  margin: var(--bs-margin-sm) 0;
+  border: 0;
+  border-block-start: var(--bs-hairline) solid var(--bs-color-border);
+}
+
+[data-scope="ai"][data-part="document-source"] {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--bs-gap-sm);
+  color: var(--bs-color-text-primary);
+}
+
+[data-scope="ai"][data-part="document-source"] > :last-child {
+  color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-font-size-sm);
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-scope="ai"][data-part="loader"]::before,
   [data-scope="ai"][data-part="loader"]::after {

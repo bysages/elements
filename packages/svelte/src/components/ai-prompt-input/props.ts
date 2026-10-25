@@ -1,7 +1,12 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
-import type { MentionEntry, MentionTriggers } from "../mentions";
+import type {
+  MentionCommitKey,
+  MentionEntry,
+  MentionPlacement,
+  MentionTriggers,
+} from "../mentions";
 
 export interface PromptInputProps extends HTMLAttributes<HTMLFormElement> {
   /** The draft in the vessel — bind `value`; it clears itself on a
@@ -20,13 +25,19 @@ export interface PromptInputProps extends HTMLAttributes<HTMLFormElement> {
   busy?: boolean;
   /** Mention candidates for the field: pass the roster, the summon
    * character(s) (`@` unless told otherwise), and whether a selection
-   * rewrites the composer text. While candidates are up, Enter inserts
-   * and the send waits. */
+   * rewrites the composer text. While candidates are up, a configured
+   * commit key inserts and the send waits. */
   mentions?: {
     items: MentionEntry[];
     trigger?: string;
     triggers?: MentionTriggers;
     insertOnSelect?: boolean;
+    /** Defaults to Enter, Space and Tab for the composer. */
+    commitKeys?: MentionCommitKey[];
+    /** Defaults above the composer. */
+    placement?: MentionPlacement;
+    /** Remove the live `/command` query after a no-insert selection. */
+    clearQueryOnSelect?: boolean;
   };
   /** A candidate was confirmed; the whole entry rides back. */
   onSelect?: (entry: MentionEntry) => void;

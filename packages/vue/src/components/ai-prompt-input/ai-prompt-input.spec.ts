@@ -137,19 +137,59 @@ describe("ai prompt input", () => {
     expect(submitted).toEqual(["@ag"]);
     prompt.app.unmount();
   });
+
+  it("clears a command query when selection does not insert", async () => {
+    const host = defineComponent({
+      setup() {
+        const value = ref("/se");
+        return () =>
+          h(AiPromptInput, {
+            modelValue: value.value,
+            mentions: {
+              items: [mentions[1]!],
+              triggers: ["/"],
+              insertOnSelect: false,
+            },
+            "onUpdate:modelValue": (next: string) => {
+              value.value = next;
+            },
+          });
+      },
+    });
+    const container = document.createElement("div");
+    document.body.append(container);
+    const app = createApp(host);
+    app.mount(container);
+    await nextTick();
+
+    const editor = container.querySelector<HTMLElement>('[data-part="prompt-editor"]');
+    if (!editor) throw new Error("prompt editor is missing");
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+    editor.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true }),
+    );
+    await nextTick();
+
+    expect(editor.textContent).toBe("");
+    app.unmount();
+  });
 });
 
 describe("useMentions", () => {
-  function createMentions(select?: (entry: MentionEntry) => boolean | void) {
+  function createMentions(
+    select?: (entry: MentionEntry) => boolean | void,
+    options: { items?: MentionEntry[]; commitKeys?: Array<"Enter" | "Tab" | " "> } = {},
+  ) {
     let text = "/se";
     let updated = "";
+    let roster = options.items ?? mentions;
     const field = {
       focus: () => {},
       setSelectionRange: () => {},
       selectionStart: text.length,
     } as unknown as HTMLTextAreaElement;
     const hook = useMentions(
-      () => ({ items: mentions, triggers: ["@", "/"] }),
+      () => ({ items: roster, triggers: ["@", "/"], commitKeys: options.commitKeys }),
       () => field,
       {
         getText: () => text,
@@ -164,6 +204,9 @@ describe("useMentions", () => {
     return {
       mentions: hook,
       field,
+      setItems(next: MentionEntry[]) {
+        roster = next;
+      },
       updated: () => updated,
       input: () => hook.onInput(),
     };
@@ -191,5 +234,45 @@ describe("useMentions", () => {
 
     expect(context.updated()).toBe("");
     expect(context.mentions.open.value).toBe(false);
+  });
+
+  it("can accept Tab as an explicit commit key", () => {
+    const context = createMentions(undefined, { commitKeys: ["Enter", " ", "Tab"] });
+
+    context.input();
+    const accepted = context.mentions.onKeydown(
+      new KeyboardEvent("keydown", { key: "Tab", cancelable: true }),
+    );
+
+    expect(accepted).toBe(true);
+    expect(context.updated()).toBe("/Search ");
+  });
+
+  it("keeps the same token dismissed after Escape until it changes", () => {
+    const context = createMentions();
+
+    context.input();
+    expect(context.mentions.open.value).toBe(true);
+
+    context.mentions.onKeydown(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(context.mentions.open.value).toBe(false);
+
+    context.input();
+    expect(context.mentions.open.value).toBe(false);
+
+    context.setItems([{ label: "Sea", value: "sea" }]);
+    context.input();
+    expect(context.mentions.open.value).toBe(true);
+  });
+
+  it("reopens an async roster when it arrives after the query", () => {
+    const context = createMentions(undefined, { items: [] });
+
+    context.input();
+    expect(context.mentions.open.value).toBe(false);
+
+    context.setItems(mentions);
+    context.input();
+    expect(context.mentions.open.value).toBe(true);
   });
 });

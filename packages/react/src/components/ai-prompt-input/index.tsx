@@ -8,7 +8,8 @@ import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
-import type { MentionEntry } from "../mentions";
+import type { MentionCommitKey, MentionEntry } from "../mentions";
+import type { MentionPlacement } from "../mentions";
 import { MentionsVessel, useMentions } from "../mentions";
 import {
   insertEditorToken,
@@ -16,6 +17,7 @@ import {
   readCaret,
   renderEditor,
   serializeEditor,
+  setEditorCaret,
 } from "./editor";
 
 const arrowUpIcon = iconNode("arrow-up", { width: 14, height: 14 });
@@ -63,6 +65,9 @@ export interface PromptInputProps extends Omit<
     trigger?: string;
     triggers?: string | string[];
     insertOnSelect?: boolean;
+    commitKeys?: MentionCommitKey[];
+    placement?: MentionPlacement;
+    clearQueryOnSelect?: boolean;
   };
   /** The whole mention entry was selected. */
   onSelect?: (entry: MentionEntry) => void;
@@ -104,6 +109,7 @@ function PromptInputImpl({
       items: mentions?.items ?? [],
       trigger: mentions?.trigger,
       triggers: mentions?.triggers,
+      commitKeys: mentions?.commitKeys ?? ["Enter", " ", "Tab"],
     }),
     () => fieldRef.current,
     {
@@ -113,8 +119,10 @@ function PromptInputImpl({
       setText: (next) => onValueChange?.(next),
       select: (entry) => {
         onSelect?.(entry);
-        return mentions?.insertOnSelect !== false;
+        const insert = mentions?.insertOnSelect !== false;
+        return insert || mentions?.clearQueryOnSelect !== false;
       },
+      commit: (entry) => insertChoice(entry),
     },
   );
 
@@ -135,7 +143,22 @@ function PromptInputImpl({
 
   const insertChoice = (entry: MentionEntry) => {
     const editor = editorRef.current;
-    if (!editor || entry.disabled || mentions?.insertOnSelect === false) {
+    const clearQuery = mentions?.insertOnSelect === false && mentions?.clearQueryOnSelect !== false;
+    if (!editor || entry.disabled || (mentions?.insertOnSelect === false && !clearQuery)) {
+      mentionState.close();
+      return;
+    }
+
+    if (clearQuery) {
+      const text = serializeEditor(editor);
+      const next =
+        text.slice(0, mentionState.anchorIndex.current) +
+        text.slice(mentionState.caretIndex.current);
+      renderEditor(editor, next, mentions?.items ?? [], mentions?.triggers);
+      editor.toggleAttribute("data-empty", !next);
+      editor.focus();
+      setEditorCaret(editor, mentionState.anchorIndex.current);
+      onValueChange?.(next);
       mentionState.close();
       return;
     }
@@ -168,18 +191,6 @@ function PromptInputImpl({
       const editor = editorRef.current;
       if (!editor) return;
       onValueChange?.(insertLineBreak(editor));
-      return;
-    }
-
-    if (
-      mentionState.open &&
-      (event.key === "Enter" || event.key === " ") &&
-      !mentionState.matches[mentionState.active]?.disabled
-    ) {
-      const entry = mentionState.matches[mentionState.active];
-      if (!entry) return;
-      event.preventDefault();
-      insertChoice(entry);
       return;
     }
 
@@ -235,8 +246,9 @@ function PromptInputImpl({
           <div
             ref={editorRef}
             contentEditable={!disabled}
-            role="textbox"
-            aria-multiline="true"
+            role="combobox"
+            aria-autocomplete="list"
+            tabIndex={disabled ? undefined : 0}
             aria-label={ariaLabel ?? messages.ai.conversation}
             aria-expanded={mentionState.open}
             aria-controls={mentionState.open ? `${hostId}:mentions:popup` : undefined}
@@ -284,6 +296,7 @@ function PromptInputImpl({
             matches={mentionState.matches}
             active={mentionState.active}
             anchor={editorRef.current}
+            placement={mentions?.placement ?? "top-start"}
             onInsert={insertChoice}
             onActiveChange={mentionState.setActive}
             onOpenChange={(open) => {

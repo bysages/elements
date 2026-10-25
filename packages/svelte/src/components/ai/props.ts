@@ -5,6 +5,11 @@ export interface AiPartProps extends HTMLAttributes<HTMLElement> {
   children?: Snippet;
 }
 
+export interface AiConversationProps extends AiPartProps {
+  /** Follow the stream's growth while the reader rests at the bottom. */
+  autoScroll?: boolean;
+}
+
 export type { ActionProps } from "../ai-action/props";
 export type { MessageProps, MessageRole } from "../ai-message/props";
 export type { PromptInputProps } from "../ai-prompt-input/props";

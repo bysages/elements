@@ -38,6 +38,7 @@ export type ComponentMessages = {
   };
   command: { palette: string; search: string; filter: string; noMatches: string };
   spinner: { loading: string };
+  tabs: { closeTab: string };
   floatButton: { actions: string };
   imageViewer: { preview: string; zoomIn: string; zoomOut: string; rotate: string; close: string };
   transfer: { filter: string; moveRight: string; moveLeft: string };
@@ -93,6 +94,7 @@ const ENGLISH_MESSAGES: ComponentMessages = {
     noMatches: "No matches",
   },
   spinner: { loading: "Loading" },
+  tabs: { closeTab: "Close {name}" },
   floatButton: { actions: "Floating actions" },
   imageViewer: {
     preview: "Preview",
@@ -146,6 +148,7 @@ const CHINESE_MESSAGES: ComponentMessages = {
   },
   command: { palette: "命令面板", search: "搜索", filter: "筛选", noMatches: "未找到匹配项" },
   spinner: { loading: "加载中" },
+  tabs: { closeTab: "关闭 {name}" },
   floatButton: { actions: "浮动操作" },
   imageViewer: {
     preview: "预览",
@@ -192,6 +195,7 @@ function mergeMessages(
     table: mergeGroup(defaults.table, override?.table),
     command: mergeGroup(defaults.command, override?.command),
     spinner: mergeGroup(defaults.spinner, override?.spinner),
+    tabs: mergeGroup(defaults.tabs, override?.tabs),
     floatButton: mergeGroup(defaults.floatButton, override?.floatButton),
     imageViewer: mergeGroup(defaults.imageViewer, override?.imageViewer),
     transfer: mergeGroup(defaults.transfer, override?.transfer),

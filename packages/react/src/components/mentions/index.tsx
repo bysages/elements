@@ -9,9 +9,10 @@ import { useElementId } from "../../internal/id";
 import { Field } from "../field";
 import { Icon } from "../icon";
 import { Popover } from "../popover";
+import type { MentionCommitKey } from "./use-mentions";
 import { useMentions } from "./use-mentions";
 
-export type { UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
+export type { MentionCommitKey, UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {
@@ -39,6 +40,8 @@ export interface MentionEntry {
 
 export type MentionTriggers = string | string[];
 
+export type MentionPlacement = "bottom-start" | "top-start";
+
 export interface MentionsVesselProps {
   id?: string;
   /** The host field's rung, so the rows keep the field's register. */
@@ -51,6 +54,8 @@ export interface MentionsVesselProps {
   active?: number;
   /** The rectangle the vessel points at — the host's textarea. */
   anchor?: HTMLElement | null;
+  /** Which side of the anchor hosts the candidates. */
+  placement?: MentionPlacement;
   /** A candidate was chosen. */
   onInsert?: (entry: MentionEntry) => void;
   /** The pointer moved to a row. */
@@ -193,6 +198,7 @@ function MentionsVesselImpl({
   matches = [],
   active = 0,
   anchor = null,
+  placement = "bottom-start",
   onInsert,
   onActiveChange,
   onOpenChange,
@@ -207,7 +213,7 @@ function MentionsVesselImpl({
       open={open}
       onOpenChange={(details) => onOpenChange?.(details.open)}
       positioning={{
-        placement: "bottom-start",
+        placement,
         getAnchorRect: () => anchor?.getBoundingClientRect() ?? null,
       }}
     >
@@ -258,6 +264,10 @@ export interface MentionsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onS
   triggers?: MentionTriggers;
   /** Keep composer text untouched when a candidate is selected. */
   insertOnSelect?: boolean;
+  /** Keys that choose the highlighted candidate. */
+  commitKeys?: MentionCommitKey[];
+  /** Which side of the field hosts the candidates. */
+  placement?: MentionPlacement;
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -278,6 +288,8 @@ function MentionsImpl({
   trigger = "@",
   triggers,
   insertOnSelect = true,
+  commitKeys,
+  placement = "bottom-start",
   placeholder,
   autoresize = false,
   invalid = false,
@@ -298,7 +310,7 @@ function MentionsImpl({
 
   const current = value ?? internal;
 
-  const mentions = useMentions(() => ({ items, trigger, triggers }), el, {
+  const mentions = useMentions(() => ({ items, trigger, triggers, commitKeys }), el, {
     getText: () => el()?.value ?? current,
     setText: (next) => {
       setInternal(next);
@@ -326,7 +338,7 @@ function MentionsImpl({
         onOpenChange={(details) => {
           if (!details.open) mentions.close();
         }}
-        positioning={{ placement: "bottom-start" }}
+        positioning={{ placement }}
       >
         <ArkPopover.Anchor asChild>
           <Field.Textarea

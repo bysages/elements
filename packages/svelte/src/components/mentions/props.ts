@@ -26,6 +26,8 @@ export interface MentionEntry {
 }
 
 export type MentionTriggers = string | string[];
+export type MentionCommitKey = "Enter" | "Tab" | " ";
+export type MentionPlacement = "bottom-start" | "top-start";
 
 export interface UseMentionsOptions {
   /** The candidates offered once a trigger character is typed. */
@@ -35,6 +37,9 @@ export interface UseMentionsOptions {
   /** One or more summoning characters; the longest token closest to the
    * caret wins when several triggers are active. */
   triggers?: string | string[];
+  /** Keys that choose the highlighted candidate. Tab stays optional so a
+   * plain field does not take focus movement away from the browser. */
+  commitKeys?: MentionCommitKey[];
 }
 
 export interface UseMentionsHandlers {
@@ -49,6 +54,9 @@ export interface UseMentionsHandlers {
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
+  /** Replaces the default plain-text insertion. Rich editors use this so
+   * the candidate becomes a token, not another run of characters. */
+  commit?: (entry: MentionEntry) => void;
 }
 
 export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
@@ -63,6 +71,10 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   triggers?: MentionTriggers;
   /** Keep composer text untouched when a candidate is selected. */
   insertOnSelect?: boolean;
+  /** Keys that choose the highlighted candidate; Tab stays opt-in. */
+  commitKeys?: MentionCommitKey[];
+  /** Which side of the field hosts the candidates. */
+  placement?: MentionPlacement;
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -87,6 +99,8 @@ export interface MentionsVesselProps {
   anchor?: HTMLElement | null;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
+  /** Which side of the field hosts the candidates. */
+  placement?: MentionPlacement;
   /** A candidate was confirmed (click or Enter). */
   onInsert?: (entry: MentionEntry) => void;
   /** The keyboard's active row moved. */

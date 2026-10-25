@@ -1,3 +1,4 @@
+import { withSelfRoot } from "../../internal/family";
 import { AiAction as Action } from "../ai-action";
 import { AiMessage as Message } from "../ai-message";
 import { AiPromptInput as PromptInput } from "../ai-prompt-input";
@@ -10,9 +11,13 @@ import AiConversation from "./Ai.svelte";
 import AiActions from "./AiActions.svelte";
 import AiContent from "./AiContent.svelte";
 import AiLoader from "./AiLoader.svelte";
+import AiMediaSvelte from "./AiMedia.svelte";
+import AiPartsSvelte from "./AiParts.svelte";
+import { toolPartDisplay, type AiMediaComponent, type AiPartsComponent } from "./parts";
 
 export type {
   ActionProps,
+  AiConversationProps,
   AiPartProps,
   MessageProps,
   MessageRole,
@@ -24,6 +29,62 @@ export type {
   ToolProps,
   ToolStatus,
 } from "./props";
+export type {
+  AiMediaComponent,
+  AiMediaKind,
+  AiMediaProps,
+  AiPartsComponent,
+  AiPartsProps,
+  AiPartsSlots,
+  AiSdkCustomPart,
+  AiSdkDataPart,
+  AiSdkFilePart,
+  AiSdkMessage,
+  AiSdkMediaPart,
+  AiSdkMessagePart,
+  AiSdkReasoningFilePart,
+  AiSdkReasoningPart,
+  AiSdkSourceDocumentPart,
+  AiSdkSourceUrlPart,
+  AiSdkStepStartPart,
+  AiSdkTextPart,
+  AiSdkToolPart,
+  AiToolDisplay,
+} from "./parts";
+export type {
+  ChatOnDataCallback,
+  ChatOnErrorCallback,
+  ChatOnFinishCallback,
+  ChatState,
+  ChatStatus,
+  CreateUIMessage,
+  CustomContentUIPart,
+  DataUIPart,
+  DynamicToolUIPart,
+  FileUIPart,
+  InferUITools,
+  ProviderMetadata,
+  ProviderReference,
+  ReasoningFileUIPart,
+  ReasoningUIPart,
+  SourceDocumentUIPart,
+  SourceUrlUIPart,
+  StepStartUIPart,
+  TextUIPart,
+  ToolSet,
+  ToolUIPart,
+  UIDataTypes,
+  UIMessage,
+  UIMessageChunk,
+  UIMessagePart,
+  UITool,
+  UIToolInvocation,
+  UITools,
+} from "ai";
+
+export const AiMedia = withSelfRoot(AiMediaSvelte as unknown as AiMediaComponent);
+export const AiParts = AiPartsSvelte as unknown as AiPartsComponent;
+export { toolPartDisplay };
 
 /** A conversation column: Root is the log, Message carries a role, and
  * the speaking parts — Response, Reasoning, Tool, Sources — part the
@@ -49,16 +110,6 @@ export const Ai = Object.assign(AiConversation, {
   Suggestion,
   PromptInput,
   Loader: AiLoader,
+  Media: AiMedia,
+  Parts: AiParts,
 });
-export type {
-  DataUIPart,
-  FileUIPart,
-  ReasoningUIPart,
-  SourceDocumentUIPart,
-  SourceUrlUIPart,
-  StepStartUIPart,
-  TextUIPart,
-  ToolUIPart,
-  UIMessage,
-  UIMessagePart,
-} from "ai";

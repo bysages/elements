@@ -1,22 +1,18 @@
 import { Tabs as ArkTabs } from "@ark-ui/solid/tabs";
 import type { TabsRootProps as ArkTabsRootProps } from "@ark-ui/solid/tabs";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { For, splitProps, type JSX } from "solid-js";
+import { For, Show, splitProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
-
-/**
- * Tabs — tabbed navigation.
- *
- * Parts: Root, List, Trigger, Content, Indicator (machine-positioned ink
- * bar on the list rule).
- */
+import {
+  formatComponentMessage,
+  useComponentMessages,
+} from "../config-provider/use-component-messages";
+import { Icon } from "../icon";
 
 type TabsOwnProps = {
-  /** One rung of the control-height ladder for the tab rows. */
   size?: "sm" | "md" | "lg";
-  /** The register: a ruled line (default), or each tab its own card. */
   variant?: "line" | "card";
 };
 
@@ -37,22 +33,28 @@ export type TabsItem = {
   value: string;
   label: string;
   content?: JSX.Element;
+  disabled?: boolean;
+  closable?: boolean;
+  icon?: string;
 };
 
 export interface TabsFacadeProps {
   value?: string;
   defaultValue?: string;
   items: TabsItem[];
-  /** The register: a ruled line (default), or each tab its own card. */
   variant?: "line" | "card";
   orientation?: "horizontal" | "vertical";
-  /** One rung of the control-height ladder for the tab rows. */
   size?: "sm" | "md" | "lg";
+  scrollable?: boolean;
+  contentless?: boolean;
+  closable?: boolean;
   onValueChange?: (value: string) => void;
+  onClose?: (item: TabsItem) => void;
 }
 
 function TabsFacade(props: TabsFacadeProps) {
   injectComponentStyle("tabs");
+  const messages = useComponentMessages();
 
   return (
     <TabsRoot
@@ -63,21 +65,57 @@ function TabsFacade(props: TabsFacadeProps) {
       {...(props.value === undefined ? {} : { value: props.value })}
       onValueChange={(details: { value: string }) => props.onValueChange?.(details.value)}
     >
-      <ArkTabs.List>
+      <ArkTabs.List data-scrollable={props.scrollable ? "" : undefined}>
         <For each={props.items}>
-          {(item) => <ArkTabs.Trigger value={item.value}>{item.label}</ArkTabs.Trigger>}
+          {(item) => {
+            const closable = item.closable ?? props.closable;
+            const trigger = (
+              <ArkTabs.Trigger
+                value={item.value}
+                disabled={item.disabled}
+                data-closable={closable ? "" : undefined}
+              >
+                {item.icon ? <Icon name={item.icon} /> : null}
+                <span>{item.label}</span>
+              </ArkTabs.Trigger>
+            );
+
+            if (!closable) return trigger;
+
+            return (
+              <span data-scope="tabs" data-part="item">
+                {trigger}
+                <button
+                  type="button"
+                  data-scope="tabs"
+                  data-part="close"
+                  aria-label={formatComponentMessage(messages().tabs.closeTab, {
+                    name: item.label,
+                  })}
+                  disabled={item.disabled}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    props.onClose?.(item);
+                  }}
+                >
+                  <Icon name="x" />
+                </button>
+              </span>
+            );
+          }}
         </For>
         <ArkTabs.Indicator />
       </ArkTabs.List>
-      <For each={props.items}>
-        {(item) => <ArkTabs.Content value={item.value}>{item.content}</ArkTabs.Content>}
-      </For>
+      <Show when={!props.contentless}>
+        <For each={props.items}>
+          {(item) => <ArkTabs.Content value={item.value}>{item.content}</ArkTabs.Content>}
+        </For>
+      </Show>
     </TabsRoot>
   );
 }
 
-/* Ark's namespace is frozen — spread copies the members so the facade
- * coexists with the anatomy while Root stays the sized wrapper. */
 export const Tabs: typeof TabsFacade & Omit<typeof ArkTabs, "Root"> & { Root: typeof TabsRoot } =
   defineFamily(TabsFacade, {
     ...ArkTabs,

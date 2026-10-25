@@ -8,7 +8,12 @@ import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Button } from "../button";
 import { Field } from "../field";
-import { MentionsVessel, type MentionEntry } from "../mentions";
+import {
+  MentionsVessel,
+  type MentionCommitKey,
+  type MentionEntry,
+  type MentionPlacement,
+} from "../mentions";
 import { useMentions } from "../mentions/use-mentions";
 import {
   insertEditorToken,
@@ -21,6 +26,23 @@ import {
 const arrowUpIcon = () => iconNode("arrow-up", { width: 14, height: 14 });
 
 const stopIcon = () => iconNode("square", { width: 14, height: 14 });
+
+export interface PromptInputMentions {
+  /** The candidates offered once a trigger character is typed. */
+  items: MentionEntry[];
+  /** The character that summons the candidates. */
+  trigger?: string;
+  /** One or more summoning characters, such as `@` and `/`. */
+  triggers?: string | string[];
+  /** Keep composer text untouched when a candidate is selected. */
+  insertOnSelect?: boolean;
+  /** Keys that choose the highlighted candidate; the prompt also accepts Tab. */
+  commitKeys?: MentionCommitKey[];
+  /** Which side of the composer hosts the candidates. */
+  placement?: MentionPlacement;
+  /** Remove the live `/command` query after a no-insert selection. */
+  clearQueryOnSelect?: boolean;
+}
 
 /** The prompt vessel: the shared field textarea — self-growing on the
  * machine's autoresize — with the submit seal riding its last line. With
@@ -48,15 +70,7 @@ export const PromptInput = withSelfRoot(
       busy: { type: Boolean, default: false },
       /** Mention candidates for the field. The field holds rich tokens
        * after a choice; the bound value remains plain text. */
-      mentions: {
-        type: Object as PropType<{
-          items: MentionEntry[];
-          trigger?: string;
-          triggers?: string | string[];
-          insertOnSelect?: boolean;
-        }>,
-        default: undefined,
-      },
+      mentions: { type: Object as PropType<PromptInputMentions>, default: undefined },
     },
     emits: {
       "update:modelValue": (_value: string) => true,
@@ -94,6 +108,7 @@ export const PromptInput = withSelfRoot(
           items: props.mentions?.items ?? [],
           trigger: props.mentions?.trigger,
           triggers: props.mentions?.triggers,
+          commitKeys: props.mentions?.commitKeys ?? ["Enter", " ", "Tab"],
         }),
         el,
         {
@@ -101,9 +116,11 @@ export const PromptInput = withSelfRoot(
           getText: () =>
             props.mentions ? serializeEditor(editorRef.value!) : (el()?.value ?? props.modelValue),
           setText: (next) => emit("update:modelValue", next),
+          commit: (entry) => insertChoice(entry),
           select: (entry) => {
             emit("select", entry);
-            return props.mentions?.insertOnSelect !== false;
+            const insert = props.mentions?.insertOnSelect !== false;
+            return insert || props.mentions?.clearQueryOnSelect !== false;
           },
         },
       );
@@ -119,7 +136,25 @@ export const PromptInput = withSelfRoot(
 
       const insertChoice = (entry: MentionEntry) => {
         const editor = editorRef.value;
-        if (!editor || entry.disabled || props.mentions?.insertOnSelect === false) {
+        const clearQuery =
+          props.mentions?.insertOnSelect === false && props.mentions?.clearQueryOnSelect !== false;
+        if (
+          !editor ||
+          entry.disabled ||
+          (props.mentions?.insertOnSelect === false && !clearQuery)
+        ) {
+          mentions.close();
+          return;
+        }
+
+        if (clearQuery) {
+          const text = serializeEditor(editor);
+          const next =
+            text.slice(0, mentions.anchorIndex.value) + text.slice(mentions.caretIndex.value);
+          renderEditor(editor, next, props.mentions?.items ?? [], props.mentions?.triggers);
+          editor.toggleAttribute("data-empty", !next);
+          editor.focus();
+          emit("update:modelValue", next);
           mentions.close();
           return;
         }
@@ -145,18 +180,6 @@ export const PromptInput = withSelfRoot(
           const editor = editorRef.value;
           if (!editor) return;
           emit("update:modelValue", insertLineBreak(editor));
-          return;
-        }
-
-        if (
-          mentions.open.value &&
-          (event.key === "Enter" || event.key === " ") &&
-          !mentions.matches.value[mentions.active.value]?.disabled
-        ) {
-          const entry = mentions.matches.value[mentions.active.value];
-          if (!entry) return;
-          event.preventDefault();
-          insertChoice(entry);
           return;
         }
 
@@ -224,8 +247,9 @@ export const PromptInput = withSelfRoot(
                 ref: editorRef,
                 key: "ai-prompt-editor",
                 contenteditable: props.disabled ? "false" : "true",
-                role: "textbox",
-                "aria-multiline": "true",
+                role: "combobox",
+                "aria-autocomplete": "list",
+                tabindex: props.disabled ? undefined : 0,
                 "aria-label": consumerLabel ?? messages.value.ai.conversation,
                 "aria-expanded": mentions.open.value,
                 "aria-controls": mentions.open.value ? `${mentionsId.value}:popup` : undefined,
@@ -279,18 +303,23 @@ export const PromptInput = withSelfRoot(
               row("prompt-leading", slots.leading?.()),
               mentionsActive.value ? field() : h(Field.Root as Component, () => [field()]),
               mentionsActive.value
-                ? h(MentionsVessel, {
-                    open: mentions.open.value,
-                    matches: mentions.matches.value,
-                    active: mentions.active.value,
-                    anchor: editorRef.value,
-                    id: mentionsId.value,
-                    onInsert: insertChoice,
-                    "onUpdate:active": (index: number) => (mentions.active.value = index),
-                    "onUpdate:open": (open: boolean) => {
-                      if (!open) mentions.close();
+                ? h(
+                    MentionsVessel,
+                    {
+                      open: mentions.open.value,
+                      matches: mentions.matches.value,
+                      active: mentions.active.value,
+                      anchor: editorRef.value,
+                      id: mentionsId.value,
+                      placement: props.mentions?.placement ?? "top-start",
+                      onInsert: insertChoice,
+                      "onUpdate:active": (index: number) => (mentions.active.value = index),
+                      "onUpdate:open": (open: boolean) => {
+                        if (!open) mentions.close();
+                      },
                     },
-                  })
+                    slots.mentionOption ? { option: slots.mentionOption } : undefined,
+                  )
                 : null,
               row(
                 "prompt-trailing",

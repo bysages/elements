@@ -95,6 +95,25 @@ export const jsdocZh: Record<string, FamilyZh> = {
       AiLoader: {
         description: "AI 处理中的对话轮次显示的加载提示。",
       },
+      Media: {
+        description:
+          "AI SDK 媒体：文件或推理文件片段。浏览器能播放的图像、音频、视频使用原生查看器，其他类型显示为带文件名的下载链接。",
+        props: {
+          part: "AI SDK 的媒体片段；提供后忽略下面的直接属性",
+          mediaType: "未提供 `part` 时的 IANA 媒体类型",
+          url: "未提供 `part` 时的媒体地址",
+          filename: "文件下载链接显示的文件名和辅助名称",
+          alt: "图像的替代文本；默认使用文件名",
+        },
+      },
+      Parts: {
+        description:
+          "AI SDK 消息部件渲染器：按 `UIMessage.parts` 依次渲染文本、推理、工具、来源、媒体等类型；应用自有数据可通过同名插槽接管，工具审批事件保留给调用方。",
+        props: {
+          message: "要渲染的 AI SDK `UIMessage`",
+          highlighter: "传给每个文本片段的代码高亮函数",
+        },
+      },
     },
   },
   "ai-action": {

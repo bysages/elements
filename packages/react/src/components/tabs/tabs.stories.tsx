@@ -50,6 +50,34 @@ export const Basic = {
   ),
 };
 
+/** Session tabs: a scrollable trigger-only strip, with close controls as
+ * siblings of the tab button so focus order stays clean. */
+export const Sessions = {
+  render: () => {
+    const [active, setActive] = useState("inbox");
+    const [sessions, setSessions] = useState([
+      { value: "inbox", label: "Inbox", closable: true },
+      { value: "draft", label: "Draft", closable: true },
+      { value: "review", label: "Review", closable: true },
+      { value: "archive", label: "Archive", closable: true },
+    ]);
+
+    return (
+      <Tabs
+        items={sessions}
+        value={active}
+        contentless
+        scrollable
+        closable
+        onValueChange={setActive}
+        onClose={(item) =>
+          setSessions((all) => all.filter((session) => session.value !== item.value))
+        }
+      />
+    );
+  },
+};
+
 /** The anatomy is the composition path: Ark's parts stay available when the facade is not enough. */
 export const Anatomy = {
   args: {

@@ -5,9 +5,7 @@ import {
   AiContent,
   AiLoader,
   AiPromptInput,
-  AiReasoning,
   AiSuggestion,
-  AiTool,
   Avatar,
   Badge,
   Button,
@@ -17,6 +15,7 @@ import {
   Popover,
   Select,
 } from "@bysages/vue";
+import type { AiSdkMessage } from "@bysages/vue";
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from "vue";
 
 import { FALLBACK_SUGGESTIONS, FALLBACK_TEXT, GREETING, SCRIPTS } from "./data";
@@ -247,6 +246,46 @@ function selectThread(id: string) {
   activeId.value = id;
 }
 
+/** The scripted chat state is mapped onto AI SDK parts at the boundary, so
+ * the renderer consumes the same shape an AI SDK stream would emit. */
+const entryMessages = computed(() => {
+  const messages = new Map<string, AiSdkMessage>();
+
+  for (const entry of activeThread.value.entries) {
+    if (entry.role !== "assistant") continue;
+    const parts: AiSdkMessage["parts"] = [];
+
+    if (entry.reasoning) {
+      parts.push({
+        type: "reasoning",
+        state: entry.streaming && !entry.content ? "streaming" : "done",
+        text: entry.reasoning,
+      });
+    }
+
+    if (entry.tool) {
+      parts.push({
+        type: "dynamic-tool",
+        toolName: entry.tool.name,
+        toolCallId: entry.id + ":tool",
+        state:
+          entry.toolStatus === "pending"
+            ? "input-streaming"
+            : entry.toolStatus === "running"
+              ? "input-available"
+              : "output-available",
+        input: entry.tool.input,
+        ...(entry.toolStatus === "completed" ? { output: entry.tool.output } : {}),
+      });
+    }
+
+    if (entry.content) parts.push({ type: "text", state: "done", text: entry.content });
+    messages.set(entry.id, { id: entry.id, role: "assistant", parts });
+  }
+
+  return messages;
+});
+
 const visibleSuggestions = computed(() => {
   if (busy.value) return [];
   return activeThread.value.suggestions.length
@@ -397,29 +436,32 @@ onBeforeUnmount(scriptAbort);
 
             <template v-for="entry in activeThread.entries" :key="entry.id">
               <Ai.Message :role="entry.role">
-                <AiLoader v-if="!entry.reasoning && entry.streaming && !entry.content" />
-                <template v-else-if="entry.reasoning">
-                  <AiReasoning :label="text.thinking">{{ entry.reasoning }}</AiReasoning>
-                  <AiTool
-                    v-if="entry.tool"
-                    :name="entry.tool.name"
-                    :input="entry.tool.input"
-                    :status="entry.toolStatus"
-                  >
-                    {{ entry.tool.output }}
-                  </AiTool>
-                  <Ai.Response v-if="entry.content" :content="entry.content" />
-                </template>
-                <template v-else-if="entry.tool">
-                  <AiTool
-                    :name="entry.tool.name"
-                    :input="entry.tool.input"
-                    :status="entry.toolStatus"
-                  >
-                    {{ entry.tool.output }}
-                  </AiTool>
-                  <AiContent>{{ entry.content }}</AiContent>
-                </template>
+                <AiLoader
+                  v-if="entry.streaming && !entry.reasoning && !entry.tool && !entry.content"
+                />
+                <Ai.Parts
+                  v-else-if="entryMessages.has(entry.id)"
+                  :message="entryMessages.get(entry.id)!"
+                >
+                  <template #reasoning="{ part }">
+                    <Ai.Reasoning :label="text.thinking">{{ part.text }}</Ai.Reasoning>
+                  </template>
+                  <template #tool="{ part }">
+                    <Ai.Tool
+                      :name="part.toolName"
+                      :input="String(part.input)"
+                      :status="
+                        part.state === 'input-streaming'
+                          ? 'pending'
+                          : part.state === 'input-available'
+                            ? 'running'
+                            : 'completed'
+                      "
+                    >
+                      {{ "output" in part ? part.output : "" }}
+                    </Ai.Tool>
+                  </template>
+                </Ai.Parts>
                 <AiContent v-else>{{ entry.content }}</AiContent>
               </Ai.Message>
             </template>

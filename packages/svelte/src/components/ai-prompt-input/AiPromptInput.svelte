@@ -55,6 +55,7 @@ const mentionState = useMentions(
     items: mentions?.items ?? [],
     trigger: mentions?.trigger,
     triggers: mentions?.triggers,
+    commitKeys: mentions?.commitKeys ?? ["Enter", " ", "Tab"],
   }),
   () => textareaEl,
   {
@@ -67,8 +68,10 @@ const mentionState = useMentions(
     },
     select: (entry: MentionEntry) => {
       onSelect?.(entry);
-      return mentions?.insertOnSelect !== false;
+      const insert = mentions?.insertOnSelect !== false;
+      return insert || mentions?.clearQueryOnSelect !== false;
     },
+    commit: insertChoice,
   },
 );
 
@@ -87,7 +90,22 @@ function publishEditor() {
 }
 
 function insertChoice(entry: MentionEntry) {
-  if (!editorEl || entry.disabled || mentions?.insertOnSelect === false) {
+  const clearQuery =
+    mentions?.insertOnSelect === false && mentions?.clearQueryOnSelect !== false;
+  if (!editorEl || entry.disabled || (mentions?.insertOnSelect === false && !clearQuery)) {
+    mentionState.close();
+    return;
+  }
+
+  if (clearQuery) {
+    const text = serializeEditor(editorEl);
+    const next =
+      text.slice(0, mentionState.anchorIndex) + text.slice(mentionState.caretIndex);
+    renderEditor(editorEl, next, mentions?.items ?? [], mentions?.triggers);
+    editorEl.toggleAttribute("data-empty", !next);
+    editorEl.focus();
+    value = next;
+    onValueChange?.(next);
     mentionState.close();
     return;
   }
@@ -122,18 +140,6 @@ function editorKeydown(event: KeyboardEvent) {
     if (!editorEl) return;
     value = insertLineBreak(editorEl);
     onValueChange?.(value);
-    return;
-  }
-
-  if (
-    mentionState.open &&
-    (event.key === "Enter" || event.key === " ") &&
-    !mentionState.matches[mentionState.active]?.disabled
-  ) {
-    const entry = mentionState.matches[mentionState.active];
-    if (!entry) return;
-    event.preventDefault();
-    insertChoice(entry);
     return;
   }
 
@@ -199,8 +205,9 @@ mentions it renders rich tokens while the bound value remains text. -->
       <div
         bind:this={editorEl}
         contenteditable={!disabled}
-        role="textbox"
-        aria-multiline="true"
+        role="combobox"
+        aria-autocomplete="list"
+        tabindex={disabled ? undefined : 0}
         aria-label={messages().ai.conversation}
         aria-expanded={mentionState.open ? "true" : undefined}
         aria-controls={mentionState.open ? `${mentionsId}:popup` : undefined}
@@ -215,7 +222,7 @@ mentions it renders rich tokens while the bound value remains text. -->
           if (!disabled) mentionState.onInput();
         }}
         onkeydown={editorKeydown}
-      />
+      ></div>
     {:else}
       <Field.Root>
         <Field.Textarea
@@ -245,6 +252,7 @@ mentions it renders rich tokens while the bound value remains text. -->
         matches={mentionState.matches}
         active={mentionState.active}
         anchor={editorEl}
+        placement={mentions?.placement ?? "top-start"}
         onInsert={insertChoice}
         onActiveChange={(index) => (mentionState.active = index)}
         onOpenChange={(open) => {

@@ -9,13 +9,18 @@ import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 import { Icon } from "../icon";
 import { Popover } from "../popover";
-import { useMentions, type MentionTriggers } from "./use-mentions";
+import { useMentions, type MentionCommitKey, type MentionTriggers } from "./use-mentions";
 
 /** The Anchor's polymorphic wiring is div-typed at the API boundary; the
  * textarea host supplies the concrete element type. */
 type MentionsAnchorProps = JSX.HTMLAttributes<HTMLTextAreaElement>;
 
-export type { MentionTriggers, UseMentionsHandlers, UseMentionsOptions } from "./use-mentions";
+export type {
+  MentionCommitKey,
+  MentionTriggers,
+  UseMentionsHandlers,
+  UseMentionsOptions,
+} from "./use-mentions";
 export { useMentions } from "./use-mentions";
 
 export interface MentionEntry {
@@ -40,6 +45,8 @@ export interface MentionEntry {
   /** Extra consumer data carried back through `onSelect`. */
   meta?: Record<string, unknown>;
 }
+
+export type MentionPlacement = "bottom-start" | "top-start";
 
 interface GroupedMentions {
   name: string;
@@ -70,6 +77,8 @@ export interface MentionsVesselProps {
   /** The live element the vessel points at — the anchor is virtual, a
    * rectangle read off the host's field. */
   anchor?: HTMLElement | null;
+  /** Which side of the anchor hosts the candidates. */
+  placement?: MentionPlacement;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
   /** The vessel's stable base id; popup ids derive from it. */
@@ -150,9 +159,9 @@ export const MentionsVessel = withSelfRoot(function MentionsVessel(props: Mentio
       onOpenChange={(details) => props.onOpenChange?.(details.open)}
       positioning={
         props.children
-          ? { placement: "bottom-start" }
+          ? { placement: props.placement ?? "bottom-start" }
           : {
-              placement: "bottom-start",
+              placement: props.placement ?? "bottom-start",
               getAnchorRect: () => props.anchor?.getBoundingClientRect() ?? null,
             }
       }
@@ -233,6 +242,10 @@ export interface MentionsProps extends Omit<
   triggers?: MentionTriggers;
   /** Keep composer text untouched when a candidate is selected. */
   insertOnSelect?: boolean;
+  /** Keys that choose the highlighted candidate. */
+  commitKeys?: MentionCommitKey[];
+  /** Which side of the field hosts the candidates. */
+  placement?: MentionPlacement;
   placeholder?: string;
   /** Let the field grow with its text instead of holding `rows`. */
   autoresize?: boolean;
@@ -271,6 +284,8 @@ function MentionsImpl(props: MentionsProps) {
     "trigger",
     "triggers",
     "insertOnSelect",
+    "commitKeys",
+    "placement",
     "placeholder",
     "autoresize",
     "invalid",
@@ -287,7 +302,12 @@ function MentionsImpl(props: MentionsProps) {
   const value = () => own.value ?? internal();
 
   const mentions = useMentions(
-    () => ({ items: own.items ?? [], trigger: own.trigger, triggers: own.triggers }),
+    () => ({
+      items: own.items ?? [],
+      trigger: own.trigger,
+      triggers: own.triggers,
+      commitKeys: own.commitKeys,
+    }),
     fieldEl,
     {
       getText: () => fieldEl()?.value ?? value(),
@@ -344,6 +364,7 @@ function MentionsImpl(props: MentionsProps) {
         active={mentions.active()}
         size={own.size ?? "md"}
         id={`${hostId()}:vessel`}
+        placement={own.placement ?? "bottom-start"}
         onInsert={mentions.insert}
         onActiveChange={mentions.setActive}
         onOpenChange={(open) => {

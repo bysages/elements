@@ -3,6 +3,8 @@ import type { Accessor } from "solid-js";
 
 import type { MentionEntry } from "./index";
 
+export type MentionCommitKey = "Enter" | "Tab" | " ";
+
 export type MentionTriggers = string | string[];
 
 export interface UseMentionsOptions {
@@ -13,6 +15,8 @@ export interface UseMentionsOptions {
   /** One or more summoning characters; the token closest to the caret
    * wins when several triggers are active. */
   triggers?: MentionTriggers;
+  /** Keys that choose the highlighted candidate. */
+  commitKeys?: MentionCommitKey[];
 }
 
 export interface UseMentionsHandlers {
@@ -27,6 +31,8 @@ export interface UseMentionsHandlers {
   /** Called before insertion. Return `false` to record the choice without
    * rewriting composer text — useful for slash commands and context chips. */
   select?: (entry: MentionEntry) => boolean | void;
+  /** Replaces default insertion so rich editors can commit their own token. */
+  commit?: (entry: MentionEntry) => void;
 }
 
 /** The @-detection machinery behind a mention field: watch the caret,
@@ -108,7 +114,17 @@ export function useMentions(
   };
 
   const insert = (entry: MentionEntry) => {
-    if (entry.disabled || handlers.select?.(entry) === false) {
+    if (entry.disabled) {
+      closePopup();
+      return;
+    }
+    if (handlers.select?.(entry) === false) {
+      handlers.commit?.(entry);
+      closePopup();
+      return;
+    }
+    if (handlers.commit) {
+      handlers.commit(entry);
       closePopup();
       return;
     }
@@ -133,8 +149,8 @@ export function useMentions(
    * the text as it lands, from the element itself. */
   const onInput = () => detect();
 
-  /** Arrows move, Enter inserts, Escape dismisses. Answers `true` when
-   * the vessel consumed the key. */
+  /** Arrows move, configured commit keys insert, Escape dismisses.
+   * Answers `true` when the vessel consumed the key. */
   const onKeydown = (event: KeyboardEvent): boolean => {
     if (!popupOpen() || matches().length === 0) return false;
     if (event.key === "ArrowDown") {
@@ -143,7 +159,7 @@ export function useMentions(
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       moveActive(-1);
-    } else if (event.key === "Enter" || event.key === " ") {
+    } else if ((options().commitKeys ?? ["Enter", " "]).includes(event.key as MentionCommitKey)) {
       const entry = matches()[active()];
       if (!entry || entry.disabled) return false;
       event.preventDefault();
