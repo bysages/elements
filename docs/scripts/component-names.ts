@@ -127,6 +127,7 @@ export const componentNames: Record<string, string> = {
   table: "表格",
   tabs: "标签页",
   terminal: "终端",
+  tag: "标签",
   toolbar: "工具栏",
   "tags-input": "标签输入",
   textarea: "文本域",
