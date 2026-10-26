@@ -1,11 +1,15 @@
 import type { Component } from "svelte";
 
+/** Keeps a parts namespace as named properties only, so the mounted
+ * facade remains the family's one callable component. */
+export type FamilyParts<Parts> = { [Key in keyof Parts]: Parts[Key] };
+
 /** Attaches anatomy parts to a callable family facade without letting
  * a parts namespace overwrite the facade's own component metadata. */
-export function defineFamily<
-  Facade extends Component<any, any, any>,
-  Parts extends { Root: Component<any, any, any> } & Record<string, unknown>,
->(facade: Facade, parts: Parts): Facade & Parts {
+export function defineFamily<Facade extends Component<any, any, any>, Parts extends object>(
+  facade: Facade,
+  parts: Parts,
+): Facade & FamilyParts<Parts> {
   return Object.assign(facade, parts);
 }
 

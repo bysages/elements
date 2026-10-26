@@ -6,12 +6,18 @@ import { TreeView as ArkTreeView } from "@ark-ui/svelte/tree-view";
 import { useElementId } from "../../internal/id";
 import type { TreeViewRootProps } from "./props";
 
-let { size = "md", children, ...rest }: TreeViewRootProps = $props();
+let {
+  size = "md",
+  value = $bindable(),
+  expandedValue = $bindable(),
+  children,
+  ...rest
+}: TreeViewRootProps = $props();
 const generatedId = $props.id();
 const id = $derived(useElementId("tree-view", generatedId, rest.id));
 </script>
 
-<ArkTreeView.Root {...rest} {id} data-size={size}>
+<ArkTreeView.Root bind:value bind:expandedValue {...rest} {id} data-size={size}>
   {@render children?.()}
 </ArkTreeView.Root>
 

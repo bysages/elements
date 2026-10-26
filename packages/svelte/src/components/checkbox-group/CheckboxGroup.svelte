@@ -5,6 +5,7 @@ injectComponentStyle("checkbox-group");
 import { Checkbox as ArkCheckbox } from "@ark-ui/svelte/checkbox";
 import { useFieldContext } from "@ark-ui/svelte/field";
 import InternalIcon from "../../internal/InternalIcon.svelte";
+import { useElementId } from "../../internal/id";
 import type { CheckboxGroupProps } from "./props";
 
 let {
@@ -22,7 +23,8 @@ const field = useFieldContext();
 // A field context bends every box's hidden input onto the field's own
 // id, so labels of a multi-box group would all activate the first box —
 // each box claims its own ids instead.
-const uid = $props.id();
+const generatedId = $props.id();
+const uid = $derived(useElementId("checkbox-group", generatedId, rest.id));
 
 const isInvalid = $derived(invalid || field?.()?.invalid === true);
 const isDisabled = $derived(disabled || field?.()?.disabled === true);

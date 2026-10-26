@@ -20,6 +20,7 @@ const Muted = part("Muted", "p");
 const Label = part("Label", "p");
 
 export const Typography = Object.assign(Display, {
+  Root: Display,
   Display,
   Heading,
   Lead,

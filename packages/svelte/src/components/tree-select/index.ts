@@ -1,11 +1,14 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 
-import { withSelfRoot } from "../../internal/family";
+import { defineFamily, type FamilyParts } from "../../internal/family";
+import { Popover } from "../popover";
 import TreeSelectComponent from "./TreeSelect.svelte";
 
 /** A tree behind a field: the control reads like an input, the vessel
  * below walks the hierarchy, and one leaf click closes the deal. */
-export const TreeSelect = withSelfRoot(TreeSelectComponent);
+export const TreeSelect = defineFamily(TreeSelectComponent, {
+  ...Popover,
+}) as typeof TreeSelectComponent & FamilyParts<typeof Popover>;
 
 export type { TreeSelectNode, TreeSelectProps } from "./props";
 

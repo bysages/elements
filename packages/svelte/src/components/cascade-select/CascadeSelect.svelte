@@ -10,6 +10,7 @@ import { normalizeProps, useMachine } from "@zag-js/svelte";
 
 import InternalIcon from "../../internal/InternalIcon.svelte";
 import Input from "../input/Input.svelte";
+import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/messages";
 import type { CascadeSelectNode, CascadeSelectProps } from "./props";
 
@@ -27,7 +28,8 @@ let {
 
 const messages = useComponentMessages();
 
-const id = $props.id();
+const generatedId = $props.id();
+const id = $derived(useElementId("cascade-select", generatedId, rest.id));
 const locale = useLocaleContext();
 const env = useEnvironmentContext();
 

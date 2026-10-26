@@ -155,6 +155,7 @@ export const AiLoader = withSelfRoot(
 /** The whole family under one handle — `Ai.Conversation`,
  * `Ai.MessageContent`, and the rest. */
 export const Ai = Object.assign(AiConversation, {
+  Root: AiConversation,
   Conversation: AiConversation,
   MessageContent: AiContent,
   Actions: AiActions,
