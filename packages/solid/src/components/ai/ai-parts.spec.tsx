@@ -1,5 +1,6 @@
 // @vitest-environment happy-dom
 import type { UIMessage } from "ai";
+import { createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
@@ -146,5 +147,145 @@ describe("AiParts", () => {
       input: { query: "ink" },
       output: undefined,
     });
+  });
+  it("presents approved and denied approval responses as output arrives", async () => {
+    const approvedResponse = (approved: boolean): UIMessage => ({
+      id: approved ? "message-approved" : "message-human-denied",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: approved ? "call-approved" : "call-human-denied",
+          state: "approval-responded",
+          input: { query: "ink" },
+          approval: { id: approved ? "approval-approved" : "approval-human-denied", approved },
+        },
+      ],
+    });
+    const completedMessage: UIMessage = {
+      id: "message-approved",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: "call-approved",
+          state: "output-available",
+          input: { query: "ink" },
+          output: { hits: 12 },
+        },
+      ],
+    };
+    const deniedMessage: UIMessage = {
+      id: "message-human-denied",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: "call-human-denied",
+          state: "output-denied",
+          input: { query: "ink" },
+          approval: { id: "approval-human-denied", approved: false },
+        },
+      ],
+    };
+    const [message, setMessage] = createSignal(approvedResponse(true));
+    const container = document.createElement("div");
+    document.body.append(container);
+    dispose = render(() => <AiParts message={message()} />, container);
+
+    expect(container.querySelector('[data-approval="approved"]')).not.toBeNull();
+    setMessage(completedMessage);
+    await Promise.resolve();
+    expect(container.querySelector('[data-status="completed"]')).not.toBeNull();
+
+    setMessage(approvedResponse(false));
+    await Promise.resolve();
+    expect(container.querySelector('[data-approval="denied"]')).not.toBeNull();
+    setMessage(deniedMessage);
+    await Promise.resolve();
+    expect(container.querySelector('[data-status="denied"]')).not.toBeNull();
+  });
+
+  it("renders output errors in the tool body", () => {
+    const message: UIMessage = {
+      id: "message-error",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: "call-error",
+          state: "output-error",
+          input: { query: "ink" },
+          errorText: "The ink ran dry",
+        },
+      ],
+    };
+    const container = document.createElement("div");
+    document.body.append(container);
+    dispose = render(() => <AiParts message={message} />, container);
+
+    expect(container.querySelector('[data-status="error"]')).not.toBeNull();
+    expect(container.querySelector('[data-part="tool-body"]')?.textContent).toContain(
+      "The ink ran dry",
+    );
+  });
+
+  it("fires deny with the SDK tool part", () => {
+    const denied: string[] = [];
+    const message: UIMessage = {
+      id: "message-deny",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: "call-deny",
+          state: "approval-requested",
+          input: { query: "ink" },
+          approval: { id: "approval-deny" },
+        },
+      ],
+    };
+    const container = document.createElement("div");
+    document.body.append(container);
+    dispose = render(
+      () => <AiParts message={message} onDeny={({ part }) => denied.push(part.type)} />,
+      container,
+    );
+
+    const buttons = container
+      .querySelector('[data-part="tool-actions"]')!
+      .querySelectorAll("button");
+    buttons[0]?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(denied).toEqual(["dynamic-tool"]);
+  });
+
+  it("renders unknown parts through the fallback slot", () => {
+    const message = {
+      id: "message-fallback",
+      role: "assistant",
+      parts: [{ type: "dimension-c-137", reality: "unknown" }],
+    } as never as UIMessage;
+    const container = document.createElement("div");
+    document.body.append(container);
+    dispose = render(
+      () => (
+        <AiParts
+          message={message}
+          slots={{
+            fallback: ({ part }) => (
+              <output data-test="fallback">{(part as { type: string }).type}</output>
+            ),
+          }}
+        />
+      ),
+      container,
+    );
+
+    expect(container.querySelector('[data-test="fallback"]')?.textContent).toBe("dimension-c-137");
   });
 });

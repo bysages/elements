@@ -136,4 +136,100 @@ describe("AiParts", () => {
     expect(container.querySelector('[data-test="custom-data"]')?.textContent).toBe("Writing");
     app.unmount();
   });
+
+  it("fires deny through the shared tool actions", async () => {
+    const denied: string[] = [];
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-deny",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-deny",
+          state: "approval-requested",
+          input: { query: "ink" },
+          approval: { id: "approval-deny" },
+        },
+      ],
+    };
+    const { container, app } = mount(message, { deny: () => denied.push("no") });
+    await nextTick();
+
+    const actions = container.querySelector('[data-part="tool-actions"]');
+    const buttons = actions!.querySelectorAll("button");
+    buttons[0]?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(denied).toEqual(["no"]);
+    app.unmount();
+  });
+
+  it("maps output-error parts to the error fold", async () => {
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-error",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-error",
+          state: "output-error",
+          input: { query: "ink" },
+          errorText: "Line busy",
+        },
+      ],
+    };
+    const { container, app } = mount(message);
+    await nextTick();
+
+    expect(container.querySelector('[data-status="error"]')).not.toBeNull();
+    expect(container.querySelector('[data-part="tool-body"]')?.textContent).toContain("Line busy");
+    app.unmount();
+  });
+
+  it("maps output-denied parts to the denied fold", async () => {
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-denied",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-denied",
+          state: "output-denied",
+          input: { query: "ink" },
+          approval: { id: "approval-denied", approved: false },
+        },
+      ],
+    };
+    const { container, app } = mount(message);
+    await nextTick();
+
+    expect(container.querySelector('[data-status="denied"]')).not.toBeNull();
+    app.unmount();
+  });
+
+  it("renders unknown parts through the fallback slot", async () => {
+    const message = {
+      id: "message-fallback",
+      role: "assistant",
+      parts: [{ type: "dimension-c-137", reality: "unknown" }],
+    } as never as UIMessage;
+    const { container, app } = mount(message, {}, {
+      fallback: ({ part }: { part: { type: string } }) =>
+        h("output", { "data-test": "fallback" }, part.type),
+    } as never);
+    await nextTick();
+
+    expect(container.querySelector('[data-test="fallback"]')?.textContent).toBe("dimension-c-137");
+    app.unmount();
+  });
 });

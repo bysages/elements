@@ -83,4 +83,28 @@ describe("tabs facade", () => {
     expect(closed).toEqual(["one"]);
     app.unmount();
   });
+
+  it("honors per-item closability over the facade default", () => {
+    const items = [
+      { value: "one", label: "One", content: "First", closable: true },
+      { value: "two", label: "Two", content: "Second" },
+    ];
+    const { container, app } = mount({ items, closable: false });
+    const closes = container.querySelectorAll('[data-part="close"]');
+    expect(closes).toHaveLength(1);
+    expect(closes[0]?.getAttribute("aria-label")).toBe("Close One");
+    app.unmount();
+  });
+
+  it("keeps the disabled item's close control disabled", () => {
+    const items = [
+      { value: "one", label: "One", content: "First", disabled: true, closable: true },
+      { value: "two", label: "Two", content: "Second", closable: true },
+    ];
+    const { container, app } = mount({ items });
+    const closes = container.querySelectorAll<HTMLButtonElement>('[data-part="close"]');
+    expect(closes[0]?.disabled).toBe(true);
+    expect(closes[1]?.disabled).toBe(false);
+    app.unmount();
+  });
 });

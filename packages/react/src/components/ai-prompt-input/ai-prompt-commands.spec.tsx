@@ -94,4 +94,80 @@ describe("AI prompt commands", () => {
     expect(selected).toEqual(["search"]);
     expect(values.at(-1)).toBe("");
   });
+  it("commits with Space when configured", async () => {
+    const committed: MentionEntry[] = [];
+    let text = "/se";
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setSelectionRange(text.length, text.length);
+    document.body.append(field);
+    let current: ReturnType<typeof useMentions> | undefined;
+
+    function Probe() {
+      current = useMentions(
+        () => ({ items: commands, triggers: ["/"], commitKeys: [" "] }),
+        () => field,
+        {
+          getText: () => text,
+          setText: (value) => {
+            text = value;
+          },
+          select: () => false,
+          commit: (entry) => committed.push(entry),
+        },
+      );
+      return null;
+    }
+    const container = document.createElement("div");
+    document.body.append(container);
+    act(() => {
+      createRoot(container).render(<Probe />);
+    });
+
+    await act(async () => {
+      current?.onInput();
+      await Promise.resolve();
+    });
+    await act(async () => {
+      current?.onKeydown({ key: " ", preventDefault: () => {} });
+    });
+
+    expect(committed.map((entry) => entry.value)).toEqual(["search"]);
+  });
+
+  it("keeps the trigger text when insertion and query clearing are off", () => {
+    const container = document.createElement("div");
+    document.body.append(container);
+    const root = createRoot(container);
+    const selected: string[] = [];
+    const values: string[] = [];
+
+    act(() => {
+      root.render(
+        <AiPromptInput
+          value="/se"
+          mentions={{
+            items: commands,
+            triggers: ["/"],
+            insertOnSelect: false,
+            clearQueryOnSelect: false,
+          }}
+          onSelect={(entry) => selected.push(entry.value)}
+          onValueChange={(value) => values.push(value)}
+        />,
+      );
+    });
+    const editor = container.querySelector<HTMLElement>('[data-part="prompt-editor"]');
+    if (!editor) throw new Error("prompt editor is missing");
+
+    act(() => {
+      editor.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    act(() => {
+      editor.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true }));
+    });
+
+    expect(selected).toEqual(["search"]);
+    expect(values.at(-1)).toBe("/se");
+  });
 });

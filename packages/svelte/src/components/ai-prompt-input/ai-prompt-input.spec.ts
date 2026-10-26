@@ -8,6 +8,7 @@ import { AiPromptInput } from "./index";
 const roster: MentionEntry[] = [
   { label: "Agent", value: "agent" },
   { label: "Search", value: "search" },
+  { label: "Lin", value: "lin" },
 ];
 
 beforeEach(() => {
@@ -58,6 +59,45 @@ describe("prompt input mentions", () => {
     expect(selected.map((entry) => entry.value)).toEqual(["search"]);
     expect(editor.textContent).toBe("Before  after");
     expect(values).toContain("Before  after");
+    void unmount(component);
+  });
+
+  it("commits a mention with Space", async () => {
+    const values: string[] = [];
+    const container = document.createElement("div");
+    document.body.append(container);
+    const component = mount(AiPromptInput, {
+      target: container,
+      props: {
+        value: "@lin",
+        mentions: { items: roster },
+        onValueChange: (value) => values.push(value),
+      },
+    });
+    const editor = container.querySelector<HTMLElement>("[data-part='prompt-editor']");
+    if (!editor) throw new Error("prompt editor is missing");
+    await tick();
+
+    editor.focus();
+    const textNode = editor.firstChild;
+    if (!textNode) throw new Error("prompt text is missing");
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.setStart(textNode, 4);
+    range.collapse(true);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    editor.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    await tick();
+    editor.dispatchEvent(
+      new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true }),
+    );
+    flushSync();
+
+    expect(editor.querySelector('[data-part="prompt-mention"]')).not.toBeNull();
+    expect(editor.textContent).toBe("@Lin ");
+    expect(values).toContain("@Lin ");
     void unmount(component);
   });
 

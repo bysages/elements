@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { createRawSnippet, mount, unmount } from "svelte";
+import { createRawSnippet, mount, tick, unmount } from "svelte";
 import type { ComponentProps } from "svelte";
 import { beforeEach, describe, expect, it } from "vite-plus/test";
 
@@ -44,6 +44,31 @@ describe("TreeView nav options", () => {
     expect(container.querySelector('[data-part="item"][data-selected]')?.textContent).toContain(
       "elements",
     );
+    void unmount(component);
+  });
+
+  it("reports controlled expansion changes and collapses from the event", async () => {
+    const expanded: string[][] = [];
+    const container = document.createElement("div");
+    document.body.append(container);
+    const component = mount(TreeView, {
+      target: container,
+      props: {
+        options,
+        expandedValue: ["projects"],
+        onExpandedChange: (value: string[]) => expanded.push(value),
+      } as unknown as ComponentProps<typeof TreeView>,
+    });
+    await tick();
+
+    expect(container.querySelector('[data-part="branch-content"]')).not.toBeNull();
+    container.querySelector<HTMLElement>('[data-part="branch-control"]')?.click();
+    await tick();
+
+    expect(expanded).toEqual([[]]);
+    expect(
+      container.querySelector('[data-part="branch-content"]')?.getAttribute("data-state"),
+    ).toBe("closed");
     void unmount(component);
   });
 });

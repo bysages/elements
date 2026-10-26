@@ -1,10 +1,10 @@
-import { flushSync, mount, unmount } from "svelte";
+import { createRawSnippet, flushSync, mount, unmount } from "svelte";
 import type { ComponentProps } from "svelte";
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { AiParts, toolPartDisplay } from "./index";
-import type { AiSdkMessage, AiSdkToolPart } from "./parts";
+import type { AiSdkMessage, AiSdkMessagePart, AiSdkToolPart } from "./parts";
 
 beforeEach(() => {
   document.body.replaceChildren();
@@ -103,5 +103,45 @@ describe("AiParts", () => {
       status: "error",
       output: "The ink ran dry",
     });
+  });
+
+  it("renders the denied SDK state through AiParts", () => {
+    const message: AiSdkMessage = {
+      id: "message-4",
+      role: "assistant",
+      parts: [
+        {
+          type: "dynamic-tool",
+          toolName: "search",
+          toolCallId: "call-4",
+          state: "output-denied",
+          input: { query: "ink" },
+          approval: { id: "approval-4", approved: false },
+        },
+      ],
+    };
+    const { component, container } = mountAi({ message });
+    const tool = container.querySelector('[data-ai="tool"]');
+
+    expect(tool?.getAttribute("data-status")).toBe("denied");
+    expect(tool?.getAttribute("data-approval")).toBe("denied");
+    expect(tool?.textContent).toContain("search");
+    void unmount(component);
+  });
+
+  it("renders the fallback snippet for an unknown part type", () => {
+    const message = {
+      id: "message-5",
+      role: "assistant",
+      parts: [{ type: "crystal-ball", prediction: "Ink" }],
+    } as unknown as AiSdkMessage;
+    const fallback = createRawSnippet<[AiSdkMessagePart]>((part) => ({
+      render: () =>
+        `<output data-test="unknown-part">${String((part() as { type: string }).type)}</output>`,
+    }));
+    const { component, container } = mountAi({ message, fallback });
+
+    expect(container.querySelector('[data-test="unknown-part"]')?.textContent).toBe("crystal-ball");
+    void unmount(component);
   });
 });

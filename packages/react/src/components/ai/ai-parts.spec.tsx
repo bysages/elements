@@ -158,4 +158,128 @@ describe("AiParts", () => {
       output: undefined,
     });
   });
+  it("maps an approved SDK response state onto the tool fold", () => {
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-approved",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-approved",
+          state: "approval-responded",
+          input: { query: "ink" },
+          approval: { id: "approval-approved", approved: true },
+        },
+      ],
+    };
+    const mounted = mount(<AiParts message={message} />);
+    const tool = mounted.querySelector('[data-ai="tool"]');
+
+    expect(tool?.getAttribute("data-approval")).toBe("approved");
+    expect(mounted.querySelector('[data-part="tool-actions"]')).toBeNull();
+  });
+
+  it("maps a denied SDK response state onto the tool fold", () => {
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-denied",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-denied",
+          state: "approval-responded",
+          input: { query: "ink" },
+          approval: { id: "approval-denied", approved: false },
+        },
+      ],
+    };
+    const mounted = mount(<AiParts message={message} />);
+    const tool = mounted.querySelector('[data-ai="tool"]');
+
+    expect(tool?.getAttribute("data-approval")).toBe("denied");
+    expect(mounted.querySelector('[data-part="tool-actions"]')).toBeNull();
+  });
+
+  it("opens an SDK tool error on its error presentation", () => {
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-error",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-error",
+          state: "output-error",
+          input: { query: "ink" },
+          errorText: "The ink ran dry.",
+        },
+      ],
+    };
+    const mounted = mount(<AiParts message={message} />);
+    const tool = mounted.querySelector('[data-ai="tool"]');
+
+    expect(tool?.getAttribute("data-status")).toBe("error");
+    expect(mounted.querySelector('[data-part="tool-body"]')?.textContent).toContain(
+      "The ink ran dry.",
+    );
+  });
+
+  it("reports the SDK deny action for a required tool", () => {
+    const denied: string[] = [];
+    const message: UIMessage<
+      unknown,
+      never,
+      { search: { input: { query: string }; output: { hits: number } } }
+    > = {
+      id: "message-deny",
+      role: "assistant",
+      parts: [
+        {
+          type: "tool-search",
+          toolCallId: "call-deny",
+          state: "approval-requested",
+          input: { query: "ink" },
+          approval: { id: "approval-deny" },
+        },
+      ],
+    };
+    const mounted = mount(<AiParts message={message} onDeny={() => denied.push("no")} />);
+
+    const actions = mounted.querySelector('[data-part="tool-actions"]');
+    expect(actions).not.toBeNull();
+    const buttons = actions!.querySelectorAll("button");
+    act(() => {
+      buttons[0]?.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+    });
+    expect(denied).toEqual(["no"]);
+  });
+
+  it("renders unknown SDK parts through the fallback slot", () => {
+    const message = {
+      id: "message-unknown",
+      role: "assistant",
+      parts: [{ type: "future-part", value: "Reserved" }],
+    } as unknown as UIMessage;
+    const mounted = mount(
+      <AiParts
+        message={message}
+        slots={{
+          fallback: ({ part }) => <output data-test="fallback">{JSON.stringify(part)}</output>,
+        }}
+      />,
+    );
+
+    expect(mounted.querySelector('[data-test="fallback"]')?.textContent).toContain("future-part");
+  });
 });

@@ -248,6 +248,18 @@ describe("useMentions", () => {
     expect(context.updated()).toBe("/Search ");
   });
 
+  it("can accept Space as an explicit commit key", () => {
+    const context = createMentions(undefined, { commitKeys: ["Enter", " ", "Tab"] });
+
+    context.input();
+    const accepted = context.mentions.onKeydown(
+      new KeyboardEvent("keydown", { key: " ", cancelable: true }),
+    );
+
+    expect(accepted).toBe(true);
+    expect(context.updated()).toBe("/Search ");
+  });
+
   it("keeps the same token dismissed after Escape until it changes", () => {
     const context = createMentions();
 

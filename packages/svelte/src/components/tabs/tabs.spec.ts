@@ -65,4 +65,18 @@ describe("tabs facade", () => {
     expect(closed).toEqual(["one"]);
     void unmount(component);
   });
+
+  it("supports per-item closability and hides close control on disabled items", () => {
+    const { component, container } = mountTabs({
+      contentless: true,
+      items: [{ value: "one", label: "One", icon: "file", disabled: true, closable: true }],
+    });
+    const trigger = container.querySelector<HTMLButtonElement>('[data-part="trigger"]');
+
+    expect(trigger?.hasAttribute("data-disabled")).toBe(true);
+    expect(trigger?.querySelector("svg")).not.toBeNull();
+    expect(trigger?.hasAttribute("data-closable")).toBe(true);
+    expect(container.querySelector<HTMLButtonElement>('[data-part="close"]')?.disabled).toBe(true);
+    void unmount(component);
+  });
 });
