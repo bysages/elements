@@ -47,15 +47,15 @@
     "@antv/x6": "3.1.8",
     "@bysages/core": "workspace:*",
     "@tanstack/markdown": "1.0.0",
-    "elkjs": "0.12.0"
+    "elkjs": "0.12.1"
   },
   "devDependencies": {
     "@bysages/react": "workspace:*",
     "@bysages/vue": "workspace:*",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "vue": "3.5.43"
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "vue": "3.5.44"
   }
 }
