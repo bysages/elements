@@ -48,34 +48,34 @@
     "release": "basis publish"
   },
   "dependencies": {
-    "@ai-sdk/mcp": "2.0.73",
-    "@ai-sdk/openai-compatible": "3.0.67",
-    "@ai-sdk/vue": "4.0.137",
+    "@ai-sdk/mcp": "2.0.88",
+    "@ai-sdk/openai-compatible": "3.0.82",
+    "@ai-sdk/vue": "4.0.159",
     "@bysages/nuxt": "workspace:*",
     "@bysages/tokens": "workspace:*",
     "@bysages/vue": "workspace:*",
-    "@iconify-json/lucide": "1.2.142",
-    "@nuxt/content": "3.16.1",
-    "@nuxt/icon": "2.5.1",
-    "@nuxt/kit": "4.5.2",
+    "@iconify-json/lucide": "1.2.149",
+    "@nuxt/content": "3.16.2",
+    "@nuxt/icon": "2.6.2",
+    "@nuxt/kit": "4.6.3",
     "@nuxtjs/i18n": "10.6.0",
-    "@nuxtjs/mcp-toolkit": "0.24.1",
+    "@nuxtjs/mcp-toolkit": "0.24.3",
     "@nuxtjs/robots": "6.2.4",
-    "@nuxtjs/sitemap": "8.6.1",
-    "@tanstack/highlight": "1.1.0",
-    "agents": "0.28.0",
-    "ai": "7.0.137",
+    "@nuxtjs/sitemap": "8.6.2",
+    "@tanstack/highlight": "1.2.0",
+    "agents": "0.32.0",
+    "ai": "7.0.159",
     "better-sqlite3": "13.0.3",
     "minisearch": "7.2.0",
-    "nuxt-agent-discovery": "0.7.1",
-    "nuxt-llms": "0.2.0",
-    "nuxt-og-image": "6.10.3",
+    "nuxt-agent-discovery": "0.8.1",
+    "nuxt-llms": "0.3.1",
+    "nuxt-og-image": "6.10.4",
     "nuxt-schema-org": "6.4.3",
     "tailwindcss": "4.3.3",
-    "zod": "4.6.5"
+    "zod": "4.6.7"
   },
   "devDependencies": {
-    "nuxt": "4.5.2"
+    "nuxt": "4.6.3"
   },
   "peerDependencies": {
     "nuxt": "^4.0.0"
