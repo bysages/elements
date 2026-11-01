@@ -146,6 +146,71 @@ export const AiConversation = defineComponent({
   },
 });
 
+/** The optional jump-to-latest door: an explicit part the caller drops
+ * inside the conversation when the log scrolls. It watches the log's
+ * distance from the bottom edge and surfaces only while the reader is
+ * away — clicking returns to the stream. Nothing renders by default. */
+export const AiJumpToLatest = defineComponent({
+  name: "AiJumpToLatest",
+  inheritAttrs: false,
+  props: {
+    /** Bottom-edge distance beyond which the door surfaces. */
+    threshold: { type: Number, default: 96 },
+  },
+  emits: { jump: () => true },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("ai");
+    const messages = useComponentMessages();
+    const el = ref<HTMLElement | null>(null);
+    const visible = ref(false);
+    let log: HTMLElement | null | undefined;
+
+    const measure = () => {
+      if (!log || !el.value) return;
+      visible.value = log.scrollHeight - log.scrollTop - log.clientHeight > props.threshold;
+    };
+    const jump = () => {
+      if (log) log.scrollTop = log.scrollHeight;
+      ctx.emit("jump");
+    };
+
+    onMounted(() => {
+      // The caller may scroll the conversation node itself or wrap it in
+      // a taller transcript lane. Prefer the conversation; when it does
+      // not overflow, the nearest ancestor that does owns the scroll.
+      let node = el.value?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
+      if (node && node.scrollHeight <= node.clientHeight + 1) {
+        let outer = node.parentElement;
+        while (outer && outer.scrollHeight <= outer.clientHeight + 1) {
+          outer = outer.parentElement;
+        }
+        if (outer) node = outer;
+      }
+      log = node;
+      log?.addEventListener("scroll", measure, { passive: true });
+      measure();
+    });
+    onScopeDispose(() => log?.removeEventListener("scroll", measure));
+
+    return () =>
+      h(
+        "button",
+        {
+          ref: el,
+          type: "button",
+          ...ctx.attrs,
+          "data-scope": "ai",
+          "data-part": "jump-to-latest",
+          "data-visible": visible.value ? "" : undefined,
+          tabindex: visible.value ? 0 : -1,
+          "aria-label": messages.value.ai.jumpToLatest,
+          onClick: jump,
+        },
+        ctx.slots.default?.() ?? messages.value.ai.jumpToLatest,
+      );
+  },
+});
+
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
 export const AiContent = withSelfRoot(part("Content", "div"));
@@ -189,6 +254,7 @@ export const Ai = defineFamily(AiConversation, {
   Loader: AiLoader,
   Media: AiMedia,
   Parts: AiParts,
+  JumpToLatest: AiJumpToLatest,
   Message,
   Response,
   Reasoning,

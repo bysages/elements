@@ -9,6 +9,7 @@
 export type ComponentMessages = {
   ai: {
     conversation: string;
+    jumpToLatest: string;
     loading: string;
     send: string;
     stop: string;
@@ -60,6 +61,7 @@ export type ComponentMessagesOverride = {
 const ENGLISH_MESSAGES: ComponentMessages = {
   ai: {
     conversation: "Conversation",
+    jumpToLatest: "Jump to latest",
     loading: "Loading",
     send: "Send",
     stop: "Stop",
@@ -119,6 +121,7 @@ const ENGLISH_MESSAGES: ComponentMessages = {
 const CHINESE_MESSAGES: ComponentMessages = {
   ai: {
     conversation: "对话",
+    jumpToLatest: "回到最新",
     loading: "加载中",
     send: "发送",
     stop: "停止",

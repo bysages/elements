@@ -3,7 +3,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
-import { AiConversation } from "./index";
+import { AiConversation, AiJumpToLatest } from "./index";
 
 let container: HTMLDivElement | undefined;
 let root: ReturnType<typeof createRoot> | undefined;
@@ -84,5 +84,61 @@ describe("AiConversation autoScroll", () => {
     await grow();
 
     expect(positions.at(-1)).toBe(300);
+  });
+});
+
+function mountJumpToLatest() {
+  const positions: number[] = [];
+  container = document.createElement("div");
+  document.body.append(container);
+  root = createRoot(container);
+
+  act(() => {
+    root?.render(
+      <AiConversation>
+        <p>earlier ink</p>
+        <AiJumpToLatest threshold={96} />
+      </AiConversation>,
+    );
+  });
+
+  const node = container.querySelector<HTMLElement>('[data-part="conversation"]');
+  const door = container.querySelector<HTMLElement>('[data-part="jump-to-latest"]');
+  if (!node || !door) throw new Error("conversation or jump door is missing");
+  Object.defineProperties(node, {
+    clientHeight: { configurable: true, value: 100 },
+    scrollHeight: { configurable: true, get: () => 300 },
+    scrollTop: {
+      configurable: true,
+      get: () => positions.at(-1) ?? 0,
+      set: (value: number) => positions.push(value),
+    },
+  });
+  return { node, positions, door };
+}
+
+describe("AiJumpToLatest", () => {
+  it("surfaces while the reader is away from the bottom and jumps back", () => {
+    const { node, positions, door } = mountJumpToLatest();
+    node.scrollTop = 60;
+    act(() => {
+      node.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(door.hasAttribute("data-visible")).toBe(true);
+    act(() => {
+      door.click();
+    });
+    expect(positions.at(-1)).toBe(300);
+  });
+
+  it("stays hidden while the log rests at the bottom edge", () => {
+    const { node, door } = mountJumpToLatest();
+    node.scrollTop = 200;
+    act(() => {
+      node.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(door.hasAttribute("data-visible")).toBe(false);
   });
 });

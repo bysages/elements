@@ -38,6 +38,27 @@ export const scrollAreaCss = /* css */ `
   padding-inline-end: var(--bs-padding-xl);
 }
 
+
+/* The explicit fade: the caller declares the fade attribute on the Root and the
+   viewport dissolves its edges with the shared seven-stop ramp. The mask
+   axis follows the orientation — vertical scrollers fade top and bottom,
+   horizontal fade left and right, and "both" intersects the two. */
+[data-scope="scroll-area"][data-fade] [data-part="viewport"] {
+  -webkit-mask-image: var(--bs-mask-fade-y);
+  mask-image: var(--bs-mask-fade-y);
+}
+
+[data-scope="scroll-area"][data-fade="horizontal"] [data-part="viewport"] {
+  -webkit-mask-image: var(--bs-mask-fade-x);
+  mask-image: var(--bs-mask-fade-x);
+}
+
+[data-scope="scroll-area"][data-fade="both"] [data-part="viewport"] {
+  -webkit-mask-image: var(--bs-mask-fade-y), var(--bs-mask-fade-x);
+  mask-image: var(--bs-mask-fade-y), var(--bs-mask-fade-x);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
 /* The scrollbar lane is invisible until touched — hover or scroll brings
    it up as a quiet groove; the ::before widens the hit area without
    widening the ink. */

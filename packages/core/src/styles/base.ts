@@ -154,4 +154,32 @@ export const inkRippleCss = /* css */ `
     animation-duration: var(--bs-duration-instant);
   }
 }
-`;
+
+/* The shared scroll fade: one seven-stop mask ramp per axis — the edge
+   steps transparent, quarter, half, full ink before the paper takes over,
+   so content dissolves instead of truncating. Components opt in by
+   declaring the attribute; the reach sizes the ramp in px space. */
+:root,
+:host {
+  --bs-fade-reach: 2.5rem;
+  --bs-mask-fade-y: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgb(0 0 0 / 25%) calc(0.5 * var(--bs-fade-reach)),
+    rgb(0 0 0 / 60%) calc(0.8 * var(--bs-fade-reach)),
+    rgb(0 0 0 / 100%) var(--bs-fade-reach),
+    rgb(0 0 0 / 100%) calc(100% - var(--bs-fade-reach)),
+    rgb(0 0 0 / 60%) calc(100% - 0.8 * var(--bs-fade-reach)),
+    transparent 100%
+  );
+  --bs-mask-fade-x: linear-gradient(
+    to right,
+    transparent 0,
+    rgb(0 0 0 / 25%) calc(0.5 * var(--bs-fade-reach)),
+    rgb(0 0 0 / 60%) calc(0.8 * var(--bs-fade-reach)),
+    rgb(0 0 0 / 100%) var(--bs-fade-reach),
+    rgb(0 0 0 / 100%) calc(100% - var(--bs-fade-reach)),
+    rgb(0 0 0 / 60%) calc(100% - 0.8 * var(--bs-fade-reach)),
+    transparent 100%
+  );
+}`;

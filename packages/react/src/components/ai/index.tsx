@@ -1,6 +1,6 @@
 import { createConversationFollower } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { useEffect, useRef, type HTMLAttributes } from "react";
+import { useCallback, useEffect, useRef, useState, type HTMLAttributes } from "react";
 
 import { withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
@@ -116,6 +116,57 @@ export function AiConversation({
   );
 }
 
+/** The optional jump-to-latest door: an explicit part the caller drops
+ * inside the conversation when the log scrolls. It watches the log's
+ * distance from the bottom edge and surfaces only while the reader is
+ * away — clicking returns to the stream. Nothing renders by default. */
+export function AiJumpToLatest({
+  threshold = 96,
+  onJump,
+  children,
+  ...rest
+}: HTMLAttributes<HTMLButtonElement> & { threshold?: number; onJump?: () => void }) {
+  const messages = useComponentMessages();
+  const ref = useRef<HTMLButtonElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  const measure = useCallback(() => {
+    const log = ref.current?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
+    if (!log) return;
+    setVisible(log.scrollHeight - log.scrollTop - log.clientHeight > threshold);
+  }, [threshold]);
+
+  useEffect(() => {
+    const log = ref.current?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
+    if (!log) return;
+    log.addEventListener("scroll", measure, { passive: true });
+    measure();
+    return () => log.removeEventListener("scroll", measure);
+  }, [measure]);
+
+  const jump = useCallback(() => {
+    const log = ref.current?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
+    if (log) log.scrollTop = log.scrollHeight;
+    onJump?.();
+  }, [onJump]);
+
+  return (
+    <button
+      ref={ref}
+      {...rest}
+      type="button"
+      data-scope="ai"
+      data-part="jump-to-latest"
+      data-visible={visible ? "" : undefined}
+      tabIndex={visible ? 0 : -1}
+      aria-label={rest["aria-label"] ?? messages.ai.jumpToLatest}
+      onClick={jump}
+    >
+      {children ?? messages.ai.jumpToLatest}
+    </button>
+  );
+}
+
 /** The bubble's inner measure — content that belongs to neither side
  * specifically. */
 export const AiContent = withSelfRoot(part("Content", "div"));
@@ -150,6 +201,7 @@ export const Ai = Object.assign(AiConversation, {
   Loader: AiLoader,
   Media: AiMedia,
   Parts: AiParts,
+  JumpToLatest: AiJumpToLatest,
   Message,
   Response,
   Reasoning,

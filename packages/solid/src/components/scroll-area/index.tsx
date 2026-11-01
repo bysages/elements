@@ -1,22 +1,29 @@
 import { ScrollArea as ArkScrollArea } from "@ark-ui/solid/scroll-area";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { For, createComponent, mergeProps, type ComponentProps } from "solid-js";
+import { For, createComponent, mergeProps, splitProps, type ComponentProps } from "solid-js";
 import type { JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
 import { useElementId } from "../../internal/id";
 
+type ScrollAreaFade = "vertical" | "horizontal" | "both";
+type ScrollAreaRootProps = ComponentProps<typeof ArkScrollArea.Root> & { fade?: ScrollAreaFade };
+
 /** Ark's ScrollArea, dressed in the paper-and-ink system: native bars
  * give way to quiet ink lanes that surface on hover and scroll. The API
  * is Ark's own — Root, Viewport, Content, Scrollbar, Thumb, Corner. */
-function ScrollAreaRoot(props: ComponentProps<typeof ArkScrollArea.Root>) {
-  const id = useElementId("scroll-area", () => props.id);
+function ScrollAreaRoot(props: ScrollAreaRootProps) {
+  const [own, rest] = splitProps(props, ["fade"]);
+  const id = useElementId("scroll-area", () => rest.id);
 
   return createComponent(
     ArkScrollArea.Root,
-    mergeProps(props, {
+    mergeProps(rest, {
       get id() {
         return id();
+      },
+      get "data-fade"() {
+        return own.fade;
       },
     }),
   );
@@ -25,6 +32,8 @@ function ScrollAreaRoot(props: ComponentProps<typeof ArkScrollArea.Root>) {
 export interface ScrollAreaFacadeProps {
   class?: string;
   orientation?: "vertical" | "horizontal" | "both";
+  /** Dissolve the viewport's edges — see Root's `fade`. */
+  fade?: ScrollAreaFade;
   children?: JSX.Element;
 }
 
@@ -35,7 +44,7 @@ function ScrollAreaFacade(props: ScrollAreaFacadeProps) {
     props.orientation === "both" ? ["vertical", "horizontal"] : [props.orientation ?? "vertical"];
 
   return (
-    <ScrollAreaRoot class={props.class}>
+    <ScrollAreaRoot class={props.class} fade={props.fade}>
       <ArkScrollArea.Viewport>
         <ArkScrollArea.Content>{props.children}</ArkScrollArea.Content>
       </ArkScrollArea.Viewport>

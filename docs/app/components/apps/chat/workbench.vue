@@ -470,6 +470,7 @@ onBeforeUnmount(scriptAbort);
                 <AiContent v-else>{{ entry.content }}</AiContent>
               </Ai.Message>
             </template>
+            <Ai.JumpToLatest v-if="activeThread.entries.length > 1" />
           </Ai.Conversation>
         </div>
 
@@ -628,6 +629,10 @@ onBeforeUnmount(scriptAbort);
   min-block-size: 0;
   overflow-y: auto;
   padding-inline: var(--bs-padding-xs);
+  /* The stream dissolves at the reading edges instead of truncating —
+     the shared seven-stop ramp keeps the register with ScrollArea. */
+  -webkit-mask-image: var(--bs-mask-fade-y);
+  mask-image: var(--bs-mask-fade-y);
 }
 
 .ai-welcome {

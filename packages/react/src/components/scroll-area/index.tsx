@@ -5,18 +5,23 @@ import type { ComponentProps } from "react";
 
 import { useElementId } from "../../internal/id";
 
+type ScrollAreaFade = "vertical" | "horizontal" | "both";
+type ScrollAreaRootProps = ComponentProps<typeof ArkScrollArea.Root> & { fade?: ScrollAreaFade };
+
 /** Ark's ScrollArea, dressed in the paper-and-ink system: native bars
  * give way to quiet ink lanes that surface on hover and scroll. The API
  * is Ark's own — Root, Viewport, Content, Scrollbar, Thumb, Corner. */
-function ScrollAreaRoot(props: ComponentProps<typeof ArkScrollArea.Root>) {
+function ScrollAreaRoot({ fade, ...props }: ScrollAreaRootProps) {
   injectComponentStyle("scroll-area");
   const id = useElementId("scroll-area", props);
 
-  return <ArkScrollArea.Root {...props} id={id} />;
+  return <ArkScrollArea.Root {...props} id={id} data-fade={fade} />;
 }
 
 type ScrollAreaFacadeProps = {
   orientation?: "vertical" | "horizontal" | "both";
+  /** Dissolve the viewport's edges — see Root's `fade`. */
+  fade?: ScrollAreaFade;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
@@ -25,12 +30,12 @@ type ScrollAreaFacadeProps = {
 /** The complete scroll vessel around caller content, with one or both quiet
  * lanes depending on orientation. */
 function ScrollAreaFacade(props: ScrollAreaFacadeProps) {
-  const { orientation = "vertical", className, style, children } = props;
+  const { orientation = "vertical", fade, className, style, children } = props;
   const orientations: Array<"vertical" | "horizontal"> =
     orientation === "both" ? ["vertical", "horizontal"] : [orientation];
 
   return (
-    <ScrollAreaRoot className={className} style={style}>
+    <ScrollAreaRoot fade={fade} className={className} style={style}>
       <ArkScrollArea.Viewport>
         <ArkScrollArea.Content>{children}</ArkScrollArea.Content>
       </ArkScrollArea.Viewport>

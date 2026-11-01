@@ -10,6 +10,7 @@ import { AiTool as Tool } from "../ai-tool";
 import AiConversation from "./Ai.svelte";
 import AiActions from "./AiActions.svelte";
 import AiContent from "./AiContent.svelte";
+import AiJumpToLatest from "./AiJumpToLatest.svelte";
 import AiLoader from "./AiLoader.svelte";
 import AiMediaSvelte from "./AiMedia.svelte";
 import AiPartsSvelte from "./AiParts.svelte";
@@ -18,6 +19,7 @@ import { toolPartDisplay, type AiMediaComponent, type AiPartsComponent } from ".
 export type {
   ActionProps,
   AiConversationProps,
+  AiJumpToLatestProps,
   AiPartProps,
   MessageProps,
   MessageRole,
@@ -93,7 +95,7 @@ export { toolPartDisplay };
  * work is never ours. Parts stay agnostic of any client; consumers map
  * their message format (e.g. the `UIMessage` parts re-exported below)
  * onto these primitives. */
-export { AiConversation, AiContent, AiActions, AiLoader };
+export { AiConversation, AiContent, AiActions, AiJumpToLatest, AiLoader };
 
 export const Ai = Object.assign(AiConversation, {
   Root: AiConversation,
@@ -109,6 +111,7 @@ export const Ai = Object.assign(AiConversation, {
   Action,
   Suggestion,
   PromptInput,
+  JumpToLatest: AiJumpToLatest,
   Loader: AiLoader,
   Media: AiMedia,
   Parts: AiParts,

@@ -7,7 +7,7 @@ const paragraph =
 </script>
 
 <template>
-  <ScrollArea class="h-30">
+  <ScrollArea class="h-30" fade="vertical">
     <p>{{ paragraph }}</p>
     <p>{{ paragraph }}</p>
     <p>{{ paragraph }}</p>

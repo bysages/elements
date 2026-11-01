@@ -1,5 +1,5 @@
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import type { HTMLAttributes, HTMLButtonAttributes } from "svelte/elements";
 
 export interface AiPartProps extends HTMLAttributes<HTMLElement> {
   children?: Snippet;
@@ -8,6 +8,13 @@ export interface AiPartProps extends HTMLAttributes<HTMLElement> {
 export interface AiConversationProps extends AiPartProps {
   /** Follow the stream's growth while the reader rests at the bottom. */
   autoScroll?: boolean;
+}
+
+export interface AiJumpToLatestProps extends HTMLButtonAttributes {
+  /** Bottom-edge distance beyond which the door surfaces. */
+  threshold?: number;
+  /** The reader returned to the live edge. */
+  onjump?: () => void;
 }
 
 export type { ActionProps } from "../ai-action/props";
