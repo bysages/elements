@@ -1,6 +1,7 @@
 import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
+import { createImageViewerGestures, type ImageViewerGestureController } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { Show, createEffect, createSignal, splitProps } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
@@ -13,8 +14,6 @@ import { useComponentMessages } from "../config-provider/use-component-messages"
 import { Dialog } from "../dialog";
 import { ImageViewerPreview } from "./preview";
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
 /** The toolbar's icons, drawn from the house icon set. */
@@ -62,8 +61,8 @@ function ImageViewerImpl(props: ImageViewerProps) {
   // an undefined `open` must not reach the machine, or it would
   // override the machine's own decisions.
   const [localOpen, setLocalOpen] = createSignal(false);
-  const [scale, setScale] = createSignal(1);
-  const [rotation, setRotation] = createSignal(0);
+  const [viewport, setViewport] = createSignal<HTMLImageElement | null>(null);
+  let gestures: ImageViewerGestureController | undefined;
 
   const isOpen = () => own.open ?? localOpen();
   const setOpen = (value: boolean) => {
@@ -71,22 +70,15 @@ function ImageViewerImpl(props: ImageViewerProps) {
     own.onOpenChange?.(value);
   };
 
-  // A fresh open starts at rest — the last session's zoom must not
-  // leak into the next look.
+  // Lazy mounting creates a new image each opening, so gesture state is
+  // owned by the currently mounted lightbox and starts at rest.
   createEffect(() => {
-    if (isOpen()) {
-      setScale(1);
-      setRotation(0);
-    }
+    gestures?.stop();
+    gestures = undefined;
+    const node = viewport();
+    if (node) gestures = createImageViewerGestures(node, { zoomable: own.zoomable ?? true });
   });
-
-  function zoom(step: number) {
-    setScale(Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale() + step)));
-  }
-
-  function rotate() {
-    setRotation((rotation() + 90) % 360);
-  }
+  onCleanup(() => gestures?.stop());
 
   function toolButton(label: string, icon: () => JSX.Element, onClick: () => void) {
     return (
@@ -134,21 +126,21 @@ function ImageViewerImpl(props: ImageViewerProps) {
               alt={own.alt ?? ""}
               width={own.width}
               height={own.height}
-              style={{
-                "--bs-image-viewer-transform": `scale(${scale()}) rotate(${rotation()}deg)`,
-              }}
+              ref={(element) => setViewport(element)}
             />
             <div data-scope="image-viewer" data-part="toolbar">
               <ButtonGroup>
                 <Show when={own.zoomable ?? true}>
                   {toolButton(messages().imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
-                    zoom(SCALE_STEP),
+                    gestures?.zoomBy(SCALE_STEP),
                   )}
                   {toolButton(messages().imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
-                    zoom(-SCALE_STEP),
+                    gestures?.zoomBy(-SCALE_STEP),
                   )}
                 </Show>
-                {toolButton(messages().imageViewer.rotate, TOOL_ICONS.rotate, rotate)}
+                {toolButton(messages().imageViewer.rotate, TOOL_ICONS.rotate, () =>
+                  gestures?.rotate(),
+                )}
                 <ArkDialog.CloseTrigger
                   asChild={(closeProps) => (
                     <Button

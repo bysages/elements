@@ -13,3 +13,4 @@ export * from "./conversation-scroll";
 export * from "./messages";
 export * from "./styles";
 export * from "./styling";
+export * from "./image-viewer-gestures";

@@ -1,8 +1,9 @@
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
+import { createImageViewerGestures, type ImageViewerGestureController } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
 import type { PropType } from "vue";
-import { defineComponent, h, ref, watch, type VNode } from "vue";
+import { defineComponent, h, onScopeDispose, ref, watch, type VNode } from "vue";
 
 import { defineFamily } from "../../internal/family";
 import { iconNode } from "../../internal/icon";
@@ -14,8 +15,6 @@ import { ButtonGroup } from "../button-group";
 import { Dialog } from "../dialog";
 import { ImageViewerPreview } from "./preview";
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
 /** The toolbar's glyphs, drawn from the house icon set. */
@@ -71,8 +70,8 @@ const ImageViewerFacade = defineComponent({
     // override the machine's own decisions.
     const hostId = useElementId("image-viewer", ctx.attrs);
     const localOpen = ref(false);
-    const scale = ref(1);
-    const rotation = ref(0);
+    const viewport = ref<HTMLImageElement | null>(null);
+    let gestures: ImageViewerGestureController | undefined;
 
     const isOpen = () => props.open ?? localOpen.value;
     const setOpen = (value: boolean) => {
@@ -80,22 +79,18 @@ const ImageViewerFacade = defineComponent({
       ctx.emit("update:open", value);
     };
 
-    // A fresh open starts at rest — the last session's zoom must not
-    // leak into the next look.
-    watch(isOpen, (open) => {
-      if (open) {
-        scale.value = 1;
-        rotation.value = 0;
-      }
-    });
-
-    function zoom(step: number) {
-      scale.value = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale.value + step));
-    }
-
-    function rotate() {
-      rotation.value = (rotation.value + 90) % 360;
-    }
+    // Gesture state belongs to the mounted lightbox image: lazy mounting
+    // naturally starts each opening at rest.
+    watch(
+      [viewport, () => props.zoomable],
+      ([node]) => {
+        gestures?.stop();
+        gestures = undefined;
+        if (node) gestures = createImageViewerGestures(node, { zoomable: props.zoomable });
+      },
+      { flush: "post" },
+    );
+    onScopeDispose(() => gestures?.stop());
 
     function toolIcon(icon: () => VNode) {
       return h(
@@ -192,11 +187,7 @@ const ImageViewerFacade = defineComponent({
                   alt: props.alt,
                   width: props.width,
                   height: props.height,
-                  style: [
-                    {
-                      "--bs-image-viewer-transform": `scale(${scale.value}) rotate(${rotation.value}deg)`,
-                    },
-                  ],
+                  ref: viewport,
                 }),
                 // The tray's children ride an array: an element's function
                 // children that return a single vnode are dropped by the
@@ -206,14 +197,16 @@ const ImageViewerFacade = defineComponent({
                     ...(props.zoomable
                       ? [
                           toolButton(messages.value.imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
-                            zoom(SCALE_STEP),
+                            gestures?.zoomBy(SCALE_STEP),
                           ),
                           toolButton(messages.value.imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
-                            zoom(-SCALE_STEP),
+                            gestures?.zoomBy(-SCALE_STEP),
                           ),
                         ]
                       : []),
-                    toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, rotate),
+                    toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, () =>
+                      gestures?.rotate(),
+                    ),
                     closeToolButton(messages.value.imageViewer.close, TOOL_ICONS.close),
                   ]),
                 ]),

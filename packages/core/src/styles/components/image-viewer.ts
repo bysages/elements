@@ -118,6 +118,8 @@ export const imageViewerCss = /* css */ `
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-on-scrim);
   background: color-mix(in oklab, var(--bs-color-scrim) 38%, transparent);
+  /* The glyph is decoration: the wrapped trigger keeps ownership of every pointer. */
+  pointer-events: none;
   opacity: 0;
   transition: opacity var(--bs-duration-base) var(--bs-ease-out);
 }
@@ -151,9 +153,23 @@ export const imageViewerCss = /* css */ `
   min-inline-size: 0;
   inline-size: 100%;
   object-fit: contain;
+  /* The viewer owns every gesture over its own image only: a two-finger
+     move here must pinch the picture, not scroll the host page. */
+  touch-action: none;
   user-select: none;
   transform: var(--bs-image-viewer-transform, none);
   transition: transform var(--bs-duration-base) var(--bs-ease-out);
+}
+
+[data-scope="image-viewer"][data-part="viewport"][data-zoomable="true"] {
+  cursor: grab;
+}
+
+/* Finger and pointer travel must follow the hand exactly; the button
+   controls keep their quiet transition. */
+[data-scope="image-viewer"][data-part="viewport"][data-panning="true"] {
+  cursor: grabbing;
+  transition: none;
 }
 
 [data-scope="image-viewer"][data-part="toolbar"] {

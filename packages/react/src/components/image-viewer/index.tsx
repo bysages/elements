@@ -1,8 +1,9 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
+import { createImageViewerGestures, type ImageViewerGestureController } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { CSSProperties, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
@@ -12,8 +13,6 @@ import { ButtonGroup } from "../button-group";
 import { Dialog } from "../dialog";
 import { ImageViewerPreview } from "./preview";
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
 const TOOL_ICONS = {
@@ -62,8 +61,8 @@ function ImageViewerImpl({
   // an undefined `open` must not reach the machine, or it would
   // override the machine's own decisions.
   const [localOpen, setLocalOpen] = useState(false);
-  const [scale, setScale] = useState(1);
-  const [rotation, setRotation] = useState(0);
+  const viewportRef = useRef<HTMLImageElement | null>(null);
+  const gesturesRef = useRef<ImageViewerGestureController | null>(null);
 
   const isOpen = open ?? localOpen;
   const setOpen = (value: boolean) => {
@@ -71,22 +70,19 @@ function ImageViewerImpl({
     onOpenChange?.(value);
   };
 
-  // A fresh open starts at rest — the last session's zoom must not
-  // leak into the next look.
+  // The lightbox is lazy, so bind gestures every time its image enters
+  // the tree; leaving the tree resets the next opening to rest.
   useEffect(() => {
-    if (isOpen) {
-      setScale(1);
-      setRotation(0);
-    }
-  }, [isOpen]);
+    const node = viewportRef.current;
+    if (!node) return;
 
-  function zoom(step: number) {
-    setScale((current) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, current + step)));
-  }
-
-  function rotate() {
-    setRotation((current) => (current + 90) % 360);
-  }
+    const gestures = createImageViewerGestures(node, { zoomable });
+    gesturesRef.current = gestures;
+    return () => {
+      gesturesRef.current = null;
+      gestures.stop();
+    };
+  }, [isOpen, zoomable]);
 
   function toolButton(label: string, icon: string, onClick: () => void) {
     return (
@@ -144,25 +140,23 @@ function ImageViewerImpl({
               alt={alt}
               width={width}
               height={height}
-              style={
-                {
-                  "--bs-image-viewer-transform": `scale(${scale}) rotate(${rotation}deg)`,
-                } as CSSProperties
-              }
+              ref={viewportRef}
             />
             <div data-scope="image-viewer" data-part="toolbar">
               <ButtonGroup>
                 {zoomable
                   ? [
                       toolButton(messages.imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
-                        zoom(SCALE_STEP),
+                        gesturesRef.current?.zoomBy(SCALE_STEP),
                       ),
                       toolButton(messages.imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
-                        zoom(-SCALE_STEP),
+                        gesturesRef.current?.zoomBy(-SCALE_STEP),
                       ),
                     ]
                   : null}
-                {toolButton(messages.imageViewer.rotate, TOOL_ICONS.rotate, rotate)}
+                {toolButton(messages.imageViewer.rotate, TOOL_ICONS.rotate, () =>
+                  gesturesRef.current?.rotate(),
+                )}
                 {closeToolButton(messages.imageViewer.close, TOOL_ICONS.close)}
               </ButtonGroup>
             </div>

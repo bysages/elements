@@ -1,4 +1,5 @@
 <script lang="ts">
+import { createImageViewerGestures, type ImageViewerGestureController } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("image-viewer");
 
@@ -13,8 +14,6 @@ import { useComponentMessages } from "../config-provider/messages";
 import ImagePreview from "./ImagePreview.svelte";
 import type { ImageViewerProps } from "./props";
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
 const SCALE_STEP = 0.25;
 
 let {
@@ -30,29 +29,28 @@ let {
 
 const messages = useComponentMessages();
 
-let scale = $state(1);
-let rotation = $state(0);
+let viewport: HTMLImageElement | null = $state(null);
+let gestures: ImageViewerGestureController | null = null;
 
 function setOpen(value: boolean) {
   open = value;
   onOpenChange?.(value);
 }
 
-// A fresh open starts at rest — the last session's zoom must not
-// leak into the next look.
+// Lazy mounting creates a new image each opening, so the mounted node
+// owns the gesture state and starts at rest.
 $effect(() => {
-  if (open) {
-    scale = 1;
-    rotation = 0;
-  }
+  gestures?.stop();
+  gestures = null;
+  if (viewport) gestures = createImageViewerGestures(viewport, { zoomable });
 });
 
 function zoom(step: number) {
-  scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + step));
+  gestures?.zoomBy(step);
 }
 
 function turn() {
-  rotation = (rotation + 90) % 360;
+  gestures?.rotate();
 }
 </script>
 
@@ -102,7 +100,7 @@ the viewer. -->
           {alt}
           {width}
           {height}
-          style:--bs-image-viewer-transform={`scale(${scale}) rotate(${rotation}deg)`}
+          bind:this={viewport}
         />
         <div data-scope="image-viewer" data-part="toolbar">
           <ButtonGroup>
