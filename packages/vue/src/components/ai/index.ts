@@ -1,6 +1,7 @@
+import { createConversationFollower } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h, onScopeDispose, ref, watch } from "vue";
+import { defineComponent, h, onMounted, onScopeDispose, ref, watch } from "vue";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
 import { useComponentMessages } from "../../internal/messages";
@@ -114,41 +115,20 @@ export const AiConversation = defineComponent({
     const { "aria-label": consumerLabel, ...rootAttrs } = ctx.attrs;
 
     const el = ref<HTMLElement | null>(null);
-    let observer: MutationObserver | undefined;
-    // The follow decision reads the pre-growth position: a scroll event
-    // can only come from the reader (or our own follow), so the flag is
-    // always settled before the next stream stroke lands.
-    let pinned = true;
+    let stopFollowing: (() => void) | undefined;
 
-    const handleScroll = () => {
-      const node = el.value;
-      if (!node) return;
-      pinned = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
-    };
-    const stopFollowing = (node: HTMLElement | null = el.value) => {
-      node?.removeEventListener("scroll", handleScroll);
-      observer?.disconnect();
-      observer = undefined;
-    };
-    const startFollowing = (node: HTMLElement) => {
-      if (!props.autoScroll) return;
-      node.addEventListener("scroll", handleScroll, { passive: true });
-      observer = new MutationObserver(() => {
-        if (pinned) node.scrollTop = node.scrollHeight;
-      });
-      observer.observe(node, { childList: true, subtree: true, characterData: true });
-    };
-
+    onMounted(() => {
+      if (el.value && props.autoScroll) stopFollowing = createConversationFollower(el.value);
+    });
     watch(
-      [el, () => props.autoScroll],
-      ([node], previous) => {
-        stopFollowing(previous?.[0] ?? null);
-        if (!node) return;
-        startFollowing(node);
+      () => props.autoScroll,
+      (enabled) => {
+        stopFollowing?.();
+        stopFollowing = undefined;
+        if (enabled && el.value) stopFollowing = createConversationFollower(el.value);
       },
-      { immediate: true },
     );
-    onScopeDispose(stopFollowing);
+    onScopeDispose(() => stopFollowing?.());
 
     return () =>
       h(

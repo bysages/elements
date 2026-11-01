@@ -1,3 +1,4 @@
+import { createConversationFollower } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { useEffect, useRef, type HTMLAttributes } from "react";
 
@@ -94,25 +95,11 @@ export function AiConversation({
 }: HTMLAttributes<HTMLElement> & { autoScroll?: boolean }) {
   const messages = useComponentMessages();
   const ref = useRef<HTMLDivElement | null>(null);
-  const pinned = useRef(true);
 
   useEffect(() => {
     const node = ref.current;
     if (!node || !autoScroll) return;
-
-    const handleScroll = () => {
-      pinned.current = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
-    };
-    const observer = new MutationObserver(() => {
-      if (pinned.current) node.scrollTop = node.scrollHeight;
-    });
-
-    node.addEventListener("scroll", handleScroll, { passive: true });
-    observer.observe(node, { childList: true, subtree: true, characterData: true });
-    return () => {
-      node.removeEventListener("scroll", handleScroll);
-      observer.disconnect();
-    };
+    return createConversationFollower(node);
   }, [autoScroll]);
 
   return (

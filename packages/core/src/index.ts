@@ -9,6 +9,7 @@
 export * from "./theme";
 export * from "./lighting";
 export * from "./ink-ripple";
+export * from "./conversation-scroll";
 export * from "./messages";
 export * from "./styles";
 export * from "./styling";

@@ -1,5 +1,5 @@
 import { flushSync, mount, unmount } from "svelte";
-import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { AiConversation } from "./index";
 
@@ -90,7 +90,8 @@ describe("AiConversation auto scroll", () => {
     void unmount(component);
   });
 
-  it("resumes when the reader returns to the bottom edge", () => {
+  it("resumes after the cooldown when the reader returns to the bottom edge", async () => {
+    vi.useFakeTimers();
     const { component, root } = mountConversation();
     let height = 200;
     const scrollTop = installLayout(root, () => height);
@@ -103,9 +104,11 @@ describe("AiConversation auto scroll", () => {
     expect(scrollTop()).toBe(80);
 
     scroll(root, 320);
+    await vi.advanceTimersByTimeAsync(160);
     height = 500;
     streamGrows();
     expect(scrollTop()).toBe(500);
+    vi.useRealTimers();
     void unmount(component);
   });
 

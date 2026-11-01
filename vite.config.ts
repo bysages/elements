@@ -5,6 +5,7 @@ export default defineConfig({
     // Scope tests to the workspace packages.
     include: ["packages/**/*.{spec,test}.{ts,tsx}"],
     projects: [
+      "packages/core/vitest.config.ts",
       "packages/vue/vitest.config.ts",
       "packages/react/vitest.config.ts",
       "packages/solid/vitest.config.ts",

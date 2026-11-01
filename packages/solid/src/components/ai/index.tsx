@@ -1,4 +1,5 @@
 import type { ComponentMessages } from "@bysages/core";
+import { createConversationFollower } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { createEffect, on, onCleanup, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
@@ -97,31 +98,19 @@ export const AiConversation = function AiConversation(
   const [own, rest] = splitProps(props, ["autoScroll"]);
   const messages = useComponentMessages();
   let node: HTMLDivElement | undefined;
-  let observer: MutationObserver | undefined;
-  let pinned = true;
+  let stopFollowing: (() => void) | undefined;
 
   createEffect(
     on(
       () => own.autoScroll !== false,
       (enabled) => {
-        const current = node;
-        if (!current || !enabled) return;
-        const handleScroll = () => {
-          pinned = current.scrollHeight - current.scrollTop - current.clientHeight < 96;
-        };
-        observer = new MutationObserver(() => {
-          if (pinned) current.scrollTop = current.scrollHeight;
-        });
-        current.addEventListener("scroll", handleScroll, { passive: true });
-        observer.observe(current, { childList: true, subtree: true, characterData: true });
-        onCleanup(() => {
-          node?.removeEventListener("scroll", handleScroll);
-          observer?.disconnect();
-          observer = undefined;
-        });
+        stopFollowing?.();
+        stopFollowing = undefined;
+        if (node && enabled) stopFollowing = createConversationFollower(node);
       },
     ),
   );
+  onCleanup(() => stopFollowing?.());
 
   return (
     <div

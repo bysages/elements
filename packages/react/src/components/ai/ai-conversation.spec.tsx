@@ -74,12 +74,13 @@ describe("AiConversation autoScroll", () => {
     expect(positions.at(-1)).toBe(50);
   });
 
-  it("resumes after the reader returns to the bottom", async () => {
+  it("resumes after the cooldown following the return to the bottom", async () => {
     const { node, positions } = mountConversation();
     node.scrollTop = 50;
     node.dispatchEvent(new Event("scroll"));
     node.scrollTop = 201;
     node.dispatchEvent(new Event("scroll"));
+    await new Promise((resolve) => setTimeout(resolve, 160));
     await grow();
 
     expect(positions.at(-1)).toBe(300);
