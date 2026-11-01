@@ -1,20 +1,13 @@
 <script setup lang="ts">
-const { t } = useDocsI18n();
 import { NavigationMenu } from "@bysages/vue";
-import { computed, inject, ref, type Ref } from "vue";
+import { computed } from "vue";
 
-interface NavItem {
-  title: string;
-  path?: string;
-  children?: NavItem[];
-}
+const { t } = useDocsI18n();
 
 /** Docus's sidebar: the whole tree, or — when the sections live in the
  * header — only the active section's children. The reference shelf is a
  * top-level group of the same tree, so it needs no second channel. */
-const { sidebarNavigation } = useSubNavigation();
-
-const navigation = inject<Ref<NavItem[]>>("navigation", ref([]));
+const { sidebarNavigation, fullNavigation } = useSubNavigation();
 
 const props = defineProps<{
   /** Render the whole tree regardless of the sub-navigation mode — the
@@ -23,9 +16,7 @@ const props = defineProps<{
   full?: boolean;
 }>();
 
-const rows = computed<NavItem[]>(() =>
-  props.full ? (navigation.value ?? []) : sidebarNavigation.value,
-);
+const rows = computed(() => (props.full ? fullNavigation.value : sidebarNavigation.value));
 
 const { Root, List } = NavigationMenu;
 </script>

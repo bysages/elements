@@ -138,5 +138,14 @@ export function useSubNavigation(provided?: Ref<NavItem[] | null | undefined>) {
     return groupSections(navigation?.value ?? []);
   });
 
-  return { subNavigationMode, sections, currentSection, sidebarNavigation };
+  // The full tree keeps its top-level shelves, then applies the same
+  // section grouping inside each one — the mobile drawer needs the whole
+  // route space without collapsing its category rhythm.
+  const fullNavigation = computed(() =>
+    (navigation?.value ?? []).map((shelf) =>
+      shelf.children?.length ? { ...shelf, children: groupSections(shelf.children) } : shelf,
+    ),
+  );
+
+  return { subNavigationMode, sections, currentSection, sidebarNavigation, fullNavigation };
 }

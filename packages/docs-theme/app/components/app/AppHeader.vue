@@ -93,16 +93,18 @@ const searchOpen = useDocsSearch();
           <Title>{{ t("docs.menu") }}</Title>
           <!-- The shelf row keeps the top-level destinations one tap away,
                even while the drawer's document tree shows every branch. -->
-          <nav class="bs-docs-header-drawer-sections" :aria-label="t('docs.sections')">
-            <p class="w-full text-sm font-medium text-tertiary">{{ t("docs.sections") }}</p>
-            <NuxtLink
-              v-for="row in sections"
-              :key="row.to"
-              :to="row.to"
-              :aria-current="row.active ? 'page' : undefined"
-            >
-              {{ row.label }}
-            </NuxtLink>
+          <nav class="grid gap-2" :aria-label="t('docs.sections')">
+            <p class="text-sm font-medium text-tertiary">{{ t("docs.sections") }}</p>
+            <div class="bs-docs-header-drawer-sections">
+              <NuxtLink
+                v-for="row in sections"
+                :key="row.to"
+                :to="row.to"
+                :aria-current="row.active ? 'page' : undefined"
+              >
+                {{ row.label }}
+              </NuxtLink>
+            </div>
           </nav>
 
           <!-- Auxiliary header controls live here on phones: the bar keeps
