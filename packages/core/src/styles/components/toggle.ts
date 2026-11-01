@@ -13,7 +13,7 @@ export const toggleCss = /* css */ `
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-secondary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   font-weight: var(--bs-font-weight-medium);
   user-select: none;
   cursor: pointer;

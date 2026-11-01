@@ -55,7 +55,7 @@ export const commandCss =
   background: transparent;
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
 }
 
 [data-scope="command"][data-part="input"]::placeholder {

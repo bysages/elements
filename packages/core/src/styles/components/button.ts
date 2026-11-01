@@ -23,7 +23,7 @@ ${selector} {
   background: var(--_fill);
   color: var(--_ink);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   font-weight: var(--bs-font-weight-medium);
   letter-spacing: var(--bs-tracking-label);
   white-space: nowrap;

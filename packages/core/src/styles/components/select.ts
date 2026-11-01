@@ -88,7 +88,7 @@ export const selectCss =
   background: transparent;
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   text-align: start;
   cursor: pointer;
 }
@@ -125,14 +125,15 @@ export const selectCss =
   border: none;
   background: transparent;
   color: var(--bs-color-text-tertiary);
+  font-size: var(--bs-control-font-size);
   cursor: pointer;
   transition: color var(--bs-duration-fast) var(--bs-ease-out);
 }
 
 [data-scope="select"][data-part="indicator"] svg,
 [data-scope="select"][data-part="clear-trigger"] svg {
-  inline-size: var(--bs-font-size-md);
-  block-size: var(--bs-font-size-md);
+  inline-size: var(--bs-control-font-size);
+  block-size: var(--bs-control-font-size);
 }
 
 [data-scope="select"][data-part="indicator"]:hover,
@@ -245,7 +246,7 @@ export const selectCss =
   padding-inline: var(--bs-padding-md);
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   text-overflow: ellipsis;
   cursor: pointer;
 }
@@ -272,8 +273,8 @@ export const selectCss =
 
 [data-scope="select"][data-part="native-icon"] {
   flex: none;
-  inline-size: var(--bs-font-size-md);
-  block-size: var(--bs-font-size-md);
+  inline-size: var(--bs-control-font-size);
+  block-size: var(--bs-control-font-size);
   margin-inline-end: var(--bs-padding-md);
   color: var(--bs-color-text-tertiary);
   pointer-events: none;

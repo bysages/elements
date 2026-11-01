@@ -533,7 +533,7 @@ export const aiCss = /* css */ `
   min-block-size: var(--bs-control-height-sm);
   max-block-size: calc(var(--bs-space-16) * 2);
   padding-block: calc(
-    (var(--bs-control-height-sm) - var(--bs-font-size-md) * var(--bs-line-height-relaxed)) / 2
+    (var(--bs-control-height-sm) - var(--bs-control-font-size) * var(--bs-line-height-relaxed)) / 2
   );
   padding-inline: 0;
   border: none;
@@ -542,7 +542,7 @@ export const aiCss = /* css */ `
   box-shadow: none;
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   line-height: var(--bs-line-height-relaxed);
   resize: none;
 }
@@ -557,11 +557,11 @@ export const aiCss = /* css */ `
   max-block-size: calc(var(--bs-space-16) * 2);
   overflow-block: auto;
   padding-block: calc(
-    (var(--bs-control-height-sm) - var(--bs-font-size-md) * var(--bs-line-height-relaxed)) / 2
+    (var(--bs-control-height-sm) - var(--bs-control-font-size) * var(--bs-line-height-relaxed)) / 2
   );
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   line-height: var(--bs-line-height-relaxed);
   white-space: pre-wrap;
   overflow-wrap: anywhere;

@@ -228,7 +228,7 @@ export function closeTriggerCss(
   border-radius: 0;
   color: inherit;
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   text-align: center;
 }
 [data-scope="${scope}"][data-part="close-trigger"][data-variant="action"]:hover {

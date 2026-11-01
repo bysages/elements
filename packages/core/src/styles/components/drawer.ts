@@ -177,7 +177,7 @@ export const drawerCss =
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   font-weight: var(--bs-font-weight-medium);
   letter-spacing: var(--bs-tracking-label);
   cursor: pointer;

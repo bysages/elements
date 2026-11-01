@@ -48,7 +48,7 @@ export const editableCss =
   border: var(--bs-hairline) solid transparent;
   border-radius: var(--bs-radius-sm);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   /* The row-height centers the preview's text exactly where the browser
      centers an input's — switching modes never nudges the letters. It
      must come after the font shorthand, which resets line-height. */

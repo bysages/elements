@@ -29,7 +29,7 @@ export const cascadeSelectCss =
   box-shadow: var(--bs-shadow-xs);
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   text-align: start;
   cursor: pointer;
   transition:

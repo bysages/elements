@@ -29,6 +29,11 @@
   --bs-part-size-md: calc(1.25rem * var(--bs-density-scale));
   --bs-part-size-lg: calc(1.75rem * var(--bs-density-scale));
 
+  /* Standard controls read at their height's own type rung. The md field
+     keeps its scene voice at rest, but compact swaps it for sm: a 28px row
+     must hold a 17px CJK line without making its hover wash touch the ink. */
+  --bs-control-font-size: var(--bs-font-size-md);
+
   /* Density-scaled whitespace. */
   --bs-padding-xs: calc(var(--bs-space-1) * var(--bs-density-scale));
   --bs-padding-sm: calc(var(--bs-space-2) * var(--bs-density-scale));
@@ -63,6 +68,7 @@
   --bs-control-height-sm: 1.75rem;
   --bs-control-height-md: 2rem;
   --bs-control-height-lg: 2.5rem;
+  --bs-control-font-size: var(--bs-font-size-md);
 }
 
 [data-density="compact"],
@@ -71,6 +77,7 @@
   --bs-control-height-sm: 1.5rem;
   --bs-control-height-md: 1.75rem;
   --bs-control-height-lg: 2rem;
+  --bs-control-font-size: var(--bs-font-size-sm);
 }
 
 [data-density="comfortable"],

@@ -379,10 +379,12 @@ body {
   inline-size: 100%;
 }
 
-/* Navigation is chrome, not prose: both rails read at the small step so
-   the archive mono voice keeps its technical-index density. */
-[data-scene="archive"] .bs-docs-sidebar [data-scope="navigation-menu"] [data-part="link"],
-[data-scene="archive"] .bs-docs-header-bottom .bs-docs-header-nav [data-part="link"] {
+/* Navigation is chrome, not prose: every rail reads at the small step.
+   This matters most in compact text-forward scenes — missive and dispatch
+   enlarge body copy, so an md row on a compact 28px rail leaves almost
+   no breathing room inside its hover wash. */
+.bs-docs-nav [data-scope="navigation-menu"] [data-part="link"],
+.bs-docs-header-bottom .bs-docs-header-nav [data-part="link"] {
   font-size: var(--bs-font-size-sm);
 }
 

@@ -49,7 +49,7 @@ export const datePickerCss =
   background: var(--bs-color-surface-2);
   color: var(--bs-color-text-primary);
   font: inherit;
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   transition: border-color var(--bs-duration-fast) var(--bs-ease-out);
 }
 ` +

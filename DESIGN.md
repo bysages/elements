@@ -129,7 +129,9 @@ Two tracks:
 Both stacks fall through into CJK platform faces, so 中西混排 keeps one rhythm.
 Sizes are fixed rem steps (`--bs-font-size-xs` 0.75rem … `--bs-font-size-4xl`
 2.25rem) outside the density scale — compact UI may choose `sm`, never below
-it. Line height comes in four steps. Weights: Regular 400, Medium 500,
+it. Standard controls consume `--bs-control-font-size`: an md control keeps
+its scene voice at rest and reads `sm` when compact halves its breathing room.
+Line height comes in four steps. Weights: Regular 400, Medium 500,
 Semibold 600, Bold 700 — no thin or light weights at small sizes.
 
 Control labels carry `--bs-tracking-label` (0.02em): upright and unhurried is

@@ -73,7 +73,7 @@ export const segmentGroupCss =
      the selects and pickers beside it. */
   border-radius: var(--bs-radius-control, var(--bs-radius-sm));
   color: var(--bs-color-text-secondary);
-  font-size: var(--bs-font-size-md);
+  font-size: var(--bs-control-font-size);
   font-weight: var(--bs-font-weight-medium);
   user-select: none;
   cursor: pointer;

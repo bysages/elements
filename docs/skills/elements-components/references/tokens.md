@@ -67,11 +67,12 @@ remain, animation does not.
 
 ## Typography
 
-| Token                                                       | Role                                    |
-| ----------------------------------------------------------- | --------------------------------------- |
-| `--bs-font-serif`                                           | Headings — the song-serif stack.        |
-| `--bs-font-sans`                                            | UI chrome — the hei stack.              |
-| `--bs-font-mono`                                            | Code.                                   |
-| `--bs-font-size-xs` … `-3xl` / `--bs-font-size-base`        | Type scale.                             |
-| `--bs-line-height-tight` / `-snug` / `-normal` / `-relaxed` | Reading rhythm.                         |
-| `--bs-tracking-label`                                       | 0.02em CJK tracking for control labels. |
+| Token                                                       | Role                                      |
+| ----------------------------------------------------------- | ----------------------------------------- |
+| `--bs-font-serif`                                           | Headings — the song-serif stack.          |
+| `--bs-font-sans`                                            | UI chrome — the hei stack.                |
+| `--bs-font-mono`                                            | Code.                                     |
+| `--bs-font-size-xs` … `-3xl` / `--bs-font-size-base`        | Type scale.                               |
+| `--bs-control-font-size`                                    | Standard md controls; compact reads `sm`. |
+| `--bs-line-height-tight` / `-snug` / `-normal` / `-relaxed` | Reading rhythm.                           |
+| `--bs-tracking-label`                                       | 0.02em CJK tracking for control labels.   |
