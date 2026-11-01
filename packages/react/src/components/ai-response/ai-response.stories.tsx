@@ -18,6 +18,7 @@ export const Basic = {
           "1. Ground in ambient shade\n" +
           "2. Ink carries hierarchy\n" +
           "3. Pigment only where it means\n\n" +
+          "```mermaid\nflowchart LR\n  Ground[Ambient shade] --> Ink[Ink hierarchy]\n  Ink --> Light[Elevation as light]\n```\n\n" +
           "```css\n.token { color: var(--bs-color-text-primary); }\n```\n\n" +
           "> 方寸为章，器物为圆 — controls are seal-cut; vessels stay round.\n\n" +
           "Read the full spec in [DESIGN.md](https://example.com/design)."

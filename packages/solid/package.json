@@ -54,7 +54,6 @@
   "dependencies": {
     "@ark-ui/solid": "5.39.3",
     "@bysages/core": "workspace:*",
-    "@tanstack/markdown": "1.0.0",
     "@tanstack/solid-form": "1.33.5",
     "@tanstack/solid-table": "9.2.8",
     "@tanstack/solid-virtual": "3.13.41",

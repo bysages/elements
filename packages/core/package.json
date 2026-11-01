@@ -44,6 +44,10 @@
     "./styling": {
       "types": "./dist/styling.d.mts",
       "import": "./dist/styling.mjs"
+    },
+    "./markdown": {
+      "types": "./dist/markdown/index.d.mts",
+      "import": "./dist/markdown/index.mjs"
     }
   },
   "scripts": {
@@ -54,6 +58,8 @@
   },
   "dependencies": {
     "@bysages/icons": "workspace:*",
-    "@bysages/tokens": "workspace:*"
+    "@bysages/tokens": "workspace:*",
+    "@tanstack/markdown": "1.0.0",
+    "pele": "1.13.0"
   }
 }

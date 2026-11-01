@@ -61,6 +61,7 @@ import { layoutCss } from "./layout";
 import { linkCss } from "./link";
 import { listCss } from "./list";
 import { listboxCss } from "./listbox";
+import { markdownCss } from "./markdown";
 import { marqueeCss } from "./marquee";
 import { masonryCss } from "./masonry";
 import { mediaPlayerCss } from "./media-player";
@@ -174,6 +175,7 @@ export const componentStyles: Record<string, string> = {
   kbd: kbdCss,
   link: linkCss,
   listbox: listboxCss,
+  markdown: markdownCss,
   marquee: marqueeCss,
   "media-player": mediaPlayerCss,
   menu: menuCss,

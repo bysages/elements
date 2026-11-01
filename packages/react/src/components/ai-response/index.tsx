@@ -1,5 +1,5 @@
+import { renderMarkdown } from "@bysages/core/markdown";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { renderHtml } from "@tanstack/markdown/html";
 import type { HTMLAttributes, MouseEvent } from "react";
 import { useEffect, useRef } from "react";
 
@@ -9,7 +9,7 @@ import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
 import { wrapResponseTables } from "./tables";
 
 /** Markdown set on the paper. Rendering goes through
- * `@tanstack/markdown`, whose defaults leave raw HTML and executable
+ * `@bysages/core/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. An optional
  * highlighter re-inks fenced code; the component stays agnostic about
  * which engine provides it. */
@@ -30,6 +30,7 @@ export interface ResponseProps extends HTMLAttributes<HTMLDivElement> {
 
 function ResponseImpl({ content, highlighter, copyLabel, copiedLabel, ...rest }: ResponseProps) {
   injectComponentStyle("ai");
+  injectComponentStyle("markdown");
   const messages = useComponentMessages();
   const resolvedCopyLabel = copyLabel ?? messages.ai.copyCode;
   const resolvedCopiedLabel = copiedLabel ?? messages.ai.copied;
@@ -56,7 +57,7 @@ function ResponseImpl({ content, highlighter, copyLabel, copiedLabel, ...rest }:
       data-part="response"
       onClick={onClick}
       dangerouslySetInnerHTML={{
-        __html: renderHtml(content, highlighter ? { highlighter } : undefined),
+        __html: renderMarkdown(content, highlighter ? { highlighter } : undefined),
       }}
     />
   );

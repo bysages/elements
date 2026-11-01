@@ -1,5 +1,5 @@
+import { renderMarkdown } from "@bysages/core/markdown";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { renderHtml } from "@tanstack/markdown/html";
 import { createEffect, createMemo, onMount, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
@@ -22,14 +22,15 @@ export interface ResponseProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Markdown set on the paper. Rendering goes through
- * `@tanstack/markdown`, whose defaults leave raw HTML and executable
+ * `@bysages/core/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. */
 export const Response = withSelfRoot(function Response(props: ResponseProps) {
   injectComponentStyle("ai");
+  injectComponentStyle("markdown");
   const [own, rest] = splitProps(props, ["content", "highlighter", "copyLabel", "copiedLabel"]);
   const messages = useComponentMessages();
   const html = createMemo(() =>
-    renderHtml(own.content, own.highlighter ? { highlighter: own.highlighter } : undefined),
+    renderMarkdown(own.content, own.highlighter ? { highlighter: own.highlighter } : undefined),
   );
   let root: HTMLDivElement | undefined;
 

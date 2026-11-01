@@ -53,7 +53,6 @@
   "dependencies": {
     "@ark-ui/svelte": "5.24.3",
     "@bysages/core": "workspace:*",
-    "@tanstack/markdown": "1.0.0",
     "@tanstack/svelte-form": "1.33.5",
     "@tanstack/svelte-table": "9.2.8",
     "@tanstack/svelte-virtual": "3.13.40",

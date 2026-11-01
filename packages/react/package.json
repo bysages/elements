@@ -55,7 +55,6 @@
   "dependencies": {
     "@ark-ui/react": "5.39.3",
     "@bysages/core": "workspace:*",
-    "@tanstack/markdown": "1.0.0",
     "@tanstack/react-form": "1.33.5",
     "@tanstack/react-table": "9.2.8",
     "@tanstack/react-virtual": "3.14.14",

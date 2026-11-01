@@ -53,6 +53,7 @@ const styleLoaders = {
   kbd: () => import("./styles/components/kbd").then((m) => m.kbdCss),
   link: () => import("./styles/components/link").then((m) => m.linkCss),
   listbox: () => import("./styles/components/listbox").then((m) => m.listboxCss),
+  markdown: () => import("./styles/components/markdown").then((m) => m.markdownCss),
   marquee: () => import("./styles/components/marquee").then((m) => m.marqueeCss),
   "media-player": () => import("./styles/components/media-player").then((m) => m.mediaPlayerCss),
   menu: () => import("./styles/components/menu").then((m) => m.menuCss),

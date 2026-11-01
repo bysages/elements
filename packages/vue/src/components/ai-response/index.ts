@@ -1,5 +1,5 @@
+import { renderMarkdown } from "@bysages/core/markdown";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { renderHtml } from "@tanstack/markdown/html";
 import type { PropType } from "vue";
 import { computed, defineComponent, h, ref, watchPostEffect } from "vue";
 
@@ -50,7 +50,7 @@ function wrapResponseTables(root: HTMLElement): void {
 }
 
 /** Markdown set on the paper. Rendering goes through
- * `@tanstack/markdown`, whose defaults leave raw HTML and executable
+ * `@bysages/core/markdown`, whose defaults leave raw HTML and executable
  * links inert — streaming-safe by construction. An optional
  * highlighter re-inks fenced code; the component stays agnostic about
  * which engine provides it. */
@@ -74,12 +74,13 @@ export const Response = withSelfRoot(
     },
     setup(props) {
       injectComponentStyle("ai");
+      injectComponentStyle("markdown");
       const messages = useComponentMessages();
       const copyLabel = computed(() => props.copyLabel ?? messages.value.ai.copyCode);
       const copiedLabel = computed(() => props.copiedLabel ?? messages.value.ai.copied);
 
       const html = computed(() =>
-        renderHtml(
+        renderMarkdown(
           props.content,
           props.highlighter ? { highlighter: props.highlighter } : undefined,
         ),

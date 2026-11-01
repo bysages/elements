@@ -11,7 +11,14 @@ Interfaces are warm paper; content is ink. A `hairline` divides, light elevates,
 
 1. Ground in ambient shade
 2. Ink carries hierarchy
-3. Pigment only where it means"
+3. Pigment only where it means
+
+```mermaid
+flowchart LR
+  Ground[Ambient shade] --> Ink[Ink hierarchy]
+  Ink --> Light[Elevation as light]
+```
+"
     />
   </div>
 </template>

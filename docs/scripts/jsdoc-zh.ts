@@ -192,11 +192,11 @@ export const jsdocZh: Record<string, FamilyZh> = {
   },
   "ai-response": {
     description:
-      "AI Markdown 渲染：内容渲染通过 `@tanstack/markdown` 完成；默认配置让原始 HTML 和可执行链接保持不可执行，因此在结构上就是流式安全的。可选高亮器会重新着色围栏代码块，组件不关心由哪个引擎提供。",
+      "AI Markdown 渲染：内容渲染通过 `@bysages/core/markdown` 完成；默认配置让原始 HTML 和可执行链接保持不可执行，围栏 Mermaid 会渲染为主题化图表，渲染失败时回退为普通代码块。可选高亮器会重新着色围栏代码块，组件不关心由哪个引擎提供。",
     parts: {
       AiResponse: {
         description:
-          "AI Markdown 渲染：内容渲染通过 `@tanstack/markdown` 完成；默认配置让原始 HTML 和可执行链接保持不可执行，因此在结构上就是流式安全的。可选高亮器会重新着色围栏代码块，组件不关心由哪个引擎提供。",
+          "AI Markdown 渲染：内容渲染通过 `@bysages/core/markdown` 完成；默认配置让原始 HTML 和可执行链接保持不可执行，围栏 Mermaid 会渲染为主题化图表，渲染失败时回退为普通代码块。可选高亮器会重新着色围栏代码块，组件不关心由哪个引擎提供。",
         props: {
           content: "显示在内容区的 markdown 文本，可自由流式传入；原始 HTML 和可执行链接不会生效",
           highlighter: "可选的代码高亮函数，用于重绘围栏代码块；组件不关心高亮引擎",

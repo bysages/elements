@@ -1,8 +1,9 @@
 <script lang="ts">
 import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("ai");
+injectComponentStyle("markdown");
 
-import { renderHtml } from "@tanstack/markdown/html";
+import { renderMarkdown } from "@bysages/core/markdown";
 
 import { useComponentMessages } from "../config-provider/messages";
 import { clickCodeCopy, decorateCodeCopy } from "./code-copy";
@@ -20,7 +21,7 @@ let {
 }: ResponseProps = $props();
 
 const messages = useComponentMessages();
-const html = $derived(renderHtml(content, highlighter ? { highlighter } : undefined));
+const html = $derived(renderMarkdown(content, highlighter ? { highlighter } : undefined));
 const copyText = $derived(copyLabel ?? messages().ai.copyCode);
 const copiedText = $derived(copiedLabel ?? messages().ai.copied);
 
@@ -43,7 +44,7 @@ const handleClick = (event: MouseEvent) => {
 </script>
 
 <!-- Markdown set on the paper. Rendering goes through
-@tanstack/markdown, whose defaults leave raw HTML and executable links
+@bysages/core/markdown, whose defaults leave raw HTML and executable links
 inert — streaming-safe by construction. -->
 <div
   {...rest}
