@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // A wide table rides a scrolling lane instead of becoming its own
 // scroll container — the table-as-scroll-container form is what ate
-// the mouse wheel over plain tables. The lane stays a plain, transparent
-// block until its table actually overflows; only then does it claim
-// `overflow-x: auto`, re-checked whenever the lane resizes.
+// the mouse wheel over plain tables. The lane starts scrollable so SSR
+// cannot clip a wide table; after mount the attribute is claimed only
+// while its table actually overflows, re-checked on lane resize.
 defineOptions({ inheritAttrs: false });
 
 const lane = ref<HTMLElement | null>(null);
@@ -24,7 +24,7 @@ onUnmounted(() => observer?.disconnect());
 </script>
 
 <template>
-  <div ref="lane" data-table-scroll>
+  <div ref="lane" data-table-scroll data-scrollable>
     <table v-bind="$attrs">
       <slot />
     </table>

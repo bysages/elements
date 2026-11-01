@@ -446,6 +446,22 @@ export const aiCss = /* css */ `
   border-color: transparent;
 }
 
+/* The compact X stays visually tied to its chip, but a finger gets a
+   transparent seat around it rather than a 16px lottery ticket. */
+@media (pointer: coarse) {
+  [data-scope="ai"][data-part="attachment"]
+    button[data-scope="button"][data-part="root"] {
+    position: relative;
+  }
+
+  [data-scope="ai"][data-part="attachment"]
+    button[data-scope="button"][data-part="root"]::after {
+    content: "";
+    position: absolute;
+    inset: -0.625rem;
+  }
+}
+
 /* Actions row: a quiet line of shared ghost buttons. */
 [data-scope="ai"][data-part="actions"] {
   display: flex;

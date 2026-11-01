@@ -297,7 +297,12 @@ watch(
   () => activeThread.value.entries,
   async () => {
     await nextTick();
-    transcript.value?.scrollTo({ top: transcript.value.scrollHeight, behavior: "smooth" });
+    const node = transcript.value;
+    if (!node) return;
+    // A reader who climbed up to reread owns the viewport; only a
+    // bottom-pinned transcript follows the next stream stroke.
+    const pinned = node.scrollHeight - node.scrollTop - node.clientHeight < 96;
+    if (pinned) node.scrollTo({ top: node.scrollHeight, behavior: "smooth" });
   },
   { deep: true, flush: "post" },
 );

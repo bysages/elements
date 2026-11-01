@@ -10,7 +10,7 @@ export const calendarCss = /* css */ `
   /* The same panel width the date-picker's popup rents at 17rem — the
      standing calendar keeps the family measure, so the day grid fills it
      and the month/year grids divide it into roomy cells. */
-  inline-size: 17rem;
+  inline-size: min(17rem, 100%);
   padding: var(--bs-padding-lg);
   border: var(--bs-hairline) solid var(--bs-color-border);
   border-radius: var(--bs-radius-lg);

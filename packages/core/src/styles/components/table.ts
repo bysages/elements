@@ -403,7 +403,19 @@ export const tableCss = /* css */ `
   cursor: default;
   opacity: 0.35;
 }
+/* Touch rows keep the same visual rhythm but give the quiet tree and
+   reorder controls a thumb-sized seat instead of a pointer-sized glyph. */
+@media (pointer: coarse) {
+  [data-scope="table"][data-part="reorder-controls"] {
+    opacity: 1;
+  }
 
+  [data-scope="table"][data-part="expander"],
+  [data-scope="table"][data-part="reorder-trigger"] {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+}
 /* The empty state: the vessel keeps its shape, the ink steps aside. */
 [data-scope="table"][data-part="empty"] {
   display: grid;

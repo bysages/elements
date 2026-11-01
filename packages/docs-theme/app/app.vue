@@ -83,7 +83,10 @@ onBeforeUnmount(() => {
 });
 
 useHead({
-  meta: [{ name: "theme-color", content: themeColor }],
+  meta: [
+    { name: "theme-color", content: themeColor },
+    { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+  ],
 });
 
 useSeoMeta({

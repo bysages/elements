@@ -327,7 +327,9 @@ function send() {
 <template>
   <Card>
     <Card.Content class="p-0!">
-      <div class="grid h-[38rem] min-w-0 grid-cols-1 md:grid-cols-[11rem_17rem_1fr]">
+      <div
+        class="grid h-[min(38rem,max(28rem,72dvh))] min-w-0 grid-cols-1 md:grid-cols-[11rem_17rem_1fr] md:h-[38rem]"
+      >
         <!-- The folders rail: quiet ink, counts where they earn keep. -->
         <div class="hidden flex-col border-r border-border p-(--bs-padding-md) md:flex">
           <Dialog.Root lazy-mount :open="composing" @update:open="composing = $event">
@@ -402,7 +404,13 @@ function send() {
           <div class="flex items-center gap-(--bs-gap-sm) p-(--bs-padding-sm) md:hidden">
             <Drawer.Root v-model:open="foldersOpen" swipe-direction="left">
               <Drawer.Trigger as-child>
-                <Button variant="ghost" size="sm" square :aria-label="text.foldersTitle">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  square
+                  class="size-9!"
+                  :aria-label="text.foldersTitle"
+                >
                   <Icon name="i-lucide-menu" />
                 </Button>
               </Drawer.Trigger>
@@ -441,6 +449,7 @@ function send() {
               variant="ghost"
               size="sm"
               square
+              class="size-9!"
               :aria-label="text.compose"
               @click="composing = true"
             >
@@ -485,7 +494,7 @@ function send() {
               }}</span>
               <span class="flex items-center gap-(--bs-gap-xs)">
                 <button
-                  class="p-0.5 no-underline"
+                  class="-m-1 inline-flex size-8 items-center justify-center p-0 no-underline"
                   :class="mail.starred ? 'text-primary' : 'text-tertiary hover:text-secondary'"
                   :aria-label="text.folders.starred"
                   @click.stop="toggleStar(mail)"
@@ -516,6 +525,7 @@ function send() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  class="size-9!"
                   :aria-label="locale === 'zh' ? '返回列表' : 'Back to list'"
                   @click="selectedId = null"
                 >
@@ -527,17 +537,35 @@ function send() {
                   {{ selected.subject[locale] }}
                 </h2>
                 <div class="flex shrink-0 gap-(--bs-gap-xs)">
-                  <Button variant="ghost" size="sm" square @click="toggleStar(selected)">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    square
+                    class="size-9!"
+                    @click="toggleStar(selected)"
+                  >
                     <Icon
                       name="i-lucide-star"
                       mode="svg"
                       :class="selected.starred ? 'fill-icon text-primary' : ''"
                     />
                   </Button>
-                  <Button variant="ghost" size="sm" square @click="moveTo(selected, 'archive')">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    square
+                    class="size-9!"
+                    @click="moveTo(selected, 'archive')"
+                  >
                     <Icon name="i-lucide-archive" />
                   </Button>
-                  <Button variant="ghost" size="sm" square @click="moveTo(selected, 'trash')">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    square
+                    class="size-9!"
+                    @click="moveTo(selected, 'trash')"
+                  >
                     <Icon name="i-lucide-trash-2" />
                   </Button>
                 </div>

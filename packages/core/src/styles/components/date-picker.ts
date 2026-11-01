@@ -402,4 +402,13 @@ export const datePickerCss =
 [data-scope="date-picker"][data-part="root"][data-size="lg"] [data-part="trigger"] {
   inline-size: var(--bs-control-height-lg);
 }
+
+/* Touch calendars need a day target, not a compact desktop grid; the
+   coarse pointer keeps the same vessel and grows only the hit rows. */
+@media (pointer: coarse) {
+  [data-scope="date-picker"][data-part="table-cell-trigger"] {
+    min-block-size: 2.75rem;
+    block-size: auto;
+  }
+}
 `;

@@ -776,7 +776,7 @@ function importJson() {
           <div
             v-else
             id="workbench-studio-preview"
-            class="grid min-h-[32rem] content-start gap-(--bs-gap-lg) rounded-sm border border-border bg-surface-0 p-(--bs-padding-xl) transition-colors"
+            class="grid min-h-[16rem] content-start gap-(--bs-gap-lg) rounded-sm border border-border bg-surface-0 p-(--bs-padding-xl) transition-colors xl:min-h-[32rem]"
             data-theme="light"
             data-density="default"
           >

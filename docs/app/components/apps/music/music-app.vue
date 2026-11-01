@@ -170,7 +170,7 @@ watch(albumIndex, () => {
       </div>
 
       <!-- Tracks: the queue of the chosen album. -->
-      <div class="min-w-0">
+      <div class="order-3 min-w-0 lg:order-2">
         <p class="m-0 text-xs uppercase tracking-label text-tertiary">
           {{ text.queue }}
         </p>
@@ -217,12 +217,14 @@ watch(albumIndex, () => {
       </div>
 
       <!-- Now playing: the turntable face. -->
-      <div class="grid content-start gap-(--bs-gap-lg) rounded-md bg-surface-1 p-(--bs-padding-lg)">
+      <div
+        class="order-2 grid content-start gap-(--bs-gap-lg) rounded-md bg-surface-1 p-(--bs-padding-lg) lg:order-3"
+      >
         <p class="m-0 text-xs uppercase tracking-label text-tertiary">
           {{ text.nowPlaying }}
         </p>
         <span
-          class="grid aspect-square w-full place-items-center rounded-md bg-primary font-serif text-6xl text-primary-text"
+          class="mx-auto grid aspect-square w-full max-w-56 place-items-center rounded-md bg-primary font-serif text-6xl text-primary-text lg:max-w-none"
           aria-hidden="true"
           >{{ album.glyph }}</span
         >

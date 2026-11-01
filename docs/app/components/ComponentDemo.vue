@@ -99,10 +99,10 @@ async function copy() {
         :href="workbenchHref"
         target="_blank"
         rel="noreferrer"
-        :title="t('docs.workbench')"
-        :aria-label="t('docs.workbench')"
+        :title="`Vue ${t('docs.workbench')}`"
+        :aria-label="`Vue ${t('docs.workbench')}`"
       >
-        Vue
+        <span class="bs-docs-demo-workbench-label">Vue</span>
         <Icon name="i-lucide-external-link" />
       </a>
       <a
@@ -111,10 +111,10 @@ async function copy() {
         :href="reactWorkbenchHref"
         target="_blank"
         rel="noreferrer"
-        :title="t('docs.workbench')"
-        :aria-label="t('docs.workbench')"
+        :title="`React ${t('docs.workbench')}`"
+        :aria-label="`React ${t('docs.workbench')}`"
       >
-        React
+        <span class="bs-docs-demo-workbench-label">React</span>
         <Icon name="i-lucide-external-link" />
       </a>
       <Tabs.Indicator />

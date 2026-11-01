@@ -214,4 +214,18 @@ export const mediaPlayerCss = /* css */ `
     display: none;
   }
 }
+
+/* Touch sliders keep the hairline track but give the whole rail a
+   coarse-pointer hit seat; the visible line is the background seat. */
+@media (pointer: coarse) {
+  [data-scope="media-player"][data-part="timeline"],
+  [data-scope="media-player"][data-part="volume"] {
+    block-size: 2rem;
+    background: linear-gradient(
+      to right,
+      var(--bs-color-primary) var(--bs-media-progress, 0%),
+      var(--bs-color-border) var(--bs-media-progress, 0%)
+    ) no-repeat center / 100% 0.25rem;
+  }
+}
 `;

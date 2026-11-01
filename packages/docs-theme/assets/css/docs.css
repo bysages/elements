@@ -198,7 +198,10 @@ body {
 }
 
 .bs-docs-header-drawer-sections a {
-  padding: var(--bs-padding-xs) var(--bs-padding-sm);
+  min-block-size: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--bs-padding-sm) var(--bs-padding-sm);
   border-radius: var(--bs-radius-sm);
   color: var(--bs-color-text-secondary);
   font-size: var(--bs-font-size-sm);
@@ -217,6 +220,12 @@ body {
 
 .bs-docs-header-drawer-theme {
   margin-inline-start: auto;
+}
+
+/* The drawer theme control rides the same touch-first register. */
+.bs-docs-header-drawer [data-scope="button"][data-part="root"] {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
 }
 
 @container (max-width: 1023.98px) {
@@ -274,6 +283,49 @@ body {
   .bs-docs-search-trigger kbd,
   .bs-docs-header-search kbd {
     display: none !important;
+  }
+
+  /* The end rail is the minimum usable set, so it keeps its natural width;
+     the wordmark yields instead of pushing the menu into a hidden track. */
+  .bs-docs-brand {
+    flex: 1 1 0;
+  }
+
+  .bs-docs-header-end {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  /* Fingers need a seat, not a label-sized hit area. */
+  .bs-docs-header-end [data-scope="button"][data-part="root"] {
+    inline-size: 2.5rem !important;
+    block-size: 2.5rem !important;
+  }
+
+  .bs-docs-header-end [data-scope="select"][data-part="trigger"] {
+    min-block-size: 2.5rem !important;
+  }
+
+  /* The sticky outline bar follows the taller mobile header, not the
+     compact desktop rail; otherwise its first pixels hide under the bar. */
+  .bs-docs-mobile-bar {
+    top: calc(2.5rem + var(--bs-padding-sm) * 2 + 1px);
+  }
+  /* The demo tab strip keeps preview/code reachable; the demo path and
+     framework words fold away, while the workbench doors stay as icons. */
+  .bs-docs-demo [data-scope="tabs"][data-part="list"] > span:not([data-scope]) {
+    display: none;
+  }
+
+  .bs-docs-demo-workbench {
+    inline-size: 2.5rem !important;
+    block-size: 2.5rem !important;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .bs-docs-demo-workbench-label {
+    display: none;
   }
 }
 
@@ -473,7 +525,7 @@ body {
     display: flex;
     justify-content: flex-end;
     position: sticky;
-    top: calc(var(--bs-control-height-md) + var(--bs-padding-sm) * 2);
+    top: calc(1.75rem + var(--bs-padding-sm) * 2 + 1px);
     z-index: 2;
     margin-block-end: var(--bs-margin-lg);
     padding-block: var(--bs-padding-xs);
@@ -966,7 +1018,7 @@ body {
   gap: var(--bs-gap-md);
   /* Wide enough for the three-tile scene row and the density row; fixed,
      so the segment's hug can't stretch the sheet past the trigger. */
-  inline-size: 22rem;
+  inline-size: min(22rem, calc(100vw - 2rem));
 }
 
 .bs-docs-theme-panel section {
@@ -1237,10 +1289,10 @@ body {
 
 .bs-docs-assistant-float {
   position: fixed;
-  inset-block-end: var(--bs-space-5);
-  inset-inline: 0;
+  inset-block-end: calc(var(--bs-space-5) + var(--bs-safe-area-inset-bottom));
+  inset-inline: var(--bs-space-4);
   z-index: var(--bs-z-floating);
-  inline-size: min(26rem, calc(100vw - var(--bs-space-8)));
+  max-inline-size: 26rem;
   margin-inline: auto;
   box-shadow: var(--bs-elevation-2);
 }
@@ -1644,5 +1696,30 @@ body {
     content: "";
     position: absolute;
     inset: calc(-1 * var(--bs-space-2));
+  }
+
+  /* Example apps reuse compact square controls; the halo travels with
+     them instead of being a header-only affordance. */
+  .bs-docs-main [data-scope="button"][data-square="true"][data-size="sm"] {
+    position: relative;
+  }
+
+  .bs-docs-main [data-scope="button"][data-square="true"][data-size="sm"]::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+  }
+
+  /* Navigation furniture is often the only route through a folded
+     mobile shell, so these rows get real thumb height. */
+  .bs-docs-mobile-bar [data-scope="button"][data-part="root"],
+  .bs-docs-nav-folder[data-scope="collapsible"][data-part="trigger"],
+  [data-scope="toc"][data-part="link"],
+  .bs-docs-surround-link {
+    min-block-size: 2.75rem;
+  }
+
+  .bs-docs-anchor {
+    opacity: 1;
   }
 }

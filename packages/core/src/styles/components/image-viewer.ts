@@ -179,4 +179,12 @@ export const imageViewerCss = /* css */ `
   --_ink: var(--bs-color-text-on-scrim);
   --_fill-hover: color-mix(in oklab, var(--bs-color-surface-2) 16%, transparent);
 }
+
+/* Touch has no hover to reveal the affordance: show it plainly and
+   let the whole preview carry the open action. */
+@media (pointer: coarse) {
+  [data-scope="image-viewer"][data-part="preview-overlay"] {
+    opacity: 1;
+  }
+}
 `;
