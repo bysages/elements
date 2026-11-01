@@ -36,9 +36,10 @@ Theme the document, then use the components — the component import
 carries the whole token layer in with it:
 
 ```ts
+import { applyTheme } from "@bysages/svelte";
 // main.ts
 import { mount } from "svelte";
-import { applyTheme } from "@bysages/svelte";
+
 import App from "./App.svelte";
 
 applyTheme({ mode: "system", accent: "ink" });

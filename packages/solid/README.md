@@ -37,10 +37,10 @@ Theme the document, then use the components — the component import
 carries the whole token layer in with it:
 
 ```tsx
-// index.tsx
-import { render } from "solid-js/web";
 import { applyTheme } from "@bysages/solid";
 import { Dialog } from "@bysages/solid";
+// index.tsx
+import { render } from "solid-js/web";
 
 applyTheme({ mode: "system", accent: "ink" });
 
