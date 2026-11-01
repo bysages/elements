@@ -74,6 +74,16 @@ const reactWorkbenchHref = computed(() =>
   storyLinks.value?.react ? `/storybook/react/?path=/story/${storyLinks.value.react}` : undefined,
 );
 
+const workbenches = computed(() =>
+  [
+    { name: "Vue" as const, href: workbenchHref.value, icon: "i-simple-icons-vuedotjs" },
+    { name: "React" as const, href: reactWorkbenchHref.value, icon: "i-simple-icons-react" },
+  ].filter(
+    (workbench): workbench is { name: "Vue" | "React"; href: string; icon: string } =>
+      !!workbench.href,
+  ),
+);
+
 const copied = ref(false);
 const { t } = useDocsI18n();
 
@@ -93,30 +103,21 @@ async function copy() {
            and the workbench door — a family page stacks several demos
            and the reader should know which one is on stage. -->
       <span class="font-mono text-xs text-tertiary">{{ name }}</span>
-      <a
-        v-if="workbenchHref"
-        class="bs-docs-demo-workbench"
-        :href="workbenchHref"
-        target="_blank"
-        rel="noreferrer"
-        :title="`Vue ${t('docs.workbench')}`"
-        :aria-label="`Vue ${t('docs.workbench')}`"
-      >
-        <span class="bs-docs-demo-workbench-label">Vue</span>
-        <Icon name="i-lucide-external-link" />
-      </a>
-      <a
-        v-if="reactWorkbenchHref"
-        class="bs-docs-demo-workbench"
-        :href="reactWorkbenchHref"
-        target="_blank"
-        rel="noreferrer"
-        :title="`React ${t('docs.workbench')}`"
-        :aria-label="`React ${t('docs.workbench')}`"
-      >
-        <span class="bs-docs-demo-workbench-label">React</span>
-        <Icon name="i-lucide-external-link" />
-      </a>
+      <div class="bs-docs-demo-workbench-group">
+        <a
+          v-for="workbench in workbenches"
+          :key="workbench.name"
+          class="bs-docs-demo-workbench"
+          :href="workbench.href"
+          target="_blank"
+          rel="noreferrer"
+          :title="workbench.name + ' ' + t('docs.workbench')"
+          :aria-label="workbench.name + ' ' + t('docs.workbench')"
+        >
+          <span class="bs-docs-demo-workbench-label">{{ workbench.name }}</span>
+          <Icon :name="workbench.icon" />
+        </a>
+      </div>
       <Tabs.Indicator />
     </Tabs.List>
     <Tabs.Content value="preview">

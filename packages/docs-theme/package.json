@@ -55,6 +55,7 @@
     "@bysages/tokens": "workspace:*",
     "@bysages/vue": "workspace:*",
     "@iconify-json/lucide": "1.2.142",
+    "@iconify-json/simple-icons": "1.2.101",
     "@nuxt/content": "3.16.1",
     "@nuxt/icon": "2.5.1",
     "@nuxt/kit": "4.5.2",

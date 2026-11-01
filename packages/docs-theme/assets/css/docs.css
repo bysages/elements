@@ -218,17 +218,23 @@ body {
   font-weight: var(--bs-font-weight-semibold);
 }
 
-.bs-docs-header-drawer-theme {
-  margin-inline-start: auto;
+/* The drawer utility shelf rides the touch-first register; physical width
+   and height outrank the button recipe's horizontal-logical properties. */
+.bs-docs-header-drawer-actions > [data-scope="select"][data-part="root"] {
+  width: fit-content !important;
 }
 
-/* The drawer theme control rides the same touch-first register. */
-.bs-docs-header-drawer [data-scope="button"][data-part="root"] {
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
+.bs-docs-header-drawer-actions > * {
+  flex: none;
 }
 
-@container (max-width: 1023.98px) {
+.bs-docs-header-drawer-actions [data-scope="button"][data-part="root"],
+.bs-docs-header-drawer-actions [data-scope="select"][data-part="trigger"].bs-docs-language-trigger {
+  width: 2.5rem !important;
+  min-height: 2.5rem !important;
+}
+
+@media (max-width: 1023.98px) {
   .bs-docs-header-menu {
     display: inline-flex;
   }
@@ -244,7 +250,7 @@ body {
   }
 }
 
-@container (min-width: 1024px) {
+@media (min-width: 1024px) {
   .bs-docs-header-stacked .bs-docs-header-bottom {
     /* The basis is the header's content box; the two paddings the
        negative margins walk out must be added back, or the rule stops
@@ -263,10 +269,13 @@ body {
   }
 }
 
-/* Narrow containers slim the rail to the essentials — docus keeps the
+/* Narrow windows slim the rail to the essentials — docus keeps the
    language, mode and menu; the rest lives in the footer or the drawer.
+   The rail reads the viewport, not the container: a window the reader
+   calls large must keep the full bar even when the scrollbar nudges
+   the container a few pixels under the breakpoint.
    The !important out-ranks the component styles' attribute specificity. */
-@container (width < 640px) {
+@media (width < 640px) {
   /* Scoped to the bar: the drawer reuses the theme control and must stay. */
   .bs-docs-header .bs-docs-header-github,
   .bs-docs-header .bs-docs-header-theme-settings {
@@ -311,12 +320,16 @@ body {
   .bs-docs-mobile-bar {
     top: calc(2.5rem + var(--bs-padding-sm) * 2 + 1px);
   }
-  /* The demo tab strip keeps preview/code reachable; the demo path and
-     framework words fold away, while the workbench doors stay as icons. */
+  /* The demo tab strip keeps preview/code reachable; the demo path folds
+     away so the framework doors keep their names on ordinary phones. */
   .bs-docs-demo [data-scope="tabs"][data-part="list"] > span:not([data-scope]) {
     display: none;
   }
+}
 
+/* Only a genuinely tiny panel trades the words for brand icons; larger
+   readers still get the framework names beside them. */
+@container (width < 480px) {
   .bs-docs-demo-workbench {
     inline-size: 2.5rem !important;
     block-size: 2.5rem !important;
@@ -902,11 +915,17 @@ body {
 
 /* The workbench door sits in the tab row, after the triggers: a quiet
    exit link, not another tab — it reads as navigation, not as a pane. */
-.bs-docs-demo-workbench {
+.bs-docs-demo-workbench-group {
   display: inline-flex;
   align-items: center;
   gap: var(--bs-gap-xs);
   margin-inline-start: auto;
+}
+
+.bs-docs-demo-workbench {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-xs);
   padding-inline: var(--bs-padding-sm);
   color: var(--bs-color-text-tertiary);
   font-size: var(--bs-font-size-sm);
@@ -916,12 +935,6 @@ body {
 
 .bs-docs-demo-workbench:hover {
   color: var(--bs-color-primary);
-}
-
-/* A second framework door follows the first: the push-right belongs to
-   the leading link alone, the follower just sits beside it. */
-.bs-docs-demo-workbench + .bs-docs-demo-workbench {
-  margin-inline-start: var(--bs-gap-sm);
 }
 
 .bs-docs-demo-workbench [data-part] {
@@ -1214,12 +1227,12 @@ body {
 
 /* The language switcher poses as a bare emoji flag in the header rail —
    the trigger sheds the stock select chrome at header specificity. */
-.bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger {
+.bs-docs-language-trigger[data-scope="select"][data-part="trigger"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   inline-size: 2.25rem;
-  block-size: var(--bs-control-height-sm);
+  min-block-size: var(--bs-control-height-sm);
   padding: 0;
   border: none;
   background: transparent;
@@ -1227,8 +1240,15 @@ body {
   color: var(--bs-color-text-primary);
 }
 
-.bs-docs-header [data-scope="select"][data-part="trigger"].bs-docs-language-trigger:hover {
+.bs-docs-language-trigger[data-scope="select"][data-part="trigger"]:hover {
   background: transparent;
+}
+
+/* The drawer utility shelf raises the language trigger to the same touch
+   register as its neighboring controls. */
+.bs-docs-header-drawer-actions [data-scope="select"][data-part="trigger"].bs-docs-language-trigger {
+  inline-size: 2.5rem !important;
+  min-block-size: 2.5rem !important;
 }
 
 /* Docus's rows: the name carries the weight, the flag trails at the end. */

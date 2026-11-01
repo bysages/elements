@@ -59,19 +59,15 @@ const searchOpen = useDocsSearch();
           class="bs-docs-header-github"
         >
           <NuxtLink :to="github.url" target="_blank" aria-label="GitHub" title="GitHub">
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
-              <path
-                d="M8 .2a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.49c-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.46.55.38A8 8 0 0 0 8 .2Z"
-              />
-            </svg>
+            <Icon name="i-simple-icons-github" class="size-4" />
           </NuxtLink>
         </Button>
 
         <ClientOnly>
-          <AppAssistantButton />
-          <LanguageSelect />
+          <div class="max-sm:hidden"><AppAssistantButton /></div>
+          <div class="max-sm:hidden"><LanguageSelect /></div>
           <template v-if="appConfig.docs.themeControls !== false">
-            <ColorModeButton />
+            <div class="max-sm:hidden"><ColorModeButton /></div>
             <ThemeSettingsButton />
           </template>
         </ClientOnly>
@@ -95,11 +91,10 @@ const searchOpen = useDocsSearch();
       <Positioner>
         <Content :aria-label="t('docs.navigation')" class="bs-docs-header-drawer">
           <Title>{{ t("docs.menu") }}</Title>
-          <!-- The shelf row hides with the header's bottom rail, and the
-               theme trigger hides with the rail itself — without these a
-               phone reader is stranded in one shelf, unable to reach the
-               reference, the examples, or the theme. -->
+          <!-- The shelf row keeps the top-level destinations one tap away,
+               even while the drawer's document tree shows every branch. -->
           <nav class="bs-docs-header-drawer-sections" :aria-label="t('docs.sections')">
+            <p class="w-full text-sm font-medium text-tertiary">{{ t("docs.sections") }}</p>
             <NuxtLink
               v-for="row in sections"
               :key="row.to"
@@ -108,9 +103,35 @@ const searchOpen = useDocsSearch();
             >
               {{ row.label }}
             </NuxtLink>
-            <ThemeSettingsButton class="bs-docs-header-drawer-theme" />
           </nav>
-          <DocsAsideLeftBody full />
+
+          <!-- Auxiliary header controls live here on phones: the bar keeps
+               only search and navigation, while the drawer becomes their
+               touch-sized utility shelf. -->
+          <div
+            class="bs-docs-header-drawer-actions flex items-center justify-between gap-1 rounded-md border border-border bg-surface-2 p-2 sm:hidden"
+          >
+            <div><AppAssistantButton /></div>
+            <LanguageSelect />
+            <div><ColorModeButton /></div>
+            <ThemeSettingsButton v-if="appConfig.docs.themeControls !== false" />
+            <a
+              v-if="github?.url"
+              :href="github.url"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              title="GitHub"
+              class="inline-flex size-10 items-center justify-center rounded-sm text-foreground transition-colors hover:bg-surface-3 hover:text-secondary"
+            >
+              <Icon name="i-simple-icons-github" class="size-4" />
+            </a>
+          </div>
+
+          <div class="min-w-0">
+            <p class="mb-2 text-sm font-medium text-tertiary">{{ t("docs.documents") }}</p>
+            <DocsAsideLeftBody full />
+          </div>
         </Content>
       </Positioner>
     </ClientOnly>
