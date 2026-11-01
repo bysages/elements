@@ -22,7 +22,9 @@ function mountConversation(autoScroll = true) {
     scrollTop: {
       configurable: true,
       get: () => positions.at(-1) ?? 0,
-      set: (value: number) => positions.push(value),
+      set: (value: number) => {
+        positions.push(value);
+      },
     },
   });
   return { app, node, positions };
