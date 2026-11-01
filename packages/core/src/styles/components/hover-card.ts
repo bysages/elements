@@ -14,7 +14,7 @@ export const hoverCardCss =
   font-weight: var(--bs-font-weight-medium);
   text-decoration: underline;
   text-decoration-color: var(--bs-color-border-strong);
-  text-underline-offset: 2px;
+  text-underline-offset: calc(var(--bs-space-1) / 2);
   cursor: pointer;
   transition: text-decoration-color var(--bs-duration-fast) var(--bs-ease-out);
 }

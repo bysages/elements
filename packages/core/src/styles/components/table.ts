@@ -481,11 +481,11 @@ export const tableCss = /* css */ `
 }
 
 [data-scope="table"][data-part="header-cell"][data-drop-before-col] {
-  box-shadow: inset 2px 0 0 var(--bs-color-primary);
+  box-shadow: inset calc(var(--bs-hairline) * 2) 0 0 var(--bs-color-primary);
 }
 
 [data-scope="table"][data-part="header-cell"][data-drop-after-col] {
-  box-shadow: inset -2px 0 0 var(--bs-color-primary);
+  box-shadow: inset calc(var(--bs-hairline) * -2) 0 0 var(--bs-color-primary);
 }
 
 /* The row insertion line indents to the sibling depth the drop will
@@ -496,7 +496,7 @@ export const tableCss = /* css */ `
   position: absolute;
   inset-inline-start: calc(var(--bs-drop-indent, 0) * var(--bs-table-indent));
   inset-inline-end: 0;
-  block-size: 2px;
+  block-size: calc(var(--bs-hairline) * 2);
   background: var(--bs-color-primary);
   pointer-events: none;
 }

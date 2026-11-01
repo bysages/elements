@@ -47,6 +47,7 @@
     "bench": "vp test bench",
     "docs:content": "tsx docs/scripts/generate-component-docs.ts",
     "docs:content:check": "tsx docs/scripts/generate-component-docs.ts --check",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "version": "pnpm --filter \"./packages/*\" -r exec basis version",
     "postinstall": "pnpm build && vp config && basis git setup",
     "release": "pnpm --filter \"./packages/*\" -r run release",

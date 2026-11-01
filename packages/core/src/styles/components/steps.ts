@@ -209,7 +209,7 @@ export const stepsCss = /* css */ `
   inline-size: 1px;
   min-block-size: var(--bs-space-6);
   margin: var(--bs-margin-xs) 0 var(--bs-margin-xs)
-    calc(var(--bs-steps-marker) / 2 - 0.5px);
+    calc(var(--bs-steps-marker) / 2 - var(--bs-hairline) / 2);
   background: linear-gradient(var(--bs-color-border), var(--bs-color-border))
     center / 1px 100% no-repeat;
 }

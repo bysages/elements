@@ -41,7 +41,7 @@ export const orderListCss = /* css */ `
   content: "";
   position: absolute;
   inset-inline: 0;
-  block-size: 2px;
+  block-size: calc(var(--bs-hairline) * 2);
   border-radius: 1px;
   background: var(--bs-color-primary);
   pointer-events: none;
@@ -49,11 +49,11 @@ export const orderListCss = /* css */ `
 }
 
 [data-scope="order-list"][data-part="item"][data-drop-line="top"]::after {
-  top: -2px;
+  top: calc(var(--bs-hairline) * -2);
 }
 
 [data-scope="order-list"][data-part="item"][data-drop-line="bottom"]::after {
-  bottom: -2px;
+  bottom: calc(var(--bs-hairline) * -2);
 }
 
 [data-scope="order-list"][data-part="grip"] {

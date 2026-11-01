@@ -101,7 +101,7 @@ export const progressCss =
 [data-scope="progress"][data-part="circle-track"],
 [data-scope="progress"][data-part="circle-range"] {
   fill: none;
-  stroke-width: 6px;
+  stroke-width: calc(var(--bs-space-2) * 0.75);
 }
 
 [data-scope="progress"][data-part="circle-track"] {

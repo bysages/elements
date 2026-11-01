@@ -21,7 +21,7 @@ export const spotlightCss = /* css */ `
     var(--bs-color-primary),
     transparent 70%
   );
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  mask: linear-gradient(rgb(0 0 0 / 100%) 0 0) content-box exclude, linear-gradient(rgb(0 0 0 / 100%) 0 0);
   opacity: 0;
   transition: opacity var(--bs-duration-base) var(--bs-ease-out);
   pointer-events: none;

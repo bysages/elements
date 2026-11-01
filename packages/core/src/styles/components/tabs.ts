@@ -64,7 +64,7 @@ export const tabsCss = /* css */ `
   position: absolute;
   inset-block-end: calc(-1 * var(--bs-hairline));
   inline-size: var(--width, 0);
-  block-size: 2px;
+  block-size: calc(var(--bs-hairline) * 2);
   background: var(--bs-color-primary);
   transition:
     inset-inline-start var(--bs-duration-base) var(--bs-ease-spring),
@@ -187,7 +187,7 @@ export const tabsCss = /* css */ `
 [data-scope="tabs"][data-orientation="vertical"] [data-part="indicator"] {
   inset-block-end: auto;
   inset-inline-start: calc(-1 * var(--bs-hairline));
-  inline-size: 2px;
+  inline-size: calc(var(--bs-hairline) * 2);
   block-size: var(--height, 0);
   transition:
     inset-block-start var(--bs-duration-base) var(--bs-ease-spring),

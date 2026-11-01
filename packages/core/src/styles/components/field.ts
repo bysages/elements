@@ -109,7 +109,7 @@ export const fieldControlCss = /* css */ `
   background-image: linear-gradient(var(--bs-color-focus), var(--bs-color-focus));
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: 0% 2px;
+  background-size: 0% calc(var(--bs-hairline) * 2);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     background-size var(--bs-duration-instant) var(--bs-ease-in);
@@ -118,7 +118,7 @@ export const fieldControlCss = /* css */ `
 [data-scene="fluent"] [data-scope="field"][data-part="input"]:focus,
 [data-scene="fluent"] [data-scope="field"][data-part="textarea"]:focus,
 [data-scene="fluent"] [data-scope="field"][data-part="select"]:focus {
-  background-size: 100% 2px;
+  background-size: 100% calc(var(--bs-hairline) * 2);
   transition:
     border-color var(--bs-duration-fast) var(--bs-ease-out),
     background-size var(--bs-duration-base) var(--bs-ease-out);

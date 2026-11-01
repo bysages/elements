@@ -30,7 +30,7 @@ export const timelineCss = /* css */ `
 [data-scope="timeline"][data-part="item"]:not(:last-child)::before {
   content: "";
   position: absolute;
-  inset-inline-start: calc(var(--bs-part-size-sm) / 4 - 0.5px);
+  inset-inline-start: calc(var(--bs-part-size-sm) / 4 - var(--bs-hairline) / 2);
   inset-block-start: calc(var(--bs-part-size-sm) / 2 + var(--bs-space-2));
   inset-block-end: calc(var(--bs-margin-sm) * -1);
   inline-size: 1px;

@@ -41,7 +41,7 @@ export const swapCss = /* css */ `
   from {
     opacity: 0;
     transform: var(--bs-swap-out, scale(0.55));
-    filter: blur(2px);
+    filter: blur(calc(var(--bs-space-1) / 2));
   }
   to {
     opacity: 1;

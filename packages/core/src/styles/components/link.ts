@@ -5,7 +5,7 @@ export const linkCss = /* css */ `
 [data-scope="link"][data-part="root"] {
   color: var(--bs-color-primary);
   text-decoration-line: none;
-  text-underline-offset: 3px;
+  text-underline-offset: calc(var(--bs-space-1) * 0.75);
   text-decoration-thickness: 1px;
   transition:
     color var(--bs-duration-fast) var(--bs-ease-out),

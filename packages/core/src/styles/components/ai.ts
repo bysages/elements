@@ -90,7 +90,7 @@ export const aiCss = /* css */ `
   color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--bs-color-border-strong);
-  text-underline-offset: 3px;
+  text-underline-offset: calc(var(--bs-space-1) * 0.75);
 }
 
 [data-scope="ai"][data-part="response"] a[href] {
@@ -175,7 +175,7 @@ export const aiCss = /* css */ `
 [data-scope="ai"][data-part="response"] blockquote {
   margin: var(--bs-margin-md) 0;
   padding-inline-start: var(--bs-padding-md);
-  border-inline-start: 3px solid var(--bs-color-border-strong);
+  border-inline-start: calc(var(--bs-hairline) * 3) solid var(--bs-color-border-strong);
   color: var(--bs-color-text-secondary);
 }
 
@@ -773,6 +773,60 @@ export const aiCss = /* css */ `
   font-size: var(--bs-font-size-sm);
 }
 
+/* The scrollable transcript: the caller scrolls the conversation node
+   itself and declares fade to dissolve the reading edges with the
+   shared seven-stop ramp — the same register as ScrollArea. */
+[data-scope="ai"][data-part="conversation"][data-fade] {
+  -webkit-mask-image: var(--bs-mask-fade-y);
+  mask-image: var(--bs-mask-fade-y);
+}
+
+/* The jump-to-latest door: an explicit part, so the UI only exists when
+   the caller asks for it. It sits glued to the log's floor and surfaces
+   while the reader is away from the bottom edge. */
+[data-scope="ai"][data-part="jump-to-latest"] {
+  position: sticky;
+  inset-block-end: var(--bs-padding-md);
+  align-self: center;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bs-gap-xs);
+  margin-block: 0;
+  padding: var(--bs-padding-xs) var(--bs-padding-md);
+  border: var(--bs-hairline) solid var(--bs-color-border);
+  border-radius: var(--bs-radius-full);
+  background: var(--bs-color-surface-1);
+  color: var(--bs-color-text-secondary);
+  font-size: var(--bs-font-size-sm);
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 var(--bs-gap-xs);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity var(--bs-duration-base) var(--bs-ease-out),
+    translate var(--bs-duration-base) var(--bs-ease-out),
+    visibility var(--bs-duration-base);
+}
+
+[data-scope="ai"][data-part="jump-to-latest"][data-visible],
+[data-scope="ai"][data-part="jump-to-latest"]:focus-visible {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+[data-scope="ai"][data-part="jump-to-latest"]:hover {
+  color: var(--bs-color-text-primary);
+  background: var(--bs-color-surface-2);
+}
+
+[data-scope="ai"][data-part="jump-to-latest"]:focus-visible {
+  outline: var(--bs-hairline) solid var(--bs-color-primary);
+  outline-offset: 1px;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-scope="ai"][data-part="loader"]::before,
   [data-scope="ai"][data-part="loader"]::after {

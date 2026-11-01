@@ -15,6 +15,6 @@ export const blockUiCss = /* css */ `
   justify-content: center;
   border-radius: inherit;
   background: color-mix(in oklab, var(--bs-color-surface-1) 72%, transparent);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(calc(var(--bs-space-1) / 2));
 }
 `;

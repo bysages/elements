@@ -130,7 +130,7 @@ export const carouselCss = /* css */ `
 
 /* Indicators are quiet dots; the current page alone carries the ink. */
 [data-scope="carousel"][data-part="indicator"] {
-  inline-size: calc(var(--bs-space-2) + 2px);
+  inline-size: calc(var(--bs-space-2) + var(--bs-hairline) * 2);
   block-size: calc(var(--bs-space-2) + 2px);
   padding: 0;
   border: none;

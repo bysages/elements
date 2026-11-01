@@ -190,6 +190,19 @@ A surface is color + material + elevation + lighting + border. The ladder:
 Inputs may sit in `--bs-color-surface-inset` (recessed semantics). Page-level
 surfaces may opt into a 2–3% grain — paper for the paper, never for controls.
 
+The border is the surface's quietest dimension and obeys a discipline of one:
+a face carries a single hairline, a border or an outline, never both. Doubling
+the line does not strengthen hierarchy — it reads as heavier paper and breaks
+the contrast ladder between a control and the vessel holding it. Containment
+divides the work instead: a table inside a card, an input inside a group, each
+owns its own edge while the outer vessel stays quiet.
+
+Focus is a state, not a second decoration. It rides `outline`, which can
+surround or inset without disturbing layout, and it replaces the resting
+hairline while attention lasts. If a ring and a border seem necessary at once,
+the surfaces probably overlap — separate them in structure before reaching for
+paint.
+
 ## Lighting and shadow
 
 One light. `--bs-shadow-ink` is the theme's shadow hue (warm in light, deeper
@@ -494,7 +507,7 @@ let brand crowd content; scatter z-index; couple the system to one framework.
 any needless structure?
 
 **Visual** — correct surface and elevation? one light direction? shadows
-restrained? borders necessary? radius matches the role (seal-cut controls,
+restrained? borders necessary and singular (one hairline per face)? radius matches the role (seal-cut controls,
 round vessels)?
 
 **Information** — primary dominant? fold strategy under pressure? compact

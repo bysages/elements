@@ -144,7 +144,7 @@ export const navigationMenuCss =
   position: absolute;
   inset-block-end: 0;
   inset-inline-start: 0;
-  block-size: 2px;
+  block-size: calc(var(--bs-hairline) * 2);
   border-radius: var(--bs-radius-full);
   background: var(--bs-color-primary);
   translate: var(--trigger-x, 0) 0;

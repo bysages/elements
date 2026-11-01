@@ -67,7 +67,7 @@ export const imageCropperCss =
 /* Handles are L-shaped corner seals (corners cut, like the control radius);
    edge handles stay hidden dots that only appear when wanted. */
 [data-scope="image-cropper"][data-part="handle"] {
-  --bs-cropper-arm: 3px;
+  --bs-cropper-arm: calc(var(--bs-hairline) * 3);
   position: absolute;
   display: flex;
   align-items: center;

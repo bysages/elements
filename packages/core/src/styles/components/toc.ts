@@ -73,7 +73,7 @@ export const tocCss = /* css */ `
 [data-scope="toc"][data-part="indicator"] {
   position: absolute;
   inset-inline-start: 0;
-  inline-size: 2px;
+  inline-size: calc(var(--bs-hairline) * 2);
   top: var(--top, 0);
   block-size: var(--height, 0);
   border-radius: var(--bs-radius-full);

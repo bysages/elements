@@ -52,7 +52,7 @@ export const editableCss =
   /* The row-height centers the preview's text exactly where the browser
      centers an input's — switching modes never nudges the letters. It
      must come after the font shorthand, which resets line-height. */
-  line-height: calc(var(--bs-control-height-md) - 2px);
+  line-height: calc(var(--bs-control-height-md) - var(--bs-hairline) * 2);
   text-overflow: ellipsis;
 }
 
@@ -173,11 +173,11 @@ export const editableCss =
    line-height must follow or the caret sits off the ink. */
 [data-scope="editable"][data-part="root"][data-size="sm"] [data-part="input"] {
   block-size: var(--bs-control-height-sm);
-  line-height: calc(var(--bs-control-height-sm) - 2px);
+  line-height: calc(var(--bs-control-height-sm) - var(--bs-hairline) * 2);
 }
 
 [data-scope="editable"][data-part="root"][data-size="lg"] [data-part="input"] {
   block-size: var(--bs-control-height-lg);
-  line-height: calc(var(--bs-control-height-lg) - 2px);
+  line-height: calc(var(--bs-control-height-lg) - var(--bs-hairline) * 2);
 }
 `;
