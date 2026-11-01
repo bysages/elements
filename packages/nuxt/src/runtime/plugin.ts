@@ -6,7 +6,9 @@ import { defineNuxtPlugin, useRuntimeConfig } from "#imports";
  * persisted choice. A stored theme is restored before mount instead; the
  * module's early head script already prevents the first-paint flash. */
 export default defineNuxtPlugin(() => {
-  if (import.meta.server) return;
+  // Module sources are checked outside a generated Nuxt app, where the
+  // environment flag is Nuxt's own injected extension rather than TS DOM metadata.
+  if ((import.meta as { server?: boolean }).server) return;
 
   const { theme } = useRuntimeConfig().public.bsElements as {
     theme: Parameters<typeof applyTheme>[0] | null;
