@@ -2,6 +2,10 @@
 defineProps<{
   orientation?: "vertical" | "horizontal";
   reverse?: boolean;
+  /** The section inverts to the night register: one attribute flips the
+   * whole token room, so the paper turns to ink and the light reads
+   * against it — the page's chapter turn. */
+  inverted?: boolean;
 }>();
 </script>
 
@@ -11,10 +15,18 @@ defineProps<{
     :class="{
       'bs-docs-section--horizontal': orientation === 'horizontal',
       'bs-docs-section--reverse': reverse,
+      'bs-docs-section--inverted': inverted,
     }"
+    :data-theme="inverted ? 'dark' : undefined"
   >
     <div class="bs-docs-section-main">
-      <header v-if="$slots.title || $slots.description" class="bs-docs-section-head">
+      <header
+        v-if="$slots.kicker || $slots.title || $slots.description"
+        class="bs-docs-section-head"
+      >
+        <p v-if="$slots.kicker" class="bs-docs-kicker">
+          <slot name="kicker" />
+        </p>
         <h2 v-if="$slots.title">
           <slot name="title" />
         </h2>

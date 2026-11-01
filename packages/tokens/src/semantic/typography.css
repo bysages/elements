@@ -32,6 +32,11 @@
   --bs-font-size-3xl: 1.875rem;
   --bs-font-size-4xl: 2.25rem;
 
+  /* The display step exists for landing pages and section openers: the
+     one place typography is allowed to shout. It scales with the
+     viewport and every scene re-points it to its own ceiling. */
+  --bs-font-size-display: clamp(2.75rem, 6.5vw, 4.75rem);
+
   /* The stroke icons are drawn with: one width, tuned to sit beside the
      hairline instead of fighting it. */
   --bs-icon-stroke-width: 1.75;

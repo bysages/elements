@@ -3,6 +3,9 @@ title: Elements
 ---
 
 ::page-hero
+#kicker
+By Sages · UI Component Library
+
 #title
 Set your docs in paper and ink.
 
@@ -20,6 +23,9 @@ Elements is the UI component library of By Sages — warm paper, ink that reads,
 ::
 
 ::page-section
+#kicker
+01 / Foundations
+
 #title
 Everything a product needs
 
@@ -93,13 +99,15 @@ Every component over one token system — interaction from headless state machin
   A lighting engine computes the shade — source, elevation, pigment bleed — and writes it to variables the styles merely consume. Motion obeys the same grammar: light needs time; ink bleeds.
   :::
 ::
-
 ::page-section{orientation="horizontal" reverse}
+#kicker
+02 / Quickstart
+
 #title
-Up and running in a minute
+Running in a minute
 
 #description
-The wrappers bring the theme engine with them — install, apply the theme once, and every control speaks the same paper. Pick your framework; the components read identically.
+The wrappers ship a theme engine — install, apply once, and every control speaks the same paper and ink. Pick a framework; the components hold.
 
 #links
   :::button-link{to="/en/guide/introduction" size="sm" variant="outline"}
@@ -108,7 +116,7 @@ The wrappers bring the theme engine with them — install, apply the theme once,
 
 #body
   ```bash
-  pnpm add @bysages/vue @bysages/core
+  pnpm add @bysages/react @bysages/core
   ```
 
   ::code-group
@@ -121,7 +129,7 @@ The wrappers bring the theme engine with them — install, apply the theme once,
   </script>
 
   <template>
-    <Button>Write in ink</Button>
+    <Button>Ink it down</Button>
   </template>
   ```
 
@@ -132,7 +140,7 @@ The wrappers bring the theme engine with them — install, apply the theme once,
   applyTheme({ mode: "light" });
 
   export default function App() {
-    return <Button>Write in ink</Button>;
+    return <Button>Ink it down</Button>;
   }
   ```
 
@@ -143,7 +151,7 @@ The wrappers bring the theme engine with them — install, apply the theme once,
 
   applyTheme({ mode: "light" });
 
-  render(() => <Button>Write in ink</Button>, document.getElementById("root"));
+  render(() => <Button>Ink it down</Button>, document.getElementById("root"));
   ```
 
   ```svelte [Svelte]
@@ -155,17 +163,37 @@ The wrappers bring the theme engine with them — install, apply the theme once,
   onMount(() => applyTheme({ mode: "light" }));
   </script>
 
-  <Button>Write in ink</Button>
+  <Button>Ink it down</Button>
   ```
   ::
 ::
 
-::page-section
+::page-section{inverted}
+#kicker
+03 / Light
+
 #title
-Now begin
+Hierarchy carried by light
 
 #description
-The introduction walks the layers; the reference documents every part of every component.
+The lighting engine computes shadow — key light, elevation, pigment bleed — and writes the variables the style layer consumes. This chapter sits in the night: the paper turns to ink and controls rise on light. Motion obeys the same grammar: light takes time, ink bleeds.
+
+#links
+  :::button-link{to="/en/guide/theming" size="sm" variant="outline"}
+  Read the theming guide
+  :::
+
+::
+
+::page-section
+#kicker
+04 / Start
+
+#title
+Begin now
+
+#description
+The introduction walks the layers; the reference records every component and part in detail.
 
 #cards
   :::page-card{to="/en/guide/introduction"}
@@ -173,7 +201,7 @@ The introduction walks the layers; the reference documents every part of every c
   Read the introduction
 
   #description
-  One premise, one style layer, one source of truth — how the pieces fit.
+  One premise, one style layer, one source of truth — how the parts bite together.
   :::
 
   :::page-card{to="/en/reference/button"}
@@ -181,6 +209,6 @@ The introduction walks the layers; the reference documents every part of every c
   Browse the reference
 
   #description
-  Props, emits, and anatomy for every component, straight from the source.
+  Every component's props, events and anatomy, straight from source.
   :::
 ::

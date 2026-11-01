@@ -14,6 +14,9 @@ defineProps<{
     }"
   >
     <div class="bs-docs-hero-head">
+      <p v-if="$slots.kicker" class="bs-docs-kicker bs-docs-kicker--center">
+        <slot name="kicker" />
+      </p>
       <h1 v-if="$slots.title" class="bs-docs-hero-title">
         <slot name="title" />
       </h1>

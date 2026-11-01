@@ -1413,10 +1413,18 @@ body {
 /* Landing and error pages                                           */
 /* ---------------------------------------------------------------- */
 
+.bs-docs-landing {
+  /* The landing breathes in two registers: ordinary sections share one
+     symmetric gap, while the hero and inverted chapters widen it to mark a
+     page turn. Clamping keeps phones from inheriting desktop voids. */
+  --landing-section-gap: clamp(var(--bs-space-16), 10vw, var(--bs-space-20));
+  --landing-chapter-gap: clamp(var(--bs-space-20), 12vw, var(--bs-space-24));
+}
+
 .bs-docs-hero {
   max-inline-size: 50rem;
   margin-inline: auto;
-  padding-block: var(--bs-space-24) var(--bs-space-16);
+  padding-block: var(--landing-chapter-gap) var(--landing-section-gap);
   /* Landing lanes carry their own gutters: centered max-widths read as
      margins on wide screens, but on a phone the gutter is all there is. */
   padding-inline: var(--bs-padding-lg);
@@ -1448,7 +1456,7 @@ body {
 .bs-docs-hero-title {
   margin: 0 0 var(--bs-margin-lg);
   font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-4xl);
+  font-size: var(--bs-font-size-display);
   font-weight: var(--bs-font-weight-display);
   line-height: var(--bs-line-height-tight);
   letter-spacing: var(--bs-tracking-headline);
@@ -1473,15 +1481,12 @@ body {
 .bs-docs-section {
   max-inline-size: 72rem;
   margin-inline: auto;
-  padding-block: var(--bs-padding-2xl) var(--bs-space-24);
+  padding-block: var(--landing-section-gap);
   padding-inline: var(--bs-padding-lg);
 }
 
 /* Horizontal sections set the copy and the demo side by side; `reverse`
    flips the panes so consecutive sections interleave. */
-.bs-docs-section--horizontal {
-  padding-block: var(--bs-space-16);
-}
 
 .bs-docs-section--horizontal .bs-docs-section-main {
   display: grid;
@@ -1505,6 +1510,31 @@ body {
 
 .bs-docs-section-main {
   min-inline-size: 0;
+}
+
+/* An inverted section is a chapter turn: the dark register owns a
+   full-bleed room with deliberate breathing room, while the content stays
+   on the same measure as the rest of the landing page. */
+.bs-docs-section--inverted {
+  max-inline-size: none;
+  padding-block: var(--landing-chapter-gap);
+  padding-inline: 0;
+  background: var(--bs-color-surface-1);
+  color: var(--bs-color-text-primary);
+}
+
+.bs-docs-section--inverted .bs-docs-section-main {
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding-inline: var(--bs-padding-lg);
+}
+
+.bs-docs-section--inverted .bs-docs-kicker {
+  color: var(--bs-color-text-secondary);
+}
+
+.bs-docs-section--inverted .bs-docs-kicker::before {
+  background: var(--bs-color-border-strong);
 }
 
 .bs-docs-section-body {
@@ -1550,7 +1580,7 @@ body {
 .bs-docs-section-head h2 {
   margin: 0 0 var(--bs-margin-sm);
   font-family: var(--bs-font-serif);
-  font-size: var(--bs-font-size-2xl);
+  font-size: var(--bs-font-size-3xl);
   font-weight: var(--bs-font-weight-headline);
   letter-spacing: var(--bs-tracking-headline);
   line-height: var(--bs-line-height-snug);
@@ -1560,6 +1590,35 @@ body {
   margin: 0;
   font-size: var(--bs-font-size-lg);
   color: var(--bs-color-text-secondary);
+}
+
+/* The eyebrow announces the section's shelf: a tracked whisper with a
+   leading hairline, numbered like the leaves of an index. */
+.bs-docs-section-head .bs-docs-kicker {
+  font-size: var(--bs-font-size-xs);
+}
+
+.bs-docs-kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--bs-gap-sm);
+  margin: 0 0 var(--bs-margin-md);
+  color: var(--bs-color-text-tertiary);
+  font-family: var(--bs-font-mono);
+  font-size: var(--bs-font-size-xs);
+  letter-spacing: var(--bs-tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+.bs-docs-kicker::before {
+  content: "";
+  inline-size: 2rem;
+  block-size: 1px;
+  background: var(--bs-color-border-strong);
+}
+
+.bs-docs-kicker--center {
+  justify-content: center;
 }
 
 .bs-docs-cards {

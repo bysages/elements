@@ -767,6 +767,7 @@
   --bs-font-size-2xl: clamp(1.375rem, 5vw, 1.625rem);
   --bs-font-size-3xl: clamp(1.75rem, 7vw, 2.25rem);
   --bs-font-size-4xl: clamp(2.5rem, 9vw, 3rem);
+  --bs-font-size-display: clamp(2.75rem, 8vw, 3.75rem);
   --bs-line-height-tight: 1.1;
   --bs-line-height-snug: 1.2;
   --bs-line-height-normal: 1.5;

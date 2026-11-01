@@ -3,6 +3,9 @@ title: Elements
 ---
 
 ::page-hero
+#kicker
+By Sages · UI Component Library
+
 #title
 纸墨为器，以光为影
 
@@ -20,6 +23,9 @@ Elements 是 By Sages 的界面组件库——温暖的纸、可读的墨、由�
 ::
 
 ::page-section
+#kicker
+01 / Foundations
+
 #title
 产品所需，一应俱全
 
@@ -93,8 +99,10 @@ Elements 是 By Sages 的界面组件库——温暖的纸、可读的墨、由�
   光照引擎计算阴影——光源、海拔、颜料渗透——写入样式层仅需消费的变量。动效遵循同一文法：光需要时间，墨会晕染。
   :::
 ::
-
 ::page-section{orientation="horizontal" reverse}
+#kicker
+02 / Quickstart
+
 #title
 一分钟跑起来
 
@@ -160,7 +168,27 @@ Elements 是 By Sages 的界面组件库——温暖的纸、可读的墨、由�
   ::
 ::
 
+::page-section{inverted}
+#kicker
+03 / Light
+
+#title
+以光为影
+
+#description
+光照引擎计算阴影——光源、海拔、颜料渗透——写入样式层仅需消费的变量。这一章落在夜里：纸张翻成墨色，控件由光托起。动效遵循同一文法：光需要时间，墨会晕染。
+
+#links
+  :::button-link{to="/zh/guide/theming" size="sm" variant="outline"}
+  阅读主题指南
+  :::
+
+::
+
 ::page-section
+#kicker
+04 / Start
+
 #title
 现在开始
 
