@@ -10,6 +10,7 @@ import {
 } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -20,6 +21,8 @@ import type { NativeSelectOption } from "./native";
  * row taking the flat ink fill. The parts — Root, Label, Control,
  * Trigger, ValueText, Indicator, ClearTrigger, HiddenSelect, Positioner,
  * Content, List, Item, ItemText, ItemIndicator, ItemGroup, ItemGroupLabel. */
+
+const SelectPositioner = definePositioner("SSelectPositioner", ArkSelect.Positioner);
 
 const SelectRoot = defineComponent({
   name: "SSelectRoot",
@@ -79,6 +82,7 @@ const SelectFacade = defineComponent({
     autoComplete: { type: String, default: undefined },
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: SelectFacadeValue) => true,
@@ -121,7 +125,7 @@ const SelectFacade = defineComponent({
               : []),
             h(ArkSelect.Indicator, () => iconNode("chevrons-up-down", { width: 14, height: 14 })),
           ]),
-          h(ArkSelect.Positioner, () =>
+          h(SelectPositioner, { portal: props.portal }, () =>
             h(ArkSelect.Content, () =>
               props.groupLabel
                 ? h(ArkSelect.ItemGroup, () => [
@@ -160,8 +164,11 @@ const SelectFacade = defineComponent({
 export const Select = defineFamily(SelectFacade, {
   ...ArkSelect,
   Root: SelectRoot,
-} as unknown as { Root: Component } & Record<string, Component>) as typeof SelectFacade &
-  SelectParts;
+  Positioner: SelectPositioner,
+} as unknown as { Root: Component; Positioner: Component } & Record<
+  string,
+  Component
+>) as typeof SelectFacade & Omit<SelectParts, "Positioner"> & { Positioner: Component };
 
 export { NativeSelect } from "./native";
 export type { NativeSelectOption } from "./native";

@@ -1,10 +1,10 @@
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
-import { Portal } from "@ark-ui/react/portal";
 import { createImageViewerGestures, type ImageViewerGestureController } from "@bysages/core";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -28,6 +28,8 @@ const TOOL_ICONS = {
  * stay in the viewer. Anatomy remains available on `ImageViewer.Root`.
  */
 export interface ImageViewerProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   id?: string;
   src: string;
   alt?: string;
@@ -44,6 +46,7 @@ export interface ImageViewerProps {
 }
 
 function ImageViewerImpl({
+  portal = true,
   src,
   alt = "",
   open,
@@ -117,7 +120,7 @@ function ImageViewerImpl({
       <ArkDialog.Trigger asChild data-scope="image-viewer" data-part="trigger">
         {children ?? <ImageViewerPreview />}
       </ArkDialog.Trigger>
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkDialog.Backdrop className="bs-image-viewer-backdrop" />
         <ArkDialog.Positioner className="bs-image-viewer-positioner">
           <ArkDialog.Content
@@ -162,7 +165,7 @@ function ImageViewerImpl({
             </div>
           </ArkDialog.Content>
         </ArkDialog.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkDialog.Root>
   );
 }

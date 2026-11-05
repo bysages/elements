@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -10,6 +11,8 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 /** Popover, dressed in the paper-and-ink system: a paper vessel that
  * dissolves in on elevation, anchored to its trigger by a whisker arrow. The parts — Root, Trigger, Anchor, Indicator, Positioner, Content,
  * Title, Description, CloseTrigger, Arrow, ArrowTip. */
+const PopoverPositioner = definePositioner("SPopoverPositioner", ArkPopover.Positioner);
+
 const PopoverRoot = defineComponent({
   name: "SPopoverRoot",
   inheritAttrs: false,
@@ -49,6 +52,7 @@ const PopoverFacade = defineComponent({
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
     placement: { type: String as PropType<PopoverPlacement>, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -72,7 +76,7 @@ const PopoverFacade = defineComponent({
             { ...(ctx.slots.trigger ? { asChild: true } : {}), disabled: props.disabled },
             ctx.slots.trigger ?? (() => props.trigger ?? props.label),
           ),
-          h(ArkPopover.Positioner, () =>
+          h(PopoverPositioner, { portal: props.portal }, () =>
             h(ArkPopover.Content, () => [
               h(ArkPopover.CloseTrigger, { "aria-label": "Close" }, () =>
                 iconNode("x", { width: 14, height: 14 }),
@@ -91,7 +95,12 @@ const PopoverFacade = defineComponent({
 export const Popover = defineFamily(PopoverFacade, {
   ...ArkPopover,
   Root: PopoverRoot,
+  Positioner: PopoverPositioner,
 } as unknown as {
   Root: Component;
+  Positioner: Component;
 } & Record<string, Component>) as typeof PopoverFacade &
-  Omit<typeof ArkPopover, "Root"> & { Root: typeof PopoverRoot };
+  Omit<typeof ArkPopover, "Root" | "Positioner"> & {
+    Root: typeof PopoverRoot;
+    Positioner: Component;
+  };

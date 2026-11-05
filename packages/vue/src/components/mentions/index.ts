@@ -4,6 +4,7 @@ import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType, type Ref } from "vue";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Field } from "../field";
@@ -13,6 +14,8 @@ import { useMentions, type MentionCommitKey } from "./use-mentions";
 
 export type { MentionCommitKey, UseMentionsOptions, UseMentionsHandlers } from "./use-mentions";
 export { useMentions } from "./use-mentions";
+
+const MentionsPositioner = definePositioner("SMentionsPositioner", ArkPopover.Positioner);
 
 export interface MentionEntry {
   /** Stable identity for tests, popups and business handlers. */
@@ -215,6 +218,7 @@ export const MentionsVessel = withSelfRoot(
       size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
       /** Which side of the composer hosts the candidates. */
       placement: { type: String as PropType<MentionPlacement>, default: "bottom-start" },
+      portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
     },
     emits: {
       insert: (_entry: MentionEntry) => true,
@@ -240,7 +244,7 @@ export const MentionsVessel = withSelfRoot(
             },
           }),
           () => [
-            h(ArkPopover.Positioner, () =>
+            h(MentionsPositioner, { portal: props.portal }, () =>
               h(ArkPopover.Content, { asChild: true }, () =>
                 h(
                   MentionsPopup,
@@ -295,6 +299,7 @@ const MentionsFacade = defineComponent({
     invalid: { type: Boolean, default: false },
     /** One rung of the control-height ladder for the resting field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: string) => true,
@@ -385,7 +390,7 @@ const MentionsFacade = defineComponent({
                   "data-part": "textarea",
                 }),
               ),
-              h(ArkPopover.Positioner, () =>
+              h(MentionsPositioner, { portal: props.portal }, () =>
                 h(ArkPopover.Content, { asChild: true }, () =>
                   h(MentionsPopup, {
                     id: `${hostId.value}:vessel:popup`,

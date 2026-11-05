@@ -4,11 +4,14 @@ import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from
 
 import { isElement, withElementProps } from "../../internal/element";
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's HoverCard, dressed in the paper-and-ink system: a preview card
  * that dissolves in over a quiet inline link, never stealing focus. The
  * API is Ark's own — Root, Trigger, Positioner, Content, Arrow, ArrowTip. */
+const HoverCardPositioner = definePositioner(ArkHoverCard.Positioner);
+
 function HoverCardRoot(props: ComponentProps<typeof ArkHoverCard.Root>) {
   const id = useElementId("hover-card", () => props.id);
 
@@ -37,6 +40,8 @@ type HoverCardPlacement =
   | "right-end";
 
 export interface HoverCardFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: string | Element;
@@ -74,7 +79,7 @@ function HoverCardFacade(props: HoverCardFacadeProps) {
       >
         {triggerChildren()}
       </ArkHoverCard.Trigger>
-      <ArkHoverCard.Positioner>
+      <HoverCardPositioner portal={props.portal ?? false}>
         <ArkHoverCard.Content>
           <ArkHoverCard.Arrow>
             <ArkHoverCard.ArrowTip />
@@ -88,17 +93,18 @@ function HoverCardFacade(props: HoverCardFacadeProps) {
           </Show>
           {props.children}
         </ArkHoverCard.Content>
-      </ArkHoverCard.Positioner>
+      </HoverCardPositioner>
     </HoverCardRoot>
   );
 }
 
 export const HoverCard: typeof HoverCardFacade &
-  Omit<typeof ArkHoverCard, "Root"> & { Root: typeof HoverCardRoot } = defineFamily(
-  HoverCardFacade,
-  {
-    ...ArkHoverCard,
-    Root: HoverCardRoot,
-  },
-);
+  Omit<typeof ArkHoverCard, "Root" | "Positioner"> & {
+    Root: typeof HoverCardRoot;
+    Positioner: typeof HoverCardPositioner;
+  } = defineFamily(HoverCardFacade, {
+  ...ArkHoverCard,
+  Root: HoverCardRoot,
+  Positioner: HoverCardPositioner,
+});
 injectComponentStyle("hover-card");

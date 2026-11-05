@@ -1,4 +1,5 @@
 import type { ColumnDef, RowData, SortingState } from "@tanstack/svelte-table";
+import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
 /** One-stop data table on TanStack Table v9, dressed in the paper-and-ink
@@ -6,6 +7,18 @@ import type { HTMLAttributes } from "svelte/elements";
  * pinned columns, merged cells, and a virtualized window all stay honest
  * while sorting, filtering, tree expansion, selection, and pagination come
  * from the row-model pipeline. */
+/** A stable toolbar contract: the table owns the filter atoms and exposes
+ * only the decisions a caller toolbar needs. */
+export interface DataTableToolbarSlot {
+  /** The current global filter value; empty string reads as no filter. */
+  globalFilter: string;
+  setGlobalFilter(value: string): void;
+  /** Current per-column filters, each as `{ id, value }`. */
+  columnFilters: Array<{ id: string; value: unknown }>;
+  setColumnFilters(filters: Array<{ id: string; value: unknown }>): void;
+  clearFilters(): void;
+}
+
 export interface DataTableProps extends HTMLAttributes<HTMLDivElement> {
   /** Row data; replaced wholesale on change — TanStack's memoized row
    * models keep unrelated rows untouched, so edits land without a full
@@ -52,6 +65,8 @@ export interface DataTableProps extends HTMLAttributes<HTMLDivElement> {
   initialSorting?: SortingState;
   /** Band every other body row so wide measures keep the eye on line. */
   striped?: boolean;
+  /** Custom toolbar receiving the filtering contract. */
+  toolbar?: Snippet<[DataTableToolbarSlot]>;
   globalFilterPlaceholder?: string;
   emptyText?: string;
   /** Allow dragging header cells onto each other to reorder columns and

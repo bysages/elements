@@ -3,9 +3,9 @@ import { Popover as ArkPopover } from "@ark-ui/solid/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Icon } from "../icon";
 import { Popover } from "../popover";
@@ -83,6 +83,8 @@ export interface MentionsVesselProps {
   size?: "sm" | "md" | "lg";
   /** The vessel's stable base id; popup ids derive from it. */
   id?: string;
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   onInsert?: (entry: MentionEntry) => void;
   onActiveChange?: (index: number) => void;
   onOpenChange?: (open: boolean) => void;
@@ -175,54 +177,51 @@ export const MentionsVessel = withSelfRoot(function MentionsVessel(props: Mentio
           }
         />
       ) : null}
-      <Portal>
-        <ArkPopover.Positioner>
-          <ArkPopover.Content
-            asChild={(contentProps) => (
-              <div
-                {...contentProps()}
-                id={popupId()}
-                role="listbox"
-                aria-activedescendant={
-                  props.matches?.[props.active ?? 0] &&
-                  !props.matches?.[props.active ?? 0]?.disabled
-                    ? `${popupId()}:option-${props.active ?? 0}`
-                    : undefined
-                }
-                data-scope="mentions"
-                data-part="popup"
-                data-size={props.size ?? "md"}
-              >
-                <For each={groupMentions(props.matches ?? [])}>
-                  {(group, groupIndex) => {
-                    const labelId = group.name ? `${popupId()}:group-${groupIndex()}` : undefined;
-                    const options = (
-                      <For each={group.entries}>
-                        {({ entry, index }) => option(entry, () => index)}
-                      </For>
-                    );
+      <Popover.Positioner portal={props.portal ?? false}>
+        <ArkPopover.Content
+          asChild={(contentProps) => (
+            <div
+              {...contentProps()}
+              id={popupId()}
+              role="listbox"
+              aria-activedescendant={
+                props.matches?.[props.active ?? 0] && !props.matches?.[props.active ?? 0]?.disabled
+                  ? `${popupId()}:option-${props.active ?? 0}`
+                  : undefined
+              }
+              data-scope="mentions"
+              data-part="popup"
+              data-size={props.size ?? "md"}
+            >
+              <For each={groupMentions(props.matches ?? [])}>
+                {(group, groupIndex) => {
+                  const labelId = group.name ? `${popupId()}:group-${groupIndex()}` : undefined;
+                  const options = (
+                    <For each={group.entries}>
+                      {({ entry, index }) => option(entry, () => index)}
+                    </For>
+                  );
 
-                    if (!group.name) return options;
-                    return (
-                      <div
-                        role="group"
-                        aria-labelledby={labelId}
-                        data-scope="mentions"
-                        data-part="group"
-                      >
-                        <div id={labelId} data-scope="mentions" data-part="group-label">
-                          {group.name}
-                        </div>
-                        {options}
+                  if (!group.name) return options;
+                  return (
+                    <div
+                      role="group"
+                      aria-labelledby={labelId}
+                      data-scope="mentions"
+                      data-part="group"
+                    >
+                      <div id={labelId} data-scope="mentions" data-part="group-label">
+                        {group.name}
                       </div>
-                    );
-                  }}
-                </For>
-              </div>
-            )}
-          />
-        </ArkPopover.Positioner>
-      </Portal>
+                      {options}
+                    </div>
+                  );
+                }}
+              </For>
+            </div>
+          )}
+        />
+      </Popover.Positioner>
     </ArkPopover.Root>
   );
 });
@@ -254,6 +253,8 @@ export interface MentionsProps extends Omit<
   invalid?: boolean;
   /** One rung of the control-height ladder for the resting field. */
   size?: "sm" | "md" | "lg";
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   /** The field's text changed. */
   onValueChange?: (value: string) => void;
   /** A candidate was chosen, including when `insertOnSelect` keeps the
@@ -290,6 +291,7 @@ function MentionsImpl(props: MentionsProps) {
     "autoresize",
     "invalid",
     "size",
+    "portal",
     "onValueChange",
     "onSelect",
   ]);
@@ -365,6 +367,7 @@ function MentionsImpl(props: MentionsProps) {
         size={own.size ?? "md"}
         id={`${hostId()}:vessel`}
         placement={own.placement ?? "bottom-start"}
+        portal={own.portal ?? false}
         onInsert={mentions.insert}
         onActiveChange={mentions.setActive}
         onOpenChange={(open) => {

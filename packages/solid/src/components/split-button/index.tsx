@@ -2,9 +2,9 @@ import { Menu as ArkMenu } from "@ark-ui/solid/menu";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
@@ -32,6 +32,8 @@ export interface SplitButtonProps extends Omit<
   variant?: "solid" | "outline" | "ghost" | "subtle";
   tone?: "ink" | "info" | "success" | "warning" | "danger";
   size?: "sm" | "md" | "lg";
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   disabled?: boolean;
   /** The main button was pressed. */
   onClick?: (event: MouseEvent) => void;
@@ -60,6 +62,7 @@ function SplitButtonImpl(props: SplitButtonProps) {
     "disabled",
     "onClick",
     "onSelect",
+    "portal",
     "children",
   ]);
   const variant = () => own.variant ?? "solid";
@@ -99,26 +102,24 @@ function SplitButtonImpl(props: SplitButtonProps) {
             </button>
           )}
         />
-        <Portal>
-          <ArkMenu.Positioner>
-            <ArkMenu.Content>
-              <For each={own.items ?? []}>
-                {(entry) => (
-                  <ArkMenu.Item
-                    value={entry.value}
-                    disabled={entry.disabled}
-                    // Danger rides a data flag of our own — the
-                    // split-button stylesheet tints the row.
-                    data-danger={entry.danger ? "" : undefined}
-                    onSelect={() => own.onSelect?.(entry.value)}
-                  >
-                    <ArkMenu.ItemText>{entry.label}</ArkMenu.ItemText>
-                  </ArkMenu.Item>
-                )}
-              </For>
-            </ArkMenu.Content>
-          </ArkMenu.Positioner>
-        </Portal>
+        <Menu.Positioner portal={own.portal ?? false}>
+          <ArkMenu.Content>
+            <For each={own.items ?? []}>
+              {(entry) => (
+                <ArkMenu.Item
+                  value={entry.value}
+                  disabled={entry.disabled}
+                  // Danger rides a data flag of our own — the
+                  // split-button stylesheet tints the row.
+                  data-danger={entry.danger ? "" : undefined}
+                  onSelect={() => own.onSelect?.(entry.value)}
+                >
+                  <ArkMenu.ItemText>{entry.label}</ArkMenu.ItemText>
+                </ArkMenu.Item>
+              )}
+            </For>
+          </ArkMenu.Content>
+        </Menu.Positioner>
       </ArkMenu.Root>
     </div>
   );

@@ -4,6 +4,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -38,6 +39,8 @@ function DatePickerRoot(props: DatePickerRootProps) {
 type DatePickerFacadeValue = DateValue | DateValue[];
 
 type DatePickerFacadeProps = {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: DatePickerFacadeValue;
   defaultValue?: DatePickerFacadeValue;
   disabled?: boolean;
@@ -60,6 +63,7 @@ function toDatePickerValue(value: DatePickerFacadeValue | undefined) {
  * while ranges, multiple selection, and custom views remain anatomy work. */
 function DatePickerFacade(props: DatePickerFacadeProps) {
   const {
+    portal = false,
     value,
     defaultValue,
     disabled,
@@ -93,53 +97,55 @@ function DatePickerFacade(props: DatePickerFacadeProps) {
           {iconNode("calendar", { width: 16, height: 16 })}
         </ArkDatePicker.Trigger>
       </ArkDatePicker.Control>
-      <ArkDatePicker.Positioner>
-        <ArkDatePicker.Content>
-          <ArkDatePicker.View view="day">
-            <ArkDatePicker.Context>
-              {(dp: any) => (
-                <>
-                  <ArkDatePicker.ViewControl>
-                    <ArkDatePicker.PrevTrigger>
-                      {iconNode("chevron-left", { width: 14, height: 14 })}
-                    </ArkDatePicker.PrevTrigger>
-                    <ArkDatePicker.ViewTrigger>
-                      <ArkDatePicker.RangeText />
-                    </ArkDatePicker.ViewTrigger>
-                    <ArkDatePicker.NextTrigger>
-                      {iconNode("chevron-right", { width: 14, height: 14 })}
-                    </ArkDatePicker.NextTrigger>
-                  </ArkDatePicker.ViewControl>
-                  <ArkDatePicker.Table>
-                    <ArkDatePicker.TableHead>
-                      <ArkDatePicker.TableRow>
-                        {dp.weekDays.map((day: any, index: number) => (
-                          <ArkDatePicker.TableHeader key={index} aria-label={day.long}>
-                            {day.narrow}
-                          </ArkDatePicker.TableHeader>
-                        ))}
-                      </ArkDatePicker.TableRow>
-                    </ArkDatePicker.TableHead>
-                    <ArkDatePicker.TableBody>
-                      {dp.weeks.map((week: any[], index: number) => (
-                        <ArkDatePicker.TableRow key={index}>
-                          {week.map((day: any, dayIndex: number) => (
-                            <ArkDatePicker.TableCell key={dayIndex} value={day}>
-                              <ArkDatePicker.TableCellTrigger>
-                                {day.day}
-                              </ArkDatePicker.TableCellTrigger>
-                            </ArkDatePicker.TableCell>
+      <FloatingPortal portal={portal}>
+        <ArkDatePicker.Positioner>
+          <ArkDatePicker.Content>
+            <ArkDatePicker.View view="day">
+              <ArkDatePicker.Context>
+                {(dp: any) => (
+                  <>
+                    <ArkDatePicker.ViewControl>
+                      <ArkDatePicker.PrevTrigger>
+                        {iconNode("chevron-left", { width: 14, height: 14 })}
+                      </ArkDatePicker.PrevTrigger>
+                      <ArkDatePicker.ViewTrigger>
+                        <ArkDatePicker.RangeText />
+                      </ArkDatePicker.ViewTrigger>
+                      <ArkDatePicker.NextTrigger>
+                        {iconNode("chevron-right", { width: 14, height: 14 })}
+                      </ArkDatePicker.NextTrigger>
+                    </ArkDatePicker.ViewControl>
+                    <ArkDatePicker.Table>
+                      <ArkDatePicker.TableHead>
+                        <ArkDatePicker.TableRow>
+                          {dp.weekDays.map((day: any, index: number) => (
+                            <ArkDatePicker.TableHeader key={index} aria-label={day.long}>
+                              {day.narrow}
+                            </ArkDatePicker.TableHeader>
                           ))}
                         </ArkDatePicker.TableRow>
-                      ))}
-                    </ArkDatePicker.TableBody>
-                  </ArkDatePicker.Table>
-                </>
-              )}
-            </ArkDatePicker.Context>
-          </ArkDatePicker.View>
-        </ArkDatePicker.Content>
-      </ArkDatePicker.Positioner>
+                      </ArkDatePicker.TableHead>
+                      <ArkDatePicker.TableBody>
+                        {dp.weeks.map((week: any[], index: number) => (
+                          <ArkDatePicker.TableRow key={index}>
+                            {week.map((day: any, dayIndex: number) => (
+                              <ArkDatePicker.TableCell key={dayIndex} value={day}>
+                                <ArkDatePicker.TableCellTrigger>
+                                  {day.day}
+                                </ArkDatePicker.TableCellTrigger>
+                              </ArkDatePicker.TableCell>
+                            ))}
+                          </ArkDatePicker.TableRow>
+                        ))}
+                      </ArkDatePicker.TableBody>
+                    </ArkDatePicker.Table>
+                  </>
+                )}
+              </ArkDatePicker.Context>
+            </ArkDatePicker.View>
+          </ArkDatePicker.Content>
+        </ArkDatePicker.Positioner>
+      </FloatingPortal>
     </DatePickerRoot>
   );
 }

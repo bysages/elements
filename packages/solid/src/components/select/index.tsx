@@ -5,6 +5,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import type { NativeSelectOption } from "./native";
@@ -20,6 +21,8 @@ type SelectOwnProps = {
   size?: "sm" | "md" | "lg";
 };
 
+const SelectPositioner = definePositioner(ArkSelect.Positioner);
+
 function SelectRoot<T extends CollectionItem>(props: ArkSelectRootProps<T> & SelectOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
   const id = useElementId("select", () => rest.id);
@@ -27,13 +30,18 @@ function SelectRoot<T extends CollectionItem>(props: ArkSelectRootProps<T> & Sel
 }
 
 type SelectFacadeValue = string | string[];
-type SelectParts = Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot };
+type SelectParts = Omit<typeof ArkSelect, "Root" | "Positioner"> & {
+  Root: typeof SelectRoot;
+  Positioner: typeof SelectPositioner;
+};
 
 function toArkValue(value: SelectFacadeValue | undefined) {
   return value === undefined || value === "" ? [] : Array.isArray(value) ? value : [value];
 }
 
 export interface SelectFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: SelectFacadeValue;
   defaultValue?: SelectFacadeValue;
   options: NativeSelectOption[];
@@ -98,7 +106,7 @@ function SelectFacade(props: SelectFacadeProps) {
           {iconNode("chevrons-up-down", { width: "14", height: "14" })}
         </ArkSelect.Indicator>
       </ArkSelect.Control>
-      <ArkSelect.Positioner>
+      <SelectPositioner portal={props.portal ?? false}>
         <ArkSelect.Content>
           <Show
             when={props.groupLabel}
@@ -132,7 +140,7 @@ function SelectFacade(props: SelectFacadeProps) {
             </ArkSelect.ItemGroup>
           </Show>
         </ArkSelect.Content>
-      </ArkSelect.Positioner>
+      </SelectPositioner>
       <ArkSelect.HiddenSelect />
     </SelectRoot>
   );
@@ -143,6 +151,7 @@ function SelectFacade(props: SelectFacadeProps) {
 export const Select: typeof SelectFacade & SelectParts = defineFamily(SelectFacade, {
   ...ArkSelect,
   Root: SelectRoot,
+  Positioner: SelectPositioner,
 });
 
 /** The platform's own list wearing the control recipe. */

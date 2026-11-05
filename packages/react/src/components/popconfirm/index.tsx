@@ -1,8 +1,8 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { Popover } from "../popover";
@@ -16,6 +16,8 @@ import { Popover } from "../popover";
  * otherwise).
  */
 export interface PopconfirmProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   id?: string;
   /** The question the reader is answering. */
   message: string;
@@ -27,6 +29,7 @@ export interface PopconfirmProps {
 }
 
 function PopconfirmImpl({
+  portal = false,
   message,
   confirmText = "Confirm",
   cancelText = "Cancel",
@@ -40,7 +43,7 @@ function PopconfirmImpl({
   return (
     <ArkPopover.Root id={`${hostId}:popover`} positioning={{ placement: "top" }}>
       <ArkPopover.Trigger asChild>{children}</ArkPopover.Trigger>
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkPopover.Positioner>
           <ArkPopover.Content className="bs-popconfirm">
             <p data-part="message">{message}</p>
@@ -63,7 +66,7 @@ function PopconfirmImpl({
             </div>
           </ArkPopover.Content>
         </ArkPopover.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkPopover.Root>
   );
 }

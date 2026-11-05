@@ -5,9 +5,9 @@ import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/solid";
 import { For, Show, createMemo, createSignal, mergeProps, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { withSelfRoot } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -42,6 +42,8 @@ export interface CascadeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
   /** One rung of the control-height ladder for the trigger. */
   size?: "sm" | "md" | "lg";
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   onValueChange?: (value: string[][]) => void;
 }
 
@@ -67,6 +69,7 @@ export const CascadeSelect = withSelfRoot(function CascadeSelect(props: CascadeS
     "disabled",
     "id",
     "size",
+    "portal",
     "onValueChange",
   ]);
   const id = useElementId("cascade-select", () => own.id)();
@@ -243,7 +246,7 @@ export const CascadeSelect = withSelfRoot(function CascadeSelect(props: CascadeS
           <span {...mergeProps(() => api().getIndicatorProps())}>{chevronDown()}</span>
         </button>
       </div>
-      <Portal>
+      <FloatingPortal portal={own.portal ?? false}>
         <div {...mergeProps(() => api().getPositionerProps())}>
           <div {...mergeProps(() => api().getContentProps())} data-size={own.size ?? "md"}>
             <Show when={own.filterable}>
@@ -294,7 +297,7 @@ export const CascadeSelect = withSelfRoot(function CascadeSelect(props: CascadeS
             </div>
           </div>
         </div>
-      </Portal>
+      </FloatingPortal>
     </div>
   );
 });

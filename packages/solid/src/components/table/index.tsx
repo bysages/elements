@@ -90,6 +90,18 @@ declare module "@tanstack/solid-table" {
  * pinned columns, merged cells, and a virtualized window all stay honest
  * while sorting, filtering, tree expansion, selection, and pagination come
  * from the row-model pipeline. */
+/** A stable toolbar contract: the table owns TanStack's state atoms and
+ * exposes only the two filter decisions a caller toolbar needs. */
+export interface DataTableToolbarSlot {
+  /** The current global filter value; empty string reads as no filter. */
+  globalFilter: string;
+  setGlobalFilter(value: string): void;
+  /** Current per-column filters, each as `{ id, value }`. */
+  columnFilters: Array<{ id: string; value: unknown }>;
+  setColumnFilters(filters: Array<{ id: string; value: unknown }>): void;
+  clearFilters(): void;
+}
+
 export interface DataTableProps {
   /** Row data; replaced wholesale on change — TanStack's memoized row
    * models keep unrelated rows untouched, so edits land without a full
@@ -112,6 +124,8 @@ export interface DataTableProps {
    * toolbar — the feature stays registered and the instance methods
    * keep working. */
   showToolbar?: boolean;
+  /** Replace the built-in toolbar with a caller-rendered toolbar. */
+  toolbar?: (slot: DataTableToolbarSlot) => JSX.Element;
   /** Enable tree expansion over `subRows`; the first column hosts the
    * expander and depth indent. */
   tree?: boolean;
@@ -783,6 +797,15 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
     );
   }
 
+  const toolbarSlot = (): DataTableToolbarSlot => ({
+    globalFilter: (table.atoms.globalFilter.get() as string) ?? "",
+    setGlobalFilter: (value) => table.setGlobalFilter(value),
+    columnFilters: table.atoms.columnFilters.get().map((filter) => ({ ...filter })),
+    setColumnFilters: (filters) => table.setColumnFilters(filters),
+    clearFilters: () => table.setColumnFilters([]),
+  });
+  const customToolbar = props.filterable && props.toolbar ? props.toolbar(toolbarSlot()) : null;
+
   return (
     <div
       data-scope="table"
@@ -791,7 +814,12 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
       data-striped={props.striped || undefined}
       style={{ "--bs-table-row-height": `calc(${baseRowHeight()}px * var(--bs-density-scale, 1))` }}
     >
-      {props.filterable && (props.showToolbar ?? true) ? (
+      {customToolbar ? (
+        <div data-scope="table" data-part="toolbar">
+          {customToolbar}
+        </div>
+      ) : null}
+      {!customToolbar && props.filterable && (props.showToolbar ?? true) ? (
         <div data-scope="table" data-part="toolbar">
           <input
             type="search"
@@ -919,7 +947,7 @@ export const DataTable = withSelfRoot(function DataTable(props: DataTableProps) 
                   <ArkSelect.Indicator>{chevronDownIcon()}</ArkSelect.Indicator>
                 </ArkSelect.Trigger>
               </ArkSelect.Control>
-              <ArkSelect.Positioner>
+              <ArkSelect.Positioner portal>
                 <ArkSelect.Content>
                   <For
                     each={(props.pageSizeOptions ?? [10, 20, 50]).map((size) => ({

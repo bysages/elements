@@ -3,6 +3,7 @@ import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
 import { defineFamily } from "../../internal/family";
 import DialogFacade from "./Dialog.svelte";
 import DialogBody from "./DialogBody.svelte";
+import DialogContent from "./DialogContent.svelte";
 import DialogFooter from "./DialogFooter.svelte";
 import DialogHeader from "./DialogHeader.svelte";
 import DialogRoot from "./DialogRoot.svelte";
@@ -15,14 +16,16 @@ export type { DialogOpenChangeDetails } from "@ark-ui/svelte/dialog";
  * Footer, Trigger, Backdrop, Positioner, Content, Title, Description,
  * CloseTrigger. */
 export const Dialog: typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root"> & {
+  Omit<typeof ArkDialog, "Root" | "Content"> & {
     Root: typeof DialogRoot;
+    Content: typeof DialogContent;
     Header: typeof DialogHeader;
     Body: typeof DialogBody;
     Footer: typeof DialogFooter;
   } = defineFamily(DialogFacade, {
   ...ArkDialog,
   Root: DialogRoot,
+  Content: DialogContent,
   Header: DialogHeader,
   Body: DialogBody,
   Footer: DialogFooter,

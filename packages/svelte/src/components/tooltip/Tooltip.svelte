@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Tooltip as ArkTooltip } from "@ark-ui/svelte/tooltip";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import TooltipRoot from "./TooltipRoot.svelte";
 
@@ -11,6 +11,7 @@ let {
   placement,
   trigger,
   children,
+  portal = false,
   ...rest
 }: {
   open?: boolean;
@@ -20,6 +21,8 @@ let {
   /** The affordance the tooltip describes: text, a snippet, or the default slot. */
   trigger?: string | import("svelte").Snippet<[import("svelte/elements").HTMLAttributes<HTMLElement>]>;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("./props").TooltipRootProps = $props();
 </script>
 
@@ -35,12 +38,12 @@ let {
   {:else if children}
     <ArkTooltip.Trigger {disabled}>{@render children()}</ArkTooltip.Trigger>
   {/if}
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkTooltip.Positioner>
       <ArkTooltip.Content>
         <ArkTooltip.Arrow><ArkTooltip.ArrowTip /></ArkTooltip.Arrow>
         {content}
       </ArkTooltip.Content>
     </ArkTooltip.Positioner>
-  </Portal>
+  </FloatingPortal>
 </TooltipRoot>

@@ -7,6 +7,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -25,6 +26,8 @@ export type {
  * Root, Label, Control, Input, Trigger, ClearTrigger, Positioner,
  * Content, View, ViewControl, ViewTrigger, RangeText, PrevTrigger,
  * NextTrigger, Table*, MonthSelect, YearSelect, PresetTrigger. */
+const DatePickerPositioner = definePositioner("SDatePickerPositioner", ArkDatePicker.Positioner);
+
 const DatePickerRoot = defineComponent({
   name: "SDatePickerRoot",
   props: {
@@ -79,6 +82,7 @@ const DatePickerFacade = defineComponent({
     /** Quick choices rendered above the calendar; the picker's own preset
      * machine resolves named ranges. */
     presets: { type: Array as PropType<DatePickerPreset[]>, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: DateValue[]) => true,
@@ -104,7 +108,7 @@ const DatePickerFacade = defineComponent({
             h(ArkDatePicker.Input as never, props.label ? {} : { "aria-label": props.placeholder }),
             h(ArkDatePicker.Trigger, () => iconNode("calendar", { width: 16, height: 16 })),
           ]),
-          h(ArkDatePicker.Positioner, () =>
+          h(DatePickerPositioner, { portal: props.portal }, () =>
             h(ArkDatePicker.Content, () =>
               h(ArkDatePicker.View, { view: "day" }, () =>
                 h(ArkDatePicker.Context, null, {
@@ -169,5 +173,12 @@ const DatePickerFacade = defineComponent({
 export const DatePicker = defineFamily(DatePickerFacade, {
   ...ArkDatePicker,
   Root: DatePickerRoot,
-} as unknown as { Root: Component } & Record<string, Component>) as typeof DatePickerFacade &
-  Omit<typeof ArkDatePicker, "Root"> & { Root: typeof ArkDatePicker.Root & typeof DatePickerRoot };
+  Positioner: DatePickerPositioner,
+} as unknown as { Root: Component; Positioner: Component } & Record<
+  string,
+  Component
+>) as typeof DatePickerFacade &
+  Omit<typeof ArkDatePicker, "Root" | "Positioner"> & {
+    Root: typeof ArkDatePicker.Root & typeof DatePickerRoot;
+    Positioner: Component;
+  };

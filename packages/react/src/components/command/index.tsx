@@ -1,10 +1,10 @@
 import { type ListCollection, useListCollection } from "@ark-ui/react/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
 import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { useEffect, useState } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Dialog } from "../dialog";
@@ -28,6 +28,8 @@ export interface CommandEntry {
  * grafts onto the sheet's list.
  */
 export interface CommandProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   id?: string;
   /** The commands on offer, grouped as they arrive. */
   items?: CommandEntry[];
@@ -53,6 +55,7 @@ export interface CommandProps {
 }
 
 function CommandImpl({
+  portal = true,
   items = [],
   placeholder,
   open,
@@ -145,7 +148,7 @@ function CommandImpl({
       open={currentOpen}
       onOpenChange={(details) => setOpen(details.open)}
     >
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkDialog.Backdrop />
         <ArkDialog.Positioner asChild>
           <div data-scope="command" data-part="positioner">
@@ -213,7 +216,7 @@ function CommandImpl({
             </ArkDialog.Content>
           </div>
         </ArkDialog.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkDialog.Root>
   );
 }

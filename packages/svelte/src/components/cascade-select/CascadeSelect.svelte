@@ -4,7 +4,7 @@ injectComponentStyle("cascade-select");
 
 import { useEnvironmentContext } from "@ark-ui/svelte/environment";
 import { useFilter, useLocaleContext } from "@ark-ui/svelte/locale";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/svelte";
 
@@ -23,6 +23,7 @@ let {
   size = "md",
   multiple = false,
   disabled = false,
+  portal = false,
   ...rest
 }: CascadeSelectProps = $props();
 
@@ -182,7 +183,7 @@ its full route. -->
       </span>
     </button>
   </div>
-  <Portal>
+  <FloatingPortal {portal}>
     <div {...api.getPositionerProps()}>
       <div {...api.getContentProps()} data-size={size}>
         {#if filterable}
@@ -213,6 +214,5 @@ its full route. -->
         </div>
       </div>
     </div>
-  </Portal>
+  </FloatingPortal>
 </div>
-

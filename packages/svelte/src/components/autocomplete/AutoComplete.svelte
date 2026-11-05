@@ -4,7 +4,7 @@ injectComponentStyle("combobox");
 
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 import { untrack } from "svelte";
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -17,6 +17,7 @@ let {
   placeholder,
   size = "md",
   filter,
+  portal = false,
   ...rest
 }: AutoCompleteProps =
   $props();
@@ -63,7 +64,7 @@ one job. -->
   <ArkCombobox.Control>
     <ArkCombobox.Input placeholder={placeholder} />
   </ArkCombobox.Control>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkCombobox.Positioner>
       <ArkCombobox.Content>
         <ArkCombobox.Empty>{messages().command.noMatches}</ArkCombobox.Empty>
@@ -74,6 +75,5 @@ one job. -->
         {/each}
       </ArkCombobox.Content>
     </ArkCombobox.Positioner>
-  </Portal>
+  </FloatingPortal>
 </ArkCombobox.Root>
-

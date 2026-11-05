@@ -1,8 +1,8 @@
 import { Menu as ArkMenu } from "@ark-ui/react/menu";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Menu } from "../menu";
 
@@ -31,13 +31,15 @@ export interface MenubarGroup {
  * version. Inside an open menu the machine handles arrows and Escape.
  */
 export interface MenubarProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   /** The menus across the bar, each with its entries. */
   items: MenubarGroup[];
   /** Called with the entry's `value` when it is chosen. */
   onSelect?: (value: string) => void;
 }
 
-function MenubarImpl({ items, onSelect, children, ...rest }: MenubarProps) {
+function MenubarImpl({ portal = false, items, onSelect, children, ...rest }: MenubarProps) {
   injectComponentStyle("menubar");
   injectComponentStyle("menu");
   const hostId = useElementId("menubar", rest);
@@ -54,7 +56,7 @@ function MenubarImpl({ items, onSelect, children, ...rest }: MenubarProps) {
               {group.label}
             </button>
           </ArkMenu.Trigger>
-          <Portal>
+          <FloatingPortal portal={portal}>
             <ArkMenu.Positioner>
               <ArkMenu.Content>
                 {group.items.map((entry) => (
@@ -72,7 +74,7 @@ function MenubarImpl({ items, onSelect, children, ...rest }: MenubarProps) {
                 ))}
               </ArkMenu.Content>
             </ArkMenu.Positioner>
-          </Portal>
+          </FloatingPortal>
         </ArkMenu.Root>
       ))}
       {children}

@@ -2,6 +2,7 @@ import { HoverCard as ArkHoverCard } from "@ark-ui/react/hover-card";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's HoverCard, dressed in the paper-and-ink system: a preview card
@@ -28,6 +29,8 @@ type HoverCardPlacement =
   | "right-end";
 
 export interface HoverCardFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: string;
@@ -41,6 +44,7 @@ export interface HoverCardFacadeProps {
 }
 
 function HoverCardFacade({
+  portal = false,
   open,
   defaultOpen,
   trigger,
@@ -60,17 +64,19 @@ function HoverCardFacade({
       onOpenChange={(details: { open: boolean }) => onOpenChange?.(details.open)}
     >
       <ArkHoverCard.Trigger disabled={disabled}>{trigger}</ArkHoverCard.Trigger>
-      <ArkHoverCard.Positioner>
-        <ArkHoverCard.Content>
-          <ArkHoverCard.Arrow>
-            <ArkHoverCard.ArrowTip />
-          </ArkHoverCard.Arrow>
-          <h3>{label}</h3>
-          {description ? <p>{description}</p> : null}
-          {content ? <p>{content}</p> : null}
-          {children}
-        </ArkHoverCard.Content>
-      </ArkHoverCard.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkHoverCard.Positioner>
+          <ArkHoverCard.Content>
+            <ArkHoverCard.Arrow>
+              <ArkHoverCard.ArrowTip />
+            </ArkHoverCard.Arrow>
+            <h3>{label}</h3>
+            {description ? <p>{description}</p> : null}
+            {content ? <p>{content}</p> : null}
+            {children}
+          </ArkHoverCard.Content>
+        </ArkHoverCard.Positioner>
+      </FloatingPortal>
     </HoverCardRoot>
   );
 }

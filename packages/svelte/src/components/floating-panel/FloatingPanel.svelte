@@ -1,6 +1,6 @@
 <script lang="ts">
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/svelte/floating-panel";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import FloatingPanelRoot from "./FloatingPanelRoot.svelte";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -12,6 +12,7 @@ let {
   description,
   disabled = false,
   children,
+  portal = true,
   ...rest
 }: {
   open?: boolean;
@@ -20,6 +21,8 @@ let {
   description?: string;
   disabled?: boolean;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/floating-panel").FloatingPanelRootProps = $props();
 
 const resizeAxes = ["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const;
@@ -27,7 +30,7 @@ const resizeAxes = ["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const;
 
 <FloatingPanelRoot bind:open {disabled} {...rest}>
   <ArkFloatingPanel.Trigger>{trigger ?? label}</ArkFloatingPanel.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkFloatingPanel.Positioner>
       <ArkFloatingPanel.Content>
         <ArkFloatingPanel.DragTrigger>
@@ -50,5 +53,5 @@ const resizeAxes = ["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const;
         {/each}
       </ArkFloatingPanel.Content>
     </ArkFloatingPanel.Positioner>
-  </Portal>
+  </FloatingPortal>
 </FloatingPanelRoot>

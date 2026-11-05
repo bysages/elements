@@ -2,6 +2,8 @@ import type { PopoverAnchorProps } from "@ark-ui/svelte/popover";
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface MentionEntry {
   /** Stable identity for tests, popups and business handlers. */
   id?: string;
@@ -87,6 +89,8 @@ export interface MentionsProps extends HTMLAttributes<HTMLDivElement> {
   onValueChange?: (value: string) => void;
   /** A candidate was confirmed; the whole entry rides back. */
   onSelect?: (entry: MentionEntry) => void;
+  /** After hydration, portal the candidate vessel to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }
 
 export interface MentionsVesselProps {
@@ -107,6 +111,8 @@ export interface MentionsVesselProps {
   onActiveChange?: (index: number) => void;
   /** The vessel's open state turned. */
   onOpenChange?: (open: boolean) => void;
+  /** After hydration, portal the candidate vessel to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
   /** The host's field, rendered with the popover Anchor's wiring. When
    * absent, the vessel falls back to the `anchor` rectangle. */
   children?: Snippet<[() => PopoverAnchorProps]>;

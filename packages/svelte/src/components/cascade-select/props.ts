@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface CascadeSelectNode {
   label: string;
   value: string;
@@ -21,4 +23,6 @@ export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
   filterable?: boolean;
   multiple?: boolean;
   disabled?: boolean;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }

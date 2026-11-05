@@ -12,6 +12,7 @@ let {
   disabled = false,
   invalid = false,
   required = false,
+  portal = false,
   children,
   ...rest
 }: {
@@ -24,6 +25,8 @@ let {
   invalid?: boolean;
   required?: boolean;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("./props").ColorPickerRootProps = $props();
 
 const toColor = (color: string | Color | undefined) => (typeof color === "string" ? parseColor(color) : color);

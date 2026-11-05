@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** The link bleeds ink from its press point — the same wash a button
@@ -18,6 +19,11 @@ const NavigationMenuRoot = defineComponent({
     return () => h(ArkNavigationMenu.Root, { ...attrs, id: id.value }, slots);
   },
 }) as unknown as typeof ArkNavigationMenu.Root;
+
+const NavigationMenuViewportPositioner = definePositioner(
+  "SNavigationMenuViewportPositioner",
+  ArkNavigationMenu.ViewportPositioner,
+);
 
 const NavigationMenuLink = defineComponent({
   name: "SNavigationMenuLink",
@@ -72,10 +78,13 @@ export const NavigationMenu = defineFamily(NavigationMenuFacade, {
   ...ArkNavigationMenu,
   Root: NavigationMenuRoot,
   Link: NavigationMenuLink,
+  ViewportPositioner: NavigationMenuViewportPositioner,
 } as unknown as {
   Root: Component;
+  ViewportPositioner: Component;
 } & Record<string, Component>) as typeof NavigationMenuFacade &
-  Omit<typeof ArkNavigationMenu, "Root"> & {
+  Omit<typeof ArkNavigationMenu, "Root" | "ViewportPositioner"> & {
     Root: typeof NavigationMenuRoot;
     Link: typeof NavigationMenuLink;
+    ViewportPositioner: Component;
   };

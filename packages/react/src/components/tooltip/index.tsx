@@ -2,6 +2,7 @@ import { Tooltip as ArkTooltip } from "@ark-ui/react/tooltip";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's Tooltip, dressed in the paper-and-ink system: the smallest
@@ -28,6 +29,8 @@ type TooltipPlacement =
   | "right-end";
 
 export interface TooltipFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: ReactNode;
@@ -38,6 +41,7 @@ export interface TooltipFacadeProps {
 }
 
 function TooltipFacade({
+  portal = false,
   open,
   defaultOpen,
   trigger,
@@ -56,14 +60,16 @@ function TooltipFacade({
       <ArkTooltip.Trigger asChild={isValidElement(trigger)} disabled={disabled}>
         {trigger}
       </ArkTooltip.Trigger>
-      <ArkTooltip.Positioner>
-        <ArkTooltip.Content>
-          <ArkTooltip.Arrow>
-            <ArkTooltip.ArrowTip />
-          </ArkTooltip.Arrow>
-          {content}
-        </ArkTooltip.Content>
-      </ArkTooltip.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkTooltip.Positioner>
+          <ArkTooltip.Content>
+            <ArkTooltip.Arrow>
+              <ArkTooltip.ArrowTip />
+            </ArkTooltip.Arrow>
+            {content}
+          </ArkTooltip.Content>
+        </ArkTooltip.Positioner>
+      </FloatingPortal>
     </TooltipRoot>
   );
 }

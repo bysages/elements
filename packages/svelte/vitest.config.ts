@@ -11,7 +11,12 @@ export default defineProject({
     include: ["src/**/*.spec.{ts,tsx}"],
     server: {
       deps: {
-        inline: [/@ark-ui[+/]svelte/, /@zag-js[+/]svelte/],
+        inline: [
+          /@ark-ui[+/]svelte/,
+          /@zag-js[+/]svelte/,
+          /@tanstack[+/]svelte-table/,
+          /@tanstack[+/]svelte-store/,
+        ],
       },
     },
   },

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Drawer as ArkDrawer } from "@ark-ui/svelte/drawer";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import DrawerRoot from "./DrawerRoot.svelte";
   import { iconHtml } from "../../internal/icon";
@@ -12,6 +12,7 @@ let {
   description,
   disabled = false,
   children,
+  portal = true,
   ...rest
 }: {
   open?: boolean;
@@ -20,12 +21,14 @@ let {
   description?: string;
   disabled?: boolean;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/drawer").DrawerRootProps = $props();
 </script>
 
 <DrawerRoot bind:open {...rest}>
   <ArkDrawer.Trigger {disabled}>{trigger}</ArkDrawer.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkDrawer.Backdrop />
     <ArkDrawer.Positioner>
       <ArkDrawer.Content>
@@ -35,5 +38,5 @@ let {
         <ArkDrawer.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkDrawer.CloseTrigger>
       </ArkDrawer.Content>
     </ArkDrawer.Positioner>
-  </Portal>
+  </FloatingPortal>
 </DrawerRoot>

@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface MenubarEntry {
   label: string;
   value: string;
@@ -17,4 +19,6 @@ export interface MenubarProps extends HTMLAttributes<HTMLDivElement> {
   items?: MenubarGroup[];
   /** Called with the entry's `value` when it is chosen. */
   onSelect?: (value: string) => void;
+  /** After hydration, portal each popup to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }

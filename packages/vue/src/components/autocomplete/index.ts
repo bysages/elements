@@ -5,6 +5,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, ref, watch, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Combobox } from "../combobox";
@@ -17,6 +18,8 @@ import { Combobox } from "../combobox";
  * matching is a case-insensitive substring unless `filter` says
  * otherwise.
  */
+const AutoCompletePositioner = definePositioner("SAutoCompletePositioner", ArkCombobox.Positioner);
+
 const AutoCompleteFacade = defineComponent({
   name: "AutoComplete",
   props: {
@@ -30,6 +33,7 @@ const AutoCompleteFacade = defineComponent({
     },
     /** One rung of the control-height ladder for the field row. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: string) => true,
@@ -87,7 +91,7 @@ const AutoCompleteFacade = defineComponent({
           h(ArkCombobox.Control as never, () =>
             h(ArkCombobox.Input as never, { placeholder: props.placeholder }),
           ),
-          h(ArkCombobox.Positioner, () => [
+          h(AutoCompletePositioner, { portal: props.portal }, () => [
             h(ArkCombobox.Content, () => [
               h(ArkCombobox.Empty, () => "No matches"),
               ...collection.value.items.map((item: string) =>

@@ -3,7 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("split-button");
 
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import { Button } from "../button";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -19,6 +19,7 @@ let {
   disabled = false,
   onclick,
   onSelect,
+  portal = false,
   ...rest
 }: SplitButtonProps = $props();
 
@@ -54,7 +55,7 @@ same register whose entries emit `onSelect` with their value. -->
         </button>
       {/snippet}
     </ArkMenu.Trigger>
-    <Portal>
+    <FloatingPortal {portal}>
       <ArkMenu.Positioner>
         <ArkMenu.Content>
           {#each items as entry (entry.value)}
@@ -69,7 +70,6 @@ same register whose entries emit `onSelect` with their value. -->
           {/each}
         </ArkMenu.Content>
       </ArkMenu.Positioner>
-    </Portal>
+    </FloatingPortal>
   </ArkMenu.Root>
 </div>
-

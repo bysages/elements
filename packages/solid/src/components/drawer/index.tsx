@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -11,6 +12,8 @@ import { useElementId } from "../../internal/id";
  * under the grabber's hand. The API is Ark's own — Root, Trigger,
  * Backdrop, Positioner, Content, Grabber, GrabberIndicator, Title,
  * Description, CloseTrigger, SwipeArea. */
+const DrawerPositioner = definePositioner(ArkDrawer.Positioner);
+
 function DrawerRoot(props: ComponentProps<typeof ArkDrawer.Root>) {
   const id = useElementId("drawer", () => props.id);
 
@@ -25,6 +28,8 @@ function DrawerRoot(props: ComponentProps<typeof ArkDrawer.Root>) {
 }
 
 export interface DrawerFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string;
@@ -49,7 +54,7 @@ function DrawerFacade(props: DrawerFacadeProps) {
         {props.trigger ?? props.label}
       </ArkDrawer.Trigger>
       <ArkDrawer.Backdrop />
-      <ArkDrawer.Positioner>
+      <DrawerPositioner portal={props.portal ?? true}>
         <ArkDrawer.Content>
           <ArkDrawer.Grabber>
             <ArkDrawer.GrabberIndicator />
@@ -64,14 +69,18 @@ function DrawerFacade(props: DrawerFacadeProps) {
           {props.children}
           <ArkDrawer.CloseTrigger aria-label="Close">{iconNode("x")}</ArkDrawer.CloseTrigger>
         </ArkDrawer.Content>
-      </ArkDrawer.Positioner>
+      </DrawerPositioner>
     </DrawerRoot>
   );
 }
 
 export const Drawer: typeof DrawerFacade &
-  Omit<typeof ArkDrawer, "Root"> & { Root: typeof DrawerRoot } = defineFamily(DrawerFacade, {
+  Omit<typeof ArkDrawer, "Root" | "Positioner"> & {
+    Root: typeof DrawerRoot;
+    Positioner: typeof DrawerPositioner;
+  } = defineFamily(DrawerFacade, {
   ...ArkDrawer,
   Root: DrawerRoot,
+  Positioner: DrawerPositioner,
 });
 injectComponentStyle("drawer");

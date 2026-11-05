@@ -1,6 +1,5 @@
 import { useEnvironmentContext } from "@ark-ui/react/environment";
 import { useFilter, useLocaleContext } from "@ark-ui/react/locale";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import * as cascade from "@zag-js/cascade-select";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -8,6 +7,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -36,6 +36,8 @@ const checkIcon = iconNode("check");
  * runs — each hit still reads as its full route.
  */
 export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: string[][];
   data: CascadeSelectNode[];
   placeholder?: string;
@@ -49,6 +51,7 @@ export interface CascadeSelectProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function CascadeSelectImpl({
+  portal = false,
   value,
   data,
   placeholder = "Select…",
@@ -224,7 +227,7 @@ function CascadeSelectImpl({
           <span {...api.getIndicatorProps()}>{chevronDown}</span>
         </button>
       </div>
-      <Portal>
+      <FloatingPortal portal={portal}>
         <div {...api.getPositionerProps()}>
           <div {...api.getContentProps()} data-size={size}>
             {filterable ? (
@@ -268,7 +271,7 @@ function CascadeSelectImpl({
             </div>
           </div>
         </div>
-      </Portal>
+      </FloatingPortal>
     </div>
   );
 }

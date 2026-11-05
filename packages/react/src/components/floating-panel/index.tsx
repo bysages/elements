@@ -2,6 +2,7 @@ import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/react/floating-panel"
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -19,6 +20,8 @@ function FloatingPanelRoot(props: ComponentProps<typeof ArkFloatingPanel.Root>) 
 const resizeAxes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
 
 export interface FloatingPanelFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string;
@@ -31,6 +34,7 @@ export interface FloatingPanelFacadeProps {
 }
 
 function FloatingPanelFacade({
+  portal = true,
   open,
   defaultOpen,
   trigger,
@@ -49,37 +53,39 @@ function FloatingPanelFacade({
       onOpenChange={(details: { open: boolean }) => onOpenChange?.(details.open)}
     >
       <ArkFloatingPanel.Trigger>{trigger ?? label}</ArkFloatingPanel.Trigger>
-      <ArkFloatingPanel.Positioner>
-        <ArkFloatingPanel.Content>
-          <ArkFloatingPanel.DragTrigger>
-            <ArkFloatingPanel.Header>
-              <ArkFloatingPanel.Title>{label}</ArkFloatingPanel.Title>
-              <ArkFloatingPanel.Control>
-                <ArkFloatingPanel.StageTrigger stage="minimized">
-                  {iconNode("minus")}
-                </ArkFloatingPanel.StageTrigger>
-                <ArkFloatingPanel.StageTrigger stage="maximized">
-                  {iconNode("maximize-2")}
-                </ArkFloatingPanel.StageTrigger>
-                <ArkFloatingPanel.StageTrigger stage="default" aria-label="Restore">
-                  {iconNode("minimize-2")}
-                </ArkFloatingPanel.StageTrigger>
-                <ArkFloatingPanel.CloseTrigger aria-label="Close">
-                  {iconNode("x")}
-                </ArkFloatingPanel.CloseTrigger>
-              </ArkFloatingPanel.Control>
-            </ArkFloatingPanel.Header>
-          </ArkFloatingPanel.DragTrigger>
-          <ArkFloatingPanel.Body>
-            {description ? <p>{description}</p> : null}
-            {content ? <p>{content}</p> : null}
-            {children}
-          </ArkFloatingPanel.Body>
-          {resizeAxes.map((axis) => (
-            <ArkFloatingPanel.ResizeTrigger key={axis} axis={axis} />
-          ))}
-        </ArkFloatingPanel.Content>
-      </ArkFloatingPanel.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkFloatingPanel.Positioner>
+          <ArkFloatingPanel.Content>
+            <ArkFloatingPanel.DragTrigger>
+              <ArkFloatingPanel.Header>
+                <ArkFloatingPanel.Title>{label}</ArkFloatingPanel.Title>
+                <ArkFloatingPanel.Control>
+                  <ArkFloatingPanel.StageTrigger stage="minimized">
+                    {iconNode("minus")}
+                  </ArkFloatingPanel.StageTrigger>
+                  <ArkFloatingPanel.StageTrigger stage="maximized">
+                    {iconNode("maximize-2")}
+                  </ArkFloatingPanel.StageTrigger>
+                  <ArkFloatingPanel.StageTrigger stage="default" aria-label="Restore">
+                    {iconNode("minimize-2")}
+                  </ArkFloatingPanel.StageTrigger>
+                  <ArkFloatingPanel.CloseTrigger aria-label="Close">
+                    {iconNode("x")}
+                  </ArkFloatingPanel.CloseTrigger>
+                </ArkFloatingPanel.Control>
+              </ArkFloatingPanel.Header>
+            </ArkFloatingPanel.DragTrigger>
+            <ArkFloatingPanel.Body>
+              {description ? <p>{description}</p> : null}
+              {content ? <p>{content}</p> : null}
+              {children}
+            </ArkFloatingPanel.Body>
+            {resizeAxes.map((axis) => (
+              <ArkFloatingPanel.ResizeTrigger key={axis} axis={axis} />
+            ))}
+          </ArkFloatingPanel.Content>
+        </ArkFloatingPanel.Positioner>
+      </FloatingPortal>
     </FloatingPanelRoot>
   );
 }

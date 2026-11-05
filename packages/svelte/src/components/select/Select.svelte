@@ -3,6 +3,8 @@ import { Select as ArkSelect, createListCollection } from "@ark-ui/svelte/select
 
 import SelectRoot from "./SelectRoot.svelte";
 import InternalIcon from "../../internal/InternalIcon.svelte";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import type { SelectFacadeProps, SelectValue } from "./props";
 
 export type SelectOption = { label: string; value: string };
@@ -16,6 +18,7 @@ let {
   invalid = false,
   required = false,
   clearable = true,
+  portal = false,
   closeOnSelect = true,
   value = $bindable(),
   defaultValue,
@@ -65,7 +68,8 @@ function handleValueChange(details: { value: string[] }) {
     </ArkSelect.Trigger>
     {#if clearable}<ArkSelect.ClearTrigger><InternalIcon name="x" /></ArkSelect.ClearTrigger>{/if}
   </ArkSelect.Control>
-  <ArkSelect.Positioner>
+  <FloatingPortal {portal}>
+    <ArkSelect.Positioner>
     <ArkSelect.Content>
       <ArkSelect.Empty>No results found</ArkSelect.Empty>
       {#each options as option (option.value)}
@@ -75,7 +79,8 @@ function handleValueChange(details: { value: string[] }) {
         </ArkSelect.Item>
       {/each}
     </ArkSelect.Content>
-  </ArkSelect.Positioner>
+    </ArkSelect.Positioner>
+  </FloatingPortal>
   <ArkSelect.HiddenSelect />
   {@render children?.()}
 </SelectRoot>

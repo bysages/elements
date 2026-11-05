@@ -7,6 +7,7 @@ import type { SetupContext, VNodeArrayChildren } from "vue";
 import { computed, defineComponent, h, ref, watch, type PropType } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -58,6 +59,7 @@ const CascadeSelectFacade = defineComponent({
     invalid: { type: Boolean, default: false },
     /** One rung of the control-height ladder for the trigger. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: string[][]) => true,
@@ -244,65 +246,67 @@ const CascadeSelectFacade = defineComponent({
         ]),
         ...(api.value.open
           ? [
-              h("div", api.value.getPositionerProps(), [
-                h(
-                  "div",
-                  { ...api.value.getContentProps(), "data-size": props.size },
-                  [
-                    ...(props.filterable
-                      ? [
-                          h("div", { "data-scope": "cascade-select", "data-part": "search" }, [
-                            h(Input, {
-                              size: "sm",
-                              modelValue: query.value,
-                              "onUpdate:modelValue": (value: string) => (query.value = value),
-                              placeholder: messages.value.command.filter,
-                              "aria-label": messages.value.select.filter,
-                            }),
-                          ]),
-                        ]
-                      : []),
-                    h(
-                      "div",
-                      {
-                        "data-scope": "cascade-select",
-                        "data-part": "corridor",
-                        "data-flow": filtering.value ? "flat" : "columns",
-                      },
-                      [
-                        filtering.value
-                          ? matchPaths.value.length === 0
-                            ? [
-                                h(
-                                  "p",
-                                  { "data-scope": "cascade-select", "data-part": "empty" },
-                                  "Nothing matches",
-                                ),
-                              ]
-                            : matchPaths.value.map((hit) =>
-                                h(
-                                  "button",
-                                  {
-                                    key: hit.path.join("/"),
-                                    type: "button",
-                                    role: "option",
-                                    "data-scope": "cascade-select",
-                                    "data-part": "match",
-                                    "data-selected": isSelected(hit.path) || undefined,
-                                    "aria-selected": isSelected(hit.path),
-                                    disabled: props.disabled || undefined,
-                                    "aria-disabled": props.disabled || undefined,
-                                    onClick: () => pickMatch(hit.path),
-                                  },
-                                  hit.labels.join(" / "),
-                                ),
-                              )
-                          : renderColumn(collection.value.rootNode, [], []),
-                      ].flat(),
-                    ),
-                  ].flat(),
-                ),
-              ]),
+              h(FloatingPortal, { portal: props.portal }, () =>
+                h("div", api.value.getPositionerProps(), [
+                  h(
+                    "div",
+                    { ...api.value.getContentProps(), "data-size": props.size },
+                    [
+                      ...(props.filterable
+                        ? [
+                            h("div", { "data-scope": "cascade-select", "data-part": "search" }, [
+                              h(Input, {
+                                size: "sm",
+                                modelValue: query.value,
+                                "onUpdate:modelValue": (value: string) => (query.value = value),
+                                placeholder: messages.value.command.filter,
+                                "aria-label": messages.value.select.filter,
+                              }),
+                            ]),
+                          ]
+                        : []),
+                      h(
+                        "div",
+                        {
+                          "data-scope": "cascade-select",
+                          "data-part": "corridor",
+                          "data-flow": filtering.value ? "flat" : "columns",
+                        },
+                        [
+                          filtering.value
+                            ? matchPaths.value.length === 0
+                              ? [
+                                  h(
+                                    "p",
+                                    { "data-scope": "cascade-select", "data-part": "empty" },
+                                    "Nothing matches",
+                                  ),
+                                ]
+                              : matchPaths.value.map((hit) =>
+                                  h(
+                                    "button",
+                                    {
+                                      key: hit.path.join("/"),
+                                      type: "button",
+                                      role: "option",
+                                      "data-scope": "cascade-select",
+                                      "data-part": "match",
+                                      "data-selected": isSelected(hit.path) || undefined,
+                                      "aria-selected": isSelected(hit.path),
+                                      disabled: props.disabled || undefined,
+                                      "aria-disabled": props.disabled || undefined,
+                                      onClick: () => pickMatch(hit.path),
+                                    },
+                                    hit.labels.join(" / "),
+                                  ),
+                                )
+                            : renderColumn(collection.value.rootNode, [], []),
+                        ].flat(),
+                      ),
+                    ].flat(),
+                  ),
+                ]),
+              ),
             ]
           : []),
         h("input", api.value.getHiddenInputProps()),

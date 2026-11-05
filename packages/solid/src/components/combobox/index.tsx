@@ -5,6 +5,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -19,6 +20,8 @@ type ComboboxOwnProps = {
   size?: "sm" | "md" | "lg";
 };
 
+const ComboboxPositioner = definePositioner(ArkCombobox.Positioner);
+
 function ComboboxRoot<T extends CollectionItem>(props: ArkComboboxRootProps<T> & ComboboxOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
   const id = useElementId("combobox", () => rest.id);
@@ -27,7 +30,10 @@ function ComboboxRoot<T extends CollectionItem>(props: ArkComboboxRootProps<T> &
 
 type ComboboxOption = { label: string; value: string };
 type ComboboxFacadeValue = string | string[];
-type ComboboxParts = Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot };
+type ComboboxParts = Omit<typeof ArkCombobox, "Root" | "Positioner"> & {
+  Root: typeof ComboboxRoot;
+  Positioner: typeof ComboboxPositioner;
+};
 
 function toComboboxValue(value: ComboboxFacadeValue | undefined) {
   if (value === undefined) return undefined;
@@ -39,6 +45,8 @@ function fromComboboxValue(value: string[], multiple: boolean | undefined) {
 }
 
 export interface ComboboxFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: ComboboxFacadeValue;
   defaultValue?: ComboboxFacadeValue;
   options: ComboboxOption[];
@@ -93,7 +101,7 @@ function ComboboxFacade(props: ComboboxFacadeProps) {
           {iconNode("chevron-down", { width: "16", height: "16" })}
         </ArkCombobox.Trigger>
       </ArkCombobox.Control>
-      <ArkCombobox.Positioner>
+      <ComboboxPositioner portal={props.portal ?? false}>
         <ArkCombobox.Content>
           <ArkCombobox.Empty>No results found</ArkCombobox.Empty>
           <ArkCombobox.List>
@@ -109,7 +117,7 @@ function ComboboxFacade(props: ComboboxFacadeProps) {
             </For>
           </ArkCombobox.List>
         </ArkCombobox.Content>
-      </ArkCombobox.Positioner>
+      </ComboboxPositioner>
     </ComboboxRoot>
   );
 }
@@ -117,6 +125,7 @@ function ComboboxFacade(props: ComboboxFacadeProps) {
 export const Combobox: typeof ComboboxFacade & ComboboxParts = defineFamily(ComboboxFacade, {
   ...ArkCombobox,
   Root: ComboboxRoot,
+  Positioner: ComboboxPositioner,
 });
 
 injectComponentStyle("combobox");

@@ -2,6 +2,7 @@ import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -30,6 +31,8 @@ type PopoverPlacement =
   | "right-end";
 
 export interface PopoverFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: ReactNode;
@@ -43,6 +46,7 @@ export interface PopoverFacadeProps {
 }
 
 function PopoverFacade({
+  portal = false,
   open,
   defaultOpen,
   trigger,
@@ -64,17 +68,19 @@ function PopoverFacade({
       <ArkPopover.Trigger asChild={isValidElement(trigger)} disabled={disabled}>
         {trigger ?? label}
       </ArkPopover.Trigger>
-      <ArkPopover.Positioner>
-        <ArkPopover.Content>
-          <ArkPopover.CloseTrigger aria-label="Close">
-            {iconNode("x", { width: 14, height: 14 })}
-          </ArkPopover.CloseTrigger>
-          <ArkPopover.Title>{label}</ArkPopover.Title>
-          {description ? <ArkPopover.Description>{description}</ArkPopover.Description> : null}
-          {content ? <p>{content}</p> : null}
-          {children}
-        </ArkPopover.Content>
-      </ArkPopover.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkPopover.Positioner>
+          <ArkPopover.Content>
+            <ArkPopover.CloseTrigger aria-label="Close">
+              {iconNode("x", { width: 14, height: 14 })}
+            </ArkPopover.CloseTrigger>
+            <ArkPopover.Title>{label}</ArkPopover.Title>
+            {description ? <ArkPopover.Description>{description}</ArkPopover.Description> : null}
+            {content ? <p>{content}</p> : null}
+            {children}
+          </ArkPopover.Content>
+        </ArkPopover.Positioner>
+      </FloatingPortal>
     </PopoverRoot>
   );
 }

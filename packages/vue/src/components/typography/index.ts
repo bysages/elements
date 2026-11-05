@@ -1,6 +1,5 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
 
@@ -21,8 +20,36 @@ function part(name: string, tag: string) {
   });
 }
 
+/** A heading voice with explicit hierarchy: `size` rides the token
+ * ladder, while `as` maps it to the document's own semantic heading. */
+const Heading = defineComponent({
+  name: "TypographyHeading",
+  inheritAttrs: false,
+  props: {
+    size: {
+      type: String as PropType<"sm" | "md" | "lg" | "xl" | "display">,
+      default: undefined,
+    },
+    as: { type: String, default: undefined },
+  },
+  setup(props, ctx: SetupContext) {
+    injectComponentStyle("typography");
+
+    return () =>
+      h(
+        props.as ?? "p",
+        {
+          ...ctx.attrs,
+          "data-scope": "typography",
+          "data-part": "heading",
+          "data-size": props.size,
+        },
+        ctx.slots.default?.(),
+      );
+  },
+}) as unknown as Component;
+
 const Display = part("Display", "p");
-const Heading = part("Heading", "p");
 const Lead = part("Lead", "p");
 const Body = part("Body", "p");
 const Muted = part("Muted", "p");

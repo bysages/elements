@@ -14,6 +14,7 @@ import {
 } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -44,6 +45,8 @@ const MenuRoot = defineComponent({
       h(withPresenceRoot(ArkMenu.Root), withPresenceEnter({ ...attrs, id: id.value }), slots);
   },
 });
+
+const MenuPositioner = definePositioner("SMenuPositioner", ArkMenu.Positioner);
 
 const MenuContent = defineComponent({
   name: "SMenuContent",
@@ -91,6 +94,7 @@ const MenuFacade = defineComponent({
     disabled: { type: Boolean, default: false },
     placement: { type: String as PropType<MenuPlacement>, default: "bottom-start" },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     select: (_value: string) => true,
@@ -116,7 +120,7 @@ const MenuFacade = defineComponent({
             props.trigger,
             h(ArkMenu.Indicator, () => iconNode("chevron-down", { width: 14, height: 14 })),
           ]),
-          h(ArkMenu.Positioner, () =>
+          h(MenuPositioner, { portal: props.portal }, () =>
             h(MenuContent, () =>
               props.items.map((item) =>
                 h(
@@ -143,8 +147,10 @@ export const Menu = defineFamily(MenuFacade, {
   Content: MenuContent,
 } as unknown as {
   Root: Component;
+  Positioner: Component;
 } & Record<string, Component>) as typeof MenuFacade &
-  Omit<typeof ArkMenu, "Root" | "Content"> & {
+  Omit<typeof ArkMenu, "Root" | "Content" | "Positioner"> & {
     Root: typeof MenuRoot;
+    Positioner: Component;
     Content: typeof MenuContent;
   };

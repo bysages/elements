@@ -2,6 +2,7 @@ import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/react/navigation-me
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's NavigationMenu, dressed in the paper-and-ink system: a menubar of
@@ -18,6 +19,27 @@ function NavigationMenuLink(props: ComponentProps<typeof ArkNavigationMenu.Link>
   injectComponentStyle("navigation-menu");
   return <ArkNavigationMenu.Link {...props} data-motion="ink-ripple" />;
 }
+
+/** The shared panel stage keeps the raw Ark part until a caller opts into
+ * a portal; the flat-link facade has no vessel of its own. */
+interface NavigationMenuViewportPositionerProps extends ComponentProps<
+  typeof ArkNavigationMenu.ViewportPositioner
+> {
+  portal?: FloatingPortalTarget;
+}
+
+function NavigationMenuViewportPositioner({
+  portal,
+  ...rest
+}: NavigationMenuViewportPositionerProps) {
+  return (
+    <FloatingPortal portal={portal}>
+      <ArkNavigationMenu.ViewportPositioner {...rest} />
+    </FloatingPortal>
+  );
+}
+
+NavigationMenuViewportPositioner.displayName = "SNavigationMenuViewportPositioner";
 
 /** One flat destination in the callable bar; grouped panels and mega
  * menus stay on the anatomy. */
@@ -57,9 +79,13 @@ function NavigationMenuFacade({
 
 NavigationMenuFacade.displayName = "SNavigationMenu";
 
-type NavigationMenuParts = Omit<typeof ArkNavigationMenu, "Root" | "Link"> & {
+type NavigationMenuParts = Omit<
+  typeof ArkNavigationMenu,
+  "Root" | "Link" | "ViewportPositioner"
+> & {
   Root: typeof NavigationMenuRoot;
   Link: typeof NavigationMenuLink;
+  ViewportPositioner: typeof NavigationMenuViewportPositioner;
 };
 
 /* Ark's namespace is frozen — spread copies the members so Root and Link
@@ -68,6 +94,7 @@ export const NavigationMenu = Object.assign(NavigationMenuFacade, {
   ...ArkNavigationMenu,
   Root: NavigationMenuRoot,
   Link: NavigationMenuLink,
+  ViewportPositioner: NavigationMenuViewportPositioner,
 }) as typeof NavigationMenuFacade & NavigationMenuParts;
 
 injectComponentStyle("navigation-menu");

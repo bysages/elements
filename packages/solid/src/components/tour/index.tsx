@@ -8,6 +8,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, mergeProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 
@@ -25,12 +26,16 @@ export type {
  * useTour. */
 
 export interface TourFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   tour: UseTourReturn;
   trigger?: string;
   /** Replaces the standard card body when supplied. */
   content?: JSX.Element;
   children?: JSX.Element;
 }
+
+const TourPositioner = definePositioner(ArkTour.Positioner);
 
 function TourFacade(props: TourFacadeProps) {
   injectComponentStyle("tour");
@@ -43,13 +48,13 @@ function TourFacade(props: TourFacadeProps) {
       {props.children}
       <ArkTour.Backdrop />
       <ArkTour.Spotlight />
-      <ArkTour.Positioner>
+      <TourPositioner portal={props.portal ?? true}>
         <ArkTour.Content>
           <Show when={props.content} fallback={<TourCardBody />}>
             {props.content}
           </Show>
         </ArkTour.Content>
-      </ArkTour.Positioner>
+      </TourPositioner>
     </ArkTour.Root>
   );
 }
@@ -76,9 +81,13 @@ function TourCardBody() {
 }
 
 export const Tour: typeof TourFacade &
-  Omit<typeof ArkTour, "Root"> & { Root: typeof ArkTour.Root } = defineFamily(TourFacade, {
+  Omit<typeof ArkTour, "Root" | "Positioner"> & {
+    Root: typeof ArkTour.Root;
+    Positioner: typeof TourPositioner;
+  } = defineFamily(TourFacade, {
   ...ArkTour,
   Root: ArkTour.Root,
+  Positioner: TourPositioner,
 });
 
 /** Tour machines are created by useTour, so the stable id belongs there. */

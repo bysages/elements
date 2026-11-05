@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's NavigationMenu, dressed in the paper-and-ink system: a menubar of
@@ -21,6 +22,8 @@ function NavigationMenuRoot(props: ComponentProps<typeof ArkNavigationMenu.Root>
     }),
   );
 }
+
+const NavigationMenuViewportPositioner = definePositioner(ArkNavigationMenu.ViewportPositioner);
 
 function NavigationMenuLink(props: ComponentProps<typeof ArkNavigationMenu.Link>) {
   injectComponentStyle("navigation-menu");
@@ -67,12 +70,14 @@ function NavigationMenuFacade(props: NavigationMenuFacadeProps) {
 }
 
 export const NavigationMenu: typeof NavigationMenuFacade &
-  Omit<typeof ArkNavigationMenu, "Root"> & {
+  Omit<typeof ArkNavigationMenu, "Root" | "ViewportPositioner"> & {
     Root: typeof NavigationMenuRoot;
+    ViewportPositioner: typeof NavigationMenuViewportPositioner;
     Link: typeof NavigationMenuLink;
   } = defineFamily(NavigationMenuFacade, {
   ...ArkNavigationMenu,
   Root: NavigationMenuRoot,
+  ViewportPositioner: NavigationMenuViewportPositioner,
   Link: NavigationMenuLink,
 });
 injectComponentStyle("navigation-menu");

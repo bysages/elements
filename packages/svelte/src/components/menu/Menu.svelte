@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import MenuContent from "./MenuContent.svelte";
 import MenuRoot from "./MenuRoot.svelte";
@@ -16,6 +16,7 @@ let {
   placement = "bottom-start",
   onSelect,
   children,
+  portal = false,
   ...rest
 }: {
   open?: boolean;
@@ -25,6 +26,8 @@ let {
   placement?: "top" | "top-start" | "top-end" | "bottom" | "bottom-start" | "bottom-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   onSelect?: (value: string) => void;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/menu").MenuRootProps = $props();
 </script>
 
@@ -33,7 +36,7 @@ let {
     {trigger}
     <ArkMenu.Indicator><InternalIcon name="chevron-down" /></ArkMenu.Indicator>
   </ArkMenu.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkMenu.Positioner>
       <MenuContent>
         {#each items as item (item.value)}
@@ -42,5 +45,5 @@ let {
         {@render children?.()}
       </MenuContent>
     </ArkMenu.Positioner>
-  </Portal>
+  </FloatingPortal>
 </MenuRoot>

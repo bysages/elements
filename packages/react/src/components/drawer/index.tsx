@@ -2,6 +2,7 @@ import { Drawer as ArkDrawer } from "@ark-ui/react/drawer";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -17,6 +18,8 @@ function DrawerRoot(props: ComponentProps<typeof ArkDrawer.Root>) {
 }
 
 export interface DrawerFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string;
@@ -29,6 +32,7 @@ export interface DrawerFacadeProps {
 }
 
 function DrawerFacade({
+  portal = true,
   open,
   defaultOpen,
   trigger,
@@ -47,18 +51,20 @@ function DrawerFacade({
     >
       <ArkDrawer.Trigger disabled={disabled}>{trigger ?? label}</ArkDrawer.Trigger>
       <ArkDrawer.Backdrop />
-      <ArkDrawer.Positioner>
-        <ArkDrawer.Content>
-          <ArkDrawer.Grabber>
-            <ArkDrawer.GrabberIndicator />
-          </ArkDrawer.Grabber>
-          <ArkDrawer.Title>{label}</ArkDrawer.Title>
-          {description ? <ArkDrawer.Description>{description}</ArkDrawer.Description> : null}
-          {content ? <p>{content}</p> : null}
-          {children}
-          <ArkDrawer.CloseTrigger aria-label="Close">{iconNode("x")}</ArkDrawer.CloseTrigger>
-        </ArkDrawer.Content>
-      </ArkDrawer.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkDrawer.Positioner>
+          <ArkDrawer.Content>
+            <ArkDrawer.Grabber>
+              <ArkDrawer.GrabberIndicator />
+            </ArkDrawer.Grabber>
+            <ArkDrawer.Title>{label}</ArkDrawer.Title>
+            {description ? <ArkDrawer.Description>{description}</ArkDrawer.Description> : null}
+            {content ? <p>{content}</p> : null}
+            {children}
+            <ArkDrawer.CloseTrigger aria-label="Close">{iconNode("x")}</ArkDrawer.CloseTrigger>
+          </ArkDrawer.Content>
+        </ArkDrawer.Positioner>
+      </FloatingPortal>
     </DrawerRoot>
   );
 }

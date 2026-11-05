@@ -46,6 +46,7 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   type CSSProperties,
+  type ReactNode,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -55,6 +56,7 @@ import {
 } from "react";
 
 import { withSelfRoot } from "../../internal/family";
+import { FloatingPortal } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
@@ -149,8 +151,23 @@ export interface DataTableProps {
   onRowReorder?: (rows: RowData[]) => void;
   /** Fires with the full leaf-column id order after a header drop. */
   onColumnReorder?: (ids: string[]) => void;
+  /** Render a caller-owned toolbar instead of the built-in global filter.
+   * The function receives the live filter values and setters. */
+  toolbar?: (slot: DataTableToolbarSlot) => ReactNode;
   /** Applied to the root vessel. */
   style?: CSSProperties;
+}
+
+/** A stable toolbar contract: the wrapper owns TanStack's state atoms and
+ * exposes only the two filter decisions a caller toolbar needs. */
+export interface DataTableToolbarSlot {
+  /** The current global filter value; empty string reads as no filter. */
+  globalFilter: string;
+  setGlobalFilter(value: string): void;
+  /** Current per-column filters, each as `{ id, value }`. */
+  columnFilters: Array<{ id: string; value: unknown }>;
+  setColumnFilters(filters: Array<{ id: string; value: unknown }>): void;
+  clearFilters(): void;
 }
 
 const SELECT_COL_ID = "__select";
@@ -410,7 +427,12 @@ function DataTableImpl(rawProps: DataTableProps) {
   // row height serves the same first-screen slice on server and client;
   // the measured window takes over after mount.
   useEffect(() => setHydrated(true), []);
-  type VirtualRow = { key: string | number; index: number; start: number; size: number };
+  type VirtualRow = {
+    key: string | number;
+    index: number;
+    start: number;
+    size: number;
+  };
   const fallbackRows = virtual
     ? rows.slice(0, Math.max(1, Math.ceil(320 / rowHeight))).map((row, index): VirtualRow => ({
         key: row.id ?? index,
@@ -671,7 +693,9 @@ function DataTableImpl(rawProps: DataTableProps) {
 
     const isExpandHost = column.id === expandHostId;
     const pin = pinAttrs(column);
-    const style = { ...(pin.style as CSSProperties & Record<string, string | number>) };
+    const style = {
+      ...(pin.style as CSSProperties & Record<string, string | number>),
+    };
     delete pin.style;
     const rowSpan = cell.getRowSpan();
     if (rowSpan > 1) {
@@ -765,7 +789,9 @@ function DataTableImpl(rawProps: DataTableProps) {
             type="text"
             data-scope="table"
             data-part="header-filter"
-            aria-label={formatMessage(messages.table.filterColumn, { name: column.id })}
+            aria-label={formatMessage(messages.table.filterColumn, {
+              name: column.id,
+            })}
             value={(column.getFilterValue() as string) ?? ""}
             placeholder={messages.command.filter}
             draggable={false}
@@ -910,18 +936,20 @@ function DataTableImpl(rawProps: DataTableProps) {
                 <ArkSelect.Indicator>{chevronDownIcon}</ArkSelect.Indicator>
               </ArkSelect.Trigger>
             </ArkSelect.Control>
-            <ArkSelect.Positioner>
-              <ArkSelect.Content>
-                {sizeItems.items.map((item) => (
-                  <ArkSelect.Item key={item.value} item={item}>
-                    <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                    <ArkSelect.ItemIndicator>
-                      {iconNode("check", { width: 14, height: 14 })}
-                    </ArkSelect.ItemIndicator>
-                  </ArkSelect.Item>
-                ))}
-              </ArkSelect.Content>
-            </ArkSelect.Positioner>
+            <FloatingPortal portal>
+              <ArkSelect.Positioner>
+                <ArkSelect.Content>
+                  {sizeItems.items.map((item) => (
+                    <ArkSelect.Item key={item.value} item={item}>
+                      <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                      <ArkSelect.ItemIndicator>
+                        {iconNode("check", { width: 14, height: 14 })}
+                      </ArkSelect.ItemIndicator>
+                    </ArkSelect.Item>
+                  ))}
+                </ArkSelect.Content>
+              </ArkSelect.Positioner>
+            </FloatingPortal>
           </ArkSelect.Root>
         );
         const pager = (
@@ -962,8 +990,22 @@ function DataTableImpl(rawProps: DataTableProps) {
       })()
     : null;
 
+  const toolbarSlot: DataTableToolbarSlot | undefined = filterable
+    ? {
+        globalFilter: (table.atoms.globalFilter.get() as string) ?? "",
+        setGlobalFilter: (value) => table.setGlobalFilter(value),
+        columnFilters: table.atoms.columnFilters.get().map((filter) => ({ ...filter })),
+        setColumnFilters: (filters) => table.setColumnFilters(filters),
+        clearFilters: () => table.setColumnFilters([]),
+      }
+    : undefined;
+  const customToolbar = toolbarSlot ? props.toolbar?.(toolbarSlot) : undefined;
   const toolbar =
-    filterable && showToolbar ? (
+    customToolbar !== undefined ? (
+      <div data-scope="table" data-part="toolbar">
+        {customToolbar}
+      </div>
+    ) : filterable && showToolbar ? (
       <div data-scope="table" data-part="toolbar">
         <input
           type="search"

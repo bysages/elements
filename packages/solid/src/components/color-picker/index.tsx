@@ -4,6 +4,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps, type ComponentProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -23,6 +24,8 @@ type ColorPickerOwnProps = {
   swatches?: string[];
 };
 
+const ColorPickerPositioner = definePositioner(ArkColorPicker.Positioner);
+
 function ColorPickerRoot(props: ArkColorPickerRootProps & ColorPickerOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
   const id = useElementId("color-picker", () => rest.id);
@@ -40,6 +43,8 @@ type ColorPickerFacadeProps = Omit<
   | "required"
   | "value"
 > & {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: string | Color;
   defaultValue?: string | Color;
   disabled?: boolean;
@@ -77,7 +82,7 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
           <ArkColorPicker.ValueSwatch />
         </ArkColorPicker.Trigger>
       </ArkColorPicker.Control>
-      <ArkColorPicker.Positioner>
+      <ColorPickerPositioner portal={props.portal ?? false}>
         <ArkColorPicker.Content>
           <ArkColorPicker.Area>
             <ArkColorPicker.AreaBackground />
@@ -115,7 +120,7 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
             </ArkColorPicker.SwatchGroup>
           </Show>
         </ArkColorPicker.Content>
-      </ArkColorPicker.Positioner>
+      </ColorPickerPositioner>
       <ArkColorPicker.HiddenInput />
     </ColorPickerRoot>
   );
@@ -124,12 +129,13 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const ColorPicker: typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot } = defineFamily(
-  ColorPickerFacade,
-  {
-    ...ArkColorPicker,
-    Root: ColorPickerRoot,
-  },
-);
+  Omit<typeof ArkColorPicker, "Root" | "Positioner"> & {
+    Root: typeof ColorPickerRoot;
+    Positioner: typeof ColorPickerPositioner;
+  } = defineFamily(ColorPickerFacade, {
+  ...ArkColorPicker,
+  Root: ColorPickerRoot,
+  Positioner: ColorPickerPositioner,
+});
 
 injectComponentStyle("color-picker");

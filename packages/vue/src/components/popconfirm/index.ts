@@ -1,9 +1,10 @@
 import { Popover as ArkPopover } from "@ark-ui/vue/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
@@ -17,6 +18,8 @@ import { Popover } from "../popover";
  * trigger; give it a single element (wrap a group in a span
  * otherwise).
  */
+const PopconfirmPositioner = definePositioner("SPopconfirmPositioner", ArkPopover.Positioner);
+
 const PopconfirmFacade = defineComponent({
   name: "Popconfirm",
   props: {
@@ -24,6 +27,7 @@ const PopconfirmFacade = defineComponent({
     message: { type: String, required: true },
     confirmText: { type: String, default: "Confirm" },
     cancelText: { type: String, default: "Cancel" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     confirm: () => true,
@@ -42,7 +46,7 @@ const PopconfirmFacade = defineComponent({
         }),
         () => [
           h(ArkPopover.Trigger, { asChild: true }, ctx.slots.default),
-          h(ArkPopover.Positioner, () => [
+          h(PopconfirmPositioner, { portal: props.portal }, () => [
             h(ArkPopover.Content, { class: "bs-popconfirm" }, () => [
               h("p", { "data-part": "message" }, () => props.message),
               h("div", { "data-part": "actions" }, () => [

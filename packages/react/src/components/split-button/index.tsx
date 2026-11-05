@@ -1,8 +1,8 @@
 import { Menu as ArkMenu } from "@ark-ui/react/menu";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -18,6 +18,8 @@ export interface SplitButtonEntry {
 }
 
 export interface SplitButtonProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   /** The main action's label. */
   label: string;
   /** The dropdown's entries. */
@@ -44,6 +46,7 @@ export interface SplitButtonProps extends Omit<HTMLAttributes<HTMLDivElement>, "
  * menu parts untouched.
  */
 function SplitButtonImpl({
+  portal = false,
   label,
   items = [],
   variant = "solid",
@@ -81,7 +84,7 @@ function SplitButtonImpl({
             {chevronDown}
           </button>
         </ArkMenu.Trigger>
-        <Portal>
+        <FloatingPortal portal={portal}>
           <ArkMenu.Positioner>
             <ArkMenu.Content>
               {items.map((entry) => (
@@ -99,7 +102,7 @@ function SplitButtonImpl({
               ))}
             </ArkMenu.Content>
           </ArkMenu.Positioner>
-        </Portal>
+        </FloatingPortal>
       </ArkMenu.Root>
     </div>
   );

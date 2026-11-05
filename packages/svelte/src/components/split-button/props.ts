@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface SplitButtonEntry {
   label: string;
   /** Handed back with `onSelect` when the entry is chosen. */
@@ -23,4 +25,6 @@ export interface SplitButtonProps extends HTMLAttributes<HTMLDivElement> {
   onclick?: () => void;
   /** An entry was chosen; carries its `value`. */
   onSelect?: (value: string) => void;
+  /** After hydration, portal the dropdown to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }

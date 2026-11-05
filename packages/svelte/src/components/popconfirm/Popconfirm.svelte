@@ -2,7 +2,7 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("popconfirm");
 
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 
 import { Button } from "../button";
@@ -15,6 +15,7 @@ let {
   onConfirm,
   onCancel,
   children,
+  portal = false,
   ...rest
 }: PopconfirmProps = $props();
 
@@ -41,7 +42,7 @@ cancellation are the caller's to act on — the panel closes either way. -->
       </button>
     {/snippet}
   </ArkPopover.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkPopover.Positioner>
       <ArkPopover.Content class="bs-popconfirm">
         <p data-part="message">{message}</p>
@@ -63,6 +64,5 @@ cancellation are the caller's to act on — the panel closes either way. -->
         </div>
       </ArkPopover.Content>
     </ArkPopover.Positioner>
-  </Portal>
+  </FloatingPortal>
 </ArkPopover.Root>
-

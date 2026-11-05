@@ -124,10 +124,20 @@ const partTitle = (part: string) =>
 /** The zh shelf reads the same tables with translated headers and,
  * when the dictionary has one, a translated cell — the English JSDoc
  * stays the fallback so the dictionary can trail the wrappers. */
+/** Shared vocabulary keeps one cross-family behavior from repeating the
+ * same sentence in every facade and drifting as the portal contract grows. */
+const sharedProps = {
+  portal: {
+    en: "After hydration, render the floating vessel in `body` (`true`) or a selector; `false` keeps it inline.",
+    zh: "水合后将浮层渲染到 `body`（`true`）或指定选择器；`false` 保持原位渲染。",
+  },
+} as const;
+
 const propCell = (family: string, part: string, p: PropDoc, locale: string) => {
-  const en = prose(p.description);
+  const shared = sharedProps[p.name as keyof typeof sharedProps];
+  const en = prose(p.description || shared?.en);
   if (locale !== "zh") return prose(en);
-  return prose(normalizeZh(jsdocZh[family]?.parts?.[part]?.props?.[p.name] ?? en));
+  return prose(normalizeZh(jsdocZh[family]?.parts?.[part]?.props?.[p.name] ?? shared?.zh ?? en));
 };
 
 const markdownProps = (

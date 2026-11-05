@@ -4,6 +4,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -32,6 +33,8 @@ function ColorPickerRoot(props: ColorPickerRootProps) {
  * FormatSelect, HiddenInput, Context. */
 
 type ColorPickerFacadeProps = {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: string | Color;
   defaultValue?: string | Color;
   disabled?: boolean;
@@ -50,6 +53,7 @@ type ColorPickerFacadeProps = {
  * swatch trigger, while the popup carries the area and hue/alpha tracks.
  * Saved swatches and format switches remain anatomy work. */
 function ColorPickerFacade(props: ColorPickerFacadeProps) {
+  const { portal = false } = props;
   const {
     value,
     defaultValue,
@@ -86,41 +90,43 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
           <ArkColorPicker.ValueSwatch />
         </ArkColorPicker.Trigger>
       </ArkColorPicker.Control>
-      <ArkColorPicker.Positioner>
-        <ArkColorPicker.Content>
-          <ArkColorPicker.Area>
-            <ArkColorPicker.AreaBackground />
-            <ArkColorPicker.AreaThumb />
-          </ArkColorPicker.Area>
-          <div data-scope="color-picker" data-part="channel-controls">
-            <ArkColorPicker.EyeDropperTrigger>
-              {iconNode("pipette", { width: 14, height: 14 })}
-            </ArkColorPicker.EyeDropperTrigger>
-            <div data-scope="color-picker" data-part="channel-sliders">
-              <ArkColorPicker.ChannelSlider channel="hue">
-                <ArkColorPicker.ChannelSliderTrack />
-                <ArkColorPicker.ChannelSliderThumb />
-              </ArkColorPicker.ChannelSlider>
-              <ArkColorPicker.ChannelSlider channel="alpha">
-                <ArkColorPicker.TransparencyGrid />
-                <ArkColorPicker.ChannelSliderTrack />
-                <ArkColorPicker.ChannelSliderThumb />
-              </ArkColorPicker.ChannelSlider>
+      <FloatingPortal portal={portal}>
+        <ArkColorPicker.Positioner>
+          <ArkColorPicker.Content>
+            <ArkColorPicker.Area>
+              <ArkColorPicker.AreaBackground />
+              <ArkColorPicker.AreaThumb />
+            </ArkColorPicker.Area>
+            <div data-scope="color-picker" data-part="channel-controls">
+              <ArkColorPicker.EyeDropperTrigger>
+                {iconNode("pipette", { width: 14, height: 14 })}
+              </ArkColorPicker.EyeDropperTrigger>
+              <div data-scope="color-picker" data-part="channel-sliders">
+                <ArkColorPicker.ChannelSlider channel="hue">
+                  <ArkColorPicker.ChannelSliderTrack />
+                  <ArkColorPicker.ChannelSliderThumb />
+                </ArkColorPicker.ChannelSlider>
+                <ArkColorPicker.ChannelSlider channel="alpha">
+                  <ArkColorPicker.TransparencyGrid />
+                  <ArkColorPicker.ChannelSliderTrack />
+                  <ArkColorPicker.ChannelSliderThumb />
+                </ArkColorPicker.ChannelSlider>
+              </div>
             </div>
-          </div>
-          {swatches.length > 0 ? (
-            <ArkColorPicker.SwatchGroup>
-              {swatches.map((color) => (
-                <ArkColorPicker.SwatchTrigger key={color} value={color}>
-                  <ArkColorPicker.Swatch value={color}>
-                    <ArkColorPicker.SwatchIndicator>{checkIcon}</ArkColorPicker.SwatchIndicator>
-                  </ArkColorPicker.Swatch>
-                </ArkColorPicker.SwatchTrigger>
-              ))}
-            </ArkColorPicker.SwatchGroup>
-          ) : null}
-        </ArkColorPicker.Content>
-      </ArkColorPicker.Positioner>
+            {swatches.length > 0 ? (
+              <ArkColorPicker.SwatchGroup>
+                {swatches.map((color) => (
+                  <ArkColorPicker.SwatchTrigger key={color} value={color}>
+                    <ArkColorPicker.Swatch value={color}>
+                      <ArkColorPicker.SwatchIndicator>{checkIcon}</ArkColorPicker.SwatchIndicator>
+                    </ArkColorPicker.Swatch>
+                  </ArkColorPicker.SwatchTrigger>
+                ))}
+              </ArkColorPicker.SwatchGroup>
+            ) : null}
+          </ArkColorPicker.Content>
+        </ArkColorPicker.Positioner>
+      </FloatingPortal>
       <ArkColorPicker.HiddenInput />
     </ColorPickerRoot>
   );

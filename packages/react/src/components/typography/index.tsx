@@ -1,5 +1,5 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { HTMLAttributes } from "react";
+import type { ElementType, HTMLAttributes } from "react";
 
 /** The typographic voices, named so prose can ask for one: display and
  * heading ride the song-serif, the rest ride the hei. Nothing here is
@@ -16,7 +16,23 @@ function part(name: string, tag: string) {
 }
 
 const Display = part("Display", "p");
-const Heading = part("Heading", "p");
+
+export type TypographyHeadingSize = "sm" | "md" | "lg" | "xl" | "display";
+
+interface HeadingProps extends HTMLAttributes<HTMLElement> {
+  size?: TypographyHeadingSize;
+  as?: ElementType;
+}
+
+function Heading({ size, as = "p", children, ...rest }: HeadingProps) {
+  const Tag = as;
+  return (
+    <Tag {...rest} data-scope="typography" data-part="heading" data-size={size}>
+      {children}
+    </Tag>
+  );
+}
+
 const Lead = part("Lead", "p");
 const Body = part("Body", "p");
 const Muted = part("Muted", "p");

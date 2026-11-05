@@ -1,5 +1,6 @@
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { JSX } from "solid-js";
+import { splitProps, type JSX } from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 /** The typographic voices, named so prose can ask for one: display and
  * heading ride the song-serif, the rest ride the hei. Nothing here is
@@ -12,8 +13,32 @@ function part(name: string, tag: string) {
   return Component;
 }
 
+export type TypographyHeadingSize = "sm" | "md" | "lg" | "xl" | "display";
+
+export interface TypographyHeadingProps extends JSX.HTMLAttributes<HTMLHeadingElement> {
+  /** One rung of the heading token ladder. */
+  size?: TypographyHeadingSize;
+  /** The document's own semantic heading, independent of visual size. */
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+}
+
+function Heading(props: TypographyHeadingProps) {
+  const [own, rest] = splitProps(props, ["as", "size", "children"]);
+  const Tag = (own.as ?? "p") as "p";
+  return (
+    <Dynamic
+      component={Tag}
+      {...rest}
+      data-scope="typography"
+      data-part="heading"
+      data-size={own.size}
+    >
+      {own.children}
+    </Dynamic>
+  );
+}
+
 const Display = part("Display", "p");
-const Heading = part("Heading", "p");
 const Lead = part("Lead", "p");
 const Body = part("Body", "p");
 const Muted = part("Muted", "p");

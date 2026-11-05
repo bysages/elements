@@ -4,6 +4,7 @@ import { Show, createComponent, mergeProps, type ComponentProps, type JSX } from
 
 import { isElement, withElementProps } from "../../internal/element";
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -11,6 +12,8 @@ import { useElementId } from "../../internal/id";
  * dissolves in on elevation, anchored to its trigger by a whisker arrow. The
  * API is Ark's own — Root, Trigger, Anchor, Indicator, Positioner, Content,
  * Title, Description, CloseTrigger, Arrow, ArrowTip. */
+const PopoverPositioner = definePositioner(ArkPopover.Positioner);
+
 function PopoverRoot(props: ComponentProps<typeof ArkPopover.Root>) {
   const id = useElementId("popover", () => props.id);
 
@@ -39,6 +42,8 @@ type PopoverPlacement =
   | "right-end";
 
 export interface PopoverFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string | Element;
@@ -74,7 +79,7 @@ function PopoverFacade(props: PopoverFacadeProps) {
       >
         {triggerChildren()}
       </ArkPopover.Trigger>
-      <ArkPopover.Positioner>
+      <PopoverPositioner portal={props.portal ?? false}>
         <ArkPopover.Content>
           <ArkPopover.CloseTrigger aria-label="Close">
             {iconNode("x", { width: "14", height: "14" })}
@@ -88,14 +93,18 @@ function PopoverFacade(props: PopoverFacadeProps) {
           </Show>
           {props.children}
         </ArkPopover.Content>
-      </ArkPopover.Positioner>
+      </PopoverPositioner>
     </PopoverRoot>
   );
 }
 
 export const Popover: typeof PopoverFacade &
-  Omit<typeof ArkPopover, "Root"> & { Root: typeof PopoverRoot } = defineFamily(PopoverFacade, {
+  Omit<typeof ArkPopover, "Root" | "Positioner"> & {
+    Root: typeof PopoverRoot;
+    Positioner: typeof PopoverPositioner;
+  } = defineFamily(PopoverFacade, {
   ...ArkPopover,
   Root: PopoverRoot,
+  Positioner: PopoverPositioner,
 });
 injectComponentStyle("popover");

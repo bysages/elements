@@ -3,7 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("mentions");
 
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import { useElementId } from "../../internal/id";
 import { Icon } from "../icon";
@@ -17,6 +17,7 @@ let {
   anchor = null,
   size = "md",
   placement = "bottom-start",
+  portal = false,
   children,
   onInsert,
   onActiveChange,
@@ -73,7 +74,7 @@ the textarea in the host's own anatomy. -->
       {/snippet}
     </ArkPopover.Anchor>
   {/if}
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkPopover.Positioner>
       <ArkPopover.Content>
         {#snippet asChild(contentProps)}
@@ -115,7 +116,7 @@ the textarea in the host's own anatomy. -->
         {/snippet}
       </ArkPopover.Content>
     </ArkPopover.Positioner>
-  </Portal>
+  </FloatingPortal>
 </ArkPopover.Root>
 
 {#snippet option(entry: MentionEntry, index: number)}

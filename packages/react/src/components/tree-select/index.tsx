@@ -1,11 +1,11 @@
 import { useFilter } from "@ark-ui/react/locale";
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
-import { Portal } from "@ark-ui/react/portal";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/react/tree-view";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 import { useMemo, useState } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -60,6 +60,8 @@ function TreeSelectRow({ node, indexPath }: { node: TreeSelectNode; indexPath: n
  * matches keep their ancestors and the branches fan open.
  */
 export interface TreeSelectProps extends HTMLAttributes<HTMLDivElement> {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: string;
   data: TreeSelectNode[];
   placeholder?: string;
@@ -72,6 +74,7 @@ export interface TreeSelectProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function TreeSelectImpl({
+  portal = false,
   value,
   data,
   placeholder = "Select…",
@@ -174,7 +177,7 @@ function TreeSelectImpl({
           {chevronDown}
         </button>
       </ArkPopover.Trigger>
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkPopover.Positioner>
           <ArkPopover.Content data-scope="tree-select" data-part="content" data-size={size}>
             {filterable ? (
@@ -214,7 +217,7 @@ function TreeSelectImpl({
             </div>
           </ArkPopover.Content>
         </ArkPopover.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkPopover.Root>
   );
 }

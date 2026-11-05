@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import PopoverRoot from "./PopoverRoot.svelte";
   import { iconHtml } from "../../internal/icon";
@@ -13,6 +13,7 @@ let {
   disabled = false,
   placement,
   children,
+  portal = false,
   ...rest
 }: {
   open?: boolean;
@@ -22,6 +23,8 @@ let {
   disabled?: boolean;
   placement?: "top" | "top-start" | "top-end" | "bottom" | "bottom-start" | "bottom-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/popover").PopoverRootProps = $props();
 </script>
 
@@ -35,7 +38,7 @@ let {
       {/snippet}
     </ArkPopover.Trigger>
   {/if}
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkPopover.Positioner>
       <ArkPopover.Content>
         <ArkPopover.Arrow><ArkPopover.ArrowTip /></ArkPopover.Arrow>
@@ -45,5 +48,5 @@ let {
         <ArkPopover.CloseTrigger aria-label="Close">{@html iconHtml("x", { width: "14", height: "14" })}</ArkPopover.CloseTrigger>
       </ArkPopover.Content>
     </ArkPopover.Positioner>
-  </Portal>
+  </FloatingPortal>
 </PopoverRoot>

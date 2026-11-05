@@ -1,6 +1,6 @@
 <script lang="ts">
 import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import DatePickerRoot from "./DatePickerRoot.svelte";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -14,6 +14,7 @@ let {
   invalid = false,
   required = false,
   children,
+  portal = false,
   ...rest
 }: {
   value?: unknown;
@@ -24,6 +25,8 @@ let {
   invalid?: boolean;
   required?: boolean;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("./props").DatePickerRootProps = $props();
 </script>
 
@@ -33,7 +36,7 @@ let {
     <ArkDatePicker.Input aria-label={label ? undefined : placeholder} />
     <ArkDatePicker.Trigger><InternalIcon name="calendar" /></ArkDatePicker.Trigger>
   </ArkDatePicker.Control>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkDatePicker.Positioner>
       <ArkDatePicker.Content>
         <ArkDatePicker.View view="day">
@@ -69,6 +72,6 @@ let {
         </ArkDatePicker.View>
       </ArkDatePicker.Content>
     </ArkDatePicker.Positioner>
-  </Portal>
+  </FloatingPortal>
   {@render children?.()}
 </DatePickerRoot>

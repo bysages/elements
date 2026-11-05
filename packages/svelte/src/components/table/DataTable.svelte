@@ -44,6 +44,7 @@ import type {
 import { createVirtualizer } from "@tanstack/svelte-virtual";
 import { createListCollection } from "@ark-ui/svelte/select";
 import { untrack } from "svelte";
+import { get } from "svelte/store";
 
 import { iconHtml } from "../../internal/icon";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -51,7 +52,7 @@ import { formatMessage, useComponentMessages } from "../config-provider/messages
 import { Pagination as ArkPagination } from "../pagination";
 import { Select as ArkSelect } from "../select";
 import { containsNode, findNode, mark, removeById, replaceById, type TreeNode } from "./table-utils";
-import type { DataTableProps } from "./props";
+import type { DataTableProps, DataTableToolbarSlot } from "./props";
 
 let {
   data,
@@ -74,6 +75,7 @@ let {
   striped = false,
   globalFilterPlaceholder,
   emptyText,
+  toolbar,
   reorderable = false,
   onRowReorder,
   onColumnReorder,
@@ -512,6 +514,24 @@ const hasFooters = $derived(
   ),
 );
 
+let toolbarVersion = $state(0);
+$effect(() => {
+  if (!filterable) return;
+  return table.store.subscribe(() => (toolbarVersion += 1));
+});
+
+const toolbarSlot = $derived.by((): DataTableToolbarSlot | undefined => {
+  void toolbarVersion;
+  if (!filterable) return undefined;
+  return {
+    globalFilter: (table.atoms.globalFilter.get() as string) ?? "",
+    setGlobalFilter: (value) => table.setGlobalFilter(value),
+    columnFilters: table.atoms.columnFilters.get().map((filter) => ({ ...filter })),
+    setColumnFilters: (filters) => table.setColumnFilters(filters),
+    clearFilters: () => table.setColumnFilters([]),
+  };
+});
+
 function cellStyle(column: TColumn, span: number) {
   return {
     ...(pinOffset(column) ? { "--pin-offset": pinOffset(column) } : {}),
@@ -529,7 +549,11 @@ function cellStyle(column: TColumn, span: number) {
   data-striped={striped || undefined}
   style:--bs-table-row-height={`calc(${baseRowHeight()}px * var(--bs-density-scale, 1))`}
 >
-  {#if filterable && showToolbar}
+  {#if filterable && toolbar}
+    <div data-scope="table" data-part="toolbar">
+      {@render toolbar(toolbarSlot!)}
+    </div>
+  {:else if filterable && showToolbar}
     <div data-scope="table" data-part="toolbar">
       <input
         type="search"
@@ -704,7 +728,7 @@ function cellStyle(column: TColumn, span: number) {
               </ArkSelect.Indicator>
             </ArkSelect.Trigger>
           </ArkSelect.Control>
-          <ArkSelect.Positioner>
+          <ArkSelect.Positioner portal>
             <ArkSelect.Content>
               {#each sizeItems.items as item (item.value)}
                 <ArkSelect.Item item={item} value={item.value}>

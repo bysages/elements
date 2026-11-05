@@ -1,10 +1,10 @@
 import { Popover as ArkPopover } from "@ark-ui/react/popover";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ChangeEvent, HTMLAttributes } from "react";
 import { Fragment, useRef, useState } from "react";
 
 import { withSelfRoot } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Field } from "../field";
 import { Icon } from "../icon";
@@ -43,6 +43,8 @@ export type MentionTriggers = string | string[];
 export type MentionPlacement = "bottom-start" | "top-start";
 
 export interface MentionsVesselProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   id?: string;
   /** The host field's rung, so the rows keep the field's register. */
   size?: "sm" | "md" | "lg";
@@ -193,6 +195,7 @@ function MentionsPopup({
  * vessel still points at the right place. Shares the detection state
  * with the host through `useMentions`. */
 function MentionsVesselImpl({
+  portal = false,
   size = "md",
   open = false,
   matches = [],
@@ -217,7 +220,7 @@ function MentionsVesselImpl({
         getAnchorRect: () => anchor?.getBoundingClientRect() ?? null,
       }}
     >
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkPopover.Positioner>
           <ArkPopover.Content asChild>
             <MentionsPopup
@@ -230,7 +233,7 @@ function MentionsVesselImpl({
             />
           </ArkPopover.Content>
         </ArkPopover.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkPopover.Root>
   );
 }
@@ -253,6 +256,8 @@ export const MentionsVessel = withSelfRoot(MentionsVesselImpl);
  * themselves.
  */
 export interface MentionsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onSelect"> {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   /** The candidates offered once a trigger character is typed. */
   items?: MentionEntry[];
   /** The text held by the field. Supply it to control the field;
@@ -283,6 +288,7 @@ export interface MentionsProps extends Omit<HTMLAttributes<HTMLDivElement>, "onS
 }
 
 function MentionsImpl({
+  portal = false,
   items = [],
   value,
   trigger = "@",
@@ -356,18 +362,20 @@ function MentionsImpl({
             data-part="textarea"
           />
         </ArkPopover.Anchor>
-        <ArkPopover.Positioner>
-          <ArkPopover.Content asChild>
-            <MentionsPopup
-              size={size}
-              matches={mentions.matches}
-              active={mentions.active}
-              onInsert={mentions.insert}
-              onActiveChange={mentions.setActive}
-              id={`${hostId}:vessel:popup`}
-            />
-          </ArkPopover.Content>
-        </ArkPopover.Positioner>
+        <FloatingPortal portal={portal}>
+          <ArkPopover.Positioner>
+            <ArkPopover.Content asChild>
+              <MentionsPopup
+                size={size}
+                matches={mentions.matches}
+                active={mentions.active}
+                onInsert={mentions.insert}
+                onActiveChange={mentions.setActive}
+                id={`${hostId}:vessel:popup`}
+              />
+            </ArkPopover.Content>
+          </ArkPopover.Positioner>
+        </FloatingPortal>
       </ArkPopover.Root>
       {children}
     </div>

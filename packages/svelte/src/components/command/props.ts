@@ -1,3 +1,5 @@
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface CommandEntry {
   label: string;
   value: string;
@@ -29,4 +31,6 @@ export interface CommandProps {
   onOpenChange?: (open: boolean) => void;
   /** The field's live text turned. */
   onInputValueChange?: (inputValue: string) => void;
+  /** After hydration, portal the palette to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }

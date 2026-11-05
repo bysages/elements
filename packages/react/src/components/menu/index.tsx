@@ -2,6 +2,7 @@ import { Menu as ArkMenu } from "@ark-ui/react/menu";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { createContext, useContext, type ComponentProps } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -54,6 +55,8 @@ type MenuPlacement =
   | "right-end";
 
 export interface MenuFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: string;
@@ -66,6 +69,7 @@ export interface MenuFacadeProps {
 }
 
 function MenuFacade({
+  portal = false,
   open,
   defaultOpen,
   trigger,
@@ -89,15 +93,17 @@ function MenuFacade({
         {trigger}
         <ArkMenu.Indicator>{iconNode("chevron-down", { width: 14, height: 14 })}</ArkMenu.Indicator>
       </ArkMenu.Trigger>
-      <ArkMenu.Positioner>
-        <MenuContent>
-          {items.map((item) => (
-            <ArkMenu.Item key={item.value} value={item.value} disabled={item.disabled}>
-              {item.label}
-            </ArkMenu.Item>
-          ))}
-        </MenuContent>
-      </ArkMenu.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkMenu.Positioner>
+          <MenuContent>
+            {items.map((item) => (
+              <ArkMenu.Item key={item.value} value={item.value} disabled={item.disabled}>
+                {item.label}
+              </ArkMenu.Item>
+            ))}
+          </MenuContent>
+        </ArkMenu.Positioner>
+      </FloatingPortal>
     </MenuRoot>
   );
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Combobox as ArkCombobox, createListCollection } from "@ark-ui/svelte/combobox";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import ComboboxRoot from "./ComboboxRoot.svelte";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -17,6 +17,7 @@ let {
   required = false,
   clearable = true,
   children,
+  portal = false,
   ...rest
 }: {
   options: ComboboxOption[];
@@ -29,6 +30,8 @@ let {
   /** Show the clear-value control when the machine allows it. */
   clearable?: boolean;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("./props").ComboboxRootProps = $props();
 
 const collection = $derived(createListCollection({ items: options }));
@@ -41,7 +44,7 @@ const collection = $derived(createListCollection({ items: options }));
     {#if clearable}<ArkCombobox.ClearTrigger><InternalIcon name="x" /></ArkCombobox.ClearTrigger>{/if}
     <ArkCombobox.Trigger><InternalIcon name="chevron-down" /></ArkCombobox.Trigger>
   </ArkCombobox.Control>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkCombobox.Positioner>
       <ArkCombobox.Content>
         <ArkCombobox.Empty>No results found</ArkCombobox.Empty>
@@ -55,6 +58,6 @@ const collection = $derived(createListCollection({ items: options }));
         </ArkCombobox.List>
       </ArkCombobox.Content>
     </ArkCombobox.Positioner>
-  </Portal>
+  </FloatingPortal>
   {@render children?.()}
 </ComboboxRoot>

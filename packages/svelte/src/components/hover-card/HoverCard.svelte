@@ -1,6 +1,6 @@
 <script lang="ts">
 import { HoverCard as ArkHoverCard } from "@ark-ui/svelte/hover-card";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import HoverCardRoot from "./HoverCardRoot.svelte";
 
@@ -12,6 +12,7 @@ let {
   disabled = false,
   placement,
   children,
+  portal = false,
   ...rest
 }: {
   open?: boolean;
@@ -21,12 +22,14 @@ let {
   disabled?: boolean;
   placement?: "top" | "top-start" | "top-end" | "bottom" | "bottom-start" | "bottom-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/hover-card").HoverCardRootProps = $props();
 </script>
 
 <HoverCardRoot bind:open {...(placement === undefined ? null : { positioning: { placement } })} {...rest}>
   <ArkHoverCard.Trigger {disabled}>{trigger}</ArkHoverCard.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkHoverCard.Positioner>
       <ArkHoverCard.Content>
         <ArkHoverCard.Arrow><ArkHoverCard.ArrowTip /></ArkHoverCard.Arrow>
@@ -35,5 +38,5 @@ let {
         {@render children?.()}
       </ArkHoverCard.Content>
     </ArkHoverCard.Positioner>
-  </Portal>
+  </FloatingPortal>
 </HoverCardRoot>

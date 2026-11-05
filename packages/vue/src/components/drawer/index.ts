@@ -1,8 +1,9 @@
 import { Drawer as ArkDrawer } from "@ark-ui/vue/drawer";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { defineComponent, h, type Component, type SetupContext } from "vue";
+import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -25,6 +26,8 @@ const DrawerRoot = defineComponent({
 
 /** The common path: a trigger, grabber, heading, and dismissal come as
  * one sheet; the default slot carries whatever lives below the heading. */
+const DrawerPositioner = definePositioner("SDrawerPositioner", ArkDrawer.Positioner);
+
 const DrawerFacade = defineComponent({
   name: "SDrawer",
   inheritAttrs: false,
@@ -36,6 +39,7 @@ const DrawerFacade = defineComponent({
     label: { type: String, required: true },
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -55,7 +59,7 @@ const DrawerFacade = defineComponent({
         () => [
           h(ArkDrawer.Trigger, { disabled: props.disabled }, () => props.trigger ?? props.label),
           h(ArkDrawer.Backdrop),
-          h(ArkDrawer.Positioner, () =>
+          h(DrawerPositioner, { portal: props.portal }, () =>
             h(ArkDrawer.Content, () => [
               h(ArkDrawer.Grabber, () => h(ArkDrawer.GrabberIndicator)),
               h(ArkDrawer.Title, () => props.label),

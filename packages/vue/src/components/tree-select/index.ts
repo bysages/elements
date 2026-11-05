@@ -6,6 +6,7 @@ import type { SetupContext } from "vue";
 import { computed, defineComponent, h, ref, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -35,6 +36,8 @@ function chevronDown() {
  * `modelValue`. `filterable` puts a filter line at the top of the
  * vessel; matches keep their ancestors and the branches fan open.
  */
+const TreeSelectPositioner = definePositioner("STreeSelectPositioner", ArkPopover.Positioner);
+
 const TreeSelectFacade = defineComponent({
   name: "TreeSelect",
   /* The root is a popover fragment (trigger + portal), so the caller's
@@ -50,6 +53,7 @@ const TreeSelectFacade = defineComponent({
     /** One rung of the ladder: the trigger height and the vessel's
      * row register follow it together. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: string) => true,
@@ -183,7 +187,7 @@ const TreeSelectFacade = defineComponent({
             },
             () => [label.value ?? props.placeholder, chevronDown()],
           ),
-          h(ArkPopover.Positioner, () => [
+          h(TreeSelectPositioner, { portal: props.portal }, () => [
             h(
               ArkPopover.Content,
               {

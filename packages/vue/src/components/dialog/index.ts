@@ -1,13 +1,16 @@
 import { Dialog as ArkDialog } from "@ark-ui/vue/dialog";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { defineComponent, h, type Component, type SetupContext } from "vue";
+import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/vue/dialog";
+
+export type DialogSize = "sm" | "md" | "lg" | "xl";
 
 function part(name: string, tag: string) {
   return defineComponent({
@@ -25,6 +28,21 @@ function part(name: string, tag: string) {
     },
   });
 }
+
+/** The semantic sheet: `size` names one content measure instead of a caller
+ * overriding the sheet's max-width for every dialog. */
+const DialogContent = defineComponent({
+  name: "SDialogContent",
+  inheritAttrs: false,
+  props: {
+    size: { type: String as PropType<DialogSize>, default: undefined },
+  },
+  setup(props, ctx) {
+    injectComponentStyle("dialog");
+
+    return () => h(ArkDialog.Content, { ...ctx.attrs, "data-size": props.size }, ctx.slots.default);
+  },
+});
 
 /** A semantic section for the dialog's title and description. */
 const Header = part("Header", "header");
@@ -50,6 +68,8 @@ const DialogRoot = defineComponent({
 
 /** The common path: name the message, and the vessel, backdrop, close
  * trigger, and open state wiring arrive together. */
+const DialogPositioner = definePositioner("SDialogPositioner", ArkDialog.Positioner);
+
 const DialogFacade = defineComponent({
   name: "SDialog",
   inheritAttrs: false,
@@ -61,6 +81,8 @@ const DialogFacade = defineComponent({
     label: { type: String, default: undefined },
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
+    size: { type: String as PropType<DialogSize>, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -85,8 +107,8 @@ const DialogFacade = defineComponent({
             () => props.trigger ?? title ?? "Open",
           ),
           h(ArkDialog.Backdrop),
-          h(ArkDialog.Positioner, () =>
-            h(ArkDialog.Content, () => [
+          h(DialogPositioner, { portal: props.portal }, () =>
+            h(DialogContent, { size: props.size }, () => [
               h(Header, () => [
                 h(ArkDialog.Title, () => title),
                 props.description ? h(ArkDialog.Description, () => props.description) : null,
@@ -109,14 +131,17 @@ const DialogFacade = defineComponent({
 export const Dialog = defineFamily(DialogFacade, {
   ...ArkDialog,
   Root: DialogRoot,
+  Content: DialogContent,
   Header,
   Body,
   Footer,
 } as unknown as {
   Root: Component;
+  Content: Component;
 } & Record<string, Component>) as typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root"> & {
+  Omit<typeof ArkDialog, "Root" | "Content"> & {
     Root: typeof DialogRoot;
+    Content: typeof DialogContent;
     Header: Component;
     Body: Component;
     Footer: Component;

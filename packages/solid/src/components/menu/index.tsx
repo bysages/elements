@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, createContext, splitProps, useContext } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -22,6 +23,8 @@ type MenuOwnProps = {
   /** One rung of the control-height ladder for the vessel's rows. */
   size?: "sm" | "md" | "lg";
 };
+
+const MenuPositioner = definePositioner(ArkMenu.Positioner);
 
 function MenuRoot(props: Parameters<typeof ArkMenu.Root>[0] & MenuOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
@@ -61,6 +64,8 @@ type MenuPlacement =
   | "right-end";
 
 export interface MenuFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: string;
@@ -90,7 +95,7 @@ function MenuFacade(props: MenuFacadeProps) {
           {iconNode("chevron-down", { width: "14", height: "14" })}
         </ArkMenu.Indicator>
       </ArkMenu.Trigger>
-      <ArkMenu.Positioner>
+      <MenuPositioner portal={props.portal ?? false}>
         <MenuContent>
           <For each={props.items}>
             {(item) => (
@@ -100,7 +105,7 @@ function MenuFacade(props: MenuFacadeProps) {
             )}
           </For>
         </MenuContent>
-      </ArkMenu.Positioner>
+      </MenuPositioner>
     </MenuRoot>
   );
 }
@@ -108,12 +113,14 @@ function MenuFacade(props: MenuFacadeProps) {
 /* Ark's namespace is frozen — spread copies the members so Root and
  * Content can be the sized wrappers while the rest stay Ark's own parts. */
 export const Menu: typeof MenuFacade &
-  Omit<typeof ArkMenu, "Root" | "Content"> & {
+  Omit<typeof ArkMenu, "Root" | "Content" | "Positioner"> & {
     Root: typeof MenuRoot;
+    Positioner: typeof MenuPositioner;
     Content: typeof MenuContent;
   } = defineFamily(MenuFacade, {
   ...ArkMenu,
   Root: MenuRoot,
+  Positioner: MenuPositioner,
   Content: MenuContent,
 });
 

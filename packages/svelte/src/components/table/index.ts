@@ -8,7 +8,7 @@ import DataTableComponent from "./DataTable.svelte";
  * component. The API is TanStack's own — columns ride `ColumnDef`. */
 export const DataTable = withSelfRoot(DataTableComponent);
 
-export type { DataTableProps } from "./props";
+export type { DataTableProps, DataTableToolbarSlot } from "./props";
 export { FlexRender, createColumnHelper } from "@tanstack/svelte-table";
 export type { ColumnDef, SortingState } from "@tanstack/svelte-table";
 

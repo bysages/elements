@@ -3,9 +3,9 @@ import { createImageViewerGestures, type ImageViewerGestureController } from "@b
 import { injectComponentStyle } from "@bysages/core/styling";
 import { Show, createEffect, createSignal, onCleanup, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
@@ -41,6 +41,8 @@ export interface ImageViewerProps {
   zoomable?: boolean;
   /** The openness changed — from the scrim, Escape or the toolbar. */
   onOpenChange?: (open: boolean) => void;
+  /** Portal after hydration; `false` keeps the lightbox inline. */
+  portal?: FloatingPortalTarget;
 }
 
 function ImageViewerImpl(props: ImageViewerProps) {
@@ -53,6 +55,7 @@ function ImageViewerImpl(props: ImageViewerProps) {
     "open",
     "zoomable",
     "onOpenChange",
+    "portal",
     "children",
   ]);
   const id = useElementId("image-viewer");
@@ -103,7 +106,7 @@ function ImageViewerImpl(props: ImageViewerProps) {
         data-scope="image-viewer"
         data-part="trigger"
       />
-      <Portal>
+      <FloatingPortal portal={own.portal ?? true}>
         <ArkDialog.Backdrop class="bs-image-viewer-backdrop" />
         <ArkDialog.Positioner class="bs-image-viewer-positioner">
           <ArkDialog.Content
@@ -158,7 +161,7 @@ function ImageViewerImpl(props: ImageViewerProps) {
             </div>
           </ArkDialog.Content>
         </ArkDialog.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkDialog.Root>
   );
 }

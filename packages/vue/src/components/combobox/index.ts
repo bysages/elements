@@ -11,6 +11,7 @@ import {
 } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -53,6 +54,8 @@ function fromComboboxValue(value: string[], multiple: boolean) {
 
 /** The complete combobox behind one model value: options become the vessel's
  * rows while typing, clearing, and selection stay on the common field path. */
+const ComboboxPositioner = definePositioner("SComboboxPositioner", ArkCombobox.Positioner);
+
 const ComboboxFacade = defineComponent({
   name: "SCombobox",
   props: {
@@ -74,6 +77,7 @@ const ComboboxFacade = defineComponent({
     label: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: ComboboxFacadeValue) => true,
@@ -118,7 +122,7 @@ const ComboboxFacade = defineComponent({
               : []),
             h(ArkCombobox.Trigger, () => iconNode("chevron-down", { width: 16, height: 16 })),
           ]),
-          h(ArkCombobox.Positioner, () =>
+          h(ComboboxPositioner, { portal: props.portal }, () =>
             h(ArkCombobox.Content, () =>
               h(ArkCombobox.List, () => [
                 h(ArkCombobox.Empty, () => "No results found"),

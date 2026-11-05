@@ -54,6 +54,7 @@ import {
   type CSSProperties,
   type PropType,
   type SetupContext,
+  type SlotsType,
 } from "vue";
 
 import { withSelfRoot } from "../../internal/family";
@@ -154,6 +155,18 @@ export interface DataTableProps {
   defaultExpanded?: boolean;
   /** Band every other body row so wide measures keep the eye on line. */
   striped?: boolean;
+}
+
+/** A stable toolbar contract: the wrapper owns TanStack's state atoms and
+ * exposes only the two filter decisions a caller toolbar needs. */
+export interface DataTableToolbarSlot {
+  /** The current global filter value; empty string reads as no filter. */
+  globalFilter: string;
+  setGlobalFilter(value: string): void;
+  /** Current per-column filters, each as `{ id, value }`. */
+  columnFilters: Array<{ id: string; value: unknown }>;
+  setColumnFilters(filters: Array<{ id: string; value: unknown }>): void;
+  clearFilters(): void;
 }
 
 const SELECT_COL_ID = "__select";
@@ -302,7 +315,22 @@ const DataTableFacade = defineComponent({
     /** Band every other body row so wide measures keep the eye on line. */
     striped: Boolean,
   },
-  setup(rawProps, { attrs, expose, emit }: SetupContext) {
+  setup(
+    rawProps,
+    {
+      attrs,
+      expose,
+      emit,
+      slots,
+    }: SetupContext<
+      {
+        rowReorder: (_rows: RowData[]) => true;
+        columnReorder: (_ids: string[]) => true;
+        rowDrop: (_row: RowData, _event: DragEvent, _zone: "before" | "inside" | "after") => true;
+      },
+      SlotsType<{ toolbar?: (props: DataTableToolbarSlot) => any }>
+    >,
+  ) {
     injectComponentStyle("table");
     const messages = useComponentMessages();
     const id = useElementId("table", attrs);
@@ -1197,7 +1225,7 @@ const DataTableFacade = defineComponent({
                     ],
                   ),
                 ),
-                h(ArkSelect.Positioner as never, () =>
+                h(ArkSelect.Positioner as never, { portal: true }, () =>
                   h(ArkSelect.Content as never, () =>
                     sizeItems.map((item) =>
                       h(
@@ -1258,8 +1286,20 @@ const DataTableFacade = defineComponent({
           })()
         : null;
 
-      const toolbar =
-        props.filterable && props.showToolbar
+      const customToolbar = props.filterable
+        ? slots.toolbar?.({
+            globalFilter: (table.atoms.globalFilter.get() as string) ?? "",
+            setGlobalFilter: (value: string) => table.setGlobalFilter(value),
+            columnFilters: table.atoms.columnFilters.get().map((filter) => ({ ...filter })),
+            setColumnFilters: (filters: Array<{ id: string; value: unknown }>) =>
+              table.setColumnFilters(filters),
+            clearFilters: () => table.setColumnFilters([]),
+          })
+        : undefined;
+
+      const toolbar = customToolbar
+        ? h("div", { "data-scope": "table", "data-part": "toolbar" }, customToolbar)
+        : props.filterable && props.showToolbar
           ? h("div", { "data-scope": "table", "data-part": "toolbar" }, [
               h("input", {
                 type: "search",

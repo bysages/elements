@@ -5,9 +5,9 @@ import type { TreeViewSelectionChangeDetails } from "@ark-ui/solid/tree-view";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createMemo, createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -33,6 +33,8 @@ export interface TreeSelectProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** One rung of the ladder: the trigger height and the vessel's
    * row register follow it together. */
   size?: "sm" | "md" | "lg";
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   disabled?: boolean;
   onValueChange?: (value: string) => void;
 }
@@ -56,6 +58,7 @@ function TreeSelectImpl(props: TreeSelectProps) {
     "filterable",
     "disabled",
     "size",
+    "portal",
     "onValueChange",
   ]);
   const [open, setOpen] = createSignal(false);
@@ -180,54 +183,52 @@ function TreeSelectImpl(props: TreeSelectProps) {
           </button>
         )}
       />
-      <Portal>
-        <ArkPopover.Positioner>
-          <ArkPopover.Content
-            data-scope="tree-select"
-            data-part="content"
-            data-size={own.size ?? "md"}
-          >
-            <Show when={own.filterable}>
-              <div data-scope="tree-select" data-part="search">
-                <Input
-                  size="sm"
-                  value={query()}
-                  onValueChange={setQuery}
-                  placeholder={messages().select.filter}
-                  aria-label={messages().select.filter}
-                />
-              </div>
-            </Show>
-            <div data-scope="tree-select" data-part="body">
-              <Show
-                when={(visibleCollection().rootNode.children ?? []).length > 0}
-                fallback={
-                  <p data-scope="tree-select" data-part="empty">
-                    Nothing matches
-                  </p>
-                }
-              >
-                <ArkTreeView.Root
-                  id={`${id()}-tree`}
-                  collection={visibleCollection()}
-                  selectionMode="single"
-                  selectedValue={own.value ? [own.value] : []}
-                  {...(filtering()
-                    ? { expandedValue: expandedWhileFiltering() }
-                    : { defaultExpandedValue: firstLevel() })}
-                  onSelectionChange={pick}
-                >
-                  <ArkTreeView.Tree>
-                    <For each={visibleCollection().rootNode.children}>
-                      {(node, index) => <Row node={node} indexPath={[index()]} />}
-                    </For>
-                  </ArkTreeView.Tree>
-                </ArkTreeView.Root>
-              </Show>
+      <Popover.Positioner portal={own.portal ?? false}>
+        <ArkPopover.Content
+          data-scope="tree-select"
+          data-part="content"
+          data-size={own.size ?? "md"}
+        >
+          <Show when={own.filterable}>
+            <div data-scope="tree-select" data-part="search">
+              <Input
+                size="sm"
+                value={query()}
+                onValueChange={setQuery}
+                placeholder={messages().select.filter}
+                aria-label={messages().select.filter}
+              />
             </div>
-          </ArkPopover.Content>
-        </ArkPopover.Positioner>
-      </Portal>
+          </Show>
+          <div data-scope="tree-select" data-part="body">
+            <Show
+              when={(visibleCollection().rootNode.children ?? []).length > 0}
+              fallback={
+                <p data-scope="tree-select" data-part="empty">
+                  Nothing matches
+                </p>
+              }
+            >
+              <ArkTreeView.Root
+                id={`${id()}-tree`}
+                collection={visibleCollection()}
+                selectionMode="single"
+                selectedValue={own.value ? [own.value] : []}
+                {...(filtering()
+                  ? { expandedValue: expandedWhileFiltering() }
+                  : { defaultExpandedValue: firstLevel() })}
+                onSelectionChange={pick}
+              >
+                <ArkTreeView.Tree>
+                  <For each={visibleCollection().rootNode.children}>
+                    {(node, index) => <Row node={node} indexPath={[index()]} />}
+                  </For>
+                </ArkTreeView.Tree>
+              </ArkTreeView.Root>
+            </Show>
+          </div>
+        </ArkPopover.Content>
+      </Popover.Positioner>
     </ArkPopover.Root>
   );
 }

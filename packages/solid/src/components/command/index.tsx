@@ -3,9 +3,9 @@ import { Combobox as ArkCombobox, type ListCollection } from "@ark-ui/solid/comb
 import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createEffect, createSignal, splitProps } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../config-provider/use-component-messages";
 import { Dialog } from "../dialog";
@@ -42,6 +42,8 @@ export interface CommandProps {
   onOpenChange?: (open: boolean) => void;
   /** The field's text changed. */
   onInputValueChange?: (value: string) => void;
+  /** Portal after hydration; `false` keeps the sheet inline. */
+  portal?: FloatingPortalTarget;
 }
 
 /** A command row: the machine's item grafted onto a vessel of our own,
@@ -94,6 +96,7 @@ function CommandImpl(props: CommandProps) {
     "onSelect",
     "onOpenChange",
     "onInputValueChange",
+    "portal",
   ]);
   const id = useElementId("command", () => props.id);
   const [internalOpen, setInternalOpen] = createSignal(false);
@@ -157,7 +160,7 @@ function CommandImpl(props: CommandProps) {
       open={open()}
       onOpenChange={(details) => setOpen(details.open)}
     >
-      <Portal>
+      <FloatingPortal portal={own.portal ?? true}>
         <ArkDialog.Backdrop />
         <ArkDialog.Positioner
           asChild={(positionerProps) => (
@@ -258,7 +261,7 @@ function CommandImpl(props: CommandProps) {
             </div>
           )}
         />
-      </Portal>
+      </FloatingPortal>
     </ArkDialog.Root>
   );
 }

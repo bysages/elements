@@ -10,14 +10,24 @@ import {
 } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
 export type { DialogOpenChangeDetails } from "@ark-ui/solid/dialog";
 
+export type DialogSize = "sm" | "md" | "lg" | "xl";
+
 export interface DialogPartProps extends JSX.HTMLAttributes<HTMLElement> {}
 
 export interface DialogBodyProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+
+/** The semantic sheet: `size` names one content measure instead of a caller
+ * overriding the sheet's max-width for every dialog. */
+function DialogContent(props: ComponentProps<typeof ArkDialog.Content> & { size?: DialogSize }) {
+  const [own, rest] = splitProps(props, ["size"]);
+  return <ArkDialog.Content {...rest} data-size={own.size} />;
+}
 
 /** A semantic section for the dialog's title and description. */
 function DialogHeader(props: DialogPartProps) {
@@ -52,6 +62,8 @@ function DialogFooter(props: DialogPartProps) {
  * in on elevation, the backdrop fades, and nested overlays stack through
  * the shared z-index ladder. The API is Ark's own — Root, Trigger,
  * Backdrop, Positioner, Content, Title, Description, CloseTrigger. */
+const DialogPositioner = definePositioner(ArkDialog.Positioner);
+
 function DialogRoot(props: ComponentProps<typeof ArkDialog.Root>) {
   const id = useElementId("dialog", () => props.id);
 
@@ -66,6 +78,8 @@ function DialogRoot(props: ComponentProps<typeof ArkDialog.Root>) {
 }
 
 export interface DialogFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string;
@@ -73,6 +87,8 @@ export interface DialogFacadeProps {
   label?: string;
   description?: string;
   disabled?: boolean;
+  /** One content measure for the facade's sheet. */
+  size?: DialogSize;
   children?: JSX.Element;
   onOpenChange?: (open: boolean) => void;
 }
@@ -89,8 +105,8 @@ function DialogFacade(props: DialogFacadeProps) {
     >
       <ArkDialog.Trigger disabled={props.disabled}>{title() ?? "Open"}</ArkDialog.Trigger>
       <ArkDialog.Backdrop />
-      <ArkDialog.Positioner>
-        <ArkDialog.Content>
+      <DialogPositioner portal={props.portal ?? true}>
+        <DialogContent size={props.size ?? "md"}>
           <DialogHeader>
             <ArkDialog.Title>{title()}</ArkDialog.Title>
             <Show when={props.description}>
@@ -106,21 +122,25 @@ function DialogFacade(props: DialogFacadeProps) {
           <ArkDialog.CloseTrigger aria-label="Close">
             {iconNode("x", { width: 14, height: 14 })}
           </ArkDialog.CloseTrigger>
-        </ArkDialog.Content>
-      </ArkDialog.Positioner>
+        </DialogContent>
+      </DialogPositioner>
     </DialogRoot>
   );
 }
 
 export const Dialog: typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root"> & {
+  Omit<typeof ArkDialog, "Root" | "Content" | "Positioner"> & {
     Root: typeof DialogRoot;
+    Content: typeof DialogContent;
+    Positioner: typeof DialogPositioner;
     Header: typeof DialogHeader;
     Body: typeof DialogBody;
     Footer: typeof DialogFooter;
   } = defineFamily(DialogFacade, {
   ...ArkDialog,
   Root: DialogRoot,
+  Content: DialogContent,
+  Positioner: DialogPositioner,
   Header: DialogHeader,
   Body: DialogBody,
   Footer: DialogFooter,

@@ -2,9 +2,9 @@ import { Menu as ArkMenu } from "@ark-ui/solid/menu";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Menu } from "../menu";
 
@@ -25,6 +25,8 @@ export interface MenubarProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
   items?: MenubarGroup[];
   /** Called with the entry's `value` when it is chosen. */
   onSelect?: (value: string) => void;
+  /** Portal vessels after hydration by default; `false` keeps them inline. */
+  portal?: FloatingPortalTarget;
 }
 
 /**
@@ -42,7 +44,7 @@ export interface MenubarProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "
 function MenubarImpl(props: MenubarProps) {
   injectComponentStyle("menubar");
   injectComponentStyle("menu");
-  const [own, rest] = splitProps(props, ["id", "items", "onSelect", "children"]);
+  const [own, rest] = splitProps(props, ["id", "items", "onSelect", "portal", "children"]);
   const id = useElementId("menubar", () => own.id);
   return (
     <div {...rest} id={own.id} data-scope="menubar" data-part="root" role="menubar">
@@ -62,26 +64,24 @@ function MenubarImpl(props: MenubarProps) {
                 </button>
               )}
             />
-            <Portal>
-              <ArkMenu.Positioner>
-                <ArkMenu.Content>
-                  <For each={group.items}>
-                    {(entry) => (
-                      <ArkMenu.Item
-                        value={entry.value}
-                        disabled={entry.disabled}
-                        // Danger rides a data flag of our own — the
-                        // menubar stylesheet tints the row.
-                        data-danger={entry.danger ? "" : undefined}
-                        onSelect={() => own.onSelect?.(entry.value)}
-                      >
-                        <ArkMenu.ItemText>{entry.label}</ArkMenu.ItemText>
-                      </ArkMenu.Item>
-                    )}
-                  </For>
-                </ArkMenu.Content>
-              </ArkMenu.Positioner>
-            </Portal>
+            <Menu.Positioner portal={own.portal ?? false}>
+              <ArkMenu.Content>
+                <For each={group.items}>
+                  {(entry) => (
+                    <ArkMenu.Item
+                      value={entry.value}
+                      disabled={entry.disabled}
+                      // Danger rides a data flag of our own — the
+                      // menubar stylesheet tints the row.
+                      data-danger={entry.danger ? "" : undefined}
+                      onSelect={() => own.onSelect?.(entry.value)}
+                    >
+                      <ArkMenu.ItemText>{entry.label}</ArkMenu.ItemText>
+                    </ArkMenu.Item>
+                  )}
+                </For>
+              </ArkMenu.Content>
+            </Menu.Positioner>
           </ArkMenu.Root>
         )}
       </For>

@@ -35,6 +35,20 @@ export const dialogCss =
   padding-block-end: max(var(--bs-padding-lg), var(--bs-safe-area-inset-bottom));
 }
 
+/* Content measures are component vocabulary: dialogs choose one rung
+   instead of fighting the sheet's measure with utility overrides. */
+[data-scope="dialog"][data-part="content"][data-size="sm"] {
+  inline-size: min(24rem, 100%);
+}
+
+[data-scope="dialog"][data-part="content"][data-size="lg"] {
+  inline-size: min(44rem, 100%);
+}
+
+[data-scope="dialog"][data-part="content"][data-size="xl"] {
+  inline-size: min(56rem, 100%);
+}
+
 /* The dialog owns the top of the restraint ladder: a white sheet with a
    hairline, entering on elevation-4 and settling on 5. */
 [data-scope="dialog"][data-part="content"]:focus,

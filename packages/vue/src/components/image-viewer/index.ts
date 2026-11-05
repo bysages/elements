@@ -6,6 +6,7 @@ import type { PropType } from "vue";
 import { defineComponent, h, onScopeDispose, ref, watch, type VNode } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -41,6 +42,8 @@ export interface ImageViewerProps {
   height?: string | number;
 }
 
+const ImageViewerPositioner = definePositioner("SImageViewerPositioner", ArkDialog.Positioner);
+
 const ImageViewerFacade = defineComponent({
   name: "ImageViewer",
   inheritAttrs: false,
@@ -57,6 +60,7 @@ const ImageViewerFacade = defineComponent({
       type: [String, Number] as PropType<ImageViewerProps["height"]>,
       default: undefined,
     },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   emits: {
     "update:open": (_value: boolean) => true,
@@ -163,55 +167,58 @@ const ImageViewerFacade = defineComponent({
             triggerContent ?? (() => [h(ImageViewerPreview)]),
           ),
           h(ArkDialog.Backdrop, { class: "bs-image-viewer-backdrop" }),
-          h(ArkDialog.Positioner, { class: "bs-image-viewer-positioner" }, () =>
-            h(
-              ArkDialog.Content,
-              {
-                class: "bs-image-viewer-content",
-                "aria-label": props.alt || "Image preview",
-                // The content owns the whole screen, so the machine's
-                // outside-click never fires — the scrim is always
-                // "inside". A bare click on the content itself (the
-                // page around the picture and its toolbar) reads as
-                // the scrim and closes; clicks on the picture or the
-                // tools carry their own targets and stay.
-                onClick: (event: MouseEvent) => {
-                  if (event.target === event.currentTarget) setOpen(false);
+          h(
+            ImageViewerPositioner,
+            { portal: props.portal, class: "bs-image-viewer-positioner" },
+            () =>
+              h(
+                ArkDialog.Content,
+                {
+                  class: "bs-image-viewer-content",
+                  "aria-label": props.alt || "Image preview",
+                  // The content owns the whole screen, so the machine's
+                  // outside-click never fires — the scrim is always
+                  // "inside". A bare click on the content itself (the
+                  // page around the picture and its toolbar) reads as
+                  // the scrim and closes; clicks on the picture or the
+                  // tools carry their own targets and stay.
+                  onClick: (event: MouseEvent) => {
+                    if (event.target === event.currentTarget) setOpen(false);
+                  },
                 },
-              },
-              () => [
-                h("img", {
-                  "data-scope": "image-viewer",
-                  "data-part": "viewport",
-                  src: props.src,
-                  alt: props.alt,
-                  width: props.width,
-                  height: props.height,
-                  ref: viewport,
-                }),
-                // The tray's children ride an array: an element's function
-                // children that return a single vnode are dropped by the
-                // runtime in silence.
-                h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, [
-                  h(ButtonGroup, () => [
-                    ...(props.zoomable
-                      ? [
-                          toolButton(messages.value.imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
-                            gestures?.zoomBy(SCALE_STEP),
-                          ),
-                          toolButton(messages.value.imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
-                            gestures?.zoomBy(-SCALE_STEP),
-                          ),
-                        ]
-                      : []),
-                    toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, () =>
-                      gestures?.rotate(),
-                    ),
-                    closeToolButton(messages.value.imageViewer.close, TOOL_ICONS.close),
+                () => [
+                  h("img", {
+                    "data-scope": "image-viewer",
+                    "data-part": "viewport",
+                    src: props.src,
+                    alt: props.alt,
+                    width: props.width,
+                    height: props.height,
+                    ref: viewport,
+                  }),
+                  // The tray's children ride an array: an element's function
+                  // children that return a single vnode are dropped by the
+                  // runtime in silence.
+                  h("div", { "data-scope": "image-viewer", "data-part": "toolbar" }, [
+                    h(ButtonGroup, () => [
+                      ...(props.zoomable
+                        ? [
+                            toolButton(messages.value.imageViewer.zoomIn, TOOL_ICONS.zoomIn, () =>
+                              gestures?.zoomBy(SCALE_STEP),
+                            ),
+                            toolButton(messages.value.imageViewer.zoomOut, TOOL_ICONS.zoomOut, () =>
+                              gestures?.zoomBy(-SCALE_STEP),
+                            ),
+                          ]
+                        : []),
+                      toolButton(messages.value.imageViewer.rotate, TOOL_ICONS.rotate, () =>
+                        gestures?.rotate(),
+                      ),
+                      closeToolButton(messages.value.imageViewer.close, TOOL_ICONS.close),
+                    ]),
                   ]),
-                ]),
-              ],
-            ),
+                ],
+              ),
           ),
         ],
       );

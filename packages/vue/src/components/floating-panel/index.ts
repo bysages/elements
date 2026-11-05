@@ -1,8 +1,9 @@
 import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/vue/floating-panel";
 import { injectComponentStyle } from "@bysages/core/styling";
-import { defineComponent, h, type Component, type SetupContext } from "vue";
+import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -30,6 +31,11 @@ const resizeAxes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
 
 /** The common path: a headed, draggable, resizable panel with stage and
  * close rungs; the default slot fills the body. */
+const FloatingPanelPositioner = definePositioner(
+  "SFloatingPanelPositioner",
+  ArkFloatingPanel.Positioner,
+);
+
 const FloatingPanelFacade = defineComponent({
   name: "SFloatingPanel",
   inheritAttrs: false,
@@ -41,6 +47,7 @@ const FloatingPanelFacade = defineComponent({
     label: { type: String, required: true },
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -60,7 +67,7 @@ const FloatingPanelFacade = defineComponent({
         },
         () => [
           h(ArkFloatingPanel.Trigger, () => props.trigger ?? props.label),
-          h(ArkFloatingPanel.Positioner, () =>
+          h(FloatingPanelPositioner, { portal: props.portal }, () =>
             h(ArkFloatingPanel.Content, () => [
               h(ArkFloatingPanel.DragTrigger, () =>
                 h(ArkFloatingPanel.Header, () => [

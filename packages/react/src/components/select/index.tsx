@@ -4,6 +4,7 @@ import { createListCollection, Select as ArkSelect } from "@ark-ui/react/select"
 import { injectComponentStyle } from "@bysages/core/styling";
 import { useMemo } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import type { NativeSelectOption } from "./native";
@@ -34,6 +35,8 @@ function toArkValue(value: SelectFacadeValue | undefined) {
 }
 
 export interface SelectFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: SelectFacadeValue;
   defaultValue?: SelectFacadeValue;
   options: NativeSelectOption[];
@@ -58,6 +61,7 @@ export interface SelectFacadeProps {
 }
 
 function SelectFacade({
+  portal = false,
   value,
   defaultValue,
   options,
@@ -114,34 +118,36 @@ function SelectFacade({
           {iconNode("chevrons-up-down", { width: 14, height: 14 })}
         </ArkSelect.Indicator>
       </ArkSelect.Control>
-      <ArkSelect.Positioner>
-        <ArkSelect.Content>
-          {groupLabel ? (
-            <ArkSelect.ItemGroup>
-              <ArkSelect.ItemGroupLabel>{groupLabel}</ArkSelect.ItemGroupLabel>
-              {collection.items.map((item) => (
-                <ArkSelect.Item key={item.value} item={item}>
-                  <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                  <ArkSelect.ItemIndicator>
-                    {iconNode("check", { width: 14, height: 14 })}
-                  </ArkSelect.ItemIndicator>
-                </ArkSelect.Item>
-              ))}
-            </ArkSelect.ItemGroup>
-          ) : (
-            <ArkSelect.List>
-              {collection.items.map((item) => (
-                <ArkSelect.Item key={item.value} item={item}>
-                  <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                  <ArkSelect.ItemIndicator>
-                    {iconNode("check", { width: 14, height: 14 })}
-                  </ArkSelect.ItemIndicator>
-                </ArkSelect.Item>
-              ))}
-            </ArkSelect.List>
-          )}
-        </ArkSelect.Content>
-      </ArkSelect.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkSelect.Positioner>
+          <ArkSelect.Content>
+            {groupLabel ? (
+              <ArkSelect.ItemGroup>
+                <ArkSelect.ItemGroupLabel>{groupLabel}</ArkSelect.ItemGroupLabel>
+                {collection.items.map((item) => (
+                  <ArkSelect.Item key={item.value} item={item}>
+                    <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                    <ArkSelect.ItemIndicator>
+                      {iconNode("check", { width: 14, height: 14 })}
+                    </ArkSelect.ItemIndicator>
+                  </ArkSelect.Item>
+                ))}
+              </ArkSelect.ItemGroup>
+            ) : (
+              <ArkSelect.List>
+                {collection.items.map((item) => (
+                  <ArkSelect.Item key={item.value} item={item}>
+                    <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                    <ArkSelect.ItemIndicator>
+                      {iconNode("check", { width: 14, height: 14 })}
+                    </ArkSelect.ItemIndicator>
+                  </ArkSelect.Item>
+                ))}
+              </ArkSelect.List>
+            )}
+          </ArkSelect.Content>
+        </ArkSelect.Positioner>
+      </FloatingPortal>
       <ArkSelect.HiddenSelect />
     </SelectRoot>
   );

@@ -8,6 +8,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, splitProps } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -22,6 +23,8 @@ type DatePickerOwnProps = {
   /** One rung of the control-height ladder for the field row. */
   size?: "sm" | "md" | "lg";
 };
+
+const DatePickerPositioner = definePositioner(ArkDatePicker.Positioner);
 
 function DatePickerRoot(props: ArkDatePickerRootProps & DatePickerOwnProps) {
   const [own, rest] = splitProps(props, ["size"]);
@@ -45,6 +48,8 @@ function toDatePickerValue(value: DatePickerFacadeValue | undefined) {
 /** The complete picker behind one date: the field opens a single day grid,
  * while ranges, multiple selection, and custom views remain anatomy work. */
 export interface DatePickerFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: DatePickerFacadeValue;
   defaultValue?: DatePickerFacadeValue;
   disabled?: boolean;
@@ -83,7 +88,7 @@ function DatePickerFacade(props: DatePickerFacadeProps) {
           {iconNode("calendar", { width: "16", height: "16" })}
         </ArkDatePicker.Trigger>
       </ArkDatePicker.Control>
-      <ArkDatePicker.Positioner>
+      <DatePickerPositioner portal={props.portal ?? false}>
         <ArkDatePicker.Content>
           <ArkDatePicker.View view="day">
             <ArkDatePicker.Context>
@@ -146,13 +151,14 @@ function DatePickerFacade(props: DatePickerFacadeProps) {
             </ArkDatePicker.Context>
           </ArkDatePicker.View>
         </ArkDatePicker.Content>
-      </ArkDatePicker.Positioner>
+      </DatePickerPositioner>
     </DatePickerRoot>
   );
 }
 
-type DatePickerParts = Omit<typeof ArkDatePicker, "Root"> & {
+type DatePickerParts = Omit<typeof ArkDatePicker, "Root" | "Positioner"> & {
   Root: typeof DatePickerRoot;
+  Positioner: typeof DatePickerPositioner;
 };
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
@@ -162,6 +168,7 @@ export const DatePicker: typeof DatePickerFacade & DatePickerParts = defineFamil
   {
     ...ArkDatePicker,
     Root: DatePickerRoot,
+    Positioner: DatePickerPositioner,
   },
 );
 

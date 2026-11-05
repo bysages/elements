@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 /** Tooltip, dressed in the paper-and-ink system: the smallest
@@ -33,6 +34,8 @@ type TooltipPlacement =
   | "right-end";
 
 /** The common path: one name and one sentence, attached to a trigger. */
+const TooltipPositioner = definePositioner("STooltipPositioner", ArkTooltip.Positioner);
+
 const TooltipFacade = defineComponent({
   name: "STooltip",
   inheritAttrs: false,
@@ -49,6 +52,7 @@ const TooltipFacade = defineComponent({
     disabled: { type: Boolean, default: false },
     /** Where the tooltip sits relative to its trigger. */
     placement: { type: String as PropType<TooltipPlacement>, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -75,7 +79,7 @@ const TooltipFacade = defineComponent({
             },
             ctx.slots.trigger ?? (() => props.trigger),
           ),
-          h(ArkTooltip.Positioner, () => {
+          h(TooltipPositioner, { portal: props.portal }, () => {
             const renderContent = () => [
               h(ArkTooltip.Arrow, () => h(ArkTooltip.ArrowTip)),
               ctx.slots.content ? ctx.slots.content() : props.content,

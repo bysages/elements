@@ -6,6 +6,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, ref, watch, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -50,6 +51,8 @@ export interface CommandProps {
  * The input part carries one `as never`: its prop union outgrows what
  * h() can resolve (TS2590).
  */
+const CommandPositioner = definePositioner("SCommandPositioner", ArkDialog.Positioner);
+
 const CommandFacade = defineComponent({
   name: "Command",
   inheritAttrs: false,
@@ -60,6 +63,7 @@ const CommandFacade = defineComponent({
     autoFilter: { type: Boolean, default: true },
     inputValue: { type: String, default: undefined },
     emptyText: { type: String, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -181,7 +185,7 @@ const CommandFacade = defineComponent({
         }),
         () => [
           h(ArkDialog.Backdrop),
-          h(ArkDialog.Positioner, { asChild: true }, () =>
+          h(CommandPositioner, { portal: props.portal, asChild: true }, () =>
             h("div", { "data-scope": "command", "data-part": "positioner" }, [
               h(ArkDialog.Content, { asChild: true }, () =>
                 h(

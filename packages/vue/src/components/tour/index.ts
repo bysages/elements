@@ -10,6 +10,7 @@ import type { Component, PropType, SetupContext } from "vue";
 import { computed, defineComponent, h, useId } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Button } from "../button";
 
@@ -36,12 +37,15 @@ const TourRoot = defineComponent({
 /** The common path: give it a prepared machine and the starter, dimmed
  * page, spotlight, and standard card arrive as one. The default slot is
  * the anchored page; the content slot replaces the card body. */
+const TourPositioner = definePositioner("STourPositioner", ArkTour.Positioner);
+
 const TourFacade = defineComponent({
   name: "STour",
   inheritAttrs: false,
   props: {
     tour: { type: Object as PropType<UseTourReturn["value"]>, required: true },
     trigger: { type: String, default: "Start tour" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: true },
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("tour");
@@ -52,7 +56,7 @@ const TourFacade = defineComponent({
         ctx.slots.default?.(),
         h(ArkTour.Backdrop),
         h(ArkTour.Spotlight),
-        h(ArkTour.Positioner, () =>
+        h(TourPositioner, { portal: props.portal }, () =>
           h(
             ArkTour.Content as never,
             () =>

@@ -1,6 +1,8 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface ImageViewerProps extends HTMLAttributes<HTMLElement> {
   src: string;
   alt?: string;
@@ -16,6 +18,8 @@ export interface ImageViewerProps extends HTMLAttributes<HTMLElement> {
   zoomable?: boolean;
   /** The viewer's open state turned. */
   onOpenChange?: (open: boolean) => void;
+  /** After hydration, portal the lightbox to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }
 
 export interface ImageViewerPreviewProps extends Omit<HTMLAttributes<HTMLElement>, "children"> {

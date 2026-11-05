@@ -2,9 +2,9 @@ import { Popover as ArkPopover } from "@ark-ui/solid/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { createSignal, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 import { Popover } from "../popover";
@@ -14,6 +14,8 @@ export interface PopconfirmProps extends JSX.HTMLAttributes<HTMLButtonElement> {
   message: string;
   confirmText?: string;
   cancelText?: string;
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
@@ -31,6 +33,7 @@ function PopconfirmImpl(props: PopconfirmProps) {
     "cancelText",
     "onConfirm",
     "onCancel",
+    "portal",
     "children",
   ]);
   const id = useElementId("popconfirm");
@@ -54,29 +57,27 @@ function PopconfirmImpl(props: PopconfirmProps) {
           </button>
         )}
       />
-      <Portal>
-        <ArkPopover.Positioner>
-          <ArkPopover.Content class="bs-popconfirm">
-            <p data-part="message">{own.message}</p>
-            <div data-part="actions">
-              <ArkPopover.CloseTrigger
-                asChild={(closeProps) => (
-                  <Button {...closeProps()} variant="ghost" size="sm" onClick={() => settle(false)}>
-                    {own.cancelText ?? "Cancel"}
-                  </Button>
-                )}
-              />
-              <ArkPopover.CloseTrigger
-                asChild={(closeProps) => (
-                  <Button {...closeProps()} size="sm" onClick={() => settle(true)}>
-                    {own.confirmText ?? "Confirm"}
-                  </Button>
-                )}
-              />
-            </div>
-          </ArkPopover.Content>
-        </ArkPopover.Positioner>
-      </Portal>
+      <Popover.Positioner portal={own.portal ?? false}>
+        <ArkPopover.Content class="bs-popconfirm">
+          <p data-part="message">{own.message}</p>
+          <div data-part="actions">
+            <ArkPopover.CloseTrigger
+              asChild={(closeProps) => (
+                <Button {...closeProps()} variant="ghost" size="sm" onClick={() => settle(false)}>
+                  {own.cancelText ?? "Cancel"}
+                </Button>
+              )}
+            />
+            <ArkPopover.CloseTrigger
+              asChild={(closeProps) => (
+                <Button {...closeProps()} size="sm" onClick={() => settle(true)}>
+                  {own.confirmText ?? "Confirm"}
+                </Button>
+              )}
+            />
+          </div>
+        </ArkPopover.Content>
+      </Popover.Positioner>
     </ArkPopover.Root>
   );
 }

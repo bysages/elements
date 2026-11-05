@@ -4,11 +4,14 @@ import { createComponent, mergeProps, type ComponentProps } from "solid-js";
 
 import { isElement, withElementProps } from "../../internal/element";
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's Tooltip, dressed in the paper-and-ink system: the smallest
  * vessel — a tight chip of ink that dissolves in over its anchor. The
  * API is Ark's own — Root, Trigger, Positioner, Content, Arrow, ArrowTip. */
+const TooltipPositioner = definePositioner(ArkTooltip.Positioner);
+
 function TooltipRoot(props: ComponentProps<typeof ArkTooltip.Root>) {
   const id = useElementId("tooltip", () => props.id);
 
@@ -37,6 +40,8 @@ type TooltipPlacement =
   | "right-end";
 
 export interface TooltipFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger: string | Element;
@@ -69,21 +74,25 @@ function TooltipFacade(props: TooltipFacadeProps) {
       >
         {triggerChildren()}
       </ArkTooltip.Trigger>
-      <ArkTooltip.Positioner>
+      <TooltipPositioner portal={props.portal ?? false}>
         <ArkTooltip.Content>
           <ArkTooltip.Arrow>
             <ArkTooltip.ArrowTip />
           </ArkTooltip.Arrow>
           {props.content}
         </ArkTooltip.Content>
-      </ArkTooltip.Positioner>
+      </TooltipPositioner>
     </TooltipRoot>
   );
 }
 
 export const Tooltip: typeof TooltipFacade &
-  Omit<typeof ArkTooltip, "Root"> & { Root: typeof TooltipRoot } = defineFamily(TooltipFacade, {
+  Omit<typeof ArkTooltip, "Root" | "Positioner"> & {
+    Root: typeof TooltipRoot;
+    Positioner: typeof TooltipPositioner;
+  } = defineFamily(TooltipFacade, {
   ...ArkTooltip,
   Root: TooltipRoot,
+  Positioner: TooltipPositioner,
 });
 injectComponentStyle("tooltip");

@@ -2,9 +2,9 @@ import { useListCollection } from "@ark-ui/solid/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/solid/combobox";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { For, createEffect, splitProps } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { defineFamily } from "../../internal/family";
+import type { FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Combobox } from "../combobox";
 import { useComponentMessages } from "../config-provider/use-component-messages";
@@ -18,6 +18,8 @@ export interface AutoCompleteProps {
   size?: "sm" | "md" | "lg";
   /** Field text to match against; defaults to the item itself. */
   filter?: (item: string, input: string) => boolean;
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   onValueChange?: (value: string) => void;
 }
 
@@ -40,6 +42,7 @@ function AutoCompleteImpl(props: AutoCompleteProps) {
     "size",
     "filter",
     "onValueChange",
+    "portal",
   ]);
   const id = useElementId("autocomplete", () => props.id);
   // The field's live text is never rendered; keeping it plain keeps the
@@ -80,20 +83,18 @@ function AutoCompleteImpl(props: AutoCompleteProps) {
       <ArkCombobox.Control>
         <ArkCombobox.Input placeholder={own.placeholder} />
       </ArkCombobox.Control>
-      <Portal>
-        <ArkCombobox.Positioner>
-          <ArkCombobox.Content>
-            <ArkCombobox.Empty>{messages().command.noMatches}</ArkCombobox.Empty>
-            <For each={collection().items}>
-              {(item) => (
-                <ArkCombobox.Item item={item}>
-                  <ArkCombobox.ItemText>{item}</ArkCombobox.ItemText>
-                </ArkCombobox.Item>
-              )}
-            </For>
-          </ArkCombobox.Content>
-        </ArkCombobox.Positioner>
-      </Portal>
+      <Combobox.Positioner portal={own.portal ?? false}>
+        <ArkCombobox.Content>
+          <ArkCombobox.Empty>{messages().command.noMatches}</ArkCombobox.Empty>
+          <For each={collection().items}>
+            {(item) => (
+              <ArkCombobox.Item item={item}>
+                <ArkCombobox.ItemText>{item}</ArkCombobox.ItemText>
+              </ArkCombobox.Item>
+            )}
+          </For>
+        </ArkCombobox.Content>
+      </Combobox.Positioner>
     </ArkCombobox.Root>
   );
 }

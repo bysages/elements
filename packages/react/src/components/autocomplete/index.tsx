@@ -1,10 +1,10 @@
 import { useListCollection } from "@ark-ui/react/collection";
 import { Combobox as ArkCombobox } from "@ark-ui/react/combobox";
-import { Portal } from "@ark-ui/react/portal";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { HTMLAttributes } from "react";
 import { useEffect, useRef } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
 import { Combobox } from "../combobox";
@@ -20,6 +20,8 @@ export interface AutoCompleteProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   "defaultValue" | "onSelect"
 > {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: string;
   items?: string[];
   placeholder?: string;
@@ -31,6 +33,7 @@ export interface AutoCompleteProps extends Omit<
 }
 
 function AutoCompleteImpl({
+  portal = false,
   value = "",
   items = [],
   placeholder,
@@ -85,7 +88,7 @@ function AutoCompleteImpl({
       <ArkCombobox.Control>
         <ArkCombobox.Input placeholder={placeholder} />
       </ArkCombobox.Control>
-      <Portal>
+      <FloatingPortal portal={portal}>
         <ArkCombobox.Positioner>
           <ArkCombobox.Content>
             <ArkCombobox.Empty>{messages.command.noMatches}</ArkCombobox.Empty>
@@ -96,7 +99,7 @@ function AutoCompleteImpl({
             ))}
           </ArkCombobox.Content>
         </ArkCombobox.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkCombobox.Root>
   );
 }

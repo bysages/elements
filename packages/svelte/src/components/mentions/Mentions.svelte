@@ -23,6 +23,7 @@ let {
   size = "md",
   onValueChange,
   onSelect,
+  portal = false,
   ...rest
 }: MentionsProps = $props();
 
@@ -75,6 +76,7 @@ wire `useMentions` plus `MentionsVessel` themselves. -->
     active={mentions.active}
     size={size}
     {placement}
+    {portal}
     onInsert={mentions.insert}
     onActiveChange={(index) => (mentions.active = index)}
     onOpenChange={(open) => {

@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { For, Show, createComponent, mergeProps, type ComponentProps, type JSX } from "solid-js";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -11,6 +12,8 @@ import { useElementId } from "../../internal/id";
  * handle. The API is Ark's own — Root, Trigger, Positioner, Content, Header,
  * Title, Control, DragTrigger, StageTrigger, CloseTrigger, ResizeTrigger,
  * Body. */
+const FloatingPanelPositioner = definePositioner(ArkFloatingPanel.Positioner);
+
 function FloatingPanelRoot(props: ComponentProps<typeof ArkFloatingPanel.Root>) {
   const id = useElementId("floating-panel", () => props.id);
 
@@ -27,6 +30,8 @@ function FloatingPanelRoot(props: ComponentProps<typeof ArkFloatingPanel.Root>) 
 const resizeAxes = ["n", "e", "s", "w", "ne", "se", "sw", "nw"] as const;
 
 export interface FloatingPanelFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   open?: boolean;
   defaultOpen?: boolean;
   trigger?: string;
@@ -49,7 +54,7 @@ function FloatingPanelFacade(props: FloatingPanelFacadeProps) {
       onOpenChange={(details: { open: boolean }) => props.onOpenChange?.(details.open)}
     >
       <ArkFloatingPanel.Trigger>{props.trigger ?? props.label}</ArkFloatingPanel.Trigger>
-      <ArkFloatingPanel.Positioner>
+      <FloatingPanelPositioner portal={props.portal ?? true}>
         <ArkFloatingPanel.Content>
           <ArkFloatingPanel.DragTrigger>
             <ArkFloatingPanel.Header>
@@ -83,17 +88,18 @@ function FloatingPanelFacade(props: FloatingPanelFacadeProps) {
             {(axis) => <ArkFloatingPanel.ResizeTrigger axis={axis} />}
           </For>
         </ArkFloatingPanel.Content>
-      </ArkFloatingPanel.Positioner>
+      </FloatingPanelPositioner>
     </FloatingPanelRoot>
   );
 }
 
 export const FloatingPanel: typeof FloatingPanelFacade &
-  Omit<typeof ArkFloatingPanel, "Root"> & { Root: typeof FloatingPanelRoot } = defineFamily(
-  FloatingPanelFacade,
-  {
-    ...ArkFloatingPanel,
-    Root: FloatingPanelRoot,
-  },
-);
+  Omit<typeof ArkFloatingPanel, "Root" | "Positioner"> & {
+    Root: typeof FloatingPanelRoot;
+    Positioner: typeof FloatingPanelPositioner;
+  } = defineFamily(FloatingPanelFacade, {
+  ...ArkFloatingPanel,
+  Root: FloatingPanelRoot,
+  Positioner: FloatingPanelPositioner,
+});
 injectComponentStyle("floating-panel");

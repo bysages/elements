@@ -2,12 +2,17 @@
 import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("typography");
 
-import type {TypographyPartProps} from "./props";
+import type { TypographyHeadingProps } from "./props";
 
-let { children, ...rest }: TypographyPartProps = $props();
+let { size, as = "p", children, ...rest }: TypographyHeadingProps = $props();
 </script>
 
-<p {...rest} data-scope="typography" data-part="heading">
+<svelte:element
+  this={as}
+  {...rest}
+  data-scope="typography"
+  data-part="heading"
+  data-size={size}
+>
   {@render children?.()}
-</p>
-
+</svelte:element>

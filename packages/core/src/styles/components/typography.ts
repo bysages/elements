@@ -20,6 +20,31 @@ export const typographyCss = /* css */ `
   line-height: var(--bs-line-height-snug);
 }
 
+[data-scope="typography"][data-part="heading"][data-size="sm"] {
+  font-size: var(--bs-font-size-sm);
+  line-height: var(--bs-line-height-normal);
+}
+
+[data-scope="typography"][data-part="heading"][data-size="md"] {
+  font-size: var(--bs-font-size-md);
+  line-height: var(--bs-line-height-normal);
+}
+
+[data-scope="typography"][data-part="heading"][data-size="lg"] {
+  font-size: var(--bs-font-size-lg);
+  line-height: var(--bs-line-height-snug);
+}
+
+[data-scope="typography"][data-part="heading"][data-size="xl"] {
+  font-size: var(--bs-font-size-xl);
+  line-height: var(--bs-line-height-snug);
+}
+
+[data-scope="typography"][data-part="heading"][data-size="display"] {
+  font-size: var(--bs-font-size-4xl);
+  line-height: var(--bs-line-height-tight);
+}
+
 [data-scope="typography"][data-part="lead"] {
   margin: 0;
   color: var(--bs-color-text-secondary);

@@ -5,7 +5,7 @@ injectComponentStyle("image-viewer");
 
 import { Dialog } from "../dialog";
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import { Button } from "../button";
 import InternalIcon from "../../internal/InternalIcon.svelte";
@@ -24,6 +24,7 @@ let {
   children,
   open = $bindable(false),
   zoomable = true,
+  portal = true,
   onOpenChange,
 }: ImageViewerProps = $props();
 
@@ -78,7 +79,7 @@ the viewer. -->
       {/if}
     {/snippet}
   </ArkDialog.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkDialog.Backdrop class="bs-image-viewer-backdrop" />
     <ArkDialog.Positioner class="bs-image-viewer-positioner">
       <!-- The content owns the whole screen, so the machine's
@@ -126,6 +127,5 @@ the viewer. -->
         </div>
       </ArkDialog.Content>
     </ArkDialog.Positioner>
-  </Portal>
+  </FloatingPortal>
 </Dialog.Root>
-

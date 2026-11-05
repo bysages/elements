@@ -7,6 +7,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
@@ -65,6 +66,8 @@ function channelInputs(channels: string[]) {
 /** The complete picker behind one color: a swatch trigger opens the area,
  * eyedropper, hue and alpha tracks, per-format channel inputs, and the
  * native format select. Optional swatches ride the same saved-color row. */
+const ColorPickerPositioner = definePositioner("SColorPickerPositioner", ArkColorPicker.Positioner);
+
 const ColorPickerFacade = defineComponent({
   name: "SColorPicker",
   props: {
@@ -82,6 +85,7 @@ const ColorPickerFacade = defineComponent({
       default: "rgba",
     },
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:modelValue": (_value: Color) => true,
@@ -113,7 +117,7 @@ const ColorPickerFacade = defineComponent({
               h(ArkColorPicker.ValueSwatch),
             ]),
           ]),
-          h(ArkColorPicker.Positioner, () =>
+          h(ColorPickerPositioner, { portal: props.portal }, () =>
             h(ArkColorPicker.Content, () => [
               h(ArkColorPicker.Area, () => [
                 h(ArkColorPicker.AreaBackground),

@@ -4,11 +4,11 @@ injectComponentStyle("menubar");
 injectComponentStyle("menu");
 
 import { Menu as ArkMenu } from "@ark-ui/svelte/menu";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 
 import type { MenubarProps } from "./props";
 
-let { items = [], onSelect, ...rest }: MenubarProps = $props();
+let { items = [], onSelect, portal = false, ...rest }: MenubarProps = $props();
 </script>
 
 <!-- A desktop-style menu bar: a row of quiet ghost triggers, each
@@ -31,7 +31,7 @@ version. Inside an open menu the machine handles arrows and Escape. -->
           </button>
         {/snippet}
       </ArkMenu.Trigger>
-      <Portal>
+      <FloatingPortal {portal}>
         <ArkMenu.Positioner>
           <ArkMenu.Content>
             {#each group.items as entry (entry.value)}
@@ -46,8 +46,7 @@ version. Inside an open menu the machine handles arrows and Escape. -->
             {/each}
           </ArkMenu.Content>
         </ArkMenu.Positioner>
-      </Portal>
+      </FloatingPortal>
     </ArkMenu.Root>
   {/each}
 </div>
-

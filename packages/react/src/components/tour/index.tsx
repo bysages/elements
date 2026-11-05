@@ -7,6 +7,7 @@ import {
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 
@@ -27,6 +28,8 @@ function TourRoot(props: ComponentProps<typeof ArkTour.Root>) {
 }
 
 export interface TourFacadeProps {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   tour: UseTourReturn;
   trigger?: string;
   /** Replaces the standard card body when supplied. */
@@ -34,7 +37,13 @@ export interface TourFacadeProps {
   children?: ReactNode;
 }
 
-function TourFacade({ tour, trigger = "Start tour", content, children }: TourFacadeProps) {
+function TourFacade({
+  portal = true,
+  tour,
+  trigger = "Start tour",
+  content,
+  children,
+}: TourFacadeProps) {
   return (
     <TourRoot tour={tour}>
       <Button size="sm" onClick={() => tour.start()}>
@@ -43,28 +52,30 @@ function TourFacade({ tour, trigger = "Start tour", content, children }: TourFac
       {children}
       <ArkTour.Backdrop />
       <ArkTour.Spotlight />
-      <ArkTour.Positioner>
-        <ArkTour.Content>
-          {content ?? (
-            <>
-              <ArkTour.ProgressText />
-              <ArkTour.Title />
-              <ArkTour.Description />
-              <ArkTour.Control>
-                <ArkTour.Actions>
-                  {(actions) =>
-                    actions.map((action) => (
-                      <ArkTour.ActionTrigger key={action.label} action={action}>
-                        {action.label}
-                      </ArkTour.ActionTrigger>
-                    ))
-                  }
-                </ArkTour.Actions>
-              </ArkTour.Control>
-            </>
-          )}
-        </ArkTour.Content>
-      </ArkTour.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkTour.Positioner>
+          <ArkTour.Content>
+            {content ?? (
+              <>
+                <ArkTour.ProgressText />
+                <ArkTour.Title />
+                <ArkTour.Description />
+                <ArkTour.Control>
+                  <ArkTour.Actions>
+                    {(actions) =>
+                      actions.map((action) => (
+                        <ArkTour.ActionTrigger key={action.label} action={action}>
+                          {action.label}
+                        </ArkTour.ActionTrigger>
+                      ))
+                    }
+                  </ArkTour.Actions>
+                </ArkTour.Control>
+              </>
+            )}
+          </ArkTour.Content>
+        </ArkTour.Positioner>
+      </FloatingPortal>
     </TourRoot>
   );
 }

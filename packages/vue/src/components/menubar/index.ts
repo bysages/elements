@@ -4,6 +4,7 @@ import type { SetupContext } from "vue";
 import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 import { Menu } from "../menu";
@@ -39,12 +40,15 @@ export interface MenubarProps {
  * arrow keys — cross-menu arrow traversal is out of scope for this
  * version. Inside an open menu the machine handles arrows and Escape.
  */
+const MenubarPositioner = definePositioner("SMenubarPositioner", ArkMenu.Positioner);
+
 const MenubarFacade = defineComponent({
   name: "Menubar",
   inheritAttrs: false,
   props: {
     items: { type: Array as PropType<MenubarGroup[]>, default: () => [] },
     onSelect: { type: Function as PropType<(value: string) => void>, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   setup(props, ctx: SetupContext) {
     injectComponentStyle("menubar");
@@ -77,7 +81,7 @@ const MenubarFacade = defineComponent({
                     () => group.label,
                   ),
                 ),
-                h(ArkMenu.Positioner, () =>
+                h(MenubarPositioner, { portal: props.portal }, () =>
                   h(ArkMenu.Content, {}, () =>
                     group.items.map((entry) =>
                       h(

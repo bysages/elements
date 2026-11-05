@@ -3,6 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import { defineComponent, h, type Component, type PropType, type SetupContext } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
 
@@ -35,6 +36,8 @@ type HoverCardPlacement =
 
 /** The common path: an inline trigger opening a headed preview; the
  * default slot extends the card after its lead. */
+const HoverCardPositioner = definePositioner("SHoverCardPositioner", ArkHoverCard.Positioner);
+
 const HoverCardFacade = defineComponent({
   name: "SHoverCard",
   inheritAttrs: false,
@@ -47,6 +50,7 @@ const HoverCardFacade = defineComponent({
     description: { type: String, default: undefined },
     disabled: { type: Boolean, default: false },
     placement: { type: String as PropType<HoverCardPlacement>, default: undefined },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     "update:open": (_open: boolean) => true,
@@ -68,7 +72,7 @@ const HoverCardFacade = defineComponent({
           ctx.slots.trigger
             ? ctx.slots.trigger()
             : h(ArkHoverCard.Trigger, { disabled: props.disabled }, () => props.trigger),
-          h(ArkHoverCard.Positioner, () =>
+          h(HoverCardPositioner, { portal: props.portal }, () =>
             h(ArkHoverCard.Content, () => [
               h(ArkHoverCard.Arrow, () => h(ArkHoverCard.ArrowTip)),
               h("h3", () => props.label),

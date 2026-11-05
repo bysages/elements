@@ -11,6 +11,7 @@ let {
   tour,
   trigger = "Start tour",
   content,
+  portal = true,
   children,
   ...rest
 }: {
@@ -18,6 +19,8 @@ let {
   trigger?: string;
   content?: import("svelte").Snippet;
   children?: import("svelte").Snippet;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: import("../../internal/floating").FloatingPortalTarget;
 } & import("@ark-ui/svelte/tour").TourRootProps = $props();
 </script>
 
@@ -47,4 +50,3 @@ let {
     </ArkTour.Content>
   </ArkTour.Positioner>
 </TourRoot>
-

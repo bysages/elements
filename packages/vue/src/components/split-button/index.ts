@@ -1,9 +1,10 @@
 import { Menu as ArkMenu } from "@ark-ui/vue/menu";
 import { injectComponentStyle } from "@bysages/core/styling";
-import type { PropType, SetupContext } from "vue";
-import { defineComponent, h } from "vue";
+import type { SetupContext } from "vue";
+import { defineComponent, h, type PropType } from "vue";
 
 import { defineFamily } from "../../internal/family";
+import { definePositioner, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import { useComponentMessages } from "../../internal/messages";
@@ -27,6 +28,8 @@ export interface SplitButtonEntry {
  * machine keeps the element (positioning, focus, `data-state`), the
  * button recipe dresses it. The popup keeps the menu parts untouched.
  */
+const SplitButtonPositioner = definePositioner("SSplitButtonPositioner", ArkMenu.Positioner);
+
 const SplitButtonFacade = defineComponent({
   name: "SplitButton",
   inheritAttrs: false,
@@ -50,6 +53,7 @@ const SplitButtonFacade = defineComponent({
     /** One rung of the control-height ladder for both halves. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
     disabled: { type: Boolean, default: false },
+    portal: { type: [Boolean, String] as PropType<FloatingPortalTarget>, default: false },
   },
   emits: {
     /** The main button was pressed. */
@@ -97,7 +101,7 @@ const SplitButtonFacade = defineComponent({
                 chevronDown,
               ),
             ),
-            h(ArkMenu.Positioner, () =>
+            h(SplitButtonPositioner, { portal: props.portal }, () =>
               h(ArkMenu.Content, {}, () =>
                 props.items.map((entry) =>
                   h(

@@ -5,7 +5,7 @@ injectComponentStyle("command");
 import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { useListCollection } from "@ark-ui/svelte/collection";
 import { Dialog as ArkDialog } from "@ark-ui/svelte/dialog";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 import { untrack } from "svelte";
 
 import { useComponentMessages } from "../config-provider/messages";
@@ -21,6 +21,7 @@ let {
   onSelect,
   onOpenChange,
   onInputValueChange,
+  portal = true,
 }: CommandProps = $props();
 
 // The list has no popup of its own, but the machine still opens and
@@ -123,7 +124,7 @@ driving our own list: the vessel and the list live inside the sheet,
 so the combobox renders no separate popup and the machine's content
 grafts onto the sheet's list. -->
 <ArkDialog.Root {open} onOpenChange={(details) => setOpen(details.open)}>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkDialog.Backdrop />
     <ArkDialog.Positioner>
       {#snippet asChild(positionerProps)}
@@ -197,6 +198,5 @@ grafts onto the sheet's list. -->
         </div>
       {/snippet}
     </ArkDialog.Positioner>
-  </Portal>
+  </FloatingPortal>
 </ArkDialog.Root>
-

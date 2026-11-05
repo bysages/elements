@@ -3,7 +3,7 @@ import { injectComponentStyle } from "@bysages/core/styling";
 injectComponentStyle("tree-select");
 
 import { useFilter } from "@ark-ui/svelte/locale";
-import { Portal } from "@ark-ui/svelte/portal";
+import FloatingPortal from "../../internal/FloatingPortal.svelte";
 import { Popover as ArkPopover } from "@ark-ui/svelte/popover";
 import { TreeView as ArkTreeView, createTreeCollection } from "@ark-ui/svelte/tree-view";
 
@@ -19,6 +19,7 @@ let {
   filterable = false,
   size = "md",
   disabled = false,
+  portal = false,
   ...rest
 }: TreeSelectProps = $props();
 
@@ -145,7 +146,7 @@ matches keep their ancestors and the branches fan open. -->
       </button>
     {/snippet}
   </ArkPopover.Trigger>
-  <Portal>
+  <FloatingPortal {portal}>
     <ArkPopover.Positioner>
       <ArkPopover.Content data-scope="tree-select" data-part="content" data-size={size}>
         {#if filterable}
@@ -175,6 +176,5 @@ matches keep their ancestors and the branches fan open. -->
         </div>
       </ArkPopover.Content>
     </ArkPopover.Positioner>
-  </Portal>
+  </FloatingPortal>
 </ArkPopover.Root>
-

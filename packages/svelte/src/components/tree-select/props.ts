@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "svelte/elements";
 
+import type { FloatingPortalTarget } from "../../internal/floating";
+
 export interface TreeSelectNode {
   label: string;
   value: string;
@@ -17,4 +19,6 @@ export interface TreeSelectProps extends HTMLAttributes<HTMLButtonElement> {
    * ancestors and the branches fan open. */
   filterable?: boolean;
   disabled?: boolean;
+  /** After hydration, portal the floating vessel to body (`true`) or a CSS selector. */
+  portal?: FloatingPortalTarget;
 }

@@ -5,6 +5,7 @@ import { createListCollection } from "@ark-ui/react/combobox";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 
+import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -32,6 +33,8 @@ type ComboboxOption = { label: string; value: string };
 type ComboboxFacadeValue = string | string[];
 
 type ComboboxFacadeProps = {
+  /** Portal after hydration; `false` keeps the vessel inline. */
+  portal?: FloatingPortalTarget;
   value?: ComboboxFacadeValue;
   defaultValue?: ComboboxFacadeValue;
   options: ComboboxOption[];
@@ -62,6 +65,7 @@ function fromComboboxValue(value: string[], multiple: boolean | undefined) {
  * rows while typing, clearing, and selection stay on the common field path. */
 function ComboboxFacade(props: ComboboxFacadeProps) {
   const {
+    portal = false,
     value,
     defaultValue,
     options,
@@ -110,21 +114,23 @@ function ComboboxFacade(props: ComboboxFacadeProps) {
           {iconNode("chevron-down", { width: 16, height: 16 })}
         </ArkCombobox.Trigger>
       </ArkCombobox.Control>
-      <ArkCombobox.Positioner>
-        <ArkCombobox.Content>
-          <ArkCombobox.Empty>No results found</ArkCombobox.Empty>
-          <ArkCombobox.List>
-            {collection.items.map((item) => (
-              <ArkCombobox.Item key={item.value} item={item}>
-                <ArkCombobox.ItemText>{item.label}</ArkCombobox.ItemText>
-                <ArkCombobox.ItemIndicator>
-                  {iconNode("check", { width: 14, height: 14 })}
-                </ArkCombobox.ItemIndicator>
-              </ArkCombobox.Item>
-            ))}
-          </ArkCombobox.List>
-        </ArkCombobox.Content>
-      </ArkCombobox.Positioner>
+      <FloatingPortal portal={portal}>
+        <ArkCombobox.Positioner>
+          <ArkCombobox.Content>
+            <ArkCombobox.Empty>No results found</ArkCombobox.Empty>
+            <ArkCombobox.List>
+              {collection.items.map((item) => (
+                <ArkCombobox.Item key={item.value} item={item}>
+                  <ArkCombobox.ItemText>{item.label}</ArkCombobox.ItemText>
+                  <ArkCombobox.ItemIndicator>
+                    {iconNode("check", { width: 14, height: 14 })}
+                  </ArkCombobox.ItemIndicator>
+                </ArkCombobox.Item>
+              ))}
+            </ArkCombobox.List>
+          </ArkCombobox.Content>
+        </ArkCombobox.Positioner>
+      </FloatingPortal>
     </ComboboxRoot>
   );
 }

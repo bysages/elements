@@ -113,6 +113,70 @@ describe("select facade SSR", () => {
   });
 });
 
+describe("select floating portal", () => {
+  async function openSelect(props: Record<string, unknown> = {}) {
+    const host = defineComponent({
+      render: () =>
+        h(Select, {
+          options,
+          label: "Framework",
+          modelValue: undefined,
+          ...props,
+        }),
+    });
+    const container = document.createElement("div");
+    document.body.append(container);
+    const app = createApp(host);
+    app.mount(container);
+    await nextTick();
+
+    const trigger = container.querySelector<HTMLElement>('[data-part="trigger"]');
+    expect(trigger).toBeTruthy();
+    trigger!.click();
+    await nextTick();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    return { app, container };
+  }
+
+  it("keeps the default open positioner inline", async () => {
+    const { app, container } = await openSelect();
+
+    const positioner = container.querySelector('[data-part="positioner"]');
+    expect(positioner).toBeTruthy();
+    expect(container.contains(positioner!)).toBe(true);
+
+    app.unmount();
+    container.remove();
+  });
+
+  it("mounts the open positioner on body without moving the trigger", async () => {
+    const { app, container } = await openSelect({ portal: true });
+
+    const positioner = document.querySelector('[data-part="positioner"]');
+    expect(positioner).toBeTruthy();
+    expect(container.contains(positioner!)).toBe(false);
+
+    app.unmount();
+    container.remove();
+  });
+
+  it("mounts the open positioner in a named target", async () => {
+    const target = document.createElement("div");
+    target.id = "select-target";
+    document.body.append(target);
+    const { app, container } = await openSelect({ portal: "#select-target" });
+
+    const positioner = target.querySelector('[data-part="positioner"]');
+    expect(positioner).toBeTruthy();
+    expect(container.contains(positioner!)).toBe(false);
+
+    app.unmount();
+    target.remove();
+    container.remove();
+  });
+});
+
 describe("select anatomy inside a field", () => {
   function anatomyPage() {
     return defineComponent({
