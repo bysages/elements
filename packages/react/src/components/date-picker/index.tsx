@@ -4,7 +4,11 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -61,6 +65,8 @@ function toDatePickerValue(value: DatePickerFacadeValue | undefined) {
 
 /** The complete picker behind one date: the field opens a single day grid,
  * while ranges, multiple selection, and custom views remain anatomy work. */
+const DatePickerPositioner = definePositioner(ArkDatePicker.Positioner);
+
 function DatePickerFacade(props: DatePickerFacadeProps) {
   const {
     portal = false,
@@ -151,10 +157,15 @@ function DatePickerFacade(props: DatePickerFacadeProps) {
 }
 
 export const DatePicker: typeof DatePickerFacade &
-  Omit<typeof ArkDatePicker, "Root"> & { Root: typeof DatePickerRoot } = Object.assign(
-  DatePickerFacade,
-  {
-    ...ArkDatePicker,
-    Root: DatePickerRoot,
-  },
-) as typeof DatePickerFacade & Omit<typeof ArkDatePicker, "Root"> & { Root: typeof DatePickerRoot };
+  Omit<typeof ArkDatePicker, "Root" | "Positioner"> & {
+    Positioner: typeof DatePickerPositioner;
+    Root: typeof DatePickerRoot;
+  } = Object.assign(DatePickerFacade, {
+  ...ArkDatePicker,
+  Positioner: DatePickerPositioner,
+  Root: DatePickerRoot,
+}) as typeof DatePickerFacade &
+  Omit<typeof ArkDatePicker, "Root" | "Positioner"> & {
+    Positioner: typeof DatePickerPositioner;
+    Root: typeof DatePickerRoot;
+  };

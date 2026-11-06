@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 export type FloatingPortalTarget = boolean | string;
@@ -25,4 +25,21 @@ export function FloatingPortal({ portal, children }: FloatingPortalProps) {
   }, [portal]);
 
   return target ? createPortal(children, target) : <>{children}</>;
+}
+
+/** Wraps an Ark positioner without changing its anatomy contract. The
+ * wrapper adds only the portal decision; with no `portal` the wrapped
+ * part renders directly, so anatomy callers keep Ark's raw output. */
+export function definePositioner<P extends object>(Positioner: ComponentType<P>) {
+  function FloatingPositioner({ portal, ...rest }: FloatingPortalProps & P) {
+    return (
+      <FloatingPortal portal={portal}>
+        <Positioner {...(rest as P)} />
+      </FloatingPortal>
+    );
+  }
+
+  FloatingPositioner.displayName = "SFloatingPositioner";
+
+  return FloatingPositioner;
 }

@@ -2,7 +2,11 @@ import { Menu as ArkMenu } from "@ark-ui/react/menu";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { createContext, useContext, type ComponentProps } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -68,6 +72,8 @@ export interface MenuFacadeProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+const MenuPositioner = definePositioner(ArkMenu.Positioner);
+
 function MenuFacade({
   portal = false,
   open,
@@ -110,7 +116,8 @@ function MenuFacade({
 
 MenuFacade.displayName = "SMenu";
 
-type MenuParts = Omit<typeof ArkMenu, "Root" | "Content"> & {
+type MenuParts = Omit<typeof ArkMenu, "Root" | "Content" | "Positioner"> & {
+  Positioner: typeof MenuPositioner;
   Root: typeof MenuRoot;
   Content: typeof MenuContent;
 };
@@ -119,6 +126,7 @@ type MenuParts = Omit<typeof ArkMenu, "Root" | "Content"> & {
  * Content can be the sized wrappers while the rest stay Ark's own parts. */
 export const Menu = Object.assign(MenuFacade, {
   ...ArkMenu,
+  Positioner: MenuPositioner,
   Root: MenuRoot,
   Content: MenuContent,
 }) as typeof MenuFacade & MenuParts;

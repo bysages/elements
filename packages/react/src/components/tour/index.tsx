@@ -7,7 +7,11 @@ import {
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 import { Button } from "../button";
 
@@ -36,6 +40,8 @@ export interface TourFacadeProps {
   content?: ReactNode;
   children?: ReactNode;
 }
+
+const TourPositioner = definePositioner(ArkTour.Positioner);
 
 function TourFacade({
   portal = true,
@@ -82,12 +88,15 @@ function TourFacade({
 
 TourFacade.displayName = "STour";
 
-type TourParts = typeof ArkTour;
-
+type TourParts = Omit<typeof ArkTour, "Root" | "Positioner"> & {
+  Positioner: typeof TourPositioner;
+  Root: typeof TourRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the wrapper while the rest stay Ark's own parts. */
 export const Tour = Object.assign(TourFacade, {
   ...ArkTour,
+  Positioner: TourPositioner,
   Root: TourRoot,
 }) as typeof TourFacade & TourParts;
 

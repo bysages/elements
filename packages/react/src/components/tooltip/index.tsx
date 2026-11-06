@@ -2,7 +2,11 @@ import { Tooltip as ArkTooltip } from "@ark-ui/react/tooltip";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's Tooltip, dressed in the paper-and-ink system: the smallest
@@ -40,6 +44,8 @@ export interface TooltipFacadeProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+const TooltipPositioner = definePositioner(ArkTooltip.Positioner);
+
 function TooltipFacade({
   portal = false,
   open,
@@ -76,12 +82,15 @@ function TooltipFacade({
 
 TooltipFacade.displayName = "STooltip";
 
-type TooltipParts = typeof ArkTooltip;
-
+type TooltipParts = Omit<typeof ArkTooltip, "Root" | "Positioner"> & {
+  Positioner: typeof TooltipPositioner;
+  Root: typeof TooltipRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Tooltip = Object.assign(TooltipFacade, {
   ...ArkTooltip,
+  Positioner: TooltipPositioner,
   Root: TooltipRoot,
 }) as typeof TooltipFacade & TooltipParts;
 

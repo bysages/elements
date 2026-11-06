@@ -2,7 +2,11 @@ import { Drawer as ArkDrawer } from "@ark-ui/react/drawer";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -30,6 +34,8 @@ export interface DrawerFacadeProps {
   children?: ReactNode;
   onOpenChange?: (open: boolean) => void;
 }
+
+const DrawerPositioner = definePositioner(ArkDrawer.Positioner);
 
 function DrawerFacade({
   portal = true,
@@ -71,12 +77,15 @@ function DrawerFacade({
 
 DrawerFacade.displayName = "SDrawer";
 
-type DrawerParts = typeof ArkDrawer;
-
+type DrawerParts = Omit<typeof ArkDrawer, "Root" | "Positioner"> & {
+  Positioner: typeof DrawerPositioner;
+  Root: typeof DrawerRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Drawer = Object.assign(DrawerFacade, {
   ...ArkDrawer,
+  Positioner: DrawerPositioner,
   Root: DrawerRoot,
 }) as typeof DrawerFacade & DrawerParts;
 

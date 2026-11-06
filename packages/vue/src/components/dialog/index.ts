@@ -131,6 +131,7 @@ const DialogFacade = defineComponent({
 export const Dialog = defineFamily(DialogFacade, {
   ...ArkDialog,
   Root: DialogRoot,
+  Positioner: DialogPositioner,
   Content: DialogContent,
   Header,
   Body,
@@ -139,7 +140,7 @@ export const Dialog = defineFamily(DialogFacade, {
   Root: Component;
   Content: Component;
 } & Record<string, Component>) as typeof DialogFacade &
-  Omit<typeof ArkDialog, "Root" | "Content"> & {
+  Omit<typeof ArkDialog, "Root" | "Positioner" | "Content"> & {
     Root: typeof DialogRoot;
     Content: typeof DialogContent;
     Header: Component;

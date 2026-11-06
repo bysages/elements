@@ -2,7 +2,11 @@ import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/react/floating-panel"
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -32,6 +36,8 @@ export interface FloatingPanelFacadeProps {
   children?: ReactNode;
   onOpenChange?: (open: boolean) => void;
 }
+
+const FloatingPanelPositioner = definePositioner(ArkFloatingPanel.Positioner);
 
 function FloatingPanelFacade({
   portal = true,
@@ -92,12 +98,15 @@ function FloatingPanelFacade({
 
 FloatingPanelFacade.displayName = "SFloatingPanel";
 
-type FloatingPanelParts = typeof ArkFloatingPanel;
-
+type FloatingPanelParts = Omit<typeof ArkFloatingPanel, "Root" | "Positioner"> & {
+  Positioner: typeof FloatingPanelPositioner;
+  Root: typeof FloatingPanelRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const FloatingPanel = Object.assign(FloatingPanelFacade, {
   ...ArkFloatingPanel,
+  Positioner: FloatingPanelPositioner,
   Root: FloatingPanelRoot,
 }) as typeof FloatingPanelFacade & FloatingPanelParts;
 

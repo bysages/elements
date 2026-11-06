@@ -175,8 +175,9 @@ const ColorPickerFacade = defineComponent({
 export const ColorPicker = defineFamily(ColorPickerFacade, {
   ...ArkColorPicker,
   Root: ColorPickerRoot,
+  Positioner: ColorPickerPositioner,
 } as unknown as { Root: Component } & Record<string, Component>) as typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & {
+  Omit<typeof ArkColorPicker, "Root" | "Positioner"> & {
     Root: typeof ArkColorPicker.Root & typeof ColorPickerRoot;
   };
 

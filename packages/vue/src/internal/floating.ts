@@ -3,6 +3,7 @@ import {
   h,
   Teleport,
   type Component,
+  type DefineComponent,
   type PropType,
   type SetupContext,
   type SlotsType,
@@ -62,5 +63,5 @@ export function definePositioner(name: string, Positioner: Component) {
           : positioner();
       };
     },
-  }) as Component;
+  }) as DefineComponent<FloatingPortalProps>;
 }

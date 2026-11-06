@@ -106,7 +106,8 @@ const FloatingPanelFacade = defineComponent({
 export const FloatingPanel = defineFamily(FloatingPanelFacade, {
   ...ArkFloatingPanel,
   Root: FloatingPanelRoot,
+  Positioner: FloatingPanelPositioner,
 } as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof FloatingPanelFacade &
-  Omit<typeof ArkFloatingPanel, "Root"> & { Root: typeof FloatingPanelRoot };
+  Omit<typeof ArkFloatingPanel, "Root" | "Positioner"> & { Root: typeof FloatingPanelRoot };

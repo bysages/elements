@@ -4,6 +4,7 @@ import { defineFamily } from "../../internal/family";
 import MenuFacade from "./Menu.svelte";
 import MenuContent from "./MenuContent.svelte";
 import MenuRoot from "./MenuRoot.svelte";
+import Positioner from "./Positioner.svelte";
 
 /** Ark's Menu, dressed in the paper-and-ink system: a quiet paper vessel on
  * elevation, hover as light on the row, checked items as the flat ink fill.
@@ -13,11 +14,13 @@ import MenuRoot from "./MenuRoot.svelte";
  * spread copies the members so Root and Content can be the sized
  * wrappers while the rest stay Ark's own parts. */
 export const Menu: typeof MenuFacade &
-  Omit<typeof ArkMenu, "Root" | "Content"> & {
+  Omit<typeof ArkMenu, "Root" | "Content" | "Positioner"> & {
+    Positioner: typeof Positioner;
     Root: typeof MenuRoot;
     Content: typeof MenuContent;
   } = defineFamily(MenuFacade, {
   ...ArkMenu,
+  Positioner,
   Root: MenuRoot,
   Content: MenuContent,
 });

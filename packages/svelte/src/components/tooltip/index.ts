@@ -1,6 +1,7 @@
 import { Tooltip as ArkTooltip } from "@ark-ui/svelte/tooltip";
 
 import { defineFamily } from "../../internal/family";
+import Positioner from "./Positioner.svelte";
 import TooltipFacade from "./Tooltip.svelte";
 import TooltipRoot from "./TooltipRoot.svelte";
 
@@ -8,9 +9,11 @@ import TooltipRoot from "./TooltipRoot.svelte";
  * vessel — a tight chip of ink that dissolves in over its anchor. The
  * API is Ark's own — Root, Trigger, Positioner, Content, Arrow, ArrowTip. */
 export const Tooltip: typeof TooltipFacade &
-  Omit<typeof ArkTooltip, "Root"> & {
+  Omit<typeof ArkTooltip, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
     Root: typeof TooltipRoot;
   } = defineFamily(TooltipFacade, {
   ...ArkTooltip,
+  Positioner,
   Root: TooltipRoot,
 });

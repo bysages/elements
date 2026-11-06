@@ -56,7 +56,6 @@ import {
 } from "react";
 
 import { withSelfRoot } from "../../internal/family";
-import { FloatingPortal } from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { formatMessage, useComponentMessages } from "../../internal/messages";
 import { Pagination as ArkPagination } from "../pagination";
@@ -936,20 +935,18 @@ function DataTableImpl(rawProps: DataTableProps) {
                 <ArkSelect.Indicator>{chevronDownIcon}</ArkSelect.Indicator>
               </ArkSelect.Trigger>
             </ArkSelect.Control>
-            <FloatingPortal portal>
-              <ArkSelect.Positioner>
-                <ArkSelect.Content>
-                  {sizeItems.items.map((item) => (
-                    <ArkSelect.Item key={item.value} item={item}>
-                      <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
-                      <ArkSelect.ItemIndicator>
-                        {iconNode("check", { width: 14, height: 14 })}
-                      </ArkSelect.ItemIndicator>
-                    </ArkSelect.Item>
-                  ))}
-                </ArkSelect.Content>
-              </ArkSelect.Positioner>
-            </FloatingPortal>
+            <ArkSelect.Positioner portal>
+              <ArkSelect.Content>
+                {sizeItems.items.map((item) => (
+                  <ArkSelect.Item key={item.value} item={item}>
+                    <ArkSelect.ItemText>{item.label}</ArkSelect.ItemText>
+                    <ArkSelect.ItemIndicator>
+                      {iconNode("check", { width: 14, height: 14 })}
+                    </ArkSelect.ItemIndicator>
+                  </ArkSelect.Item>
+                ))}
+              </ArkSelect.Content>
+            </ArkSelect.Positioner>
           </ArkSelect.Root>
         );
         const pager = (

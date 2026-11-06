@@ -79,10 +79,14 @@ const TourFacade = defineComponent({
   },
 });
 
-export const Tour = defineFamily(TourFacade, { ...ArkTour, Root: TourRoot } as unknown as {
+export const Tour = defineFamily(TourFacade, {
+  ...ArkTour,
+  Root: TourRoot,
+  Positioner: TourPositioner,
+} as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof TourFacade &
-  Omit<typeof ArkTour, "Root"> & { Root: typeof TourRoot };
+  Omit<typeof ArkTour, "Root" | "Positioner"> & { Root: typeof TourRoot };
 /** Tour machines are created by useTour, so the stable id belongs there. */
 export function useTour(
   props: UseTourProps = {},

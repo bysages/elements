@@ -2,6 +2,7 @@ import { Tour as ArkTour } from "@ark-ui/svelte/tour";
 import { injectComponentStyle } from "@bysages/core/styling";
 
 import { defineFamily } from "../../internal/family";
+import Positioner from "./Positioner.svelte";
 import TourFacade from "./Tour.svelte";
 import TourRoot from "./TourRoot.svelte";
 import { useTour } from "./use-tour.svelte";
@@ -18,10 +19,12 @@ export type {
  * Positioner, Content, Arrow, ArrowTip, Title, Description, ProgressText,
  * Control, Actions, ActionTrigger, CloseTrigger, plus useTour. */
 export const Tour: typeof TourFacade &
-  Omit<typeof ArkTour, "Root"> & {
+  Omit<typeof ArkTour, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
     Root: typeof TourRoot;
   } = defineFamily(TourFacade, {
   ...ArkTour,
+  Positioner,
   Root: TourRoot,
 });
 export { useTour };

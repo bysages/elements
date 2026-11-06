@@ -4,7 +4,11 @@ import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 import type { ComponentProps } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -52,6 +56,8 @@ type ColorPickerFacadeProps = {
 /** The complete picker behind one color: the hex input rides beside the
  * swatch trigger, while the popup carries the area and hue/alpha tracks.
  * Saved swatches and format switches remain anatomy work. */
+const ColorPickerPositioner = definePositioner(ArkColorPicker.Positioner);
+
 function ColorPickerFacade(props: ColorPickerFacadeProps) {
   const { portal = false } = props;
   const {
@@ -133,11 +139,15 @@ function ColorPickerFacade(props: ColorPickerFacadeProps) {
 }
 
 export const ColorPicker: typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot } = Object.assign(
-  ColorPickerFacade,
-  {
-    ...ArkColorPicker,
-    Root: ColorPickerRoot,
-  },
-) as typeof ColorPickerFacade &
-  Omit<typeof ArkColorPicker, "Root"> & { Root: typeof ColorPickerRoot };
+  Omit<typeof ArkColorPicker, "Root" | "Positioner"> & {
+    Positioner: typeof ColorPickerPositioner;
+    Root: typeof ColorPickerRoot;
+  } = Object.assign(ColorPickerFacade, {
+  ...ArkColorPicker,
+  Positioner: ColorPickerPositioner,
+  Root: ColorPickerRoot,
+}) as typeof ColorPickerFacade &
+  Omit<typeof ArkColorPicker, "Root" | "Positioner"> & {
+    Positioner: typeof ColorPickerPositioner;
+    Root: typeof ColorPickerRoot;
+  };

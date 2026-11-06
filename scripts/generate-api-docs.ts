@@ -189,13 +189,46 @@ function arkProps(family: string, part: string): PropDoc[] {
 function dressedProps(file: SourceFile): Record<string, PropDoc[]> {
   const out: Record<string, PropDoc[]> = {};
   for (const decl of file.getVariableDeclarations()) {
-    const literal = decl.getInitializer()?.asKind(SyntaxKind.ObjectLiteralExpression);
+    const unwrapAssertion = (node: Node): Node => {
+      let current = node;
+      for (;;) {
+        const inner =
+          current.asKind(SyntaxKind.AsExpression)?.getExpression() ??
+          current.asKind(SyntaxKind.ParenthesizedExpression)?.getExpression();
+        if (!inner) return current;
+        current = inner;
+      }
+    };
+    const initializer = decl.getInitializer();
+    const callArguments = initializerCall(initializer)?.getArguments() ?? [];
+    const literal =
+      initializer?.asKind(SyntaxKind.ObjectLiteralExpression) ??
+      callArguments
+        .map(unwrapAssertion)
+        .find((argument): argument is ObjectLiteralExpression =>
+          argument.isKind(SyntaxKind.ObjectLiteralExpression),
+        );
     if (!literal) continue;
     for (const prop of literal.getProperties()) {
       if (!prop.isKind(SyntaxKind.PropertyAssignment)) continue;
       const ref = prop.getInitializer()?.asKind(SyntaxKind.Identifier);
       const comp = ref ? file.getVariableDeclaration(ref.getText()) : undefined;
       const call = comp?.getInitializer()?.asKind(SyntaxKind.CallExpression);
+      if (call?.getExpression().getText() === "definePositioner") {
+        // Every shared positioner wrapper owns this runtime prop even though
+        // the factory's component type is intentionally broad.
+        out[pascal(prop.getName())] = [
+          {
+            name: "portal",
+            type: "[Boolean, String] as PropType<FloatingPortalTarget>",
+            required: false,
+            description:
+              "After hydration, render the floating vessel in `body` (`true`) or a selector; `false` keeps it inline.",
+            default: "undefined",
+          },
+        ];
+        continue;
+      }
       if (call?.getExpression().getText() !== "defineComponent") continue;
       const arg = call.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
       if (!arg) continue;
@@ -456,6 +489,7 @@ function composedComponents(
       };
     }
   }
+
   return out;
 }
 

@@ -144,12 +144,13 @@ const MenuFacade = defineComponent({
 export const Menu = defineFamily(MenuFacade, {
   ...ArkMenu,
   Root: MenuRoot,
+  Positioner: MenuPositioner,
   Content: MenuContent,
 } as unknown as {
   Root: Component;
   Positioner: Component;
 } & Record<string, Component>) as typeof MenuFacade &
-  Omit<typeof ArkMenu, "Root" | "Content" | "Positioner"> & {
+  Omit<typeof ArkMenu, "Root" | "Positioner" | "Content"> & {
     Root: typeof MenuRoot;
     Positioner: Component;
     Content: typeof MenuContent;

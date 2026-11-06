@@ -89,7 +89,8 @@ const HoverCardFacade = defineComponent({
 export const HoverCard = defineFamily(HoverCardFacade, {
   ...ArkHoverCard,
   Root: HoverCardRoot,
+  Positioner: HoverCardPositioner,
 } as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof HoverCardFacade &
-  Omit<typeof ArkHoverCard, "Root"> & { Root: typeof HoverCardRoot };
+  Omit<typeof ArkHoverCard, "Root" | "Positioner"> & { Root: typeof HoverCardRoot };

@@ -2,7 +2,11 @@ import { HoverCard as ArkHoverCard } from "@ark-ui/react/hover-card";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's HoverCard, dressed in the paper-and-ink system: a preview card
@@ -42,6 +46,8 @@ export interface HoverCardFacadeProps {
   children?: ReactNode;
   onOpenChange?: (open: boolean) => void;
 }
+
+const HoverCardPositioner = definePositioner(ArkHoverCard.Positioner);
 
 function HoverCardFacade({
   portal = false,
@@ -83,12 +89,15 @@ function HoverCardFacade({
 
 HoverCardFacade.displayName = "SHoverCard";
 
-type HoverCardParts = typeof ArkHoverCard;
-
+type HoverCardParts = Omit<typeof ArkHoverCard, "Root" | "Positioner"> & {
+  Positioner: typeof HoverCardPositioner;
+  Root: typeof HoverCardRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const HoverCard = Object.assign(HoverCardFacade, {
   ...ArkHoverCard,
+  Positioner: HoverCardPositioner,
   Root: HoverCardRoot,
 }) as typeof HoverCardFacade & HoverCardParts;
 

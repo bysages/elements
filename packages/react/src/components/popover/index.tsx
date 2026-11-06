@@ -2,7 +2,11 @@ import { Popover as ArkPopover } from "@ark-ui/react/popover";
 import { injectComponentStyle } from "@bysages/core/styling";
 import { isValidElement, type ComponentProps, type ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -44,6 +48,8 @@ export interface PopoverFacadeProps {
   children?: ReactNode;
   onOpenChange?: (open: boolean) => void;
 }
+
+const PopoverPositioner = definePositioner(ArkPopover.Positioner);
 
 function PopoverFacade({
   portal = false,
@@ -87,12 +93,15 @@ function PopoverFacade({
 
 PopoverFacade.displayName = "SPopover";
 
-type PopoverParts = typeof ArkPopover;
-
+type PopoverParts = Omit<typeof ArkPopover, "Root" | "Positioner"> & {
+  Positioner: typeof PopoverPositioner;
+  Root: typeof PopoverRoot;
+};
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Popover = Object.assign(PopoverFacade, {
   ...ArkPopover,
+  Positioner: PopoverPositioner,
   Root: PopoverRoot,
 }) as typeof PopoverFacade & PopoverParts;
 

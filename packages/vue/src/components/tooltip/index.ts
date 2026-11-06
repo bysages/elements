@@ -94,7 +94,8 @@ const TooltipFacade = defineComponent({
 export const Tooltip = defineFamily(TooltipFacade, {
   ...ArkTooltip,
   Root: TooltipRoot,
+  Positioner: TooltipPositioner,
 } as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof TooltipFacade &
-  Omit<typeof ArkTooltip, "Root"> & { Root: typeof TooltipRoot };
+  Omit<typeof ArkTooltip, "Root" | "Positioner"> & { Root: typeof TooltipRoot };

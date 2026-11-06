@@ -6,14 +6,19 @@
 import { Select as ArkSelect } from "@ark-ui/svelte/select";
 
 import { defineFamily, withSelfRoot } from "../../internal/family";
+import Positioner from "./Positioner.svelte";
 import SelectFacade from "./Select.svelte";
 import SelectRoot from "./SelectRoot.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Select: typeof SelectFacade &
-  Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot } = defineFamily(SelectFacade, {
+  Omit<typeof ArkSelect, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
+    Root: typeof SelectRoot;
+  } = defineFamily(SelectFacade, {
   ...ArkSelect,
+  Positioner,
   Root: SelectRoot,
 });
 

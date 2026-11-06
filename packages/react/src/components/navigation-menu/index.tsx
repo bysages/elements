@@ -2,7 +2,7 @@ import { NavigationMenu as ArkNavigationMenu } from "@ark-ui/react/navigation-me
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import { definePositioner } from "../../internal/floating";
 import { useElementId } from "../../internal/id";
 
 /** Ark's NavigationMenu, dressed in the paper-and-ink system: a menubar of
@@ -22,22 +22,7 @@ function NavigationMenuLink(props: ComponentProps<typeof ArkNavigationMenu.Link>
 
 /** The shared panel stage keeps the raw Ark part until a caller opts into
  * a portal; the flat-link facade has no vessel of its own. */
-interface NavigationMenuViewportPositionerProps extends ComponentProps<
-  typeof ArkNavigationMenu.ViewportPositioner
-> {
-  portal?: FloatingPortalTarget;
-}
-
-function NavigationMenuViewportPositioner({
-  portal,
-  ...rest
-}: NavigationMenuViewportPositionerProps) {
-  return (
-    <FloatingPortal portal={portal}>
-      <ArkNavigationMenu.ViewportPositioner {...rest} />
-    </FloatingPortal>
-  );
-}
+const NavigationMenuViewportPositioner = definePositioner(ArkNavigationMenu.ViewportPositioner);
 
 NavigationMenuViewportPositioner.displayName = "SNavigationMenuViewportPositioner";
 

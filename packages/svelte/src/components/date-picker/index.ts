@@ -9,13 +9,16 @@ import { DatePicker as ArkDatePicker } from "@ark-ui/svelte/date-picker";
 import { defineFamily } from "../../internal/family";
 import DatePickerFacade from "./DatePicker.svelte";
 import DatePickerRoot from "./DatePickerRoot.svelte";
+import Positioner from "./Positioner.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const DatePicker: typeof DatePickerFacade &
-  Omit<typeof ArkDatePicker, "Root"> & {
+  Omit<typeof ArkDatePicker, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
     Root: typeof DatePickerRoot;
   } = defineFamily(DatePickerFacade, {
   ...ArkDatePicker,
+  Positioner,
   Root: DatePickerRoot,
 });

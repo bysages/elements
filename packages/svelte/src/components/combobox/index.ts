@@ -8,11 +8,16 @@ import { Combobox as ArkCombobox } from "@ark-ui/svelte/combobox";
 import { defineFamily } from "../../internal/family";
 import ComboboxFacade from "./Combobox.svelte";
 import ComboboxRoot from "./ComboboxRoot.svelte";
+import Positioner from "./Positioner.svelte";
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Combobox: typeof ComboboxFacade &
-  Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot } = defineFamily(ComboboxFacade, {
+  Omit<typeof ArkCombobox, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
+    Root: typeof ComboboxRoot;
+  } = defineFamily(ComboboxFacade, {
   ...ArkCombobox,
+  Positioner,
   Root: ComboboxRoot,
 });

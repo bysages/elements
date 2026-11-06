@@ -4,7 +4,11 @@ import { createListCollection, Select as ArkSelect } from "@ark-ui/react/select"
 import { injectComponentStyle } from "@bysages/core/styling";
 import { useMemo } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 import type { NativeSelectOption } from "./native";
@@ -28,7 +32,10 @@ function SelectRoot<T extends CollectionItem>(props: SelectRootComponentProps<T,
 
 type SelectFacadeValue = string | string[];
 
-type SelectParts = Omit<typeof ArkSelect, "Root"> & { Root: typeof SelectRoot };
+type SelectParts = Omit<typeof ArkSelect, "Root" | "Positioner"> & {
+  Positioner: typeof SelectPositioner;
+  Root: typeof SelectRoot;
+};
 
 function toArkValue(value: SelectFacadeValue | undefined) {
   return value === undefined || value === "" ? [] : Array.isArray(value) ? value : [value];
@@ -59,6 +66,8 @@ export interface SelectFacadeProps {
   size?: "sm" | "md" | "lg";
   onValueChange?: (value: string | string[]) => void;
 }
+
+const SelectPositioner = definePositioner(ArkSelect.Positioner);
 
 function SelectFacade({
   portal = false,
@@ -159,6 +168,7 @@ SelectFacade.displayName = "SSelect";
  * the sized wrapper while the rest stay Ark's own parts. */
 export const Select = Object.assign(SelectFacade, {
   ...ArkSelect,
+  Positioner: SelectPositioner,
   Root: SelectRoot,
 }) as typeof SelectFacade & SelectParts;
 

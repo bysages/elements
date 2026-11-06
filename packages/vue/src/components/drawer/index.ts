@@ -76,7 +76,11 @@ const DrawerFacade = defineComponent({
   },
 });
 
-export const Drawer = defineFamily(DrawerFacade, { ...ArkDrawer, Root: DrawerRoot } as unknown as {
+export const Drawer = defineFamily(DrawerFacade, {
+  ...ArkDrawer,
+  Root: DrawerRoot,
+  Positioner: DrawerPositioner,
+} as unknown as {
   Root: Component;
 } & Record<string, Component>) as typeof DrawerFacade &
-  Omit<typeof ArkDrawer, "Root"> & { Root: typeof DrawerRoot };
+  Omit<typeof ArkDrawer, "Root" | "Positioner"> & { Root: typeof DrawerRoot };

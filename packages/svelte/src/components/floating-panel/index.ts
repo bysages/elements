@@ -3,6 +3,7 @@ import { FloatingPanel as ArkFloatingPanel } from "@ark-ui/svelte/floating-panel
 import { defineFamily } from "../../internal/family";
 import FloatingPanelFacade from "./FloatingPanel.svelte";
 import FloatingPanelRoot from "./FloatingPanelRoot.svelte";
+import Positioner from "./Positioner.svelte";
 
 /** Ark's FloatingPanel, dressed in the paper-and-ink system: the shared
  * popup vessel let loose — a draggable, resizable sheet whose header is the
@@ -10,9 +11,11 @@ import FloatingPanelRoot from "./FloatingPanelRoot.svelte";
  * Title, Control, DragTrigger, StageTrigger, CloseTrigger, ResizeTrigger,
  * Body. */
 export const FloatingPanel: typeof FloatingPanelFacade &
-  Omit<typeof ArkFloatingPanel, "Root"> & {
+  Omit<typeof ArkFloatingPanel, "Root" | "Positioner"> & {
+    Positioner: typeof Positioner;
     Root: typeof FloatingPanelRoot;
   } = defineFamily(FloatingPanelFacade, {
   ...ArkFloatingPanel,
+  Positioner,
   Root: FloatingPanelRoot,
 });

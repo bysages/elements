@@ -2,7 +2,11 @@ import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -81,6 +85,8 @@ export interface DialogFacadeProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+const DialogPositioner = definePositioner(ArkDialog.Positioner);
+
 function DialogFacade({
   portal = true,
   open,
@@ -127,25 +133,26 @@ function DialogFacade({
 
 DialogFacade.displayName = "SDialog";
 
-type DialogParts = typeof ArkDialog;
+type DialogParts = Omit<typeof ArkDialog, "Root" | "Content" | "Positioner"> & {
+  Positioner: typeof DialogPositioner;
+  Root: typeof DialogRoot;
+  Content: typeof DialogContent;
+  Header: typeof Header;
+  Body: typeof Body;
+  Footer: typeof Footer;
+};
 
 /* Ark's namespace is frozen — spread copies the members so Root can be
  * the sized wrapper while the rest stay Ark's own parts, with the local
  * section parts layered on top. */
 export const Dialog = Object.assign(DialogFacade, {
   ...ArkDialog,
+  Positioner: DialogPositioner,
   Root: DialogRoot,
   Content: DialogContent,
   Header,
   Body,
   Footer,
-}) as typeof DialogFacade &
-  Omit<DialogParts, "Root" | "Content"> & {
-    Root: typeof DialogRoot;
-    Content: typeof DialogContent;
-    Header: typeof Header;
-    Body: typeof Body;
-    Footer: typeof Footer;
-  };
+}) as typeof DialogFacade & DialogParts;
 
 injectComponentStyle("dialog");

@@ -5,7 +5,11 @@ import { createListCollection } from "@ark-ui/react/combobox";
 import { injectComponentStyle } from "@bysages/core/styling";
 import type { CSSProperties } from "react";
 
-import { FloatingPortal, type FloatingPortalTarget } from "../../internal/floating";
+import {
+  definePositioner,
+  FloatingPortal,
+  type FloatingPortalTarget,
+} from "../../internal/floating";
 import { iconNode } from "../../internal/icon";
 import { useElementId } from "../../internal/id";
 
@@ -63,6 +67,8 @@ function fromComboboxValue(value: string[], multiple: boolean | undefined) {
 
 /** The complete combobox behind one model value: options become the vessel's
  * rows while typing, clearing, and selection stay on the common field path. */
+const ComboboxPositioner = definePositioner(ArkCombobox.Positioner);
+
 function ComboboxFacade(props: ComboboxFacadeProps) {
   const {
     portal = false,
@@ -136,7 +142,15 @@ function ComboboxFacade(props: ComboboxFacadeProps) {
 }
 
 export const Combobox: typeof ComboboxFacade &
-  Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot } = Object.assign(ComboboxFacade, {
+  Omit<typeof ArkCombobox, "Root" | "Positioner"> & {
+    Positioner: typeof ComboboxPositioner;
+    Root: typeof ComboboxRoot;
+  } = Object.assign(ComboboxFacade, {
   ...ArkCombobox,
+  Positioner: ComboboxPositioner,
   Root: ComboboxRoot,
-}) as typeof ComboboxFacade & Omit<typeof ArkCombobox, "Root"> & { Root: typeof ComboboxRoot };
+}) as typeof ComboboxFacade &
+  Omit<typeof ArkCombobox, "Root" | "Positioner"> & {
+    Positioner: typeof ComboboxPositioner;
+    Root: typeof ComboboxRoot;
+  };
