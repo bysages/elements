@@ -102,6 +102,18 @@ function part(name: string, tag: string, extra: Record<string, unknown> = {}, fa
  * but only while the reader rests at the bottom edge. Climb up to reread
  * a thought and the stream stops yanking the view back down; return to
  * the bottom and the follow resumes. */
+/** The node a transcript is actually scrolled through: prefer the log,
+ * then walk outward once a caller owns the scroll in a taller lane. */
+function scrollOwner(node: HTMLElement): HTMLElement {
+  const scrolls = (element: HTMLElement) => {
+    const overflow = getComputedStyle(element).overflowY;
+    return overflow === "auto" || overflow === "scroll";
+  };
+  if (scrolls(node)) return node;
+  let outer = node.parentElement;
+  while (outer && !scrolls(outer)) outer = outer.parentElement;
+  return outer ?? node;
+}
 export const AiConversation = defineComponent({
   name: "AiConversation",
   inheritAttrs: false,
@@ -118,7 +130,8 @@ export const AiConversation = defineComponent({
     let stopFollowing: (() => void) | undefined;
 
     onMounted(() => {
-      if (el.value && props.autoScroll) stopFollowing = createConversationFollower(el.value);
+      if (!el.value || !props.autoScroll) return;
+      stopFollowing = createConversationFollower(scrollOwner(el.value));
     });
     watch(
       () => props.autoScroll,
@@ -175,18 +188,8 @@ export const AiJumpToLatest = defineComponent({
     };
 
     onMounted(() => {
-      // The caller may scroll the conversation node itself or wrap it in
-      // a taller transcript lane. Prefer the conversation; when it does
-      // not overflow, the nearest ancestor that does owns the scroll.
-      let node = el.value?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
-      if (node && node.scrollHeight <= node.clientHeight + 1) {
-        let outer = node.parentElement;
-        while (outer && outer.scrollHeight <= outer.clientHeight + 1) {
-          outer = outer.parentElement;
-        }
-        if (outer) node = outer;
-      }
-      log = node;
+      const node = el.value?.closest<HTMLElement>('[data-scope="ai"][data-part="conversation"]');
+      log = node ? scrollOwner(node) : undefined;
       log?.addEventListener("scroll", measure, { passive: true });
       measure();
     });

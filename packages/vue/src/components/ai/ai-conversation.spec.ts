@@ -11,7 +11,10 @@ beforeEach(() => {
 function mountConversation(autoScroll = true) {
   const container = document.createElement("div");
   document.body.append(container);
-  const app = createApp({ render: () => h(AiConversation as never, { autoScroll }, () => "Ink") });
+  const app = createApp({
+    render: () =>
+      h(AiConversation as never, { autoScroll, style: "overflow-y: auto" }, () => "Ink"),
+  });
   app.mount(container);
   const node = container.querySelector<HTMLElement>('[data-part="conversation"]');
   if (!node) throw new Error("conversation is missing");
@@ -52,6 +55,40 @@ describe("AiConversation autoScroll", () => {
     node.dispatchEvent(new Event("scroll"));
     await grow();
     expect(positions.at(-1)).toBe(50);
+    app.unmount();
+  });
+
+  it("follows an outer transcript lane when the conversation does not scroll", async () => {
+    const container = document.createElement("div");
+    document.body.append(container);
+    const lane = document.createElement("div");
+    lane.style.overflowY = "auto";
+    const positions: number[] = [];
+    Object.defineProperties(lane, {
+      clientHeight: { configurable: true, value: 100 },
+      scrollHeight: { configurable: true, get: () => 300 },
+      scrollTop: {
+        configurable: true,
+        get: () => positions.at(-1) ?? 0,
+        set: (value: number) => {
+          positions.push(value);
+        },
+      },
+    });
+    container.append(lane);
+    const app = createApp({
+      render: () => h(AiConversation as never, { autoScroll: true }, () => "Ink"),
+    });
+    app.mount(lane);
+    const node = lane.querySelector<HTMLElement>('[data-part="conversation"]');
+    if (!node) throw new Error("conversation is missing");
+    Object.defineProperties(node, {
+      clientHeight: { configurable: true, value: 300 },
+      scrollHeight: { configurable: true, get: () => 300 },
+    });
+
+    await grow();
+    expect(positions.at(-1)).toBe(300);
     app.unmount();
   });
 
