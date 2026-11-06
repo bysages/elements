@@ -1213,9 +1213,7 @@ const DataTableFacade = defineComponent({
                 positioning: { placement: "top-start" },
               },
               () => [
-                h(
-                  ArkSelect.Control as never,
-                  {},
+                h(ArkSelect.Control as never, {}, () =>
                   h(
                     ArkSelect.Trigger as never,
                     { "aria-label": messages.value.table.rowsPerPage },

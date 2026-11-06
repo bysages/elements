@@ -32,9 +32,9 @@ function icon(d: string) {
     );
 }
 
-const pencil = icon("M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z");
-const check = icon("M20 6 9 17l-5-5");
-const cross = icon("M18 6 6 18M6 6l12 12");
+const pencil = () => icon("M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z");
+const check = () => icon("M20 6 9 17l-5-5");
+const cross = () => icon("M18 6 6 18M6 6l12 12");
 
 /** The shared anatomy: preview as rest state, input on edit, triggers
  * swapping with the machine. */
