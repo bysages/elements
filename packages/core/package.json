@@ -59,7 +59,7 @@
   "dependencies": {
     "@bysages/icons": "workspace:*",
     "@bysages/tokens": "workspace:*",
-    "@tanstack/markdown": "1.0.0",
+    "@tanstack/markdown": "1.2.0",
     "pele": "1.13.0"
   }
 }
