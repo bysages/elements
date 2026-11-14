@@ -51,27 +51,27 @@
     "release": "basis publish"
   },
   "dependencies": {
-    "@ark-ui/svelte": "5.24.3",
+    "@ark-ui/svelte": "5.25.1",
     "@bysages/core": "workspace:*",
     "@tanstack/svelte-form": "1.33.5",
     "@tanstack/svelte-table": "9.3.1",
-    "@tanstack/svelte-virtual": "3.13.51",
-    "@zag-js/cascade-select": "1.47.0",
-    "@zag-js/svelte": "1.47.0"
+    "@tanstack/svelte-virtual": "3.13.52",
+    "@zag-js/cascade-select": "1.48.0",
+    "@zag-js/svelte": "1.48.0"
   },
   "devDependencies": {
-    "@json-render/core": "0.21.4",
-    "@json-render/svelte": "0.21.4",
+    "@json-render/core": "0.22.0",
+    "@json-render/svelte": "0.22.0",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
-    "ai": "7.0.159",
+    "ai": "7.0.173",
     "rollup-plugin-svelte": "7.2.3",
     "svelte": "5.57.3",
-    "svelte2tsx": "0.7.62",
+    "svelte2tsx": "0.7.63",
     "zod": "4.6.7"
   },
   "peerDependencies": {
-    "@json-render/core": "^0.21.0",
-    "@json-render/svelte": "^0.21.0",
+    "@json-render/core": "^0.21.0 || ^0.22.0",
+    "@json-render/svelte": "^0.21.0 || ^0.22.0",
     "ai": "^7.0.0",
     "svelte": "^5",
     "zod": "^4.0"

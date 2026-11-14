@@ -52,25 +52,25 @@
     "release": "basis publish"
   },
   "dependencies": {
-    "@ark-ui/solid": "5.39.3",
+    "@ark-ui/solid": "5.40.0",
     "@bysages/core": "workspace:*",
     "@tanstack/solid-form": "1.33.5",
     "@tanstack/solid-table": "9.3.1",
-    "@tanstack/solid-virtual": "3.13.52",
-    "@zag-js/cascade-select": "1.47.0",
-    "@zag-js/solid": "1.47.0"
+    "@tanstack/solid-virtual": "3.13.53",
+    "@zag-js/cascade-select": "1.48.0",
+    "@zag-js/solid": "1.48.0"
   },
   "devDependencies": {
-    "@json-render/core": "0.21.4",
-    "@json-render/solid": "0.21.4",
-    "ai": "7.0.159",
-    "solid-js": "1.9.18",
+    "@json-render/core": "0.22.0",
+    "@json-render/solid": "0.22.0",
+    "ai": "7.0.173",
+    "solid-js": "1.9.19",
     "unplugin-solid": "2.0.0",
     "zod": "4.6.7"
   },
   "peerDependencies": {
-    "@json-render/core": "^0.21.0",
-    "@json-render/solid": "^0.21.0",
+    "@json-render/core": "^0.21.0 || ^0.22.0",
+    "@json-render/solid": "^0.21.0 || ^0.22.0",
     "ai": "^7.0.0",
     "solid-js": "^1.9",
     "zod": "^4.0"
