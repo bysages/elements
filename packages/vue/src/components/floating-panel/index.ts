@@ -15,6 +15,7 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
  * Body. */
 const FloatingPanelRoot = defineComponent({
   name: "SFloatingPanelRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("floating-panel", attrs);
 

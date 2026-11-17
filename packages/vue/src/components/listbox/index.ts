@@ -21,6 +21,7 @@ import { useElementId } from "../../internal/id";
 
 const ListboxRoot = defineComponent({
   name: "SListboxRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the ladder for the row register and the filter field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

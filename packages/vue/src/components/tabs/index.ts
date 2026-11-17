@@ -22,6 +22,7 @@ import { Icon } from "../icon";
  */
 const TabsRoot = defineComponent({
   name: "STabsRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the tab rows. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * of quiet seals where the pressed item takes the flat ink fill. The parts — Root, Item. */
 const ToggleGroupRoot = defineComponent({
   name: "SToggleGroupRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the items. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * Context. */
 const ImageCropperRoot = defineComponent({
   name: "SImageCropperRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("image-cropper", attrs);
 
@@ -30,7 +31,7 @@ const ImageCropperFacade = defineComponent({
     injectComponentStyle("image-cropper");
 
     return () =>
-      h(ImageCropperRoot, attrs, () => [
+      h(ImageCropperRoot, { ...attrs }, () => [
         h(ArkImageCropper.Viewport, () => [
           h(ArkImageCropper.Image as never, { src: props.src, alt: props.alt }),
           h(ArkImageCropper.Selection, () => [

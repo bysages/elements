@@ -12,6 +12,7 @@ import { useElementId } from "../../internal/id";
  * Context. */
 const TagsInputRoot = defineComponent({
   name: "STagsInputRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the vessel at rest. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

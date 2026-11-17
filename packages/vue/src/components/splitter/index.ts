@@ -9,10 +9,12 @@ import { useElementId } from "../../internal/id";
  * a hairline and a small paper-seal thumb answers the hand. The parts — Root, Panel, ResizeTrigger, ResizeTriggerIndicator. */
 const SplitterRoot = defineComponent({
   name: "SSplitterRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
-    const id = useElementId("splitter", attrs);
+    const forwardedAttrs = { ...attrs };
+    const id = useElementId("splitter", forwardedAttrs);
 
-    return () => h(ArkSplitter.Root as never, { ...attrs, id: id.value }, slots);
+    return () => h(ArkSplitter.Root as never, { ...forwardedAttrs, id: id.value }, slots);
   },
 });
 

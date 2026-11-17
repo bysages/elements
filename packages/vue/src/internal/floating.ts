@@ -56,7 +56,7 @@ export function definePositioner(name: string, Positioner: Component) {
     },
     setup(props, ctx: SetupContext<{ default?: () => any }, SlotsType<{ default?: () => any }>>) {
       return () => {
-        const positioner = () => h(Positioner, ctx.attrs, ctx.slots.default);
+        const positioner = () => h(Positioner, { ...ctx.attrs }, ctx.slots.default);
 
         return props.portal
           ? h(FloatingPortal, { portal: props.portal }, positioner)

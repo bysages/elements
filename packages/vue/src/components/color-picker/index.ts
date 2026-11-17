@@ -26,6 +26,7 @@ type Color = ReturnType<typeof parseColor>;
  * and hsba formats. */
 const ColorPickerRoot = defineComponent({
   name: "SColorPickerRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the swatch seal. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

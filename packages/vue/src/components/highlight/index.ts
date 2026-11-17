@@ -12,7 +12,7 @@ const HighlightRoot = defineComponent({
   name: "SHighlight",
   inheritAttrs: false,
   setup(_, { attrs }) {
-    return () => h(ArkHighlight as never, attrs);
+    return () => h(ArkHighlight as never, { ...attrs });
   },
 }) as unknown as typeof ArkHighlight;
 

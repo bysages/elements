@@ -17,6 +17,7 @@ import { useElementId } from "../../internal/id";
  * CircleTrack, CircleRange. */
 const ProgressRoot = defineComponent({
   name: "SProgressRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the groove ladder — the track's thickness. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

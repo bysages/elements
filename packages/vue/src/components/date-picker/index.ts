@@ -30,6 +30,7 @@ const DatePickerPositioner = definePositioner("SDatePickerPositioner", ArkDatePi
 
 const DatePickerRoot = defineComponent({
   name: "SDatePickerRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the field row. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

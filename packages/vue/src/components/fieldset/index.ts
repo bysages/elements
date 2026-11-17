@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * HelperText, ErrorText. */
 const FieldsetRoot = defineComponent({
   name: "SFieldsetRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("fieldset", attrs);
 

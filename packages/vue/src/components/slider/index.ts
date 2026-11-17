@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * Thumb, MarkerGroup, Marker, DraggingIndicator, HiddenInput. */
 const SliderRoot = defineComponent({
   name: "SSliderRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the part-size ladder for the thumb seal. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

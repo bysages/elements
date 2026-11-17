@@ -12,6 +12,7 @@ import { useElementId } from "../../internal/id";
  * ClearTrigger, HiddenInput, Context. */
 const SignaturePadRoot = defineComponent({
   name: "SSignaturePadRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("signature-pad", attrs);
 

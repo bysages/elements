@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * ItemText, ItemControl, Indicator, ItemHiddenInput. */
 const RadioGroupRoot = defineComponent({
   name: "SRadioGroupRoot",
+  inheritAttrs: false,
   props: {
     /** One rung for the dial; the chosen dot rides it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

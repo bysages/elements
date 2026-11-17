@@ -34,6 +34,7 @@ const Preview = defineComponent({
  * its text rendering. */
 const EditableRoot = defineComponent({
   name: "SEditableRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the editing field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

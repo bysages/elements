@@ -13,6 +13,7 @@ type TocItem = { value: string; label: string; depth?: number };
 
 const TocRoot = defineComponent({
   name: "STocRoot",
+  inheritAttrs: false,
   props: {
     items: { type: Array as PropType<TocItem[]>, default: undefined },
     scrollEl: { type: Function as PropType<() => HTMLElement | null>, default: undefined },

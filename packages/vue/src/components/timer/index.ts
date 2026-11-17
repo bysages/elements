@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * Context. Unit labels are plain content, not a machine part. */
 const TimerRoot = defineComponent({
   name: "STimerRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("timer", attrs);
 

@@ -23,6 +23,7 @@ import { useElementId } from "../../internal/id";
 
 const TreeViewRoot = defineComponent({
   name: "STreeViewRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the row register: the rows' breathing room follows it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
@@ -53,7 +54,11 @@ const TreeViewBranchIndicator = defineComponent({
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
     return () =>
-      h(ArkTreeView.BranchIndicator, attrs, () => slots.default?.() ?? [iconNode("chevron-right")]);
+      h(
+        ArkTreeView.BranchIndicator,
+        { ...attrs },
+        () => slots.default?.() ?? [iconNode("chevron-right")],
+      );
   },
 });
 

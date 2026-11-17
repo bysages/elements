@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * RequiredIndicator. */
 const FieldRoot = defineComponent({
   name: "SFieldRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("field", attrs);
 

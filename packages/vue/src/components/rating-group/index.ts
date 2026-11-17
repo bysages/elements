@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * ItemContext render helpers). */
 const RatingGroupRoot = defineComponent({
   name: "SRatingGroupRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder every seal stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

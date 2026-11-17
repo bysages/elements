@@ -98,7 +98,7 @@ describe("AiConversation autoScroll", () => {
     node.dispatchEvent(new Event("scroll"));
     node.scrollTop = 201;
     node.dispatchEvent(new Event("scroll"));
-    await new Promise((resolve) => setTimeout(resolve, 160));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     await grow();
     expect(positions.at(-1)).toBe(300);
     app.unmount();

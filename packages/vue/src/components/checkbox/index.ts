@@ -12,6 +12,7 @@ import { useElementId } from "../../internal/id";
  * HiddenInput. */
 const CheckboxRoot = defineComponent({
   name: "SCheckboxRoot",
+  inheritAttrs: false,
   props: {
     /** One rung for the control's box: the tick scales with it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

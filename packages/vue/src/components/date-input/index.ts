@@ -15,6 +15,7 @@ export type {
  * HiddenInput. */
 const DateInputRoot = defineComponent({
   name: "SDateInputRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the segmented field. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

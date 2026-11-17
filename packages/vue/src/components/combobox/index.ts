@@ -23,6 +23,7 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
  * Item, ItemText, ItemIndicator, ItemGroup, ItemGroupLabel. */
 const ComboboxRoot = defineComponent({
   name: "SComboboxRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the field row. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

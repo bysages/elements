@@ -8,6 +8,7 @@ import { useElementId } from "../../internal/id";
  * give way to quiet ink lanes that surface on hover and scroll. The parts — Root, Viewport, Content, Scrollbar, Thumb, Corner. */
 const ScrollAreaRoot = defineComponent({
   name: "SScrollAreaRoot",
+  inheritAttrs: false,
   props: {
     /** Dissolve the viewport's edges with the shared seven-stop ramp:
      * `vertical` fades top and bottom, `horizontal` fades left and

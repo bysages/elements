@@ -14,6 +14,7 @@ import { useElementId } from "../../internal/id";
  */
 const StepsRoot = defineComponent({
   name: "SStepsRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder every indicator stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * Marker, HiddenInput. */
 const AngleSliderRoot = defineComponent({
   name: "SAngleSliderRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the dial ladder — the diameter the needle sweeps. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

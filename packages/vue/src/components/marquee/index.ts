@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * cutting off. The parts — Root, Viewport, Content, Edge, Item. */
 const MarqueeRoot = defineComponent({
   name: "SMarqueeRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("marquee", attrs);
 

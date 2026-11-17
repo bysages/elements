@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * DownloadTrigger. */
 const QrCodeRoot = defineComponent({
   name: "SQrCodeRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("qr-code", attrs);
 

@@ -11,6 +11,7 @@ import { useElementId } from "../../internal/id";
  * Control, Thumb, HiddenInput. */
 const SwitchRoot = defineComponent({
   name: "SSwitchRoot",
+  inheritAttrs: false,
   props: {
     /** One rung for the thumb; the track travels with it. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

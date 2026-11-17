@@ -14,6 +14,7 @@ export type AvatarSize = "sm" | "md" | "lg";
 
 const AvatarRoot = defineComponent({
   name: "SAvatarRoot",
+  inheritAttrs: false,
   props: {
     /** Seal diameter: one rung of the control-height ladder — the
      * default is the md rung, level with the other control families,

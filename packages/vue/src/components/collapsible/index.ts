@@ -12,6 +12,7 @@ import { withPresenceEnter, withPresenceRoot } from "../../internal/presence";
  * The parts — Root, Trigger, Content, Indicator. */
 const CollapsibleRoot = defineComponent({
   name: "SCollapsibleRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("collapsible", attrs);
 

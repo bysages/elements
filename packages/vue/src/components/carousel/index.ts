@@ -13,6 +13,7 @@ import { useElementId } from "../../internal/id";
  * Indicator, AutoplayTrigger, ProgressText. */
 const CarouselRoot = defineComponent({
   name: "SCarouselRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("carousel", attrs);
 

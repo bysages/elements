@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * ItemHiddenInput. */
 const SegmentGroupRoot = defineComponent({
   name: "SSegmentGroupRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the segments. The
      * family keeps its compact register, so the rungs sit one notch

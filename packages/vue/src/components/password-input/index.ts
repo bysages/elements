@@ -12,6 +12,7 @@ import { useElementId } from "../../internal/id";
  * VisibilityTrigger. */
 const PasswordInputRoot = defineComponent({
   name: "SPasswordInputRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the field and its eye. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

@@ -10,6 +10,7 @@ import { useElementId } from "../../internal/id";
  * Root, Label, Control, Input, HiddenInput. */
 const PinInputRoot = defineComponent({
   name: "SPinInputRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder each seal stands on. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

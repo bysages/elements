@@ -13,6 +13,7 @@ import { useElementId } from "../../internal/id";
 
 const ClipboardRoot = defineComponent({
   name: "SClipboardRoot",
+  inheritAttrs: false,
   props: {
     /** One rung of the control-height ladder for the value field and its copy seal. */
     size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },

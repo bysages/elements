@@ -12,6 +12,7 @@ import { useElementId } from "../../internal/id";
 
 const JsonTreeViewRoot = defineComponent({
   name: "SJsonTreeViewRoot",
+  inheritAttrs: false,
   setup(_, { attrs, slots }) {
     const id = useElementId("json-tree-view", attrs);
 
@@ -27,17 +28,21 @@ const JsonTreeViewTree = defineComponent({
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
     return () =>
-      h(ArkJsonTreeView.Tree as never, attrs, {
-        ...(slots.default ? { default: () => slots.default?.() } : {}),
-        ...(slots.indentGuide ? { indentGuide: () => slots.indentGuide?.() } : {}),
-        ...(slots.renderValue
-          ? {
-              renderValue: (node: unknown) =>
-                (slots.renderValue as (s: unknown) => unknown)?.(node),
-            }
-          : {}),
-        arrow: () => slots.arrow?.() ?? [iconNode("chevron-right")],
-      });
+      h(
+        ArkJsonTreeView.Tree as never,
+        { ...attrs },
+        {
+          ...(slots.default ? { default: () => slots.default?.() } : {}),
+          ...(slots.indentGuide ? { indentGuide: () => slots.indentGuide?.() } : {}),
+          ...(slots.renderValue
+            ? {
+                renderValue: (node: unknown) =>
+                  (slots.renderValue as (s: unknown) => unknown)?.(node),
+              }
+            : {}),
+          arrow: () => slots.arrow?.() ?? [iconNode("chevron-right")],
+        },
+      );
   },
 });
 
